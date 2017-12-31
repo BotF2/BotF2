@@ -143,7 +143,7 @@ namespace Supremacy.Client
         {
             try
             {
-                string playerName = "";// = PlayerNameSPInput.Text;
+                string playerName = PlayerNameSPInput.Text;
                 if (playerName.Length > 0)
                 {
                     StorageManager.WriteSetting("LastPlayerName", playerName);
