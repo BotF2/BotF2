@@ -129,8 +129,6 @@ namespace Supremacy.Game
 
         TechTreeMap TechTrees { get; }
 
-        //IntelTreeMap IntelTrees { get; }
-
         StrategyDatabase StrategyDatabase { get; }
 
         /// <summary>
@@ -179,14 +177,11 @@ namespace Supremacy.Game
         private RaceDatabase _races;
         private UniverseManager _universe;
         private TechDatabase _techDatabase;
-        //private IntelDatabase _intelDatabase;
         [NonSerialized]
         private GameTables _tables;
         private ResearchMatrix _researchMatrix;
-        //private IntelligenceMatrix _intelligenceMatrix;
         private SectorClaimGrid _sectorClaims;
         private TechTreeMap _techTrees;
-        //private IntelTreeMap _intelTrees;
         private CivilizationPairedMap<IDiplomacyData> _diplomacyData;
         private AgreementMatrix _agreementMatrix;
         private CivilizationKeyedMap<Diplomat> _diplomats;
@@ -208,12 +203,9 @@ namespace Supremacy.Game
             writer.WriteObject(_races);
             writer.WriteObject(_universe);
             writer.WriteObject(_techDatabase);
-            //writer.WriteObject(_intelDatabase);
             writer.WriteObject(_researchMatrix);
-            //writer.WriteObject(_intelligenceMatrix);
             writer.WriteObject(_sectorClaims);
             writer.WriteObject(_techTrees);
-            //writer.WriteObject(_intelTrees);
             writer.WriteObject(_diplomacyData);
             writer.WriteObject(_agreementMatrix);
             writer.WriteObject(_diplomats);
@@ -524,12 +516,6 @@ namespace Supremacy.Game
             get { return _techTrees; }
             internal set { _techTrees = value; }
         }
-
-        //public IntelTreeMap IntelTrees
-        //{
-        //    get { return _intelTrees; }
-        //    internal set { _intelTrees = value; }
-        //}
 
         public StrategyDatabase StrategyDatabase
         {
@@ -881,13 +867,10 @@ namespace Supremacy.Game
                         GameLog.Client.GameData.DebugFormat("Tables loaded");
                 _techDatabase = TechDatabase.Load();
                         GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
-                //_intelDatabase = IntelDatabase.Load();  // on some point we tried to make Intel the same like research (levels, abilities). at the moment we stopped it and made Spy ships etc. 
                 _researchMatrix = ResearchMatrix.Load();
                         GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
-                //_intelligenceMatrix = IntelligenceMatrix.Load();
                 _techTrees = new TechTreeMap();
                         GameLog.Client.GameData.DebugFormat("TechTree loaded");
-                //_intelTrees = new IntelTreeMap();
                 _strategyDatabase = StrategyDatabase.Load();
                 _scriptedEvents = new List<ScriptedEvent>();
                 _agentDatabase = AgentDatabase.Load();

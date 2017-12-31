@@ -1392,7 +1392,6 @@ namespace Supremacy.Universe
         {
             var shutDown = 0;
             var shipyard = Shipyard;
-            //var intelyard = this.Intelyard;
 
             while (true)
             {
@@ -1469,24 +1468,6 @@ namespace Supremacy.Universe
                         goto Next;
                     }
                 }
-
-                /*
-                 * Lastly, try to shut down some intelyard build slots.  To be fair to the player, we'll favor
-                 * shutting down build slots with the least build progress.
-                 */
-                //if (intelyard != null)
-                //{
-                //    var deactivatedBuildSlot = intelyard.BuildSlots
-                //        .Where(o => o.IsActive && !o.HasProject)
-                //        .Where(DeactivateIntelyardBuildSlot)
-                //        .FirstOrDefault();
-
-                //    if (deactivatedBuildSlot != null)
-                //    {
-                //        ++shutDown;
-                //        goto Next;
-                //    }
-                //}
                 break;
             Next:
                 continue;

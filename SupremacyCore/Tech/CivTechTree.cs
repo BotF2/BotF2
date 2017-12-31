@@ -396,14 +396,10 @@ namespace Supremacy.Tech
                 _buildingDesigns.Add(design.DesignID);
             else if (design is ShipyardDesign)
                 _shipyardDesigns.Add(design.DesignID);
-            //else if (design is IntelyardDesign)
-            //    _intelyardDesigns.Add(design.DesignID);
             else if (design is ProductionFacilityDesign)
                 _productionFacilityDesigns.Add(design.DesignID);
             else if (design is ShipDesign)
                 _shipDesigns.Add(design.DesignID);
-            //else if (design is IntelDesign)
-            //    _intelDesigns.Add(design.DesignID);
             else if (design is StationDesign)
                 _stationDesigns.Add(design.DesignID);
             else if (design is OrbitalBatteryDesign)
@@ -437,14 +433,10 @@ namespace Supremacy.Tech
                 return _buildingDesigns.Remove(design.DesignID);
             if (design is ShipyardDesign)
                 return _shipyardDesigns.Remove(design.DesignID);
-            //if (design is IntelyardDesign)
-            //    return _intelyardDesigns.Remove(design.DesignID);
             if (design is ProductionFacilityDesign)
                 return _productionFacilityDesigns.Remove(design.DesignID);
             if (design is ShipDesign)
                 return _shipDesigns.Remove(design.DesignID);
-            //if (design is IntelDesign)
-            //    return _intelDesigns.Remove(design.DesignID);
             if (design is StationDesign)
                 return _stationDesigns.Remove(design.DesignID);
             if (design is OrbitalBatteryDesign)
@@ -478,10 +470,6 @@ namespace Supremacy.Tech
                 yield return design;
             foreach (var design in _shipDesigns.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign))
                 yield return design;
-            //foreach (var design in _intelyardDesigns.Select(i => GameContext.Current.TechDatabase[i] as IntelyardDesign))
-            //    yield return design;
-            //foreach (var design in _intelDesigns.Select(i => GameContext.Current.TechDatabase[i] as IntelDesign))
-            //    yield return design;
             foreach (var design in _stationDesigns.Select(i => GameContext.Current.TechDatabase[i] as StationDesign))
                 yield return design;
             foreach (var design in _orbitalBatteryDesigns.Select(i => GameContext.Current.TechDatabase[i] as OrbitalBatteryDesign))
@@ -509,10 +497,6 @@ namespace Supremacy.Tech
         {
             _shipyardDesigns.Clear();
         }
-        //public void ClearIntelyardDesigns()
-        //{
-        //    _intelyardDesigns.Clear();
-        //}
 
         public void ClearStationDesigns()
         {
@@ -523,10 +507,6 @@ namespace Supremacy.Tech
         {
             _shipDesigns.Clear();
         }
-        //public void ClearIntelDesigns()
-        //{
-        //    _intelDesigns.Clear();
-        //}
 
         public void ClearProductionFacilityDesigns()
         {
