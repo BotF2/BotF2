@@ -254,18 +254,6 @@ namespace Supremacy.Diplomacy
             writer.WriteOptimized(_contactTurn);
             writer.WriteOptimized((int)_diplomacyStatus);
             writer.WriteOptimized(_lastStatusChange);
-
-            //if (_lastStatusChange == GameContext.Current.TurnNumber)   //just for Federation: add: OwnerID == 1 && 
-            if (OwnerID == 6)
-                GameLog.Client.GameData.DebugFormat("DiplomacyData.cs: Races {0} to {1}, Regard={2}, Trust={3}, _contactTurn={4}, _diplomacyStatus={5}, _lastStatusChange={6}",
-                _ownerId,
-                _counterpartyId,
-                _regard,
-                _trust,
-                _contactTurn,
-                _diplomacyStatus,
-                _lastStatusChange
-                );
         }
     }
 }
