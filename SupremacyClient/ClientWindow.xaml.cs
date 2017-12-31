@@ -527,10 +527,6 @@ namespace Supremacy.Client
                 ClientProperties.SetScaleFactor(this, _scaleFactor);
                 
                 LayoutTransform = ContentPanel.LayoutTransform = new ScaleTransform(_scaleFactor, _scaleFactor, 0.5, 0.5);
-                
-                //TextOptions.SetTextFormattingMode(
-                //    this.ContentPanel,
-                //    TextFormattingMode.Ideal);
             }
             else
             {
@@ -540,9 +536,6 @@ namespace Supremacy.Client
 
                 LayoutTransform = ContentPanel.LayoutTransform = null;
 
-                //TextOptions.SetTextFormattingMode(
-                //    this.ContentPanel,
-                //    TextFormattingMode.Display);
             }
         }
 

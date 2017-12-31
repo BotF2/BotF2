@@ -504,8 +504,6 @@ namespace Supremacy.Client
 
             if (_appContext.IsGameInPlay)
             {
-                //    GameLog.Client.GameData.DebugFormat("ClientModule.cs: LocalPlayerRace={0}, EmpireKey={1}", _appContext.LocalPlayer.Empire.Race.Name, _appContext.LocalPlayer.Empire.Key);
-
                 if (_appContext.LocalPlayer.Empire.Key == "INTRO")
                     LoadTheme("Intro");
                 else if (_appContext.LocalPlayer.Empire.Key == "FEDERATION")
@@ -524,22 +522,7 @@ namespace Supremacy.Client
                     LoadTheme("TerranEmpire");
                 else
                     LoadDefaultTheme();
-
-                //    //"else"....old version
-                //    LoadTheme(_appContext.LocalPlayer.Empire.Key);
             }
-            //else
-
-            //GameLog.Client.GameData.DebugFormat("ClientModule.cs: ...ELSE... LocalPlayerCivName={0}, EmpireKey={1}", _appContext.LocalPlayerEmpire.Civilization.Name, _appContext.LocalPlayer.Empire.Key);
-
-            //if (_appContext.LocalPlayer.Empire.Key == "BORG")
-            //    LoadTheme("BORG");
-
-            //if (_appContext.LocalPlayer.Empire.Key == "TERRANEMPIRE")
-            //    LoadTheme("TERRANEMPIRE");
-
-            //LoadTheme("Klingons");
-            //LoadDefaultTheme();
         }
 
         public void LoadDefaultTheme()
