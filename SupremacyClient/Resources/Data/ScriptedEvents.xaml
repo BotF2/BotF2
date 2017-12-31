@@ -1,0 +1,15 @@
+﻿<ScriptedEventDatabase xmlns="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:coreEvents="clr-namespace:Supremacy.Scripting.Events;assembly=SupremacyCore">
+
+  <EventDefinition EventID="RELIGIOUS_HOLIDAY"
+                   Description="Religious Holiday"
+                   EventType="coreEvents:ReligiousHolidayEvent">
+    <EventDefinition.Options>
+      <x:Int32 x:Key="CivilizationRecurrencePeriod">75</x:Int32>
+      <x:Int32 x:Key="UnitRecurrencePeriod">150</x:Int32>
+      <x:Int32 x:Key="OccurrenceChance">100</x:Int32>
+    </EventDefinition.Options>
+  </EventDefinition>
+
+</ScriptedEventDatabase>

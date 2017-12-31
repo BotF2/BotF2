@@ -1,0 +1,1209 @@
+<?xml version="1.0"?><doc><assembly><name>ActiproSoftware.Text.Addons.DotNet.Net351</name></assembly><members><member name="T:ActiproSoftware.Products.Text.Addons.DotNet.Resources"><summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.ResourceManager"><summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.Culture"><summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpCloseCurlyBraceErrorAlias"><summary>
+              Looks up a localized string similar to '}'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpCloseParenthesisErrorAlias"><summary>
+              Looks up a localized string similar to ')'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpCloseSquareBraceErrorAlias"><summary>
+              Looks up a localized string similar to ']'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpColonErrorAlias"><summary>
+              Looks up a localized string similar to ':'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpCommaErrorAlias"><summary>
+              Looks up a localized string similar to ','.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpCompilationUnitContentErrorAlias"><summary>
+              Looks up a localized string similar to Extern alias declarations, using clauses, assembly/module attributes, or namespace/type declarations.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpContextualKeywordErrorAlias"><summary>
+              Looks up a localized string similar to '{0}'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpDocumentEndErrorAlias"><summary>
+              Looks up a localized string similar to Document end.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpDotErrorAlias"><summary>
+              Looks up a localized string similar to '.'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpExpressionErrorAlias"><summary>
+              Looks up a localized string similar to Expression.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpGreaterThanErrorAlias"><summary>
+              Looks up a localized string similar to '&gt;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpIdentifierErrorAlias"><summary>
+              Looks up a localized string similar to Identifier.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpInterfaceAccessorErrorAlias"><summary>
+              Looks up a localized string similar to A get or set accessor.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpKeywordErrorAlias"><summary>
+              Looks up a localized string similar to '{0}'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpLessThanErrorAlias"><summary>
+              Looks up a localized string similar to '&lt;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpLiteralCharacterErrorAlias"><summary>
+              Looks up a localized string similar to Character literal.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpLiteralDecimalIntegerErrorAlias"><summary>
+              Looks up a localized string similar to Decimal integer literal.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpLiteralHexadecimalIntegerErrorAlias"><summary>
+              Looks up a localized string similar to Hexadecimal integer literal.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpLiteralRealErrorAlias"><summary>
+              Looks up a localized string similar to Real number literal.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpLiteralStringErrorAlias"><summary>
+              Looks up a localized string similar to String literal.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpLiteralVerbatimStringErrorAlias"><summary>
+              Looks up a localized string similar to Verbatim string literal.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpMemberNameErrorAlias"><summary>
+              Looks up a localized string similar to Member name.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpNamespaceAliasQualifierErrorAlias"><summary>
+              Looks up a localized string similar to '::'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpNamespaceDeclarationContentErrorAlias"><summary>
+              Looks up a localized string similar to Extern alias declarations, using clauses, or namespace/type declarations.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOpenCurlyBraceErrorAlias"><summary>
+              Looks up a localized string similar to '{'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOpenParenthesisErrorAlias"><summary>
+              Looks up a localized string similar to '('.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOpenSquareBraceErrorAlias"><summary>
+              Looks up a localized string similar to '['.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorAdditionErrorAlias"><summary>
+              Looks up a localized string similar to '+'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorAssignmentErrorAlias"><summary>
+              Looks up a localized string similar to '='.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorBitwiseAndErrorAlias"><summary>
+              Looks up a localized string similar to '&amp;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorBitwiseOrErrorAlias"><summary>
+              Looks up a localized string similar to '|'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorConditionalAndErrorAlias"><summary>
+              Looks up a localized string similar to '&amp;&amp;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorConditionalOrErrorAlias"><summary>
+              Looks up a localized string similar to '||'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorDecrementErrorAlias"><summary>
+              Looks up a localized string similar to '--'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorDivisionErrorAlias"><summary>
+              Looks up a localized string similar to '/'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorEqualityErrorAlias"><summary>
+              Looks up a localized string similar to '=='.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorExclusiveOrErrorAlias"><summary>
+              Looks up a localized string similar to '^'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorGreaterThanErrorAlias"><summary>
+              Looks up a localized string similar to '&gt;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorGreaterThanOrEqualErrorAlias"><summary>
+              Looks up a localized string similar to '&gt;='.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorIncrementErrorAlias"><summary>
+              Looks up a localized string similar to '++'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorInequalityErrorAlias"><summary>
+              Looks up a localized string similar to '!='.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorLambdaErrorAlias"><summary>
+              Looks up a localized string similar to '=&gt;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorLeftShiftErrorAlias"><summary>
+              Looks up a localized string similar to '&lt;&lt;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorLessThanErrorAlias"><summary>
+              Looks up a localized string similar to '&lt;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorLessThanOrEqualErrorAlias"><summary>
+              Looks up a localized string similar to '&gt;'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorModulusErrorAlias"><summary>
+              Looks up a localized string similar to '%'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorMultiplicationErrorAlias"><summary>
+              Looks up a localized string similar to '*'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorNegationErrorAlias"><summary>
+              Looks up a localized string similar to '!'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorNullCoalescingErrorAlias"><summary>
+              Looks up a localized string similar to '??'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorOnesComplementErrorAlias"><summary>
+              Looks up a localized string similar to '~'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpOperatorSubtractionErrorAlias"><summary>
+              Looks up a localized string similar to '-'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpQuestionMarkErrorAlias"><summary>
+              Looks up a localized string similar to '?'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpSelectOrGroupClauseErrorAlias"><summary>
+              Looks up a localized string similar to Select or group clause.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpSemiColonErrorAlias"><summary>
+              Looks up a localized string similar to ';'.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.CSharpTypeErrorAlias"><summary>
+              Looks up a localized string similar to Type.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.ParseErrorAttributeArgumentOrder"><summary>
+              Looks up a localized string similar to Named attribute argument expected..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.ParseErrorAttributeTarget"><summary>
+              Looks up a localized string similar to '{0}' is not a recognized attribute location.  All attributes in this block will be ignored..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.ParseErrorExternAliasDirectiveOrder"><summary>
+              Looks up a localized string similar to An extern alias declaration must precede all other elements defined in the namespace..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.ParseErrorGlobalAttributeOrder"><summary>
+              Looks up a localized string similar to Assembly and module attributes must precede all other elements defined in a file except using clauses and extern alias declarations..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.ParseErrorModifierInvalid"><summary>
+              Looks up a localized string similar to The modifier '{0}' is not valid for this item..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.Resources.ParseErrorUsingDirectiveOrder"><summary>
+              Looks up a localized string similar to A using clause must precede all other elements defined in the namespace except extern alias declarations..
+            </summary></member><member name="T:ActiproSoftware.Products.Text.Addons.DotNet.SR"><summary>
+            Provides access to the string resources of this assembly, also allowing for their customization.
+            </summary><remarks>
+            Call the <see cref="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.GetString(System.String)" /> method to return a resolved resource string.
+            If a custom string has been set for a specified string resource name, it will be returned.
+            Otherwise, the default string resource value is returned.
+            <para>
+            If any of the resource strings are customized via a call to <see cref="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.SetCustomString(System.String,System.String)" />,
+            it is best to do so before any other classes in this assembly are referenced,
+            such as in the application startup.
+            </para></remarks></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.ClearCustomStrings"><summary>
+            Removes all custom strings.
+            </summary></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.ContainsCustomString(System.String)"><summary>
+            Returns whether a custom string is defined for the specified string resource.
+            </summary><param name="name">The name of the resource for which to search.</param><returns><c>true</c> if a custom string is defined for the specified string resource; otherwise, <c>false</c>.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.GetCustomString(System.String)"><summary>
+            Returns custom string that is stored for the specified string resource, if any.
+            </summary><param name="name">The name of the resource to get.</param><returns>The custom string that is stored for the specified string resource, if any.</returns></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.GetString(System.String)"><summary>
+            Returns the resolved value of the specified string resource.
+            </summary><param name="name">The name of the resource to get.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.GetString(ActiproSoftware.Products.Text.Addons.DotNet.SRName)"><summary>
+            Returns the resolved value of the specified string resource.
+            </summary><param name="name">The name of the resource to get.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.GetString(System.String,System.Object[])"><summary>
+            Returns the resolved value of the specified string resource, by calling <c>String.Format</c> using supplied arguments.
+            </summary><param name="name">The name of the resource to get.</param><param name="args">The arguments to pass to <c>String.Format</c>.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.GetString(ActiproSoftware.Products.Text.Addons.DotNet.SRName,System.Object[])"><summary>
+            Returns the resolved value of the specified string resource, by calling <c>String.Format</c> using supplied arguments.
+            </summary><param name="name">The name of the resource to get.</param><param name="args">The arguments to pass to <c>String.Format</c>.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.RemoveCustomString(System.String)"><summary>
+            Removes any custom string that is defined for the specified string resource.
+            </summary><param name="name">The name of the resource to remove.</param></member><member name="M:ActiproSoftware.Products.Text.Addons.DotNet.SR.SetCustomString(System.String,System.String)"><summary>
+            Sets a custom string value for the specified string resource.
+            </summary><param name="name">The name of the resource to set.</param><param name="value">The value of the resource to set.</param></member><member name="P:ActiproSoftware.Products.Text.Addons.DotNet.SR.ResourceManager"><summary>
+            Gets the <see cref="P:ActiproSoftware.Products.Text.Addons.DotNet.SR.ResourceManager" /> that provides the default resources. 
+            </summary><value>The <see cref="P:ActiproSoftware.Products.Text.Addons.DotNet.SR.ResourceManager" /> that provides the default resources.</value></member><member name="T:ActiproSoftware.Products.Text.Addons.DotNet.SRName"><summary>
+            Specifies the names of string resources for this assembly.
+            </summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpCloseCurlyBraceErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpCloseParenthesisErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpCloseSquareBraceErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpColonErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpCommaErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpContextualKeywordErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpDocumentEndErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpDotErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpGreaterThanErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpIdentifierErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpKeywordErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpLessThanErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpLiteralCharacterErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpLiteralDecimalIntegerErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpLiteralHexadecimalIntegerErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpLiteralRealErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpLiteralStringErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpLiteralVerbatimStringErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpNamespaceAliasQualifierErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOpenCurlyBraceErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOpenParenthesisErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOpenSquareBraceErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorAdditionErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorAssignmentErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorBitwiseAndErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorBitwiseOrErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorConditionalAndErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorConditionalOrErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorDecrementErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorDivisionErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorEqualityErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorExclusiveOrErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorGreaterThanErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorGreaterThanOrEqualErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorIncrementErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorInequalityErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorLambdaErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorLeftShiftErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorLessThanErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorLessThanOrEqualErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorModulusErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorMultiplicationErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorNegationErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorNullCoalescingErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorOnesComplementErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpOperatorSubtractionErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpQuestionMarkErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpSemiColonErrorAlias"><summary>A terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpCompilationUnitContentErrorAlias"><summary>A non-terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpExpressionErrorAlias"><summary>A non-terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpInterfaceAccessorErrorAlias"><summary>A non-terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpMemberNameErrorAlias"><summary>A non-terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpNamespaceDeclarationContentErrorAlias"><summary>A non-terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpSelectOrGroupClauseErrorAlias"><summary>A non-terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.CSharpTypeErrorAlias"><summary>A non-terminal error alias string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.ParseErrorAttributeArgumentOrder"><summary>A parse error string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.ParseErrorAttributeTarget"><summary>A parse error string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.ParseErrorExternAliasDirectiveOrder"><summary>A parse error string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.ParseErrorGlobalAttributeOrder"><summary>A parse error string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.ParseErrorModifierInvalid"><summary>A parse error string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.DotNet.SRName.ParseErrorUsingDirectiveOrder"><summary>A parse error string.</summary></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexer"><summary>
+            Represents a <c>C#</c> lexer (lexical analyzer) implementation.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexer.GetAllLexicalStateTransitions"><summary>
+            Returns a collection containing all <see cref="T:ActiproSoftware.Text.Lexing.ILexicalStateTransition" /> objects within the lexer.
+            </summary><returns>A collection containing all <see cref="T:ActiproSoftware.Text.Lexing.ILexicalStateTransition" /> objects within the lexer.</returns><remarks>
+            This method allows consumers to see which language transitions can be made within the lexer.
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexer.GetNextToken(ActiproSoftware.Text.ITextBufferReader,ActiproSoftware.Text.Lexing.ILexicalState)"><summary>
+            Performs a lex to return the next <see cref="T:ActiproSoftware.Text.Lexing.MergableLexerResult" /> 
+            from a <see cref="T:ActiproSoftware.Text.ITextBufferReader" /> and seeks past it if there is a match.
+            </summary><param name="reader">An <see cref="T:ActiproSoftware.Text.ITextBufferReader" /> that is reading a text source.</param><param name="lexicalState">The <see cref="T:ActiproSoftware.Text.Lexing.ILexicalState" /> that specifies the current state.</param><returns>A <see cref="T:ActiproSoftware.Text.Lexing.MergableLexerResult" /> indicating the lexer result.</returns></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexer.#ctor"><summary>
+            Initializes a new instance of the <c>CSharpLexer</c> class.
+            </summary></member><member name="P:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexer.LexicalStates"><summary>
+            Gets the collection of lexical states used by this lexer.
+            </summary><value>The collection of lexical states used by this lexer.</value></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId"><summary>
+            Contains the lexical state IDs for the <c>C#</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool (http://www.actiprosoftware.com).
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.ContainsId(System.Int32)"><summary>
+            Returns whether the specified ID value is valid for this lexical state ID provider.
+            </summary><param name="id">The lexical state ID to examine.</param><returns><c>true</c> if the ID value is valid; otherwise, <c>false</c></returns></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.GetDescription(System.Int32)"><summary>
+            Returns the actual string representation for the specified lexical state ID.
+            </summary><param name="id">The lexical state ID to examine.</param><returns>The actual string representation for the specified lexical state ID.</returns></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.GetKey(System.Int32)"><summary>
+            Returns the string-based key for the specified lexical state ID.
+            </summary><param name="id">The lexical state ID to examine.</param><returns>The string-based key for the specified lexical state ID.</returns></member><member name="P:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.MinId"><summary>
+            Gets the minimum lexical state ID returned by this provider.
+            </summary><value>The minimum lexical state ID returned by this provider.</value></member><member name="P:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.MaxId"><summary>
+            Gets the maximum lexical state ID returned by this provider.
+            </summary><value>The maximum lexical state ID returned by this provider.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.Default"><summary>
+            Gets the <c>Default</c> lexical state ID.
+            </summary><value>The <c>Default</c> lexical state ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.DocumentationComment"><summary>
+            Gets the <c>DocumentationComment</c> lexical state ID.
+            </summary><value>The <c>DocumentationComment</c> lexical state ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpLexicalStateId.PreprocessorDirective"><summary>
+            Gets the <c>PreprocessorDirective</c> lexical state ID.
+            </summary><value>The <c>PreprocessorDirective</c> lexical state ID.</value></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId"><summary>
+            Contains the token IDs for the <c>C#</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool (http://www.actiprosoftware.com).
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ContainsId(System.Int32)"><summary>
+            Returns whether the specified ID value is valid for this token ID provider.
+            </summary><param name="id">The token ID to examine.</param><returns><c>true</c> if the ID value is valid; otherwise, <c>false</c></returns></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.GetDescription(System.Int32)"><summary>
+            Returns the actual string representation for the specified token ID.
+            </summary><param name="id">The token ID to examine.</param><returns>The actual string representation for the specified token ID.</returns></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.GetKey(System.Int32)"><summary>
+            Returns the string-based key for the specified token ID.
+            </summary><param name="id">The token ID to examine.</param><returns>The string-based key for the specified token ID.</returns></member><member name="P:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.MinId"><summary>
+            Gets the minimum token ID returned by this provider.
+            </summary><value>The minimum token ID returned by this provider.</value></member><member name="P:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.MaxId"><summary>
+            Gets the maximum token ID returned by this provider.
+            </summary><value>The maximum token ID returned by this provider.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Whitespace"><summary>
+            Gets the <c>Whitespace</c> token ID.
+            </summary><value>The <c>Whitespace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.LineTerminator"><summary>
+            Gets the <c>LineTerminator</c> token ID.
+            </summary><value>The <c>LineTerminator</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.SingleLineComment"><summary>
+            Gets the <c>SingleLineComment</c> token ID.
+            </summary><value>The <c>SingleLineComment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.MultiLineComment"><summary>
+            Gets the <c>MultiLineComment</c> token ID.
+            </summary><value>The <c>MultiLineComment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.DocumentationCommentDelimiter"><summary>
+            Gets the <c>DocumentationCommentDelimiter</c> token ID.
+            </summary><value>The <c>DocumentationCommentDelimiter</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.DocumentationCommentText"><summary>
+            Gets the <c>DocumentationCommentText</c> token ID.
+            </summary><value>The <c>DocumentationCommentText</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.DocumentationCommentTag"><summary>
+            Gets the <c>DocumentationCommentTag</c> token ID.
+            </summary><value>The <c>DocumentationCommentTag</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.DecimalIntegerLiteral"><summary>
+            Gets the <c>DecimalIntegerLiteral</c> token ID.
+            </summary><value>The <c>DecimalIntegerLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.HexadecimalIntegerLiteral"><summary>
+            Gets the <c>HexadecimalIntegerLiteral</c> token ID.
+            </summary><value>The <c>HexadecimalIntegerLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.RealLiteral"><summary>
+            Gets the <c>RealLiteral</c> token ID.
+            </summary><value>The <c>RealLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.CharacterLiteral"><summary>
+            Gets the <c>CharacterLiteral</c> token ID.
+            </summary><value>The <c>CharacterLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.StringLiteral"><summary>
+            Gets the <c>StringLiteral</c> token ID.
+            </summary><value>The <c>StringLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.VerbatimStringLiteral"><summary>
+            Gets the <c>VerbatimStringLiteral</c> token ID.
+            </summary><value>The <c>VerbatimStringLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Identifier"><summary>
+            Gets the <c>Identifier</c> token ID.
+            </summary><value>The <c>Identifier</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ContextualKeywordStart"><summary>
+            Gets the <c>ContextualKeywordStart</c> token ID.
+            </summary><value>The <c>ContextualKeywordStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Ascending"><summary>
+            Gets the <c>Ascending</c> token ID.
+            </summary><value>The <c>Ascending</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.By"><summary>
+            Gets the <c>By</c> token ID.
+            </summary><value>The <c>By</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Descending"><summary>
+            Gets the <c>Descending</c> token ID.
+            </summary><value>The <c>Descending</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Equals"><summary>
+            Gets the <c>Equals </c> token ID.
+            </summary><value>The <c>Equals </c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.From"><summary>
+            Gets the <c>From</c> token ID.
+            </summary><value>The <c>From</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Group"><summary>
+            Gets the <c>Group</c> token ID.
+            </summary><value>The <c>Group</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Into"><summary>
+            Gets the <c>Into</c> token ID.
+            </summary><value>The <c>Into</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Join"><summary>
+            Gets the <c>Join</c> token ID.
+            </summary><value>The <c>Join</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Let"><summary>
+            Gets the <c>Let</c> token ID.
+            </summary><value>The <c>Let</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.On"><summary>
+            Gets the <c>On</c> token ID.
+            </summary><value>The <c>On</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.OrderBy"><summary>
+            Gets the <c>OrderBy</c> token ID.
+            </summary><value>The <c>OrderBy</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Select"><summary>
+            Gets the <c>Select</c> token ID.
+            </summary><value>The <c>Select</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Where"><summary>
+            Gets the <c>Where</c> token ID.
+            </summary><value>The <c>Where</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Var"><summary>
+            Gets the <c>Var</c> token ID.
+            </summary><value>The <c>Var</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ContextualKeywordEnd"><summary>
+            Gets the <c>ContextualKeywordEnd</c> token ID.
+            </summary><value>The <c>ContextualKeywordEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.KeywordStart"><summary>
+            Gets the <c>KeywordStart</c> token ID.
+            </summary><value>The <c>KeywordStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Abstract"><summary>
+            Gets the <c>Abstract</c> token ID.
+            </summary><value>The <c>Abstract</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Add"><summary>
+            Gets the <c>Add</c> token ID.
+            </summary><value>The <c>Add</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.As"><summary>
+            Gets the <c>As</c> token ID.
+            </summary><value>The <c>As</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Base"><summary>
+            Gets the <c>Base</c> token ID.
+            </summary><value>The <c>Base</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Bool"><summary>
+            Gets the <c>Bool</c> token ID.
+            </summary><value>The <c>Bool</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Break"><summary>
+            Gets the <c>Break</c> token ID.
+            </summary><value>The <c>Break</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Byte"><summary>
+            Gets the <c>Byte</c> token ID.
+            </summary><value>The <c>Byte</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Case"><summary>
+            Gets the <c>Case</c> token ID.
+            </summary><value>The <c>Case</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Catch"><summary>
+            Gets the <c>Catch</c> token ID.
+            </summary><value>The <c>Catch</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Char"><summary>
+            Gets the <c>Char</c> token ID.
+            </summary><value>The <c>Char</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Checked"><summary>
+            Gets the <c>Checked</c> token ID.
+            </summary><value>The <c>Checked</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Class"><summary>
+            Gets the <c>Class</c> token ID.
+            </summary><value>The <c>Class</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Const"><summary>
+            Gets the <c>Const</c> token ID.
+            </summary><value>The <c>Const</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Continue"><summary>
+            Gets the <c>Continue</c> token ID.
+            </summary><value>The <c>Continue</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Decimal"><summary>
+            Gets the <c>Decimal</c> token ID.
+            </summary><value>The <c>Decimal</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Default"><summary>
+            Gets the <c>Default</c> token ID.
+            </summary><value>The <c>Default</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Delegate"><summary>
+            Gets the <c>Delegate</c> token ID.
+            </summary><value>The <c>Delegate</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Do"><summary>
+            Gets the <c>Do</c> token ID.
+            </summary><value>The <c>Do</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Double"><summary>
+            Gets the <c>Double</c> token ID.
+            </summary><value>The <c>Double</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Else"><summary>
+            Gets the <c>Else</c> token ID.
+            </summary><value>The <c>Else</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Enum"><summary>
+            Gets the <c>Enum </c> token ID.
+            </summary><value>The <c>Enum </c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Event"><summary>
+            Gets the <c>Event</c> token ID.
+            </summary><value>The <c>Event</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Explicit"><summary>
+            Gets the <c>Explicit</c> token ID.
+            </summary><value>The <c>Explicit</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Extern"><summary>
+            Gets the <c>Extern</c> token ID.
+            </summary><value>The <c>Extern</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.False"><summary>
+            Gets the <c>False</c> token ID.
+            </summary><value>The <c>False</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Finally"><summary>
+            Gets the <c>Finally</c> token ID.
+            </summary><value>The <c>Finally</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Fixed"><summary>
+            Gets the <c>Fixed</c> token ID.
+            </summary><value>The <c>Fixed</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Float"><summary>
+            Gets the <c>Float</c> token ID.
+            </summary><value>The <c>Float</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.For"><summary>
+            Gets the <c>For</c> token ID.
+            </summary><value>The <c>For</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ForEach"><summary>
+            Gets the <c>ForEach</c> token ID.
+            </summary><value>The <c>ForEach</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Get"><summary>
+            Gets the <c>Get</c> token ID.
+            </summary><value>The <c>Get</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Goto"><summary>
+            Gets the <c>Goto</c> token ID.
+            </summary><value>The <c>Goto</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.If"><summary>
+            Gets the <c>If</c> token ID.
+            </summary><value>The <c>If</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Implicit"><summary>
+            Gets the <c>Implicit</c> token ID.
+            </summary><value>The <c>Implicit</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.In"><summary>
+            Gets the <c>In</c> token ID.
+            </summary><value>The <c>In</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Int"><summary>
+            Gets the <c>Int</c> token ID.
+            </summary><value>The <c>Int</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Interface"><summary>
+            Gets the <c>Interface</c> token ID.
+            </summary><value>The <c>Interface</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Internal"><summary>
+            Gets the <c>Internal</c> token ID.
+            </summary><value>The <c>Internal</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Is"><summary>
+            Gets the <c>Is</c> token ID.
+            </summary><value>The <c>Is</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Lock"><summary>
+            Gets the <c>Lock</c> token ID.
+            </summary><value>The <c>Lock</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Long"><summary>
+            Gets the <c>Long</c> token ID.
+            </summary><value>The <c>Long</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Namespace"><summary>
+            Gets the <c>Namespace</c> token ID.
+            </summary><value>The <c>Namespace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.New"><summary>
+            Gets the <c>New</c> token ID.
+            </summary><value>The <c>New</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Null"><summary>
+            Gets the <c>Null</c> token ID.
+            </summary><value>The <c>Null</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Object"><summary>
+            Gets the <c>Object</c> token ID.
+            </summary><value>The <c>Object</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Operator"><summary>
+            Gets the <c>Operator</c> token ID.
+            </summary><value>The <c>Operator</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Out"><summary>
+            Gets the <c>Out</c> token ID.
+            </summary><value>The <c>Out</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Override"><summary>
+            Gets the <c>Override</c> token ID.
+            </summary><value>The <c>Override</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Params"><summary>
+            Gets the <c>Params</c> token ID.
+            </summary><value>The <c>Params</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Partial"><summary>
+            Gets the <c>Partial</c> token ID.
+            </summary><value>The <c>Partial</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Private"><summary>
+            Gets the <c>Private</c> token ID.
+            </summary><value>The <c>Private</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Protected"><summary>
+            Gets the <c>Protected</c> token ID.
+            </summary><value>The <c>Protected</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Public"><summary>
+            Gets the <c>Public</c> token ID.
+            </summary><value>The <c>Public</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ReadOnly"><summary>
+            Gets the <c>ReadOnly</c> token ID.
+            </summary><value>The <c>ReadOnly</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Ref"><summary>
+            Gets the <c>Ref</c> token ID.
+            </summary><value>The <c>Ref</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Remove"><summary>
+            Gets the <c>Remove</c> token ID.
+            </summary><value>The <c>Remove</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Return"><summary>
+            Gets the <c>Return</c> token ID.
+            </summary><value>The <c>Return</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.SByte"><summary>
+            Gets the <c>SByte</c> token ID.
+            </summary><value>The <c>SByte</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Sealed"><summary>
+            Gets the <c>Sealed</c> token ID.
+            </summary><value>The <c>Sealed</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Set"><summary>
+            Gets the <c>Set</c> token ID.
+            </summary><value>The <c>Set</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Short"><summary>
+            Gets the <c>Short</c> token ID.
+            </summary><value>The <c>Short</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.SizeOf"><summary>
+            Gets the <c>SizeOf</c> token ID.
+            </summary><value>The <c>SizeOf</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.StackAlloc"><summary>
+            Gets the <c>StackAlloc</c> token ID.
+            </summary><value>The <c>StackAlloc</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Static"><summary>
+            Gets the <c>Static</c> token ID.
+            </summary><value>The <c>Static</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.String"><summary>
+            Gets the <c>String</c> token ID.
+            </summary><value>The <c>String</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Struct"><summary>
+            Gets the <c>Struct</c> token ID.
+            </summary><value>The <c>Struct</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Switch"><summary>
+            Gets the <c>Switch</c> token ID.
+            </summary><value>The <c>Switch</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.This"><summary>
+            Gets the <c>This</c> token ID.
+            </summary><value>The <c>This</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Throw"><summary>
+            Gets the <c>Throw</c> token ID.
+            </summary><value>The <c>Throw</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.True"><summary>
+            Gets the <c>True</c> token ID.
+            </summary><value>The <c>True</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Try"><summary>
+            Gets the <c>Try</c> token ID.
+            </summary><value>The <c>Try</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.TypeOf"><summary>
+            Gets the <c>TypeOf</c> token ID.
+            </summary><value>The <c>TypeOf</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.UInt"><summary>
+            Gets the <c>UInt</c> token ID.
+            </summary><value>The <c>UInt</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ULong"><summary>
+            Gets the <c>ULong</c> token ID.
+            </summary><value>The <c>ULong</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Unchecked"><summary>
+            Gets the <c>Unchecked</c> token ID.
+            </summary><value>The <c>Unchecked</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Unsafe"><summary>
+            Gets the <c>Unsafe</c> token ID.
+            </summary><value>The <c>Unsafe</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.UShort"><summary>
+            Gets the <c>UShort</c> token ID.
+            </summary><value>The <c>UShort</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Using"><summary>
+            Gets the <c>Using</c> token ID.
+            </summary><value>The <c>Using</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Virtual"><summary>
+            Gets the <c>Virtual</c> token ID.
+            </summary><value>The <c>Virtual</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Void"><summary>
+            Gets the <c>Void</c> token ID.
+            </summary><value>The <c>Void</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Volatile"><summary>
+            Gets the <c>Volatile</c> token ID.
+            </summary><value>The <c>Volatile</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.While"><summary>
+            Gets the <c>While</c> token ID.
+            </summary><value>The <c>While</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Yield"><summary>
+            Gets the <c>Yield</c> token ID.
+            </summary><value>The <c>Yield</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.KeywordEnd"><summary>
+            Gets the <c>KeywordEnd</c> token ID.
+            </summary><value>The <c>KeywordEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.OperatorOrPunctuatorStart"><summary>
+            Gets the <c>OperatorOrPunctuatorStart</c> token ID.
+            </summary><value>The <c>OperatorOrPunctuatorStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.OpenCurlyBrace"><summary>
+            Gets the <c>OpenCurlyBrace</c> token ID.
+            </summary><value>The <c>OpenCurlyBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.CloseCurlyBrace"><summary>
+            Gets the <c>CloseCurlyBrace</c> token ID.
+            </summary><value>The <c>CloseCurlyBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.OpenSquareBrace"><summary>
+            Gets the <c>OpenSquareBrace</c> token ID.
+            </summary><value>The <c>OpenSquareBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.CloseSquareBrace"><summary>
+            Gets the <c>CloseSquareBrace</c> token ID.
+            </summary><value>The <c>CloseSquareBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.OpenParenthesis"><summary>
+            Gets the <c>OpenParenthesis</c> token ID.
+            </summary><value>The <c>OpenParenthesis</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.CloseParenthesis"><summary>
+            Gets the <c>CloseParenthesis</c> token ID.
+            </summary><value>The <c>CloseParenthesis</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Dot"><summary>
+            Gets the <c>Dot</c> token ID.
+            </summary><value>The <c>Dot</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Comma"><summary>
+            Gets the <c>Comma</c> token ID.
+            </summary><value>The <c>Comma</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Colon"><summary>
+            Gets the <c>Colon</c> token ID.
+            </summary><value>The <c>Colon</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.NamespaceAliasQualifier"><summary>
+            Gets the <c>NamespaceAliasQualifier</c> token ID.
+            </summary><value>The <c>NamespaceAliasQualifier</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.SemiColon"><summary>
+            Gets the <c>SemiColon</c> token ID.
+            </summary><value>The <c>SemiColon</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Addition"><summary>
+            Gets the <c>Addition</c> token ID.
+            </summary><value>The <c>Addition</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Subtraction"><summary>
+            Gets the <c>Subtraction</c> token ID.
+            </summary><value>The <c>Subtraction</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Multiplication"><summary>
+            Gets the <c>Multiplication</c> token ID.
+            </summary><value>The <c>Multiplication</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Division"><summary>
+            Gets the <c>Division</c> token ID.
+            </summary><value>The <c>Division</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Modulus"><summary>
+            Gets the <c>Modulus</c> token ID.
+            </summary><value>The <c>Modulus</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.BitwiseAnd"><summary>
+            Gets the <c>BitwiseAnd</c> token ID.
+            </summary><value>The <c>BitwiseAnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.BitwiseOr"><summary>
+            Gets the <c>BitwiseOr</c> token ID.
+            </summary><value>The <c>BitwiseOr</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ExclusiveOr"><summary>
+            Gets the <c>ExclusiveOr</c> token ID.
+            </summary><value>The <c>ExclusiveOr</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Negation"><summary>
+            Gets the <c>Negation</c> token ID.
+            </summary><value>The <c>Negation</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.OnesComplement"><summary>
+            Gets the <c>OnesComplement</c> token ID.
+            </summary><value>The <c>OnesComplement</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Assignment"><summary>
+            Gets the <c>Assignment</c> token ID.
+            </summary><value>The <c>Assignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.LessThan"><summary>
+            Gets the <c>LessThan</c> token ID.
+            </summary><value>The <c>LessThan</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.GreaterThan"><summary>
+            Gets the <c>GreaterThan</c> token ID.
+            </summary><value>The <c>GreaterThan</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.QuestionMark"><summary>
+            Gets the <c>QuestionMark</c> token ID.
+            </summary><value>The <c>QuestionMark</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Increment"><summary>
+            Gets the <c>Increment</c> token ID.
+            </summary><value>The <c>Increment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Decrement"><summary>
+            Gets the <c>Decrement</c> token ID.
+            </summary><value>The <c>Decrement</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ConditionalAnd"><summary>
+            Gets the <c>ConditionalAnd</c> token ID.
+            </summary><value>The <c>ConditionalAnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ConditionalOr"><summary>
+            Gets the <c>ConditionalOr</c> token ID.
+            </summary><value>The <c>ConditionalOr</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.LeftShift"><summary>
+            Gets the <c>LeftShift</c> token ID.
+            </summary><value>The <c>LeftShift</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Equality"><summary>
+            Gets the <c>Equality</c> token ID.
+            </summary><value>The <c>Equality</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Inequality"><summary>
+            Gets the <c>Inequality</c> token ID.
+            </summary><value>The <c>Inequality</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.LessThanOrEqual"><summary>
+            Gets the <c>LessThanOrEqual</c> token ID.
+            </summary><value>The <c>LessThanOrEqual</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.GreaterThanOrEqual"><summary>
+            Gets the <c>GreaterThanOrEqual</c> token ID.
+            </summary><value>The <c>GreaterThanOrEqual</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.AdditionAssignment"><summary>
+            Gets the <c>AdditionAssignment</c> token ID.
+            </summary><value>The <c>AdditionAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.SubtractionAssignment"><summary>
+            Gets the <c>SubtractionAssignment</c> token ID.
+            </summary><value>The <c>SubtractionAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.MultiplicationAssignment"><summary>
+            Gets the <c>MultiplicationAssignment</c> token ID.
+            </summary><value>The <c>MultiplicationAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.DivisionAssignment"><summary>
+            Gets the <c>DivisionAssignment</c> token ID.
+            </summary><value>The <c>DivisionAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ModulusAssignment"><summary>
+            Gets the <c>ModulusAssignment</c> token ID.
+            </summary><value>The <c>ModulusAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.BitwiseAndAssignment"><summary>
+            Gets the <c>BitwiseAndAssignment</c> token ID.
+            </summary><value>The <c>BitwiseAndAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.BitwiseOrAssignment"><summary>
+            Gets the <c>BitwiseOrAssignment</c> token ID.
+            </summary><value>The <c>BitwiseOrAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ExclusiveOrAssignment"><summary>
+            Gets the <c>ExclusiveOrAssignment</c> token ID.
+            </summary><value>The <c>ExclusiveOrAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.LeftShiftAssignment"><summary>
+            Gets the <c>LeftShiftAssignment</c> token ID.
+            </summary><value>The <c>LeftShiftAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.PointerDereference"><summary>
+            Gets the <c>PointerDereference</c> token ID.
+            </summary><value>The <c>PointerDereference</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.NullCoalescing"><summary>
+            Gets the <c>NullCoalescing</c> token ID.
+            </summary><value>The <c>NullCoalescing</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Lambda"><summary>
+            Gets the <c>Lambda</c> token ID.
+            </summary><value>The <c>Lambda</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.OperatorOrPunctuatorEnd"><summary>
+            Gets the <c>OperatorOrPunctuatorEnd</c> token ID.
+            </summary><value>The <c>OperatorOrPunctuatorEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.PreprocessorDirectiveKeywordStart"><summary>
+            Gets the <c>PreprocessorDirectiveKeywordStart</c> token ID.
+            </summary><value>The <c>PreprocessorDirectiveKeywordStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.IfPreprocessorDirective"><summary>
+            Gets the <c>IfPreprocessorDirective</c> token ID.
+            </summary><value>The <c>IfPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ElsePreprocessorDirective"><summary>
+            Gets the <c>ElsePreprocessorDirective</c> token ID.
+            </summary><value>The <c>ElsePreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ElIfPreprocessorDirective"><summary>
+            Gets the <c>ElIfPreprocessorDirective</c> token ID.
+            </summary><value>The <c>ElIfPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.EndIfPreprocessorDirective"><summary>
+            Gets the <c>EndIfPreprocessorDirective</c> token ID.
+            </summary><value>The <c>EndIfPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.DefinePreprocessorDirective"><summary>
+            Gets the <c>DefinePreprocessorDirective</c> token ID.
+            </summary><value>The <c>DefinePreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.UndefPreprocessorDirective"><summary>
+            Gets the <c>UndefPreprocessorDirective</c> token ID.
+            </summary><value>The <c>UndefPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.WarningPreprocessorDirective"><summary>
+            Gets the <c>WarningPreprocessorDirective</c> token ID.
+            </summary><value>The <c>WarningPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.ErrorPreprocessorDirective"><summary>
+            Gets the <c>ErrorPreprocessorDirective</c> token ID.
+            </summary><value>The <c>ErrorPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.LinePreprocessorDirective"><summary>
+            Gets the <c>LinePreprocessorDirective</c> token ID.
+            </summary><value>The <c>LinePreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.RegionPreprocessorDirective"><summary>
+            Gets the <c>RegionPreprocessorDirective</c> token ID.
+            </summary><value>The <c>RegionPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.EndRegionPreprocessorDirective"><summary>
+            Gets the <c>EndRegionPreprocessorDirective</c> token ID.
+            </summary><value>The <c>EndRegionPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.PragmaPreprocessorDirective"><summary>
+            Gets the <c>PragmaPreprocessorDirective</c> token ID.
+            </summary><value>The <c>PragmaPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.PreprocessorDirectiveKeywordEnd"><summary>
+            Gets the <c>PreprocessorDirectiveKeywordEnd</c> token ID.
+            </summary><value>The <c>PreprocessorDirectiveKeywordEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.PreprocessorDirectiveText"><summary>
+            Gets the <c>PreprocessorDirectiveText</c> token ID.
+            </summary><value>The <c>PreprocessorDirectiveText</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenId.Dynamic"><summary>
+            Gets the <c>Dynamic</c> token ID.
+            </summary><value>The <c>Dynamic</c> token ID.</value></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenTagger"><summary>
+            Represents an <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" />  for the <c>C#</c> language.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenTagger.ClassifyToken(ActiproSoftware.Text.Lexing.IToken)"><summary>
+            Returns an <see cref="T:ActiproSoftware.Text.IClassificationType" /> for the specified <see cref="T:ActiproSoftware.Text.Lexing.IToken" />, if one is appropriate.
+            </summary><param name="token">The <see cref="T:ActiproSoftware.Text.Lexing.IToken" /> to examine.</param><returns>An <see cref="T:ActiproSoftware.Text.IClassificationType" /> for the specified <see cref="T:ActiproSoftware.Text.Lexing.IToken" />, if one is appropriate.</returns><remarks>
+            The default implementation of this method automatically returns the classification type if the token
+            is an <see cref="T:ActiproSoftware.Text.Lexing.IMergableToken" />.
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenTagger.#ctor(ActiproSoftware.Text.ICodeDocument,ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider)"><summary>
+            Initializes a new instance of the <c>CSharpTokenTagger</c> class.
+            </summary><param name="document">The specific <see cref="T:ActiproSoftware.Text.ICodeDocument" /> for which this token tagger will be used.</param><param name="classificationTypeProvider">A <see cref="T:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider" /> that provides classification types used by this token tagger.</param></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenReader"><summary>
+            Represents an object that can provide tokens to a <see cref="T:ActiproSoftware.Text.Parsing.LLParser.ILLParser" /> in a forward-only direction for the <c>C#</c> language.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenReader.GetNextToken"><summary>
+            Returns the next <see cref="T:ActiproSoftware.Text.Lexing.IToken" /> that will be consumed by the token reader.
+            </summary><returns>The next <see cref="T:ActiproSoftware.Text.Lexing.IToken" /> that will be consumed by the token reader.</returns></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenReader.#ctor(ActiproSoftware.Text.ITextBufferReader,ActiproSoftware.Text.Lexing.IMergableLexer)"><summary>
+            Initializes a new instance of the <c>CSharpTokenReader</c> class.
+            </summary><param name="reader">The <see cref="T:ActiproSoftware.Text.ITextBufferReader" /> to use for consuming text.</param><param name="rootLexer">The root <see cref="T:ActiproSoftware.Text.Lexing.IMergableLexer" />.</param></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpExampleTextProvider"><summary>
+            Represents a example text provider for the <c>C#</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool v10.2.530.0 (http://www.actiprosoftware.com).
+            Generated code is based on input created by Actipro Software LLC.
+            Copyright (c) 2001-2010 Actipro Software LLC.  All rights reserved.
+            </remarks></member><member name="P:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpExampleTextProvider.ExampleText"><summary>
+            Gets the example text, a code snippet of the related language.
+            </summary><value>The example text, a code snippet of the related language.</value></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenTaggerProvider"><summary>
+            Represents a provider of <see cref="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenTagger" /> objects for documents that use the <c>CSharpTokenTagger</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool v10.2.530.0 (http://www.actiprosoftware.com).
+            Generated code is based on input created by Actipro Software LLC.
+            Copyright (c) 2001-2010 Actipro Software LLC.  All rights reserved.
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenTaggerProvider.GetTagger``1(ActiproSoftware.Text.ICodeDocument)"><summary>
+            Returns a tagger for the specified <see cref="T:ActiproSoftware.Text.ICodeDocument" />.
+            </summary><typeparam name="T">The type of <see cref="T:ActiproSoftware.Text.Tagging.ITag" /> created by the tagger.</typeparam><param name="document">The <see cref="T:ActiproSoftware.Text.ICodeDocument" /> that requires a tagger.</param><returns>A tagger for the specified <see cref="T:ActiproSoftware.Text.ICodeDocument" />.</returns></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpTokenTaggerProvider.#ctor(ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider)"><summary>
+            Initializes a new instance of the <c>CSharpTokenTaggerProvider</c> class.
+            </summary><param name="classificationTypeProvider">A <see cref="T:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider" /> that provides classification types.</param></member><member name="T:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider"><summary>
+            Provides the base requirements of an object that provides <see cref="T:ActiproSoftware.Text.IClassificationType" /> objects for the <c>XML</c> language.
+            </summary></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.Comment"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for comments.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for comments.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.Identifier"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for identifiers.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for identifiers.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.Keyword"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for keywords.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for keywords.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.Number"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for numbers.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for numbers.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.PreprocessorKeyword"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for preprocessor keywords.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for preprocessor keywords.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.String"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for strings.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for strings.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.XmlDocumentationComment"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation comments.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation comments.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider.XmlDocumentationTag"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation tags.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation tags.</value></member><member name="T:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetSyntaxLanguageBase"><summary>
+            Provides an abstract base class for a .NET syntax language definition.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetSyntaxLanguageBase.#ctor(System.String)"><summary>
+            Initializes a new instance of the <c>DotNetSyntaxLanguageBase</c> class.
+            </summary><param name="key">The language key.</param></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBExampleTextProvider"><summary>
+            Represents a example text provider for the <c>VB</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool v10.2.530.0 (http://www.actiprosoftware.com).
+            Generated code is based on input created by Actipro Software LLC.
+            Copyright (c) 2001-2010 Actipro Software LLC.  All rights reserved.
+            </remarks></member><member name="P:ActiproSoftware.Text.Languages.VB.Implementation.VBExampleTextProvider.ExampleText"><summary>
+            Gets the example text, a code snippet of the related language.
+            </summary><value>The example text, a code snippet of the related language.</value></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenReader"><summary>
+            Represents an object that can provide tokens to a <see cref="T:ActiproSoftware.Text.Parsing.LLParser.ILLParser" /> in a forward-only direction for the <c>Visual Basic</c> language.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenReader.GetNextToken"><summary>
+            Returns the next <see cref="T:ActiproSoftware.Text.Lexing.IToken" /> that will be consumed by the token reader.
+            </summary><returns>The next <see cref="T:ActiproSoftware.Text.Lexing.IToken" /> that will be consumed by the token reader.</returns></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenReader.#ctor(ActiproSoftware.Text.ITextBufferReader,ActiproSoftware.Text.Lexing.IMergableLexer)"><summary>
+            Initializes a new instance of the <c>VBTokenReader</c> class.
+            </summary><param name="reader">The <see cref="T:ActiproSoftware.Text.ITextBufferReader" /> to use for consuming text.</param><param name="rootLexer">The root <see cref="T:ActiproSoftware.Text.Lexing.IMergableLexer" />.</param></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBLexer"><summary>
+            Represents a <c>Visual Basic</c> lexer (lexical analyzer) implementation.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBLexer.GetAllLexicalStateTransitions"><summary>
+            Returns a collection containing all <see cref="T:ActiproSoftware.Text.Lexing.ILexicalStateTransition" /> objects within the lexer.
+            </summary><returns>A collection containing all <see cref="T:ActiproSoftware.Text.Lexing.ILexicalStateTransition" /> objects within the lexer.</returns><remarks>
+            This method allows consumers to see which language transitions can be made within the lexer.
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBLexer.GetNextToken(ActiproSoftware.Text.ITextBufferReader,ActiproSoftware.Text.Lexing.ILexicalState)"><summary>
+            Performs a lex to return the next <see cref="T:ActiproSoftware.Text.Lexing.MergableLexerResult" /> 
+            from a <see cref="T:ActiproSoftware.Text.ITextBufferReader" /> and seeks past it if there is a match.
+            </summary><param name="reader">An <see cref="T:ActiproSoftware.Text.ITextBufferReader" /> that is reading a text source.</param><param name="lexicalState">The <see cref="T:ActiproSoftware.Text.Lexing.ILexicalState" /> that specifies the current state.</param><returns>A <see cref="T:ActiproSoftware.Text.Lexing.MergableLexerResult" /> indicating a lexer result.</returns></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBLexer.#ctor"><summary>
+            Initializes a new instance of the <c>VBLexer</c> class.
+            </summary></member><member name="P:ActiproSoftware.Text.Languages.VB.Implementation.VBLexer.LexicalStates"><summary>
+            Gets the collection of lexical states used by this lexer.
+            </summary><value>The collection of lexical states used by this lexer.</value></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId"><summary>
+            Contains the lexical state IDs for the <c>Visual Basic</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool (http://www.actiprosoftware.com).
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.ContainsId(System.Int32)"><summary>
+            Returns whether the specified ID value is valid for this lexical state ID provider.
+            </summary><param name="id">The lexical state ID to examine.</param><returns><c>true</c> if the ID value is valid; otherwise, <c>false</c></returns></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.GetDescription(System.Int32)"><summary>
+            Returns the actual string representation for the specified lexical state ID.
+            </summary><param name="id">The lexical state ID to examine.</param><returns>The actual string representation for the specified lexical state ID.</returns></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.GetKey(System.Int32)"><summary>
+            Returns the string-based key for the specified lexical state ID.
+            </summary><param name="id">The lexical state ID to examine.</param><returns>The string-based key for the specified lexical state ID.</returns></member><member name="P:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.MinId"><summary>
+            Gets the minimum lexical state ID returned by this provider.
+            </summary><value>The minimum lexical state ID returned by this provider.</value></member><member name="P:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.MaxId"><summary>
+            Gets the maximum lexical state ID returned by this provider.
+            </summary><value>The maximum lexical state ID returned by this provider.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.Default"><summary>
+            Gets the <c>Default</c> lexical state ID.
+            </summary><value>The <c>Default</c> lexical state ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.DocumentationComment"><summary>
+            Gets the <c>DocumentationComment</c> lexical state ID.
+            </summary><value>The <c>DocumentationComment</c> lexical state ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBLexicalStateId.PreprocessorDirective"><summary>
+            Gets the <c>PreprocessorDirective</c> lexical state ID.
+            </summary><value>The <c>PreprocessorDirective</c> lexical state ID.</value></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId"><summary>
+            Contains the token IDs for the <c>Visual Basic</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool (http://www.actiprosoftware.com).
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ContainsId(System.Int32)"><summary>
+            Returns whether the specified ID value is valid for this token ID provider.
+            </summary><param name="id">The token ID to examine.</param><returns><c>true</c> if the ID value is valid; otherwise, <c>false</c></returns></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GetDescription(System.Int32)"><summary>
+            Returns the actual string representation for the specified token ID.
+            </summary><param name="id">The token ID to examine.</param><returns>The actual string representation for the specified token ID.</returns></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GetKey(System.Int32)"><summary>
+            Returns the string-based key for the specified token ID.
+            </summary><param name="id">The token ID to examine.</param><returns>The string-based key for the specified token ID.</returns></member><member name="P:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.MinId"><summary>
+            Gets the minimum token ID returned by this provider.
+            </summary><value>The minimum token ID returned by this provider.</value></member><member name="P:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.MaxId"><summary>
+            Gets the maximum token ID returned by this provider.
+            </summary><value>The maximum token ID returned by this provider.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Whitespace"><summary>
+            Gets the <c>Whitespace</c> token ID.
+            </summary><value>The <c>Whitespace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.LineTerminator"><summary>
+            Gets the <c>LineTerminator</c> token ID.
+            </summary><value>The <c>LineTerminator</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.SingleLineComment"><summary>
+            Gets the <c>SingleLineComment</c> token ID.
+            </summary><value>The <c>SingleLineComment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.RemComment"><summary>
+            Gets the <c>RemComment</c> token ID.
+            </summary><value>The <c>RemComment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.DocumentationCommentDelimiter"><summary>
+            Gets the <c>DocumentationCommentDelimiter</c> token ID.
+            </summary><value>The <c>DocumentationCommentDelimiter</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.DocumentationCommentText"><summary>
+            Gets the <c>DocumentationCommentText</c> token ID.
+            </summary><value>The <c>DocumentationCommentText</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.DocumentationCommentTag"><summary>
+            Gets the <c>DocumentationCommentTag</c> token ID.
+            </summary><value>The <c>DocumentationCommentTag</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.DecimalIntegerLiteral"><summary>
+            Gets the <c>DecimalIntegerLiteral</c> token ID.
+            </summary><value>The <c>DecimalIntegerLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.HexadecimalIntegerLiteral"><summary>
+            Gets the <c>HexadecimalIntegerLiteral</c> token ID.
+            </summary><value>The <c>HexadecimalIntegerLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.OctalIntegerLiteral"><summary>
+            Gets the <c>OctalIntegerLiteral</c> token ID.
+            </summary><value>The <c>OctalIntegerLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.FloatingPointLiteral"><summary>
+            Gets the <c>FloatingPointLiteral</c> token ID.
+            </summary><value>The <c>FloatingPointLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CharacterLiteral"><summary>
+            Gets the <c>CharacterLiteral</c> token ID.
+            </summary><value>The <c>CharacterLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.StringLiteral"><summary>
+            Gets the <c>StringLiteral</c> token ID.
+            </summary><value>The <c>StringLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.DateLiteral"><summary>
+            Gets the <c>DateLiteral</c> token ID.
+            </summary><value>The <c>DateLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.XmlLiteral"><summary>
+            Gets the <c>XmlLiteral</c> token ID.
+            </summary><value>The <c>XmlLiteral</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.XmlAttribute"><summary>
+            Gets the <c>XmlAttribute</c> token ID.
+            </summary><value>The <c>XmlAttribute</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Identifier"><summary>
+            Gets the <c>Identifier</c> token ID.
+            </summary><value>The <c>Identifier</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ContextualKeywordStart"><summary>
+            Gets the <c>ContextualKeywordStart</c> token ID.
+            </summary><value>The <c>ContextualKeywordStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Aggregate"><summary>
+            Gets the <c>Aggregate</c> token ID.
+            </summary><value>The <c>Aggregate</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Ascending"><summary>
+            Gets the <c>Ascending</c> token ID.
+            </summary><value>The <c>Ascending</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.By"><summary>
+            Gets the <c>By</c> token ID.
+            </summary><value>The <c>By</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Descending"><summary>
+            Gets the <c>Descending</c> token ID.
+            </summary><value>The <c>Descending</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Distinct"><summary>
+            Gets the <c>Distinct</c> token ID.
+            </summary><value>The <c>Distinct</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Equals"><summary>
+            Gets the <c>Equals</c> token ID.
+            </summary><value>The <c>Equals</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.From"><summary>
+            Gets the <c>From</c> token ID.
+            </summary><value>The <c>From</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Group"><summary>
+            Gets the <c>Group</c> token ID.
+            </summary><value>The <c>Group</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Into"><summary>
+            Gets the <c>Into</c> token ID.
+            </summary><value>The <c>Into</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Join"><summary>
+            Gets the <c>Join</c> token ID.
+            </summary><value>The <c>Join</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Order"><summary>
+            Gets the <c>Order</c> token ID.
+            </summary><value>The <c>Order</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Skip"><summary>
+            Gets the <c>Skip</c> token ID.
+            </summary><value>The <c>Skip</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Take"><summary>
+            Gets the <c>Take</c> token ID.
+            </summary><value>The <c>Take</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Where"><summary>
+            Gets the <c>Where</c> token ID.
+            </summary><value>The <c>Where</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ContextualKeywordEnd"><summary>
+            Gets the <c>ContextualKeywordEnd</c> token ID.
+            </summary><value>The <c>ContextualKeywordEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.KeywordStart"><summary>
+            Gets the <c>KeywordStart</c> token ID.
+            </summary><value>The <c>KeywordStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.AddHandler"><summary>
+            Gets the <c>AddHandler</c> token ID.
+            </summary><value>The <c>AddHandler</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.AddressOf"><summary>
+            Gets the <c>AddressOf</c> token ID.
+            </summary><value>The <c>AddressOf</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Alias"><summary>
+            Gets the <c>Alias</c> token ID.
+            </summary><value>The <c>Alias</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.And"><summary>
+            Gets the <c>And</c> token ID.
+            </summary><value>The <c>And</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.AndAlso"><summary>
+            Gets the <c>AndAlso</c> token ID.
+            </summary><value>The <c>AndAlso</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.As"><summary>
+            Gets the <c>As</c> token ID.
+            </summary><value>The <c>As</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Boolean"><summary>
+            Gets the <c>Boolean</c> token ID.
+            </summary><value>The <c>Boolean</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ByRef"><summary>
+            Gets the <c>ByRef</c> token ID.
+            </summary><value>The <c>ByRef</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Byte"><summary>
+            Gets the <c>Byte</c> token ID.
+            </summary><value>The <c>Byte</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ByVal"><summary>
+            Gets the <c>ByVal</c> token ID.
+            </summary><value>The <c>ByVal</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Call"><summary>
+            Gets the <c>Call</c> token ID.
+            </summary><value>The <c>Call</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Case"><summary>
+            Gets the <c>Case</c> token ID.
+            </summary><value>The <c>Case</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Catch"><summary>
+            Gets the <c>Catch</c> token ID.
+            </summary><value>The <c>Catch</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CBool"><summary>
+            Gets the <c>CBool</c> token ID.
+            </summary><value>The <c>CBool</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CByte"><summary>
+            Gets the <c>CByte</c> token ID.
+            </summary><value>The <c>CByte</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CChar"><summary>
+            Gets the <c>CChar</c> token ID.
+            </summary><value>The <c>CChar</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CDate"><summary>
+            Gets the <c>CDate</c> token ID.
+            </summary><value>The <c>CDate</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CDbl"><summary>
+            Gets the <c>CDbl</c> token ID.
+            </summary><value>The <c>CDbl</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CDec"><summary>
+            Gets the <c>CDec</c> token ID.
+            </summary><value>The <c>CDec</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Char"><summary>
+            Gets the <c>Char</c> token ID.
+            </summary><value>The <c>Char</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CInt"><summary>
+            Gets the <c>CInt</c> token ID.
+            </summary><value>The <c>CInt</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Class"><summary>
+            Gets the <c>Class</c> token ID.
+            </summary><value>The <c>Class</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CLng"><summary>
+            Gets the <c>CLng</c> token ID.
+            </summary><value>The <c>CLng</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CObj"><summary>
+            Gets the <c>CObj</c> token ID.
+            </summary><value>The <c>CObj</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Const"><summary>
+            Gets the <c>Const</c> token ID.
+            </summary><value>The <c>Const</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Continue"><summary>
+            Gets the <c>Continue</c> token ID.
+            </summary><value>The <c>Continue</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CSByte"><summary>
+            Gets the <c>CSByte</c> token ID.
+            </summary><value>The <c>CSByte</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CShort"><summary>
+            Gets the <c>CShort</c> token ID.
+            </summary><value>The <c>CShort</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CSng"><summary>
+            Gets the <c>CSng</c> token ID.
+            </summary><value>The <c>CSng</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CStr"><summary>
+            Gets the <c>CStr</c> token ID.
+            </summary><value>The <c>CStr</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CType"><summary>
+            Gets the <c>CType</c> token ID.
+            </summary><value>The <c>CType</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CUInt"><summary>
+            Gets the <c>CUInt</c> token ID.
+            </summary><value>The <c>CUInt</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CULng"><summary>
+            Gets the <c>CULng</c> token ID.
+            </summary><value>The <c>CULng</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CUShort"><summary>
+            Gets the <c>CUShort</c> token ID.
+            </summary><value>The <c>CUShort</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Custom"><summary>
+            Gets the <c>Custom</c> token ID.
+            </summary><value>The <c>Custom</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Date"><summary>
+            Gets the <c>Date</c> token ID.
+            </summary><value>The <c>Date</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Decimal"><summary>
+            Gets the <c>Decimal</c> token ID.
+            </summary><value>The <c>Decimal</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Declare"><summary>
+            Gets the <c>Declare</c> token ID.
+            </summary><value>The <c>Declare</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Default"><summary>
+            Gets the <c>Default</c> token ID.
+            </summary><value>The <c>Default</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Delegate"><summary>
+            Gets the <c>Delegate</c> token ID.
+            </summary><value>The <c>Delegate</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Dim"><summary>
+            Gets the <c>Dim</c> token ID.
+            </summary><value>The <c>Dim</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.DirectCast"><summary>
+            Gets the <c>DirectCast</c> token ID.
+            </summary><value>The <c>DirectCast</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Do"><summary>
+            Gets the <c>Do</c> token ID.
+            </summary><value>The <c>Do</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Double"><summary>
+            Gets the <c>Double</c> token ID.
+            </summary><value>The <c>Double</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Each"><summary>
+            Gets the <c>Each</c> token ID.
+            </summary><value>The <c>Each</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Else"><summary>
+            Gets the <c>Else</c> token ID.
+            </summary><value>The <c>Else</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ElseIf"><summary>
+            Gets the <c>ElseIf</c> token ID.
+            </summary><value>The <c>ElseIf</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.End"><summary>
+            Gets the <c>End</c> token ID.
+            </summary><value>The <c>End</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.EndIf"><summary>
+            Gets the <c>EndIf</c> token ID.
+            </summary><value>The <c>EndIf</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Enum"><summary>
+            Gets the <c>Enum</c> token ID.
+            </summary><value>The <c>Enum</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Erase"><summary>
+            Gets the <c>Erase</c> token ID.
+            </summary><value>The <c>Erase</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Error"><summary>
+            Gets the <c>Error</c> token ID.
+            </summary><value>The <c>Error</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Event"><summary>
+            Gets the <c>Event</c> token ID.
+            </summary><value>The <c>Event</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Exit"><summary>
+            Gets the <c>Exit</c> token ID.
+            </summary><value>The <c>Exit</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.False"><summary>
+            Gets the <c>False</c> token ID.
+            </summary><value>The <c>False</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Finally"><summary>
+            Gets the <c>Finally</c> token ID.
+            </summary><value>The <c>Finally</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.For"><summary>
+            Gets the <c>For</c> token ID.
+            </summary><value>The <c>For</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Friend"><summary>
+            Gets the <c>Friend</c> token ID.
+            </summary><value>The <c>Friend</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Function"><summary>
+            Gets the <c>Function</c> token ID.
+            </summary><value>The <c>Function</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Get"><summary>
+            Gets the <c>Get</c> token ID.
+            </summary><value>The <c>Get</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GetTypeKeyword"><summary>
+            Gets the <c>GetTypeKeyword</c> token ID.
+            </summary><value>The <c>GetTypeKeyword</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GetXmlNamespace"><summary>
+            Gets the <c>GetXmlNamespace</c> token ID.
+            </summary><value>The <c>GetXmlNamespace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Global"><summary>
+            Gets the <c>Global</c> token ID.
+            </summary><value>The <c>Global</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GoSub"><summary>
+            Gets the <c>GoSub</c> token ID.
+            </summary><value>The <c>GoSub</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GoTo"><summary>
+            Gets the <c>GoTo</c> token ID.
+            </summary><value>The <c>GoTo</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Handles"><summary>
+            Gets the <c>Handles</c> token ID.
+            </summary><value>The <c>Handles</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.If"><summary>
+            Gets the <c>If</c> token ID.
+            </summary><value>The <c>If</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.IIf"><summary>
+            Gets the <c>IIf</c> token ID.
+            </summary><value>The <c>IIf</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Implements"><summary>
+            Gets the <c>Implements</c> token ID.
+            </summary><value>The <c>Implements</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Imports"><summary>
+            Gets the <c>Imports</c> token ID.
+            </summary><value>The <c>Imports</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.In"><summary>
+            Gets the <c>In</c> token ID.
+            </summary><value>The <c>In</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Inherits"><summary>
+            Gets the <c>Inherits</c> token ID.
+            </summary><value>The <c>Inherits</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Integer"><summary>
+            Gets the <c>Integer</c> token ID.
+            </summary><value>The <c>Integer</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Interface"><summary>
+            Gets the <c>Interface</c> token ID.
+            </summary><value>The <c>Interface</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Is"><summary>
+            Gets the <c>Is</c> token ID.
+            </summary><value>The <c>Is</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.IsFalse"><summary>
+            Gets the <c>IsFalse</c> token ID.
+            </summary><value>The <c>IsFalse</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.IsNot"><summary>
+            Gets the <c>IsNot</c> token ID.
+            </summary><value>The <c>IsNot</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.IsTrue"><summary>
+            Gets the <c>IsTrue</c> token ID.
+            </summary><value>The <c>IsTrue</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Let"><summary>
+            Gets the <c>Let</c> token ID.
+            </summary><value>The <c>Let</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Lib"><summary>
+            Gets the <c>Lib</c> token ID.
+            </summary><value>The <c>Lib</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Like"><summary>
+            Gets the <c>Like</c> token ID.
+            </summary><value>The <c>Like</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Long"><summary>
+            Gets the <c>Long</c> token ID.
+            </summary><value>The <c>Long</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Loop"><summary>
+            Gets the <c>Loop</c> token ID.
+            </summary><value>The <c>Loop</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Me"><summary>
+            Gets the <c>Me</c> token ID.
+            </summary><value>The <c>Me</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Mid"><summary>
+            Gets the <c>Mid</c> token ID.
+            </summary><value>The <c>Mid</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Mod"><summary>
+            Gets the <c>Mod</c> token ID.
+            </summary><value>The <c>Mod</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Module"><summary>
+            Gets the <c>Module</c> token ID.
+            </summary><value>The <c>Module</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.MustInherit"><summary>
+            Gets the <c>MustInherit</c> token ID.
+            </summary><value>The <c>MustInherit</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.MustOverride"><summary>
+            Gets the <c>MustOverride</c> token ID.
+            </summary><value>The <c>MustOverride</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.MyBase"><summary>
+            Gets the <c>MyBase</c> token ID.
+            </summary><value>The <c>MyBase</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.MyClass"><summary>
+            Gets the <c>MyClass</c> token ID.
+            </summary><value>The <c>MyClass</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Namespace"><summary>
+            Gets the <c>Namespace</c> token ID.
+            </summary><value>The <c>Namespace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Narrowing"><summary>
+            Gets the <c>Narrowing</c> token ID.
+            </summary><value>The <c>Narrowing</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.New"><summary>
+            Gets the <c>New</c> token ID.
+            </summary><value>The <c>New</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Next"><summary>
+            Gets the <c>Next</c> token ID.
+            </summary><value>The <c>Next</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Not"><summary>
+            Gets the <c>Not</c> token ID.
+            </summary><value>The <c>Not</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Nothing"><summary>
+            Gets the <c>Nothing</c> token ID.
+            </summary><value>The <c>Nothing</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.NotInheritable"><summary>
+            Gets the <c>NotInheritable</c> token ID.
+            </summary><value>The <c>NotInheritable</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.NotOverridable"><summary>
+            Gets the <c>NotOverridable</c> token ID.
+            </summary><value>The <c>NotOverridable</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Object"><summary>
+            Gets the <c>Object</c> token ID.
+            </summary><value>The <c>Object</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Of"><summary>
+            Gets the <c>Of</c> token ID.
+            </summary><value>The <c>Of</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.On"><summary>
+            Gets the <c>On</c> token ID.
+            </summary><value>The <c>On</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Operator"><summary>
+            Gets the <c>Operator</c> token ID.
+            </summary><value>The <c>Operator</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Option"><summary>
+            Gets the <c>Option</c> token ID.
+            </summary><value>The <c>Option</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Optional"><summary>
+            Gets the <c>Optional</c> token ID.
+            </summary><value>The <c>Optional</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Or"><summary>
+            Gets the <c>Or</c> token ID.
+            </summary><value>The <c>Or</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.OrElse"><summary>
+            Gets the <c>OrElse</c> token ID.
+            </summary><value>The <c>OrElse</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Overloads"><summary>
+            Gets the <c>Overloads</c> token ID.
+            </summary><value>The <c>Overloads</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Overridable"><summary>
+            Gets the <c>Overridable</c> token ID.
+            </summary><value>The <c>Overridable</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Overrides"><summary>
+            Gets the <c>Overrides</c> token ID.
+            </summary><value>The <c>Overrides</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ParamArray"><summary>
+            Gets the <c>ParamArray</c> token ID.
+            </summary><value>The <c>ParamArray</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Partial"><summary>
+            Gets the <c>Partial</c> token ID.
+            </summary><value>The <c>Partial</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Private"><summary>
+            Gets the <c>Private</c> token ID.
+            </summary><value>The <c>Private</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Property"><summary>
+            Gets the <c>Property</c> token ID.
+            </summary><value>The <c>Property</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Protected"><summary>
+            Gets the <c>Protected</c> token ID.
+            </summary><value>The <c>Protected</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Public"><summary>
+            Gets the <c>Public</c> token ID.
+            </summary><value>The <c>Public</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.RaiseEvent"><summary>
+            Gets the <c>RaiseEvent</c> token ID.
+            </summary><value>The <c>RaiseEvent</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ReadOnly"><summary>
+            Gets the <c>ReadOnly</c> token ID.
+            </summary><value>The <c>ReadOnly</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ReDim"><summary>
+            Gets the <c>ReDim</c> token ID.
+            </summary><value>The <c>ReDim</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.REM"><summary>
+            Gets the <c>REM</c> token ID.
+            </summary><value>The <c>REM</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.RemoveHandler"><summary>
+            Gets the <c>RemoveHandler</c> token ID.
+            </summary><value>The <c>RemoveHandler</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Resume"><summary>
+            Gets the <c>Resume</c> token ID.
+            </summary><value>The <c>Resume</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Return"><summary>
+            Gets the <c>Return</c> token ID.
+            </summary><value>The <c>Return</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.SByte"><summary>
+            Gets the <c>SByte</c> token ID.
+            </summary><value>The <c>SByte</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Select"><summary>
+            Gets the <c>Select</c> token ID.
+            </summary><value>The <c>Select</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Set"><summary>
+            Gets the <c>Set</c> token ID.
+            </summary><value>The <c>Set</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Shadows"><summary>
+            Gets the <c>Shadows</c> token ID.
+            </summary><value>The <c>Shadows</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Shared"><summary>
+            Gets the <c>Shared</c> token ID.
+            </summary><value>The <c>Shared</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Short"><summary>
+            Gets the <c>Short</c> token ID.
+            </summary><value>The <c>Short</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Single"><summary>
+            Gets the <c>Single</c> token ID.
+            </summary><value>The <c>Single</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Static"><summary>
+            Gets the <c>Static</c> token ID.
+            </summary><value>The <c>Static</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Step"><summary>
+            Gets the <c>Step</c> token ID.
+            </summary><value>The <c>Step</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Stop"><summary>
+            Gets the <c>Stop</c> token ID.
+            </summary><value>The <c>Stop</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.String"><summary>
+            Gets the <c>String</c> token ID.
+            </summary><value>The <c>String</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Structure"><summary>
+            Gets the <c>Structure</c> token ID.
+            </summary><value>The <c>Structure</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Sub"><summary>
+            Gets the <c>Sub</c> token ID.
+            </summary><value>The <c>Sub</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.SyncLock"><summary>
+            Gets the <c>SyncLock</c> token ID.
+            </summary><value>The <c>SyncLock</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Then"><summary>
+            Gets the <c>Then</c> token ID.
+            </summary><value>The <c>Then</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Throw"><summary>
+            Gets the <c>Throw</c> token ID.
+            </summary><value>The <c>Throw</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.To"><summary>
+            Gets the <c>To</c> token ID.
+            </summary><value>The <c>To</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.True"><summary>
+            Gets the <c>True</c> token ID.
+            </summary><value>The <c>True</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Try"><summary>
+            Gets the <c>Try</c> token ID.
+            </summary><value>The <c>Try</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.TryCast"><summary>
+            Gets the <c>TryCast</c> token ID.
+            </summary><value>The <c>TryCast</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.TypeOf"><summary>
+            Gets the <c>TypeOf</c> token ID.
+            </summary><value>The <c>TypeOf</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.UInteger"><summary>
+            Gets the <c>UInteger</c> token ID.
+            </summary><value>The <c>UInteger</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ULong"><summary>
+            Gets the <c>ULong</c> token ID.
+            </summary><value>The <c>ULong</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Until"><summary>
+            Gets the <c>Until</c> token ID.
+            </summary><value>The <c>Until</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.UShort"><summary>
+            Gets the <c>UShort</c> token ID.
+            </summary><value>The <c>UShort</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Using"><summary>
+            Gets the <c>Using</c> token ID.
+            </summary><value>The <c>Using</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Variant"><summary>
+            Gets the <c>Variant</c> token ID.
+            </summary><value>The <c>Variant</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Wend"><summary>
+            Gets the <c>Wend</c> token ID.
+            </summary><value>The <c>Wend</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.When"><summary>
+            Gets the <c>When</c> token ID.
+            </summary><value>The <c>When</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.While"><summary>
+            Gets the <c>While</c> token ID.
+            </summary><value>The <c>While</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Widening"><summary>
+            Gets the <c>Widening</c> token ID.
+            </summary><value>The <c>Widening</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.With"><summary>
+            Gets the <c>With</c> token ID.
+            </summary><value>The <c>With</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.WithEvents"><summary>
+            Gets the <c>WithEvents</c> token ID.
+            </summary><value>The <c>WithEvents</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.WriteOnly"><summary>
+            Gets the <c>WriteOnly</c> token ID.
+            </summary><value>The <c>WriteOnly</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Xor"><summary>
+            Gets the <c>Xor	</c> token ID.
+            </summary><value>The <c>Xor	</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.KeywordEnd"><summary>
+            Gets the <c>KeywordEnd</c> token ID.
+            </summary><value>The <c>KeywordEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.OperatorOrPunctuatorStart"><summary>
+            Gets the <c>OperatorOrPunctuatorStart</c> token ID.
+            </summary><value>The <c>OperatorOrPunctuatorStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.LineContinuation"><summary>
+            Gets the <c>LineContinuation</c> token ID.
+            </summary><value>The <c>LineContinuation</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.OpenParenthesis"><summary>
+            Gets the <c>OpenParenthesis</c> token ID.
+            </summary><value>The <c>OpenParenthesis</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CloseParenthesis"><summary>
+            Gets the <c>CloseParenthesis</c> token ID.
+            </summary><value>The <c>CloseParenthesis</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.OpenCurlyBrace"><summary>
+            Gets the <c>OpenCurlyBrace</c> token ID.
+            </summary><value>The <c>OpenCurlyBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CloseCurlyBrace"><summary>
+            Gets the <c>CloseCurlyBrace</c> token ID.
+            </summary><value>The <c>CloseCurlyBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.OpenSquareBrace"><summary>
+            Gets the <c>OpenSquareBrace</c> token ID.
+            </summary><value>The <c>OpenSquareBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.CloseSquareBrace"><summary>
+            Gets the <c>CloseSquareBrace</c> token ID.
+            </summary><value>The <c>CloseSquareBrace</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Comma"><summary>
+            Gets the <c>Comma</c> token ID.
+            </summary><value>The <c>Comma</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Dot"><summary>
+            Gets the <c>Dot</c> token ID.
+            </summary><value>The <c>Dot</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Colon"><summary>
+            Gets the <c>Colon</c> token ID.
+            </summary><value>The <c>Colon</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ColonEquals"><summary>
+            Gets the <c>ColonEquals</c> token ID.
+            </summary><value>The <c>ColonEquals</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ExclamationPoint"><summary>
+            Gets the <c>ExclamationPoint</c> token ID.
+            </summary><value>The <c>ExclamationPoint</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.QuestionMark"><summary>
+            Gets the <c>QuestionMark</c> token ID.
+            </summary><value>The <c>QuestionMark</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.DotAt"><summary>
+            Gets the <c>DotAt</c> token ID.
+            </summary><value>The <c>DotAt</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.TripleDot"><summary>
+            Gets the <c>TripleDot</c> token ID.
+            </summary><value>The <c>TripleDot</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.StringConcatenation"><summary>
+            Gets the <c>StringConcatenation</c> token ID.
+            </summary><value>The <c>StringConcatenation</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Multiplication"><summary>
+            Gets the <c>Multiplication</c> token ID.
+            </summary><value>The <c>Multiplication</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Addition"><summary>
+            Gets the <c>Addition</c> token ID.
+            </summary><value>The <c>Addition</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Subtraction"><summary>
+            Gets the <c>Subtraction</c> token ID.
+            </summary><value>The <c>Subtraction</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.FloatingPointDivision"><summary>
+            Gets the <c>FloatingPointDivision</c> token ID.
+            </summary><value>The <c>FloatingPointDivision</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.IntegerDivision"><summary>
+            Gets the <c>IntegerDivision</c> token ID.
+            </summary><value>The <c>IntegerDivision</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Exponentiation"><summary>
+            Gets the <c>Exponentiation</c> token ID.
+            </summary><value>The <c>Exponentiation</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.LessThan"><summary>
+            Gets the <c>LessThan</c> token ID.
+            </summary><value>The <c>LessThan</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Equality"><summary>
+            Gets the <c>Equality</c> token ID.
+            </summary><value>The <c>Equality</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GreaterThan"><summary>
+            Gets the <c>GreaterThan</c> token ID.
+            </summary><value>The <c>GreaterThan</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.LessThanOrEqual"><summary>
+            Gets the <c>LessThanOrEqual</c> token ID.
+            </summary><value>The <c>LessThanOrEqual</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.GreaterThanOrEqual"><summary>
+            Gets the <c>GreaterThanOrEqual</c> token ID.
+            </summary><value>The <c>GreaterThanOrEqual</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.Inequality"><summary>
+            Gets the <c>Inequality</c> token ID.
+            </summary><value>The <c>Inequality</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.LeftShift"><summary>
+            Gets the <c>LeftShift</c> token ID.
+            </summary><value>The <c>LeftShift</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.RightShift"><summary>
+            Gets the <c>RightShift</c> token ID.
+            </summary><value>The <c>RightShift</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.StringConcatenationAssignment"><summary>
+            Gets the <c>StringConcatenationAssignment</c> token ID.
+            </summary><value>The <c>StringConcatenationAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.MultiplicationAssignment"><summary>
+            Gets the <c>MultiplicationAssignment</c> token ID.
+            </summary><value>The <c>MultiplicationAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.AdditionAssignment"><summary>
+            Gets the <c>AdditionAssignment</c> token ID.
+            </summary><value>The <c>AdditionAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.SubtractionAssignment"><summary>
+            Gets the <c>SubtractionAssignment</c> token ID.
+            </summary><value>The <c>SubtractionAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.FloatingPointDivisionAssignment"><summary>
+            Gets the <c>FloatingPointDivisionAssignment</c> token ID.
+            </summary><value>The <c>FloatingPointDivisionAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.IntegerDivisionAssignment"><summary>
+            Gets the <c>IntegerDivisionAssignment</c> token ID.
+            </summary><value>The <c>IntegerDivisionAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ExponentiationAssignment"><summary>
+            Gets the <c>ExponentiationAssignment</c> token ID.
+            </summary><value>The <c>ExponentiationAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.LeftShiftAssignment"><summary>
+            Gets the <c>LeftShiftAssignment</c> token ID.
+            </summary><value>The <c>LeftShiftAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.RightShiftAssignment"><summary>
+            Gets the <c>RightShiftAssignment</c> token ID.
+            </summary><value>The <c>RightShiftAssignment</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.OperatorOrPunctuatorEnd"><summary>
+            Gets the <c>OperatorOrPunctuatorEnd</c> token ID.
+            </summary><value>The <c>OperatorOrPunctuatorEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.PreprocessorDirectiveKeywordStart"><summary>
+            Gets the <c>PreprocessorDirectiveKeywordStart</c> token ID.
+            </summary><value>The <c>PreprocessorDirectiveKeywordStart</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ConstPreprocessorDirective"><summary>
+            Gets the <c>ConstPreprocessorDirective</c> token ID.
+            </summary><value>The <c>ConstPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.IfPreprocessorDirective"><summary>
+            Gets the <c>IfPreprocessorDirective</c> token ID.
+            </summary><value>The <c>IfPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ElseIfPreprocessorDirective"><summary>
+            Gets the <c>ElseIfPreprocessorDirective</c> token ID.
+            </summary><value>The <c>ElseIfPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ElsePreprocessorDirective"><summary>
+            Gets the <c>ElsePreprocessorDirective</c> token ID.
+            </summary><value>The <c>ElsePreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.EndIfPreprocessorDirective"><summary>
+            Gets the <c>EndIfPreprocessorDirective</c> token ID.
+            </summary><value>The <c>EndIfPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ExternalSourcePreprocessorDirective"><summary>
+            Gets the <c>ExternalSourcePreprocessorDirective</c> token ID.
+            </summary><value>The <c>ExternalSourcePreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.EndExternalSourcePreprocessorDirective"><summary>
+            Gets the <c>EndExternalSourcePreprocessorDirective</c> token ID.
+            </summary><value>The <c>EndExternalSourcePreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.RegionPreprocessorDirective"><summary>
+            Gets the <c>RegionPreprocessorDirective</c> token ID.
+            </summary><value>The <c>RegionPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.EndRegionPreprocessorDirective"><summary>
+            Gets the <c>EndRegionPreprocessorDirective</c> token ID.
+            </summary><value>The <c>EndRegionPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.ExternalChecksumPreprocessorDirective"><summary>
+            Gets the <c>ExternalChecksumPreprocessorDirective</c> token ID.
+            </summary><value>The <c>ExternalChecksumPreprocessorDirective</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.PreprocessorDirectiveKeywordEnd"><summary>
+            Gets the <c>PreprocessorDirectiveKeywordEnd</c> token ID.
+            </summary><value>The <c>PreprocessorDirectiveKeywordEnd</c> token ID.</value></member><member name="F:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenId.PreprocessorDirectiveText"><summary>
+            Gets the <c>PreprocessorDirectiveText</c> token ID.
+            </summary><value>The <c>PreprocessorDirectiveText</c> token ID.</value></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenTagger"><summary>
+            Represents an <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" /> for the <c>Visual Basic</c> language.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenTagger.ClassifyToken(ActiproSoftware.Text.Lexing.IToken)"><summary>
+            Returns an <see cref="T:ActiproSoftware.Text.IClassificationType" /> for the specified <see cref="T:ActiproSoftware.Text.Lexing.IToken" />, if one is appropriate.
+            </summary><param name="token">The <see cref="T:ActiproSoftware.Text.Lexing.IToken" /> to examine.</param><returns>An <see cref="T:ActiproSoftware.Text.IClassificationType" /> for the specified <see cref="T:ActiproSoftware.Text.Lexing.IToken" />, if one is appropriate.</returns><remarks>
+            The default implementation of this method automatically returns the classification type if the token
+            is an <see cref="T:ActiproSoftware.Text.Lexing.IMergableToken" />.
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenTagger.#ctor(ActiproSoftware.Text.ICodeDocument,ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider)"><summary>
+            Initializes a new instance of the <c>VBTokenTagger</c> class.
+            </summary><param name="document">The specific <see cref="T:ActiproSoftware.Text.ICodeDocument" /> for which this token tagger will be used.</param><param name="classificationTypes">A <see cref="T:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider" /> that provides classification types used by this token tagger.</param></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenTaggerProvider"><summary>
+            Represents a provider of <see cref="T:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenTagger" /> objects for documents that use the <c>VBTokenTagger</c> language.
+            </summary><remarks>
+            This type was generated by the Actipro Language Designer tool v10.2.530.0 (http://www.actiprosoftware.com).
+            Generated code is based on input created by Actipro Software LLC.
+            Copyright (c) 2001-2010 Actipro Software LLC.  All rights reserved.
+            </remarks></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenTaggerProvider.GetTagger``1(ActiproSoftware.Text.ICodeDocument)"><summary>
+            Returns a tagger for the specified <see cref="T:ActiproSoftware.Text.ICodeDocument" />.
+            </summary><typeparam name="T">The type of <see cref="T:ActiproSoftware.Text.Tagging.ITag" /> created by the tagger.</typeparam><param name="document">The <see cref="T:ActiproSoftware.Text.ICodeDocument" /> that requires a tagger.</param><returns>A tagger for the specified <see cref="T:ActiproSoftware.Text.ICodeDocument" />.</returns></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBTokenTaggerProvider.#ctor(ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider)"><summary>
+            Initializes a new instance of the <c>VBTokenTaggerProvider</c> class.
+            </summary><param name="classificationTypeProvider">A <see cref="T:ActiproSoftware.Text.Languages.DotNet.IDotNetClassificationTypeProvider" /> that provides classification types.</param></member></members></doc>

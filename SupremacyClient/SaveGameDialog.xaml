@@ -1,0 +1,100 @@
+﻿<!--
+  
+   SaveGameDialog.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<scc:Dialog x:Class="Supremacy.Client.SaveGameDialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            HasBorder="False"
+            Header="Save Game">
+  <Border CornerRadius="16"
+          Background="#cc000000"
+          Height="360">
+    <GroupBox Header="{s:StringResource SAVE_GAME_DIALOG_HEADER}"
+              Focusable="False"
+              IsTabStop="False">
+      <DockPanel Focusable="False">
+        <StackPanel DockPanel.Dock="Bottom"
+                    Margin="0,14,0,0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Focusable="False">
+          <Button x:Name="SaveButton"
+                  IsDefault="True"
+                  Focusable="False"
+                  IsTabStop="True"
+                  TabIndex="1"
+                  Style="{StaticResource LCARS_StandardButtonStyle}"
+                  Command="{x:Static local:GameCommands.SaveGameCommand}"
+                  CommandParameter="{Binding ElementName=SaveGameFilename, Path=Text}">
+            <AccessText Text="{s:StringResource SAVE_GAME_DIALOG_SAVE_GAME}" />
+          </Button>
+          <Button x:Name="CancelButton"
+                  Focusable="False"
+                  IsTabStop="True"
+                  TabIndex="2"
+                  Style="{StaticResource LCARS_StandardButtonStyle}"
+                  Command="{x:Static local:GenericCommands.CancelCommand}"
+                  IsCancel="True"
+                  Margin="7,0,0,0">
+            <AccessText Text="{s:StringResource SAVE_GAME_DIALOG_CANCEL}" />
+          </Button>
+        </StackPanel>
+        <TextBlock x:Name="SaveGameInfoText"
+                   DockPanel.Dock="Right"
+                   Margin="14,0,0,0"
+                   Width="160"
+                   TextTrimming="CharacterEllipsis"
+                   Focusable="False"
+                   Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                   FontSize="12pt"
+                   Visibility="Hidden">
+          <Run Text="{Binding ElementName=SaveGameList, Path=SelectedItem.LocalPlayerEmpireName, Mode=OneWay}" />
+          <LineBreak />
+          <Run Text="{s:StringResource SAVED_GAME_TURN_NUMBER}" />
+          <Run Text="{Binding ElementName=SaveGameList, Path=SelectedItem.TurnNumber, Mode=OneWay}" />
+          <LineBreak />
+          <Run Text="{Binding ElementName=SaveGameList, Path=SelectedItem.Options.GalaxySize, Mode=OneWay}" />
+          <Run Text="{Binding ElementName=SaveGameList, Path=SelectedItem.Options.GalaxyShape, Mode=OneWay}" />
+          <LineBreak />
+          <Run Text="{Binding ElementName=SaveGameList, Path=SelectedItem.Timestamp, StringFormat=g, Mode=OneWay}" />
+        </TextBlock>
+        <DockPanel DockPanel.Dock="Left"
+                   LastChildFill="True"
+                   Focusable="False">
+          <TextBox x:Name="SaveGameFilename"
+                   DockPanel.Dock="Bottom"
+                   Margin="0,4,0,0"
+                   Focusable="True"
+                   IsTabStop="True"
+                   TabIndex="0"/>
+          <ListBox x:Name="SaveGameList"
+                   Width="280"
+                   ItemsSource="{Binding}"
+                   IsSynchronizedWithCurrentItem="False"
+                   Focusable="False"
+                   IsTabStop="True"
+                   TabIndex="3"
+                   SelectedIndex="-1"
+                   DisplayMemberPath="Title"
+                   Background="Transparent"
+                   Foreground="{StaticResource LCARS_BlueTextBrush}"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                   FontSize="12pt" />
+        </DockPanel>
+      </DockPanel>
+    </GroupBox>
+  </Border>
+</scc:Dialog>

@@ -1,0 +1,420 @@
+<!--
+  
+   generic.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:Supremacy.UI">
+
+  <Style TargetType="{x:Type ui:NumericUpDown}">
+    <Setter Property="HorizontalAlignment"
+            Value="Center" />
+    <Setter Property="VerticalAlignment"
+            Value="Center" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ui:NumericUpDown}">
+          <Grid Margin="3">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Border BorderThickness="1"
+                    BorderBrush="Gray"
+                    Margin="2"
+                    Grid.RowSpan="2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch">
+              <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}"
+                         Width="60"
+                         TextAlignment="Right"
+                         Padding="5" />
+            </Border>
+            <RepeatButton Command="{x:Static ui:NumericUpDown.IncreaseCommand}"
+                          Grid.Column="1"
+                          Grid.Row="0">Up</RepeatButton>
+            <RepeatButton Command="{x:Static ui:NumericUpDown.DecreaseCommand}"
+                          Grid.Column="1"
+                          Grid.Row="1">Down</RepeatButton>
+
+          </Grid>
+
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type ui:SpinnerButton}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ui:SpinnerButton}">
+          <Button Content="{Binding Path=SelectedValue.Content, RelativeSource={RelativeSource TemplatedParent}}"
+                  Command="{x:Static ui:SpinnerButton.NextItemCommand}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type ui:UnitActivationBar}">
+    <Setter Property="UnitBrush">
+      <Setter.Value>
+        <DrawingBrush>
+          <DrawingBrush.Drawing>
+            <DrawingGroup>
+              <DrawingGroup.Children>
+                <GeometryDrawing Geometry="F1 M 15.998,0L 3.99951,0L 5.68434e-014,2.66634L 3.17891e-007,5.33267L 13.3317,5.33267L 13.3317,2.66634L 15.998,0 Z ">
+                  <GeometryDrawing.Brush>
+                    <LinearGradientBrush StartPoint="1,0.5"
+                                         EndPoint="0,0.5">
+                      <LinearGradientBrush.GradientStops>
+                        <GradientStop Color="#FF0F734B"
+                                      Offset="0"/>
+                        <GradientStop Color="#FF20DFAD"
+                                      Offset="1"/>
+                      </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                  </GeometryDrawing.Brush>
+                </GeometryDrawing>
+                <GeometryDrawing Geometry="F1 M 2.54313e-006,6.66584L 3.99951,10.6653L 3.99951,15.998L 2.54313e-006,19.9975L 11.9985,19.9975L 15.998,15.998L 15.998,10.6653L 11.9985,6.66584L 2.54313e-006,6.66584 Z ">
+                  <GeometryDrawing.Brush>
+                    <LinearGradientBrush StartPoint="1,0.5"
+                                         EndPoint="0,0.5">
+                      <LinearGradientBrush.GradientStops>
+                        <GradientStop Color="#FFB54B17"
+                                      Offset="0"/>
+                        <GradientStop Color="#FFF78C2F"
+                                      Offset="1"/>
+                      </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                  </GeometryDrawing.Brush>
+                </GeometryDrawing>
+                <GeometryDrawing Geometry="F1 M 15.998,26.6634L 3.99951,26.6634L -4.96705e-009,23.997L 3.12924e-007,21.3307L 13.3317,21.3307L 13.3317,23.997L 15.998,26.6634 Z ">
+                  <GeometryDrawing.Brush>
+                    <LinearGradientBrush StartPoint="1,0.5"
+                                         EndPoint="0,0.5">
+                      <LinearGradientBrush.GradientStops>
+                        <GradientStop Color="#FF0F734B"
+                                      Offset="0"/>
+                        <GradientStop Color="#FF20DFAD"
+                                      Offset="1"/>
+                      </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                  </GeometryDrawing.Brush>
+                </GeometryDrawing>
+              </DrawingGroup.Children>
+            </DrawingGroup>
+          </DrawingBrush.Drawing>
+        </DrawingBrush>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ui:UnitActivationBar}">
+          <Grid Background="Transparent" IsHitTestVisible="True">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="PART_DecrementButton"
+                    Content="&lt;"
+                    Grid.Column="0"
+                    Width="32">
+              <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                  <Rectangle x:Name="LeftButton">
+                    <Rectangle.Fill>
+                      <DrawingBrush>
+                        <DrawingBrush.Drawing>
+                          <DrawingGroup>
+                            <DrawingGroup.Children>
+                              <GeometryDrawing Geometry="F1 M 28,26.6666L 28,29.3334L 30.6667,32L 12,32L 9.33333,29.3334L 9.33333,26.6666">
+                                <GeometryDrawing.Brush>
+                                  <LinearGradientBrush StartPoint="1,0.5"
+                                                       EndPoint="0,0.5">
+                                    <LinearGradientBrush.GradientStops>
+                                      <GradientStop Color="#FF0F734B"
+                                                    Offset="0"/>
+                                      <GradientStop Color="#FF20DFAD"
+                                                    Offset="1"/>
+                                    </LinearGradientBrush.GradientStops>
+                                  </LinearGradientBrush>
+                                </GeometryDrawing.Brush>
+                              </GeometryDrawing>
+                              <GeometryDrawing Geometry="F1 M 28,5.33337L 28,2.66663L 30.6667,0L 12,0L 9.33333,2.66663L 9.33333,5.33337">
+                                <GeometryDrawing.Brush>
+                                  <LinearGradientBrush StartPoint="1,0.5"
+                                                       EndPoint="0,0.5">
+                                    <LinearGradientBrush.GradientStops>
+                                      <GradientStop Color="#FF0F734B"
+                                                    Offset="0"/>
+                                      <GradientStop Color="#FF20DFAD"
+                                                    Offset="1"/>
+                                    </LinearGradientBrush.GradientStops>
+                                  </LinearGradientBrush>
+                                </GeometryDrawing.Brush>
+                              </GeometryDrawing>
+                              <GeometryDrawing Geometry="F1 M 28,6.66663L 24,10.6666L 24,21.3334L 28,25.3334L 9.33333,25.3334L 0,16L 9.33333,6.66663">
+                                <GeometryDrawing.Brush>
+                                  <LinearGradientBrush StartPoint="1,0.5"
+                                                       EndPoint="0,0.5">
+                                    <LinearGradientBrush.GradientStops>
+                                      <GradientStop Color="#FFB54B17"
+                                                    Offset="0"/>
+                                      <GradientStop Color="#FFF78C2F"
+                                                    Offset="1"/>
+                                    </LinearGradientBrush.GradientStops>
+                                  </LinearGradientBrush>
+                                </GeometryDrawing.Brush>
+                              </GeometryDrawing>
+                            </DrawingGroup.Children>
+                          </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                      </DrawingBrush>
+                    </Rectangle.Fill>
+                  </Rectangle>
+                  <ControlTemplate.Triggers>
+                    <MultiTrigger>
+                      <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver"
+                                   Value="True"/>
+                        <Condition Property="IsPressed"
+                                   Value="False"/>
+                      </MultiTrigger.Conditions>
+                      <Setter TargetName="LeftButton"
+                              Property="Fill">
+                        <Setter.Value>
+                          <DrawingBrush>
+                            <DrawingBrush.Drawing>
+                              <DrawingGroup>
+                                <DrawingGroup.Children>
+                                  <GeometryDrawing Geometry="F1 M 28,26.6666L 28,29.3334L 30.6667,32L 12,32L 9.33333,29.3334L 9.33333,26.6666">
+                                    <GeometryDrawing.Brush>
+                                      <LinearGradientBrush StartPoint="1,0.5"
+                                                           EndPoint="0,0.5">
+                                        <LinearGradientBrush.GradientStops>
+                                          <GradientStop Color="#FF159E67"
+                                                        Offset="0"/>
+                                          <GradientStop Color="#FF4CE6BD"
+                                                        Offset="1"/>
+                                        </LinearGradientBrush.GradientStops>
+                                      </LinearGradientBrush>
+                                    </GeometryDrawing.Brush>
+                                  </GeometryDrawing>
+                                  <GeometryDrawing Geometry="F1 M 28,5.33337L 28,2.66663L 30.6667,0L 12,0L 9.33333,2.66663L 9.33333,5.33337">
+                                    <GeometryDrawing.Brush>
+                                      <LinearGradientBrush StartPoint="1,0.5"
+                                                           EndPoint="0,0.5">
+                                        <LinearGradientBrush.GradientStops>
+                                          <GradientStop Color="#FF159E67"
+                                                        Offset="0"/>
+                                          <GradientStop Color="#FF4CE6BD"
+                                                        Offset="1"/>
+                                        </LinearGradientBrush.GradientStops>
+                                      </LinearGradientBrush>
+                                    </GeometryDrawing.Brush>
+                                  </GeometryDrawing>
+                                  <GeometryDrawing Geometry="F1 M 28,6.66663L 24,10.6666L 24,21.3334L 28,25.3334L 9.33333,25.3334L 0,16L 9.33333,6.66663">
+                                    <GeometryDrawing.Brush>
+                                      <LinearGradientBrush StartPoint="1,0.5"
+                                                           EndPoint="0,0.5">
+                                        <LinearGradientBrush.GradientStops>
+                                          <GradientStop Color="#FFE25F1D"
+                                                        Offset="0"/>
+                                          <GradientStop Color="#FFF9A862"
+                                                        Offset="1"/>
+                                        </LinearGradientBrush.GradientStops>
+                                      </LinearGradientBrush>
+                                    </GeometryDrawing.Brush>
+                                  </GeometryDrawing>
+                                </DrawingGroup.Children>
+                              </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                          </DrawingBrush>
+                        </Setter.Value>
+                      </Setter>
+                    </MultiTrigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+            <ContentControl x:Name="PART_ContentArea"
+                            Grid.Column="1"/>
+            <Button x:Name="PART_IncrementButton"
+                    Content="&gt;"
+                    Grid.Column="2"
+                    Width="32">
+              <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                  <Rectangle x:Name="RightButton">
+                    <Rectangle.Fill>
+                      <DrawingBrush>
+                        <DrawingBrush.Drawing>
+                          <DrawingGroup>
+                            <DrawingGroup.Children>
+                              <GeometryDrawing Geometry="F1 M 2.66667,26.6666L 2.66667,29.3334L 0,32L 18.6667,32L 21.3333,29.3334L 21.3333,26.6666">
+                                <GeometryDrawing.Brush>
+                                  <LinearGradientBrush StartPoint="0,0.5"
+                                                       EndPoint="1,0.5">
+                                    <LinearGradientBrush.GradientStops>
+                                      <GradientStop Color="#FF0F734B"
+                                                    Offset="0"/>
+                                      <GradientStop Color="#FF20DFAD"
+                                                    Offset="1"/>
+                                    </LinearGradientBrush.GradientStops>
+                                  </LinearGradientBrush>
+                                </GeometryDrawing.Brush>
+                              </GeometryDrawing>
+                              <GeometryDrawing Geometry="F1 M 2.66667,5.33337L 2.66667,2.66663L 0,0L 18.6667,0L 21.3333,2.66663L 21.3333,5.33337">
+                                <GeometryDrawing.Brush>
+                                  <LinearGradientBrush StartPoint="0,0.5"
+                                                       EndPoint="1,0.5">
+                                    <LinearGradientBrush.GradientStops>
+                                      <GradientStop Color="#FF0F734B"
+                                                    Offset="0"/>
+                                      <GradientStop Color="#FF20DFAD"
+                                                    Offset="1"/>
+                                    </LinearGradientBrush.GradientStops>
+                                  </LinearGradientBrush>
+                                </GeometryDrawing.Brush>
+                              </GeometryDrawing>
+                              <GeometryDrawing Geometry="F1 M 2.66667,6.66663L 6.66667,10.6666L 6.66667,21.3334L 2.66667,25.3334L 21.3333,25.3334L 30.6667,16L 21.3333,6.66663">
+                                <GeometryDrawing.Brush>
+                                  <LinearGradientBrush StartPoint="0,0.5"
+                                                       EndPoint="1,0.5">
+                                    <LinearGradientBrush.GradientStops>
+                                      <GradientStop Color="#FFB54B17"
+                                                    Offset="0"/>
+                                      <GradientStop Color="#FFF78C2F"
+                                                    Offset="1"/>
+                                    </LinearGradientBrush.GradientStops>
+                                  </LinearGradientBrush>
+                                </GeometryDrawing.Brush>
+                              </GeometryDrawing>
+                            </DrawingGroup.Children>
+                          </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                      </DrawingBrush>
+                    </Rectangle.Fill>
+                  </Rectangle>
+                  <ControlTemplate.Triggers>
+                    <MultiTrigger>
+                      <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver"
+                                   Value="True"/>
+                        <Condition Property="IsPressed"
+                                   Value="False"/>
+                      </MultiTrigger.Conditions>
+                      <Setter TargetName="RightButton"
+                              Property="Fill">
+                        <Setter.Value>
+                          <DrawingBrush>
+                            <DrawingBrush.Drawing>
+                              <DrawingGroup>
+                                <DrawingGroup.Children>
+                                  <GeometryDrawing Geometry="F1 M 2.66667,26.6666L 2.66667,29.3334L 0,32L 18.6667,32L 21.3333,29.3334L 21.3333,26.6666">
+                                    <GeometryDrawing.Brush>
+                                      <LinearGradientBrush StartPoint="0,0.5"
+                                                           EndPoint="1,0.5">
+                                        <LinearGradientBrush.GradientStops>
+                                          <GradientStop Color="#FF159E67"
+                                                        Offset="0"/>
+                                          <GradientStop Color="#FF4CE6BD"
+                                                        Offset="1"/>
+                                        </LinearGradientBrush.GradientStops>
+                                      </LinearGradientBrush>
+                                    </GeometryDrawing.Brush>
+                                  </GeometryDrawing>
+
+                                  <GeometryDrawing Geometry="F1 M 2.66667,5.33337L 2.66667,2.66663L 0,0L 18.6667,0L 21.3333,2.66663L 21.3333,5.33337">
+                                    <GeometryDrawing.Brush>
+                                      <LinearGradientBrush StartPoint="0,0.5"
+                                                           EndPoint="1,0.5">
+                                        <LinearGradientBrush.GradientStops>
+                                          <GradientStop Color="#FF159E67"
+                                                        Offset="0"/>
+                                          <GradientStop Color="#FF4CE6BD"
+                                                        Offset="1"/>
+                                        </LinearGradientBrush.GradientStops>
+                                      </LinearGradientBrush>
+                                    </GeometryDrawing.Brush>
+                                  </GeometryDrawing>
+
+                                  <GeometryDrawing Geometry="F1 M 2.66667,6.66663L 6.66667,10.6666L 6.66667,21.3334L 2.66667,25.3334L 21.3333,25.3334L 30.6667,16L 21.3333,6.66663">
+                                    <GeometryDrawing.Brush>
+                                      <LinearGradientBrush StartPoint="0,0.5"
+                                                           EndPoint="1,0.5">
+                                        <LinearGradientBrush.GradientStops>
+                                          <GradientStop Color="#FFE25F1D"
+                                                        Offset="0"/>
+                                          <GradientStop Color="#FFF9A862"
+                                                        Offset="1"/>
+                                        </LinearGradientBrush.GradientStops>
+                                      </LinearGradientBrush>
+                                    </GeometryDrawing.Brush>
+                                  </GeometryDrawing>
+
+                                </DrawingGroup.Children>
+                              </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                          </DrawingBrush>
+                        </Setter.Value>
+                      </Setter>
+                    </MultiTrigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+              <Setter TargetName="PART_DecrementButton"
+                      Property="Visibility"
+                      Value="Collapsed"/>
+              <Setter TargetName="PART_IncrementButton"
+                      Property="Visibility"
+                      Value="Collapsed"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+    <Style TargetType="{x:Type ui:HoverItemsControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:HoverItemsControl}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                      <ItemsPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+      <Setter Property="ItemsPanel">
+        <Setter.Value>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Vertical"
+                        IsItemsHost="True"/>
+          </ItemsPanelTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+</ResourceDictionary>

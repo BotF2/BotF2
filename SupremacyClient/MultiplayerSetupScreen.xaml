@@ -1,0 +1,176 @@
+﻿<!--
+  
+   MultiplayerSetupScreen.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<scc:Dialog x:Class="Supremacy.Client.MultiplayerSetupScreen"
+      xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+      xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+      xmlns:local="clr-namespace:Supremacy.Client"
+      HasBorder="True"
+      MinWidth="480"
+      x:Name="mpSetupScreen">
+  <scc:Dialog.Resources>
+    <Style TargetType="{x:Type Button}"
+           BasedOn="{StaticResource LCARS_StandardButtonStyle}">
+      <Setter Property="FontSize"
+              Value="16pt"/>
+      <Setter Property="Padding"
+              Value="16,2,16,1"/>
+    </Style>
+    <Style TargetType="{x:Type ListBox}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ListBox}">
+            <Border x:Name="Border"
+                    BorderBrush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    BorderThickness="2"
+                    >
+              <ScrollViewer Margin="0"
+                            Focusable="False">
+                <StackPanel IsItemsHost="True" />
+              </ScrollViewer>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsEnabled"
+                       Value="False">
+                <Setter TargetName="Border"
+                        Property="BorderBrush"
+                        Value="{StaticResource LCARS_GrayGradient_TopLeft_BottomRight}" />
+              </Trigger>
+              <Trigger Property="IsGrouping"
+                       Value="True">
+                <Setter Property="ScrollViewer.CanContentScroll"
+                        Value="False"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="{x:Type ListBoxItem}"
+           TargetType="{x:Type ListBoxItem}">
+      <Setter Property="SnapsToDevicePixels"
+              Value="True"/>
+      <Setter Property="OverridesDefaultStyle"
+              Value="True"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ListBoxItem}">
+            <Border Name="Border"
+                    Padding="2"
+                    SnapsToDevicePixels="True">
+              <ContentPresenter />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsSelected"
+                       Value="True">
+                <Setter TargetName="Border"
+                        Property="Background"
+                        Value="{StaticResource LCARS_GrayGradient_Top_Bottom}"/>
+              </Trigger>
+              <Trigger Property="IsEnabled"
+                       Value="False">
+                <Setter Property="Foreground"
+                        Value="{StaticResource LCARS_DisabledTextBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </scc:Dialog.Resources>
+
+  <DockPanel LastChildFill="True"
+           TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+           TextBlock.FontSize="12pt"
+           TextBlock.Foreground="White">
+    <DockPanel DockPanel.Dock="Top"
+               Margin="0,0,0,0">
+      <Label DockPanel.Dock="Left"
+             Foreground="{StaticResource LCARS_BlueTextBrush}"
+             VerticalAlignment="Center"
+             Padding="0"
+             Target="{Binding ElementName=PlayerName}">
+        <AccessText Text="{s:StringResource MP_SETUP_PLAYER_NAME}" />
+      </Label>
+      <TextBox x:Name="PlayerName"
+               DockPanel.Dock="Right"
+               Margin="7,0,0,0"
+               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               VerticalAlignment="Center"
+               Background="#00000000"/>
+    </DockPanel>
+    <DockPanel DockPanel.Dock="Top"
+               Margin="0,7,0,0"
+               LastChildFill="True">
+      <Label DockPanel.Dock="Left"
+             Foreground="{StaticResource LCARS_BlueTextBrush}"
+             VerticalAlignment="Center"
+             Padding="0"
+             Target="{Binding ElementName=DirectConnectAddress}">
+        <AccessText Text="{s:StringResource MP_SETUP_DIRECT_CONNECT}" />
+      </Label>
+      <Button DockPanel.Dock="Right"
+              Margin="7,0,0,0"
+              VerticalAlignment="Center"
+              Command="{x:Static local:MultiplayerSetupScreen.DirectConnectCommand}">
+        <AccessText Text="{s:StringResource Key=MP_SETUP_CONNECT, Case=Upper}" />
+      </Button>
+      <TextBox x:Name="DirectConnectAddress"
+               DockPanel.Dock="Left"
+               Margin="7,0,0,0"
+               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               VerticalAlignment="Center"
+               Background="#00000000"/>
+    </DockPanel>
+    <Label DockPanel.Dock="Top"
+           Foreground="{StaticResource LCARS_BlueTextBrush}"
+           Margin="0,14,0,0"
+           Target="{Binding ElementName=PART_ServerList}">
+      <AccessText Text="{s:StringResource MP_SETUP_SERVER_LIST}" />
+    </Label>
+    <ListBox x:Name="PART_ServerList"
+             DockPanel.Dock="Top"
+             Margin="0,4,0,0"
+             Foreground="{StaticResource LCARS_BeigeTextBrush}"
+             Background="Transparent"
+             Height="320"/>
+    <DockPanel DockPanel.Dock="Bottom"
+               LastChildFill="True"
+               Margin="0,14,0,0">
+      <Button x:Name="JoinGameButton"
+              Command="{x:Static local:MultiplayerSetupScreen.JoinGameCommand}"
+              DockPanel.Dock="Left"
+              Margin="0,0,0,0"
+              VerticalAlignment="Center">
+        <AccessText Text="{s:StringResource Key=MP_SETUP_JOIN_GAME, Case=Upper}" />
+      </Button>
+      <Button x:Name="CancelButton"
+              Command="{x:Static local:MultiplayerSetupScreen.CancelCommand}"
+              IsCancel="True"
+              DockPanel.Dock="Right"
+              Margin="0,0,0,0"
+              VerticalAlignment="Center">
+        <AccessText Text="{s:StringResource Key=MP_SETUP_CANCEL, Case=Upper}" />
+      </Button>
+      <Button x:Name="HostGameButton"
+              Command="{x:Static local:MultiplayerSetupScreen.HostGameCommand}"
+              DockPanel.Dock="Left"
+              Margin="4,0,4,0"
+              VerticalAlignment="Center">
+        <AccessText Text="{s:StringResource Key=MP_SETUP_HOST_GAME, Case=Upper}" />
+      </Button>
+    </DockPanel>
+  </DockPanel>
+
+</scc:Dialog>

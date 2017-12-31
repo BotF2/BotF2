@@ -1,0 +1,66 @@
+// AppContextAwareValueConverter.cs
+//
+// Copyright (c) 2009 Mike Strobel
+//
+// This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+// For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+//
+// All other rights reserved.
+
+using System;
+using System.Globalization;
+using System.Threading;
+using System.Windows.Data;
+
+using Microsoft.Practices.ServiceLocation;
+
+using Supremacy.Resources;
+using Supremacy.Client.Context;
+
+namespace Supremacy.Client
+{
+    public abstract class AppContextAwareValueConverter : IValueConverter
+    {
+        private static IResourceManager s_resourceManager;
+        private static IAppContext s_appContext;
+
+        // ReSharper disable MemberCanBeMadeStatic.Global
+        protected IResourceManager ResourceManager
+        {
+            get
+            {
+                var resourceManager = s_resourceManager;
+                if (resourceManager == null)
+                {
+                    var newResourceManager = ServiceLocator.Current.GetInstance<IResourceManager>();
+                    resourceManager = Interlocked.CompareExchange(ref s_resourceManager, resourceManager, null) ?? newResourceManager;
+                }
+                return resourceManager;
+            }
+        }
+
+        protected IAppContext AppContext
+        {
+            get
+            {
+                var appContext = s_appContext;
+                if (appContext == null)
+                {
+                    var newAppContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                    appContext = Interlocked.CompareExchange(ref s_appContext, appContext, null) ?? newAppContext;
+                }
+                return appContext;
+            }
+        }
+        // ReSharper restore MemberCanBeMadeStatic.Global
+
+        #region Implementation of IValueConverter
+        public abstract object Convert(object value, Type targetType, object parameter, CultureInfo culture);
+        
+        public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+        #endregion
+    }
+}

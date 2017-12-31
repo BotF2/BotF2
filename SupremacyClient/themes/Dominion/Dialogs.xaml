@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+  <!--<Style x:Key="{x:Static scc:ClientResources.DialogContainerStyleKey}"
+         TargetType="{x:Type ContentControl}"
+         BasedOn="{StaticResource LCARS_DomThinBorderStyle}" />
+
+  <Style x:Key="{x:Static scc:ClientResources.MessageDialogButtonStyleKey}"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />-->
+
+</ResourceDictionary>

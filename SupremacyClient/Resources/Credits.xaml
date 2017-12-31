@@ -1,0 +1,320 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+             Background="Transparent" MaxWidth="480" MaxHeight="480">
+  <UserControl.Resources>
+    <Style x:Key="SectionHeader" TargetType="{x:Type Paragraph}">
+      <Setter Property="FontSize" Value="14pt" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Foreground" Value="{DynamicResource HeaderTextBrush}" />
+      <Setter Property="TextDecorations" Value="Underline" />
+    </Style>
+    <Style TargetType="{x:Type Section}">
+      <Setter Property="Padding" Value="0,0,0,0" />
+    </Style>
+    <Style TargetType="{x:Type Bold}">
+      <Setter Property="Foreground" Value="{DynamicResource HeaderTextBrush}" />
+    </Style>
+    <Style TargetType="{x:Type Hyperlink}">
+      <Setter Property="TextBlock.Foreground" Value="{DynamicResource HeaderTextBrush}" />
+      <Setter Property="Focusable" Value="False" />
+    </Style>
+  </UserControl.Resources>
+  <FlowDocumentScrollViewer Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto">
+    <FlowDocument FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                  FontStyle="Normal"
+                  FontSize="11pt"
+                  Foreground="{DynamicResource DefaultTextBrush}"
+                  Background="Transparent"
+                  TextAlignment="Center">
+      <Section>
+        <Paragraph Style="{StaticResource SectionHeader}">
+          <Span>Programming</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Lead Programmer</Bold>
+          <LineBreak />
+          <Span>Mike Strobel</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Additional Programmers</Bold>
+          <LineBreak />
+          <Span>Andrew Sweet</Span>
+          <LineBreak />
+          <Span>Darren Barrick</Span>
+          <LineBreak />
+          <Span>Alan Podlesek</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Combat System Development</Bold>
+          <LineBreak />
+          <Span>Strings</Span>
+          <LineBreak />
+          <Span>Cdrwolfe</Span>
+        </Paragraph>
+      </Section>
+      <Section>
+        <Paragraph Style="{StaticResource SectionHeader}">
+          <Span>Game Design</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Lead Game Designers</Bold>
+          <LineBreak />
+          <Span>Mike Strobel</Span>
+          <LineBreak />
+          <Span>Dafedz</Span>
+          <LineBreak />
+          <Span>Slim</Span>
+        </Paragraph>
+      </Section>
+      <Section>
+        <Paragraph Style="{StaticResource SectionHeader}">
+          <Span>Web Development</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Forum Administration</Bold>
+          <LineBreak />
+          <Span>Jigalypuff</Span>
+          <LineBreak />
+          <Span>Skeeter</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Supremacy Website Administration</Bold>
+          <LineBreak />
+          <Span>Jean Marciniak</Span>
+        </Paragraph>
+      </Section>
+      <Section>
+        <Paragraph Style="{StaticResource SectionHeader}">
+          <Span>Creative Content</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Game Object Database</Bold>
+          <LineBreak />
+          <Span>Dafedz</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Game Text and Dialogue</Bold>
+          <LineBreak />
+          <Span>Dafedz</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+          <LineBreak />
+          <Span>Jamie11</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Proofreading</Bold>
+          <LineBreak />
+          <Span>.Iceman</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Civilization Stats</Bold>
+          <LineBreak />
+          <Span>Cdrwolfe</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+          <LineBreak />
+          <Span>Zeleni</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Ship List</Bold>
+          <LineBreak />
+          <Span>Dafedz</Span>
+          <LineBreak />
+          <Span>Cdrwolfe</Span>
+          <LineBreak />
+          <Span>Kenneth_of_Borg</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+          <LineBreak />
+          <Span>Zeleni</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Ship Names</Bold>
+          <LineBreak />
+          <Span>CVN-65</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Ship Stats Testing</Bold>
+          <LineBreak />
+          <Span>Zulnak</Span>
+          <LineBreak />
+          <Span>Dafedz</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+        </Paragraph>
+      </Section>
+      <Section>
+        <Paragraph Style="{StaticResource SectionHeader}">
+          <Span>Music and Sound</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Original Soundtrack</Bold>
+          <LineBreak />
+          <Span>Kenneth Welch</Span>
+          <LineBreak />
+          <Span>Andrew James Thomas</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Sound Effects</Bold>
+          <LineBreak />
+          <Span>Kenneth_of_Borg</Span>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Vocal Recordings</Bold>
+          <LineBreak />
+          <Span>Kenneth_of_Borg</Span>
+          <LineBreak />
+          <Span>Jade</Span>
+          <LineBreak />
+          <Span>Cdrwolfe</Span>
+          <LineBreak />
+          <Span>Thunder47</Span>
+          <LineBreak />
+          <Span>Kathleen Flanagan</Span>
+          <LineBreak />
+          <Span>Krista Flanagan</Span>
+        </Paragraph>
+      </Section>
+      <Section>
+        <Paragraph Style="{StaticResource SectionHeader}">
+          <Span>3D Models and Other Artwork</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>3D Models</Bold>
+          <LineBreak />
+          <Span>Dafedz</Span>
+          <LineBreak />
+          <Span>Jigalypuff</Span>
+          <LineBreak />
+          <Span>Kenneth_of_Borg</Span>
+          <LineBreak />
+          <Span>Trashman</Span>
+          <LineBreak />
+          <Span>Fireball</Span>
+          <LineBreak />
+          <Span>Skeeter</Span>
+          <LineBreak />
+          <Span>Major A Payne</Span>
+          <LineBreak />
+          <Span>Eon_Janus</Span>
+          <LineBreak />
+          <Span>Zeleni</Span>
+          <LineBreak />
+          <Span>Nemitor_Atimen</Span>
+          <LineBreak />
+          <Span>Zahadoom</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Standardized Model Texturing System</Bold>
+          <LineBreak />
+          <Span>Fireball</Span>
+          <LineBreak />
+          <Span>Strings</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Additional Model Texturing</Bold>
+          <LineBreak />
+          <Span>Kenneth_of_Borg</Span>
+          <LineBreak />
+          <Span>Trashman</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Structure Images</Bold>
+          <LineBreak />
+          <Span>Dafedz</Span>
+          <LineBreak />
+          <Span>Zeleni</Span>
+          <LineBreak />
+          <Span>Trashman</Span>
+          <LineBreak />
+          <Span>Valcoren</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Random Event Images</Bold>
+          <LineBreak />
+          <Span>SJ2290</Span>
+          <LineBreak />
+          <Span>Valcoren</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>UI Design and Color Scheme</Bold>
+          <LineBreak />
+          <Span>Joel Bailey</Span>
+          <LineBreak />
+          <Span>Silvercliff</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Civilization Insignias</Bold>
+          <LineBreak />
+          <Span>Joel Bailey</Span>
+          <LineBreak />
+          <Span>Zeleni</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Planet Textures</Bold>
+          <LineBreak />
+          <Span>Mathias Koehler</Span>
+          <LineBreak />
+          <Span>Jonathan Hill</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Planet Atmosphere Overlays</Bold>
+          <LineBreak />
+          <Span>Mathias Koehler</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Asteroid Belt Animations</Bold>
+          <LineBreak />
+          <Span>Mathias Koehler</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Galaxy Selection Images</Bold>
+          <LineBreak />
+          <Span>Satyagraha</Span>
+        </Paragraph>
+      </Section>
+      <Section>
+        <Paragraph Style="{StaticResource SectionHeader}">
+          <Span>QA and Support</Span>
+        </Paragraph>
+        <Paragraph>
+          <Bold>Playtesting</Bold>
+          <LineBreak />
+          <Span>Matress_of_Evil</Span>
+          <LineBreak />
+          <Span>Jean Marciniak</Span>
+          <LineBreak />
+          <Span>Cdrwolfe</Span>
+          <LineBreak />
+          <Span>Kenneth_of_Borg</Span>
+          <LineBreak />
+          <Span>Skeeter</Span>
+          <LineBreak />
+          <Span>Jigalypuff</Span>
+          <LineBreak />
+          <Span>.Iceman</Span>
+        </Paragraph>
+      </Section>
+      <Section>
+        <Paragraph FontSize="12pt">
+          <Span>And a very special thanks to the developers at the</Span>
+          <Hyperlink NavigateUri="http://www.freeorion.org/">freeOrion</Hyperlink>
+          <LineBreak />
+          <Span>and</Span>
+          <Hyperlink NavigateUri="http://majestyofomega.codeplex.com/">Majesty of Omega</Hyperlink>
+          <Span>projects.</Span>
+        </Paragraph>
+      </Section>
+    </FlowDocument>
+  </FlowDocumentScrollViewer>
+</UserControl>

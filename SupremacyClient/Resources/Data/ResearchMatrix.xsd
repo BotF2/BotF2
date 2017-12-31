@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="ResearchMatrix"
+           targetNamespace="Supremacy:ResearchMatrix.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:ResearchMatrix.xsd"
+           xmlns:mstns="Supremacy:ResearchMatrix.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:s="Supremacy:Supremacy.xsd">
+
+  <xs:import namespace="Supremacy:Supremacy.xsd"
+             schemaLocation="Supremacy.xsd"/>
+
+  <xs:complexType name="ResearchApplication">
+    <xs:all>
+      <xs:element name="Name"
+                  type="xs:normalizedString"/>
+      <xs:element name="Description"
+                  type="xs:normalizedString"/>
+      <xs:element name="Level"
+                  type="xs:nonNegativeInteger"/>
+      <xs:element name="ResearchCost"
+                  type="xs:nonNegativeInteger"/>
+    </xs:all>  
+  </xs:complexType>
+  
+  <xs:complexType name="ResearchField">
+    <xs:all>
+      <xs:element name="Name"
+                  type="xs:normalizedString"/>
+      <xs:element name="Description"
+                  type="xs:normalizedString"/>
+      <xs:element name="TechCategory"
+                  type="s:TechCategory"/>
+      <xs:element name="Applications">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Application"
+                        type="ResearchApplication"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="ResearchMatrix">
+    <xs:all>
+      <xs:element name="Fields">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Field"
+                        type="ResearchField"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:element name="ResearchMatrix"
+              type="ResearchMatrix"/>
+</xs:schema>

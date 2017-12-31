@@ -1,0 +1,345 @@
+<?xml version="1.0"?><doc><assembly><name>ActiproSoftware.Text.LanguageGeneration.Wpf351</name></assembly><members><member name="T:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator"><summary>
+            Generates source code for an <see cref="T:ActiproSoftware.Text.ISyntaxLanguage" />.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateAstNodeDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject,ActiproSoftware.Text.LanguageSerialization.AstNode)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of an AST node class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><param name="astNode">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.AstNode" /> to examine.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateClassificationTypeProviderInterfaceDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a classification type provider interface.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateLexicalStateIdClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a lexical state ID class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateTokenIdClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a token ID class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateDynamicLexerClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a dynamic lexer class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateExampleTextProviderClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of an example text provider class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateSyntaxLanguageClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a syntax language class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateClassificationTypeProviderClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a classification type provider class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CamelCase(System.String)"><summary>
+            Returns the camel case version of the specified text string.
+            </summary><param name="text">The text string to examine.</param><returns>The modified text string.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.GenerateCodeForTypeDeclarations(ActiproSoftware.Text.LanguageSerialization.LanguageProject,System.CodeDom.Compiler.CodeDomProvider,System.CodeDom.CodeTypeDeclaration[])"><summary>
+            Generates code for the given type declarations and returns it in a string.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><param name="provider">The <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> to use.</param><param name="types">The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> objects for which to generate code.</param><returns>The generated code string.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateTokenTaggerClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a token tagger class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.LanguageGeneration.LanguageGenerator.CreateTokenTaggerProviderClassDeclaration(ActiproSoftware.Text.LanguageSerialization.LanguageProject)"><summary>
+            Creates a <see cref="T:System.CodeDom.CodeTypeDeclaration" /> containing the declaration of a token tagger provider class.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to use.</param><returns>The <see cref="T:System.CodeDom.CodeTypeDeclaration" /> that was created.</returns></member><member name="T:ActiproSoftware.Text.LanguageGeneration.IOutputLanguage"><summary>
+            Provides the base requiresments for an output language in which code can be generated.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageGeneration.IOutputLanguage.CodeDomProvider"><summary>
+            Gets the <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> that is used to interact with CodeDOM.
+            </summary><value>The <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> that is used to interact with CodeDOM.</value></member><member name="P:ActiproSoftware.Text.LanguageGeneration.IOutputLanguage.Description"><summary>
+            Gets the description, or friendly name, of the language (e.g. C#).
+            </summary><value>The description, or friendly name, of the language (e.g. C#).</value></member><member name="P:ActiproSoftware.Text.LanguageGeneration.IOutputLanguage.FileExtension"><summary>
+            Gets the file extension to use for generated code.
+            </summary><value>The file extension to use for generated code.</value></member><member name="P:ActiproSoftware.Text.LanguageGeneration.IOutputLanguage.ImageSourceSmall"><summary>
+            Gets or sets the small <see cref="T:System.Windows.Media.ImageSource" /> for files in this language.
+            </summary><value>The small <see cref="T:System.Windows.Media.ImageSource" /> for files in this language.</value></member><member name="P:ActiproSoftware.Text.LanguageGeneration.IOutputLanguage.Key"><summary>
+            Gets a unique key that identifies the language and is used in class names (e.g. CSharp).
+            </summary><value>A unique key that identifies the language and is used in class names (e.g. CSharp).</value></member><member name="P:ActiproSoftware.Text.LanguageGeneration.IOutputLanguage.SyntaxLanguage"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.ISyntaxLanguage" /> to use for code display.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.ISyntaxLanguage" /> to use for code display.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ObjectBase"><summary>
+            Implements an abstract base class that supports property change notification.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.ObjectBase.OnPropertyChanged(System.String)"><summary>
+            Raises the <c>PropertyChanged</c> event.
+            </summary><param name="name">The name of the property.</param></member><member name="M:ActiproSoftware.Text.LanguageSerialization.ObjectBase.#ctor"><summary>
+            Initializes a new instance of the <c>DynamicLexer</c> class.
+            </summary></member><member name="E:ActiproSoftware.Text.LanguageSerialization.ObjectBase.PropertyChanged"><summary>
+            Occurs when a property value is changed.
+            </summary><eventdata>
+            The event handler receives an argument of type <c>PropertyChangedEventArgs</c> containing data related to this event.
+            </eventdata></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ClassificationType"><summary>
+            Represents serializable information about a classification type.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.ClassificationType.ResetDefaultStyle"><summary>
+            Resets the <see cref="P:ActiproSoftware.Text.LanguageSerialization.ClassificationType.DefaultStyle" /> property to its default value.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.ClassificationType.ShouldSerializeDefaultStyle"><summary>
+            Indicates whether the <see cref="P:ActiproSoftware.Text.LanguageSerialization.ClassificationType.DefaultStyle" /> property should be persisted.
+            </summary><returns><c>true</c> if the property value has changed from its default; otherwise, <c>false</c>.
+            </returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ClassificationType.DefaultStyle"><summary>
+            Gets or sets the default <see cref="T:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle" /> to use for the classification type.
+            </summary><value>The default <see cref="T:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle" /> to use for the classification type.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ClassificationType.Description"><summary>
+            Gets or sets the full textual representation of the classification type (e.g. XML Doc Tag).
+            </summary><value>The full textual representation of the classification type (e.g. XML Doc Tag).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ClassificationType.Key"><summary>
+            Gets or sets the unique key that identifies the classification type and is used as a property name (e.g. XmlDocumentationTag).
+            </summary><value>The unique key that identifies the classification type and is used as a property name (e.g. XmlDocumentationTag).</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.AstNode"><summary>
+            Represents serializable information about an AST node.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNode.Description"><summary>
+            Gets or sets the full textual representation of the AST node that appears in generated XML comments (e.g. The expression.).
+            </summary><value>The full textual representation of the AST node that appears in generated XML comments (e.g. The expression.).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNode.Inherits"><summary>
+            Gets or sets the type name inherited by this AST node.  It can be the key of another AST node or left blank to use the default base class.
+            </summary><value>The type name inherited by this AST node.  It can be the key of another AST node or left blank to use the default base class.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNode.Key"><summary>
+            Gets or sets the unique key that identifies the AST node and is used as a class name (e.g. Expression).
+            </summary><value>The unique key that identifies the AST node and is used as a class name (e.g. Expression).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNode.Properties"><summary>
+            Gets the collection of properties.
+            </summary><value>A collection containing the properties.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.AstNodeProperty"><summary>
+            Represents serializable information about an AST node property.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNodeProperty.Description"><summary>
+            Gets or sets the full textual representation of the property that appears in generated XML comments (e.g. The method name.).
+            </summary><value>The full textual representation of the property that appears in generated XML comments (e.g. The method name.).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNodeProperty.Key"><summary>
+            Gets or sets the unique key that identifies the property and is used as a property name (e.g. Name).
+            </summary><value>The unique key that identifies the property and is used as a property name (e.g. Name).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNodeProperty.PropertyType"><summary>
+            Gets or sets the type of property to generate.
+            </summary><value>The type of property to generate.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.AstNodeProperty.Type"><summary>
+            Gets or sets the type name of the Type returned by the property  It can be the key of an AST node or any other type name.
+            </summary><value>The type name of the Type returned by the property  It can be the key of an AST node or any other type name.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.AstNodePropertyType"><summary>
+            Specifies the AST node property type.
+            </summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.AstNodePropertyType.Simple"><summary>
+            A CLR type property.
+            </summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.AstNodePropertyType.SimpleList"><summary>
+            A list property whose item type is a CLR type.
+            </summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.AstNodePropertyType.AstNode"><summary>
+            A property whose type must be or implement <see cref="T:ActiproSoftware.Text.Parsing.IAstNode" />.
+            The parent generated AST node will contain code to enumerate over the property value when building its children collection.
+            </summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.AstNodePropertyType.AstNodeList"><summary>
+            A list property whose item type must be or implement <see cref="T:ActiproSoftware.Text.Parsing.IAstNode" />.
+            The parent generated AST node will contain code to enumerate over the list's items when building its children collection.
+            </summary></member><member name="T:ActiproSoftware.Text.LanguageSerialization.LLParser"><summary>
+            Stores information about an LL parser for the language.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LLParser.DebuggerAssemblyPath"><summary>
+            Gets or sets the file path of the debugger assembly.
+            </summary><value>The file path of the debugger assembly.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition"><summary>
+            Represents serializable information about a lexical state transition.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition.ChildLanguage"><summary>
+            Gets or sets a reference to the language that contains the lexical state to be transitioned into.
+            </summary><value>A reference to the language that contains the lexical state to be transitioned into.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition.ChildLexicalScope"><summary>
+            Gets the lexical scope that is used in the child lexical state to end the transition and pop back up to the parent lexical state.
+            </summary><value>The lexical scope that is used in the child lexical state to end the transition and pop back up to the parent lexical state.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.FileRef"><summary>
+            Provides a reference to a file, stored in an assembly's manifest resource stream.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.FileRef.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="M:ActiproSoftware.Text.LanguageSerialization.FileRef.ToString"><summary>
+            Returns a <c>String</c> that represents the current <c>Object</c>.
+            </summary><returns>A <c>String</c> that represents the current <c>Object</c>.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.FileRef.AssemblyName"><summary>
+            Gets or sets the name of the assembly that contains the <see cref="P:ActiproSoftware.Text.LanguageSerialization.FileRef.ManifestResourceStreamName" />.
+            </summary><value>The name of the assembly that contains the <see cref="P:ActiproSoftware.Text.LanguageSerialization.FileRef.ManifestResourceStreamName" />.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.FileRef.FilePath"><summary>
+            Gets or sets the path to a file on the hard drive relative to the application's location.
+            </summary><value>The path to a file on the hard drive relative to the application's location.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.FileRef.ManifestResourceStreamName"><summary>
+            Gets or sets the case-sensitive name of the manifest resource stream in the assembly.
+            </summary><value>The case-sensitive name of the manifest resource stream in the assembly.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.EnumerableExtensions"><summary>
+            Provides helper extension methods.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.EnumerableExtensions.ContainsKeyedObject(System.Collections.IEnumerable,System.String)"><summary>
+            Returns whether the collection contains an <see cref="T:ActiproSoftware.Text.Utility.IKeyedObject" /> with the specified key.
+            </summary><param name="collection">The collection to examine.</param><param name="key">The string key.</param><returns><c>true</c> if the item exists; otherwise, <c>false</c>.
+            </returns></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ILexer"><summary>
+            Provides the base requirements for a lexer.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ILexer.LexicalStates"><summary>
+            Gets the collection of lexical states.
+            </summary><value>A collection containing the lexical states.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ILexer.TokenDeclarations"><summary>
+            Gets the collection of token declarations.
+            </summary><value>A collection containing the token declarations.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.DataflowLexer"><summary>
+            Represents serializable information about a dataflow lexer.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.DataflowLexer.#ctor"><summary>
+            Initializes a new instance of the <c>DataflowLexer</c> class.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DataflowLexer.ImageFile"><summary>
+            Gets or sets an <see cref="T:ActiproSoftware.Text.LanguageSerialization.FileRef" /> that indicates the location of the 'M' Language Definitions image file.
+            </summary><value>
+            An <see cref="T:ActiproSoftware.Text.LanguageSerialization.FileRef" /> that indicates the location of the 'M' Language Definitions image file.
+            </value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DataflowLexer.ParserName"><summary>
+            Gets or sets the name of the parser in the 'M' Language Definitions image file.
+            </summary><value>
+            The name of the parser in the 'M' Language Definitions image file.
+            </value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.TokenDeclarationBase"><summary>
+            Represents a token declaration.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.TokenDeclarationBase.ClassificationTypeKey"><summary>
+            Gets or sets the logical classification type key associated with this token (e.g. PreprocessorKeyword).
+            </summary><value>The logical classification type key associated with this token (e.g. PreprocessorKeyword).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.TokenDeclarationBase.Description"><summary>
+            Gets or sets the full textual representation of the token (e.g. #region).
+            </summary><value>The full textual representation of the token (e.g. #region).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.TokenDeclarationBase.Id"><summary>
+            Gets or sets an optional integer ID that identifies the token.
+            </summary><value>An optional integer ID that identifies the token.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.TokenDeclarationBase.Key"><summary>
+            Gets or sets a unique key that identifies the token and is used as a constant's name (e.g. StartRegion).
+            </summary><value>A unique key that identifies the token and is used as a constant's name (e.g. StartRegion).</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ProgrammaticTokenDeclaration"><summary>
+            Represents serializable information about a programmatic token declaration.
+            </summary></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode"><summary>
+            Provides the common validation error codes.
+            </summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.AstNodesAstNodeKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.AstNodesAstNodeKeyDuplicated"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.AstNodesAstNodePropertyKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.AstNodesAstNodePropertyKeyDuplicated"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.ClassificationTypesClassificationTypeKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.ClassificationTypesClassificationTypeKeyDuplicated"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.CodeGenerationOutputLanguageKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.CodeGenerationOutputNamespaceNameInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.CodeGenerationOutputFolderPathInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.GeneralPropertiesLanguageKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.LexerNone"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerNoStates"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerMacroKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerMacroKeyDuplicated"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerMacroPatternInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerStateIdInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerStateKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerStateKeyDuplicated"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerStateDefaultClassificationTypeNotFound"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerStateDefaultTokenIdInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerStateDefaultTokenKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerStateTransitionInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerChildStateKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerChildStateKeyDuplicated"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerChildStateNotFound"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerScopeTransitionInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupKeyDuplicated"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupClassificationTypeNotFound"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupTokenIdInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupTokenKeyInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupNoPatterns"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupEmptyPattern"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupRegexAutoCorrect"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DynamicLexerPatternGroupPatternInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DataflowLexerImageFileInvalid"><summary>An error code.</summary></member><member name="F:ActiproSoftware.Text.LanguageSerialization.ValidationErrorCode.DataflowLexerParserNameInvalid"><summary>An error code.</summary></member><member name="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexer"><summary>
+            Represents serializable information about a dynamic lexer.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexer.LexicalMacros"><summary>
+            Gets the collection of lexical macros.
+            </summary><value>A collection containing the lexical macros.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexer.LexicalStates"><summary>
+            Gets the collection of lexical states.
+            </summary><value>A collection containing the lexical states.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalMacro"><summary>
+            Represents serializable information about a dynamic lexical macro.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalMacro.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalMacro.Key"><summary>
+            Gets or sets a unique key that identifies the macro (e.g. UrlStart).
+            </summary><value>A unique key that identifies the macro (e.g. UrlStart).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalMacro.Pattern"><summary>
+            Gets or sets the text regular expression pattern used by this macro.
+            </summary><value>The text regular expression pattern used by this macro.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup"><summary>
+            Represents serializable information about a dynamic lexical pattern group.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="M:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.SortStrings(System.Collections.Generic.List{System.String},ActiproSoftware.Text.CaseSensitivity)"><summary>
+            Sorts the strings in a list to match properly.
+            </summary><param name="list">The list of strings to sort.</param><param name="caseSensitivity">The case sensitivity.</param></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.CaseSensitivity"><summary>
+            Gets or sets a nullable <see cref="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.CaseSensitivity" /> determining how the lexer should handle case sensitivity
+            for patterns in the pattern group.
+            </summary><value>
+            A nullable <see cref="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.CaseSensitivity" /> determining how the lexer should handle case sensitivity
+            for patterns in the pattern group.
+            </value><remarks>
+            A <see langword="null" /> value indicates that the setting should be inherited from the parent lexical state.
+            </remarks></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.ClassificationTypeKey"><summary>
+            Gets or sets the string-based key that identifies the classification type to use for tokens created by the pattern group (e.g. PreprocessorKeyword).
+            </summary><value>The string-based key that identifies the classification type to use for tokens created by the pattern group (e.g. PreprocessorKeyword).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.Key"><summary>
+            Gets or sets a string-based key that identifies the lexical pattern group.
+            </summary><value>A string-based key that identifies the lexical pattern group.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.LookAheadPattern"><summary>
+            Gets or sets the text regular expression pattern for the look-ahead.
+            </summary><value>The text regular expression pattern for the look-ahead.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.LookBehindPattern"><summary>
+            Gets or sets the text regular expression source for the look-behind.
+            </summary><value>The text regular expression source for the look-behind.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.Patterns"><summary>
+            Gets the collection of lexical patterns.
+            </summary><value>A collection containing the lexical patterns.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.PatternType"><summary>
+            Gets or sets a <see cref="T:ActiproSoftware.Text.Lexing.Implementation.DynamicLexicalPatternType" /> indicating the type of pattern.
+            </summary><value>A <see cref="T:ActiproSoftware.Text.Lexing.Implementation.DynamicLexicalPatternType" /> indicating the type of pattern.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.TokenId"><summary>
+            Gets or sets a numeric ID that identifies the token that this pattern group assigns.
+            </summary><value>A numeric ID that identifies the token that this pattern group assigns.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup.TokenKey"><summary>
+            Gets or sets the key of the token that this pattern group assigns (e.g. StartRegion).
+            </summary><value>The key of the token that this pattern group assigns (e.g. StartRegion).</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalScope"><summary>
+            Represents serializable information about a dynamic lexical scope.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalScope.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalScope.EndLexicalPatternGroup"><summary>
+            Gets or sets the lexical pattern group that ends the scope.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup" /> that ends the scope.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalScope.IsAncestorEndScopeCheckEnabled"><summary>
+            Gets or sets whether ancestor end scope checking is enabled while parsing inside the scope.
+            </summary><value><c>true</c> if ancestor end scope checking is enabled; otherwise, <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalScope.StartLexicalPatternGroup"><summary>
+            Gets or sets the lexical pattern group that starts the scope.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalPatternGroup" /> that starts the scope.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalScope.Transition"><summary>
+            Gets or sets the <see cref="T:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition" /> that is performed immediately after an end scope match.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition" /> that is performed immediately after an end scope match.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.LexicalStateBase"><summary>
+            Represents an abstract base class for serializable information about a lexical state.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LexicalStateBase.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LexicalStateBase.Description"><summary>
+            Gets or sets the full textual representation of the lexical state (e.g. Pre-processor Directive).
+            </summary><value>The full textual representation of the lexical state (e.g. Pre-processor Directive).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LexicalStateBase.Id"><summary>
+            Gets or sets the ID value that identifies the lexical state.
+            </summary><value>The ID value that identifies the lexical state.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LexicalStateBase.Key"><summary>
+            Gets or sets a unique key that identifies the lexical state (e.g. PreprocessorDirective).
+            </summary><value>A unique key that identifies the lexical state (e.g. PreprocessorDirective).</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState"><summary>
+            Represents serializable information about a dynamic lexical state.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.ChildLexicalStates"><summary>
+            Gets the collection of child lexical states.
+            </summary><value>A collection containing the child lexical states.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.DefaultCaseSensitivity"><summary>
+            Gets or sets a <see cref="T:ActiproSoftware.Text.CaseSensitivity" /> determining how the lexer should handle case sensitivity
+            for patterns in the state's pattern groups.
+            </summary><value>
+            A <see cref="T:ActiproSoftware.Text.CaseSensitivity" /> determining how the lexer should handle case sensitivity
+            for patterns in the state's pattern groups.
+            </value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.DefaultClassificationTypeKey"><summary>
+            Gets or sets the string-based key that identifies the default classification type to use for tokens within the lexical state (e.g. PreprocessorKeyword).
+            </summary><value>The string-based key that identifies the default classification type to use for tokens within the lexical state (e.g. PreprocessorKeyword).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.DefaultTokenId"><summary>
+            Gets or sets the ID of the default token that this state assigns.
+            </summary><value>The ID of the default token that this state assigns.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.DefaultTokenKey"><summary>
+            Gets or sets the key of the default token that this state assigns and is used as a constant's name (e.g. StartRegion).
+            </summary><value>The key of the default token that this state assigns and is used as a constant's name (e.g. StartRegion).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.LexicalPatternGroups"><summary>
+            Gets the collection of lexical pattern groups.
+            </summary><value>A collection containing the lexical pattern groups.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.LexicalScopes"><summary>
+            Gets the collection of lexical scopes.
+            </summary><value>A collection containing the lexical scopes.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalState.Transition"><summary>
+            Gets or sets the <see cref="T:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition" /> that is performed immediately after a start scope match.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LexicalStateTransition" /> that is performed immediately after a start scope match.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalStateRef"><summary>
+            Represents serializable information about a dynamic lexical state reference.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalStateRef.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.DynamicLexicalStateRef.Key"><summary>
+            Gets or sets a unique key that identifies the lexical state (e.g. PreprocessorDirective).
+            </summary><value>A unique key that identifies the lexical state (e.g. PreprocessorDirective).</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle"><summary>
+            Represents serializable information about a highlighting style.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle.Equals(System.Object)"><summary>
+            Determines whether the specified <c>Object</c> is equal to the current <c>Object</c>. 
+            </summary><param name="obj">The <c>Object</c> to compare to the current <c>Object</c>.</param><returns><c>true</c> if the specified <c>Object</c> is equal to the current <c>Object</c>; 
+            otherwise, <c>false</c>. 
+            </returns></member><member name="M:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle.GetHashCode"><summary>
+            Returns a hash code for this object.
+            </summary><returns>An integer value that specifies a hash value for this object.</returns></member><member name="P:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle.Background"><summary>
+            Gets or sets the background color of the highlighting style.
+            </summary><value>A nullable <see cref="T:System.Windows.Media.Color" /> indicating the background brush of the highlighting style.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle.Bold"><summary>
+            Gets or sets a nullable <see cref="T:System.Boolean" /> indicating whether the highlighting style uses boldface.
+            </summary><value>
+            A nullable <see cref="T:System.Boolean" /> indicating whether the highlighting style uses boldface.
+            </value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle.Foreground"><summary>
+            Gets or sets the foreground color of the highlighting style.
+            </summary><value>A nullable <see cref="T:System.Windows.Media.Color" /> indicating the foreground brush of the highlighting style.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle.HasNonDefaultValue"><summary>
+            Gets whether there are any non-default property values set.
+            </summary><value><c>true</c> if there is at least one non-default property value set; otherwise, <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.HighlightingStyle.Italic"><summary>
+            Gets or sets a nullable <see cref="T:System.Boolean" /> indicating whether the highlighting style uses italics.
+            </summary><value>
+            A nullable <see cref="T:System.Boolean" /> indicating whether the highlighting style uses italics.
+            </value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject"><summary>
+            Represents serializable information about a language project.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LanguageProject.Validate"><summary>
+            Validates the language project.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LanguageProject.#ctor"><summary>
+            Initializes a new instance of the <c>LanguageProject</c> class.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.AstNodes"><summary>
+            Gets the collection of AST nodes.
+            </summary><value>A collection containing the AST nodes.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.ClassificationTypes"><summary>
+            Gets the collection of classification types.
+            </summary><value>A collection containing the classification types.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.Copyright"><summary>
+            Gets or sets the copyright associated with the language.
+            </summary><value>The copyright associated with the language.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.Creator"><summary>
+            Gets or sets the creator of the language.
+            </summary><value>The creator of the language.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.ExampleText"><summary>
+            Gets or sets the example text for the language.
+            </summary><value>The example text for the language.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.Filename"><summary>
+            Gets or sets the filename from which the language project was loaded.
+            </summary><value>The filename from which the language project was loaded.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.LanguageDescription"><summary>
+            Gets or sets the description, or friendly name, of the language (e.g. C#).
+            </summary><value>The description, or friendly name, of the language (e.g. C#).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.LanguageKey"><summary>
+            Gets or sets a unique key that identifies the language and is used in class names (e.g. CSharp).
+            </summary><value>A unique key that identifies the language and is used in class names (e.g. CSharp).</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.Lexer"><summary>
+            Gets or sets the <see cref="T:ActiproSoftware.Text.LanguageSerialization.ILexer" /> to use with the language.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.LanguageSerialization.ILexer" /> to use with the language.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.LLParser"><summary>
+            Gets or sets information about the <see cref="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.LLParser" /> for the language.
+            </summary><value>Information about the <see cref="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.LLParser" /> for the language.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.OutputFullyQualifiedTypeNames"><summary>
+            Gets or sets whether to output fully-qualified type names.
+            </summary><value><c>true</c> if fully-qualified type names should be generated; otherwise, <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.OutputLanguageDefinition"><summary>
+            Gets or sets whether to output a language definition.
+            </summary><value><c>true</c> if a language definition should be generated; otherwise, <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.OutputLanguageKey"><summary>
+            Gets or sets the key of the output language in which code is generated.
+            </summary><value>The key of the output language in which code is generated.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.OutputNamespaceName"><summary>
+            Gets or sets the name of the namespace in which to place the generated code.
+            </summary><value>The name of the namespace in which to place the generated code.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.OutputPath"><summary>
+            Gets or sets the file system path in which to place the generated code.
+            </summary><value>The file system path in which to place the generated code.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.LanguageProject.ValidationErrors"><summary>
+            Gets the collection of validation errors for this project.
+            </summary><value>A collection containing the validation errors for this project.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.LanguageProjectSerializer"><summary>
+            Provides a class that can serialize a <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to XML.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LanguageProjectSerializer.ImportFromFile(System.String)"><summary>
+            Loads a <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> from a file.
+            </summary><param name="path">The full path to the file.</param><returns>The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> that was loaded.</returns></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LanguageProjectSerializer.LoadFromFile(System.String)"><summary>
+            Loads a <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> from a file.
+            </summary><param name="path">The full path to the file.</param><returns>The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> that was loaded.</returns></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LanguageProjectSerializer.SaveToFile(ActiproSoftware.Text.LanguageSerialization.LanguageProject,System.String,System.Boolean)"><summary>
+            Serializes a <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to an file in XML format.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to serialize.</param><param name="path">The full path and name of the file that should be created.</param><param name="exportLanguageDefinition">Whether to export the project as a more concise language definition.</param></member><member name="M:ActiproSoftware.Text.LanguageSerialization.LanguageProjectSerializer.SaveToString(ActiproSoftware.Text.LanguageSerialization.LanguageProject,System.Boolean)"><summary>
+            Serializes a <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to a string in XML format.
+            </summary><param name="project">The <see cref="T:ActiproSoftware.Text.LanguageSerialization.LanguageProject" /> to serialize.</param><param name="exportLanguageDefinition">Whether to export the project as a more concise language definition.</param><returns>The serialized XML.</returns></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ProgrammaticLexer"><summary>
+            Represents serializable information about a programmatic lexer.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ProgrammaticLexer.LexicalStates"><summary>
+            Gets the collection of lexical states.
+            </summary><value>A collection containing the lexical states.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ProgrammaticLexer.TokenDeclarations"><summary>
+            Gets the collection of token declarations.
+            </summary><value>A collection containing the token declarations.</value></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ProgrammaticLexicalState"><summary>
+            Represents serializable information about a programmatic lexical state.
+            </summary></member><member name="M:ActiproSoftware.Text.LanguageSerialization.ProgrammaticLexicalState.Clone"><summary>
+            Creates a deep clone of the object.
+            </summary><returns>A deep clone of the object.</returns></member><member name="T:ActiproSoftware.Text.LanguageSerialization.ValidationError"><summary>
+            Represents a validation error.
+            </summary></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ValidationError.Category"><summary>
+            Gets the error category.
+            </summary><value>The error category.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ValidationError.Code"><summary>
+            Gets or sets the error code.
+            </summary><value>The error code.</value></member><member name="P:ActiproSoftware.Text.LanguageSerialization.ValidationError.Context"><summary>
+            Gets or sets the context object.
+            </summary><value>The context object.</value></member></members></doc>

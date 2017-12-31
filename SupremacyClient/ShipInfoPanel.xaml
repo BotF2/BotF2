@@ -1,0 +1,268 @@
+<!--
+  
+   ShipInfoPanel.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<UserControl x:Class="Supremacy.Client.ShipInfoPanel"
+             xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Supremacy.Client"
+             xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+             Width="260px">
+
+    <UserControl.Style>
+        <Style TargetType="{x:Type local:ShipInfoPanel}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:ShipInfoPanel}">
+
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+
+                            <StackPanel Orientation="Vertical"
+                                        CanHorizontallyScroll="False"
+                                        TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        TextBlock.FontSize="12pt">
+
+                                <Image Source="{Binding Path=ShipDesign, Converter={StaticResource TechObjectImageConverter}}"
+                                       Margin="0,0,0,14"
+                                       MaxWidth="200"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Top"
+                                       Stretch="UniformToFill"
+                                       StretchDirection="Both"/>
+
+                                <DockPanel Margin="0,0,0,14">
+                                    <TextBlock DockPanel.Dock="Left"
+                                             Foreground="{StaticResource HeaderTextBrush}"
+                                             Margin="0,0,7,0"
+                                             VerticalAlignment="Center"
+                                             Text="{s:StringResource SHIP_NAME}"/>
+                                    <TextBox x:Name="NameText"
+                                             DockPanel.Dock="Right"
+                                             VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="Name" Mode="TwoWay" Converter="{StaticResource StringResourceConverter}" UpdateSourceTrigger="Explicit" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </DockPanel>
+                                <DockPanel>
+
+                                    <TextBlock DockPanel.Dock="Left" 
+                                               Foreground="{StaticResource HeaderTextBrush}"  
+                                               Margin="0,0,7,0"
+                                               VerticalAlignment="Center"
+                                               Text="{s:StringResource SHIP_CLASS}"/>
+
+                                    <TextBox x:Name="ClassText"
+                                               DockPanel.Dock="Right"
+                                               VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="ClassName" Mode="OneWay" Converter="{StaticResource StringResourceConverter}" UpdateSourceTrigger="Explicit"/>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </DockPanel>
+
+                                <Border x:Name="Line1"
+                                        Height="20"
+                                        Background="Transparent" />
+
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left"
+                                                Foreground="{StaticResource HeaderTextBrush}"
+                                                Margin="0,0,7,0"
+                                                VerticalAlignment="Center"
+                                                Text="{s:StringResource SHIP_HULL_STRENGTH}"/>
+                                <TextBlock DockPanel.Dock="Right"
+                                                Foreground="{StaticResource DefaultTextBrush}"
+                                                TextAlignment="Right"
+                                                VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=HullStrength.CurrentValue}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=HullStrength.Maximum}"/>
+                            </TextBlock>
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left"
+                                                Foreground="{StaticResource HeaderTextBrush}"
+                                                Margin="0,0,7,0"
+                                                VerticalAlignment="Center"
+                                                Text="{s:StringResource SHIP_SHIELD_STRENGTH}"/>
+                                            <TextBlock DockPanel.Dock="Right"
+                                                Foreground="{StaticResource DefaultTextBrush}"
+                                                TextAlignment="Right"
+                                                VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Path=ShieldStrength.CurrentValue}"/>
+                                <TextBlock Text="/"/>
+                                <TextBlock Text="{Binding Path=ShieldStrength.Maximum}"/>
+                            </TextBlock>
+                            </DockPanel>
+
+                            <DockPanel x:Name="BeamWeaponPanel">
+                                <TextBlock DockPanel.Dock="Left"
+                                            Foreground="{StaticResource HeaderTextBrush}"
+                                            Margin="0,0,7,0"
+                                            VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=OrbitalDesign.PrimaryWeapon.Count}"/>
+                            <TextBlock Text="x"/>
+                            <TextBlock Text="{Binding Path=OrbitalDesign.PrimaryWeaponName}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{s:StringResource SHIP_BEAM_REFIRE}"/>
+                          </TextBlock>
+                                            <TextBlock DockPanel.Dock="Right"
+                                       Foreground="{StaticResource DefaultTextBrush}"
+                                       TextAlignment="Right"
+                                       VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=OrbitalDesign.PrimaryWeapon.Damage}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=OrbitalDesign.PrimaryWeapon.Refire}"/>
+                          </TextBlock>
+                        </DockPanel>
+
+                        <DockPanel x:Name="SecondaryWeaponPanel">
+                            <TextBlock DockPanel.Dock="Left"
+                            Foreground="{StaticResource HeaderTextBrush}"
+                            Margin="0,0,7,0"
+                            VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=OrbitalDesign.SecondaryWeapon.Count}"/>
+                            <TextBlock Text="x"/>
+                            <TextBlock Text="{Binding Path=OrbitalDesign.SecondaryWeaponName}"/>
+                          </TextBlock>
+                          <TextBlock DockPanel.Dock="Right"
+                                        Foreground="{StaticResource DefaultTextBrush}"
+                                        TextAlignment="Right"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=OrbitalDesign.SecondaryWeapon.Damage}"/>
+                          </TextBlock>
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left"
+                                        Foreground="{StaticResource HeaderTextBrush}"
+                                        Margin="0,0,7,0"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{s:StringResource SHIP_SPEED}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{s:StringResource SHIP_RANGE}"/>
+                          </TextBlock>
+                          <TextBlock DockPanel.Dock="Right"
+                                        Foreground="{StaticResource DefaultTextBrush}"
+                                        TextAlignment="Right"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=Speed}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=Range}"/>
+                          </TextBlock>
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left"
+                                        Foreground="{StaticResource HeaderTextBrush}"
+                                        Margin="0,0,7,0"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{s:StringResource SHIP_FUEL_RESERVES_CAPACITY}"/>
+                          </TextBlock>
+                                            <TextBlock DockPanel.Dock="Right"
+                                        Foreground="{StaticResource DefaultTextBrush}"
+                                        TextAlignment="Right"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=FuelReserve.CurrentValue}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=FuelReserve.Maximum}"/>
+                          </TextBlock>
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left"
+                                        Foreground="{StaticResource HeaderTextBrush}"
+                                        Margin="0,0,7,0"
+                                        VerticalAlignment="Center"
+                                        Text="{s:StringResource SHIP_SCAN_POWER_RANGE}"/>
+                                            <TextBlock DockPanel.Dock="Right"
+                                        Foreground="{StaticResource DefaultTextBrush}"
+                                        TextAlignment="Right"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=ShipDesign.ScanStrength}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=ShipDesign.SensorRange}"/>
+                          </TextBlock>
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left"
+                                            Foreground="{StaticResource HeaderTextBrush}"
+                                            Margin="0,0,7,0"
+                                            VerticalAlignment="Center">
+                            <TextBlock Text="{s:StringResource SHIP_SCIENCE_ABILITY}"/>
+                          </TextBlock>
+                                            <TextBlock DockPanel.Dock="Right"
+                                        Foreground="{StaticResource DefaultTextBrush}"
+                                        TextAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Path=ShipDesign.ScienceAbility}"/>
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left"
+                                        Foreground="{StaticResource HeaderTextBrush}"
+                                        Margin="0,0,7,0"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{s:StringResource SHIP_POPULATION_HEALTH}"/>
+                          </TextBlock>
+                                            <TextBlock DockPanel.Dock="Right"
+                                        Foreground="{StaticResource DefaultTextBrush}"
+                                        TextAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Path=ShipDesign.PopulationHealth}"/>
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Left"
+                                        Foreground="{StaticResource HeaderTextBrush}"
+                                        Margin="0,0,7,0"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{s:StringResource SHIP_CREW_SIZE_EXPERIENCE}"/>
+                          </TextBlock>
+                                            <TextBlock DockPanel.Dock="Right"
+                                        Foreground="{StaticResource DefaultTextBrush}"
+                                        TextAlignment="Right"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Path=ShipDesign.CrewSize}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=ExperienceRankString}"/>
+                            <TextBlock Text="{Binding Path=ExperienceLevel}"/>
+                          </TextBlock>
+                        </DockPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=OrbitalDesign.SecondaryWeapon.Count}"
+                           Value="0">
+                                <Setter TargetName="SecondaryWeaponPanel"
+                                            Property="FrameworkElement.Visibility"
+                                            Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=OrbitalDesign.PrimaryWeapon.Count}"
+                                       Value="0">
+                               <Setter TargetName="BeamWeaponPanel"
+                                    Property="FrameworkElement.Visibility"
+                                    Value="Collapsed"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Style>
+
+</UserControl>

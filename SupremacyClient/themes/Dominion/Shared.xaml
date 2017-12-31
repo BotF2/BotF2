@@ -1,0 +1,2189 @@
+<!--
+  
+   Shared.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--Usage: {StaticResource HeaderTextBrush}-->
+    <SolidColorBrush x:Key="BorderBrush"
+            Color="Tan" />
+    
+    <SolidColorBrush x:Key="HeaderTextBrush"
+            Color="#ff7c00a7"/>
+    <SolidColorBrush x:Key="LCARS_HeaderBrush"
+            Color="#ff7c00a7"/>
+    <SolidColorBrush x:Key="DefaultTextBrush"
+            Color="#ff9b00ae"/>
+    <SolidColorBrush x:Key="DisabledTextBrush"
+            Color="#FF4f0485"/>
+    <SolidColorBrush x:Key="SelectionBrush"
+            Color="#7f87DB7A" />
+
+  <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Romulan Header Text</FontFamily>
+  <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+  <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Romulan Header Text</FontFamily>
+
+  <system:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</system:Double>
+  <system:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</system:Double>
+  <system:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">14</system:Double>
+
+  <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Bold</FontWeight>
+  <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
+  <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Bold</FontWeight>
+
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
+                   Color="#ff000000" />
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"
+                   Color="#ff77DC60" />
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"
+                   Color="#ff36E50E" />
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"
+                   Color="White" />
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"
+                   Color="#ff41A52A" />
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"
+                   Color="#7f87DB7A" />
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"
+                   Color="#7f666666" />
+  <SolidColorBrush x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"
+                   Color="Crimson" />
+  <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                   Color="#7f87DB7A" />
+
+    <!--
+    
+    ###### BUTTONS ######
+    
+    - GameButton   // e.g. Economy
+    - LCARS_BorderButtonStyle
+    - LCARS_BorderToggleButtonStyle"    // e.g. CHAT Button in GalaxyMapView
+    - LCARS_SimpleButtonStyle          // e.g. REDEPLOY-Button
+    - LCARS_SimpleToggleButtonStyle
+    
+    
+    -->
+
+    <Style x:Key="LCARS_SimpleButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="16pt" />
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Padding"
+            Value="16,2,16,2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="0"
+                    Margin="0"
+                    Padding="{TemplateBinding Padding}"
+                    Background="{StaticResource LCARS_Dom5TanGradient_Bottom_Top}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Right_Left}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LCARS_SimpleToggleButtonStyle"
+         TargetType="{x:Type ToggleButton}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+            Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+        <Setter Property="Padding"
+            Value="16,2,16,2" />
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="0"
+                    Margin="0"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource LCARS_BlueGradient_Left_Right}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                                VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_PinkGradient_Right_Left}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="ToggleButton.Click">
+                <!--<EventTrigger.Actions>
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+        </EventTrigger.Actions>-->
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="LCARS_SmallButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="16pt" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="ContentBorder"
+                  CornerRadius="7"
+                  Padding="7,2,7,2"
+                  Background="{StaticResource LCARS_BlueGradient_Top_Bottom}">
+                        <ContentPresenter VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              RecognizesAccessKey="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LCARS_BorderButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="16pt" />
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Background"
+            Value="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="0"
+                    Margin="0"
+                    Padding="7,2,7,2"
+                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--e.g. CHAT Button in GalaxyMapView-->
+    <Style x:Key="LCARS_BorderToggleButtonStyle"
+         TargetType="{x:Type ToggleButton}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="FontSize"
+            Value="16pt" />
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Background"
+            Value="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="0"
+                    Margin="0"
+                    Padding="7,2,7,2"
+                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--LCARS_StandardButtonStyle-->
+    <Style x:Key="LCARS_StandardButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="18pt" />
+        <!--<Setter Property="FontWeight"
+            Value="Normal" />-->
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Padding"
+            Value="16,0,16,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <!--<ColumnDefinition Width="Auto" />-->
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0"
+                    Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    CornerRadius="14,0,0,14"
+                    Width="21" />
+                        <!--<Path Grid.Column="0"
+                    Height="28"
+                    Width="14"
+                    Stretch="Fill" 
+                    Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    Data="F1 M 16,32C 7.16345,32 3.8147e-006,24.8366 3.8147e-006,16C 3.8147e-006,7.16344 7.16345,5.72205e-006 16,5.72205e-006L 16,16L 16,32 Z"/>-->
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Margin="3,0,3,0"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource LCARS_BlueGradient_Left_Right}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <!--<Rectangle Grid.Column="2"
+                       Stretch="Fill"
+                       Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                       Margin="0,0,3,0"
+                       Width="14" />-->
+                        <Border Grid.Column="3"
+                    Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    CornerRadius="0,14,14,0"
+                    Width="21" />
+                        <!--<Path Grid.Column="3"
+                    Height="28"
+                    Width="14" 
+                    Stretch="Fill"
+                    Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" 
+                    Data="F1 M 9.79717e-016,5.72205e-006C 8.83655,5.72205e-006 16,7.16344 16,16C 16,24.8366 8.83655,32 9.79717e-016,32L 0,16L 9.79717e-016,5.72205e-006 Z"/>-->
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Right_Left}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StandardButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+
+    <Style TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+
+
+
+    <!--Production and more - complete Tab-->
+    <Style TargetType="{x:Type TabControl}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+        <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+        <Setter Property="KeyboardNavigation.IsTabStop"
+            Value="False" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid Grid.IsSharedSizeScope="False"
+                SnapsToDevicePixels="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Path Grid.Column="0"
+                  Grid.Row="0"
+                  SnapsToDevicePixels="True"
+                  Data="{StaticResource LCARS_Corner_TopLeft_Tall}"
+                  Fill="{StaticResource LCARS_Dom3Gradient_Top_Bottom}" />
+                        <Path Grid.Column="2"
+                  Grid.Row="0"
+                  SnapsToDevicePixels="True"
+                  Data="{StaticResource LCARS_Corner_TopRight_Tall}"
+                  Fill="{StaticResource LCARS_Dom3Gradient_Top_Bottom}" />
+                        <Path Grid.Column="0"
+                  Grid.Row="2"
+                  SnapsToDevicePixels="True"
+                  Data="{StaticResource LCARS_Corner_BottomLeft_Tall}"
+                  Fill="{StaticResource LCARS_Dom3Gradient_Top_Bottom}" />
+                        <Path Grid.Column="2"
+                  Grid.Row="2"
+                  SnapsToDevicePixels="True"
+                  Data="{StaticResource LCARS_Corner_BottomRight_Tall}"
+                  Fill="{StaticResource LCARS_Dom3Gradient_Top_Bottom}" />
+                        <Rectangle x:Name="LeftEdge"
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       Width="8"
+                       Margin="0,3,0,3"
+                       HorizontalAlignment="Left"
+                       Fill="{StaticResource LCARS_Dom5TanGradient_Left_Right}" />
+                        <Rectangle x:Name="RightEdge"
+                       Grid.Column="2"
+                       Grid.Row="1"
+                       Width="8"
+                       Margin="0,3,0,3"
+                       HorizontalAlignment="Right"
+                       Fill="{StaticResource LCARS_Dom5TanGradient_Left_Right}" />
+                        <Rectangle x:Name="BottomEdge"
+                       Grid.Column="1"
+                       Grid.Row="2"
+                       Height="28"
+                       Margin="3,0,3,0"
+                       VerticalAlignment="Bottom"
+                       Fill="{StaticResource LCARS_Dom2Gradient_Bottom_Top}" 
+                        />
+
+                        <Grid Grid.Column="1"
+                  Grid.Row="0"
+                  Height="28"
+                  VerticalAlignment="Top"
+                  SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TabPanel x:Name="HeaderPanel"
+                        Grid.Column="0"
+                        Margin="0"
+                        IsItemsHost="True"
+                        Panel.ZIndex="1"
+                        KeyboardNavigation.TabIndex="1"
+                        Background="Transparent"
+                        SnapsToDevicePixels="True" />
+                            <Rectangle Grid.Column="1"
+                         Margin="3,0,3,0"
+                         Fill="{StaticResource LCARS_Dom2Gradient_Right_Left}" />
+                        </Grid>
+
+                        <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Column="1"
+                                          Grid.Row="1"
+                              ContentSource="SelectedContent" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--TabItemStyle (Production and more, but only Header line)-->
+    <Style TargetType="{x:Type TabItem}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Height"
+            Value="28" />
+        <Setter Property="Margin"
+            Value="2,0,0,0" />
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="KeyboardNavigation.IsTabStop"
+            Value="False" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid x:Name="TabItemContainer" Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Margin}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="14" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Grid.Column="0"
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" />
+                        <scc:PixelSnappingBorder x:Name="Border"
+                                     Grid.Column="1"
+                                     Margin="3,0,0,0"
+                                     Padding="7,0,7,0"
+                                     SnapsToDevicePixels="True"
+                                     Background="{StaticResource LCARS_Dom1Gradient_Right_Left}">
+                            <ContentPresenter ContentSource="Header"
+                                VerticalAlignment="Center"
+                                SnapsToDevicePixels="True" />
+                        </scc:PixelSnappingBorder>
+                        <!--Column 2 is new-->
+                        <!--
+                        <Rectangle Grid.Column="2"
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+              -->
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="Border"
+                      Property="Background"
+
+                      Value="{StaticResource LCARS_Dom5TanGradient_Left_Right}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected"
+                     Value="True">
+                            <!--<Setter Property="Panel.ZIndex"
+                      Value="100" />-->
+                            <Setter TargetName="Border"
+                      Property="Background"
+                      Value="{StaticResource LCARS_Dom3Gradient_Left_Right}" />
+                        </Trigger>
+                        <!--<Trigger Property="IsMouseDown"
+                     Value="True">
+              <Setter TargetName="Border"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Right_Left}"/>
+            </Trigger>-->
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="Border"
+                      Property="Opacity"
+                      Value="0.25" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--End of TabStyle-->
+
+
+    <!--Dom1 Gradient (previous Orange now )-->
+
+    <LinearGradientBrush x:Key="LCARS_Dom1Gradient_TopLeft_BottomRight"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="1,1">
+        <GradientStop Color="#FF9b00ae"
+                  Offset="0" />
+        <GradientStop Color="#ff7c00a7"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom1Gradient_BottomLeft_TopRight"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="1,1"
+                       EndPoint="0,0">
+        <GradientStop Color="#FF9b00ae"
+                  Offset="0" />
+        <GradientStop Color="#ff7c00a7"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom1Gradient_Top_Bottom"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+        <GradientStop Color="#FF9b00ae"
+                  Offset="0" />
+        <GradientStop Color="#ff7c00a7"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom1Gradient_Bottom_Top"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,1"
+                       EndPoint="0,0">
+        <GradientStop Color="#FF9b00ae"
+                  Offset="0" />
+        <GradientStop Color="#ff7c00a7"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom1Gradient_Left_Right"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="1,0">
+        <GradientStop Color="#FF9b00ae"
+                  Offset="0" />
+        <GradientStop Color="#ff7c00a7"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom1Gradient_Right_Left"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="1,0">
+        <GradientStop Color="#FF9b00ae"
+                  Offset="1" />
+        <GradientStop Color="#ff7c00a7"
+                  Offset="0" />
+    </LinearGradientBrush>
+    
+    
+
+
+    <!--Dom3 Gradient 'Green' (previously Purple) -->
+    <!--<LinearGradientBrush x:Key="LCARS_Dom3Gradient_TopLeft_BottomRight"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="1,1">
+        <GradientStop Color="#3dac4a"
+                  Offset="0" />
+        <GradientStop Color="#b3ffbd"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom3Gradient_BottomLeft_TopRight"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="1,1"
+                       EndPoint="0,0">
+        <GradientStop Color="#3dac4a"
+                  Offset="0" />
+        <GradientStop Color="#b3ffbd"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom3Gradient_Top_Bottom"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+        <GradientStop Color="#3dac4a"
+                  Offset="0" />
+        <GradientStop Color="#b3ffbd"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom3Gradient_Bottom_Top"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,1"
+                       EndPoint="0,0">
+        <GradientStop Color="#3dac4a"
+                  Offset="0" />
+        <GradientStop Color="#b3ffbd"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom3Gradient_Left_Right"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="1,0">
+        <GradientStop Color="#3dac4a"
+                  Offset="0" />
+        <GradientStop Color="#b3ffbd"
+                  Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LCARS_Dom3Gradient_Right_Left"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="1,0">
+        <GradientStop Color="#3dac4a"
+                  Offset="1" />
+        <GradientStop Color="#b3ffbd"
+                  Offset="0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="DOM_GreenGradient_Top_Bottom"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+    <GradientStop Color="#FF09935f"
+                  Offset="0" />
+    <GradientStop Color="#FF075e2b"
+                  Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="DOM_GreenGradient_Bottom_Top"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+    <GradientStop Color="#FF075e2b"
+                  Offset="0" />
+    <GradientStop Color="#FF09935f"
+                  Offset="1" />
+  </LinearGradientBrush>-->
+    
+<!--Was Rom Green but now Dom Purpleish-->
+    
+  <LinearGradientBrush x:Key="DOM_HoverGreenGradient_Top_Bottom"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+        <GradientStop Color="#FF72334e"
+                  Offset="0" />
+        <GradientStop Color="#FFc97397"
+                  Offset="1" />
+  </LinearGradientBrush>
+
+
+  <!--<LinearGradientBrush x:Key="DOM_PurpleGradient_Top_Bottom"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+    <GradientStop Color="#FF835FBA"
+                  Offset="0" />
+    <GradientStop Color="#FF531093"
+                  Offset="1" />
+  </LinearGradientBrush>-->
+    
+   
+
+    <!--<Style x:Key="LCARS_StandardButtonStyle"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}"
+         TargetType="{x:Type Button}">
+    <Setter Property="ClipToBounds"
+            Value="False" />
+    <Setter Property="Focusable"
+            Value="False" />
+    <Setter Property="MinHeight"
+            Value="28" />
+    <Setter Property="Padding"
+            Value="16,0,16,0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Button}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource LCARS_PurpleGradient_Top_Bottom}">
+              <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+            </Border>
+            <Path x:Name="LeftEdge"
+                  Grid.Column="0"
+                  Margin="0,0,3,0"
+                  Fill="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                  Data="M 0,18 L 8,28 28,28 28,0 8,0 0,10 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+            <Path x:Name="RightEdge"
+                  Grid.Column="2"
+                  Margin="3,0,0,0"
+                  Fill="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                  Data="M 0,0 L 20,0 28,10 28,18 20,28 0,28 Z"
+                  VerticalAlignment="Center"
+                  Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
+                  Stretch="Fill" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+              <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+            </Trigger>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+              <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource DOM_HoverGreenGradient_Top_Bottom}" />
+              <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource DOM_HoverGreenGradient_Top_Bottom}" />
+              <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource DOM_HoverGreenGradient_Top_Bottom}" />
+            </Trigger>
+            <Trigger Property="IsPressed"
+                     Value="True">
+              <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource DOM_GreenGradient_Bottom_Top}" />
+              <Setter TargetName="LeftEdge"
+                      Property="Fill"
+                      Value="{StaticResource DOM_GreenGradient_Bottom_Top}" />
+              <Setter TargetName="RightEdge"
+                      Property="Fill"
+                      Value="{StaticResource DOM_GreenGradient_Bottom_Top}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="StandardButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+
+  <Style TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />-->
+
+  <LinearGradientBrush x:Key="SeparatorBackgroundBrush"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+   <GradientStop Color="#ff9b00ae"
+                  Offset="0" />
+   <GradientStop Color="#ff7c00a7"
+                  Offset="1" />
+  </LinearGradientBrush>
+  
+  <ImageBrush x:Key="FleetSelectionBorderBrush"
+              ImageSource="vfs:///Resources/UI/Dominion/GalaxyScreen/FleetSelectionBorder.png" />
+
+    <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
+              ImageSource="vfs:///Resources/UI/Dominion/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
+
+    <!--<ImageBrush x:Key="LeftRepeatButton1"
+              ImageSource="vfs:///Resources/UI/Dominion/Shared/LeftRepeatButton1.png" />
+
+  <ImageBrush x:Key="LeftRepeatButton2"
+              ImageSource="vfs:///Resources/UI/Dominion/Shared/LeftRepeatButton2.png" />
+    
+  <ImageBrush x:Key="RightRepeatButton1"
+              ImageSource="vfs:///Resources/UI/Dominion/Shared/RightRepeatButton1.png" />
+
+  <ImageBrush x:Key="RightRepeatButton2"
+              ImageSource="vfs:///Resources/UI/Dominion/Shared/RightRepeatButton2.png" />-->
+
+  <Style x:Key="LockToggleButtonStyle"
+         TargetType="{x:Type ToggleButton}">
+    <Setter Property="IsTabStop"
+            Value="False"/>
+    <Setter Property="OverridesDefaultStyle"
+            Value="True"/>
+    <Setter Property="SnapsToDevicePixels"
+            Value="True"/>
+    <Setter Property="Width"
+            Value="21"/>
+    <Setter Property="Height"
+            Value="21"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ToggleButton}">
+          <Image x:Name="LockImage"
+                 Source="vfs:///Resources/UI/Dominion/Shared/Unlocked.png"/>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked"
+                     Value="True">
+              <Setter TargetName="LockImage"
+                      Property="Source"
+                      Value="vfs:///Resources/UI/Dominion/Shared/Locked.png"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <!--<EventTrigger RoutedEvent="ToggleButton.Click">
+        <EventTrigger.Actions>
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Dominion/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+        </EventTrigger.Actions>
+      </EventTrigger>-->
+    </Style.Triggers>
+  </Style>
+
+    <Style TargetType="{x:Type s:UnitActivationBar}">
+        <Style.Resources>
+          <!--<ControlTemplate x:Key="LeftRepeatButton1Template"-->
+            <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
+                           TargetType="{x:Type RepeatButton}">
+                <Border x:Name="LeftButton"
+                     Background="{StaticResource LCARS_Dom3Gradient_TopLeft_BottomRight}"
+                     CornerRadius="5,5,7,48" />
+                <ControlTemplate.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver"
+                             Value="True" />
+                            <Condition Property="IsPressed"
+                             Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter TargetName="LeftButton"
+                            Property="Background"
+                            Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+                    </MultiTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--<ControlTemplate x:Key="RightRepeatButtonTemplate"
+                           TargetType="{x:Type RepeatButton}">
+            <Border x:Name="RightButton"
+                    Background="{StaticResource RightRepeatButton1 }" />
+                <ControlTemplate.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver"
+                             Value="True" />
+                            <Condition Property="IsPressed"
+                             Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter TargetName="RightButton"
+                            Property="Background"
+                            Value="{DynamicResource RightRepeatButton2 }" />
+                    </MultiTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>-->
+            <ControlTemplate x:Key="RightRepeatButtonTemplate"
+                           TargetType="{x:Type RepeatButton}">
+            <Border x:Name="RightButton"
+                    Background="{StaticResource LCARS_Dom3Gradient_TopLeft_BottomRight}"
+                    CornerRadius="14,48,5,5" />
+            <ControlTemplate.Triggers>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsMouseOver"
+                             Value="True" />
+                  <Condition Property="IsPressed"
+                             Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="RightButton"
+                        Property="Background"
+                        Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+              </MultiTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Style.Resources>
+    <Setter Property="UnitBrush"
+            Value="{StaticResource LCARS_Dom2Gradient_Top_Bottom}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type s:UnitActivationBar}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <RepeatButton x:Name="PART_DecrementButton"
+                          Command="{x:Static s:UnitActivationBar.DecrementValueCommand}"
+                          Interval="50"
+                          Delay="300"
+                          Content="&lt;"
+                          Grid.Column="0"
+                          Width="24"
+                          Template="{StaticResource LeftRepeatButtonTemplate}" />
+            <Border x:Name="PART_ContentArea"
+                    Grid.Column="1"
+                    Background="#00000000"
+                    IsHitTestVisible="True" />
+            <RepeatButton x:Name="PART_IncrementButton"
+                          Command="{x:Static s:UnitActivationBar.IncrementValueCommand}"
+                          Interval="50"
+                          Delay="300"
+                          Content="&gt;"
+                          Grid.Column="2"
+                          Width="24"
+                          Template="{StaticResource RightRepeatButtonTemplate}" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+              <Setter TargetName="PART_DecrementButton"
+                      Property="Visibility"
+                      Value="Collapsed" />
+              <Setter TargetName="PART_IncrementButton"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!--
+    XCEED DATA GRID 
+  -->
+
+  <Style TargetType="{x:Type xcdg:GroupLevelIndicatorPane}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+  <Style TargetType="{x:Type xcdg:ColumnManagerCell}">
+    <Setter Property="HorizontalAlignment"
+            Value="Left" />
+    <Setter Property="VerticalAlignment"
+            Value="Center" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Left" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+    <Setter Property="Background"
+            Value="Transparent" />
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Padding"
+            Value="6,0,6,0" />
+    <Setter Property="Margin"
+            Value="0,0,0,0" />
+    <Setter Property="Height"
+            Value="28" />
+    <Setter Property="Foreground"
+            Value="{StaticResource HeaderTextBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:ColumnManagerCell}">
+          <Grid SnapsToDevicePixels="true"
+                Height="28">
+            <Border Name="HeaderBorder">
+              <DockPanel LastChildFill="True">
+                <Border Padding="{TemplateBinding Padding}">
+                  <ContentPresenter x:Name="HeaderContent"
+                                    DockPanel.Dock="Left"
+                                    Content="{xcdg:CellContentBinding}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                    Margin="0,0,0,1"
+                                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    TextBlock.Foreground="{StaticResource HeaderTextBrush}"
+                                    TextBlock.FontSize="18pt"
+                                    RecognizesAccessKey="True"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch" />
+                </Border>
+                <Border x:Name="BackgroundBorder"
+                        Background="{StaticResource LCARS_PinkTextBrush}"
+                        MinWidth="14"
+                        HorizontalAlignment="Stretch" />
+              </DockPanel>
+            </Border>
+            <Canvas>
+              <Thumb x:Name="PART_ColumnResizerThumb"
+                     Background="Transparent"
+                     Foreground="Transparent"
+                     BorderBrush="Transparent"
+                     Style="{StaticResource GridViewColumnHeaderGripper}" />
+            </Canvas>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ParentColumn.HasFixedWidth}"
+                         Value="True">
+              <Setter TargetName="PART_ColumnResizerThumb"
+                      Property="IsEnabled"
+                      Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ParentColumn.Visible}"
+                         Value="False">
+              <Setter Property="Visibility"
+                      Value="Collapsed" />
+            </DataTrigger>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+              <Setter TargetName="BackgroundBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+            </Trigger>
+            <Trigger Property="IsPressed"
+                     Value="True">
+              <Setter TargetName="BackgroundBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:ColumnManagerRow}">
+    <Setter Property="HorizontalAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalAlignment"
+            Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+    <Setter Property="Background"
+            Value="Transparent" />
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Padding"
+            Value="0" />
+    <Setter Property="Margin"
+            Value="0,0,0,4" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="xcdg:ColumnManagerRow">
+          <ControlTemplate.Resources>
+            <xcdg:ThicknessConverter x:Key="thicknessConverter"
+                                     InverseValue="True" />
+          </ControlTemplate.Resources>
+          <!-- This Grid is used to layout the GroupLevelIndicatorPane placeholder and the CellsHost panel. -->
+          <Grid x:Name="rootGrid">
+
+            <!-- The border responsible for the visual outline of the row (gridlines and background)
+                       spans the GroupLevelIndicatorPane and CellsHost Panel. Those 2 elements are not children of
+                       the Border because we don't want the border to be displayed in the GroupLevelIndicatorPane. -->
+            <Border x:Name="rootBorder"
+                    Padding="{TemplateBinding Padding}" />
+
+            <Decorator x:Name="indentationDecorator">
+
+              <!-- The PART_CellsHost part designates the Panel to which this Row's Cells should be added.-->
+              <DockPanel LastChildFill="True">
+                <xcdg:FixedCellPanel x:Name="PART_CellsHost"
+                                     DockPanel.Dock="Left"
+                                     Margin="{TemplateBinding BorderThickness}" />
+                <Rectangle Fill="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" />
+              </DockPanel>
+            </Decorator>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(xcdg:DataGridControl.ParentDataGridControl).ViewBindingContext.FixedColumnCount}"
+                           Value="0" />
+                <Condition Value="True">
+                  <Condition.Binding>
+                    <Binding RelativeSource="{RelativeSource Self}"
+                             Path="(xcdg:DataGridControl.ParentDataGridControl).GroupLevelDescriptions.Count">
+                      <Binding.Converter>
+                        <xcdg:GreaterThanZeroConverter />
+                      </Binding.Converter>
+                    </Binding>
+                  </Condition.Binding>
+                </Condition>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(xcdg:DataGridControl.ParentDataGridControl).ViewBindingContext.ShowFixedColumnSplitter}"
+                           Value="True" />
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="indentationDecorator"
+                      Property="Margin"
+                      Value="{Binding ElementName=PART_CellsHost, Path=SplitterWidth, Converter={StaticResource thicknessConverter}, ConverterParameter='Left'}">
+              </Setter>
+            </MultiDataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type xcdg:DataCell}">
+    <Setter Property="HorizontalAlignment"
+            Value="Left" />
+    <Setter Property="VerticalAlignment"
+            Value="Center" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Left" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+    <!--<Setter Property="Background"
+                          Value="Transparent" />
+                  <Setter Property="Foreground"
+                          Value="{StaticResource DefaultTextBrush}" />
+                  <Setter Property="FontFamily"
+                          Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+                  <Setter Property="FontSize"
+                          Value="12pt" />
+                  <Setter Property="BorderBrush"
+                          Value="{x:Null}" />
+                  <Setter Property="BorderThickness"
+                          Value="0" />-->
+    <Setter Property="Padding"
+            Value="6,3,6,3" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:DataCell}">
+          <Border Padding="{TemplateBinding Padding}">
+            <ContentPresenter />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:DataRow}">
+    <Setter Property="HorizontalAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalAlignment"
+            Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Stretch" />
+    <Setter Property="Background"
+            Value="Transparent" />
+    <!--<Setter Property="Foreground"
+                          Value="{StaticResource DefaultTextBrush}" />
+                  <Setter Property="FontFamily"
+                          Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+                  <Setter Property="FontSize"
+                          Value="12pt" />-->
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:DataRow}">
+          <Grid x:Name="PART_RowFocusRoot">
+            <Border x:Name="RowBorder"
+                    Background="Transparent">
+              <!--<DockPanel x:Name="PART_CellsHost"
+                                       LastChildFill="True" />-->
+              <xcdg:FixedCellPanel x:Name="PART_CellsHost"
+                                   SplitterStyle="{TemplateBinding xcdg:TableView.FixedColumnSplitterStyle}"
+                                   Margin="{TemplateBinding BorderThickness}" />
+            </Border>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected"
+                     Value="True">
+              <Setter TargetName="RowBorder"
+                      Property="Background"
+                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:TableViewScrollViewer}">
+    <Setter Property="VerticalScrollBarVisibility"
+            Value="Auto" />
+    <Setter Property="HorizontalScrollBarVisibility"
+            Value="Auto" />
+    <Setter Property="CanContentScroll"
+            Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:TableViewScrollViewer}">
+          <DockPanel LastChildFill="True">
+            <xcdg:SynchronizedScrollViewer x:Name="FixedHeadersHostScrollViewer"
+                                           DockPanel.Dock="Top"
+                                           xcdg:TableViewScrollViewer.SynchronizedScrollViewerPosition="Top"
+                                           Focusable="False"
+                                           Height="28">
+              <StackPanel xcdg:DataGridControl.IsFixedHeadersHost="True"
+                          Orientation="Vertical"
+                          HorizontalAlignment="Stretch"
+                          Height="28" />
+              <!--<DockPanel LastChildFill="True"
+                                       xcdg:DataGridControl.IsFixedHeadersHost="True"
+                                       HorizontalAlignment="Stretch"
+                                       Width="{TemplateBinding ScrollViewer.ViewportWidth}"
+                                       Height="28" />-->
+            </xcdg:SynchronizedScrollViewer>
+            <ScrollBar x:Name="PART_VerticalScrollBar"
+                       DockPanel.Dock="Right"
+                       Orientation="Vertical"
+                       Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"
+                       Value="{TemplateBinding ScrollViewer.VerticalOffset}"
+                       ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}"
+                       Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}"
+                       Style="{StaticResource {x:Type ScrollBar}}" />
+            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                       DockPanel.Dock="Bottom"
+                       Orientation="Horizontal"
+                       Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}"
+                       Value="{TemplateBinding ScrollViewer.HorizontalOffset}"
+                       ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}"
+                       Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"
+                       Style="{StaticResource {x:Type ScrollBar}}" />
+            <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
+          </DockPanel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:DataGridControl}">
+    <Setter Property="Background"
+            Value="Transparent" />
+    <Setter Property="Foreground"
+            Value="{StaticResource DefaultTextBrush}" />
+    <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+    <Setter Property="FontSize"
+            Value="12pt" />
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:DataGridControl}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <AdornerDecorator>
+              <xcdg:TableViewScrollViewer
+                  x:Name="PART_ScrollViewer"
+                  ShowRowSelectorPane="False"
+                  xcdg:GroupLevelIndicatorPane.ShowIndicators="False">
+                <ItemsPresenter />
+              </xcdg:TableViewScrollViewer>
+            </AdornerDecorator>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:GroupByControl}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+  <Style TargetType="{x:Type xcdg:HierarchicalGroupByControl}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+  <Style TargetType="{x:Type xcdg:GroupHeaderControl}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+
+  <DrawingImage x:Key="Scrap_Indicator_Glyph">
+    <DrawingImage.Drawing>
+      <DrawingGroup>
+        <DrawingGroup.Children>
+          <GeometryDrawing Brush="#FF990000"
+                           Geometry="F1 M 85.0467,338.729L 176.343,247.433L 85.0467,156.139C 77.388,148.479 77.388,136.06 85.0467,128.401L 130.937,82.5107C 138.596,74.852 151.016,74.852 158.675,82.5107L 249.971,173.807L 341.264,82.5107C 348.924,74.852 361.343,74.852 369.003,82.5107L 414.892,128.401C 422.551,136.06 422.551,148.479 414.892,156.139L 323.596,247.433L 414.892,338.729C 422.551,346.388 422.551,358.805 414.892,366.467L 369.003,412.356C 361.343,420.016 348.924,420.016 341.264,412.356L 249.969,321.06L 158.675,412.356C 151.016,420.016 138.596,420.016 130.937,412.356L 85.0467,366.467C 77.388,358.805 77.388,346.388 85.0467,338.729 Z " />
+          <GeometryDrawing Geometry="F1 M 88.4,363.113C 82.5907,357.305 82.5907,347.888 88.4,342.081L 183.047,247.433L 88.4,152.785C 82.5907,146.977 82.5907,137.561 88.4,131.752L 134.289,85.8626C 140.097,80.056 149.515,80.056 155.323,85.8626L 249.971,180.511L 344.617,85.8626C 350.424,80.056 359.841,80.056 365.649,85.8626L 411.539,131.752C 417.348,137.561 417.348,146.977 411.539,152.785L 316.892,247.433L 411.539,342.081C 417.348,347.888 417.348,357.305 411.539,363.113L 365.649,409.003C 359.841,414.811 350.424,414.811 344.617,409.003L 249.969,314.356L 155.323,409.003C 149.515,414.811 140.097,414.811 134.289,409.003L 88.4,363.113 Z ">
+            <GeometryDrawing.Brush>
+              <LinearGradientBrush StartPoint="0.473001,1.01526"
+                                   EndPoint="0.527008,-0.0152552">
+                <LinearGradientBrush.GradientStops>
+                  <GradientStop Color="#FF990000"
+                                Offset="0" />
+                  <GradientStop Color="#FFFF0000"
+                                Offset="0.572433" />
+                  <GradientStop Color="#FFEB7B7B"
+                                Offset="0.990662" />
+                  <GradientStop Color="#FFEB7B7B"
+                                Offset="1" />
+                </LinearGradientBrush.GradientStops>
+              </LinearGradientBrush>
+            </GeometryDrawing.Brush>
+          </GeometryDrawing>
+          <GeometryDrawing Geometry="F1 M 354.664,209.335L 315.38,248.617L 410.028,343.265C 415.836,349.073 415.836,358.489 410.028,364.299L 364.139,410.188C 358.331,415.996 348.915,415.996 343.105,410.188L 248.459,315.54L 153.809,410.188C 148.003,415.996 138.585,415.996 132.777,410.188L 86.888,364.299C 81.0813,358.489 81.08,349.073 86.888,343.265L 181.535,248.617L 169.772,236.772C 225.24,207.999 286.872,198.853 354.664,209.335 Z ">
+            <GeometryDrawing.Brush>
+              <LinearGradientBrush StartPoint="0.652679,1.1282"
+                                   EndPoint="1.90602,1.1282">
+                <LinearGradientBrush.RelativeTransform>
+                  <TransformGroup>
+                    <SkewTransform CenterX="0.652679"
+                                   CenterY="1.1282"
+                                   AngleX="21.0954"
+                                   AngleY="0" />
+                    <RotateTransform CenterX="0.652679"
+                                     CenterY="1.1282"
+                                     Angle="252.176" />
+                  </TransformGroup>
+                </LinearGradientBrush.RelativeTransform>
+                <LinearGradientBrush.GradientStops>
+                  <GradientStop Color="#FF990000"
+                                Offset="0" />
+                  <GradientStop Color="#FFFF0000"
+                                Offset="0.536377" />
+                  <GradientStop Color="#FFEB0202"
+                                Offset="0.89621" />
+                  <GradientStop Color="#FFEB0202"
+                                Offset="1" />
+                </LinearGradientBrush.GradientStops>
+              </LinearGradientBrush>
+            </GeometryDrawing.Brush>
+          </GeometryDrawing>
+        </DrawingGroup.Children>
+      </DrawingGroup>
+    </DrawingImage.Drawing>
+  </DrawingImage>
+    
+   <!--Expander Menus e.g. Empire Info, Requisition--> 
+    <Style TargetType="{x:Type Expander}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background"
+            Value="Transparent" />
+        <Setter Property="KeyboardNavigation.IsTabStop"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="ExpandDirection"
+            Value="Down" />
+        <Setter Property="Foreground"
+            Value="{StaticResource LCARS_PinkTextBrush}" />
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="18pt" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <DockPanel>
+                        <ToggleButton DockPanel.Dock="Top"
+                          Focusable="False"
+                          Cursor="Hand"
+                          IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent, AncestorType={x:Null}}}">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                            <Grid x:Name="HeaderSite"
+                    Grid.IsSharedSizeScope="False">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="28" />
+                                    <RowDefinition MaxHeight="14" />
+                                </Grid.RowDefinitions>
+                <Rectangle x:Name="TopLeftExpanded"
+                           Grid.Column="0"
+                           Grid.Row="0"
+                           Grid.RowSpan="2"
+                           Width="21"
+                           Height="42"
+                           Visibility="Collapsed">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing 
+                                                Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,38 8,39 15,39 16,38 16, 26 21,26 21,28 18,28 17,42 0,42 Z" />
+                                                    <GeometryDrawing
+                                                        Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                Geometry="F1 M 12,19 L 9,19 9,5 12,5 12,19 z" />
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                <Path x:Name="TopLeftCollapsed"
+                      Grid.Column="0"
+                      Grid.Row="0"
+                      Width="21"
+                      Height="28"
+                      Stretch="Fill"
+                      Fill="{StaticResource LCARS_Dom2Gradient_Left_Right}"                    
+                      Data="F1 M 28,0 L 8,0 0,7 0,19 0,29 8,37 28,37 28,0 Z  " />
+               <ContentControl Grid.Column="1"
+                                Grid.Row="0"
+                               VerticalAlignment="Top"
+                                Margin="7,0,0,0"
+                                Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                                FontSize="18pt">
+                                    <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header}" />
+                                </ContentControl>
+                <Rectangle Grid.Column="2"
+                           Grid.Row="0"
+                           Height="28"
+                           VerticalAlignment="Top"
+                           Fill="{StaticResource LCARS_Dom2Gradient_Top_Bottom}"
+                           Margin="7,0,3,0" />
+                <Rectangle Grid.Column="3"
+                           Grid.Row="0"
+                           Width="14"
+                           Height="28"
+                           VerticalAlignment="Top"
+                           Fill="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                           Margin="0,0,3,0" />
+                <Rectangle Grid.Column="4"
+                           Grid.Row="0"
+                           Width="21"
+                           Height="28"
+                           VerticalAlignment="Top"
+                           Margin="0,0,0,0">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,24 8,24 15,25 16,24 16, 12 21,12 21,14 18,14 17,28 0,28 Z" />
+                                                    <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 11,8 L 18,8 18,14  11,14 z" />
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </ToggleButton>
+            <Grid x:Name="ContentSite"
+                  DockPanel.Dock="Bottom"
+                  Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="7" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto"
+                               MaxHeight="28" />
+                            </Grid.RowDefinitions>
+                            <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
+              <Rectangle Grid.Column="0"
+                         Grid.Row="1"
+                         Fill="Tan"
+                         Width="7"
+                         Margin="0,3,0,3"
+                         Stretch="Fill" />
+              <Rectangle Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="2"
+                         Grid.RowSpan="2"
+                         Width="21"
+                         Height="42">
+                <Rectangle.RenderTransform>
+                  <ScaleTransform ScaleX="1"
+                                  ScaleY="-1"
+                                  CenterY="21" />
+                                </Rectangle.RenderTransform>
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing 
+                                                Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,38 8,39 15,39 16,38 16, 26 21,26 21,28 18,28 17,42 0,42 Z" />
+                                                <GeometryDrawing
+                                                        Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                Geometry="F1 M 12,19 L 9,19 9,5 12,5 12,19 z" />
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
+                            <Rectangle 
+                                Grid.Column="2"
+                                Grid.Row="3"
+                                Height="28"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top" >
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom4Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 0,13 200,13 200,14 0,14 Z" />
+                                                <GeometryDrawing
+                                                    Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 4,11 4,17 12,17 20,22 22,22 23,17 16,14 23,9 22,7 19,5 12,11 Z" />
+                                                <GeometryDrawing
+                                                    Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M38,11 L 38,17 46,17 54,22 56,22 57,17 50,14 57,9 56,7 53,5 46,11 38,11z" />
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 68,11 L 68,17 76,17 84,22 86,22 87,17 80,14 87,9 86,7 83,5 76,11 68,11z" />                                                
+                                                <GeometryDrawing Brush="Transparent"
+                                               Geometry="F1 M 0,0 200,0 200,28 0,28 Z " >
+                                                <GeometryDrawing.Pen>
+                                                    <Pen LineJoin="Bevel" 
+                                                         Thickness="3">
+                                                        <Pen.Brush>
+                                                            <LinearGradientBrush StartPoint="0.0,0.0"
+                                                                                 EndPoint="0.1,0.0">
+                                                                <LinearGradientBrush.GradientStops>
+                                                                    <GradientStop Color="#b3ffbd"
+                                                                                Offset="0" />
+                                                                    <GradientStop Color="#3dac4a"
+                                                                                Offset="1" />
+                                                                </LinearGradientBrush.GradientStops>
+                                                            </LinearGradientBrush>
+                                                        </Pen.Brush>
+                                                    </Pen>
+                                                </GeometryDrawing.Pen>
+                                            </GeometryDrawing>
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+              <Rectangle Grid.Column="3"
+                         Grid.Row="3"
+                         Width="21"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Margin="3,0,0,0">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,24 8,24 15,25 16,24 16, 12 21,12 21,14 18,14 17,28 0,28 Z" />
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 11,8 L 18,8 18,14  11,14 z" />
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+              <Border Grid.Column="2"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="0"
+                      Grid.RowSpan="3"
+                      Padding="0,0,14,14">
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
+                            </Border>
+                        </Grid>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded"
+                     Value="True">
+                            <Setter TargetName="TopLeftExpanded"
+                      Property="Visibility"
+                      Value="Visible" />
+                            <Setter TargetName="TopLeftCollapsed"
+                      Property="Visibility"
+                      Value="Collapsed" />
+                            <Setter TargetName="ContentSite"
+                      Property="Visibility"
+                      Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="LCARS_ComboBoxToggleButton"
+                   TargetType="{x:Type ToggleButton}">
+        <Grid>
+            <Border x:Name="Border"
+              Width="21"
+              Background="{StaticResource LCARS_OrangeGradient_Top_Bottom}">
+                <Path x:Name="Arrow"
+              Grid.Column="1"
+              Fill="Black"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Data="M 0 0 L 4 4 L 8 0 Z" />
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ToggleButton.IsMouseOver"
+               Value="True">
+                <Setter TargetName="Arrow"
+                Property="Fill"
+                Value="White" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked"
+               Value="True">
+                <Setter TargetName="Border"
+                Property="Background"
+                Value="{StaticResource LCARS_OrangeGradient_Bottom_Top}" />
+            </Trigger>
+            <Trigger Property="IsEnabled"
+               Value="False">
+                <Setter TargetName="Border"
+                Property="Background"
+                Value="{StaticResource LCARS_GrayGradient_Top_Bottom}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="LCARS_ComboBoxTextBox"
+                   TargetType="{x:Type TextBox}">
+        <Border x:Name="Border"
+            BorderBrush="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+            Background="#FF000000"
+            BorderThickness="2"
+            Focusable="False" />
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type ComboBox}"
+         TargetType="{x:Type ComboBox}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="16pt" />
+        <Setter Property="Foreground"
+            Value="{StaticResource LCARS_BeigeTextBrush}" />
+        <Setter Property="SnapsToDevicePixels"
+            Value="true" />
+        <Setter Property="OverridesDefaultStyle"
+            Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+            Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+            Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll"
+            Value="true" />
+        <Setter Property="MinWidth"
+            Value="120" />
+        <Setter Property="MinHeight"
+            Value="24" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="IsTabStop"
+            Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ToggleButton Name="ToggleButton"
+                          Template="{StaticResource LCARS_ComboBoxToggleButton}"
+                          Grid.Column="1"
+                          Focusable="false"
+                          IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                          ClickMode="Press"
+                          Margin="3,0,0,0">
+                        </ToggleButton>
+                        <Border x:Name="Border"
+                    Grid.Column="0"
+                    BorderBrush="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                    Background="#FF000000"
+                    BorderThickness="2"
+                    Focusable="False">
+                            <Grid Margin="7,0,7,0">
+                                <ContentPresenter Name="ContentSite"
+                                  IsHitTestVisible="False"
+                                  Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectionBoxItem}"
+                                  ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectionBoxItemTemplate}"
+                                  ContentTemplateSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ItemTemplateSelector}"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Left" />
+                                <TextBox x:Name="PART_EditableTextBox"
+                         Style="{x:Null}"
+                         Template="{StaticResource LCARS_ComboBoxTextBox}"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center"
+                         Focusable="True"
+                         Background="Transparent"
+                         Visibility="Hidden"
+                         IsReadOnly="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsReadOnly}" />
+                            </Grid>
+                        </Border>
+
+                        <Popup Name="Popup"
+                   Placement="Bottom"
+                   IsOpen="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsDropDownOpen}"
+                   AllowsTransparency="True"
+                   Focusable="False"
+                   PopupAnimation="Slide"
+                   HorizontalOffset="-14"
+                   VerticalOffset="2">
+
+                            <Border Background="Black"
+                      CornerRadius="14">
+                                <Grid Name="DropDown"
+                      SnapsToDevicePixels="True"
+                      MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
+                      MaxHeight="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MaxDropDownHeight}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="14" />
+                                        <ColumnDefinition Width="*"
+                                      MinWidth="14" />
+                                        <ColumnDefinition Width="14" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="14" />
+                                        <RowDefinition Height="*"
+                                   MinHeight="14" />
+                                        <RowDefinition Height="14" />
+                                    </Grid.RowDefinitions>
+                                    <Border Grid.Column="0"
+                          Grid.Row="0"
+                          CornerRadius="14,0,0,0"
+                          Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                                    <Border Grid.Column="2"
+                          Grid.Row="0"
+                          CornerRadius="0,14,0,0"
+                          Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                                    <Border Grid.Column="2"
+                          Grid.Row="2"
+                          CornerRadius="0,0,14,0"
+                          Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                                    <Border Grid.Column="0"
+                          Grid.Row="2"
+                          CornerRadius="0,0,0,14"
+                          Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                                    <Border Grid.Column="0"
+                          Grid.Row="1"
+                          Margin="0,2,0,2"
+                          Background="{StaticResource LCARS_OrangeGradient_Left_Right}" />
+                                    <Border Grid.Column="2"
+                          Grid.Row="1"
+                          Margin="0,2,0,2"
+                          Background="{StaticResource LCARS_OrangeGradient_Left_Right}" />
+                                    <Border Grid.Column="1"
+                          Grid.Row="0"
+                          Margin="2,0,2,0"
+                          Background="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+                                    <Border Grid.Column="1"
+                          Grid.Row="2"
+                          Margin="2,0,2,0"
+                          Background="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+                                    <ScrollViewer Grid.Column="1"
+                                Grid.Row="1"
+                                Margin="2,2,2,0"
+                                SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="false">
+                            <Setter Property="Opacity"
+                      Value="0.25" />
+                        </Trigger>
+                        <Trigger Property="IsGrouping"
+                     Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll"
+                      Value="false" />
+                        </Trigger>
+                        <Trigger Property="IsEditable"
+                     Value="true">
+                            <Setter Property="IsTabStop"
+                      Value="false" />
+                            <Setter TargetName="PART_EditableTextBox"
+                      Property="Visibility"
+                      Value="Visible" />
+                            <Setter TargetName="ContentSite"
+                      Property="Visibility"
+                      Value="Hidden" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type ComboBoxItem}"
+         TargetType="{x:Type ComboBoxItem}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="SnapsToDevicePixels"
+            Value="true" />
+        <Setter Property="OverridesDefaultStyle"
+            Value="true" />
+        <Setter Property="Foreground"
+            Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                    <Grid Margin="0,0,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0"
+                    Width="14"
+                    Visibility="Collapsed"
+                    Margin="0,0,3,0"
+                    Background="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                    SnapsToDevicePixels="True" />
+                        <Border x:Name="Border"
+                    Grid.Column="1"
+                    Background="{StaticResource LCARS_BlueGradient_Left_Right}"
+                    Padding="2"
+                    SnapsToDevicePixels="True">
+                            <ContentPresenter Margin="7,0,7,0" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted"
+                     Value="true">
+                            <Setter TargetName="Border"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                     Value="false">
+                            <Setter Property="Opacity"
+                      Value="0.25" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- LCARS Side Panel GroupBox Style e.g. Trade Routes, but also used in Combat Window-->
+    <Style TargetType="{x:Type GroupBox}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background"
+            Value="Transparent" />
+        <Setter Property="KeyboardNavigation.IsTabStop"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="Foreground"
+            Value="{StaticResource LCARS_PinkTextBrush}" />
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="18pt" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupBox}">
+                    <DockPanel>
+                        <Grid x:Name="HeaderSite"
+                  Grid.IsSharedSizeScope="False"
+                  DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28" />
+                                <RowDefinition MaxHeight="14" />
+                            </Grid.RowDefinitions>
+                            <Rectangle x:Name="TopLeftExpanded"
+                         Grid.Column="0"
+                         Grid.Row="0"
+                         Grid.RowSpan="2"
+                         Width="21"
+                         Height="42">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing 
+                                                Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,38 8,39 15,39 16,38 16, 26 21,26 21,28 18,28 17,42 0,42 Z" />
+                                                <GeometryDrawing
+                                                        Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                Geometry="F1 M 12,19 L 9,19 9,5 12,5 12,19 z" />
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ContentControl Grid.Column="1"
+                              Grid.Row="0"
+                                            VerticalAlignment="Top"
+                              Margin="7,0,0,0"
+                              Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                              FontSize="18pt">
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header}" />
+                            </ContentControl>
+                            <Rectangle Grid.Column="2"
+                         Grid.Row="0"
+                                       Height="28"
+                         VerticalAlignment="Top"
+                         Fill="{StaticResource LCARS_Dom2Gradient_Top_Bottom}"
+                         Margin="7,0,0,0" />
+                            <Rectangle Grid.Column="3"
+                         Grid.Row="0"
+                                       Width="14"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Fill="{StaticResource LCARS_Dom3Gradient_Left_Right}"
+                         Margin="3,0,0,0" />
+                            <Rectangle Grid.Column="4"
+                         Grid.Row="0"
+                                       Width="21"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Margin="3,0,0,0">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,24 8,24 15,25 16,24 16, 12 21,12 21,14 18,14 17,28 0,28 Z" />
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 11,8 L 18,8 18,14  11,14 z" />
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Grid>
+                        
+        <Grid x:Name="ContentSite"
+                  DockPanel.Dock="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="7" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto"
+                               MaxHeight="28" />
+                            </Grid.RowDefinitions>
+                            <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
+                            <Rectangle Grid.Column="0"
+                         Grid.Row="1"
+                         Fill="{StaticResource LCARS_Dom5TanGradient_Left_Right}"
+                         Width="7"
+                         Margin="0,3,0,3"
+                         Stretch="Fill" />
+                            <Rectangle Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="2"
+                         Grid.RowSpan="2"
+                         Width="21"
+                         Height="42">
+                                <Rectangle.RenderTransform>
+                                    <ScaleTransform ScaleX="1"
+                                  ScaleY="-1"
+                                  CenterY="21" />
+                                </Rectangle.RenderTransform>
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing 
+                                                Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,38 8,39 15,39 16,38 16, 26 21,26 21,28 18,28 17,42 0,42 Z" />
+                                                <GeometryDrawing
+                                                        Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                Geometry="F1 M 12,19 L 9,19 9,5 12,5 12,19 z" />
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
+                            <Rectangle Grid.Column="2"
+                         Grid.Row="3"
+                         Fill="{StaticResource LCARS_Dom2Gradient_Bottom_Top}"
+                         Margin="3,0,0,0"
+                         Height="28"
+                         Stretch="Fill" />
+                            <Rectangle Grid.Column="3"
+                         Grid.Row="3"
+                         Width="21"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Margin="3,0,0,0">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom3Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,24 8,24 15,25 16,24 16, 12 21,12 21,14 18,14 17,28 0,28 Z" />
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 11,8 L 18,8 18,14  11,14 z" />
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Border Grid.Column="2"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="0"
+                      Grid.RowSpan="3"
+                      Padding="0,0,14,14">
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
+                            </Border>
+                        </Grid>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>

@@ -1,0 +1,125 @@
+﻿<dialogs:Dialog x:Class="Supremacy.Client.Dialogs.SitRepDialog"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                xmlns:scc="clr-namespace:Supremacy.Client"
+                xmlns:dialogs="clr-namespace:Supremacy.Client.Dialogs"
+                xmlns:controls="clr-namespace:Supremacy.Client.Controls"
+                IsModal="False"
+                Height="480"
+                Width="720">
+  <dialogs:Dialog.Resources>
+    <DataTemplate x:Key="SitRepEntryTemplate"
+                  DataType="{x:Type s:SitRepEntry}">
+      <DockPanel LastChildFill="True">
+        <Image x:Name="PriorityIcon"
+               DockPanel.Dock="Left"
+               Source="vfs:///Resources/Images/ScreenIcons/green_hand.png"
+               Width="16"
+               Height="16"
+               Margin="0,2,7,2"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Left" />
+        <TextBlock VerticalAlignment="Center"
+                   Text="{Binding Path=SummaryText, Mode=OneWay}" />
+      </DockPanel>
+      <DataTemplate.Triggers>
+        <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}"
+                     Value="Yellow">
+          <Setter TargetName="PriorityIcon"
+                  Property="Source"
+                  Value="vfs:///Resources/Images/ScreenIcons/orange_hand.png" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}"
+                     Value="Red">
+          <Setter TargetName="PriorityIcon"
+                  Property="Source"
+                  Value="vfs:///Resources/Images/ScreenIcons/red_hand.png" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Path=Priority, Mode=OneWay}"
+                     Value="Special">
+          <Setter TargetName="PriorityIcon"
+                  Property="Source"
+                  Value="vfs:///Resources/Images/ScreenIcons/blue_hand.png" />
+        </DataTrigger>
+      </DataTemplate.Triggers>
+    </DataTemplate>
+  </dialogs:Dialog.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"
+                     MinHeight="39" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto"
+                     MinHeight="27" />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0"
+               FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+               FontSize="18pt"
+               Foreground="{DynamicResource HeaderTextBrush}"
+               TextWrapping="Wrap"
+               TextTrimming="None"
+               HorizontalAlignment="Center"
+               Text="{scc:StringResource Key=SITREP_DIALOG_HEADER, Case=Upper}" />
+    <ListView x:Name="ItemsView"
+              Grid.Row="1" MouseDoubleClick="OnSitRepEntryDoubleClick"
+              ItemTemplate="{StaticResource SitRepEntryTemplate}" />
+    <DockPanel Grid.Row="2"
+               Margin="0,14,0,0"
+               LastChildFill="True">
+      <Button DockPanel.Dock="Right"
+              IsDefault="True"
+              Click="OnCloseButtonClick"
+              Content="{scc:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              Margin="14,0,0,0" />
+      <CheckBox x:Name="GreenCheck"
+                DockPanel.Dock="Left"
+                Content="{scc:StringResource Key=SITREP_DIALOG_GREEN_CHECKBOX}"
+                VerticalAlignment="Center"
+                Foreground="LimeGreen"
+                Checked="OnFilterItemIsCheckedChanged"
+                Unchecked="OnFilterItemIsCheckedChanged"
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowGreenItems), Mode=TwoWay}" />
+      <CheckBox x:Name="YellowCheck"
+                DockPanel.Dock="Left"
+                Content="{scc:StringResource Key=SITREP_DIALOG_YELLOW_CHECKBOX}"
+                VerticalAlignment="Center"
+                Margin="14,0,0,0"
+                Checked="OnFilterItemIsCheckedChanged"
+                Unchecked="OnFilterItemIsCheckedChanged"
+                Foreground="Orange"
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowOrangeItems), Mode=TwoWay}" />
+      <CheckBox x:Name="RedCheck"
+                DockPanel.Dock="Left"
+                Content="{scc:StringResource Key=SITREP_DIALOG_RED_CHECKBOX}"
+                VerticalAlignment="Center"
+                Foreground="Red"
+                Margin="14,0,0,0"
+                Checked="OnFilterItemIsCheckedChanged"
+                Unchecked="OnFilterItemIsCheckedChanged"
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowRedItems), Mode=TwoWay}" />
+      <CheckBox x:Name="BlueCheck"
+                DockPanel.Dock="Left"
+                Content="{scc:StringResource Key=SITREP_DIALOG_BLUE_CHECKBOX}"
+                VerticalAlignment="Center"
+                Foreground="DodgerBlue"
+                Margin="14,0,0,0"
+                Checked="OnFilterItemIsCheckedChanged"
+                Unchecked="OnFilterItemIsCheckedChanged"
+                IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(dialogs:SitRepDialogSettings.ShowBlueItems), Mode=TwoWay}" />
+      <controls:GameButton x:Name="FilterButton"
+                    Label="FILTER"
+                    HorizontalAlignment="Center"
+                    DisplayMode="Minimal"
+                    Click="OnFilterButtonClick">
+        <controls:GameButton.ContextMenu>
+          <ContextMenu x:Name="FilterMenu"
+                       StaysOpen="True"
+                       PlacementTarget="{x:Reference FilterButton}"
+                       Placement="Top" />
+        </controls:GameButton.ContextMenu>
+      </controls:GameButton>
+    </DockPanel>
+  </Grid>
+</dialogs:Dialog>

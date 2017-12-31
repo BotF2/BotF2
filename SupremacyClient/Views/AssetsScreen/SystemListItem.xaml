@@ -1,0 +1,237 @@
+﻿<scc:ThemedUserControl x:Class="Supremacy.Client.Views.SystemListItem"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                       xmlns:sxna="http://schemas.startreksupremacy.com/xaml/xna"
+                       xmlns:sx="http://schemas.startreksupremacy.com/xaml/core/markup"
+                       mc:Ignorable="d"
+                       d:DesignWidth="1024"
+                       d:DataContext="{x:Static scc:DesignTimeObjects.Colony}"
+                       Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                       FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.DefaultFontWeightKey}}"
+                       FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}">
+
+  <UserControl.Resources>
+    <scc:HasSystemBonusConverter x:Key="SystemBonusVisibilityConverter"
+                                 TrueValue="{x:Static Visibility.Visible}"
+                                 FalseValue="{x:Static Visibility.Collapsed}" />
+    <scc:IsNullConverter x:Key="NullValueVisibilityConverter"
+                         TrueValue="{x:Static Visibility.Collapsed}"
+                         FalseValue="{x:Static Visibility.Visible}" />
+    <Style x:Key="LinkButton"
+           TargetType="{x:Type Button}">
+      <Setter Property="Focusable"
+              Value="False" />
+      <Setter Property="IsTabStop"
+              Value="False" />
+      <Setter Property="Cursor"
+              Value="Hand" />
+      <Setter Property="FocusVisualStyle"
+              Value="{x:Null}" />
+      <Setter Property="TextBlock.Foreground"
+              Value="{DynamicResource HeaderTextBrush}" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <TextBlock x:Name="LinkText" Text="{TemplateBinding Content}" />
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver"
+                       Value="True">
+                <Setter TargetName="LinkText"
+                        Property="TextDecorations"
+                        Value="Underline" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
+  
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="SystemListColumn0" />
+      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="Auto" MinWidth="128" SharedSizeGroup="SystemListColumn1" />
+      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn2" />
+      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn3" />
+      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn4" />
+      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn5" />
+      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="0.00001*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="0.00001*" />
+    </Grid.RowDefinitions>
+      
+      <Border Grid.Row="0"
+              Grid.ColumnSpan="12"
+              BorderThickness="1"
+              Margin="2,2,2,2"
+              BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+      
+    <scc:GameButton Grid.Column="0"
+                    Grid.Row="1"
+                    DisplayMode="Hyperlink"
+                    VerticalAlignment="Center"
+                    Label="{Binding Path=Name}"
+                    Command="{x:Static scc:NavigationCommands.NavigateToColony}"
+                    CommandParameter="{Binding FallbackValue={x:Null}}" />
+
+    <TextBlock Grid.Column="0"
+               Grid.Row="2"
+               VerticalAlignment="Center"
+               Text="{Binding Path=Inhabitants.PluralName}" />
+
+    <TextBlock Grid.Column="0"
+               Grid.Row="3"
+               VerticalAlignment="Center"
+               Text="Building:" />
+
+    <TextBlock Grid.Column="2"
+               Grid.Row="3"
+               VerticalAlignment="Center"
+               Text="{Binding Path=BuildSlots[0].Project}" />
+    <scc:GameButton Grid.Column="4"
+                    Grid.Row="3"
+                    DisplayMode="Tiny"
+                    VerticalAlignment="Center"
+                    Label="Buy"
+                    Foreground="Black"
+                    Background="Transparent"
+                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                    BorderThickness="2"
+                    Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
+                    CommandParameter="{Binding FallbackValue={x:Null}}" />
+
+    <scc:GameLabel Grid.Column="2"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
+      <scc:GameLabel.Label>
+        <MultiBinding StringFormat="{}{0} / {1} ({2:0.#%})">
+          <Binding Path="Population.CurrentValue" />
+          <Binding Path="Population.Maximum" />
+          <Binding Path="GrowthRate" />
+        </MultiBinding>
+      </scc:GameLabel.Label>
+    </scc:GameLabel>
+    <scc:GameLabel Grid.Column="2"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/morale.png"
+                   Foreground="{Binding Path=Morale.CurrentValue, Converter={x:Static s:MoraleBrushConverter.Instance}}"
+
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=MORALE_TOOL_TIP}" >
+        <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} ({1}) ">
+                    <Binding Path="Morale.CurrentValue" 
+                             Converter="{x:Static s:MoraleConverter.Instance}" />
+                    <Binding Path="Morale.CurrentValue" />
+                </MultiBinding>
+        </scc:GameLabel.Label>
+    </scc:GameLabel>
+    <scc:GameLabel Grid.Column="4"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                   Label="{Binding Path=FoodReserves.CurrentValue}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+    <scc:GameLabel Grid.Column="4"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/Resources/deuterium.png"
+                   Label="{Binding Path=NetDeuterium}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />
+    
+    <scc:GameLabel Grid.Column="6"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/Resources/dilithium.png"
+                   Label="{Binding Path=NetDilithium}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOL_TIP}" />
+  	<scc:GameLabel Grid.Column="6"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/Resources/rawmaterials.png"
+                   Label="{Binding Path=NetRawMaterials}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
+
+  	<scc:GameLabel Grid.Column="8"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
+                   Label="{Binding Path=NetIndustry}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+    <scc:GameLabel Grid.Column="8"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/ship.png"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPBUILDING_TOOL_TIP}"
+                   Visibility="{Binding Path=Shipyard, Converter={StaticResource NullValueVisibilityConverter}}">
+    	<scc:GameLabel.Label>
+        <MultiBinding StringFormat="{}{0} x {1}" FallbackValue="n/a">
+          <Binding Path="Shipyard.EffectiveBuildOutput" />
+          <Binding Path="Shipyard.ShipyardDesign.BuildSlots" />
+        </MultiBinding>
+    	</scc:GameLabel.Label>
+    </scc:GameLabel>
+    
+    <scc:GameLabel Grid.Column="10"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                   Label="{Binding Path=NetEnergy}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+    <scc:GameLabel Grid.Column="10"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                   Label="{Binding Path=NetResearch}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+
+    <ItemsControl Grid.Column="12"
+                  Grid.Row="0"
+                  Grid.RowSpan="4"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  ItemsSource="{Binding Path=System.ReversedPlanets}"
+                  s:PlanetView3D.LightSourceDirection="Right"
+                  s:PlanetView3D.PlanetMargin="3,0,0,0"
+                  s:PlanetView3D.StarSystem="{Binding Path=System}"
+                  s:PlanetView3D.BaseDimension="48"
+                  s:PlanetView3D.ShowMoons="False"
+                  s:PlanetView3D.ShowPlanetTypeLabels="False"
+                  ItemTemplateSelector="{x:Static s:PlanetItemTemplateSelector.Instance}"
+                  RenderOptions.BitmapScalingMode="HighQuality">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"
+                      IsItemsHost="True" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ItemsControl>
+
+    <sxna:SunView3DRenderer Grid.Column="13"
+                            Grid.Row="0"
+                            Grid.RowSpan="4"
+                            Height="64"
+                            Width="64"
+                            Margin="14,0,0,0"
+                            StarType="{Binding Path=System.StarType}" />
+  </Grid>
+</scc:ThemedUserControl>

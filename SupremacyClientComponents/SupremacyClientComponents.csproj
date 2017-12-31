@@ -1,0 +1,535 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4836D1C7-B3C6-4021-9B5F-CEEF027251EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Supremacy.Client</RootNamespace>
+    <AssemblyName>SupremacyClientComponents</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\lib\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\lib\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ActiproSoftware.Shared.Wpf351">
+      <HintPath>..\Common\ActiproSoftware.Shared.Wpf351.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AvalonLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\AvalonLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BindingOriented.SyncLinq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1645360add590f18, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\BindingOriented.SyncLinq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ConcurrentHashtable, Version=1.3.3.0, Culture=neutral, PublicKeyToken=17752bf2fea97f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\ConcurrentHashtable.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Composite, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.Composite.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Composite.Presentation, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.Composite.Presentation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Composite.UnityExtensions, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.Composite.UnityExtensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
+      <HintPath>..\Common\Microsoft.Xna.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="ShaderEffectLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\ShaderEffectLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SoftUni.Wintellect.PowerCollections, Version=1.1.5733.22550, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SoftUni.Wintellect.PowerCollections.1.1.5733.22550\lib\net20\SoftUni.Wintellect.PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.CoreEx, Version=1.0.2563.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\System.CoreEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Interactive">
+      <HintPath>..\Common\System.Interactive.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Reactive, Version=1.0.2563.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Common\System.Reactive.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\System.Windows.Interactivity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessTextExtension.cs" />
+    <Compile Include="ActivatorExtension.cs" />
+    <Compile Include="Audio\AudioEngine.cs" />
+    <Compile Include="Audio\AudioGrouping.cs" />
+    <Compile Include="Audio\AudioTrack.cs" />
+    <Compile Include="Audio\FMOD\fmod.cs" />
+    <Compile Include="Audio\FMOD\fmod_dsp.cs" />
+    <Compile Include="Audio\FMOD\fmod_errors.cs" />
+    <Compile Include="Audio\MusicEntry.cs" />
+    <Compile Include="Audio\MusicLibrary.cs" />
+    <Compile Include="Audio\MusicPack.cs" />
+    <Compile Include="Audio\MusicPlayer.cs" />
+    <Compile Include="Audio\SoundPlayer.cs" />
+    <Compile Include="Behaviors\BoolValueGrayEffectBehavior.cs" />
+    <Compile Include="Behaviors\MultiSelectBehavior.cs" />
+    <Compile Include="Behaviors\MultiSelectBehavior.SelectionAdorner.cs" />
+    <Compile Include="Behaviors\VisibilityGroupScopeBehavior.cs" />
+    <Compile Include="CancelRoutedEventArgs.cs" />
+    <Compile Include="ClientProperties.cs" />
+    <Compile Include="ClientResources.cs" />
+    <Compile Include="ClientSettings.cs" />
+    <Compile Include="Collections\CollectionViewModel.cs" />
+    <Compile Include="Context\Commands\DialogCommands.cs" />
+    <Compile Include="ConsoleEvent.cs" />
+    <Compile Include="Context\DesignTimeContexts.cs" />
+    <Compile Include="Controls\CheckedListBox.cs" />
+    <Compile Include="Controls\Chevron.cs" />
+    <Compile Include="Controls\DropShadowChrome.cs" />
+    <Compile Include="Controls\EnumValueItemTemplateSelector.cs" />
+    <Compile Include="Controls\GameControlCollection.cs" />
+    <Compile Include="Controls\GameControlContext.cs" />
+    <Compile Include="Controls\GameControlSeparator.cs" />
+    <Compile Include="Controls\GameGlyphButton.cs" />
+    <Compile Include="Controls\GameItemsControl.cs" />
+    <Compile Include="Controls\GameLabel.cs" />
+    <Compile Include="Controls\GameMenu.cs" />
+    <Compile Include="Controls\GameMenuItem.cs" />
+    <Compile Include="Controls\GamePopupButton.cs" />
+    <Compile Include="Controls\GamePopup\GamePopup.cs" />
+    <Compile Include="Controls\GamePopup\GamePopupCloseReason.cs" />
+    <Compile Include="Controls\GamePopup\GamePopupCollection.cs" />
+    <Compile Include="Controls\GamePopup\GamePopupRoot.cs" />
+    <Compile Include="Controls\GamePopup\GamePopupSite.cs" />
+    <Compile Include="Controls\GamePopup\NonLogicalAdornerDecorator.cs" />
+    <Compile Include="Controls\GamePopup\ReadOnlyGamePopupCollection.cs" />
+    <Compile Include="Controls\GlyphIconInfo.cs" />
+    <Compile Include="Controls\InfoCard\IInfoCardSubject.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardFader.cs" />
+    <Compile Include="Controls\RangeBar.cs" />
+    <Compile Include="Controls\RichTextBlock.cs" />
+    <Compile Include="Controls\RichTextExtensions.cs" />
+    <Compile Include="Controls\TextBlockExtensions.cs" />
+    <Compile Include="Controls\ThemedUserControl.cs" />
+    <Compile Include="Data\BooleanValueConverter.cs" />
+    <Compile Include="Data\ComparisonConverter.cs" />
+    <Compile Include="Data\ContainsConverter.cs" />
+    <Compile Include="Data\CornerRadiusConverter.cs" />
+    <Compile Include="Data\EffectiveTradeRouteIncomeConverter.cs" />
+    <Compile Include="Data\EnumStringConverter.cs" />
+    <Compile Include="Data\EnumToInt32Converter.cs" />
+    <Compile Include="Data\FormattedTextConverter.cs" />
+    <Compile Include="Data\IsNullConverter.cs" />
+    <Compile Include="Data\IsTypeConverter.cs" />
+    <Compile Include="Data\MapConverter.cs" />
+    <Compile Include="Data\MathHelper.cs" />
+    <Compile Include="Controls\PixelSnapper.cs" />
+    <Compile Include="Data\CoalesceConverter.cs" />
+    <Compile Include="Context\Commands\ClientCommands.cs" />
+    <Compile Include="Context\Commands\CompositeCommandArgs.cs" />
+    <Compile Include="Context\Commands\DebugCommands.cs" />
+    <Compile Include="Context\Commands\GalaxyScreenCommands.cs" />
+    <Compile Include="Context\Commands\INavigationCommandsProxy.cs" />
+    <Compile Include="Context\Commands\MultiplayerConnectParameters.cs" />
+    <Compile Include="Context\Commands\NavigationCommands.cs" />
+    <Compile Include="Context\Commands\NavigationCommandsProxy.cs" />
+    <Compile Include="ContextMenuItemRoutedEventArgs.cs" />
+    <Compile Include="Context\AppContext.cs" />
+    <Compile Include="Controls\ExecutedRoutedEventArgs.cs" />
+    <Compile Include="Controls\GameButtonBase.cs" />
+    <Compile Include="Controls\GameCommand.cs" />
+    <Compile Include="Controls\GameCommandUIProvider.cs" />
+    <Compile Include="Controls\GameControlBase.cs" />
+    <Compile Include="Controls\GameControl.cs" />
+    <Compile Include="Controls\GameControlService.cs" />
+    <Compile Include="Controls\GameControlUIManager.cs" />
+    <Compile Include="Controls\IGameCommandUIProvider.cs" />
+    <Compile Include="Controls\IGameControl.cs" />
+    <Compile Include="Controls\ILogicalParent.cs" />
+    <Compile Include="Controls\InfoCard\EventNotifier.cs" />
+    <Compile Include="Controls\GameButton.cs" />
+    <Compile Include="Controls\GameButtonDisplayMode.cs" />
+    <Compile Include="Controls\InfoCard\IInfoCardWindow.cs" />
+    <Compile Include="Controls\InfoCard\InfoCard.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardCloseReason.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardCollection.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardEventArgs.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardHelper.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardHost.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardService.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardSite.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardWindow.cs" />
+    <Compile Include="Controls\InfoCard\InfoCardWindowControl.cs" />
+    <Compile Include="Controls\InfoCard\ReadOnlyInfoCardCollection.cs" />
+    <Compile Include="Controls\InlineWindow\InlineWindow.cs" />
+    <Compile Include="Controls\InlineWindow\InlineWindowTitleBarButton.cs" />
+    <Compile Include="Controls\GamePopup\IGamePopupAnchor.cs" />
+    <Compile Include="Controls\ListViewEx.cs" />
+    <Compile Include="Controls\ObjectItemRoutedEventArgs.cs" />
+    <Compile Include="Controls\ObjectPropertyChangedRoutedEventArgs.cs" />
+    <Compile Include="Controls\GamePopupContentPresenter.cs" />
+    <Compile Include="Controls\PopupControlService.cs" />
+    <Compile Include="Controls\GamePopupScrollViewer.cs" />
+    <Compile Include="Controls\PropertyChangedRoutedEventArgs.cs" />
+    <Compile Include="Controls\ScrollViewerItemsPresenter.cs" />
+    <Compile Include="Controls\VariantSize.cs" />
+    <Compile Include="Data\HasSystemBonusConverter.cs" />
+    <Compile Include="Data\SimpleCaseConverter.cs" />
+    <Compile Include="Data\ValueConversionHelper.cs" />
+    <Compile Include="Data\ValueConverter.cs" />
+    <Compile Include="DefaultDispatcherService.cs" />
+    <Compile Include="DeferrableObservableCollection.cs" />
+    <Compile Include="DelegatingWeakEventListener.cs" />
+    <Compile Include="DelegatingWeakPropertyChangedListener.cs" />
+    <Compile Include="DelegatingWeakRoutedEventListener.cs" />
+    <Compile Include="DependencyHelpers.cs" />
+    <Compile Include="Designer.cs" />
+    <Compile Include="Dialogs\SitRepDialogSettings.cs" />
+    <Compile Include="Dialogs\Dialog.cs" />
+    <Compile Include="Dialogs\DialogManager.cs" />
+    <Compile Include="Dialogs\MessageDialog.cs" />
+    <Compile Include="Dialogs\SitRepDetailDialog.xaml.cs">
+      <DependentUpon>SitRepDetailDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\SitRepDialog.xaml.cs">
+      <DependentUpon>SitRepDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\TargetSelectionDialog.xaml.cs">
+      <DependentUpon>TargetSelectionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DragDrop\DragDropManager.cs" />
+    <Compile Include="DragDrop\DropPreviewAdorner.cs" />
+    <Compile Include="DragDrop\IDragSourceAdvisor.cs" />
+    <Compile Include="DragDrop\IDropTargetAdvisor.cs" />
+    <Compile Include="EnumStringConverter.cs" />
+    <Compile Include="EnumStringResourceExtension.cs" />
+    <Compile Include="Events\DependecyPropertyChangedEventManager.cs" />
+    <Compile Include="Events\GameEvents.cs" />
+    <Compile Include="Events\PlayerActionEvents.cs" />
+    <Compile Include="Events\ClientEvents.cs" />
+    <Compile Include="FocusHelper.cs" />
+    <Compile Include="GenericWeakEventManager.cs" />
+    <Compile Include="IAnimationsHost.cs" />
+    <Compile Include="ICheckableCommandParameter.cs" />
+    <Compile Include="IClientApplication.cs" />
+    <Compile Include="IClientCommandLineArguments.cs" />
+    <Compile Include="IClientOptionsPage.cs" />
+    <Compile Include="IDispatcherService.cs" />
+    <Compile Include="IEnabledAware.cs" />
+    <Compile Include="IGameController.cs" />
+    <Compile Include="IGameServer.cs" />
+    <Compile Include="IGameWindow.cs" />
+    <Compile Include="IInteractionNode.cs" />
+    <Compile Include="ImageCache.cs" />
+    <Compile Include="Input\DelegateCommand.cs" />
+    <Compile Include="Interop\NativeMethods.cs" />
+    <Compile Include="IsFalseValueConverter.cs" />
+    <Compile Include="ItemRoutedEventArgs.cs" />
+    <Compile Include="Logging\FilteredTextLogger.cs" />
+    <Compile Include="Logging\IFilteredLogger.cs" />
+    <Compile Include="Markup\EnumValueCollectionExtension.cs" />
+    <Compile Include="Markup\FalseExtension.cs" />
+    <Compile Include="Markup\SharedResourceDictionary.cs" />
+    <Compile Include="Markup\TrueExtension.cs" />
+    <Compile Include="PixelSnappingBorder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IGameClient.cs" />
+    <Compile Include="Controls\AutoGrid.cs" />
+    <Compile Include="Services\IApplicationSettingsService.cs" />
+    <Compile Include="Services\IGameErrorService.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\PlayerOrderService.cs" />
+    <Compile Include="SitRepListView.xaml.cs">
+      <DependentUpon>SitRepListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SR.resx</DependentUpon>
+    </Compile>
+    <Compile Include="StandardGameScreens.cs" />
+    <Compile Include="CharacterCasingConverter.cs" />
+    <Compile Include="StringFormatConverter.cs" />
+    <Compile Include="StringResource.cs" />
+    <Compile Include="Themes\ThemeHelper.cs" />
+    <Compile Include="Themes\ThemeProperties.cs" />
+    <Compile Include="UIHelpers.cs" />
+    <Compile Include="UniqueFlagsConverter.cs" />
+    <Compile Include="UnsafeNativeMethods.cs" />
+    <Compile Include="Views\AssetsScreen\AssetsScreenPresentationModel.cs" />
+    <Compile Include="Views\AssetsScreen\AssetsScreenPresenter.cs" />
+    <Compile Include="Views\ClientRegions.cs" />
+    <Compile Include="Views\ColonyScreen\ColonyScreenCommands.cs" />
+    <Compile Include="Views\ColonyScreen\ColonyScreenPresentationModel.cs" />
+    <Compile Include="Views\ColonyScreen\ColonyScreenPresenter.cs" />
+    <Compile Include="Views\ColonyScreen\ColonyScreenRegions.cs" />
+    <Compile Include="Views\ColonyScreen\ColonyScreenView.cs" />
+    <Compile Include="Views\ColonyScreen\IColonyScreenPresenter.cs" />
+    <Compile Include="Views\ColonyScreen\NewShipSelectionView.xaml.cs">
+      <DependentUpon>NewShipSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ColonyScreen\ShipyardDockView.cs" />
+    <Compile Include="Views\ColonyScreen\TechObjectDesignViewModel.cs" />
+    <Compile Include="Views\CommonGameScreenRegions.cs" />
+    <Compile Include="Views\DiplomacyScreen\ActiveAgreementViewModel.cs" />
+    <Compile Include="Views\DiplomacyScreen\CreditsDataViewModel.cs" />
+    <Compile Include="Views\DiplomacyScreen\CreditsParameterEditor.xaml.cs">
+      <DependentUpon>CreditsParameterEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiplomacyScreen\DiplomacyGraphNode.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyMessageAvailableElement.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyMessageElement.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyMessageElementActionCategory.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyMessageElementType.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyMessageViewModel.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyScreenDisplayMode.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomacyScreenViewModel.cs" />
+    <Compile Include="Views\DiplomacyScreen\DiplomaticMessageCategory.cs" />
+    <Compile Include="Views\DiplomacyScreen\EnvoyAssignmentViewModel.cs" />
+    <Compile Include="Views\DiplomacyScreen\ForeignPowerViewModel.cs" />
+    <Compile Include="Views\DiplomacyScreen\IClauseParameterInfo.cs" />
+    <Compile Include="Views\DiplomacyScreen\NewDiplomacyScreenView.cs" />
+    <Compile Include="Views\Enums.cs" />
+    <Compile Include="Views\GalaxyScreen\EmpirePlayerStatus.cs" />
+    <Compile Include="Views\GalaxyScreen\GalaxyScreenPresentationModel.cs" />
+    <Compile Include="Views\GalaxyScreen\GalaxyScreenPresenter.cs" />
+    <Compile Include="Views\GalaxyScreen\GalaxyScreenRegions.cs" />
+    <Compile Include="Views\GalaxyScreen\GalaxyScreenView.cs" />
+    <Compile Include="Views\GalaxyScreen\IGalaxyScreenPresenter.cs" />
+    <Compile Include="Views\GalaxyScreen\IGalaxyScreenView.cs" />
+    <Compile Include="Views\GalaxyScreen\IView.cs" />
+    <Compile Include="Views\GalaxyScreen\View.cs" />
+    <Compile Include="Views\GameScreenPresenterBase.cs" />
+    <Compile Include="Views\GameScreenView.cs" />
+    <Compile Include="Views\IGameScreenPresenter.cs" />
+    <Compile Include="Views\ILobbyScreenView.cs" />
+    <Compile Include="Views\IPresentationModel.cs" />
+    <Compile Include="Views\PresentationModelBase.cs" />
+    <Compile Include="Views\SystemAssaultScreen\SystemAssaultScreenViewModel.cs" />
+    <Compile Include="Views\ViewModelBase.cs" />
+    <Compile Include="Views\ViewModelPresenter.cs" />
+    <Compile Include="WeakReference.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Supremacy.Scripting\Supremacy.Scripting.csproj">
+      <Project>{25AEA57E-9376-4B73-93D4-A2DCDB15D2D2}</Project>
+      <Name>Supremacy.Scripting</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Supremacy.Xna\Supremacy.Xna.csproj">
+      <Project>{D6643396-9911-4B24-95C0-B94717B280A9}</Project>
+      <Name>Supremacy.Xna</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SupremacyCore\SupremacyCore.csproj">
+      <Project>{04E34C27-6942-4EA8-93FF-DF3C4026B22A}</Project>
+      <Name>SupremacyCore</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SupremacyNative\SupremacyNative.vcxproj">
+      <Project>{b86ce700-6763-44c2-85fa-594f68b50347}</Project>
+      <Name>SupremacyNative</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Dialogs\SitRepDetailDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\SitRepDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\TargetSelectionDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SitRepListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Borg\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Cardassians\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Dominion\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Federation\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\InfoCard\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Klingons\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Romulans\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\TerranEmpire\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ColonyScreen\NewShipSelectionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DiplomacyScreen\CreditsParameterEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

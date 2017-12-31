@@ -1,0 +1,9 @@
+﻿TableStart	StartingTechLevels
+ColumnHeadingsStart	BioTech	Energy	Computers	Propulsion	Construction	Weapons
+RowHeadingsStart
+Early	1	1	1	1	1	1
+Developed	2	2	2	2	2	2
+Sophisticated	4	4	4	4	4	4
+Advanced	7	7	7	7	7	7
+Supreme	10	10	10	10	10	10
+TableEnd

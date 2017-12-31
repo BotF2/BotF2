@@ -1,0 +1,57 @@
+﻿<Window x:Class="Supremacy.Client.ClientWindow"
+        xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+        xmlns:res="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="http://www.codeplex.com/CompositeWPF"
+        xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+        xmlns:Client="clr-namespace:Supremacy.Client"
+        FocusManager.IsFocusScope="True"
+        Background="Black"
+        Title="{res:StringResource GAME_NAME}"
+        MinHeight="768"
+        MinWidth="1024"
+        Height="768"
+        Width="1280"
+        WindowState="Maximized"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Icon="SupremacyXP.ico"
+        ContextMenuService.Placement="Custom"
+        ContextMenuService.ShowOnDisabled="False"
+        SnapsToDevicePixels="True"
+        ShowActivated="True"
+        ShowInTaskbar="True"
+        UseLayoutRounding="True">
+  <Grid x:Name="ContentPanel"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextHintingMode="Fixed"
+        TextOptions.TextRenderingMode="ClearType"
+        scc:ClientSettings.EnableDialogAnimations="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableDialogAnimations), Mode=OneWay}">
+    <scc:GamePopupSite>
+      <Grid>
+        <Border x:Name="GameScreensRegionBorder">
+          <Border.Background>
+            <ImageBrush Stretch="UniformToFill"
+                        ImageSource="vfs:///Resources/Images/Backgrounds/Default.png">
+            </ImageBrush>
+          </Border.Background>
+          <Grid>
+            <scc:InfoCardSite UseHostedInfoCardWindows="True">
+              <Client:GameScreenStack x:Name="GameScreensRegion"
+                                      cal:RegionManager.RegionName="{x:Static scc:ClientRegions.GameScreens}" />
+            </scc:InfoCardSite>
+            <scc:DialogManager x:Name="ModelessDialogsRegion"
+                               cal:RegionManager.RegionName="{x:Static scc:ClientRegions.ModelessDialogs}"
+                               OrderingMode="Stack" />
+          </Grid>
+        </Border>
+        <scc:DialogManager x:Name="ModalDialogsRegion"
+                           cal:RegionManager.RegionName="{x:Static scc:ClientRegions.ModalDialogs}"
+                           OrderingMode="Stack" />
+        <Client:ClientConsole x:Name="Console"
+                              Visibility="Hidden" />
+      </Grid>
+    </scc:GamePopupSite>
+  </Grid>
+</Window>

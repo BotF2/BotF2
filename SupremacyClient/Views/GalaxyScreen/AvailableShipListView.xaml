@@ -1,0 +1,185 @@
+﻿<scc:ThemedUserControl x:Class="Supremacy.Client.Views.AvailableShipListView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                       xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                       xmlns:views="clr-namespace:Supremacy.Client.Views"
+                       Margin="0,7,7,7">
+  <UserControl.Resources>
+    <s:CivBrushConverter x:Key="CivBrushConverter" />
+    <views:NewTaskForceDropTargetAdvisor x:Key="NewTaskForceDropTargetAdvisor" />
+    <Style TargetType="{x:Type scc:ListViewItemEx}">
+      <Setter Property="KeyboardNavigation.IsTabStop"
+              Value="False" />
+      <Setter Property="FocusVisualStyle"
+              Value="{x:Null}" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type scc:ListViewItemEx}">
+            <DockPanel LastChildFill="False">
+              <Border x:Name="ItemBorder">
+                <DockPanel LastChildFill="False"
+                           Margin="0,7,7,0">
+                  <s:BlockBar x:Name="ShieldBar"
+                              DockPanel.Dock="Left"
+                              s:BlockBar.IsReadOnly="True"
+                              BlockCount="12"
+                              BlockMargin="3"
+                              BlockBrush="Magenta"
+                              Value="{Binding Path=ShieldStrength.PercentFilled, Mode=OneWay}"
+                              Height="4"
+                              Margin="0,0,3,0"
+                              Width="45"
+                              VerticalAlignment="Top">
+                    <s:BlockBar.LayoutTransform>
+                      <RotateTransform Angle="270" />
+                    </s:BlockBar.LayoutTransform>
+                    <s:BlockBar.ToolTip>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{s:StringResource SHIP_SHIELDS}" />
+                        <TextBlock Text=": " />
+                        <TextBlock Text="{Binding Path=ShieldStrength.CurrentValue}" />
+                        <TextBlock Text="/" />
+                        <TextBlock Text="{Binding Path=ShieldStrength.Maximum}" />
+                      </StackPanel>
+                    </s:BlockBar.ToolTip>
+                  </s:BlockBar>
+                  <s:BlockBar x:Name="HullBar"
+                              DockPanel.Dock="Left"
+                              s:BlockBar.IsReadOnly="True"
+                              BlockCount="12"
+                              BlockMargin="3"
+                              BlockBrush="Lime"
+                              Value="{Binding Path=HullStrength.PercentFilled, Mode=OneWay}"
+                              Height="4"
+                              Margin="0,0,3,0"
+                              Width="45"
+                              VerticalAlignment="Top">
+                    <s:BlockBar.LayoutTransform>
+                      <RotateTransform Angle="270" />
+                    </s:BlockBar.LayoutTransform>
+                    <s:BlockBar.ToolTip>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{s:StringResource SHIP_HULL}" />
+                        <TextBlock Text=": " />
+                        <TextBlock Text="{Binding Path=HullStrength.CurrentValue}" />
+                        <TextBlock Text="/" />
+                        <TextBlock Text="{Binding Path=HullStrength.Maximum}" />
+                      </StackPanel>
+                    </s:BlockBar.ToolTip>
+                  </s:BlockBar>
+                  <s:BlockBar x:Name="FuelBar"
+                              DockPanel.Dock="Left"
+                              s:BlockBar.IsReadOnly="True"
+                              BlockCount="12"
+                              BlockMargin="3"
+                              BlockBrush="Gold"
+                              Value="{Binding Path=FuelReserve.PercentFilled, Mode=OneWay}"
+                              Height="4"
+                              Margin="0,0,3,0"
+                              Width="45"
+                              VerticalAlignment="Top">
+                    <s:BlockBar.LayoutTransform>
+                      <RotateTransform Angle="270" />
+                    </s:BlockBar.LayoutTransform>
+                    <s:BlockBar.ToolTip>
+                      <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{s:StringResource SHIP_FUEL}" />
+                        <TextBlock Text=": " />
+                        <TextBlock Text="{Binding Path=FuelReserve.CurrentValue}" />
+                        <TextBlock Text="/" />
+                        <TextBlock Text="{Binding Path=FuelReserve.Maximum}" />
+                      </StackPanel>
+                    </s:BlockBar.ToolTip>
+                  </s:BlockBar>
+                  <Border x:Name="ShipImageBorder"
+                          Width="54"
+                          Height="45"
+                          BorderThickness="2"
+                          BorderBrush="{Binding Converter={StaticResource CivBrushConverter}}"
+                          CornerRadius="4"
+                          ToolTip="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}">
+                    <Border.Background>
+                      <ImageBrush Stretch="UniformToFill"
+                                  ImageSource="vfs:///Resources/Images/ScreenIcons/ship_backdrop.png" />
+                    </Border.Background>
+                    <Border BorderThickness="2" CornerRadius="4" BorderBrush="Transparent">
+                      <Border.Background>
+                        <ImageBrush Stretch="Uniform"
+                                    ImageSource="{Binding Path=ShipDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+                      </Border.Background>
+                    </Border>
+                  </Border>
+                </DockPanel>
+              </Border>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="Selector.IsSelected" Value="True" />
+                  <Condition Property="Selector.IsSelectionActive" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="ShipImageBorder"
+                        Property="BorderBrush"
+                        Value="White" />
+              </MultiTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
+  <DockPanel LastChildFill="True">
+    <Border DockPanel.Dock="Top" BorderBrush="#7fee82ee" CornerRadius="8" BorderThickness="2" Background="#1fee82ee" Padding="14" scc:DragDropManager.DropTargetAdvisor="{StaticResource NewTaskForceDropTargetAdvisor}">
+      <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" FontSize="18pt" Foreground="White" Text="{scc:StringResource Key=NEW_TASK_FORCE_DROP_ZONE_TEXT, Case=Upper}" VerticalAlignment="Center" IsHitTestVisible="False" HorizontalAlignment="Center" />
+    </Border>
+    <ItemsControl ItemsSource="{Binding Path=LocalPlayerTaskForces}">
+      <ItemsControl.Template>
+        <ControlTemplate TargetType="{x:Type ItemsControl}">
+          <ScrollViewer CanContentScroll="False"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel IsItemsHost="True"
+                        Orientation="Vertical" />
+          </ScrollViewer>
+        </ControlTemplate>
+      </ItemsControl.Template>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="{x:Type s:FleetViewWrapper}">
+          <Border Background="#1f007fff" Margin="0,7,0,0" BorderBrush="#7f007fff" BorderThickness="2" CornerRadius="8" Padding="7,0,0,0">
+            <scc:ListViewEx x:Name="ShipList"
+                      MouseDoubleClick="OnShipListMouseDoubleClick"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      ItemsSource="{Binding Path=View.Source.Ships, Mode=OneWay}"
+                      SelectionMode="Extended"
+                      ScrollViewer.CanContentScroll="False"
+                      SelectedItem="{Binding Path=Model.SelectedShip, Mode=OneWayToSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type scc:GalaxyScreenView}}}">
+              <i:Interaction.Behaviors>
+                <scc:MultiSelectBehavior />
+              </i:Interaction.Behaviors>
+              <scc:DragDropManager.DropTargetAdvisor>
+                <views:TaskForceDropTargetAdvisor />
+              </scc:DragDropManager.DropTargetAdvisor>
+              <scc:DragDropManager.DragSourceAdvisor>
+                <views:TaskForceDragSourceAdvisor />
+              </scc:DragDropManager.DragSourceAdvisor>
+              <ListView.Template>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                  <ContentControl>
+                    <WrapPanel IsItemsHost="True"
+                               IsHitTestVisible="True"
+                               Background="Transparent"
+                               Orientation="Horizontal"
+                               Margin="0,0,0,7" />
+                  </ContentControl>
+                </ControlTemplate>
+              </ListView.Template>
+            </scc:ListViewEx>
+          
+        </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </DockPanel>
+</scc:ThemedUserControl>

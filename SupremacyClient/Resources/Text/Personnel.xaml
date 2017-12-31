@@ -1,0 +1,61 @@
+﻿<LocalizedTextDatabase xmlns="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <LocalizedTextGroup Key="{x:Static LocalizedTextGroups.PersonnelText}">
+
+    <LocalizedString Name="RecallAgentCommandText">
+      <LocalizedStringValue Language="en" Text="Recall Agent" />
+    </LocalizedString>
+    
+    <LocalizedString Name="CancelAgentRecallCommandText">
+      <LocalizedStringValue Language="en" Text="Cancel Recall" />
+    </LocalizedString>
+
+  </LocalizedTextGroup>
+
+  <LocalizedTextGroup Key="{x:Type TrainingAssignment}">
+
+    <LocalizedString Name="StatusText">
+      <LocalizedStringValue Language="en" Text="Training" />
+    </LocalizedString>
+
+    <LocalizedString Name="DescriptionText">
+      <LocalizedStringValue Language="en" Text="{}{0} is training for a career in {1}." />
+    </LocalizedString>
+
+  </LocalizedTextGroup>
+  
+  <LocalizedTextGroup Key="{x:Type NullMission}">
+
+    <LocalizedString Name="DescriptionText">
+      <LocalizedStringValue Language="en" Text="None" />
+    </LocalizedString>
+    
+    <LocalizedString Name="StatusText">
+      <LocalizedStringValue Language="en" Text="{}Awaiting assignment at {0}" />
+    </LocalizedString>
+
+  </LocalizedTextGroup>
+
+  <LocalizedTextGroup Key="{x:Type DiplomaticEnvoyMission}">
+
+    <LocalizedString Name="DescriptionText">
+      <LocalizedStringValue Language="en"
+                            Text="{}Diplomatic envoy to {0}" />
+    </LocalizedString>
+    
+    <LocalizedString Name="InboundPhaseStatusText">
+      <LocalizedStringValue Language="en" Text="{}En route to {0}" />
+    </LocalizedString>
+    
+    <LocalizedString Name="OutboundPhaseStatusText">
+      <LocalizedStringValue Language="en" Text="{}En route to {0}" />
+    </LocalizedString>
+    
+    <LocalizedString Name="StationedPhaseStatusText">
+      <LocalizedStringValue Language="en" Text="{}Stationed at {0}" />
+    </LocalizedString>
+
+  </LocalizedTextGroup>
+  
+</LocalizedTextDatabase>

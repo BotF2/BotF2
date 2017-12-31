@@ -1,0 +1,531 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ActiproContrib.Composite.Wpf35</name>
+    </assembly>
+    <members>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.RibbonRegionAdapter">
+            <summary>
+            Adapts an Actipro <see cref="T:ActiproSoftware.Windows.Controls.Ribbon.Ribbon"/> control to host a Composite WPF <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/>.
+            </summary>
+            <remarks>
+            The views in the adapted <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/> may be hosted in three different parts of the
+            <see cref="T:ActiproSoftware.Windows.Controls.Ribbon.Ribbon"/>.  Views deriving from <see cref="T:ActiproSoftware.Windows.Controls.Ribbon.Controls.Tab"/> will automatically be added to the
+            <see cref="P:ActiproSoftware.Windows.Controls.Ribbon.Ribbon.Tabs"/> collection.  Views with a <see cref="F:ActiproSoftware.Windows.Controls.Ribbon.Controls.ControlContext.QuickAccessToolBarItem"/>
+            context will be added to the <see cref="P:ActiproSoftware.Windows.Controls.Ribbon.Ribbon.QuickAccessToolBarItems"/> collection.  All other
+            views will be added to the <see cref="P:ActiproSoftware.Windows.Controls.Ribbon.Ribbon.TabPanelItems"/> collection.
+            </remarks>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.RibbonRegionAdapter.#ctor(Microsoft.Practices.Composite.Presentation.Regions.IRegionBehaviorFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Composite.Presentation.Regions.RibbonRegionAdapter"/> class.
+            </summary>
+            <param name="regionBehaviorFactory">The factory used to create the region behaviors to attach to the created regions.</param>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.RibbonRegionAdapter.ContextualTabGroupsSyncBehaviorKey">
+            <summary>
+            Gets the key used to identify the <see cref="T:Microsoft.Practices.Composite.Regions.IRegionBehavior"/> used to synchronize the
+            <see cref="P:ActiproSoftware.Windows.Controls.Ribbon.Ribbon.ContextualTabGroups"/> collection with the <see cref="P:Microsoft.Practices.Composite.Regions.IRegion.Views"/> collection.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.RibbonRegionAdapter.TabsSyncBehaviorKey">
+            <summary>
+            Gets the key used to identify the <see cref="T:Microsoft.Practices.Composite.Regions.IRegionBehavior"/> used to synchronize the
+            <see cref="P:ActiproSoftware.Windows.Controls.Ribbon.Ribbon.Tabs"/> collection with the <see cref="P:Microsoft.Practices.Composite.Regions.IRegion.Views"/> collection.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.RibbonRegionAdapter.TabPanelItemsSyncBehaviorKey">
+            <summary>
+            Gets the key used to identify the <see cref="T:Microsoft.Practices.Composite.Regions.IRegionBehavior"/> used to synchronize the
+            <see cref="P:ActiproSoftware.Windows.Controls.Ribbon.Ribbon.TabPanelItems"/> collection with the <see cref="P:Microsoft.Practices.Composite.Regions.IRegion.Views"/> collection.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.RibbonRegionAdapter.QuickAccessToolbarItemsSyncBehaviorKey">
+            <summary>
+            Gets the key used to identify the <see cref="T:Microsoft.Practices.Composite.Regions.IRegionBehavior"/> used to synchronize the
+            <see cref="P:ActiproSoftware.Windows.Controls.Ribbon.Ribbon.QuickAccessToolBarItems"/> collection with the <see cref="P:Microsoft.Practices.Composite.Regions.IRegion.Views"/>
+            collection.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata">
+            <summary>
+            An interface that provides metadata to the <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter"/>
+            describing how a view should be presented (e.g. as a document window or a tool window),
+            as well as the docking window's capabilities.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.DefaultDock">
+            <summary>
+            Gets the default dock location of the view.
+            </summary>
+            <value>The default dock location.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.AlwaysCreateNewToolWindowContainer">
+            <summary>
+            Gets a value indicating whether the view should always be hosted in its own <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindowContainer"/>.
+            </summary>
+            <value>
+            <c>true</c> if the view should always be hosted in its own <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindowContainer"/>; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            A value of <c>false</c> (the default value) may result in the view being initially displayed in an existing
+            <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindowContainer"/> if one already exists in the location specified by <see cref="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.DefaultDock"/>.
+            </remarks>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.IsToolWindow">
+            <summary>
+            Gets a value indicating whether the view should be presented as a tool window.
+            </summary>
+            <value>
+            <c>true</c> if this instance is tool window; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            The default value is <c>false</c>; by default, views will be presented as document windows.
+            </remarks>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanClose">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can close.
+            </summary>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can close; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanDockLeft">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the left.
+            </summary>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the left; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanDockRight">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the right.
+            </summary>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the right; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanDockTop">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the top.
+            </summary>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the top; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanDockBottom">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the bottom.
+            </summary>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the bottom; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanRaft">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can tear off as a rafting window.
+            </summary>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can tear off as a rafting window; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanDrag">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be dragged to a new location.
+            </summary>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be dragged to a new location; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanAttach">
+            <summary>
+            Gets a value indicating whether a view's rafted <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked.
+            </summary>
+            <value><c>true</c> if the rafted <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanAutoHide">
+            <summary>
+            Gets a value indicating whether a view's docked <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be auto-hidden.
+            </summary>
+            <value><c>true</c> if the docked <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be auto-hidden; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.CanBecomeDocument">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked as a document.
+            </summary>
+            <value>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked as a document; otherwise, <c>false</c>.</value>
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata.Title">
+            <summary>
+            Gets the title to apply to the view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.
+            </summary>
+            <value>The title to apply to the view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.</value>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior">
+            <summary>
+            A behavior for the <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter"/> that keeps the contents of a
+            <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/> synchronized with the views of the attached region.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior.#ctor(System.Action{System.Object,ActiproSoftware.Windows.Controls.Docking.DockSite},System.Action{System.Object,ActiproSoftware.Windows.Controls.Docking.DockSite})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior"/> class.
+            </summary>
+            <param name="addViewToDockSiteCallback">Specifies a callback method that can be used to activate
+            a view in the control hosting the <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/>.</param>
+            <param name="removeViewFromDockSiteCallback">Specifies a callback method that can be used to deactivate
+            a view in the control hosting the <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/>.</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior.Attach">
+            <summary>
+            Attaches the behavior to the specified region.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior.Detach">
+            <summary>
+            Detaches the behavior from the specified region.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior.GetActualView(ActiproSoftware.Windows.Controls.Docking.DockingWindow)">
+            <summary>
+            Gets the actual view object from a <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.  In cases where the
+            window was generated to host the view, the window's content will be returned.  If the
+            window is the view itself, then the window will be returned.
+            </summary>
+            <param name="window">The <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> that represents the view or is hosting the view.</param>
+            <returns>The actual view object.</returns>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior.Region">
+            <summary>
+            The region that this behavior is extending.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior.HostControl">
+            <summary>
+            Gets or sets the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/> that the <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/> is attached to.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.Behaviors.DockSiteRegionSyncBehavior.Microsoft#Practices#Composite#Presentation#Regions#Behaviors#IHostAwareRegionBehavior#HostControl">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.DependencyObject"/> that the <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/> is attached to.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata">
+            <summary>
+            The standard <see cref="T:ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata"/> implementation.
+            </summary>
+            <remarks>
+            Usable in Xaml, this class provides metadata to the <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter"/>
+            describing how a view should be presented (e.g. as a document window or a tool window),
+            as well as the docking window's capabilities.
+            </remarks>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.GetDockSiteRegionMetadata(System.Windows.DependencyObject)">
+            <summary>
+            Gets the <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata"/> for a given view.
+            </summary>
+            <param name="d">The view.</param>
+            <returns>The <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata"/> for the view.</returns>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.SetDockSiteRegionMetadata(System.Windows.DependencyObject,ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata)">
+            <summary>
+            Sets the <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata"/> for a given view.
+            </summary>
+            <param name="d">The view.</param>
+            <param name="value">The <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata"/> to apply to the view.</param>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanAttach">
+            <summary>
+            Gets a value indicating whether a view's rafted <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked.
+            </summary>
+            <value>
+            <c>true</c> if the rafted <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanAutoHide">
+            <summary>
+            Gets a value indicating whether a view's docked <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be auto-hidden.
+            </summary>
+            <value>
+            <c>true</c> if the docked <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be auto-hidden; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanDrag">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be dragged to a new location.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be dragged to a new location; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanRaft">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can tear off as a rafting window.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can tear off as a rafting window; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanClose">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can close.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can close; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanDockLeft">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the left.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the left; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanDockRight">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the right.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the right; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanDockTop">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the top.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the top; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanDockBottom">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the bottom.
+            </summary>
+            <value>
+            <c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can dock to the bottom; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.CanBecomeDocument">
+            <summary>
+            Gets a value indicating whether a view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked as a document.
+            </summary>
+            <value>
+            <value><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> can be docked as a document; otherwise, <c>false</c>.</value>
+            </value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.DefaultDock">
+            <summary>
+            Gets the default dock location of the view.
+            </summary>
+            <value>The default dock location.</value>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.AlwaysCreateNewToolWindowContainer">
+            <summary>
+            Gets a value indicating whether the view should always be hosted in its own <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindowContainer"/>.
+            </summary>
+            <value>
+            <c>true</c> if the view should always be hosted in its own <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindowContainer"/>; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            A value of <c>false</c> (the default value) may result in the view being initially displayed in an existing
+            <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindowContainer"/> if one already exists in the location specified by <see cref="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.DefaultDock"/>.
+            </remarks>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.IsToolWindow">
+            <summary>
+            Gets a value indicating whether the view should be presented as a tool window.
+            </summary>
+            <value>
+            <c>true</c> if this instance is tool window; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            The default value is <c>false</c>; by default, views will be presented as document windows.
+            </remarks>
+        </member>
+        <member name="P:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionMetadata.Title">
+            <summary>
+            Gets the title to apply to the view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.
+            </summary>
+            <value>The title to apply to the view's <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.</value>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.ContextualTabGroupRegionAdapter">
+            <summary>
+            Adapts a Ribbon <see cref="T:ActiproSoftware.Windows.Controls.Ribbon.Controls.ContextualTabGroup"/> as an <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/>.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.ContextualTabGroupRegionAdapter.#ctor(Microsoft.Practices.Composite.Presentation.Regions.IRegionBehaviorFactory)">
+            <summary>
+            Constructs a new <see cref="T:ActiproContrib.Composite.Presentation.Regions.ContextualTabGroupRegionAdapter"/>.
+            </summary>
+            <param name="regionBehaviorFactory">The factory used to create the region behaviors to attach to the created regions.</param>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter">
+            <summary>
+            A Composite WPF region adapter for the Actipro <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/> docking/MDI control.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.SetIsGeneratedDockingWindow(ActiproSoftware.Windows.Controls.Docking.DockingWindow,System.Boolean)">
+            <summary>
+            Sets a value indicating whether the specified <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> was generated by
+            the region adapter to host a view.
+            </summary>
+            <param name="window">The <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.</param>
+            <param name="value"><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> was generated; otherwise, <c>false</c>.</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.GetIsGeneratedDockingWindow(ActiproSoftware.Windows.Controls.Docking.DockingWindow)">
+            <summary>
+            Gets a value indicating whether the specified <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> was generated by
+            the region adapter to host a view.
+            </summary>
+            <param name="window">The <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.</param>
+            <returns><c>true</c> if the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> was generated; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.#ctor(Microsoft.Practices.Composite.Presentation.Regions.IRegionBehaviorFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter"/> class.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.Adapt(Microsoft.Practices.Composite.Regions.IRegion,ActiproSoftware.Windows.Controls.Docking.DockSite)">
+            <summary>
+            Adapts a <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/> to an <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/>.
+            </summary>
+            <param name="region">The new region being used.</param>
+            <param name="regionTarget">The <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/> to adapt.</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.GetRegion(System.Windows.DependencyObject)">
+            <summary>
+            Gets the <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/> in which a UI element resides.
+            </summary>
+            <param name="element">The UI element.</param>
+            <returns>The <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/> in which a UI element resides.</returns>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.RemoveView(System.Object,ActiproSoftware.Windows.Controls.Docking.DockSite)">
+            <summary>
+            Removes a view from the adapted DockSite, destroying its DockingWindow host if necessary.
+            </summary>
+            <param name="view">The view to add.</param>
+            <param name="regionTarget">The DockSite adapted to the target region.</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.AddView(System.Object,ActiproSoftware.Windows.Controls.Docking.DockSite)">
+            <summary>
+            Adds a view to the adapted <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/>, creating a <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>
+            to host the view if necessary.
+            </summary>
+            <param name="view">The view to add.</param>
+            <param name="regionTarget">The <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/> adapted to the target region.</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.BindMetadataProperties(ActiproSoftware.Windows.Controls.Docking.DockingWindow,ActiproContrib.Composite.Presentation.Regions.IDockSiteRegionMetadata,System.Boolean)">
+            <summary>
+            Binds the properties provided by <paramref name="metadata"/> to the corresponding properties on
+            the specified <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.
+            </summary>
+            <param name="window">The window.</param>
+            <param name="metadata">The metadata.</param>
+            <param name="viewIsDockingWindow">if set to <c>true</c> [view is docking window].</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.IsLocalValueSet(System.Windows.DependencyObject,System.Windows.DependencyProperty)">
+            <summary>
+            Determines whether a local value is set for the specified property on the specified object.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="property">The property.</param>
+            <returns>
+            	<c>true</c> if [is local value set] [the specified source]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.ActivateWindow(ActiproSoftware.Windows.Controls.Docking.DockingWindow)">
+            <summary>
+            Activates the specified <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/> in the <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockSite"/> hosting the region.
+            </summary>
+            <param name="dockingWindow">The docking window to activate.</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.GetDockTarget(ActiproSoftware.Windows.Controls.Docking.DockingWindow,ActiproSoftware.Windows.Controls.Docking.DockSite,System.Boolean,ActiproSoftware.Windows.Controls.Docking.Direction@)">
+            <summary>
+            Gets the relative dock target for the specified <see cref="T:ActiproSoftware.Windows.Controls.Docking.DockingWindow"/>.
+            </summary>
+            <param name="window">The window being docked.</param>
+            <param name="dockSite">The target dock site.</param>
+            <param name="mayUseExistingContainer">if set to <c>false</c> and <paramref name="window"/> is a
+            <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindow"/>, then the window will be docked in a new <see cref="T:ActiproSoftware.Windows.Controls.Docking.ToolWindowContainer"/>.
+            If set to <c>true</c>, the window may be docked in an existing container.</param>
+            <param name="direction">The direction.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.AttachBehaviors(Microsoft.Practices.Composite.Regions.IRegion,ActiproSoftware.Windows.Controls.Docking.DockSite)">
+            <summary>
+            Attach new behaviors.
+            </summary>
+            <param name="region">The region being used.</param>
+            <param name="regionTarget">The object to adapt.</param>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter.CreateRegion">
+            <summary>
+            Creates a new instance of <see cref="T:Microsoft.Practices.Composite.Presentation.Regions.Region"/>.
+            </summary>
+            <returns>A new instance of <see cref="T:Microsoft.Practices.Composite.Presentation.Regions.Region"/>.</returns>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.RibbonTabRegionAdapter">
+            <summary>
+            Adapts a Ribbon <see cref="T:ActiproSoftware.Windows.Controls.Ribbon.Controls.Tab"/> as an <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/>.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.RibbonTabRegionAdapter.#ctor(Microsoft.Practices.Composite.Presentation.Regions.IRegionBehaviorFactory)">
+            <summary>
+            Constructs a new <see cref="T:ActiproContrib.Composite.Presentation.Regions.RibbonTabRegionAdapter"/>.
+            </summary>
+            <param name="regionBehaviorFactory">The factory used to create the region behaviors to attach to the created regions.</param>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionDock">
+            <summary>
+            Defines the valid dock locations for views presented by a <see cref="T:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionAdapter"/>.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionDock.Left">
+            <summary>
+            Describes the dock location to the left of the center content area.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionDock.Right">
+            <summary>
+            Describes the dock location to the right of the center content area.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionDock.Top">
+            <summary>
+            Describes the dock location to the top of the center content area.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionDock.Bottom">
+            <summary>
+            Describes the dock location to the bottom of the center content area.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Composite.Presentation.Regions.DockSiteRegionDock.Content">
+            <summary>
+            Describes the center content area.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.ApplicationMenuRegionAdapter">
+            <summary>
+            Adapts a Ribbon <see cref="T:ActiproSoftware.Windows.Controls.Ribbon.Controls.ApplicationMenu"/> as an <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/>.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.ApplicationMenuRegionAdapter.#ctor(Microsoft.Practices.Composite.Presentation.Regions.IRegionBehaviorFactory)">
+            <summary>
+            Constructs a new <see cref="T:ActiproContrib.Composite.Presentation.Regions.ApplicationMenuRegionAdapter"/>.
+            </summary>
+            <param name="regionBehaviorFactory">The factory used to create the region behaviors to attach to the created regions.</param>
+        </member>
+        <member name="T:ActiproContrib.Composite.Presentation.Regions.RibbonRegion">
+            <summary>
+            Implementation of <see cref="T:Microsoft.Practices.Composite.Regions.IRegion"/> that allows multiple active views.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.RibbonRegion.Add(System.Object,System.String,System.Boolean)">
+            <summary>
+            Adds a new view to the region.
+            </summary>
+            <param name="view">The view to add.</param>
+            <param name="viewName">The name of the view. This can be used to retrieve it later by calling <see cref="M:Microsoft.Practices.Composite.Regions.IRegion.GetView(System.String)"/>.</param>
+            <param name="createRegionManagerScope">When <see langword="true"/>, the added view will receive a new instance of <see cref="T:Microsoft.Practices.Composite.Regions.IRegionManager"/>, otherwise it will use the current region manager for this region.</param>
+            <returns>The <see cref="T:Microsoft.Practices.Composite.Regions.IRegionManager"/> that is set on the view if it is a <see cref="T:System.Windows.DependencyObject"/>.</returns>
+        </member>
+        <member name="M:ActiproContrib.Composite.Presentation.Regions.RibbonRegion.Remove(System.Object)">
+            <summary>
+            Removes the specified view from the region.
+            </summary>
+            <param name="view">The view to remove.</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,92 @@
+﻿<scc:Dialog x:Class="Supremacy.Client.Views.GalaxyScreen.ColonyInfoScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="930" d:DesignWidth="800">
+    <Grid Margin="0,4,0,4"
+          Background="Black"
+          ScrollViewer.CanContentScroll="True"
+          ScrollViewer.HorizontalScrollBarVisibility="Visible"
+          ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="350" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="3" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > COLONY INFO Screen - for more info go to Wiki or manual - maybe take a Screenshot</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" >( Press ESC to close )"</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > right mouse click = Popup Panel</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F1 = Galaxy Map Screen</TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F2 = System Screen</TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F3 = Embassy Screen</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F4 = Science Screen</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F5 = Intel Screen</TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F6 = nothing</TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F7 = nothing</TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F8 = nothing</TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F9 = Info Screens</TextBlock>
+        <TextBlock Grid.Row="21" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F10 = nothing</TextBlock>
+        <TextBlock Grid.Row="23" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F11 = Cheat Menu (not in MultiPlayer)</TextBlock>
+        <TextBlock Grid.Row="25" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F12 = nothing</TextBlock>
+        <TextBlock Grid.Row="27" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > ESC = just try</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > ALT + F12 = toggles window and full screen (on laptops also use FN-Key), ALT + ENTER while running Visual Studio</TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use arrow keys right or left in System screen</TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use CTRL for REDEPLOY more than one ship</TextBlock>
+        <TextBlock Grid.Row="35" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > ALT + A =  starts and ends AUTOTURN function</TextBlock>
+        <TextBlock Grid.Row="37" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CTRL + SHIFT + G = CollectGarbage (coding only)</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CRTL + o =  opens OptionsDialog</TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CRTL + s =  opens SaveGameDialog</TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CRTL + t =  doing END TURN</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > Galaxy Map only: CRTL + ENTER =  doing END TURN</TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > Galaxy Map only: CRTL + plus or minus =  zoom in or out</TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > Galaxy Map only: F12 = lift fog (not in MultiPlayer)</TextBlock>
+    </Grid>
+</scc:Dialog>

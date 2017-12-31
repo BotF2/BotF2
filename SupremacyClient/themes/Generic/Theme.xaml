@@ -1,0 +1,20 @@
+<!--
+  
+   Theme.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="..\Federation\Theme.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

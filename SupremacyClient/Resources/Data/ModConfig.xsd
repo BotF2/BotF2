@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="ModConfig"
+           targetNamespace="Supremacy:ModConfig.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:ModConfig.xsd"
+           xmlns:local="Supremacy:ModConfig.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="guid">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="(\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\})|([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="version">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[1-9][0-9]*([.][1-9][0-9]*([.][1-9][0-9]*([.][1-9][0-9]*)))"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ModConfig">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="UniqueIdentifier"
+                    type="local:guid"
+                    minOccurs="1"/>
+        <xs:element name="Name"
+                    type="xs:normalizedString"
+                    minOccurs="1"/>
+        <xs:element name="Version"
+                    type="local:version"
+                    minOccurs="1"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

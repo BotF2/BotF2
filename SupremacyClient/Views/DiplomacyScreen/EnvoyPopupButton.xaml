@@ -1,0 +1,152 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:themes="http://schemas.actiprosoftware.com/winfx/xaml/themes">
+
+  <Style x:Key="EnvoyPopupButtonStyle"
+         TargetType="{x:Type scc:GamePopupButton}">
+    <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+    <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+    <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+    <Setter Property="FontWeight"
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultFontWeightKey}}" />
+    <Setter Property="FontSize"
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultFontSizeKey}}" />
+    <Setter Property="Foreground"
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
+    <Setter Property="BorderBrush"
+            Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
+    <Setter Property="BorderThickness"
+            Value="2" />
+    <Setter Property="themes:ThemeProperties.CornerRadius"
+            Value="3" />
+    <Setter Property="Focusable"
+            Value="False" />
+    <Setter Property="PopupPlacement"
+            Value="Left" />
+    <Setter Property="PopupPlacementTarget"
+            Value="{Binding RelativeSource={RelativeSource Self}}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type scc:GamePopupButton}">
+          <Grid>
+            <scc:GamePopup Name="PART_Popup"
+                           Grid.RowSpan="2"
+                           MinWidth="200"
+                           MinHeight="20"
+                           StaysOpen="False"
+                           ClipToBounds="False"
+                           IsOpen="{Binding Path=IsPopupOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                           HorizontalOffset="{TemplateBinding PopupHorizontalOffset}"
+                           Placement="{TemplateBinding PopupPlacement}"
+                           PlacementRectangle="{TemplateBinding PopupPlacementRectangle}"
+                           PlacementTarget="{TemplateBinding PopupPlacementTarget}"
+                           VerticalOffset="{TemplateBinding PopupVerticalOffset}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"
+                                 MinHeight="14" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border Grid.ColumnSpan="3"
+                        Grid.Row="1"
+                        Background="#CC000000"
+                        BorderBrush="White"
+                        BorderThickness="2,0,2,2"
+                        CornerRadius="0,0,6,6" />
+                <Border Margin="0,7,0,0"
+                        Background="#CC000000"
+                        BorderBrush="White"
+                        BorderThickness="2,2,0,0"
+                        CornerRadius="6,0,0,0" />
+                <Border Grid.Column="1"
+                        Margin="0,9,0,0"
+                        Background="#CC000000" />
+                <Border Grid.Column="2"
+                        Margin="0,7,0,0"
+                        Background="#CC000000"
+                        BorderBrush="White"
+                        BorderThickness="0,2,2,0"
+                        CornerRadius="0,6,0,0" />
+                <Path Grid.Column="1"
+                      Margin="0,2,0,0"
+                      Data="M 0,7 L 7,0 L 14,7"
+                      Fill="#CC000000" />
+                <Path Grid.Column="1"
+                      Margin="0,1,-1,0"
+                      Data="M 0,7 L 7,0 L 14,7"
+                      Stroke="White"
+                      StrokeEndLineCap="Round"
+                      StrokeLineJoin="Miter"
+                      StrokeStartLineCap="Round"
+                      StrokeThickness="2" />
+                <Border Grid.ColumnSpan="1"
+                        Grid.RowSpan="2"
+                        Margin="7,14,-32,7">
+                  <scc:GamePopupContentPresenter Content="{TemplateBinding PopupContent}"
+                                                 ContentTemplate="{TemplateBinding PopupContentTemplate}"
+                                                 ContentTemplateSelector="{TemplateBinding PopupContentTemplateSelector}" />
+                </Border>
+              </Grid>
+            </scc:GamePopup>
+
+            <Border x:Name="ContentBorder"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding themes:ThemeProperties.CornerRadius}">
+              <Border.Background>
+                <ImageBrush Stretch="UniformToFill">
+                  <ImageBrush.ImageSource>
+                    <MultiBinding Converter="{scc:CoalesceConverter}">
+                      <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                               Path="ImageSourceLarge" />
+                      <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                               Path="ImageSourceSmall" />
+                    </MultiBinding>
+                  </ImageBrush.ImageSource>
+                </ImageBrush>
+              </Border.Background>
+              <TextBlock FontSize="16pt"
+                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                         Text="{TemplateBinding Label}"
+                         VerticalAlignment="Center"
+                         TextAlignment="Center"
+                         Visibility="{Binding ElementName=ContentBorder, Path=Background.(ImageBrush.ImageSource), Converter={scc:SimpleCase Case={x:Null}, IfMatch=Visible, Else=Collapsed}}" />
+            </Border>
+          </Grid>
+          <ControlTemplate.Triggers>
+<!--
+            <Trigger Property="IsEnabled"
+                     Value="False">
+              <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+            </Trigger>
+-->
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+              <Setter TargetName="ContentBorder"
+                      Property="BorderBrush"
+                      Value="Yellow" />
+            </Trigger>
+            <Trigger Property="IsPressed"
+                     Value="True">
+              <Setter TargetName="ContentBorder"
+                      Property="BorderBrush"
+                      Value="GreenYellow" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>

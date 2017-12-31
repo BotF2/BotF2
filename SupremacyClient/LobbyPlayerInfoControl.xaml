@@ -1,0 +1,70 @@
+<!--
+  
+   LobbyPlayerInfoControl.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<UserControl x:Class="Supremacy.Client.LobbyPlayerInfoControl"
+    xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
+  <UserControl.Resources>
+    <DataTemplate x:Key="KeyValuePairTemplate">
+      <ContentPresenter Content="{Binding Path=Value}"/>
+    </DataTemplate>
+  </UserControl.Resources>
+    <Grid Margin="0,0,0,4">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"
+                          SharedSizeGroup="LobbyPlayerInfoColumn0"/>
+        <ColumnDefinition Width="Auto"
+                          MinWidth="200"
+                          SharedSizeGroup="LobbyPlayerInfoColumn1"/>
+        <ColumnDefinition Width="Auto"
+                          SharedSizeGroup="LobbyPlayerInfoColumn2"/>
+        <ColumnDefinition Width="Auto"
+                          MinWidth="200"
+                          SharedSizeGroup="LobbyPlayerInfoColumn3"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"
+                          SharedSizeGroup="LobbyPlayerInfoColumn5"/>
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0"
+              Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+              CornerRadius="14,0,0,14"
+              Width="21"
+              Margin="0,0,0,0"/>
+      <TextBlock x:Name="PlayerNameText"
+                 Grid.Column="1"
+                 Margin="4,0,4,0"
+                 FontSize="18pt"
+                 FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                 Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                 VerticalAlignment="Center"/>
+      <Border Grid.Column="2"
+              Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+              Width="21"
+              Margin="0,0,0,0"/>
+      <ComboBox x:Name="EmpireList"
+                Grid.Column="3"
+                Margin="4,0,0,0"
+                IsReadOnly="True"
+                IsEditable="False"
+                HorizontalAlignment="Stretch"
+                ItemTemplate="{StaticResource KeyValuePairTemplate}"/>
+      <Border Grid.Column="4"
+              Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+              Margin="4,0,4,0"/>
+      <Border Grid.Column="5"
+              Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+              CornerRadius="0,14,14,0"
+              Width="21"
+              Margin="0,0,0,0"/>
+    </Grid>
+</UserControl>

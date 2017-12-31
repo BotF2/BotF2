@@ -1,0 +1,393 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>nRoute.Framework</name>
+    </assembly>
+    <members>
+        <member name="T:nRoute.SiteMaps.SiteMapNode">
+            <summary>
+            Represents a <see cref="T:nRoute.SiteMaps.SiteMap">Site Map</see> leaf, that can have zero or more sub-nodes.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.Key">
+            <summary>
+            The unique key identifying the <see cref="T:nRoute.SiteMaps.SiteMapNode">Site Map Node</see>.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.Title">
+            <summary>
+            The title of the node.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.Description">
+            <summary>
+            The description of the node.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.IconPath">
+            <summary>
+            The Icon Path for the node.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.ChildNodes">
+            <summary>
+            Child nodes of the nodes.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.SiteArea">
+            <summary>
+            The area that the node belongs to.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.IsEnabled">
+            <summary>
+            Indicates as to if the node is enabled.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.IsListed">
+            <summary>
+            Indicates as to if the node is listed in menus and other visual representations of the <see cref="T:nRoute.SiteMaps.SiteMap">Site Map</see>.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.Tag">
+            <summary>
+            Allows for custom tag to be associated with the <see cref="T:nRoute.SiteMaps.SiteMapNode">SiteMapNode</see>
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMapNode.HasChildNodes">
+            <summary>
+            Indicates as to if the node has one or more children.
+            </summary>
+        </member>
+        <member name="T:nRoute.Navigation.ISupportNavigationState">
+            <summary>
+            Provides support for restoring and saving the page state whilst navigating
+            </summary>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationState.RestoreState(nRoute.Components.ParametersCollection)">
+            <summary>
+            Restores the content state of the page.
+            </summary>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationState.SaveState">
+            <summary>
+            Returns the content state of the page.
+            </summary>
+        </member>
+        <member name="T:nRoute.Navigation.ISupportNavigationViewState">
+            <summary>
+            Provides support for restoring and saving visual state whilst navigating
+            </summary>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationViewState.RestoreState(nRoute.Components.ParametersCollection)">
+            <summary>
+            Restores the content state of the page.
+            </summary>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationViewState.SaveState">
+            <summary>
+            Returns the content state of the page.
+            </summary>
+        </member>
+        <member name="T:nRoute.Components.IReverseCommand">
+            <summary>
+            Represents an <see cref="T:System.Windows.Input.ICommand">ICommand</see> who's execution can be handled in the View.
+            </summary>
+        </member>
+        <member name="E:nRoute.Components.IReverseCommand.CommandExecuted">
+            <summary>
+            Occurs when the <see cref="T:System.Windows.Input.ICommand">ICommand</see> is executed.
+            </summary>
+        </member>
+        <member name="T:nRoute.Components.Routing.RouteCollection">
+            <summary>
+            Provides a collection of routes for routing. 
+            </summary>
+        </member>
+        <member name="T:nRoute.Components.Composition.Adapters.LocatorAdapterBase`2">
+            <summary>
+            Represents an <see cref="T:nRoute.Components.Composition.Adapters.ILocatorAdapter"/> implementation that adapts a <see cref="!:T"/> to <see cref="!:R"/>
+            </summary>
+            <typeparam name="T">The type of resource</typeparam>
+            <typeparam name="R">The type that resource is adapted to</typeparam>
+        </member>
+        <member name="T:nRoute.Components.Composition.Adapters.ILocatorAdapter">
+            <summary>
+            Represents an adapter that helps resolve a specified of resource against the <see cref="T:nRoute.Components.Composition.ResourceLocator"/>
+            </summary>
+        </member>
+        <member name="M:nRoute.Components.Composition.Adapters.ILocatorAdapter.Resolve(System.String)">
+            <summary>
+            Resolves a resource request
+            </summary>
+            <param name="name">The optional name/key associated with resource</param>
+            <returns>An instance of the requested resource</returns>
+        </member>
+        <member name="M:nRoute.Components.Composition.Adapters.LocatorAdapterBase`2.Resolve(System.String)">
+            <summary>
+            Resolves a request for a resource
+            </summary>
+            <param name="name">The optional name/key associated with resource</param>
+            <returns>An instance of the requested resource of type <see cref="!:R"/></returns>
+        </member>
+        <member name="T:nRoute.Behaviors.Triggers.ValueMatchTrigger">
+            <summary>
+            Represents a trigger that can match a value being equal to the given value.
+            </summary>
+        </member>
+        <member name="T:nRoute.ApplicationServices.IApplicationService">
+            <remarks>Brought for Silverlight Compatibility.</remarks>
+        </member>
+        <member name="M:nRoute.Components.Routing.IRouteHandler.GetResponse(nRoute.Components.Routing.IRoutingContext)">
+            <summary>
+            Handles the routing request, and returns a response.
+            </summary>
+            <remarks>
+            - The IObservable only starts processing the response once an item subscribes to it. 
+            </remarks>
+        </member>
+        <member name="T:nRoute.Components.Lazy`2">
+            <remarks>from MEF http://mef.codeplex.com/SourceControl/changeset/view/34058#484572
+            to be removed when moving to SL4. </remarks>
+        </member>
+        <member name="T:nRoute.Themes.AboutBlank">
+            <summary>
+            AboutBlank
+            </summary>
+        </member>
+        <member name="M:nRoute.Themes.AboutBlank.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:nRoute.ApplicationServices.IApplicationLifetimeAware">
+            <remarks>Brought for Silverlight Compatibility.</remarks>
+        </member>
+        <member name="T:nRoute.Themes.AboutError">
+            <summary>
+            AboutError
+            </summary>
+        </member>
+        <member name="M:nRoute.Themes.AboutError.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:nRoute.Controls.StatusViewer.HideStatus">
+            <summary>
+            Hides currently visible status.
+            </summary>
+        </member>
+        <member name="P:nRoute.Behaviors.Triggers.MouseWheelTrigger.DeltaFactor">
+            <summary>
+            Factors the delta with the specified value.
+            </summary>
+        </member>
+        <member name="T:nRoute.Components.DependencyGraph.DependencyNode`2">
+            <remarks>
+            - Adopted from http://www.patrickdewane.com/2009/03/topological-sort.html
+            </remarks>
+        </member>
+        <member name="T:nRoute.Navigation.ISupportNavigationLifecycle">
+            <summary>
+            Provides navigation lifetime participation functionality
+            </summary>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationLifecycle.Initialize(nRoute.Components.ParametersCollection)">
+            <summary>
+            Initializes the supporter
+            </summary>
+            <param name="requestParameters">Merged request parameters that included the navigation parameters and 
+            the parsed parameters from the Url</param>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationLifecycle.Closing(System.Action{System.Boolean})">
+            <summary>
+            Indicates closing/navigation-away, which can be cancelled by the supporter
+            </summary>
+            <param name="confirmCallback">Callback confirming to proceed with the closing, else false to indicate cancel the closing</param>
+        </member>
+        <member name="P:nRoute.Navigation.ISupportNavigationLifecycle.Title">
+            <summary>
+            The title of the navigation content
+            </summary>
+        </member>
+        <member name="T:nRoute.SiteMaps.SiteMap">
+            <summary>
+            Represents a navigation and  structure for a app, which is provided by one or more site map providers. 
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteMap.RootNode">
+            <remarks>
+            - Specifically we've made the root-node to be a navigation node
+            </remarks>
+        </member>
+        <member name="M:nRoute.Controllers.ControllerContext.#ctor(nRoute.Components.Routing.IUrlResponse)">
+            <remarks>This is to wrap any non-success reply into a action response</remarks>
+        </member>
+        <member name="M:nRoute.Components.ParametersCollection.#ctor(System.Object)">
+            <remarks>This is not allowed as accessing non-public types outside declaring assembly is not allowed.</remarks>
+        </member>
+        <member name="M:nRoute.Components.Composition.TypeBuilder.BuildType``1">
+            <summary>
+            Builds an instance of <see cref="!:T">Type T</see>.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Type"/> of object to create</typeparam>
+            <returns>An instance of <see cref="!:T"/></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:nRoute.Components.Composition.TypeBuilder.BuildType(System.Type)" -->
+        <member name="T:nRoute.ApplicationServices.ApplicationServiceContext">
+            <remarks>Brought for Silverlight Compatibility.</remarks>
+        </member>
+        <member name="T:nRoute.SiteMaps.ISiteMapProvider">
+            <summary>
+            Resolves a <see cref="T:nRoute.SiteMaps.SiteMap">Site Map</see>, asyncronously from any internal or external source.
+            </summary>
+        </member>
+        <member name="M:nRoute.SiteMaps.ISiteMapProvider.ResolveSiteMap">
+            <summary>
+            Requests for a <see cref="T:nRoute.SiteMaps.SiteMap">Site Map</see> to be resolved.
+            </summary>
+        </member>
+        <member name="T:nRoute.Navigation.Mapping.NavigationLocatorRouteHandlerProxy">
+            <remarks>
+            Since the route handler is stored with the RLF, we use this proxy to register with the routing engine
+            and it fetches the response from the RLF, if not found then it returns a handler not found response
+            </remarks>
+        </member>
+        <member name="T:nRoute.Components.TypeActivator">
+            <summary>
+            A type-instance activator, that initializes types using only public and parameter-less constructors.
+            </summary>
+            <remarks>
+            - This is much more faster than the system CreateType, as it uses dynamic methods.
+            - Secondly, it also caches the activator so next set of instances don't need to create the instances.
+            - Adapter from http://www.lostechies.com/blogs/jimmy_bogard/archive/2009/08/05/late-bound-invocations-with-dynamicmethod.aspx
+              including comments and from http://beaucrawford.net/post/Constructor-invocation-with-DynamicMethod.aspx and
+              http://stackoverflow.com/questions/2353174/c-emitting-dynamic-method-delegate-to-load-parametrized-constructor-problem  
+            </remarks>
+        </member>
+        <member name="M:nRoute.Components.TypeActivator.CreateInstance``1">
+            <summary>
+            Creates an instance of <see cref="!:T">Type T</see>.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Type"/> of object to create</typeparam>
+            <returns>An instance of <see cref="!:T"/></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:nRoute.Components.TypeActivator.CreateInstance(System.Type)" -->
+        <member name="P:nRoute.Behaviors.Triggers.KeyTrigger.WithAppleModifier">
+            <remarks>Ignored in non-Silverlight Apps</remarks>
+        </member>
+        <member name="T:nRoute.Navigation.ISupportNavigationViewLifecycle">
+            <summary>
+            Provides support for transitioning visuals whilst navigating
+            </summary>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationViewLifecycle.Initialize(nRoute.Navigation.NavigationResponse)">
+            <summary>
+            Indicates navigation-to, which can be perform visual transitions
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:nRoute.Navigation.ISupportNavigationViewLifecycle.Closing(nRoute.Navigation.NavigationRequest,System.Action)">
+            <summary>
+            Indicates closing/navigation-away, which can be (indefinitely) delayed to perform visual transitions
+            </summary>
+            <param name="request"></param>
+            <param name="closeCallback"></param>
+        </member>
+        <member name="M:nRoute.Navigation.NavigationResponse.#ctor(nRoute.Components.Routing.IUrlResponse)">
+            <remarks>This is to wrap any non-successful reply into a navigation response, this
+            is required because the Navigation Service API only returns a NavigationResponse type</remarks>
+        </member>
+        <member name="T:nRoute.SiteMaps.XamlSiteMapProvider">
+            <summary>
+            Xaml declared <see cref="T:nRoute.SiteMaps.ISiteMapProvider">Site Map Provider</see>.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.XamlSiteMapProvider.SiteMap">
+            <summary>
+            <see cref="P:nRoute.SiteMaps.XamlSiteMapProvider.SiteMap">Site Map</see> declared in xaml.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteArea.Key">
+            <summary>
+            The unique name of the SiteArea.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteArea.RemoteUrl">
+            <summary>
+            The url of the remote package (xap or dll) to download and map.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteArea.InitializeOnLoad">
+            <summary>
+            Indicates as to if the resource is initialized on loading of the application.
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteArea.AreaDependencies">
+            <summary>
+            Children
+            </summary>
+        </member>
+        <member name="P:nRoute.SiteMaps.SiteArea.HasDependencies">
+            <summary>
+            Indicates as to if the area has dependencies on other areas
+            </summary>
+        </member>
+        <member name="M:nRoute.Controls.WorkIndicator.HideIndicator">
+            <summary>
+            Hides currently visible indicator.
+            </summary>
+        </member>
+        <member name="T:nRoute.Components.ValueConverter`2">
+            <summary>
+            A generic converter using lambdas.
+            </summary>
+            <typeparam name="TIn"></typeparam>
+            <typeparam name="TOut"></typeparam>
+            <remarks>
+            - based on ideas from http://khason.net/dev/nifty-time-savers-for-wpf-development/
+            </remarks>
+        </member>
+        <member name="M:nRoute.Navigation.Mapping.NavigationResourceHandler.XamlXClassLoader(System.String)">
+            <summary>
+            Loads and an xaml resource using it's x:Class attributes info into an initialized but detached object;
+            </summary>
+        </member>
+        <member name="M:nRoute.Navigation.Mapping.NavigationResourceHandler.XamlXClassLoader(System.String,System.Object[])">
+            <summary>
+            Loads and an xaml resource using it's x:Class attributes info into an initialized but detached object;
+            </summary>
+        </member>
+        <member name="P:nRoute.Navigation.Mapping.NavigationResourceHandler.XamlLoader">
+            <summary>
+            Loads and an xaml resource into an initialized but detached object;
+            </summary>
+        </member>
+        <member name="P:nRoute.Navigation.Mapping.NavigationResourceHandler.BitmapImageLoader">
+            <summary>
+            Loads an image resource into a bitmap image type.
+            </summary>
+        </member>
+        <member name="P:nRoute.Navigation.Mapping.NavigationResourceHandler.ImageControlLoader">
+            <summary>
+            Loads image as an / into an Image Control.
+            </summary>
+        </member>
+        <member name="P:nRoute.Navigation.Mapping.NavigationResourceHandler.TextLoader">
+            <summary>
+            Loads a resource as a text
+            </summary>
+        </member>
+        <member name="P:nRoute.Navigation.Mapping.NavigationResourceHandler.BinaryLoader">
+            <summary>
+            Loads an resource as byte[]
+            </summary>
+        </member>
+        <member name="T:nRoute.Components.PropertyChangedExtensions">
+            <remarks>
+            - ideas from http://michaelsync.net/2009/04/09/silverlightwpf-implementing-propertychanged-with-expression-tree
+            </remarks>
+        </member>
+    </members>
+</doc>

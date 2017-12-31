@@ -1,0 +1,374 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:client="clr-namespace:Supremacy.Client"
+                    xmlns:dialogs="clr-namespace:Supremacy.Client.Dialogs"
+                    xmlns:controls="clr-namespace:Supremacy.Client.Controls">
+  
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/SupremacyClientComponents;component/Themes/InfoCard/generic.xaml" />
+    <!--<ResourceDictionary Source="/SupremacyClientComponents;component/Themes/ShipyardDockView.xaml" />-->
+  </ResourceDictionary.MergedDictionaries>
+
+  <client:CharacterCasingConverter x:Key="CharacterCasingConverter"
+                                Casing="Upper" />
+  <client:EnumStringConverter x:Key="EnumStringAccessTextConverter"
+                           AccessText="True" />
+
+  <Storyboard x:Key="MessageDialogOpeningStoryboard"
+              FillBehavior="Stop"
+              Duration="0:0:0.5">
+    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                     From="0"
+                     To="1"
+                     Duration="0:0:0.5" />
+    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                   Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)">
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="0"
+                            KeyTime="00:00:00" />
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="1"
+                            KeyTime="00:00:00.3000000" />
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="0.9"
+                            KeyTime="00:00:00.4000000" />
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="1"
+                            KeyTime="00:00:00.5000000" />
+    </DoubleAnimationUsingKeyFrames>
+    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                   Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)">
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="0"
+                            KeyTime="00:00:00" />
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="1"
+                            KeyTime="00:00:00.3000000" />
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="0.9"
+                            KeyTime="00:00:00.4000000" />
+      <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5"
+                            Value="1"
+                            KeyTime="00:00:00.5000000" />
+    </DoubleAnimationUsingKeyFrames>
+  </Storyboard>
+
+  <Style TargetType="{x:Type dialogs:DialogManager}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type dialogs:DialogManager}">
+          <Border x:Name="OverlayBorder"
+                  Background="#00000000"
+                  IsHitTestVisible="True">
+            <Border x:Name="DialogBorder"
+                    HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActiveDialog.HorizontalAlignment}"
+                    VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActiveDialog.VerticalAlignment}"
+                    TextOptions.TextRenderingMode="ClearType"
+                    RenderOptions.ClearTypeHint="Enabled">
+              <ContentPresenter x:Name="PART_ActiveDialogPresenter"
+                                Content="{TemplateBinding ActiveDialog}"
+                                HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActiveDialog.HorizontalContentAlignment}"
+                                VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActiveDialog.VerticalContentAlignment}" />
+            </Border>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="ActiveDialog"
+                     Value="{x:Null}">
+              <Setter TargetName="OverlayBorder"
+                      Property="Visibility"
+                      Value="Hidden" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <ControlTemplate x:Key="BorderlessDialogTemplate"
+                   TargetType="{x:Type dialogs:Dialog}">
+    <Border SnapsToDevicePixels="True"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            Background="{TemplateBinding Background}"
+            Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            MinWidth="{TemplateBinding MinWidth}"
+            MinHeight="{TemplateBinding MinHeight}"
+            MaxWidth="{TemplateBinding MaxWidth}"
+            MaxHeight="{TemplateBinding MaxHeight}">
+      <ContentControl FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                      FontSize="12pt"
+                      Foreground="{DynamicResource DefaultTextBrush}">
+        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ContentControl>
+    </Border>
+  </ControlTemplate>
+
+  <Style TargetType="{x:Type dialogs:Dialog}">
+    <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+    <Setter Property="FontFamily"
+            Value="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+    <Setter Property="FontSize"
+            Value="12pt" />
+    <Setter Property="Foreground"
+            Value="{DynamicResource DefaultTextBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type dialogs:Dialog}">
+          <Border Background="#cc000000"
+                  CornerRadius="24"
+                  SnapsToDevicePixels="True"
+                  Width="{TemplateBinding Width}"
+                  Height="{TemplateBinding Height}"
+                  MinWidth="{TemplateBinding MinWidth}"
+                  MinHeight="{TemplateBinding MinHeight}"
+                  MaxWidth="{TemplateBinding MaxWidth}"
+                  MaxHeight="{TemplateBinding MaxHeight}">
+            <ContentControl Style="{DynamicResource {x:Static scc:ClientResources.DialogContainerStyleKey}}"
+                            Padding="14">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="HeaderText"
+                           Grid.Row="0"
+                           FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           FontSize="20pt"
+                           Foreground="{DynamicResource HeaderTextBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,6"
+                           Text="{Binding Path=Header, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource CharacterCasingConverter}}" />
+                <ContentPresenter Grid.Row="1"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+              </Grid>
+            </ContentControl>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="Header"
+                     Value="{x:Null}">
+              <Setter TargetName="HeaderText"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Header"
+                     Value="">
+              <Setter TargetName="HeaderText"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Content"
+                     Value="{x:Null}">
+              <Setter TargetName="HeaderText"
+                      Property="Margin"
+                      Value="0,0,0,0" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="RenderTransformOrigin"
+            Value="0.5,0.5" />
+    <Setter Property="RenderTransform">
+      <Setter.Value>
+        <ScaleTransform ScaleX="1.0"
+                        ScaleY="1.0" />
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="scc:ClientSettings.EnableDialogAnimations"
+                     Value="True" />
+          <Condition Property="IsVisible"
+                     Value="True" />
+        </MultiTrigger.Conditions>
+        <MultiTrigger.EnterActions>
+          <BeginStoryboard Name="BeginMessageDialogOpeningStoryboard"
+                           Storyboard="{StaticResource MessageDialogOpeningStoryboard}" />
+        </MultiTrigger.EnterActions>
+      </MultiTrigger>
+      <Trigger Property="IsActive"
+               Value="False">
+        <Setter Property="IsEnabled"
+                Value="False" />
+      </Trigger>
+      <Trigger Property="HasBorder"
+               Value="False">
+        <Setter Property="Template"
+                Value="{StaticResource BorderlessDialogTemplate}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <client:EnumStringConverter x:Key="EnumStringConverter" />
+  <DataTemplate x:Key="MessageDialogButtonsTemplate"
+                DataType="{x:Type dialogs:MessageDialogButtons}">
+    <Button x:Name="Button"
+            Command="{x:Static dialogs:MessageDialog.SetMessageDialogResultCommand}"
+            CommandParameter="{Binding}"
+            Margin="3,0,3,0"
+            Style="{DynamicResource {x:Static scc:ClientResources.MessageDialogButtonStyleKey}}">
+      <AccessText Text="{Binding Converter={StaticResource EnumStringAccessTextConverter}, ConverterParameter=UpperCase}" />
+    </Button>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding}"
+                   Value="{x:Static dialogs:MessageDialogButtons.Cancel}">
+        <Setter TargetName="Button"
+                Property="IsCancel"
+                Value="True" />
+      </DataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding}"
+                     Value="{x:Static dialogs:MessageDialogButtons.Ok}" />
+          <Condition Binding="{Binding Path=(dialogs:MessageDialog.Buttons), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:MessageDialog}}}"
+                     Value="{x:Static dialogs:MessageDialogButtons.Ok}" />
+        </MultiDataTrigger.Conditions>
+        <Setter TargetName="Button"
+                Property="IsDefault"
+                Value="True" />
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding}"
+                     Value="{x:Static dialogs:MessageDialogButtons.Close}" />
+          <Condition Binding="{Binding Path=(dialogs:MessageDialog.Buttons), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:MessageDialog}}}"
+                     Value="{x:Static dialogs:MessageDialogButtons.Close}" />
+        </MultiDataTrigger.Conditions>
+        <Setter TargetName="Button"
+                Property="IsDefault"
+                Value="True" />
+      </MultiDataTrigger>
+
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+  <DataTemplate x:Key="MessageDialogContentTemplate">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <ContentPresenter HorizontalAlignment="Center"
+                        TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
+                        Content="{Binding Path=Content, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:MessageDialog}}}" />
+      <ItemsControl x:Name="ButtonsSite"
+                    Grid.Row="1"
+                    Margin="0,12,0,0" ItemTemplate="{StaticResource MessageDialogButtonsTemplate}">
+      	<ItemsControl.ItemsSource>
+      		<Binding Path="Buttons" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:MessageDialog}}">
+      			<Binding.Converter>
+                            <client:Activator Type="{client:ActivatorType client:UniqueFlagsConverter}">
+                                <client:Activator.PropertyValues>
+                                    <client:ActivatorSetter Name="FlagsType" Value="{x:Type dialogs:MessageDialogButtons}" />
+                                </client:Activator.PropertyValues>
+                            </client:Activator>
+                        </Binding.Converter>
+      		</Binding>
+      	</ItemsControl.ItemsSource>
+      	<ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Horizontal"
+                        IsItemsHost="True"
+                        HorizontalAlignment="Center" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+      </ItemsControl>
+    </Grid>
+  </DataTemplate>
+
+  <Style TargetType="{x:Type dialogs:MessageDialog}"
+         BasedOn="{StaticResource {x:Type dialogs:Dialog}}">
+    <Setter Property="ContentTemplate"
+            Value="{StaticResource MessageDialogContentTemplate}" />
+    <Setter Property="IsModal"
+            Value="True" />
+    <Setter Property="ForceCursor"
+            Value="True" />
+    <Setter Property="Cursor"
+            Value="{DynamicResource DefaultCursor}" />
+    <Setter Property="MaxWidth"
+            Value="600" />
+  </Style>
+
+  <Style x:Key="{x:Type controls:GameItemsControl}"
+         TargetType="{x:Type controls:GameItemsControl}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:GameItemsControl}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  Padding="{TemplateBinding Padding}"
+                  SnapsToDevicePixels="True">
+            <ItemsPresenter SnapsToDevicePixels="True" />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="Context"
+               Value="VerticalGroupItem">
+        <Setter Property="ItemsPanel">
+          <Setter.Value>
+            <ItemsPanelTemplate>
+              <StackPanel IsItemsHost="True"
+                          Orientation="Vertical" />
+            </ItemsPanelTemplate>
+          </Setter.Value>
+        </Setter>
+      </Trigger>
+      <Trigger Property="Context"
+               Value="HorizontalGroupItem">
+        <Setter Property="ItemsPanel">
+          <Setter.Value>
+            <ItemsPanelTemplate>
+              <StackPanel IsItemsHost="True"
+                          Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </Setter.Value>
+        </Setter>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+  
+<!--
+  <Style TargetType="controls:GamePopupRoot">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="controls:GamePopupRoot">
+          <DockPanel x:Name="PART_MainContainer" LastChildFill="True">
+            <Grid x:Name="PART_Arrow" DockPanel.Dock="Bottom">
+              <Path Width="14"
+                    Height="7"
+                    Fill="Black"
+                    Data="M 0,0 L 7,7 L 14,0 Z"
+                    />
+              <Path Width="14"
+                    Height="7"
+                    Stroke="Gray"
+                    StrokeThickness="1"
+                    Fill="{x:Null}"
+                    Data="M 0,0 L 7,7 L 14,0"
+                    />
+            </Grid>
+            <Border Background="Transparent" BorderThickness="1" BorderBrush="Gray">
+              
+            </Border>
+          </DockPanel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+-->
+
+</ResourceDictionary>

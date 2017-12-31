@@ -1,0 +1,59 @@
+TableStart	BasePersonnel
+ColumnHeadingsStart	Value
+RowHeadingsStart	
+(Default)	15
+FEDERATION	15
+KLINGONS	16
+ROMULANS	14
+CARDASSIANS	15
+DOMINION	18
+TableEnd
+
+TableStart	TradeRoutePopReq
+ColumnHeadingsStart	Value
+RowHeadingsStart	
+(Default)	160
+FEDERATION	150
+KLINGONS	160
+ROMULANS	185
+CARDASSIANS	160
+DOMINION	160
+TableEnd
+
+TableStart	TradeRoutePopMultipliers
+ColumnHeadingsStart	Value
+RowHeadingsStart
+Source	0.015
+Target	0.03
+TableEnd
+
+TableStart	BaseCreditValues
+ColumnHeadingsStart	Value
+RowHeadingsStart	
+Deuterium	5.0
+Dilithium	100.0
+RawMaterials	1.0
+TableEnd
+
+TableStart	ScrapReturns
+ColumnHeadingsStart	Value
+RowHeadingsStart
+Credits	0.25
+Deuterium	1.0
+Dilithium	0.0
+RawMaterials	0.5
+Personnel	1.0
+TableEnd
+
+TableStart	DiminishedUtilityModifiers
+ColumnHeadingsStart	UpperBound	Multiplier
+RowHeadingsStart
+0	-1.0	3.0
+1	-0.75	2.0
+2	-0.5	1.5
+3	-0.25	1.25
+4	0.25	1.0
+5	0.5	0.75
+6	0.75	0.5
+7	1.0	0.33333
+TableEnd

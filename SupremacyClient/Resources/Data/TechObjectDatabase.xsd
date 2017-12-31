@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="TechObjectDatabase"
+           targetNamespace="Supremacy:TechObjectDatabase.xsd"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           xmlns="Supremacy:TechObjectDatabase.xsd"
+           xmlns:mstns="Supremacy:TechObjectDatabase.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:s="Supremacy:Supremacy.xsd">
+  
+  <xs:import namespace="Supremacy:Supremacy.xsd"
+             schemaLocation="Supremacy.xsd"/>
+
+  <xs:simpleType name="BonusType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Food"/>
+      <xs:enumeration value="PercentFood"/>
+      <xs:enumeration value="Industry"/>
+      <xs:enumeration value="PercentIndustry"/>
+      <xs:enumeration value="Energy"/>
+      <xs:enumeration value="PercentEnergy"/>
+      <xs:enumeration value="Research"/>
+      <xs:enumeration value="Credits"/>
+      <xs:enumeration value="PercentCredits"/>
+      <xs:enumeration value="Intelligence"/>
+      <xs:enumeration value="PercentIntelligence"/>
+      <xs:enumeration value="Morale"/>
+      <xs:enumeration value="MoraleEmpireWide"/>
+      <xs:enumeration value="TradeRoutes"/>
+      <xs:enumeration value="PercentTotalCredits"/>
+      <xs:enumeration value="PercentTradeIncome"/>
+      <xs:enumeration value="GrowthRate"/>
+      <xs:enumeration value="PercentGrowthRate"/>
+      <xs:enumeration value="BribeResistance"/>
+      <xs:enumeration value="PercentBribeResistanceEmpireWide"/>
+      <xs:enumeration value="PercentPopulationHealth"/>
+      <xs:enumeration value="Food"/>
+      <xs:enumeration value="InternalAffairs"/>
+      <xs:enumeration value="PercentInternalAffairs"/>
+      <xs:enumeration value="ExternalAffairs"/>
+      <xs:enumeration value="PercentExternalAffairs"/>
+      <xs:enumeration value="Personnel"/>
+      <xs:enumeration value="PercentPersonnelLoyalty"/>
+      <xs:enumeration value="PercentPersonnelTraining"/>
+      <xs:enumeration value="PercentShipExperience"/>
+      <xs:enumeration value="AntiShipDefense"/>
+      <xs:enumeration value="PercentAntiShipDefense"/>
+      <xs:enumeration value="ShieldPerEnergyTech"/>
+      <xs:enumeration value="PercentGroundCombat"/>
+      <xs:enumeration value="PercentGroundDefense"/>
+      <xs:enumeration value="PercentAntiCloak"/>
+      <xs:enumeration value="PercentPlanetaryShielding"/>
+      <xs:enumeration value="ScanRange"/>
+      <xs:enumeration value="JammingRange"/>
+      <xs:enumeration value="RawMaterials"/>
+      <xs:enumeration value="PercentRawMaterials"/>
+      <xs:enumeration value="Deuterium"/>
+      <xs:enumeration value="PercentDeuterium"/>
+      <xs:enumeration value="Dilithium"/>
+      <xs:enumeration value="PercentShipBuilding"/>
+      <xs:enumeration value="PercentScrapping"/>
+      <xs:enumeration value="Raiding"/>
+      <xs:enumeration value="PercentRaiding"/>
+      <xs:enumeration value="Intercept"/>
+      <xs:enumeration value="PercentIntercept"/>
+      <xs:enumeration value="PercentTotalIntelligence"/>
+      <xs:enumeration value="PercentInternalSecurity"/>
+      <xs:enumeration value="PercentGeneralIntelligence"/>
+      <xs:enumeration value="PercentEconomicSecurity"/>
+      <xs:enumeration value="PercentSabotage"/>
+      <xs:enumeration value="PercentEconomicSabotage"/>
+      <xs:enumeration value="PercentMilitarySabotage"/>
+      <xs:enumeration value="PercentBioTechResearch"/>
+      <xs:enumeration value="PercentComputerResearch"/>
+      <xs:enumeration value="PercentConstructionResearch"/>
+      <xs:enumeration value="PercentEnergyResearch"/>
+      <xs:enumeration value="PercentPropulsionResearch"/>
+      <xs:enumeration value="PercentWeaponsResearch"/>
+      <xs:enumeration value="PercentResearchEmpireWide"/>
+      <xs:enumeration value="MoonsMadeHabitable"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ResourceValueCollection">
+    <xs:all>
+      <xs:element name="Deuterium"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+      <xs:element name="Dilithium"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+      <xs:element name="Personnel"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+      <xs:element name="RawMaterials"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="PrerequisiteCollection">
+    <xs:sequence>
+      <xs:element name="EquivalentPrerequisites"
+                  minOccurs="0"
+                  maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Prerequisite"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TechRequirementCollection">
+    <xs:all>
+      <xs:element name="BioTech"
+                  type="xs:unsignedByte"
+                  minOccurs="0"/>
+      <xs:element name="Computers"
+                  type="xs:unsignedByte"
+                  minOccurs="0"/>
+      <xs:element name="Construction"
+                  type="xs:unsignedByte"
+                  minOccurs="0"/>
+      <xs:element name="Energy"
+                  type="xs:unsignedByte"
+                  minOccurs="0"/>
+      <xs:element name="Propulsion"
+                  type="xs:unsignedByte"
+                  minOccurs="0"/>
+      <xs:element name="Weapons"
+                  type="xs:unsignedByte"
+                  minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="UpgradeOption">
+    <xs:all>
+      <xs:element name="UpgradeCost"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+      <xs:element name="ResourceCosts"
+                  type="ResourceValueCollection"
+                  minOccurs="0"/>
+    </xs:all>
+    <xs:attribute name="Target"
+                  type="xs:normalizedString"
+                  use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="BuildRestriction">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="OnePerSystem"/>
+      <xs:enumeration value="HomeSystem"/>
+      <xs:enumeration value="NativeSystem"/>
+      <xs:enumeration value="NonNativeSystem"/>
+      <xs:enumeration value="ConqueredSystem"/>
+      <xs:enumeration value="WhiteStar"/>
+      <xs:enumeration value="BlueStar"/>
+      <xs:enumeration value="GreenStar"/>
+      <xs:enumeration value="YellowStar"/>
+      <xs:enumeration value="OrangeStar"/>
+      <xs:enumeration value="RedStar"/>
+      <xs:enumeration value="ArcticPlanet"/>
+      <xs:enumeration value="Asteroids"/>
+      <xs:enumeration value="BarrenPlanet"/>
+      <xs:enumeration value="CrystallinePlanet"/>
+      <xs:enumeration value="DemonPlanet"/>
+      <xs:enumeration value="DesertPlanet"/>
+      <xs:enumeration value="GasGiant"/>
+      <xs:enumeration value="JunglePlanet"/>
+      <xs:enumeration value="OceanicPlanet"/>
+      <xs:enumeration value="RoguePlanet"/>
+      <xs:enumeration value="TerranPlanet"/>
+      <xs:enumeration value="VolcanicPlanet"/>
+      <xs:enumeration value="OnePerEmpire"/>
+      <xs:enumeration value="DilithiumBonus"/>
+      <xs:enumeration value="RawMaterialsBonus"/>
+      <xs:enumeration value="Moons"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="TechObjectType"
+                  abstract="true">
+    <xs:sequence>
+      <xs:element name="Name"
+                  type="xs:normalizedString"
+                  minOccurs="0"/>
+      <xs:element name="Description"
+                  type="xs:normalizedString"
+                  minOccurs="0"/>
+      <xs:element name="Image"
+                  type="xs:normalizedString"
+                  minOccurs="0"/>
+      <xs:element name="TechRequirements"
+                  type="TechRequirementCollection"
+                  minOccurs="0"/>
+      <xs:element name="BuildCost"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+      <xs:element name="RawMaterials"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+      <xs:element name="MaintenanceCost"
+                  type="xs:nonNegativeInteger"
+                  minOccurs="0"/>
+      <xs:element name="PopulationHealth"
+                  minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:nonNegativeInteger">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="IsUniversallyAvailable"
+                  type="xs:boolean"
+                  minOccurs="0"/>
+      <xs:element name="Prerequisites"
+                  type="PrerequisiteCollection"
+                  minOccurs="0"/>
+      <xs:element name="ObsoletedItems"
+                  minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ObsoletedItem"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="UpgradeOptions"
+                  minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UpgradeOption"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Key"
+                  type="xs:normalizedString"
+                  use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="OrbitalType"
+                  abstract="true">
+    <xs:complexContent>
+      <xs:extension base="TechObjectType">
+        <xs:sequence>
+          <xs:element name="Crew"
+                      type="xs:nonNegativeInteger"
+                      minOccurs="0"/>
+          <xs:element name="ScienceAbility"
+                      minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:nonNegativeInteger">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="100"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="ScanPower"
+                      type="xs:nonNegativeInteger"
+                      minOccurs="0"/>
+          <xs:element name="SensorRange"
+                      type="xs:nonNegativeInteger"
+                      minOccurs="0"/>
+          <xs:element name="HullStrength"
+                      type="xs:nonNegativeInteger"
+                      minOccurs="1"/>
+          <xs:element name="ShieldStrength"
+                      type="xs:nonNegativeInteger"
+                      minOccurs="1"/>
+          <xs:element name="ShieldRecharge"
+                      minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:nonNegativeInteger">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="100"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="BeamType"
+                      minOccurs="0">
+            <xs:complexType>
+              <xs:attribute name="Name"
+                            type="xs:normalizedString"
+                            use="optional"/>
+              <xs:attribute name="Count"
+                            type="xs:positiveInteger"
+                            use="required"/>
+              <xs:attribute name="Damage"
+                            type="xs:positiveInteger"
+                            use="required"/>
+              <xs:attribute name="Refire"
+                            use="required">
+                <xs:simpleType>
+                  <xs:restriction base="xs:nonNegativeInteger">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="1000"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="TorpedoType"
+                      minOccurs="0">
+            <xs:complexType>
+              <xs:attribute name="Name"
+                            type="xs:normalizedString"
+                            use="optional"/>
+              <xs:attribute name="Count"
+                            type="xs:positiveInteger"
+                            use="required"/>
+              <xs:attribute name="Damage"
+                            type="xs:positiveInteger"
+                            use="required"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ShipType">
+    <xs:complexContent>
+      <xs:extension base="OrbitalType">
+        <xs:sequence>
+          <xs:element name="ShipType"
+                      minOccurs="1">
+            <xs:simpleType>
+              <xs:restriction base="xs:normalizedString">
+                <xs:enumeration value="Colony"/>
+                <xs:enumeration value="Construction"/>
+                <xs:enumeration value="Transport"/>
+                <xs:enumeration value="Medical"/>
+                <xs:enumeration value="Science"/>
+                <xs:enumeration value="Scout"/>
+                <xs:enumeration value="FastAttack"/>
+                <xs:enumeration value="Cruiser"/>
+                <xs:enumeration value="HeavyCruiser"/>
+                <xs:enumeration value="StrikeCruiser"/>
+                <xs:enumeration value="Command"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="ClassName"
+                      type="xs:normalizedString"
+                      minOccurs="1"/>
+          <xs:element name="Dilithium"
+                      type="xs:nonNegativeInteger"
+                      minOccurs="0"/>
+          <xs:element name="CloakStrength"
+                      type="xs:unsignedByte"
+                      minOccurs="0"/>
+          <xs:element name="Range"
+                      type="xs:unsignedByte"
+                      minOccurs="1"/>
+          <xs:element name="Speed"
+                      type="xs:unsignedByte"
+                      minOccurs="1"/>
+          <xs:element name="FuelReserve"
+                      type="xs:unsignedShort"
+                      minOccurs="1"/>
+          <xs:element name="InterceptAbility"
+                      minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:nonNegativeInteger">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="100"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="RaidAbility"
+                      minOccurs="0">
+            <xs:simpleType>
+              <xs:restriction base="xs:nonNegativeInteger">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="100"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="Maneuverability"
+                      type="xs:unsignedByte"
+                      minOccurs="1"/>
+          <xs:element name="EvacuationLimit"
+                      type="xs:unsignedByte"
+                      default="0"
+                      minOccurs="0"/>
+          <xs:element name="WorkCapacity"
+                      type="xs:nonNegativeInteger"
+                      minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SpaceStationType">
+    <xs:complexContent>
+      <xs:extension base="OrbitalType">
+        <xs:sequence>
+          <xs:element name="RepairSlots"
+                      type="xs:unsignedByte"
+                      minOccurs="1"/>
+          <xs:element name="RepairCapacity"
+                      type="xs:unsignedShort"
+                      minOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OrbitalBatteryType">
+    <xs:complexContent>
+      <xs:extension base="OrbitalType">
+        <xs:sequence>
+          <xs:element name="UnitEnergyCost"
+                      type="xs:integer"
+                      minOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="BuildingType">
+    <xs:complexContent>
+      <xs:extension base="TechObjectType">
+        <xs:sequence>
+          <xs:element name="EnergyCost"
+                      type="xs:unsignedShort"
+                      minOccurs="0"/>
+          <xs:element name="Restrictions"
+                      minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Restriction"
+                            type="BuildRestriction" 
+                            minOccurs="0"
+                            maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Bonuses"
+                      minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Bonus"
+                            maxOccurs="unbounded">
+                  <xs:complexType>
+                    <xs:attribute name="Type"
+                                  type="BonusType"
+                                  use="required"/>
+                    <xs:attribute name="Amount"
+                                  type="xs:integer"
+                                  use="required"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <!--<xs:element name="EffectsGroups"
+                      minOccurs="0">
+            <xs:complexType>
+              <xs:choice minOccurs="0"
+                         maxOccurs="unbounded">
+                <xs:element name="EffectsGroup"
+                            type="EffectsGroup:EffectsGroup"/>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>-->
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ShipyardType">
+    <xs:complexContent>
+      <xs:extension base="BuildingType">
+        <xs:sequence>
+          <xs:element name="BuildSlots"
+                      type="xs:unsignedByte"
+                      minOccurs="1"/>
+          <xs:element name="BuildEfficiency"
+                      minOccurs="1">
+            <xs:simpleType>
+              <xs:restriction base="xs:float">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="1.0"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="MaxBuildTechLevel"
+                      type="xs:unsignedByte"
+                      minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ProductionFacilityType">
+    <xs:complexContent>
+      <xs:extension base="TechObjectType">
+        <xs:sequence>
+          <xs:element name="LaborCost"
+                      type="xs:unsignedByte"
+                      minOccurs="1"/>
+          <xs:element name="ProductionCategory"
+                      minOccurs="1">
+            <xs:simpleType>
+              <xs:restriction base="xs:normalizedString">
+                <xs:enumeration value="Food" />
+                <xs:enumeration value="Industry" />
+                <xs:enumeration value="Energy" />
+                <xs:enumeration value="Research" />
+                <xs:enumeration value="Intelligence" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <!--<xs:element name="ProductionCategory"
+                      type="s:ProductionCategory"
+                      minOccurs="1"/>-->
+          <xs:element name="UnitOutput"
+                      type="xs:unsignedShort"
+                      minOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="TechObjectDatabase">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="ProductionFacilities">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="ProductionFacility"
+                          type="ProductionFacilityType"
+                          minOccurs="0"
+                          maxOccurs="unbounded"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Buildings">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="Building"
+                          type="BuildingType"
+                          minOccurs="0"
+                          maxOccurs="unbounded"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Shipyards">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="Shipyard"
+                          type="ShipyardType"
+                          minOccurs="0"
+                          maxOccurs="unbounded"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SpaceStations">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="SpaceStation"
+                          type="SpaceStationType"
+                          minOccurs="0"
+                          maxOccurs="unbounded"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Ships">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="Ship"
+                          type="ShipType"
+                          minOccurs="0"
+                          maxOccurs="unbounded"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OrbitalBatteries">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="OrbitalBattery"
+                          type="OrbitalBatteryType"
+                          minOccurs="0"
+                          maxOccurs="unbounded"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

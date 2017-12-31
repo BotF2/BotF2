@@ -1,0 +1,146 @@
+using System;
+using System.Xml;
+
+using Supremacy.Entities;
+using Supremacy.Encyclopedia;
+using Supremacy.Game;
+using Supremacy.IO.Serialization;
+using Supremacy.Tech;
+using Supremacy.Universe;
+
+namespace Supremacy.Orbitals
+{
+    [Serializable]
+    public class OrbitalBatteryDesign : OrbitalDesign
+    {
+        public OrbitalBatteryDesign() {}
+
+        public OrbitalBatteryDesign(XmlElement element)
+            : base(element)
+        {
+            var currentElement = element["UnitEnergyCost"];
+            if (currentElement != null)
+            {
+                int unitEnergyCost;
+                var unitEnergyCostText = currentElement.InnerText.Trim();
+
+                if (int.TryParse(unitEnergyCostText, out unitEnergyCost))
+                {
+                    UnitEnergyCost = unitEnergyCost;
+                }
+                else
+                {
+                    Log.WarnFormat(
+                        "Invalid unit energy cost specified for design '{0}': {1}",
+                        Key ?? UnknownDesignKey,
+                        unitEnergyCostText);
+                }
+            }
+        }
+
+        public int UnitEnergyCost { get; set; }
+
+        protected override string DefaultImageSubFolder
+        {
+            get { return "OrbitalBatteries/"; }
+        }
+
+        /// <summary>
+        /// Gets the encyclopedia category for a building of this design.
+        /// </summary>
+        /// <value>The encyclopedia category.</value>
+        public override EncyclopediaCategory EncyclopediaCategory
+        {
+            get { return EncyclopediaCategory.Batteries; }
+        }
+
+        protected internal override void AppendXml(XmlElement baseElement)
+        {
+            base.AppendXml(baseElement);
+
+            var doc = baseElement.OwnerDocument;
+            var newElement = doc.CreateElement("UnitEnergyCost");
+
+            newElement.InnerText = UnitEnergyCost.ToString();
+            baseElement.AppendChild(newElement);
+        }
+
+        public override bool TrySpawn(MapLocation location, Civilization owner, out TechObject spawnedInstance)
+        {
+            if (!CanSpawn(
+                location,
+                owner,
+                requireSectorOwned: true,
+                requireStarSystem: true,
+                requireColony: true))
+            {
+                spawnedInstance = null;
+                return false;
+            }
+
+            var sector = GameContext.Current.Universe.Map[location];
+            var system = sector.System;
+
+            system.Colony.OrbitalBatteryDesign = this;
+            system.Colony.AddOrbitalBatteries(1);
+            system.Colony.ActivateOrbitalBattery();
+
+            spawnedInstance = null;
+            return true;
+        }
+    }
+
+    [Serializable]
+    public class OrbitalBattery : Orbital
+    {
+        public OrbitalBattery() {}
+
+        // ReSharper disable RedundantOverridenMember
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            base.SerializeOwnedData(writer, context);
+            writer.Write(_isActive);
+        }
+
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
+            _isActive = reader.ReadBoolean();
+        }
+        // ReSharper restore RedundantOverridenMember
+
+        public OrbitalBattery(OrbitalBatteryDesign design)
+            : base(design) {}
+
+        public new OrbitalBatteryDesign Design
+        {
+            get { return (OrbitalBatteryDesign)base.Design; }
+            set { base.Design = value; }
+        }
+
+        #region IsActive Property
+
+        private bool _isActive;
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (Equals(value, _isActive))
+                    return;
+
+                _isActive = value;
+
+                OnIsActiveChanged();
+            }
+        }
+
+        protected virtual void OnIsActiveChanged()
+        {
+            OnPropertyChanged("IsActive");
+        }
+
+        #endregion
+    }
+}

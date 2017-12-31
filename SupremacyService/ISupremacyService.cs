@@ -1,0 +1,153 @@
+// ISupremacyService.cs
+//
+// Copyright (c) 2007 Mike Strobel
+//
+// This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+// For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+//
+// All other rights reserved.
+
+using System.ServiceModel;
+
+using Supremacy.Combat;
+using Supremacy.Game;
+
+namespace Supremacy.WCF
+{
+    [ServiceContract(
+        Namespace = "http://Supremacy.WPF",
+        SessionMode = SessionMode.Required,
+        CallbackContract = typeof(ISupremacyCallback))]
+    public interface ISupremacyService
+    {
+        [OperationContract(
+            IsOneWay = false,
+            IsInitiating = true,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/HostGame",
+            ReplyAction = "http://Supremacy.WPF/ISupremacyService/HostGameResponse")]
+        HostGameResult HostGame(GameInitData initData, out Player localPlayer, out LobbyData lobbyData);
+
+        [OperationContract(
+            IsOneWay = false,
+            IsInitiating = true,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/JoinGame",
+            ReplyAction = "http://Supremacy.WPF/ISupremacyService/JoinGameResponse")]
+        JoinGameResult JoinGame(string playerName, out Player localPlayer, out LobbyData lobbyData);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = true,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/Disconnect")]
+        void Disconnect();
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/StartGame")]
+        void StartGame();
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/Pong")]
+        void Pong(int pingId);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/SendChatMessage")]
+        void SendChatMessage(string message, int recipientId);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/EndTurn")]
+        void EndTurn(PlayerOrdersMessage orders);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/SaveGame")]
+        void SaveGame(string fileName);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/UpdateGameOptions")]
+        void UpdateGameOptions(GameOptions options);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/ClearPlayerSlot")]
+        void ClearPlayerSlot(int slotId);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/ClosePlayerSlot")]
+        void ClosePlayerSlot(int slotId);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/AssignPlayerSlot")]
+        void AssignPlayerSlot(int slotId, int playerId);
+
+        [OperationContract(
+            IsOneWay = false,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = false,
+            Action = "http://Supremacy.WPF/ISupremacyService/GetNewObjectID")]
+        int GetNewObjectID();
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/SendCombatOrders")]
+        void SendCombatOrders(CombatOrders orders);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/SendInvasionOrders")]
+        void SendInvasionOrders(InvasionOrders orders);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            //AsyncPattern = true,
+            Action = "http://Supremacy.WPF/ISupremacyService/NotifyInvasionScreenReady")]
+        void NotifyInvasionScreenReady();
+    }
+}

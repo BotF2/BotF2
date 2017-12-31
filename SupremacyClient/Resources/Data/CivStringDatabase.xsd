@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="CivStringDatabase"
+           targetNamespace="Supremacy:CivStringDatabase.xsd"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           xmlns="Supremacy:CivStringDatabase.xsd"
+           xmlns:mstns="Supremacy:CivStringDatabase.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="Demeanor">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Calm" />
+      <xs:enumeration value="Meek" />
+      <xs:enumeration value="Condescending" />
+      <xs:enumeration value="Indignant" />
+      <xs:enumeration value="Impatient" />
+      <xs:enumeration value="Annoyed" />
+      <xs:enumeration value="Enraged" />
+      <xs:enumeration value="Receptive" />
+      <xs:enumeration value="Enthusiastic" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="CivStringCollectionBase">
+    <xs:sequence>
+      <xs:element name="CivString"
+                  minOccurs="0"
+                  maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Value"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:token">
+                    <xs:attribute name="Language"
+                                  type="xs:language"
+                                  use="optional" />
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="Key"
+                        type="xs:token"/>
+          <xs:attribute name="Demeanor"
+                        use="optional"
+                        type="mstns:Demeanor"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CivStringCategory">
+    <xs:complexContent>
+      <xs:extension base="CivStringCollectionBase">
+        <xs:attribute name="Name"
+                  type="xs:token"
+                  use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CivStringCategoryCollectionBase">
+    <xs:sequence>
+      <xs:element name="Category"
+                  type="CivStringCategory"
+                  minOccurs="0"
+                  maxOccurs="unbounded">
+        <xs:unique name="CivStringUniqueKey">
+          <xs:selector xpath="mstns:CivString"/>
+          <xs:field xpath="@Key"/>
+          <xs:field xpath="@Demeanor"/>
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CivStringCategoryCollection">
+    <xs:complexContent>
+      <xs:extension base="CivStringCategoryCollectionBase">
+        <xs:attribute name="Civilization"
+                      type="xs:token"
+                      use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="CivStringDatabase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DefaultStrings"
+                    type="CivStringCategoryCollectionBase"
+                    minOccurs="1">
+          <xs:unique name="DefaultStringsUniqueKey">
+            <xs:selector xpath="mstns:Category"/>
+            <xs:field xpath="@Key"/>
+          </xs:unique>
+        </xs:element>
+        <xs:element name="CivStrings"
+                    type="CivStringCategoryCollection"
+                    minOccurs="0"
+                    maxOccurs="unbounded">
+          <xs:unique name="CivStringsCategoryUniqueKey">
+            <xs:selector xpath="mstns:Category"/>
+            <xs:field xpath="@Name"/>
+          </xs:unique>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="CivStringsCollectionUniqueKey">
+      <xs:selector xpath="mstns:CivStrings"/>
+      <xs:field xpath="@Civilization"/>
+    </xs:unique>
+  </xs:element>
+</xs:schema>

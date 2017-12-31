@@ -1,0 +1,29 @@
+
+All artwork, music and data contained within the 'Resources' directory
+is licensed under the Creative Commons Attribution-Share-Alike 2.0 license.
+
+You are free:
+
+    - to copy, distribute, display, and perform the work 
+    - to make derivative works 
+    - to make commercial use of the work 
+
+Under the following conditions:
+
+    Attribution. You must attribute the work in the manner specified by the
+    author or licensor.
+
+    Share Alike. If you alter, transform, or build upon this work, you may
+    distribute the resulting work only under a license identical to this one.
+
+    - For any reuse or distribution, you must make clear to others the
+      license terms of this work.
+
+    - Any of these conditions can be waived if you get permission from the
+      copyright holder.
+
+Your fair use and other rights are in no way affected by the above.
+
+This is a human-readable summary of the Legal Code (the full license),
+available at <http://creativecommons.org/licenses/by-sa/2.0/>.
+

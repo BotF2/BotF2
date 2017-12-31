@@ -1,0 +1,104 @@
+TableStart	BonusDescriptions
+ColumnHeadingsStart	Description	IsPercent
+RowHeadingsStart
+AntiShipDefense	Anti-Ship Defense	FALSE
+BribeResistance	Bribe Resistance	FALSE
+Credits	Credits	FALSE
+Deuterium	Deuterium	FALSE
+Dilithium	Dilithium	FALSE
+Energy	Energy	FALSE
+ExternalAffairs	External Affairs	FALSE
+Food	Food	FALSE
+GrowthRate	Growth Rate	FALSE
+Industry	Industry	FALSE
+Intelligence	Intelligence	FALSE
+Intercept	Intercept Ability	FALSE
+InternalAffairs	Internal Affairs	FALSE
+Morale	Morale	FALSE
+MoraleEmpireWide	Morale Empire-Wide	FALSE
+PercentAntiCloak	Anti-Cloak	TRUE
+PercentAntiShipDefense	Anti-Ship Defense	TRUE
+PercentBioTechResearch	Biotech Research	TRUE
+PercentBribeResistanceEmpireWide	Bribe Resistance Empire-Wide	TRUE
+PercentComputerResearch	Computers Research	TRUE
+PercentConstructionResearch	Construction Research	TRUE
+PercentCredits	Credits	TRUE
+PercentDeuterium	Deuterium	TRUE
+PercentEconomicSabotage	Economic Sabotage	TRUE
+PercentEconomicSecurity	Economic Security	TRUE
+PercentEnergy	Energy	TRUE
+PercentEnergyResearch	Energy Research	TRUE
+PercentExternalAffairs	External Affairs	TRUE
+PercentFood	Food	TRUE
+PercentGeneralIntelligence	General Intelligence	TRUE
+PercentGroundCombat	Ground Combat	TRUE
+PercentGroundDefense	Ground Defense	TRUE
+PercentGrowthRate	Growth Rate	TRUE
+PercentIndustry	Industry	TRUE
+PercentIntelligence	Intelligence	TRUE
+PercentIntercept	Intercept Ability	TRUE
+PercentInternalAffairs	Internal Affairs	TRUE
+PercentInternalSecurity	Internal Security	TRUE
+JammingRange	Jamming Range	FALSE
+PercentMilitarySabotage	Military Sabotage	TRUE
+PercentPersonnelLoyalty	Personnel Loyalty	TRUE
+PercentPersonnelTraining	Personnel Training	TRUE
+PercentPlanetaryShielding	Planetary Shielding	TRUE
+PercentPoliticalSabotage	Political Sabotage	TRUE
+PercentPopulationHealth	Population Health	TRUE
+PercentPropulsionResearch	Propulsion Research	TRUE
+PercentRaiding	Percent Raiding	TRUE
+PercentRawMaterials	Duranium	TRUE
+PercentResearchEmpireWide	Research Empire-Wide	TRUE
+PercentSabotage	Sabotage	TRUE
+PercentScrapping	Scrapping	TRUE
+ShieldPerEnergyTech	Shield per Energy Tech	FALSE
+PercentShipBuilding	Shipbuilding	TRUE
+PercentShipExperience	Ship Experience	TRUE
+PercentTotalCredits	Total Credits	TRUE
+PercentTotalIntelligence	Total Intelligence	TRUE
+PercentTradeIncome	Trade Income	TRUE
+PercentWeaponsResearch	Weapons Research	TRUE
+Personnel	Personnel	FALSE
+Raiding	Raiding	FALSE
+RawMaterials	Duranium	FALSE
+Research	Research	FALSE
+ScanRange	Scan Range	FALSE
+TradeRoutes	Trade Routes	FALSE
+MaxPopulationPerMoonSize	Max Population Per Moon Size	FALSE
+PlanetaryShielding	Planetary Shielding	FALSE
+TableEnd
+		
+TableStart	RestrictionDescriptions
+ColumnHeadingsStart	Description
+RowHeadingsStart
+None	None
+HomeSystem	Home System
+NativeSystem	Native System
+NonNativeSystem	Non-Native System
+ConqueredSystem	Conquered System
+WhiteStar	White Star
+BlueStar	Blue Star
+GreenStar	Green Star
+YellowStar	Yellow Star
+OrangeStar	Orange Star
+RedStar	Red Star
+ArcticPlanet	Arctic Planet
+Asteroids	Asteroids
+BarrenPlanet	Barren Planet
+CrystallinePlanet	Crystalline Giant
+DemonPlanet	Demon Planet
+DesertPlanet	Desert Planet
+GasGiant	Gas Giant
+JunglePlanet	Jungle Planet
+OceanicPlanet	Oceanic Planet
+RoguePlanet	Rogue Planet
+TerranPlanet	Terran Planet
+VolcanicPlanet	Volcanic Planet
+OnePerEmpire	One Per Empire
+DilithiumBonus	Dilithium
+RawMaterialsBonus	Duranium
+Moons	Moons
+OnePer100MaxPopUnits	One Per 100 Max Population
+MemberSystem	Member System
+TableEnd

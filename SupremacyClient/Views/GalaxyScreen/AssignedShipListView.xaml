@@ -1,0 +1,218 @@
+﻿<scc:ThemedUserControl x:Class="Supremacy.Client.Views.AssignedShipListView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                       xmlns:views="clr-namespace:Supremacy.Client.Views">
+  <UserControl.Resources>
+    <s:CivBrushConverter x:Key="CivBrushConverter" />
+  </UserControl.Resources>
+  <UserControl.ContextMenu>
+    <ContextMenu>
+      <MenuItem x:Name="ScrapMenuItem"
+                Header="{s:StringResource SCRAP}"
+                IsCheckable="True"
+                Command="{x:Static scc:GalaxyScreenCommands.Scrap}" />
+    </ContextMenu>
+  </UserControl.ContextMenu>
+  <Grid>
+    <scc:ListViewEx x:Name="ShipList"
+                    Background="Transparent"
+                    SelectionMode="Extended"
+                    ItemsSource="{Binding SelectedTaskForce.View.Ships}"
+                    SelectedItem="{Binding Path=SelectedShipInTaskForce, Mode=OneWayToSource}"
+                    SelectionChanged="OnShipListSelectionChanged">
+      <i:Interaction.Behaviors>
+        <scc:MultiSelectBehavior />
+      </i:Interaction.Behaviors>
+      <scc:DragDropManager.DragSourceAdvisor>
+        <views:TaskForceDragSourceAdvisor />
+      </scc:DragDropManager.DragSourceAdvisor>
+      <ListView.Template>
+        <ControlTemplate TargetType="{x:Type ListView}">
+          <ScrollViewer CanContentScroll="False"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <WrapPanel IsItemsHost="True"
+                       Orientation="Horizontal" />
+          </ScrollViewer>
+        </ControlTemplate>
+      </ListView.Template>
+      <ListView.ItemContainerStyle>
+        <Style TargetType="{x:Type scc:ListViewItemEx}">
+          <Setter Property="KeyboardNavigation.IsTabStop"
+                  Value="False" />
+          <Setter Property="FocusVisualStyle"
+                  Value="{x:Null}" />
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="{x:Type scc:ListViewItemEx}">
+                <Border x:Name="ItemBorder">
+                  <DockPanel LastChildFill="False"
+                             Margin="0,0,12,12">
+                    <s:BlockBar x:Name="ShieldBar"
+                                DockPanel.Dock="Left"
+                                s:BlockBar.IsReadOnly="True"
+                                BlockCount="12"
+                                BlockMargin="3"
+                                BlockBrush="Magenta"
+                                Value="{Binding Path=Source.ShieldStrength.PercentFilled, Mode=OneWay}"
+                                Height="6"
+                                Margin="0,0,3,0"
+                                Width="45"
+                                VerticalAlignment="Top">
+                      <s:BlockBar.LayoutTransform>
+                        <RotateTransform Angle="270" />
+                      </s:BlockBar.LayoutTransform>
+                      <s:BlockBar.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{s:StringResource SHIP_SHIELDS}" />
+                          <TextBlock Text=": " />
+                          <TextBlock Text="{Binding Path=Source.ShieldStrength.CurrentValue}" />
+                          <TextBlock Text="/" />
+                          <TextBlock Text="{Binding Path=Source.ShieldStrength.Maximum}" />
+                        </StackPanel>
+                      </s:BlockBar.ToolTip>
+                    </s:BlockBar>
+                    <s:BlockBar x:Name="HullBar"
+                                DockPanel.Dock="Left"
+                                s:BlockBar.IsReadOnly="True"
+                                BlockCount="12"
+                                BlockMargin="3"
+                                BlockBrush="Lime"
+                                Value="{Binding Path=Source.HullStrength.PercentFilled, Mode=OneWay}"
+                                Height="6"
+                                Margin="0,0,3,0"
+                                Width="45"
+                                VerticalAlignment="Top">
+                      <s:BlockBar.LayoutTransform>
+                        <RotateTransform Angle="270" />
+                      </s:BlockBar.LayoutTransform>
+                      <s:BlockBar.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{s:StringResource SHIP_HULL}" />
+                          <TextBlock Text=": " />
+                          <TextBlock Text="{Binding Path=Source.HullStrength.CurrentValue}" />
+                          <TextBlock Text="/" />
+                          <TextBlock Text="{Binding Path=Source.HullStrength.Maximum}" />
+                        </StackPanel>
+                      </s:BlockBar.ToolTip>
+                    </s:BlockBar>
+                    <s:BlockBar x:Name="FuelBar"
+                                DockPanel.Dock="Left"
+                                s:BlockBar.IsReadOnly="True"
+                                BlockCount="12"
+                                BlockMargin="3"
+                                BlockBrush="Gold"
+                                Value="{Binding Path=Source.FuelReserve.PercentFilled, Mode=OneWay}"
+                                Height="6"
+                                Margin="0,0,3,0"
+                                Width="45"
+                                VerticalAlignment="Top">
+                      <s:BlockBar.LayoutTransform>
+                        <RotateTransform Angle="270" />
+                      </s:BlockBar.LayoutTransform>
+                      <s:BlockBar.ToolTip>
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{s:StringResource SHIP_FUEL}" />
+                          <TextBlock Text=": " />
+                          <TextBlock Text="{Binding Path=Source.FuelReserve.CurrentValue}" />
+                          <TextBlock Text="/" />
+                          <TextBlock Text="{Binding Path=Source.FuelReserve.Maximum}" />
+                        </StackPanel>
+                      </s:BlockBar.ToolTip>
+                    </s:BlockBar>
+                    <Border x:Name="ShipImageBorder"
+                            Width="54"
+                            Height="45"
+                            BorderThickness="2"
+                            BorderBrush="{Binding Path=(s:ShipView.Source), Converter={StaticResource CivBrushConverter}}"
+                            CornerRadius="4"
+                            ToolTip="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}">
+                      <Border.Background>
+                        <ImageBrush Stretch="Uniform"
+                                    ImageSource="{Binding Path=Source.ShipDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+                      </Border.Background>
+                      <Image x:Name="ScrapIndicator"
+                             Margin="3"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             Width="16"
+                             Height="16"
+                             Source="{DynamicResource Scrap_Indicator_Glyph}"
+                             Visibility="Hidden"
+                             IsHitTestVisible="False" />
+                    </Border>
+                  </DockPanel>
+                </Border>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsSelected"
+                           Value="True">
+                    <Setter TargetName="ShipImageBorder"
+                            Property="BorderBrush"
+                            Value="White" />
+                  </Trigger>
+                  <DataTrigger Binding="{Binding Path=(s:ShipView.IsOwned)}"
+                               Value="False">
+                    <Setter TargetName="FuelBar"
+                            Property="Visibility"
+                            Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding  Path=(s:ShipView.Source).(s:TechObject.Scrap)}"
+                               Value="True">
+                    <Setter TargetName="ScrapIndicator"
+                            Property="Visibility"
+                            Value="Visible" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=(s:ShipView.IsDesignKnown)}"
+                               Value="False">
+                    <Setter TargetName="ShieldBar"
+                            Property="Visibility"
+                            Value="Collapsed" />
+                    <Setter TargetName="HullBar"
+                            Property="Visibility"
+                            Value="Collapsed" />
+                    <Setter TargetName="ShipImageBorder"
+                            Property="ToolTip"
+                            Value="Unknown Vessel" />
+                    <Setter TargetName="ShipImageBorder"
+                            Property="BorderBrush"
+                            Value="White" />
+                    <Setter TargetName="ShipImageBorder"
+                            Property="Background">
+                      <Setter.Value>
+                        <ImageBrush Stretch="Uniform">
+                          <ImageBrush.ImageSource>
+                            <BitmapImage UriSource="vfs:///Resources/Images/TechObjects/__unknown.png" />
+                          </ImageBrush.ImageSource>
+                        </ImageBrush>
+                      </Setter.Value>
+                    </Setter>
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=(s:ShipView.IsPresenceKnown)}"
+                               Value="False">
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=(s:ShipView.Source).IsCloaked}"
+                               Value="True">
+                    <Setter TargetName="ShipImageBorder"
+                            Property="Opacity"
+                            Value="0.33" />
+                  </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=(s:ShipView.Source).IsCamouflaged}"
+                                 Value="True">
+                        <Setter TargetName="ShipImageBorder"
+                            Property="Opacity"
+                            Value="0.33" />
+                    </DataTrigger>
+                 </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </ListView.ItemContainerStyle>
+    </scc:ListViewEx>
+  </Grid>
+</scc:ThemedUserControl>

@@ -1,0 +1,32 @@
+﻿<LocalizedTextDatabase xmlns="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:xs="http://schemas.startreksupremacy.com/xaml/core/markup"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <LocalizedTextGroup Key="{x:Type AssaultSystemOrder}">
+    <LocalizedString Name="Description">
+      <LocalizedStringValue Language="en"
+                            Text="Assault System" />
+    </LocalizedString>
+<!--
+    <LocalizedString Name="StatusFormat">
+      <LocalizedStringValue Language="en"
+                            Text="{}Assault {0}" />
+    </LocalizedString>
+-->
+  </LocalizedTextGroup>
+
+  <LocalizedTextGroup Key="{x:Static LocalizedTextGroups.InvasionScreen}">
+    
+    <LocalizedString Name="RoundNumberFormat">
+      <LocalizedStringValue Language="en"
+                            Text="{}Round {0}" />
+    </LocalizedString>
+    
+    <LocalizedString Name="TitleFormat">
+      <LocalizedStringValue Language="en"
+                            Text="{}Assault on {0}" />
+    </LocalizedString>
+    
+  </LocalizedTextGroup>
+  
+</LocalizedTextDatabase>

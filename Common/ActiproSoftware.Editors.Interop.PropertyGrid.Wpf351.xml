@@ -1,0 +1,519 @@
+<?xml version="1.0"?><doc><assembly><name>ActiproSoftware.Editors.Interop.PropertyGrid.Wpf351</name></assembly><members><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors"><summary>
+            Represents the built-in editors used in a <c>PropertyGrid</c>.
+            </summary></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.BrushValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>BrushEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.ColorValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>ColorEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.CornerRadiusValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>CornerRadiusEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.DateTimeValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>DateTimeEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.DoubleValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>DoubleEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.EnumValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>EnumEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.GuidValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>GuidEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.Int32ValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>Int32EditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.Int32RectValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>Int32RectEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.Int64ValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>Int64EditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.MaskedTextBoxValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>MaskedTextBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.PointValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>PointEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.RectValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>RectEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.SizeValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>SizeEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.ThicknessValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>ThicknessEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.TimeSpanValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>TimeSpanEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.BuiltinEditors.VectorValueTemplateKey"><summary>
+            Gets the <see cref="T:System.Windows.ResourceKey" /> for a <see cref="T:System.Windows.DataTemplate" />, which uses a <c>VectorEditBox</c> that can
+            be used in a value cell.
+            </summary><value>A resource key.</value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase"><summary>
+            Represents a base class for property editors that expose configurable settings.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.</returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.OnPropertyChanged(System.String)"><summary>
+            Raises the <see cref="E:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.PropertyChanged" /> event.
+            </summary><param name="propertyName">Name of the property that changed.</param></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)"><summary>
+            Raises the <see cref="E:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.PropertyChanged" /> event.
+            </summary><param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.#ctor(System.String,System.Windows.ResourceKey)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase" /> class.
+            </summary><param name="propertyName">Name of the property.</param><param name="valueTemplateKey">The resource key of the <see cref="T:System.Windows.DataTemplate" /> to use for the value cell.</param></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.#ctor(System.Type,System.Windows.ResourceKey)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase" /> class.
+            </summary><param name="propertyType">Type of the property.</param><param name="valueTemplateKey">The resource key of the <see cref="T:System.Windows.DataTemplate" /> to use for the value cell.</param></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.#ctor(System.String,System.Type,System.Windows.ResourceKey)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase" /> class.
+            </summary><param name="propertyName">Name of the property.</param><param name="propertyType">Type of the property.</param><param name="valueTemplateKey">The resource key of the <see cref="T:System.Windows.DataTemplate" /> to use for the value cell.</param></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.#ctor(System.String,System.Type,System.Windows.ResourceKey,System.Windows.ResourceKey)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase" /> class.
+            </summary><param name="propertyName">Name of the property.</param><param name="propertyType">Type of the property.</param><param name="valueTemplateKey">The resource key of the <see cref="T:System.Windows.DataTemplate" /> to use for the value cell.</param><param name="nameTemplateKey">The resource key of the <see cref="T:System.Windows.DataTemplate" /> to use for the name cell.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.IsBoundToValueAsString"><summary>
+            Gets or sets a value indicating whether this property editor should bind to <c>IPropertyDataAccessor.ValueAsString</c>
+            instead of <c>IPropertyDataAccessor.Value</c>.
+            </summary><value><c>true</c> if this property editor should bind to <c>IPropertyDataAccessor.ValueAsString</c> instead of
+            <c>IPropertyDataAccessor.Value</c>; otherwise <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.ValueTemplate"><summary>
+            Gets or sets the <see cref="T:System.Windows.DataTemplate" /> for the value cell.
+            </summary><value>A <see cref="T:System.Windows.DataTemplate" />.</value><remarks>
+            The order of precedence for the name template selection is: <see cref="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.ValueTemplate" />, <see cref="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.ValueTemplateSelector" />,
+            and finally <see cref="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.ValueTemplateKey" />.
+            </remarks></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.ValueTemplateKey"><summary>
+            This property is not used by this class.
+            </summary><value><see langword="null" />.</value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.ValueTemplateSelector"><summary>
+            This property is not used by this class.
+            </summary><value><see langword="null" />.</value></member><member name="E:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PropertyEditorBase.PropertyChanged"><summary>
+            Occurs when a property value changes.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1"><summary>
+            Represents a base class for property editors that utilize controls derived from <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" />.
+            </summary><typeparam name="TEditBox">The underlying <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" /> type.</typeparam></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.CenterSlotHorizontalAlignment"><summary>
+            Gets or sets the horizontal alignment used for the center slot container element of the associated <c>PartEditBox</c>.
+            </summary><value>
+            The horizontal alignment used for the center slot container element of the associated <c>PartEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.CenterSlotMargin"><summary>
+            Gets or sets the margin used for the center slot container element of the associated <c>PartEditBox</c>.
+            </summary><value>
+            The margin used for the center slot container element of the associated <c>PartEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.CheckBoxVisibility"><summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility" /> of the <c>CheckBox</c> presented by the associated <c>PartEditBox</c>.
+            </summary><value>
+            The <see cref="T:System.Windows.Visibility" /> of the <c>CheckBox</c> presented by the associated <c>PartEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.DropDownButtonVisibility"><summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility" /> of the <c>DropDownButton</c> presented by the associated <c>PartEditBox</c>.
+            </summary><value>
+            The <see cref="T:System.Windows.Visibility" /> of the <c>DropDownButton</c> presented by the associated <c>PartEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.IsNullContentTransitioningEnabled"><summary>
+            Gets or sets a value indicating whether the <see cref="P:ActiproSoftware.Windows.Controls.Editors.PartEditBox.NullContent" /> will be animated to/from the regular content.
+            </summary><value><c>true</c> if the <see cref="P:ActiproSoftware.Windows.Controls.Editors.PartEditBox.NullContent" /> will be animated to/from the regular content; otherwise, <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.LeftSlotMargin"><summary>
+            Gets or sets the margin used for the left slot container element of the associated <c>PartEditBox</c>.
+            </summary><value>
+            The margin used for the left slot container element of the associated <c>PartEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.RightSlotMargin"><summary>
+            Gets or sets the margin used for the right slot container element of the associated <c>PartEditBox</c>.
+            </summary><value>
+            The margin used for the right slot container element of the associated <c>PartEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.PartEditBoxPropertyEditorBase`1.SpinnerVisibility"><summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility" /> of the <c>Spinner</c> presented by the associated <c>PartEditBox</c>.
+            </summary><value>
+            The <see cref="T:System.Windows.Visibility" /> of the <c>Spinner</c> presented by the associated <c>PartEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2"><summary>
+            Represents a base class for property editors that utilize controls derived from <see cref="T:ActiproSoftware.Windows.Controls.Editors.Primitives.TypeSpecificEditBoxBase`1" />.
+            </summary><typeparam name="TEditBox">The underlying <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" /> type.</typeparam><typeparam name="TValue">The type that is being modified by the <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" />.</typeparam></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2.PartValueCommitTriggers"><summary>
+            Gets or sets the <see cref="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2.PartValueCommitTriggers" /> used by the associated <c>TypeSpecificEditBoxBase&lt;T&gt;</c>.
+            </summary><value>
+            The <see cref="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.TypeSpecificEditBoxPropertyEditorBase`2.PartValueCommitTriggers" /> used by the associated <c>TypeSpecificEditBoxBase&lt;T&gt;</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.BrushPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.BrushEditBox" /> for editing <see cref="T:System.Windows.Media.Brush" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.BrushPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.BrushPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.BrushPropertyEditor" /> class.
+            </summary></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.BrushPropertyEditor.BrushPreviewVisibility"><summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility" /> of brush preview presented by the associated <c>BrushEditBox</c>.
+            </summary><value>
+            The <see cref="T:System.Windows.Visibility" /> of the brush preview presented by the associated <c>BrushEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.BrushPropertyEditor.IsAlphaComponentEditable"><summary>
+            Gets or sets a value indicating whether the alpha component is editable in the associated <c>BrushEditBox</c>.
+            </summary><value><c>true</c> if the alpha component is editable in the associated <c>BrushEditBox</c>; otherwise <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.BrushPropertyEditor.IsAlphaComponentVisible"><summary>
+            Gets or sets a value indicating whether the alpha component is visible in the associated <c>BrushEditBox</c>.
+            </summary><value><c>true</c> if the alpha component is visible in the associated <c>BrushEditBox</c>; otherwise <c>false</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.RangeTypeSpecificEditBoxPropertyEditorBase`2"><summary>
+            Represents a base class for property editors that utilize controls derived from <see cref="T:ActiproSoftware.Windows.Controls.Editors.Primitives.RangeTypeSpecificEditBoxBase`1" />.
+            </summary><typeparam name="TEditBox">The underlying <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" /> type.</typeparam><typeparam name="TValue">The type that is being modified by the <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" />.</typeparam></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.RangeTypeSpecificEditBoxPropertyEditorBase`2.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.RangeTypeSpecificEditBoxPropertyEditorBase`2" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.RangeTypeSpecificEditBoxPropertyEditorBase`2.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.RangeTypeSpecificEditBoxPropertyEditorBase`2" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.RangeTypeSpecificEditBoxPropertyEditorBase`2.Maximum"><summary>
+            Gets or sets the maximum value allowed by the associated <c>RangeTypeSpecificEditBoxBase&lt;T&gt;</c>.
+            </summary><value>
+            The maximum value allowed by the associated <c>RangeTypeSpecificEditBoxBase&lt;T&gt;</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.RangeTypeSpecificEditBoxPropertyEditorBase`2.Minimum"><summary>
+            Gets or sets the minimum value allowed by the associated <c>RangeTypeSpecificEditBoxBase&lt;T&gt;</c>.
+            </summary><value>
+            The minimum value allowed by the associated <c>RangeTypeSpecificEditBoxBase&lt;T&gt;</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.ColorEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor.ColorPreviewVisibility"><summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility" /> of color preview presented by the associated <c>ColorEditBox</c>.
+            </summary><value>
+            The <see cref="T:System.Windows.Visibility" /> of the color preview presented by the associated <c>ColorEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>ColorEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>ColorEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor.Format"><summary>
+            Gets or sets the color format string used by the associated <c>ColorEditBox</c>.
+            </summary><value>
+            The color format string used by the associated <c>ColorEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableColorPropertyEditor.IsAlphaComponentVisible"><summary>
+            Gets or sets a value indicating whether the alpha component is visible in the associated <c>ColorEditBox</c>.
+            </summary><value><c>true</c> if the alpha component is visible in the associated <c>ColorEditBox</c>; otherwise <c>false</c>.
+            </value><remarks>
+            This property does not prevent a <see cref="T:ActiproSoftware.Windows.Controls.Editors.Parts.ColorAlphaPart" /> from modifying the alpha component, this only affects
+            the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Parts.ColorPart" /> and the automation text used for <see cref="T:ActiproSoftware.Windows.Controls.Editors.Parts.ColorPartGroup" /> and <see cref="T:ActiproSoftware.Windows.Controls.Editors.ColorEditBox" />.
+            </remarks></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.ColorPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.ColorEditBox" /> for editing <see cref="T:System.Windows.Media.Color" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.ColorPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.ColorPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int64EditBoxPropertyEditorBase`2"><summary>
+            Represents a base class for property editors that utilize controls derived from <see cref="T:ActiproSoftware.Windows.Controls.Editors.Primitives.Int64EditBoxBase`1" />.
+            </summary><typeparam name="TEditBox">The underlying <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" /> type.</typeparam><typeparam name="TValue">The type that is being modified by the <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" />.</typeparam></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int64EditBoxPropertyEditorBase`2.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int64EditBoxPropertyEditorBase`2" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int64EditBoxPropertyEditorBase`2.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int64EditBoxPropertyEditorBase`2" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int64EditBoxPropertyEditorBase`2.Format"><summary>
+            Gets or sets the integer format string used by the associated <c>Int64EditBoxBase&lt;T&gt;</c>.
+            </summary><value>
+            The integer format string used by the associated <c>Int64EditBoxBase&lt;T&gt;</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int64EditBoxPropertyEditorBase`2.StepValue"><summary>
+            Gets or sets the step value used by the associated <c>Int64EditBoxBase&lt;T&gt;</c> when incrementing/decrementing the value.
+            </summary><value>
+            The step value used by the associated <c>Int64EditBoxBase&lt;T&gt;</c> when incrementing/decrementing the value.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt64PropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.Int64EditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt64PropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt64PropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt64PropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt64PropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt64PropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int64PropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.Int64EditBox" /> for editing <see cref="T:System.Int64" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int64PropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int64PropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.DoubleEditBoxPropertyEditorBase`2"><summary>
+            Represents a base class for property editors that utilize controls derived from <see cref="T:ActiproSoftware.Windows.Controls.Editors.Primitives.DoubleEditBoxBase`1" />.
+            </summary><typeparam name="TEditBox">The underlying <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" /> type.</typeparam><typeparam name="TValue">The type that is being modified by the <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" />.</typeparam></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.DoubleEditBoxPropertyEditorBase`2.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.DoubleEditBoxPropertyEditorBase`2" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.DoubleEditBoxPropertyEditorBase`2.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.DoubleEditBoxPropertyEditorBase`2" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.DoubleEditBoxPropertyEditorBase`2.Format"><summary>
+            Gets or sets the double format string used by the associated <c>DoubleEditBoxBase&lt;T&gt;</c>.
+            </summary><value>
+            The double format string used by the associated <c>DoubleEditBoxBase&lt;T&gt;</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.DoubleEditBoxPropertyEditorBase`2.StepValue"><summary>
+            Gets or sets the step value used by the associated <c>DoubleEditBoxBase&lt;T&gt;</c> when incrementing/decrementing the value.
+            </summary><value>
+            The step value used by the associated <c>DoubleEditBoxBase&lt;T&gt;</c> when incrementing/decrementing the value.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableCornerRadiusPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.CornerRadiusEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableCornerRadiusPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableCornerRadiusPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableCornerRadiusPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableCornerRadiusPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableCornerRadiusPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableCornerRadiusPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>CornerRadiusEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>CornerRadiusEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.CornerRadiusPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.CornerRadiusEditBox" /> for editing <see cref="T:System.Windows.CornerRadius" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.CornerRadiusPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.CornerRadiusPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableThicknessPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.ThicknessEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableThicknessPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableThicknessPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableThicknessPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableThicknessPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableThicknessPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableThicknessPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>ThicknessEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>ThicknessEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.ThicknessPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.ThicknessEditBox" /> for editing <see cref="T:System.Windows.Thickness" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.ThicknessPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.ThicknessPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.EnumEditBox" /> for editing <see cref="T:System.Enum" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor.EnumType"><summary>
+            Gets or sets the enumeration type associated with the value used by the associated <c>EnumEditBox</c>.
+            </summary><value>
+            The enumeration type associated with the value used by the associated <c>EnumEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor.IsEditable"><summary>
+            Gets or sets a value indicating whether the underlying part of the associated <c>EnumEditBox</c> is editable.
+            </summary><value><c>true</c> if the underlying part of the associated <c>EnumEditBox</c> is editable; otherwise <c>false</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.EnumPropertyEditor.UseDescriptionAttributes"><summary>
+            Gets or sets a value indicating whether enumeration values presented by the associated <c>EnumEditBox</c>
+            should be displayed using an associated <c>DescriptionAttribute</c>, if any.
+            </summary><value><c>true</c> if enumeration values presented by the by the associated <c>EnumEditBox</c>
+            should be displayed using an associated <c>DescriptionAttribute</c>, if any; otherwise <c>false</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.MaskedTextBox" /> for editing property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor.#ctor(System.String)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor" /> class.
+            </summary><param name="propertyName">Name of the property.</param></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor.#ctor(System.String,System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor" /> class.
+            </summary><param name="propertyName">Name of the property.</param><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.MaskedTextBoxPropertyEditor.Mask"><summary>
+            Gets or sets the mask used by the associated <c>MaskedTextBox</c>.
+            </summary><value>
+            The mask used by the associated <c>MaskedTextBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.DateTimeEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>DateTimeEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>DateTimeEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDateTimePropertyEditor.Format"><summary>
+            Gets or sets the date/time format string used by the associated <c>DateTimeEditBox</c>.
+            </summary><value>
+            The date/time format string used by the associated <c>DateTimeEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.DateTimePropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.DateTimeEditBox" /> for editing <see cref="T:System.DateTime" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.DateTimePropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.DateTimePropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.GuidEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor.Format"><summary>
+            Gets or sets the GUID format string used by the associated <c>GuidEditBox</c>.
+            </summary><value>
+            The GUID format string used by the associated <c>GuidEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableGuidPropertyEditor.NewGuidButtonVisibility"><summary>
+            Gets or sets the <see cref="T:System.Windows.Visibility" /> of the new <c>Guid</c><c>Button</c> presented by the associated <c>GuidEditBox</c>.
+            </summary><value>
+            The <see cref="T:System.Windows.Visibility" /> of the new <c>Guid</c><c>Button</c> presented by the associated <c>GuidEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.GuidPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.GuidEditBox" /> for editing <see cref="T:System.Guid" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.GuidPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.GuidPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int32EditBoxPropertyEditorBase`2"><summary>
+            Represents a base class for property editors that utilize controls derived from <see cref="T:ActiproSoftware.Windows.Controls.Editors.Primitives.Int32EditBoxBase`1" />.
+            </summary><typeparam name="TEditBox">The underlying <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" /> type.</typeparam><typeparam name="TValue">The type that is being modified by the <see cref="T:ActiproSoftware.Windows.Controls.Editors.PartEditBox" />.</typeparam></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int32EditBoxPropertyEditorBase`2.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int32EditBoxPropertyEditorBase`2" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int32EditBoxPropertyEditorBase`2.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int32EditBoxPropertyEditorBase`2" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int32EditBoxPropertyEditorBase`2.Format"><summary>
+            Gets or sets the integer format string used by the associated <c>Int32EditBoxBase&lt;T&gt;</c>.
+            </summary><value>
+            The integer format string used by the associated <c>Int32EditBoxBase&lt;T&gt;</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Primitives.Int32EditBoxPropertyEditorBase`2.StepValue"><summary>
+            Gets or sets the step value used by the associated <c>Int32EditBoxBase&lt;T&gt;</c> when incrementing/decrementing the value.
+            </summary><value>
+            The step value used by the associated <c>Int32EditBoxBase&lt;T&gt;</c> when incrementing/decrementing the value.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32RectPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.Int32RectEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32RectPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32RectPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32RectPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32RectPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32RectPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32RectPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>Int32RectEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>Int32RectEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int32RectPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.Int32RectEditBox" /> for editing <see cref="T:System.Windows.Int32Rect" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int32RectPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int32RectPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32PropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.Int32EditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32PropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32PropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32PropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32PropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableInt32PropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int32PropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.Int32EditBox" /> for editing <see cref="T:System.Int32" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int32PropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.Int32PropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDoublePropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.DoubleEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDoublePropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDoublePropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDoublePropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDoublePropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableDoublePropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.DoublePropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.DoubleEditBox" /> for editing <see cref="T:System.Double" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.DoublePropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.DoublePropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullablePointPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.PointEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullablePointPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullablePointPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullablePointPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullablePointPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullablePointPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullablePointPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>PointEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>PointEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableRectPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.RectEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableRectPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableRectPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableRectPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableRectPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableRectPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableRectPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>RectEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>RectEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableSizePropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.SizeEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableSizePropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableSizePropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableSizePropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableSizePropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableSizePropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableSizePropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>SizeEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>SizeEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.TimeSpanEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>TimeSpanEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>TimeSpanEditBox</c>.
+            </value></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableTimeSpanPropertyEditor.Format"><summary>
+            Gets or sets the date/time format string used by the associated <c>TimeSpanEditBox</c>.
+            </summary><value>
+            The date/time format string used by the associated <c>TimeSpanEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableVectorPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.VectorEditBox" /> for editing <see cref="T:System.Nullable`1" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableVectorPropertyEditor.CreateDataTemplate"><summary>
+            Creates the <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </summary><returns>
+            The <see cref="T:System.Windows.DataTemplate" /> that represents the property editor.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableVectorPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableVectorPropertyEditor" /> class.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableVectorPropertyEditor.#ctor(System.Type)"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableVectorPropertyEditor" /> class.
+            </summary><param name="propertyType">Type of the property.</param></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.NullableVectorPropertyEditor.EditableParts"><summary>
+            Gets or sets the editable parts used by the associated <c>VectorEditBox</c>.
+            </summary><value>
+            The editable parts used by the associated <c>VectorEditBox</c>.
+            </value></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.PointPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.PointEditBox" /> for editing <see cref="T:System.Windows.Point" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.PointPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.PointPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.PropertyEditorsResourceDictionary"><summary>
+            Represents a <see cref="T:System.Windows.ResourceDictionary" /> related to the property editors defined in this assembly.
+            </summary></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.PropertyEditorsResourceDictionary.Instance"><summary>
+            Gets the instance of the <see cref="T:System.Windows.ResourceDictionary" />.
+            </summary><value>The instance of the <see cref="T:System.Windows.ResourceDictionary" />.</value><remarks>
+            Use this property to ensure that no excess instances of this type are created.
+            </remarks></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.RectPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.RectEditBox" /> for editing <see cref="T:System.Windows.Rect" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.RectPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.RectPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.SizePropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.SizeEditBox" /> for editing <see cref="T:System.Windows.Size" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.SizePropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.SizePropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.TimeSpanPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.TimeSpanEditBox" /> for editing <see cref="T:System.TimeSpan" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.TimeSpanPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.TimeSpanPropertyEditor" /> class.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.VectorPropertyEditor"><summary>
+            Represents an property editor that uses a <see cref="T:ActiproSoftware.Windows.Controls.Editors.VectorEditBox" /> for editing <see cref="T:System.Windows.Vector" /> property values.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.VectorPropertyEditor.#ctor"><summary>
+            Initializes a new instance of the <see cref="T:ActiproSoftware.Windows.Controls.Editors.Interop.PropertyGrid.PropertyEditors.VectorPropertyEditor" /> class.
+            </summary></member></members></doc>

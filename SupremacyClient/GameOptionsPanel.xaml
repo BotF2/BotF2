@@ -1,0 +1,418 @@
+<!--
+  
+   GameOptionsPanel.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<UserControl x:Class="Supremacy.Client.GameOptionsPanel"
+             xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation" 
+             xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+             TextBlock.Foreground="{StaticResource LCARS_BeigeTextBrush}"
+             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+             TextBlock.FontSize="14pt">
+    <Grid IsEnabled="{Binding Path=IsFrozen, Converter={StaticResource IsFalseValueConverter}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="129"/>
+            <ColumnDefinition Width="129"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <TextBlock Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="0"
+            Background="{StaticResource LCARS_BlueGradient_Bottom_Top}"  
+            Foreground="Black"
+            FontSize="16pt"
+            MinHeight="24"
+            Width="226"
+            TextAlignment="Center"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Center"
+            Text="{s:StringResource GAME_OPTIONS}"
+            Margin="0,0,20,5" />
+
+
+        <!--Text infront of DropDowns = ComboBoxes-->
+        <TextBlock Grid.Column="0"
+            Grid.Row="1"
+            Margin="5,0,0,5"
+            Text="{s:StringResource EMPIRES_HEADER}"
+            Background="DarkBlue"
+            TextAlignment="Center"
+            FontSize="16pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        <TextBlock Grid.Column="1"
+            Grid.Row="1"
+            Margin="7,0,0,5"
+            Text="{s:StringResource PLAYABLE_HEADER}"
+            Background="DarkBlue"
+            TextAlignment="Center"
+            FontSize="14pt"                  
+            Height="24"
+            Width="95"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" />
+
+        
+        <TextBlock 
+            Grid.Column="0"
+            Grid.Row="2" 
+            Margin="5,6,0,0"
+            Foreground="White"
+
+            TextAlignment="Center"
+            Text="{s:StringResource FED_PLAYABLE}"  
+            Background="Blue"
+            Height="24"
+            Width="119"
+            FontSize="14pt"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        
+        <TextBlock Grid.Column="0"
+            Grid.Row="3"
+            Margin="5,6,0,0"
+            Foreground="Black"      
+            FontSize="14pt"
+                       
+            Text="{s:StringResource TERRAN_PLAYABLE}"
+            Background="Gold"
+            TextAlignment="Center"
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        <TextBlock Grid.Column="0"
+            Grid.Row="4"
+            Margin="5,6,0,0"
+            Text="{s:StringResource ROM_PLAYABLE}"
+            Background="DarkGreen"
+            TextAlignment="Center"
+            FontSize="14pt"
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        
+        <TextBlock Grid.Column="0"
+            Grid.Row="5"
+            Margin="5,6,0,0"
+            Text="{s:StringResource KLING_PLAYABLE}"
+            Background="DarkRed"
+            TextAlignment="Center"
+            FontSize="14pt"
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        
+        <TextBlock Grid.Column="0"
+            Grid.Row="6"
+            Margin="5,6,0,0"
+            Foreground="Black"
+            Text="{s:StringResource CARD_PLAYABLE}"
+            Background="DarkGoldenrod"
+            TextAlignment="Center"
+            FontSize="14pt"
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        
+        <TextBlock Grid.Column="0"
+            Grid.Row="7"
+            Margin="5,6,0,0"
+            Text="{s:StringResource DOM_PLAYABLE}"
+            Background="DarkViolet"
+            TextAlignment="Center"
+            FontSize="14pt"
+            Height="24"
+                Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        
+        <TextBlock Grid.Column="0"
+            Grid.Row="8"
+            Margin="5,6,0,0"
+            Text="{s:StringResource BORG_PLAYABLE}"
+            Foreground="Black"
+            TextAlignment="Center"
+            FontSize="14pt"
+            Height="24"
+                    Width="119"
+            HorizontalAlignment="Right"
+            Background="YellowGreen"
+            VerticalAlignment="Center" />
+
+
+        <!--<TextBlock Grid.Column="0"
+            Grid.Row="8"
+            Margin="5,6,0,0"
+            Text="Playable=NO -> Federation will be started"
+            Foreground="Red"
+            VerticalAlignment="Center" />-->
+
+        <!--Row 8 is GalaxyImage (Preview Image)"-->
+        <Border Grid.Column="1"
+            Grid.Row="9"
+            HorizontalAlignment="Center"
+            Margin="0,10,0,0"
+            BorderBrush="White"
+            BorderThickness="2"
+            Width="80"
+            Height="70">
+            <Image x:Name="GalaxyImage"
+            Width="80"
+            Height="65"
+            Stretch="Uniform"  
+            StretchDirection="Both"
+            />
+        </Border>
+
+        <TextBlock Grid.Column="0"
+            Grid.Row="10"
+            Margin="5,7,0,0"
+            Foreground="Black"
+            Text="{s:StringResource GALAXY_SHAPE}"
+            Background="DodgerBlue"
+
+            TextAlignment="Right"
+                FontSize="14pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="0"
+            Grid.Row="11"
+            Margin="5,7,0,0"
+            Foreground="Black"
+            Text="{s:StringResource GALAXY_SIZE}"
+            Background="DodgerBlue"
+            TextAlignment="Right"
+                FontSize="14pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="0"
+            Grid.Row="12"
+            Margin="5,7,0,0"
+            Foreground="Black"
+            Text="{s:StringResource PLANET_DENSITY}"
+            Background="DodgerBlue"
+            TextAlignment="Right"
+                FontSize="14pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="0"
+            Grid.Row="13"
+            Margin="5,7,0,0"
+            Foreground="Black"  
+            Text="{s:StringResource STAR_DENSITY}"
+            Background="DodgerBlue"
+            TextAlignment="Right"
+                FontSize="14pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="0"
+            Grid.Row="14"
+            Margin="5,7,0,0"
+            Foreground="Black" 
+            Text="{s:StringResource MINOR_RACES}"
+            Background="DodgerBlue"
+            TextAlignment="Right"
+            FontSize="14pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+        <TextBlock Grid.Column="0"
+            Grid.Row="15"
+            Margin="5,7,0,0"
+            Foreground="Black"
+            Text="{s:StringResource TECH_LEVEL}"
+            Background="DodgerBlue"
+            TextAlignment="Right"
+            FontSize="14pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+        <!--<TextBlock Grid.Column="0"
+            Grid.Row="16"
+            Margin="5,7,0,0"
+            Foreground="Black"
+            Text="{s:StringResource MP_SETUP_PLAYER_NAME}"
+            Background="DodgerBlue"
+            TextAlignment="Right"
+            FontSize="14pt"
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />-->
+
+        <!--ComboBoxes-->
+        <ComboBox x:Name="lstFederationPlayable"
+              Grid.Column="1"
+              Grid.Row="2"
+              SelectedItem="{Binding Path=FederationPlayable, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstTerranEmpirePlayable"
+              Grid.Column="1"
+              Grid.Row="3"
+              SelectedItem="{Binding Path=TerranEmpirePlayable, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstRomulanPlayable"
+              Grid.Column="1"
+              Grid.Row="4"
+              SelectedItem="{Binding Path=RomulanPlayable, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstKlingonPlayable"
+              Grid.Column="1"
+              Grid.Row="5"
+              SelectedItem="{Binding Path=KlingonPlayable, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstCardassianPlayable"
+              Grid.Column="1"
+              Grid.Row="6"
+              SelectedItem="{Binding Path=CardassianPlayable, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstDominionPlayable"
+              Grid.Column="1"
+              Grid.Row="7"
+              SelectedItem="{Binding Path=DominionPlayable, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstBorgPlayable"
+              Grid.Column="1"
+              Grid.Row="8"
+              SelectedItem="{Binding Path=BorgPlayable, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+
+
+        <!--Row 8 is GalaxyImage (Preview Image)"-->
+
+        <ComboBox x:Name="lstGalaxyShape"
+              Grid.Column="1"
+              Grid.Row="10"
+              SelectedItem="{Binding Path=GalaxyShape, Mode=TwoWay}"
+              Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center"/>
+        <ComboBox x:Name="lstGalaxySize"
+              Grid.Column="1"
+              Grid.Row="11"
+              SelectedItem="{Binding Path=GalaxySize, Mode=TwoWay}"
+              Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center"/>
+        <ComboBox x:Name="lstPlanetDensity"
+              Grid.Column="1"
+              Grid.Row="12"
+              SelectedItem="{Binding Path=PlanetDensity, Mode=TwoWay}"
+              Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center"/>
+        <ComboBox x:Name="lstStarDensity"
+              Grid.Column="1"
+              Grid.Row="13"
+              SelectedItem="{Binding Path=StarDensity, Mode=TwoWay}"
+              Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center"/>
+        <ComboBox x:Name="lstMinorRaces"
+              Grid.Column="1"
+              Grid.Row="14"
+              SelectedItem="{Binding Path=MinorRaceFrequency, Mode=TwoWay}"
+              Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstTechLevel"
+              Grid.Column="1"
+              Grid.Row="15"
+              SelectedItem="{Binding Path=StartingTechLevel, Mode=TwoWay}"
+              Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+
+        <!--<Label x:Name="PlayerNameSP"
+            Grid.Column="1"
+            Grid.Row="16"
+            Target="{Binding ElementName=PlayerNameSPInput}"
+            Background="Black"
+            Margin="7,7,0,0"
+            VerticalAlignment="Center" >
+        <TextBox Name="PlayerNameSPInput" 
+            />
+        </Label>-->
+
+    </Grid>
+</UserControl>

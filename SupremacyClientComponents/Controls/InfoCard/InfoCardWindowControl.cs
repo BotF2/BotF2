@@ -1,0 +1,318 @@
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+
+namespace Supremacy.Client.Controls
+{
+    public class InfoCardWindowControl : InlineWindow, IInfoCardWindow
+    {
+        #region Fields
+        private InfoCardCloseReason _closeReason = InfoCardCloseReason.InfoCardWindowClosed;
+        private bool _isClosing;
+        private Window _popupSiteWindow;
+        #endregion
+
+        #region Constructors and Finalizers
+        static InfoCardWindowControl()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(InfoCardWindowControl),
+                new FrameworkPropertyMetadata(typeof(InfoCardWindowControl)));
+            
+            VisibilityProperty.OverrideMetadata(
+                typeof(InfoCardWindowControl),
+                new FrameworkPropertyMetadata(Visibility.Collapsed));
+            
+            DropShadowColorProperty.OverrideMetadata(
+                typeof(InfoCardWindowControl),
+                new FrameworkPropertyMetadata(Color.FromArgb(0x38, 0, 0, 0)));
+            
+            HasDropShadowProperty.OverrideMetadata(
+                typeof(InfoCardWindowControl),
+                new FrameworkPropertyMetadata(true));
+            
+            WindowStyleProperty.OverrideMetadata(
+                typeof(InfoCardWindowControl),
+                new FrameworkPropertyMetadata(WindowStyle.None));
+
+            ResizeModeProperty.OverrideMetadata(
+                typeof(InfoCardWindowControl),
+                new FrameworkPropertyMetadata(ResizeMode.NoResize));
+        }
+
+        public InfoCardWindowControl(InfoCardHost container) {
+            if (container == null)
+                throw new ArgumentNullException("container");
+
+            InfoCardHost = container;
+            
+            InfoCardHost.SetInfoCardWindow(this, this);
+
+            Setup(container.Location);
+        }
+        #endregion
+
+        #region Implementation of IInfoCardWindow
+        private event EventHandler PopupWindowActivatedEvent;
+        private event EventHandler PopupWindowClosedEvent;
+        private event EventHandler PopupWindowLocationChangedEvent;
+
+        /// <summary>
+        /// Occurs when the window is activated.
+        /// </summary>
+        event EventHandler IInfoCardWindow.Activated
+        {
+            add { PopupWindowActivatedEvent += value; }
+            remove { PopupWindowActivatedEvent -= value; }
+        }
+
+        void IInfoCardWindow.Close(InfoCardCloseReason reason)
+        {
+            _closeReason = reason;
+            Close();
+        }
+
+        event EventHandler IInfoCardWindow.Closed
+        {
+            add { PopupWindowClosedEvent += value; }
+            remove { PopupWindowClosedEvent -= value; }
+        }
+
+        public InfoCardSite InfoCardSite
+        {
+            get { return InfoCardHost.InfoCardSite; }
+        }
+
+        public bool IsClosing
+        {
+            get { return _isClosing; }
+        }
+
+        public Point Location
+        {
+            get { return new Point(Left, Top); }
+        }
+
+        event EventHandler IInfoCardWindow.LocationChanged
+        {
+            add { PopupWindowLocationChangedEvent += value; }
+            remove { PopupWindowLocationChangedEvent -= value; }
+        }
+
+        public InfoCardHost InfoCardHost
+        {
+            get { return Content as InfoCardHost; }
+            private set { Content = value; }
+        }
+
+        public void Setup(Point? position)
+        {
+            if (!position.HasValue)
+                return;
+            Left = position.Value.X;
+            Top = position.Value.Y;
+        }
+
+        public void SnapToScreen()
+        {
+            var popupSite = InfoCardSite;
+            if (popupSite == null)
+                return;
+
+            var bounds = new Rect(Left, Top, Width, Height);
+            var workingArea = new Rect(new Point(), popupSite.RenderSize);
+
+            if (bounds.Right > workingArea.Right)
+                bounds.Offset(workingArea.Right - bounds.Right, 0);
+            if (bounds.Left < workingArea.Left)
+                bounds.Offset(workingArea.Left - bounds.Left, 0);
+
+            if (bounds.Bottom > workingArea.Bottom)
+                bounds.Offset(0, workingArea.Bottom - bounds.Bottom);
+            if (bounds.Top < workingArea.Top)
+                bounds.Offset(0, workingArea.Top - bounds.Top);
+
+            if (Left != bounds.Left)
+                Left = bounds.Left;
+            if (Top != bounds.Top)
+                Top = bounds.Top;
+        }
+
+        bool IInfoCardWindow.Activate()
+        {
+            return (bool) Dispatcher.Invoke(
+                (Func<bool>)base.Activate,
+                DispatcherPriority.Input);
+        }
+
+        void IInfoCardWindow.DragMove()
+        {
+            DragMove();
+        }
+        #endregion
+
+        protected override void OnActivated(RoutedEventArgs e)
+        {
+            base.OnActivated(e);
+
+            var handler = PopupWindowActivatedEvent;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+
+            var dropShadowColor = DropShadowColor;
+            dropShadowColor.A *= 2;
+            DropShadowColor = dropShadowColor;
+
+            // Bring this window to the front
+            var popupSite = InfoCardSite;
+            if (popupSite != null)
+                popupSite.BringToFront(this);
+        }
+
+        protected override void OnOpened(RoutedEventArgs e)
+        {
+            base.OnOpened(e);
+
+            var popupSite = InfoCardSite;
+            if (popupSite != null)
+            {
+                popupSite.AddCanvasChild(this);
+                _popupSiteWindow = Window.GetWindow(popupSite);
+                if (_popupSiteWindow != null)
+                {
+                    _popupSiteWindow.PreviewMouseDown += OnPopupSitePreviewMouseDown;
+                    //_popupSiteWindow.Deactivated += OnPopupSiteWindowDeactivated;
+                }
+            }
+
+            Visibility = Visibility.Visible;
+        }
+
+/*
+        private void OnPopupSiteWindowDeactivated(object sender, EventArgs e)
+        {
+            if (!this.IsVisible)
+                return;
+
+            var popupSite = this.InfoCardSite;
+            if (popupSite == null)
+                return;
+
+            var popup = popupSite.GetPopupFromHost(this.InfoCardHost);
+            if ((popup == null) || popup.IsPinned)
+                return;
+
+            popup.Close();
+        }
+*/
+
+        private void OnPopupSitePreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var popupSite = InfoCardSite;
+            if (popupSite == null)
+                return;
+
+            var popup = popupSite.GetInfoCardFromHost(InfoCardHost);
+            if ((popup == null) || popup.IsPinned)
+                return;
+
+            var hitTestResult = popupSite.InputHitTest(e.GetPosition(popupSite)) as DependencyObject;
+            if ((hitTestResult != null) && this.IsVisualAncestorOf(hitTestResult))
+                return;
+
+            popup.Close();
+        }
+
+        protected override void OnClosed(RoutedEventArgs e)
+        {
+            if (_popupSiteWindow != null)
+            {
+                _popupSiteWindow.PreviewMouseDown -= OnPopupSitePreviewMouseDown;
+                //_popupSiteWindow.Deactivated -= OnPopupSiteWindowDeactivated;
+                _popupSiteWindow = null;
+            }
+
+            Visibility = Visibility.Collapsed;
+
+            var popupSite = InfoCardSite;
+            if (popupSite != null)
+                popupSite.RemoveCanvasChild(this);
+
+            InfoCardHost = null;
+
+            base.OnClosed(e);
+
+            var handler = PopupWindowClosedEvent;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+
+            _isClosing = false;
+        }
+        
+        protected override void OnClosing(CancelRoutedEventArgs e)
+        {
+            base.OnClosing(e);
+
+            if (e.Cancel)
+            {
+                _closeReason = InfoCardCloseReason.InfoCardWindowClosed;
+                return;
+            }
+
+            _isClosing = true;
+
+            var cancel = false;
+
+            var popupSite = InfoCardSite;
+            if (popupSite != null)
+            {
+                var popup = popupSite.GetInfoCardFromHost(InfoCardHost);
+                if (popup != null)
+                    cancel |= (!popupSite.Close(popup, _closeReason, false));
+            }
+
+            if (cancel)
+            {
+                e.Cancel = true;
+                _isClosing = false;
+                return;
+            }
+
+            // Reset the close reason
+            _closeReason = InfoCardCloseReason.InfoCardWindowClosed;
+        }
+
+        protected override void OnDeactivated(RoutedEventArgs e)
+        {
+            base.OnDeactivated(e);
+
+            ClearValue(DropShadowColorProperty);
+
+            if (!IsVisible)
+                return;
+
+            var popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
+            if ((popup != null) && !popup.IsPinned)
+                popup.Close();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="InlineWindow.LocationChanged"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="RoutedEventArgs"/> that contains the event data.</param>
+        protected override void OnLocationChanged(RoutedEventArgs e)
+        {
+            base.OnLocationChanged(e);
+
+            var handler = PopupWindowLocationChangedEvent;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+
+            Canvas.SetLeft(this, Left);
+            Canvas.SetTop(this, Top);
+        }
+    }
+}

@@ -1,0 +1,368 @@
+﻿<scc:Dialog x:Class="Supremacy.Client.Views.GalaxyScreen.Rom_ColorInfoScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="730" Width="1000">
+    <Grid Margin="0,4,0,4">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="Auto" />
+
+
+
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+<!--Row 0 = Headline-->
+        <TextBlock Grid.Row="0" Grid.Column="1" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Background="{StaticResource LCARS_Rom1Gradient_TopLeft_BottomRight}" >
+ROM_ColorInfoScreen
+        </TextBlock>
+
+        <TextBlock Grid.Row="0" Grid.Column="2" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+_Left_Right
+        </TextBlock>
+
+        <TextBlock Grid.Row="0" Grid.Column="3" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+_Right_Left
+        </TextBlock>
+
+        <TextBlock Grid.Row="0" Grid.Column="4" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+_Top_Bottom
+        </TextBlock>
+
+        <TextBlock Grid.Row="0" Grid.Column="5" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+_Bottom_Top
+        </TextBlock>
+
+        <TextBlock Grid.Row="0" Grid.Column="6" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+_BottomLeft_TopRight
+        </TextBlock>
+
+        <TextBlock Grid.Row="0" Grid.Column="7" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+
+
+
+        <!--Row="1" -->
+        <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+LCARS_Rom1Gradient
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom1Gradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom1Gradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom1Gradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom1Gradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom1Gradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom1Gradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+        <!--Row="2" -->
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+LCARS_Rom2Gradient
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom2Gradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom2Gradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom2Gradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom2Gradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom2Gradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom2Gradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+        <!--Row="3" -->
+        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+LCARS_Rom3Gradient
+        </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom3Gradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom3Gradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom3Gradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom3Gradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom3Gradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom3Gradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+        <!--Row="4" -->
+        <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+LCARS_Rom4Gradient
+        </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom4Gradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom4Gradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom4Gradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom4Gradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom4Gradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_Rom4Gradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+        <!--Row="5" -->
+        <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+ROM_PurpleGradient
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleGradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleGradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleGradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleGradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleGradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleGradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+        <!--Row="6" -->
+        <TextBlock Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Grid.ColumnSpan="4"
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+Gradients defined in GLOBAL.XAML to have it available all the time
+        </TextBlock>
+        
+        <!--Row="7" -->
+        <TextBlock Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+ROM_PurpleBlueGradient
+        </TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+        <!--Row="8" -->
+        <TextBlock Grid.Row="8" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+LCARS_RomGreenGradient
+        </TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_RomGreenGradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_RomGreenGradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_RomGreenGradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_RomGreenGradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_RomGreenGradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource LCARS_RomGreenGradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+        <!--Row="9" -->
+        <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+Text+Border (Shared.xaml)
+        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource HeaderTextBrush}" >
+HeaderTextBrush
+        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource DefaultTextBrush}" >
+DefaultTextBrush
+        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource DisabledTextBrush}" >
+DisabledTextBrush
+        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource SelectionBrush}" >
+SelectionBrush
+        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource BorderBrush}" >
+BorderBrush
+        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_HeaderBrush}" >
+LCARS_HeaderBrush
+        </TextBlock>
+
+        <!--Row="10" -->
+        <TextBlock Grid.Row="10" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+SolidColorBrush
+        </TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Left_Right}" >
+_Left_Right
+        </TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Right_Left}" >
+_Right_Left
+        </TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Top_Bottom}" >
+_Top_Bottom
+        </TextBlock>
+        <!--  makes crashes
+        <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_Bottom_Top}" >
+_Bottom_Top
+        </TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_BottomLeft_TopRight}" >
+_BottomLeft_TopRight
+        </TextBlock>-->
+        <TextBlock Grid.Row="10" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
+                   Background="{StaticResource ROM_PurpleBlueGradient_TopLeft_BottomRight}" >
+_TopLeft_BottomRight
+        </TextBlock>
+
+    </Grid>
+</scc:Dialog>

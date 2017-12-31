@@ -1,0 +1,756 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ActiproContrib.Shared.Wpf35</name>
+    </assembly>
+    <members>
+        <member name="T:ActiproContrib.Internal.Annotations.AssertionMethodAttribute">
+            <summary>
+            Indicates that the marked method is assertion method, i.e. it halts control flow if one of the conditions is satisfied.
+            To set the condition, mark one of the parameters with <see cref="T:ActiproContrib.Internal.Annotations.AssertionConditionAttribute"/> attribute.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Windows.Utility.ArgumentValidator">
+            <summary>
+            Encapsulates methods for method arguments validation.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Windows.Utility.ArgumentValidator.NotNullOrEmptyString(System.String,System.String)">
+            <summary>
+            Checks a string argument to ensure it isn't null or empty
+            </summary>
+            <param name="argumentValue">The argument value to check.</param>
+            <param name="argumentName">The name of the argument.</param>
+        </member>
+        <member name="M:ActiproContrib.Windows.Utility.ArgumentValidator.EnumValueIsDefined(System.Type,System.Object,System.String)">
+            <summary>
+            Checks an Enum argument to ensure that its value is defined by the specified Enum type.
+            </summary>
+            <param name="enumType">The Enum type the value should correspond to.</param>
+            <param name="value">The value to check for.</param>
+            <param name="argumentName">The name of the argument holding the value.</param>
+        </member>
+        <member name="M:ActiproContrib.Windows.Utility.ArgumentValidator.TypeIsAssignableFromType(System.Type,System.Type,System.String)">
+            <summary>
+            Verifies that an argument type is assignable from the provided type (meaning
+            interfaces are implemented, or classes exist in the base class hierarchy).
+            </summary>
+            <param name="assignee">The argument type.</param>
+            <param name="providedType">The type it must be assignable from.</param>
+            <param name="argumentName">The argument name.</param>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.TerminatesProgramAttribute">
+            <summary>
+            Indicates that the marked method unconditionally terminates control flow execution.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Windows.StateScope">
+            <summary>
+            This class is used to suppress events and to temporarily set property values. It is necessary 
+            because when suppressing things like events using simple boolean flags, if one thread 
+            suppresses it, then another suppresses, the first will then release while the other is still 
+            running - leading to some inconsistent runtime behavior. 
+            </summary>
+            <remarks>
+            <example>
+            private StateScope _collectionChangedSuspension;
+            
+            using (_collectionChangedSuspension.Enter()) 
+            {
+                // Do stuff
+            } // Will "Leave()" automatically
+            
+            StateScope isLoadingState = _loadingState.Enter();
+            try
+            {
+                // Do stuff
+            }
+            finally
+            {
+                isLoadingState.Leave();
+            }
+            </example>
+            </remarks>
+        </member>
+        <member name="M:ActiproContrib.Windows.StateScope.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Windows.StateScope"/> class.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Windows.StateScope.#ctor(ActiproContrib.Windows.StateScope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Windows.StateScope"/> class.
+            </summary>
+            <param name="parent">The parent StateScope.</param>
+        </member>
+        <member name="M:ActiproContrib.Windows.StateScope.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Windows.StateScope.Enter">
+            <summary>
+            Enters this state scope.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Windows.StateScope.Leave">
+            <summary>
+            Leaves this state scope.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Windows.StateScope.IsWithin">
+            <summary>
+            Gets a value indicating whether anyone is currently within this state scope.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.CanBeNullAttribute">
+            <summary>
+            Indicates that the value of marked element could be <c>null</c> sometimes, so the check for <c>null</c>
+            is necessary before its usage.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.AssertionConditionAttribute">
+            <summary>
+            Indicates the condition parameter of the assertion method.
+            The method itself should be marked by <see cref="T:ActiproContrib.Internal.Annotations.AssertionMethodAttribute"/> attribute.
+            The mandatory argument of the attribute is the assertion type.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Internal.Annotations.AssertionConditionAttribute.#ctor(ActiproContrib.Internal.Annotations.AssertionConditionType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Internal.Annotations.AssertionConditionAttribute"/> class.
+            </summary>
+            <param name="conditionType">The condition type.</param>
+        </member>
+        <member name="P:ActiproContrib.Internal.Annotations.AssertionConditionAttribute.ConditionType">
+            <summary>
+            Gets the condition type.
+            </summary>
+            <value>The condition type.</value>
+        </member>
+        <member name="T:ActiproContrib.Windows.UIHelpers">
+            <summary>
+            Encapsulates operations and data relevant to the visual and logical trees.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.EnsureAccess(System.Reflection.MethodBase)">
+            <summary>
+            Ensures the calling thread is the thread associated with the <see cref="T:System.Windows.Threading.Dispatcher"/>.
+            </summary>
+            <param name="method">The method.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.EnsureAccess(System.Reflection.MethodBase,System.Object[])">
+            <summary>
+            Ensures the calling thread is the thread associated with the <see cref="T:System.Windows.Threading.Dispatcher"/>.
+            </summary>
+            <param name="method">The method.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.EnsureAccess(System.Reflection.MethodBase,System.Object)">
+            <summary>
+            Ensures the calling thread is the thread associated with the <see cref="T:System.Windows.Threading.Dispatcher"/>.
+            </summary>
+            <param name="method">The method.</param>
+            <param name="o">The object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.EnsureAccess(System.Reflection.MethodBase,System.Object,System.Object[])">
+            <summary>
+            Ensures the calling thread is the thread associated with the <see cref="T:System.Windows.Threading.Dispatcher"/>.
+            </summary>
+            <param name="method">The method.</param>
+            <param name="o">The object.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.EnsureAccess(System.Windows.Threading.Dispatcher,System.Reflection.MethodBase,System.Object,System.Object[])">
+            <summary>
+            Ensures the calling thread is the thread associated with the <see cref="T:System.Windows.Threading.Dispatcher"/>.
+            </summary>
+            <param name="dispatcher">The dispatcher.</param>
+            <param name="method">The method.</param>
+            <param name="o">The object.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.EnsureAccess(System.Windows.Threading.DispatcherObject,System.Reflection.MethodBase,System.Object[])">
+            <summary>
+            Ensures the calling thread is the thread associated with the <see cref="T:System.Windows.Threading.Dispatcher"/>.
+            </summary>
+            <param name="o">The object.</param>
+            <param name="method">The method.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.GetLogicalParent(System.Windows.DependencyObject)">
+            <summary>
+            Returns the logical parent of the specified object.
+            </summary>
+            <param name="o">The object.</param>
+            <returns>The logical parent of <paramref name="o"/>.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalAncestor(System.Windows.DependencyObject,System.Func{System.Windows.DependencyObject,System.Boolean})">
+            <summary>
+            Finds the logical ancestor according to the condition.
+            </summary>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalAncestorsByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Finds an element's logical ancestors of a specified type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <returns>The logical ancestors.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalAncestorsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean})">
+            <summary>
+            Finds an element's logical ancestors of a specified type that match the specified predicate.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <returns>The matching logical ancestors.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalAncestorsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean},System.Boolean)">
+            <summary>
+            Finds an element's logical ancestors of a specified type that match the specified predicate.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <param name="includeStartElement">Indicates whether <paramref name="startElement"/> may be included in the results.</param>
+            <returns>The matching logical ancestors.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalDescendantsByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Finds an element's logical descendants of a specified type.
+            </summary>
+            <typeparam name="T">The type of descendant.</typeparam>
+            <param name="startElement">The start element.</param>
+            <returns>The logical descendants.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalDescendantsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean})">
+            <summary>
+            Finds an element's logical descendants of a specified type that match the specified condition.
+            </summary>
+            <typeparam name="T">The type of descendant.</typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <returns>The logical descendants.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalDescendantsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean},System.Boolean)">
+            <summary>
+            Finds an element's logical descendants of a specified type that match the specified condition.
+            </summary>
+            <typeparam name="T">The type of descendant.</typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <param name="includeStartElement">Indicates whether <paramref name="startElement"/> may be included in the results.</param>
+            <returns>The logical descendants.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalAncestorByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Finds the logical ancestor by type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindLogicalRoot(System.Windows.DependencyObject)">
+            <summary>
+            Finds the logical root.
+            </summary>
+            <param name="startElement">The start element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualAncestor(System.Windows.DependencyObject,System.Func{System.Windows.DependencyObject,System.Boolean})">
+            <summary>
+            Finds the visual ancestor according to The condition.
+            </summary>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualAncestorByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Finds the visual ancestor by type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualAncestorsByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Finds an element's visual ancestors of a specified type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <returns>The visual ancestors.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualAncestorsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean})">
+            <summary>
+            Finds an element's visual ancestors of a specified type that match the specified predicate.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <returns>The matching visual ancestors.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualAncestorsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean},System.Boolean)">
+            <summary>
+            Finds an element's visual ancestors of a specified type that match the specified predicate.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <param name="includeStartElement">Indicates whether <paramref name="startElement"/> may be included in the results.</param>
+            <returns>The matching visual ancestors.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualDescendant(System.Windows.DependencyObject,System.Func{System.Windows.DependencyObject,System.Boolean})">
+            <summary>
+            Finds the visual descendant.
+            </summary>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualDescendantsByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Finds an element's visual descendants of a specified type.
+            </summary>
+            <typeparam name="T">The type of descendant.</typeparam>
+            <param name="startElement">The start element.</param>
+            <returns>The visual descendants.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualDescendantsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean})">
+            <summary>
+            Finds an element's visual descendants of a specified type that match the specified condition.
+            </summary>
+            <typeparam name="T">The type of descendant.</typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <returns>The visual descendants.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualDescendantsByType``1(System.Windows.DependencyObject,System.Func{``0,System.Boolean},System.Boolean)">
+            <summary>
+            Finds an element's visual descendants of a specified type that match the specified condition.
+            </summary>
+            <typeparam name="T">The type of descendant.</typeparam>
+            <param name="startElement">The start element.</param>
+            <param name="predicate">The condition.</param>
+            <param name="includeStartElement">Indicates whether <paramref name="startElement"/> may be included in the results.</param>
+            <returns>The visual descendants.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualDescendantByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Finds the visual descendant by type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="startElement">The start element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.FindVisualRoot(System.Windows.DependencyObject)">
+            <summary>
+            Finds the visual root.
+            </summary>
+            <param name="startElement">The start element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.GetVisualChildren(System.Windows.DependencyObject)">
+            <summary>
+            Gets the visual children.
+            </summary>
+            <param name="parent">The parent.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.EnsureDpiData">
+            <summary>
+            Safely gets the system DPI. Using <see cref="T:System.Windows.PresentationSource"/> will not work in partial trust.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.GetItemContainers(System.Windows.Controls.ItemsControl)">
+            <summary>
+            Gets the generated containers of all items in an <see cref="T:System.Windows.Controls.ItemsControl"/>.
+            </summary>
+            <param name="itemsControl">The items control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.UIHelpers.LaunchBrowser(System.Uri)">
+            <summary>
+            Launches the browser.
+            </summary>
+            <param name="uri">The URI.</param>
+            <remarks>Provides accidental click flood protection.</remarks>
+        </member>
+        <member name="P:ActiproContrib.Windows.UIHelpers.DpiTransformToDevice">
+            <summary>
+            Gets a matrix that transforms the coordinates of this target to the device that is associated with the rendering destination.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Windows.UIHelpers.DpiTransformFromDevice">
+            <summary>
+            Gets a matrix that transforms the coordinates of the device that is associated with the rendering destination of this target.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Windows.UIHelpers.DpiX">
+            <summary>
+            Gets the system horizontal dots per inch (dpi).
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Windows.UIHelpers.DpiY">
+            <summary>
+            Gets the system vertical dots per inch (dpi).
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.Windows.UIHelpers.IsAutomaticBrowserLaunchEnabled">
+            <summary>
+            Gets or sets a value indicating whether clicking a <see cref="T:System.Windows.Documents.Hyperlink"/> that has a URI
+            automatically launches the browser.
+            </summary>
+            <value>
+            	<c>true</c> if the browser is launched automatically; otherwise, <c>false</c>. The default is <c>false</c>.
+            </value>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.InvokerParameterNameAttribute">
+            <summary>
+            Indicates that the function argument should be string literal and match one  of the parameters of the caller function.
+            For example, <see cref="T:System.ArgumentNullException"/> has such parameter.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.AssertionConditionType">
+            <summary>
+            Specifies assertion type. If the assertion method argument satisifes the condition, then the execution continues.
+            Otherwise, execution is assumed to be halted
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Internal.Annotations.AssertionConditionType.IsTrue">
+            <summary>
+            Indicates that the marked parameter should be evaluated to <c>true</c>.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Internal.Annotations.AssertionConditionType.IsFalse">
+            <summary>
+            Indicates that the marked parameter should be evaluated to <c>false</c>.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Internal.Annotations.AssertionConditionType.IsNull">
+            <summary>
+            Indicates that the marked parameter should be evaluated to a <c>null</c> value.
+            </summary>
+        </member>
+        <member name="F:ActiproContrib.Internal.Annotations.AssertionConditionType.IsNotNull">
+            <summary>
+            Indicates that the marked parameter should be evaluated to a non-<c>null</c> value.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.StringFormatMethodAttribute">
+            <summary>
+            Indicates that marked method builds string by format pattern and (optional) arguments.
+            Parameter, which contains format string, should be given in constructor.
+            The format string should be in <see cref="M:System.String.Format(System.String,System.Object)"/> -like form
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Internal.Annotations.StringFormatMethodAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Internal.Annotations.StringFormatMethodAttribute"/> class.
+            </summary>
+            <param name="formatParameterName">Name of the format parameter.</param>
+        </member>
+        <member name="P:ActiproContrib.Internal.Annotations.StringFormatMethodAttribute.FormatParameterName">
+            <summary>
+            Gets the name of the format parameter.
+            </summary>
+            <value>The name of the format parameter.</value>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.BaseTypeRequiredAttribute">
+            <summary>
+            Indicates that inheritors of the marked type must implement the specified base types (interfaces).
+            </summary>
+            <example>
+            <code>
+            [BaseTypeRequired(typeof(IComponentBase)]
+            public class ComponentImplemetnationAttribute : Attribute
+            {
+                ...
+            }
+            
+            // IComponentBase is required base type
+            [ComponentImplemetnation]
+            public class MyComponent : IComponentBase
+            {
+            ...
+            }
+            </code>
+            </example>           
+        </member>
+        <member name="M:ActiproContrib.Internal.Annotations.BaseTypeRequiredAttribute.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Internal.Annotations.BaseTypeRequiredAttribute"/> class.
+            </summary>
+            <param name="baseType">The base type.</param>
+        </member>
+        <member name="M:ActiproContrib.Internal.Annotations.BaseTypeRequiredAttribute.#ctor(System.Type[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActiproContrib.Internal.Annotations.BaseTypeRequiredAttribute"/> class.
+            </summary>
+            <param name="baseTypes">The base types.</param>
+        </member>
+        <member name="P:ActiproContrib.Internal.Annotations.BaseTypeRequiredAttribute.BaseTypes">
+            <summary>
+            Gets the base types.
+            </summary>
+            <value>The base types.</value>
+        </member>
+        <member name="T:ActiproContrib.Windows.DependencyHelpers">
+            <summary>
+            Encapsulates methods for dealing with dependency objects and properties.
+            </summary>
+        </member>
+        <member name="M:ActiproContrib.Windows.DependencyHelpers.GetDependencyProperty(System.Type,System.String)">
+            <summary>
+            Gets the <see cref="T:System.Windows.DependencyProperty"/> specified by <paramref name="propertyName"/> for the target type specified by <paramref name="targetType"/>.
+            </summary>
+            <param name="targetType">The type of object for which the property is registered.</param>
+            <param name="propertyName">The name of the property.</param>
+            <returns>The <see cref="T:System.Windows.DependencyProperty"/> specified by <paramref name="propertyName"/> for the target type specified by <paramref name="targetType"/></returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.DependencyHelpers.GetDependencyProperty(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Gets the <see cref="T:System.Windows.DependencyProperty"/> specified by <paramref name="propertyName"/> for the object specified by <paramref name="target"/>.
+            </summary>
+            <param name="target">The object for which the property is registerted.</param>
+            <param name="propertyName">The name of the property.</param>
+            <returns>The dependency property specified by <paramref name="propertyName"/> for the object specified by <paramref name="target"/>.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.DependencyHelpers.HasDefaultValue(System.Windows.DependencyObject,System.Windows.DependencyProperty)">
+            <summary>
+            Determines whether the specified object is using the default value of the specified dependency property.
+            </summary>
+            <param name="target">The target object.</param>
+            <param name="property">The dependency property.</param>
+            <returns><c>true</c> if <paramref name="target"/> is using the default value of <param name="property"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:ActiproContrib.Windows.DependencyHelpers.SetIfDefault``1(System.Windows.DependencyObject,System.Windows.DependencyProperty,``0)">
+            <summary>
+            Sets the value of the <paramref name="property"/> only if no value has been set or inherited.
+            </summary>
+            <typeparam name="T">The type of the property value.</typeparam>
+            <param name="target">The object on which the property should be set.</param>
+            <param name="property">The property to set.</param>
+            <param name="value">The value to be set.</param>
+            <returns><c>true</c> if <paramref name="value"/> was set; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.CannotApplyEqualityOperatorAttribute">
+            <summary>
+            Indicates that the value of marked type (or its derivatives) cannot be compared using '==' or '!=' operators.
+            There is only exception to compare with <c>null</c>, it is permitted.
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.SR">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.ArgumentValidator_EnumValueIsDefined">
+            <summary>
+              Looks up a localized string similar to Invalid enum value..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.ArgumentValidator_NotNullOrEmptyString">
+            <summary>
+              Looks up a localized string similar to String cannot be null or empty..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.ArgumentValidator_TypeIsAssignableFromType">
+            <summary>
+              Looks up a localized string similar to Incompatible type.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.DependencyHelpers_IncompatibleDPType">
+            <summary>
+              Looks up a localized string similar to Type of dependency property is incompatible with value..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.EnumHelper_InvalidObjectType">
+            <summary>
+              Looks up a localized string similar to Unrecognized enum type..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.EnumResourceTypeConverter_InvalidResourceManager">
+            <summary>
+              Looks up a localized string similar to Invalid resource manager..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.IAddChild_NoText">
+            <summary>
+              Looks up a localized string similar to Cannot add text children..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.IAddChild_TextOnly">
+            <summary>
+              Looks up a localized string similar to Cannot add non-text children..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.IAnimationCalculator_CreationFailed">
+            <summary>
+              Looks up a localized string similar to CreateCalculator implementation must return a value..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.KeyFramesAnimationBase_ChildNotKeyFrame">
+            <summary>
+              Looks up a localized string similar to Child must be a {0}KeyFrame..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.LinearAnimationBase_InvalidDefaultValue">
+            <summary>
+              Looks up a localized string similar to Invalid default value..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.NotifyIcon_NoNegativeTimeout">
+            <summary>
+              Looks up a localized string similar to Timeout cannot be negative..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_Buttons">
+            <summary>
+              Looks up a localized string similar to Buttons.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_CommandLinks">
+            <summary>
+              Looks up a localized string similar to Command Links.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_Content">
+            <summary>
+              Looks up a localized string similar to Content.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_ExpandedInformation">
+            <summary>
+              Looks up a localized string similar to Expanded Information.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_Footer">
+            <summary>
+              Looks up a localized string similar to Footer.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_MainInstruction">
+            <summary>
+              Looks up a localized string similar to Main Instruction.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_NoParent">
+            <summary>
+              Looks up a localized string similar to Cannot show a TaskDialog that already has a parent..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_RadioButtons">
+            <summary>
+              Looks up a localized string similar to Radio Buttons.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialog_WindowTitle">
+            <summary>
+              Looks up a localized string similar to Window Title.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtonData_ButtonSingleValue">
+            <summary>
+              Looks up a localized string similar to Button must be a single value..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtonData_SetStandardButton">
+            <summary>
+              Looks up a localized string similar to Cannot set properties on a standard button..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtons_Cancel">
+            <summary>
+              Looks up a localized string similar to _Cancel.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtons_Close">
+            <summary>
+              Looks up a localized string similar to C_lose.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtons_No">
+            <summary>
+              Looks up a localized string similar to _No.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtons_OK">
+            <summary>
+              Looks up a localized string similar to _OK.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtons_Retry">
+            <summary>
+              Looks up a localized string similar to _Retry.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TaskDialogButtons_Yes">
+            <summary>
+              Looks up a localized string similar to _Yes.
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TypeExtension_ArgumentsWrongOrder">
+            <summary>
+              Looks up a localized string similar to Type arguments need to be specified in the right order..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TypeExtension_InvalidTypeArgumentCount">
+            <summary>
+              Looks up a localized string similar to Invalid type argument count in type..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TypeExtension_InvalidTypeName">
+            <summary>
+              Looks up a localized string similar to Invalid type name..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TypeExtension_InvalidTypeNameArgumentCount">
+            <summary>
+              Looks up a localized string similar to Invalid type argument count in type name..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TypeExtension_NoIXamlTypeResolver">
+            <summary>
+              Looks up a localized string similar to Cannot retrieve IXamlTypeResolver..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.TypeExtension_TypeOrNameMissing">
+            <summary>
+              Looks up a localized string similar to Must specify Type or TypeName..
+            </summary>
+        </member>
+        <member name="P:ActiproContrib.SR.UIHelpers_NoDispatcher">
+            <summary>
+              Looks up a localized string similar to Unable to find a Dispatcher..
+            </summary>
+        </member>
+        <member name="T:ActiproContrib.Internal.Annotations.NotNullAttribute">
+            <summary>
+            Indicates that the value of marked element could never be <c>null</c>.
+            </summary>
+        </member>
+    </members>
+</doc>

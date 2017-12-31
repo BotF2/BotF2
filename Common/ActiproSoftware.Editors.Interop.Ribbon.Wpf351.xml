@@ -1,0 +1,38 @@
+<?xml version="1.0"?><doc><assembly><name>ActiproSoftware.Editors.Interop.Ribbon.Wpf351</name></assembly><members><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RenderMode"><summary>
+            Specifies the various render modes supported by one or more elements.
+            </summary></member><member name="F:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RenderMode.None"><summary>
+            Indicates the element(s) should render normally.
+            </summary></member><member name="F:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RenderMode.MouseOver"><summary>
+            Indicates the element(s) should render assuming the mouse is hovering over.
+            </summary></member><member name="F:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RenderMode.KeyboardFocusWithin"><summary>
+            Indicates the element(s) should render assuming the keyboard focus is within.
+            </summary></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsResourceDictionary"><summary>
+            Represents a <see cref="T:System.Windows.ResourceDictionary" /> related to the Editors styles defined in this assembly.
+            </summary></member><member name="P:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsResourceDictionary.Instance"><summary>
+            Gets the instance of the <see cref="T:System.Windows.ResourceDictionary" />.
+            </summary><value>The instance of the <see cref="T:System.Windows.ResourceDictionary" />.</value><remarks>
+            Use this Ribbon to ensure that no excess instances of this type are created.
+            </remarks></member><member name="T:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsStyleBehavior"><summary>
+            Provides attached behaviors for <see cref="N:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon" /> controls to style editor controls to match existing <c>Ribbon</c> controls.
+            </summary></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsStyleBehavior.GetApplyRibbonCompatibleStyles(System.Windows.UIElement)"><summary>
+            Gets the value of the <see cref="F:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsStyleBehavior.ApplyRibbonCompatibleStylesProperty" /> attached property for a specified object.
+            </summary><param name="obj">The object to which the attached property is retrieved.</param><returns><c>true</c> if the containing drop-down should be closed when a single selection is made; otherwise <c>false</c>.
+            </returns></member><member name="M:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsStyleBehavior.SetApplyRibbonCompatibleStyles(System.Windows.UIElement,System.Boolean)"><summary>
+            Sets the value of the <see cref="F:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsStyleBehavior.ApplyRibbonCompatibleStylesProperty" /> attached property to a specified object.
+            </summary><param name="obj">The object to which the attached property is written.</param><param name="value">
+            A value indicating whether the containing drop-down should be closed when a single selection is made.
+            </param></member><member name="F:ActiproSoftware.Windows.Controls.Editors.Interop.Ribbon.RibbonEditorsStyleBehavior.ApplyRibbonCompatibleStylesProperty"><summary>
+            Identifies the <c>ApplyRibbonCompatibleStyles</c> attached dependency property.  This field is read-only.
+            </summary><value>The identifier for the <c>ApplyRibbonCompatibleStyles</c> attached dependency property.</value></member><member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper"><summary>
+            GeneratedInternalTypeHelper
+            </summary></member><member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)"><summary>
+            CreateInstance
+            </summary></member><member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)"><summary>
+            GetPropertyValue
+            </summary></member><member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)"><summary>
+            SetPropertyValue
+            </summary></member><member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)"><summary>
+            CreateDelegate
+            </summary></member><member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)"><summary>
+            AddEventHandler
+            </summary></member></members></doc>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="TechTrees" 
+           targetNamespace="Supremacy:TechTrees.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:TechTrees.xsd"
+           xmlns:mstns="Supremacy:TechTrees.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="TechTree">
+    <xs:all>
+      <xs:element name="ProductionFacilities">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ProductionFacility"
+                        type="xs:normalizedString"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Buildings">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Building"
+                        type="xs:normalizedString"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Shipyards">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Shipyard"
+                        type="xs:normalizedString"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Ships">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Ship"
+                        type="xs:normalizedString"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SpaceStations">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="SpaceStation"
+                        type="xs:normalizedString"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="TechTrees">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TechTree"
+                    minOccurs="0"
+                    maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="TechTree">
+                <xs:attribute name="Civilization"
+                              type="xs:normalizedString"
+                              use="required"/>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

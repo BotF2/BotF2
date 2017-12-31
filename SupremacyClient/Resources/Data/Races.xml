@@ -1,0 +1,958 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Races xmlns="Supremacy:Races.xsd">
+  <Race Key="HUMANS">
+    <SingularName>Human</SingularName>
+    <PluralName>Humans</PluralName>
+    <Description>A founding member of the United Federation of Planets, the Humans of Earth became warp-capable in 2063, only moments before they officially experienced first contact with an alien species, the Vulcans, who by pure coincidence happened to have sent a survey vessel to explore the Sol system at the same time as Humanity's first warp flight. The Humans were still recovering from their third world war that had taken place a decade earlier - a nuclear war that had destroyed all centres of power, and wiped out two-thirds of the planetary population - and desperately welcomed the Vulcans with open arms. First contact had a profound effect on the Humans, and in just 10 years Earth began to stand on its own two feet again, and, under the careful guidance of the Vulcans, the Humans turned their attention to science and peaceful exploration amongst the stars.
+
+By the 24th century, Human society had changed from what it was for most of recorded history. On Earth, hunger, war, disease, famine, and poverty had largely been eliminated. The acquisition of wealth was no longer the primary driving force in the lives of many Humans, and a great deal of emphasis was instead placed on the importance of continued societal and self-growth. Thanks to the non-currency based New World Economy and the development of Replicators, material needs had been largely satisfied. Although money was no longer in use by Humans within the Federation, they did use gold-pressed Latinum and other forms of currency (Such as Bajoran litas and credits) in places where it is still needed, such as Quark's Bar on the Deep Space Nine station. The idea behind not using money is that Humans work to better themselves and the rest of Humanity. It must however be noted that all of this more specifically applies to Humans within the Sol system, as many Earth colonies are known to have developed vast cultural differences from other Humans and some have even fallen into anarchy, most notably Turkana IV.
+
+Whilst warp capability and first contact were first achieved in 2063, there were human populations on other planets prior to this date. In these cases, the Humans were usually brought there by alien species that had travelled to Earth. For instance, Native Americans are known to have been transplanted to Amerind by an unknown alien race called the Preservers some time in the 19th century. In 2268, these transplanted Humans still lived as hunter-gatherers, and Captain James T. Kirk was adopted into one of the tribes of Amerind, becoming known as the god, Kirok.
+
+The Humans are a rapidly advancing race, with an unquenchable thirst for knowledge. Whilst they are now peaceful, they will fight to the death if needs be to ensure the survival of their culture, ideals, and people. Only time will tell exactly how far the Humans will go.
+    </Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ROMULANS">
+    <SingularName>Romulan</SingularName>
+    <PluralName>Romulans</PluralName>
+    <Description>The Romulans are a Beta Quadrant race from the planet Romulus, but are biological cousins of the Vulcans, as they are descended from those who rejected Surak's reforms during the Vulcan Time of Awakening approximately sixteen hundred years ago. The Romulan Star Empire is the Romulan state, and is one of the major powers in known space.
+
+Some theorize that the Vulcans  - and therefore also the Romulans - are descended from Sargon's people, a race who possibly colonized the planet Vulcan some six million years ago. This theory, however, was later contradicted by the discovery of ancient humanoid progenitor remains on Vulcan.
+
+When Surak's reforms of embracing logical principles and rejecting emotion spread rapidly across Vulcan in the 4th century, a minority rejected Surak's ideals; they chose to depart Vulcan rather than accept his teachings. Some of the descendents of these exiles are known to have established settlements on the planets Calder II, Dessica II, Draken IV, Yadalla Prime and Barradas III. These planets later formed the core worlds of the Debrune Empire, but infighting and lack of resources quickly took their toll, and the fledgling Debrune Empire collapsed.
+
+At some point, another group settled on the twin planets that came to be known as Romulus and Remus. Whilst both planets were habitable Minshara-class planets, Romulus was stable and inviting, but Remus was tilted on an unusual axis that resulted in half of the planet being bathed in perpetual sunlight, whilst the other was shrouded in perpetual darkness. The only truly habitable zone of the planet was found near the boundary between night and day, and even in this region, conditions are harsh. But the Romulans encountered the native Reman race in this habitable zone, and quickly learned to exploit the Reman people as slaves and fearsome ground troops. The later discovery of abundant dilithium deposits on Remus eventually allowed the Romulans to develop interstellar capabilities, and solidified the union of the twin worlds. This union eventually became the foundation of an interstellar Empire that has since expanded to many worlds, reaching across much of the Beta Quadrant. That power eventually came to be known as the Romulan Star Empire.
+    </Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KLINGONS">
+    <SingularName>Klingon</SingularName>
+    <PluralName>Klingons</PluralName>
+    <Description>The Klingons (Klingonese: tlhIngan) are a humanoid warrior species that originates from the jungle planet Qo'noS (pronounced Kronos). One of the major powers of the galaxy, the Klingons are a proud, tradition-bound people who value honour and combat. The aggressive Klingon culture has made them an interstellar military power that is to be respected and feared. Klingons believe that they have the instinctive ability to look an opponent in the eye and see the intent to kill. Those that have such intent rarely get the chance to do so - unless they are another Klingon.
+    </Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="CARDASSIANS">
+    <SingularName>Cardassian</SingularName>
+    <PluralName>Cardassians</PluralName>
+    <Description>The Cardassians are a humanoid species from the Alpha Quadrant. They are native to the planet Cardassia Prime, capital world of the Cardassian Union, and are ruled by an oppressive military dictatorship. However, in its ancient history, before Cardassia was ruled by the military, the Cardassian people were known as the Hebitians, a society known for their fine art and beautiful architecture. But the Hebitian civilization was wasteful, and fell into decay from a chronic lack of natural resources; millions of Hebitians starved to death. The planet was subjected to decades of utter anarchy, eventually resulting in the extinction of Hebitian society.
+
+In a last attempt at survival, the few remaining Hebitians turned to the military to solve their problems, who quickly developed efficient new spacefaring technologies to allow resources to be acquired from distant planets and systems. Renaming themselves the Cardassian Union, the Cardassians quickly came to be a military power in their own right, brutally, but efficiently, subjugating entire systems in their unquenchable thirst for natural resources.
+
+To this day, the Cardassians are ruled by an oppressive military government where efficiency and absolute loyalty are the only things that matter.
+    </Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="FOUNDERS">
+    <SingularName>Founder</SingularName>
+    <PluralName>Founders</PluralName>
+    <Description>The Founders were a group of Changelings from the Gamma Quadrant. Though generally considered mythical, they were the ruling force behind the ancient and powerful Dominion. At one time, the Founders were a peaceful, curious race that explored the galaxy. Unfortunately, their overtures of peaceful cooperation were met with violent rejection and persecution. As an adverse reaction to being hunted and rejected, they accepted the pejorative Changeling as their own and retreated to a rogue planet. They then determined that, in order to be safe, they must set themselves the task of creating order from the chaos they saw around them - eliminating any and all threats as quickly and effectively as possible.
+    </Description>
+    <HomePlanetType>Rogue</HomePlanetType>
+  </Race>
+  <Race Key="JEMHADAR">
+    <SingularName>Jem'Hadar</SingularName>
+    <PluralName>Jem'Hadar</PluralName>
+    <Description>A genetically engineered humanoid race from the Gamma Quadrant, the Jem'Hadar are the military arm of the Dominion and one of the most powerful military forces in the galaxy.
+
+For humanoids, the Jem'Hadar have an incredibly fast metabolic rate due to the modifications made to their genetic structure by the Founders; an ancient, mysterious, race of shape-shifting lifeforms. The Jem'Hadar are bred in birthing chambers and have been known to be placed in stasis chambers until their awakening. For this reason, there are only males in the Jem'hadar species, as females are not considered necessary.
+
+A Jem'Hadar is mature within three days of leaving its birthing chamber, allowing for very rapid replacement of casualties. Within a day of maturation, Jem'Hadar children already have advanced language skills and cognitive reasoning. Only adolescent Jem'Hadar require food for consumption.
+
+Adult Jem'Hadar do not require sleep nor nourishment; any form of relaxation is shunned on the belief that it would only make them weak. The only form of sustenance required is Ketracel-White, which contains a key isogenic enzyme deliberately omitted from their blood chemistry by the Founders to ensure their loyalty. Without large quantities of 'the White', Jem'Hadar circulatory systems begin to shut down, beginning with muscle spasms. This key strength is also their greatest weakness however; the Jem'Hadar are loyal to anyone that can supply them with the White they need to survive. If supplies of White run low, so too does their loyalty...</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="ACAMARIANS">
+    <SingularName>Acamarian</SingularName>
+    <PluralName>Acamarians</PluralName>
+    <Description>The Acamarians are a space faring race with an extremely violent past by comparison to most interstellar species; this is because politically, Acamar utilises an archaic clan structure. Efforts to move beyond the brutal feuding of the past have resulted in the formation of a central government headed by a Sovereign. Physically, they are humanoid in appearance possessing vertical cranial ridges as well as a rather unique iron-copper blood composite. With the military infrastructure that they have, they are more than capable of defending their homeworld.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="AKAALI">
+    <SingularName>Akaali</SingularName>
+    <PluralName>Akaali</PluralName>
+    <Description>The Akaali are a pre-industrial society passing through their post-renaissance period, and still some centuries yet from achieving even basic space-flight technology. While still a primarily agrarian society, their unique farming methods are of significant merit, and in time they will grow into a rich and diverse society.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="AKRITIRIANS">
+    <SingularName>Akritirian</SingularName>
+    <PluralName>Akritirians</PluralName>
+    <Description>The Akritirians are a warp-capable civilisation ruled by an oppressive government. They are a humanoid race, and their chief discernable feature is pronounced forehead ridging. The Akritirian criminal justice system is considered cruel and draconian by the standards of most other sophisticated races, and arbitrary punishment often results in incarceration on a grim prison satellite, where inmates are fitted with a neural device to heighten aggression.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="ALDEANS">
+    <SingularName>Aldean</SingularName>
+    <PluralName>Aldeans</PluralName>
+    <Description>Aldea is a planet surrounded by an aura of myth. The advanced Aldeans protect their homeworld with a highly sophisticated planetary defence field that also acts as a cloak. This defence however comes at a cost: the cloaking device has over many centuries emitted harmful radiation, which has caused long-term chromosomal damage to their people. Ultimately this has resulted in sterility and other genetic defects. Diplomatically, they are isolationists, preferring to live in safety and security behind their defence shield.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ALGOLIANS">
+    <SingularName>Algolian</SingularName>
+    <PluralName>Algolians</PluralName>
+    <Description>The Algolians have a gift for study and detailed analysis of harmonious mathematical patterns, and complex structures. Some are highly gifted researchers and scientists, others turn their intellectual gift to the creation of art, and music.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="ALSAURIANS">
+    <SingularName>Alsaurian</SingularName>
+    <PluralName>Alsaurians</PluralName>
+    <Description>The Alsaurians are treated as a sub-species by the Mokra, who recently obtained power on the Alsaurian homeworld. The Alsaurians now live in fear and oppression under a Mokra police state, and are denied even basic equipment such as replicator technology and communications. Therefore Alsaurian subjects subsist by means of their own ingenuity, and their resistance movement has proved they are not an easy race to subdue.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="ANDORIANS">
+    <SingularName>Andorian</SingularName>
+    <PluralName>Andorians</PluralName>
+    <Description>The Andorians acknowledge themselves as a violent race, but these tendencies are softened by a sincere desire to establish beneficial relations with alien races. Their distinctive appearance is due to a mixing of mammalian and insectoid traits, resulting in a limited exoskeleton as well as the antennae, which are immediately obvious.</Description>
+    <HomePlanetType>Arctic</HomePlanetType>
+  </Race>
+  <Race Key="ANGOSIANS">
+    <SingularName>Angosian</SingularName>
+    <PluralName>Angosians</PluralName>
+    <Description>Usually considered non-violent, the Angosians are technologically advanced and essentially pacifist. However, Angosian authorities were responsible for genetically and chemically engineering soldiers to fight in their Tarsian Wars. But the process was irreversible, and the 'super soldiers' were considered outcasts and criminals that could not function or co-exist alongside the normal population of Angosian society, and as such were forced to be permanently confined to a penal settlement on an Angosian moon.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ANKARI">
+    <SingularName>Ankari</SingularName>
+    <PluralName>Ankari</PluralName>
+    <Description>The Ankari pride themselves in their entrepreneurial spirit, and engage in all manner of inter-cultural business matters, spanning multiple sectors. They also maintain a wide transit net for merchant vessels in their fleet, which utilize some surprisingly sophisticated warpfield suppression technology. This can effectively stave off rivals and conceal their activities, preventing competitors moving against them.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="ANTEDEANS">
+    <SingularName>Antedean</SingularName>
+    <PluralName>Antedeans</PluralName>
+    <Description>The Antedeans are an ichthyoid race, living in the wide oceans of their nearly landless planet. They are obdurate and uncompromising to the point of being fierce, but their level of technology is surprising, considering their limited resources and barely amphibious lifestyle. Although the Antedeans are capable of space-travel they find it disorienting and extremely unpleasant, and prefer to remain on their homeworld.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="ANTICANS">
+    <SingularName>Antican</SingularName>
+    <PluralName>Anticans</PluralName>
+    <Description>The Anticans are a lupine race, somewhat technologically lacking, and whose past includes a great deal of incidental contact with a race known as the Selay. The animosity between these two races is of epic proportions, and it will be a long diplomatic process just to ease the long simmering tension. The Anticans are extremely set in their ways, and often regard the customs and practices of other races to be barbaric and foolish.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="ARBAZAN">
+    <SingularName>Arbazan</SingularName>
+    <PluralName>Arbazan</PluralName>
+    <Description>Hailing from planet Arbaza, the Arbazan are a humanoid species who feature cranial ridges along the eyebrows and nose. They are highly conservative socially, and are culturally unvaried, maintaining a strict moral code that forbids almost all physical vices, and as such, they are regarded by others as socially as well as sexually repressed. They are very easy to offend and are considered by many to be arrogant. Arbazans are often given bureaucratic and research jobs, in which they excel.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ARDANANS">
+    <SingularName>Ardanan</SingularName>
+    <PluralName>Ardanans</PluralName>
+    <Description>The social structure of the Ardanans is far from ideal, as the caste system employs a sub-class to work in the zenite mines, whilst the intellectual ruling class live in relative peace, with recreational pursuits of art, literature and culture being their chief occupation. This social division is a constant source of strife in their society.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="ARGRATHI">
+    <SingularName>Argrathi</SingularName>
+    <PluralName>Argrathi</PluralName>
+    <Description>The Argrathi have expended a great deal of time and resources into investigating and studying the mind. Some questionable applications have arisen from this research, including neural implants of 'virtual prison' memories, eliminating the need for actual prisons. The rehabilitation benefits are detrimentally offset, it is believed, by the disorientating and displacing outcome for those who have completed their sentences; however, the practise has been effective in maintaining planetary security, and sustaining order.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="ATREANS">
+    <SingularName>Atrean</SingularName>
+    <PluralName>Atreans</PluralName>
+    <Description>The Atreans live on an M-class world near the temperate zone. Their planet is extremely old, with a cooling molten core. The Atreans have studied this problem for centuries, making them highly skilled in a variety of scientific fields, as they seek to combat or even reverse the inevitable aging of their planet.
+After years of experimentation, Atrea recently underwent a ferroplasmic infusion to reliquify its solidifying core, which was causing massive seismic, magnetic, and gravitational disruptions.
+Culturally, Atrean society is profoundly steeped in leisure and entertainment, but they also have a robust industrial economy, and thus their people are a leading manufacturer of computer systems, recreational holodeck programming, and commercial communications.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="AXANAR">
+    <SingularName>Axanar</SingularName>
+    <PluralName>Axanar</PluralName>
+    <Description>The Axanar are a highly intelligent spacefaring race. Their species is androgynous, and they have long life spans of some 400 years. They breathe a nitrogen-methane atmosphere and live in cold environments. The Axanar ships have sophisticated weaponry and advanced technology, and can be formidable opponents if provoked.</Description>
+    <HomePlanetType>Arctic</HomePlanetType>
+  </Race>
+  <Race Key="BAJORANS">
+    <SingularName>Bajoran</SingularName>
+    <PluralName>Bajorans</PluralName>
+    <Description>The Bajorans are an ancient race, whose past days of glory are still echoed in modern times. The Bajorans are a highly spiritual society, with a complex religion based around the Prophets, a mysterious extra-dimensional group of entities that reside within a nearby wormhole. Bajoran starships now use conventional drive systems rather than solar sails, but apart from this the Bajorans have not improved technologically in decades.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="BAKU">
+    <SingularName>Ba'ku</SingularName>
+    <PluralName>Ba'ku</PluralName>
+    <Description>The Ba'ku were at one time a violent and fragmented people, but since abandoning their advanced technology they have found a peaceful life of stability and longevity. The Ba'ku world is naturally endowed with life-giving metaphasic particles, which grant the people with health and long life. But the planet is vulnerable to exploitation from outside, and they are still often troubled by Son'a raiders - rebels who seek to plunder their world and wreak revenge. The Ba'ku are accomplished diplomats, and are willing to share the pleasures of their world with outsiders, but are also uninterested in binding themselves to other races.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="BANDI">
+    <SingularName>Bandi</SingularName>
+    <PluralName>Bandi</PluralName>
+    <Description>The Bandi are a technically unsophisticated race, but they are particularly interested in forming trade relations, due to their vast resources and current poor economic power. They are not inspired in cultural interchange, nor do they travel in space - they seem apparently quite satisfied with the planet on which they have evolved.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="BANEANS">
+    <SingularName>Banean</SingularName>
+    <PluralName>Baneans</PluralName>
+    <Description>The Baneans are a relatively amiable people, despite their recent conflict with the Numiri, with whom they had previously shared a homeworld. They have a strict legal system, whereby murderers are forced at regular intervals to endure the last memories of a victim’s life by means of inserting memory engrams. This is a controversial policy, but an effective one.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="BARZANS">
+    <SingularName>Barzan</SingularName>
+    <PluralName>Barzans</PluralName>
+    <Description>The Barzans have for some time now endured a resource shortage, confounded by over-population, pollution, and multiple social problems. But hope recently emerged in the form of a wormhole in the Barzan system, offering a new horizon of opportunity for their people, and any who are affiliated with them. The wormhole however is reputedly unstable, and further study is recommended.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="BENZITES">
+    <SingularName>Benzite</SingularName>
+    <PluralName>Benzites</PluralName>
+    <Description>The Benzites are a semi-ichthyoid race, whose native atmosphere contains several rare gases that are essential to their respiration. Benzites who leave their homeworld must be fitted with a small apparatus that dispenses these gases near their nostrils. Benzites live in organized geostructures, with members from the same geostructure looking identical. Benzites are competitive with each other and, because of their cultural upbringing, are constantly pushed to succeed, but fear failure. Most Benzites are honest, perfectionist, and friendly, making diplomacy easier. The Benzites have a strong interest in efficient methods, and look on alien contact as a way to compare the methods of other civilizations with their own.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="BETAZOIDS">
+    <SingularName>Betazoid</SingularName>
+    <PluralName>Betazoids</PluralName>
+    <Description>The inhabitants of Betazed are nearly all telepathic or empathic to some degree. Many of their species develop this ability during adolescence, but some Betazoid children develop telepathic capability at a premature age. These children would usually never grow up to lead normal lives, as this defective aberration causes them great confusion and discomfort, and invariably requires extensive therapy. Ultimately, the Betazoids have no secrets from one another, and are accustomed to complete honesty. They are not easily offended, but their veracity is often difficult for other races to accept. Conversely, Betazoids working in professions where such veracity is not desirable (such as diplomacy or intelligence) require some training in the art of misrepresentation. Betazoids working in such professions however are uniquely capable of accomplishing their goals with breathtaking speed, making them a valuable asset.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="BILANAIANS">
+    <SingularName>Bilanaian</SingularName>
+    <PluralName>Bilanaians</PluralName>
+    <Description>The Bilanaians are a forward-thinking people, with some interesting ideas about propulsion. However, their experimental practises exceed our own regulated levels of precaution and prudence. But they have achieved some important breakthroughs nonetheless, and their Soliton research would be an asset to our own scientific infrastructure.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="BOLIANS">
+    <SingularName>Bolian</SingularName>
+    <PluralName>Bolians</PluralName>
+    <Description>Hailing from the ninth planet of the Bolarus system, the Bolians are blue skinned humanoids with a distinctive raised cranial ridge. Bolians have extremely peculiar blood chemistry, and possess a rigid, cartilaginous lining on their tongues. It is Bolian custom, of ancient origin, to engage in assisted suicides to alleviate 'unnecessary' suffering if an individual is deemed beyond the aid of medical science. Such an act is considered highly moral in Bolian society. The Bank of Bolarus is the primary financial institute of the people, and Bolian freighters can be found throughout many sectors.</Description>
+    <HomePlanetType>Arctic</HomePlanetType>
+  </Race>
+  <Race Key="BOMAR">
+    <SingularName>B'Omar</SingularName>
+    <PluralName>B'Omar</PluralName>
+    <Description>The B'Omar are very strict when it comes to boundaries and territories. Their expansion of colonies and outposts are extensive, and they are considered experts in colonial logistics and terraforming. But if roused, or threatened, they will defend themselves fiercely.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="BOSLICS">
+    <SingularName>Boslic</SingularName>
+    <PluralName>Boslics</PluralName>
+    <Description>The Boslics are a humanoid space-faring civilization. They are recognizable by their prominent brow and purple hair. The Boslics' key enterprise is trade and smuggling, and many Boslics have a bad reputation. The Boslics prefer peace, for it best suits their business interests, but wars often open up new markets for them. Of their multiple ship types, freighters are the most common in inter-stellar shipping lanes, but they are not well armed. Boslics have a high opinion to those that have successfully defended their freighters.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="BOTHANS">
+    <SingularName>Bothan</SingularName>
+    <PluralName>Bothans</PluralName>
+    <Description>A deeply mottled integument is the chief characteristic of the Bothans, so they are not a race that blends in as well as many others. But their unbecoming appearance is offset by their powerful mental abilities: they have an extraordinary telepathic capacity. They can send telepathic delusions into the minds of others, causing them to enter a catatonic state. But they are highly sophisticated technologically, and they do possess warp capability. The Bothans are very territorial and will at once attack any vessel that enters their space if they deem it a threat.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="BREELLIANS">
+    <SingularName>Bre'ellian</SingularName>
+    <PluralName>Bre'ellians</PluralName>
+    <Description>The Bre'ellians live in a star system dominated with asteroids and planetoids that follow irregular and sometimes dangerous orbits. It is a hazardous and turbulent environment, but thus far the Bre'ellians have been fortunate in avoiding any devastating collisions. They have made good use of the raw materials available to them though, for the system is replete with minerals and precious ores, and they have pursued an active program to exploit these natural resources.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="BREEN">
+    <SingularName>Breen</SingularName>
+    <PluralName>Breen</PluralName>
+    <Description>The Breen are an advanced military race, who show no mercy whatsoever to their foes, and little is known of their political or social structures. All Breen so far encountered wear special climate-controlled bio-suits, to facilitate interaction in alien environments. Of special note are their weapons, a match for any phaser or disruptor. The Breen are known for their low integrity and their fierce backstabbing nature, and they are highly territorial and will destroy any ship that enters their space without hesitation.</Description>
+    <HomePlanetType>Arctic</HomePlanetType>
+  </Race>
+  <Race Key="BREKKIANS">
+    <SingularName>Brekkian</SingularName>
+    <PluralName>Brekkians</PluralName>
+    <Description>For centuries the entire Brekkian economy was based solely on supplying the illegal narcotic Felicium to nearby Ornara. It has recently come to light that this trafficking has stopped, or has failed, due to their limited understanding of their own technology. Henceforth, their economy has broken down, and they are in a severe recession.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="BYNARS">
+    <SingularName>Bynar</SingularName>
+    <PluralName>Bynars</PluralName>
+    <Description>The Bynars are a race of small, pale humanoids from the Beta Magellan system. They are a highly developed civilization, and the very crux of their society surrounds their planetary computer network, to which each individual 'pairing' of Bynars are connected. A typical Bynar pair are telepathically and electronically linked for rapid data swap and interchange, and work and operate together as if one unit. Bynars speak in very quick successions of binary code through the use of neural implants. Diplomatically the Bynars may be less than forthcoming, for each deliberation or decision requires considerable consultation and data processing.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="CAIRN">
+    <SingularName>Cairn</SingularName>
+    <PluralName>Cairn</PluralName>
+    <Description>The Cairn are a telepathic humanoid race. They have no form of vocal language, instead preferring to communicate with others telepathically through the sending of images and thoughts, of which they are notably skilled. The Cairn are capable of spaceflight, and they have just recently achieved warp capability. Although they have a great desire to form relations with other races, this is complicated by their inability to understand and utilize vocal communication.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="CALDONIANS">
+    <SingularName>Caldonian</SingularName>
+    <PluralName>Caldonians</PluralName>
+    <Description>The Caldonians are an exceptionally tall humanoid race, known chiefly for their love of pure research. While they welcome contact with alien species as a chance to expand their knowledge base, they are wary of entering any agreements, which might interfere with their research.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="CAPELLANS">
+    <SingularName>Capellan</SingularName>
+    <PluralName>Capellans</PluralName>
+    <Description>The Capellans are a pre-industrial civilization from the planet Capella IV. The Capellans are ruled by a tribal government, with a leader called a 'teer', and have a society based on codes of war. They solve conflicts through fighting, and their traditions forbid the show of cowardice. Combat is placed above love in their society, and they do not use medicine, believing the weak are meant to die. Their world is rich in rare minerals, giving it a significant economic advantage.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="CHALNOTH">
+    <SingularName>Chalnoth</SingularName>
+    <PluralName>Chalnoth</PluralName>
+    <Description>The Chalnoth are a fiercely competitive race; every part of their life is marked by combat in some form. Their government is essentially anarchistic; powerful Chalnoth may rise to power over a significant area, but their power is dependent on their strength. Powerful Chalnoth are usually assassinated by desperate enemies or ambitious underlings.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="CORIDAN">
+    <SingularName>Coridan</SingularName>
+    <PluralName>Coridan</PluralName>
+    <Description>Coridan was unified and achieved spaceflight shortly after the end of a centuries long civil war. They have come a long way since then, but still suffer from numerous social problems. They maintain highly impressive ship building facilities, which exceed those of any other race yet discovered, in both scope and available materials. Their planet also has high levels of dilithium deposits, making it a candidate for illegal mining operations and piracy. They are a diplomatically agreeable people, and already maintain a variety of trade agreements with neighbouring races.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="CORVALLENS">
+    <SingularName>Corvallen</SingularName>
+    <PluralName>Corvallens</PluralName>
+    <Description>The Corvallens operate their traffic between the major powers, for whatever price they chose to accept, and their cargo falls under no law or mandate they would claim to recognise. They operate autonomously, allying themselves to no-one, and serve only those who pay them.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="CYTHERIANS">
+    <SingularName>Cytherian</SingularName>
+    <PluralName>Cytherians</PluralName>
+    <Description>The Cytherians are an inspiration to all of us, having vanquished conflict, sickness, even death, and their technological supremacy is unmatched in the galaxy. Soon they will ascend to be purely ethereal, but the knowledge and wisdom they will leave behind is open to any that might successfully gain their ear.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="DELTANS">
+    <SingularName>Deltan</SingularName>
+    <PluralName>Deltans</PluralName>
+    <Description>The Deltans are a hairless, telepathic humanoid race from the Delta Triciatu system. They have more than twice the life span of most other humanoid races, and they have a highly developed society, living in relative peace. They also have a developed sexuality, which can cause conflicts with more immature and less open societies. The Deltans have a comparable level of technology and are capable of spaceflight, but their ships are poorly armed, preferring diplomacy and speech to armed conflict.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="DENOBULANS">
+    <SingularName>Denobulan</SingularName>
+    <PluralName>Denobulans</PluralName>
+    <Description>The Denobulans are polygamous, with each Denobulan having three partners that also have two other partners, creating a social network. Although Denobulans seem to be a friendly humanoid race, they were once engaged in a long conflict with a neighbouring race, and much of their economic strength atrophied. The Denobulan mindset abandons many of life's recreational preoccupations that other races take for granted. Medicine is the Denobulans' primary area of technological expertise, but they are also very interested in expanding their knowledge of other races, and giving what they themselves have to offer with the exchange of personnel.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="DEVORE">
+    <SingularName>Devore</SingularName>
+    <PluralName>Devore</PluralName>
+    <Description>The Devore Imperium is the core body of their society, and whilst somewhat oppressive in both means and method, it administers all facets of government and administration with ruthless efficiency. Even to stray into their space might result in destruction, or at the very least a stringent inspection of all goods being carried, and a heavy toll. Gaining their trust and services will require a good deal of time and patience.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="DOPTERIANS">
+    <SingularName>Dopterian</SingularName>
+    <PluralName>Dopterians</PluralName>
+    <Description>The Dopterians have little technology of their own, but through underhanded techniques and black market deals they have accumulated a great store of knowledge and equipment. It would be prudent not to trust them, but if they worked for us, the benefits should outweigh the dangers.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="DOSI">
+    <SingularName>Dosi</SingularName>
+    <PluralName>Dosi</PluralName>
+    <Description>The Dosi are a profit-driven race with a rich cultural heritage. Much of their historical background is steeped in violence, but where once their domestic tribal conflicts were conducted by the military, they have now come to recognise the bounteous gifts of their world, and what they might achieve through cooperation. Having resolved their internal differences they now compete for economic dominance in trade and commerce, and it has made them rich indeed. Their merchant navy controls much of the trade shipping in their localised region of space.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="DRAI">
+    <SingularName>Drai</SingularName>
+    <PluralName>Drai</PluralName>
+    <Description>The Drai maintain an advanced civilization, and a large and sophisticated military. Although warrior-like on the surface, they are not closed to diplomacy or the ideas and opinions of other races. However, a point of contention for most civilized peoples would be their domination over a slave-class, known as the Tosk. The Tosk are purposely bred for the 'Hunt', in which the Drai revel - it is an almost ceremonial rite that embodies the very core of Drai culture. Ethical questions aside, they are proud-spirited, and possess advanced weapons and technology. They are not to be underestimated, nor their beliefs disrespected.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="DREMANS">
+    <SingularName>Dreman</SingularName>
+    <PluralName>Dremans</PluralName>
+    <Description>The Dremans are a pre-warp civilization from the planet Drema IV. Dremans have orange skin, long digits and enlarged craniums. They are intelligent, and quick to understand, but they have far to go before they even reach the global industrial stage of development. Their planet is prone to geological disturbances, due to an unstable crust. But it does boast a very high count of dilithium deposits, ripe for mining.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="EDO">
+    <SingularName>Edo</SingularName>
+    <PluralName>Edo</PluralName>
+    <Description>The Edo society is truly utopian; there is no crime, no poverty, and no war. Their lives are spent in recreation and pleasure, and they enjoy sharing their joys with other races. However, their idyllic existence is not without price; the absence of crime is due to a draconian judicial system in which all crimes are capital.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ELAURIANS">
+    <SingularName>El-Aurian</SingularName>
+    <PluralName>El-Aurians</PluralName>
+    <Description>The long-lived El-Aurians have achieved wisdom and humility through pain and ordeal. As a result they are among the most mentally and spiritually enlightened people in the known galaxy. Any who adhere to their thoughtful philosophies will not be unmoved. However, on the darker side, it has been known that some El-Aurians have turned their natural intelligence and other wiles to more nefarious deeds, in the guise of tricksters.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="ELAYSIANS">
+    <SingularName>Elaysian</SingularName>
+    <PluralName>Elaysians</PluralName>
+    <Description>The Elaysians are a space-faring humanoid people from a low-gravity world. Because of this only a handful have ventured off-planet, where they need specially constructed anti-gravity transit chairs to move around. Despite this 'disability', they have adapted well to inter-species mingling, and they have developed efficient methods of conducting normal productive lives on other worlds. The Elaysians are a peaceful and friendly race, and more than amiable in diplomatic affairs.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ENTHARANS">
+    <SingularName>Entharan</SingularName>
+    <PluralName>Entharans</PluralName>
+    <Description>The Entharan traders operate under a strict charter, and go to great lengths to satisfy their customers. Practitioners of the trade are subject to meticulous scrutiny by their controlling body, and even the slightest discretion or flaw may result in insolvency, hence almost all trade deals with them will be honoured, and prove reliable.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="EVORA">
+    <SingularName>Evora</SingularName>
+    <PluralName>Evora</PluralName>
+    <Description>The Evora are a small-statured humanoid race of strict, passionate negotiators and diplomats. Scientifically they are very new to warp travel. They operate a number of low powered exploration vessels that remain relatively close to the Evo system, but they have expressed a desire to branch out more into surrounding sectors. Their people follow a regal system still, and are led by a regent whom they revere greatly.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="EXCALBIANS">
+    <SingularName>Excalbian</SingularName>
+    <PluralName>Excalbians</PluralName>
+    <Description>The silicon-based Excalbians are a very curious people, especially concerning the behaviour of other races. They have the ability to shape-shift, which sets them at once apart from most other races, and they possess a code of morality that is radically unique, having no concept of good or evil. Often they have pitted one race against another, merely for their own academic interests in studying knowledge, perception, and social beliefs.</Description>
+    <HomePlanetType>Volcanic</HomePlanetType>
+  </Race>
+  <Race Key="FERENGI">
+    <SingularName>Ferengi</SingularName>
+    <PluralName>Ferengi</PluralName>
+    <Description>The Ferengi are a plutocratic society; profit is the dominant religion, as well as the common man's only loyalty. Most of their critical technological advances were bought rather than achieved indigenously; to the Ferengi, this is entirely appropriate. The Ferengi society is also authoritarian and strongly patriarchal; female Ferengi are not allowed to wear clothing or leave the homeworld.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="FLAXIANS">
+    <SingularName>Flaxian</SingularName>
+    <PluralName>Flaxians</PluralName>
+    <Description>Flaxians are a humanoid race from the planet Flax. They are masters in subterfuge, sabotage and assassination, and not only for their own agenda, but any who might pay them. There is no moral guilt attached to their deeds, for they believe that a violent death will bring great fortune and luck for the next life. They are not an easy race to control or subdue, for they can defend themselves effectively even after they have been subjugated.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="GORN">
+    <SingularName>Gorn</SingularName>
+    <PluralName>Gorn</PluralName>
+    <Description>The Gorn are an elusive race of reptilians, proud and grim, and fiercely territorial. Any contact with this race should be conducted with the utmost caution and respect, as well as patience, for at first open diplomatic contact will be shunned. They often regard the customs and practices of other races to be backward and foolish, but are loyal to their allies and maintain lucrative trading links with races they consider as friends.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="GRAZERITES">
+    <SingularName>Grazerite</SingularName>
+    <PluralName>Grazerites</PluralName>
+    <Description>The Grazerites are a passive, peaceable race. Research indicates they have evolved from herbivorous herd animals, and as such are completely non-violent. They require little rest, and loathe indolence of any form, yet they are deeply contemplative, making them excellent mediators and counsellors. The Grazerites are skilled diplomats also, for they are easy to agree with others, and they gain their greatest pleasure from negotiating peace and ending conflict.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="HAAKONIANS">
+    <SingularName>Haakonian</SingularName>
+    <PluralName>Haakonians</PluralName>
+    <Description>The Haakonians are a relatively tall species, with multiple facial ridges, and of common physiology. They fought a long, bitter war with the Talaxians, and it resulted in the development of terrible weapons of mass destruction; the research of which still remains, and it would be dangerous in the wrong hands. In diplomatic affairs, they are more trusting and open than they once were. It is a period of new hope and prosperity for them, but bitterness after the war still simmers in some sectors of society. Healing those wounds should be made a priority.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="HALKANS">
+    <SingularName>Halkan</SingularName>
+    <PluralName>Halkans</PluralName>
+    <Description>The Halkans enjoy a peaceful, agrarian life, in a virtually utopian society. They are the complete pacifist regime, and will bring no fight to defend themselves, or even their way of life. Their lack of even basic defences leaves them open to attack and exploitation, especially in regards to their planet's abundance of dilithium deposits, which is the richest ever discovered. But the Halkans will not be easy to sway; they have no interest at all in any alien race, whether friendly or adversarial.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="HAZARI">
+    <SingularName>Hazari</SingularName>
+    <PluralName>Hazari</PluralName>
+    <Description>The Hazari are a violent, militant race. They are well known for their expert bounty hunting skills, and they are technologically advanced in many areas. Their ships are very fast, have excellent defences and are well-armed. They will ally themselves with other powers only if it profits them, and they will fight tirelessly against their enemies. They always honour their agreements.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="HEKARANS">
+    <SingularName>Hekaran</SingularName>
+    <PluralName>Hekarans</PluralName>
+    <Description>The Hekarans are a space-faring race from the planet Hekaras II. They are advanced in many technological fields, especially in that of warp research, being the first species to recognise the stress of warp fields on the surrounding space. More research however will have to be completed in this field before any conclusions can be drawn, but in the meantime, such studies will be of great use to our conventional propulsion research.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="HIROGEN">
+    <SingularName>Hirogen</SingularName>
+    <PluralName>Hirogen</PluralName>
+    <Description>The Hirogen civilization was highly advanced in its past, but is now in swift decline. They are a nomadic race, driven by the desire to hunt and prey on lesser races, or those considered worthy of the challenge. They are divided into small hunting 'packs', each led and coordinated by an Alpha. Significant study and analysis of a hunt subject is considered essential in order to understand the prey, and prevent the 'hunter from becoming the hunted'. Hirogen ships are well armed, built solely with combat in mind. Their technology is on par with our own; however, they rarely pursue new scientific innovation, for being so preoccupied with the hunt. They are a highly aggressive and violent people, and often they retain the body parts of their victims as trophies.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="HORTA">
+    <SingularName>Horta</SingularName>
+    <PluralName>Horta</PluralName>
+    <Description>The Horta are a lifeform based on silicon, and thus far their physiology has baffled scientists. The Horta excrete an ultra-corrosive chemical that easily burns through stone, which allows them to burrow through the hard crust of the planet. Once every 50,000 years, all but one Horta die out, leaving a large number of eggs guarded by the last remaining Horta - this defines the purpose of their existence, and society, if it can be called society. This does make them exceedingly vulnerable during hatching times, however rare the event may be. Ultimately, the Horta will not contribute a great deal to other Carbon-based humanoids in terms of affiliation and cultural interchange, but with their permission, mining works on their world can offer us much. The Horta are normally peaceful, but they will not hesitate to defend themselves - lethally, if necessary.</Description>
+    <HomePlanetType>Barren</HomePlanetType>
+  </Race>
+  <Race Key="IYAARANS">
+    <SingularName>Iyaaran</SingularName>
+    <PluralName>Iyaarans</PluralName>
+    <Description>The Iyaarans are an unusual species, physiologically and emotionally. They reproduce by post-cellular compounding, and emerge full-grown from natal pods. What sets them apart from most other sentient races in another aspect is their lack of understanding when it comes to the basic driving forces of pleasure, love, desire, even food, and they place great importance in understanding them, and how they feature in the cultures of other races. This desire and curiosity has the potential to make them skilled, if somewhat unconventional, diplomats.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="JNAII">
+    <SingularName>J'Naii</SingularName>
+    <PluralName>J'Naii</PluralName>
+    <Description>The J'Naii are a technologically advanced humanoid species. They are biologically, as well as ideologically androgynous, and it embodies their entire culture and society. Authorities take a dim view of any that step outside the acceptable, customary modes of living - such as fastening themselves sexually or emotionally to any being that is identified by gender. In such a scenario this individual can often face severe penalties, including a full psychotectic restructuring. Despite their code of ascetics, and strict moral stance, the J'naii are a socially and diplomatically adept people, and welcome contact with outsiders, as long as it falls within the bounds of their customs.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="KAELON">
+    <SingularName>Kaelon</SingularName>
+    <PluralName>Kaelon</PluralName>
+    <Description>The Kaelon have a number of curious beliefs, including a predilection for ritual suicide at retirement age, which they call the 'Resolution'. Outsiders may view this custom as rather basic and uncultured, due most notably to the fact that the person in question has no choice in the matter. Technologically, the Kaelon specialise in advanced physics, in all its forms. This is an unfortunate necessity due to the instability of their sun, which they have long sought to cure by means of affecting solar activity. They continually formulate new and innovative methods of energy generation to support their society as a counter-balance for these instabilities.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KAREMMA">
+    <SingularName>Karemma</SingularName>
+    <PluralName>Karemma</PluralName>
+    <Description>The Karemma civilization is advanced in development and influence, and very wealthy. Their trade nets span half the quadrant, and many powers, small or great, rely on their third party trafficking to maintain their economy. Trade relations with any of their affiliates are bound exclusively to Karemma subsidiaries and taxes, so it is imperative that if any economic headway is to be made by way of expansion into their area of space, the Karemma mandate is honoured - they will be at the commercial heart of all trade ventures and diplomatic negotiations, whether relations are friendly or not.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KAZON">
+    <SingularName>Kazon</SingularName>
+    <PluralName>Kazon</PluralName>
+    <Description>The Kazon are a socially primitive but technologically sophisticated warrior species that exist in a highly complex multi-sect social structure. Known together as 'The Kazon Collective', each sect is controlled by the 'Maje', as they vie for resources, allies and potential dominance over the other, rival sects. The system was originally introduced after the Trabe invasion and subjugation, but the Kazon eventually united, overthrowing their conquerors, and utilizing their spacecraft achieved technological and military prominence once more.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="KELLERUN">
+    <SingularName>Kellerun</SingularName>
+    <PluralName>Kellerun</PluralName>
+    <Description>The Kellerun were a militant race, bent on the destruction of the T'Lani at all costs, and would stop at nothing to achieve their goal, even in the elimination of the T'Lani race altogether. Fortunately peace won through, but many of their dreadful biological weapons survived the war. The Kellerun are a passionate and proud race, but diplomatically fickle, and would fight just as hard for peace as they would in war.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KESPRYTT">
+    <SingularName>Kesprytt</SingularName>
+    <PluralName>Kesprytt</PluralName>
+    <Description>Kes and Prytt are the two separate nation states of the planet Kesprytt III. The Kes maintain a three-quarter majority of the planet's territory, resources and population, while the xenophobic Prytt are left largely to their own devices as isolationists. Both parties are extremely paranoid, and suspicion and mistrust of each other is rife. The two sides both employ intense, widespread security networks, particularly the Prytt who would go to any length to ensure their internal security and national identity had not been compromised by the Kes. The Kes application for membership would be immediate, but as the planet has not met certain cultural guidelines and criteria necessary for a successful application, most notably the lack of a unified world government, a suspension in processing the application is recommended for the time being, for fear such steps would invoke a civil war with the Prytt.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KLAESTRONIANS">
+    <SingularName>Klaestronian</SingularName>
+    <PluralName>Klaestronians</PluralName>
+    <Description>The Klaestronians are a people who long endured a bitter civil war. A frail provisional government was installed, and now seeks to bring the people into a brighter age, but many of the people are still gripped by paranoia, fear, and scepticism. The government are still viewed as archaic and brutal, and many even petty crimes are punishable by death.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KRADIN">
+    <SingularName>Kradin</SingularName>
+    <PluralName>Kradin</PluralName>
+    <Description>The Kradin are a physically powerful and imposing race, who have for a long time fought a war with the Vori, yet it is not altogether clear why it started, or who were the original aggressors. Each side views and portrays the other as inhuman beasts, in an attempt to manipulate their people to support the war and fight for the cause, and even alien outsiders who had no connection or knowledge with their plight. But the original grievance and the true account of the war-history is lost, for each equally accuses the other as the aggressor, and of the same atrocities, and a drive for the ultimate subjugation of the other.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="KREETASSANS">
+    <SingularName>Kreetassan</SingularName>
+    <PluralName>Kreetassans</PluralName>
+    <Description>The Kreetassans are a highly cultured people, and deeply ritualistic. The first step in negotiating with them would be a full study of their difficult and highly convoluted belief systems, for they would take great offence at any misunderstandings, which may result in harming relations indefinitely. In diplomatic matters they are skilled and open, indeed their Hall of Diplomacy is an important structure on their homeworld. Ultimately they have much to offer, not just culturally, but in the raw materials present on Kreetassa.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KRIOSIANS">
+    <SingularName>Kriosian</SingularName>
+    <PluralName>Kriosians</PluralName>
+    <Description>For centuries the militant Kriosians have been at war with a neighbouring species. But a recent parley ended hostilities, and following peace offerings a great effort was made diplomatically to seal friendly relations, so that war never again became an option. It was an advance in ideology and mindset for the Kriosians, and one long fought for. However, signs of instability and corruption remain, and multiple agendas in the current regime are seeking to undermine the long-term peace, threatening it before the full treaty is even drawn up to completion.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="KTARIANS">
+    <SingularName>Ktarian</SingularName>
+    <PluralName>Ktarians</PluralName>
+    <Description>The Ktarians are a humanoid race with slightly feline features. They are an enigmatic race, with a great talent in the design of small neural linkage devices. This talent finds its greatest expression in their enjoyable and even addictive games. Most of these games are harmless, but in the past, some have been used as tools of sabotage.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="LEDOSIANS">
+    <SingularName>Ledosian</SingularName>
+    <PluralName>Ledosians</PluralName>
+    <Description>The Ledosian homeworld is a trafficking hub, and is in an important strategic location. Their Port Authority controls and regulates all the shipping of surrounding sectors, influencing many lucrative markets. The Ledosian homeworld is home to another species also, the Ventu, but they are protected behind an impenetrable shield, built long ago by an alien race, and almost nothing is known about them.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="LISSEPIANS">
+    <SingularName>Lissepian</SingularName>
+    <PluralName>Lissepians</PluralName>
+    <Description>The Lissepians are a race of sellers, buyers, and thieves. But they know their territory well, and their markets, and they have the protection of various powers that are contractually bound to them and their services. But the skill of what they do well cannot be understated. They are a particularly devious people, with a great talent for eyeing a potential bargain, and to turn a high profit with even the less promising ventures, for they can perceive both flaws and strengths in the market, and they can readily exploit them.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="LOKIRRIM">
+    <SingularName>Lokirrim</SingularName>
+    <PluralName>Lokirrim</PluralName>
+    <Description>Unless specifically regulated, photonic lifeforms in Lokirrim culture are forbidden, and Lokirrim survey ships are thought to roam wide areas seeking out illegal holographic activity. However, their research into holographic sciences, which they abhor due to various insurgent events in their own society, has uncovered a number of intriguing and innovative energy solutions, which would aid our own research into these fields.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="LURIANS">
+    <SingularName>Lurian</SingularName>
+    <PluralName>Lurians</PluralName>
+    <Description>The Lurians are a humanoid race from the Luria system near the Ionite nebula. They have an imposing physique and are physically very strong. They have a strange physiology involving two stomachs, and socially they are stunted and secretive, being not particularly forthcoming in speech with other races or people unless they belong to their own social circle. Lurians live in relative peace, and maintain an active trade industry with neighbouring species.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="MALCORIANS">
+    <SingularName>Malcorian</SingularName>
+    <PluralName>Malcorians</PluralName>
+    <Description>The Malcorians are an exceptionally xenophobic race, whose government takes great pains to conceal any contact with alien species. Despite their early warp technology, they have implemented many impressive engineering feats in deep core extraction, for Malcor possesses a plethora of mineral wealth, including dilithium, so affiliation duly has its value. However, they are best left alone for the time being, for their society is not yet ready to comprehend full alien contact.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="MALON">
+    <SingularName>Malon</SingularName>
+    <PluralName>Malon</PluralName>
+    <Description>The Malon have a fragile economy, and to supplement costs various waste disposal shortcuts have been employed to dispose of their dangerous toxic waste, generated by their antimatter power generator systems used in industry. These shortcut protocols are often harmful to the environment, but are an economic necessity, they deem. Although technologically advanced, the Malon lack the technology, and perhaps the inclination, to recycle their antimatter waste more efficiently and safely, for it emits dangerous levels of theta radiation. Their current solution is to thus dispose of it in open space.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="MARKALIANS">
+    <SingularName>Markalian</SingularName>
+    <PluralName>Markalians</PluralName>
+    <Description>The Markalians operate a highly elusive smuggling cartel that is known for its ability to smuggle weapons, currency, pharmaceuticals, and hazardous bio-matter to various black market outlets across hundreds of light-years of space. However, these activities act as an invisible corner-stone to many 'clean' economies, and, if removed or disturbed, could affect the market stability of the whole quadrant. The authorities know this, and it is for such a reason that they turn a blind eye to many of the Smuggling Cartel's activities, deciding they are better off in the long-run taking what benefits there are to be had, than by closing the Cartel down and bringing it to justice.</Description>
+    <HomePlanetType>Arctic</HomePlanetType>
+  </Race>
+  <Race Key="MERIDIANS">
+    <SingularName>Meridian</SingularName>
+    <PluralName>Meridians</PluralName>
+    <Description>Instabilities in the Meridian sun gives rise to the unique planetary conditions endured by the small local population. The dimensional shifts can last for up to sixty years at a time, and as a result the population develops only very slowly, and in this phase change the people experience disembodiment. It is a plight they find tenable, even utopian, but it curtails any effort to advance their culture and technology.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="MINTAKANS">
+    <SingularName>Mintakan</SingularName>
+    <PluralName>Mintakans</PluralName>
+    <Description>The fledgling Mintakan society is primarily agrarian, and organized at the village level. Despite their primitive technology, they already show signs of the sort of emotionless logical thinking that characterizes the Vulcan race. Only time will tell whether they will develop similar mental capacities. But for now, in their defenceless state, they are open to exploitation from less scrupulous races.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="MIRADORN">
+    <SingularName>Miradorn</SingularName>
+    <PluralName>Miradorn</PluralName>
+    <Description>The Miradorn are a humanoid race, distinguished by their bi-lobed foreheads. They are born as twins, and are telepathically linked - and to such a close degree that each considers himself only one half of a whole person. If one twin dies, grief, sinking him almost to the level of death, afflicts the other, and if one dies unjustly the other seeks vengeance, and will stop at nothing to obtain it. Diplomatic efforts may be complicated by their natural proclivity for contention, and a mixed opinion among them. They are a technologically advanced race, and their vessels are fast, with strong hulls.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="MIZARIANS">
+    <SingularName>Mizarian</SingularName>
+    <PluralName>Mizarians</PluralName>
+    <Description>The Mizarians are a pacifistic society. Their world has been invaded and conquered many times, but they have survived, somehow, by offering no resistance whatsoever. Despite this pacifistic ideology, they are quite confrontational and defensive in speech; they are apparently convinced that their ideology is superior to any other.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="MOKRA">
+    <SingularName>Mokra</SingularName>
+    <PluralName>Mokra</PluralName>
+    <Description>The Mokra people are ruled by the repressive and strict governing of the militant Mokra Order. Their philosophy is to crush anyone who resists their rule, and they would pursue their enemies until they were either eliminated, or turned to their service. They have an enlarged complex of superiority, and in the diplomatic arena would refuse any counsel that did not cede their 'wisdom', which thus puts them at odds with other species. They are a technologically advanced species, and their formidable starships are built purely for combat.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="MONEANS">
+    <SingularName>Monean</SingularName>
+    <PluralName>Moneans</PluralName>
+    <Description>A nomadic race of aliens were responsible for creating the containment field which surrounds the Monean planetoid, powered by an ancient reactor close to the core. Today, the Moneans live peacefully in their artificially maintained aquasphere, containing their instable waterworld. With membership, the first enterprise will be a full and detailed scientific investigation of their environment, for ultimately the integrity of the containment, and their very survival, will depend on understanding the technology.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="NAUSICAANS">
+    <SingularName>Nausicaan</SingularName>
+    <PluralName>Nausicaans</PluralName>
+    <Description>The Nausicaans are a warrior race, whose pride and bluster are legendary throughout the galaxy. Their society is authoritarian, ruled by the strong and the cunning. They have a great respect for other races that demonstrate similar values, but also demonstrate complete disdain for those who show signs of cowardice.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="NECHANI">
+    <SingularName>Nechani</SingularName>
+    <PluralName>Nechani</PluralName>
+    <Description>Of all the sites on Nechani, the most sacred is a shrine managed by the Nechisti, a holy order of monks. The shrine itself is protected by a natural forcefield that can cause massive neural damage to anyone who attempts to cross it unprepared. The Nechisti protect the secret method of crossing the field, but do not easily share it. It may well be that some technological system is involved, but it has been known that some subjects have relied upon mere faith alone, and passed through to the beyond unharmed.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="NEZU">
+    <SingularName>Nezu</SingularName>
+    <PluralName>Nezu</PluralName>
+    <Description>The Nezu homeworld has been bombarded many times by asteroid and meteor collisions, scarring the surface. And it came to light that these collisions were a device of warfare, orchestrated by a neighbouring race with which they were in conflict with. The Nezu are a colonial race, and have aspirations to expand their people further into surrounding sectors.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="NORCADIANS">
+    <SingularName>Norcadian</SingularName>
+    <PluralName>Norcadians</PluralName>
+    <Description>The Norcadian homeworld is a natural marvel to behold, and it is a common haunt for botanists and naturalists. The natives are generally friendly and cultured. Norcadia boasts some fine museums and works of art, but by far their greatest claim to renown, or notoriety, is their invention of the brutal sport of Tsunkatse, which is the planetary pass time of the people, whether they chose to gamble on the events, or merely spectate.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="NUMIRI">
+    <SingularName>Numiri</SingularName>
+    <PluralName>Numiri</PluralName>
+    <Description>The Numiri shared a homeworld with the Banean people, but as the races grew apart culturally and philosophically, deep lying tensions and distrust fuelled a bitter conflict. As well as impressive regenerative shielding for their vessels, the war also brought many lethal but innovative weapons designs into the Numiri fighting arsenal, and as a result their starships are formidable indeed, and would match or exceed many of our designs. They would make dangerous foes, but strong allies.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="NUUBARI">
+    <SingularName>Nuu'bari</SingularName>
+    <PluralName>Nuu'bari</PluralName>
+    <Description>The Nuu'bari are innovators in holographic design and utilization. They have successfully integrated holographic workers into common industry, which offsets the cost of both a workforce and general overheads. It has been a great success, proving the Nuu'bari have an inventive approach to industrial solutions, as well as shrewd business minds.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="NYRIANS">
+    <SingularName>Nyrian</SingularName>
+    <PluralName>Nyrians</PluralName>
+    <Description>The Nyrians have perfected a devious system of commandeering alien vessels to acquire technology and hardware. This is achieved by way of an elaborate hoax they perform, taking advantage of the good nature of unsuspecting crews of any passing starship. Long-range translocation devices are employed to beam their operatives on board the starship. Initially they claim innocence and ignorance over what is happening, but more and more Nyrians arrive, whilst replacing the original crew, and soon the crew is outnumbered, and before they can act, the ship belongs to the Nyrians.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="OCAMPA">
+    <SingularName>Ocampa</SingularName>
+    <PluralName>Ocampa</PluralName>
+    <Description>The members of this race have an exceptionally short life span, rarely exceeding ten Earth years. Ocampa young are born at an advanced stage of development from gestation sacks that form on an Ocampa female during the elogium. What now remains of the highly telepathic Ocampa race shelter in large subterranean structures, constructed, and regularly provisioned, by the 'Caretaker', a powerful extra-galactic entity whose people were believed to have inadvertently caused serious ecological damage to the planet's surface centuries earlier. The Caretaker remained to look after the broken Ocampa civilization.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="ORIONS">
+    <SingularName>Orion</SingularName>
+    <PluralName>Orions</PluralName>
+    <Description>The green skinned, hairless Orions live a life of hedonism and self-indulgence, and much of it is paid for by criminal activity and black market funding. The females of their race are admired and revered by the males, but live in thraldom, serving only to please clients and business partners alike, and to attract trade and interest from new clients, as a form of sexual diplomacy, drawing them ever closer into the Orion web of exploitation and deceit. The Orions operate a wide circuit of smuggling, of which their influence and bartering prowess is to be admired by some, and feared by many.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ORNARANS">
+    <SingularName>Ornaran</SingularName>
+    <PluralName>Ornarans</PluralName>
+    <Description>The Ornarans have the unique ability to create a significant electrical discharge from their hands, that while produced at great strain to the Ornaran, can incapacitate the unwary. The Ornarans have been known to use this ability to commandeer ships and supplies to feed their collapsing economy. Captains should be wary of such piracy attempts.
+The Ornaran people are entirely dependent on trade and piracy to survive however, for they lack any semblance of self-sufficiency; another race, the Brekkians, exploited the Ornarans for a long period with Felicium, which they led the Ornarans to believe was a medicine for a plague that they had long suffered with. But Felicium was in fact a highly addictive narcotic, the chief export of Brekka, and the key currency source of the entire Brekkian economy; the Ornarans were simply another customer for the Brekkian economy to serve. And so, the lie that Felicium was medicine quickly took hold on Ornara, and the people gradually became dependant on the drug. This dependency however came at a terrible price to the Ornarans, for their civilization ultimately failed in development and innovation, and they dwindled both socially and technologically, in their quest to pay for continued shipments of Felicium.
+After the recent truth of the Brekkian drug trade surfaced, an embargo was placed on further trafficking. Lacking their only source of Felicium, their entire world has since entered a painful process of detoxification and rebuilding. Only time will tell whether the effort to help the Ornarans will bear fruit, but now that the lie has been exposed, their future looks brighter than it once did.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="PAKLED">
+    <SingularName>Pakled</SingularName>
+    <PluralName>Pakled</PluralName>
+    <Description>Considered to be underdeveloped intellectually, the Pakled have still successfully gained technically impressive expertise from seemingly fraudulent means. They are a primitive culture, which has been thrust into the interstellar stage by premature introduction to advanced technology. They constantly pursue power, and search for more and more new technology to improve themselves. Their underdeveloped speech centres give them a slow and careful manner of speech that belies their great cunning.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="PARADAS">
+    <SingularName>Parada</SingularName>
+    <PluralName>Paradas</PluralName>
+    <Description>The Paradas are a somewhat reptilian species, who have suffered at the hands of insurgents for many years. Parada was thrown into civil war, and their unstable government went to extreme lengths to undermine and obstruct peace-talks - they created a body of replicant operatives, who served them in their civil war by collecting intelligence. In the aftermath a suspicious and paranoid race emerged, protected by a formidable security infrastructure.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="QUARREN">
+    <SingularName>Quarren</SingularName>
+    <PluralName>Quarren</PluralName>
+    <Description>The Quarren are a technologically advanced race that prides itself on its industrial might, and the superior production of goods for a wide variety of clientele. The Quarren economy relies heavily on its trade contracts, and will go to any length to ensure that manpower shortages do not impact productivity in an ever-changing economic climate. So much so that they have been known to resort to abduction and indirect forced-labour to meet demands. But such personnel are unaware of the slavery forced upon them; they do not even remember their formers lives. All memories prior to falling in with the Quarren are erased.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="RAKHARI">
+    <SingularName>Rakhari</SingularName>
+    <PluralName>Rakhari</PluralName>
+    <Description>The Rakhari social structure is brutal, but simplistic. Oppose the natural order, or be victim to it: this is the order of things, and the oppression under which the Rakhari people have long suffered. Few now are prepared to speak out against the authorities, or challenge their ruling. The government are reticent to change, and closed-minded to any form of off-world diplomacy or trade. They will be a difficult people to negotiate with.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="RAKOSANS">
+    <SingularName>Rakosan</SingularName>
+    <PluralName>Rakosans</PluralName>
+    <Description>The Rakosans employ a series of deep space scanners and surveillance devices to protect their planet. It has thus far proven its value as a measure of prudence - particularly in granting the Rakosans an early warning capability to detect invaders, raiders, or any other nearby spacecraft. Their world suffers from overpopulation, so the first step in assisting their people would be the expansion and continued development of their homesystem.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="RAMATIANS">
+    <SingularName>Ramatian</SingularName>
+    <PluralName>Ramatians</PluralName>
+    <Description>Many of the Ramatian people lack the gene that makes hearing possible. The ruling family have devised a method of communication involving a telepathic interpretative 'chorus' - a harmonious mental waveform that resonates with the different facets of personality, which they interpret as communicative thought patterns. Because of this skill they are able to delve deeply into the thought structures of almost any mind, perceiving thought, simplifying, amongst many cross-cultural and lingual boundaries, first contact negotiations, and mediation.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="RISIANS">
+    <SingularName>Risian</SingularName>
+    <PluralName>Risians</PluralName>
+    <Description>No form of hedonistic enjoyment or indolence is excluded from a wide array of attractions and services on the Risan homeworld. They maintain their pleasant and recreational existence due to a healthy economy based on commerce and the lucrative tourism trade. Inexperienced officers must be warned though: leisure can be a distraction, and preoccupation, and on Risa that can be fatal to one's career.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="RUTIANS">
+    <SingularName>Rutian</SingularName>
+    <PluralName>Rutians</PluralName>
+    <Description>There are as yet many social fractures on the political landscape of the Rutian homeworld. Social divisions are rife, and many urban areas are blighted by unrest, and in some cases violent factions who oppose the government. But they have a burgeoning technological research infrastructure, and many great minds. Their folded-space transit theory is a remarkable innovation, yet hazardous. On the verge of warp capability they remain a promising civilization, but for their domestic troubles.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="SELAY">
+    <SingularName>Selay</SingularName>
+    <PluralName>Selay</PluralName>
+    <Description>The Selay are a reptilian race, somewhat limited in technology and social refinement. Their past includes a great deal of incidental contact with the Anticans, a neighbouring species, with which they had fought a long conflict, and it still continues - the animosity between these two races is of epic proportions. The Selay are extremely set in their ways, and often regard the customs and practices of other races to be barbaric and foolish.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="SHELIAK">
+    <SingularName>Sheliak</SingularName>
+    <PluralName>Sheliak</PluralName>
+    <Description>The Sheliak race falls under the type R3 classification. Being extremely arrogant and reclusive they have little respect for other cultures, and have long held territorial disputes with their neighbours. They have an immense archive of active treaties, which strictly defines their borders, rights and terms. They constantly refer to these in their diplomatic dealings, which ultimately result in delays and further legal disputes, before being finally settled by some convoluted treaty condition or parameter, or by third party arbitration. It is often remarked that the Sheliak prefer to hide behind the rhetoric of jargon and litigation than engage in battle. But they are advanced, and dangerous nonetheless.</Description>
+    <HomePlanetType>Barren</HomePlanetType>
+  </Race>
+  <Race Key="SIKARIANS">
+    <SingularName>Sikarian</SingularName>
+    <PluralName>Sikarians</PluralName>
+    <Description>The Sikarians are not merely advanced in many areas of technology; they are philosophically and ideologically sophisticated also, and they are eager to pass on their knowledge to others - indeed their hospitality is legendary. But it comes at a price, small though it is. Their primary academic pursuit and preoccupation is literature, particularly the sagas and fables of other races. To them this is an important part of the development of their culture: to absorb the tales of thoughts and deeds of others, for it grants them new insight into their own social and cultural heritage.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="SKRREEA">
+    <SingularName>Skrreea</SingularName>
+    <PluralName>Skrreea</PluralName>
+    <Description>The Skrreea have suffered at the hands of invaders more than once, and more than once they have appealed for aid, or have fled and resettled. Their current choice of homeworld may not be their last, for danger always lurks near. They are beginning to advance, and at last rely on their self-sufficiency and their own strengths. But deep within their psyche lurks their long sought ideal which will never die: Kentanna, the ancestral homeworld of legend.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="SONA">
+    <SingularName>Son'a</SingularName>
+    <PluralName>Son'a</PluralName>
+    <Description>The Son'a were once the disillusioned outcasts of the utopian Ba'ku colony on their world in the Briar Patch. These separatists were forced to flee the planet, as they did not conform to Ba'ku society. Having lost the unique rejuvenating properties of the world's metaphasic field they became susceptible like everyone else to the ravages of time. Seeking to usurp those who had exiled them, there is an inherent danger they might gain the support of many powerful outsiders who desire access to the marvels of the planet's special nature.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="SULIBAN">
+    <SingularName>Suliban</SingularName>
+    <PluralName>Suliban</PluralName>
+    <Description>The Suliban lost their original homeworld centuries ago when it became uninhabitable. Their new home is comparable to their last, with favourable conditions. Suliban biology is unique due to its ease of modification and enhancement, and not all experiments have yielded auspicious results. But with continued study the research promises to further our understanding of complex biological systems.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="TAKARANS">
+    <SingularName>Takaran</SingularName>
+    <PluralName>Takarans</PluralName>
+    <Description>The Takarans are a truly unique species. Unlike other sentient races, they do not have differentiated internal organs. This decentralized internal structure makes them incredibly resilient, as they can only be seriously injured at the cellular level. They are also noted for their advances and ideas in the physical sciences. But they prefer political non-alignment, and will not easily suffer the dominion of others.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="TAKARIANS">
+    <SingularName>Takarian</SingularName>
+    <PluralName>Takarians</PluralName>
+    <Description>The Takarians are a superstitious race governed by a system of wealthy ruling barons. They are not culturally unusual in any way, and are fond of legend and prophecy. If any contact or negotiations are to be made, it must be in the very final need - for protection, against any foreign power that may seek to exploit them.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TAKTAK">
+    <SingularName>Tak Tak</SingularName>
+    <PluralName>Tak Tak</PluralName>
+    <Description>The Tak Tak have had many difficulties in the past in communicating their thoughts and ideas, for their language is steeped largely in gesticulation and complex forms of body language, which many alien races find archaic, and difficult to understand and mimic. A mere gesture or innocent glance may cause significant offence to a Tak Tak, and this obstacle could hinder diplomacy.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="TALARIANS">
+    <SingularName>Talarian</SingularName>
+    <PluralName>Talarians</PluralName>
+    <Description>Being rigidly centred in a Patriarchal social doctrine, the ritualistic Talarian society encourages a strict traditional cultural system. They have long traditions of warfare, and these are echoed in their complex customs and ideas, which are typically stubborn and inflexible. They do not have the history of conquest and invasion that marks many other militaristic societies, rather they prefer to guard their own, and their territory is heavily defended. Talarian warships are thought to employ considerably less developed weaponry than the major powers, utilizing neutral particle beam weaponry and Merculite rockets. Although they lag behind in many scientific fields, they are resolute, utterly fearless, and would gladly give their lives for their planet.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TALAXIANS">
+    <SingularName>Talaxian</SingularName>
+    <PluralName>Talaxians</PluralName>
+    <Description>Several times the Talaxian race has had to fight off attempts of conquest by adversarial races. But they had little choice in surrendering to the Haakonian Order after the deployment of a horrific weapon called the Metreon Cascade. The weapon wiped out more than a quarter of a million colonial Talaxians residing on their moon of Rinax. But they have come some way since in negotiating for peace, and healing the wounds of their world. They are a helpful, friendly people who hide their inner scars well, and from those scars they have much to offer in wisdom and counsel.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TALOSIANS">
+    <SingularName>Talosian</SingularName>
+    <PluralName>Talosians</PluralName>
+    <Description>The Talosians live underground due to high radiation levels on the surface - the result of a terrible war. The few remaining members of their species were forced to adapt to a subterranean existence after their world was virtually destroyed by nuclear conflict. Having nothing of a world or society left, they became dependent on the realm of illusion, facilitated by an ancient technology first used in generations past. Due to the emptiness of their existence they resorted to capturing passing space vehicles, and they subjected their unwitting victims to their elaborate illusions. All but the most mentally resilient subjects would fail to resist the Talosians' attempts to bend their will, but there is hope yet for the Talosians. Only now are they beginning to understand their futile pursuits. With the open hand of friendship and trust they may emerge at last from their caves and abandon fantasy and embrace reality.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TAMARIANS">
+    <SingularName>Tamarian</SingularName>
+    <PluralName>Tamarians</PluralName>
+    <Description>The Tamarians, or as they have been known in legend, 'The Children of Tama', are considered one of the most mystifying races in the known galaxy. This is due merely to their linguistic mechanisms that have thus far prevented verbal communication with virtually all races that have ever encountered them, and as a result no diplomatic understanding has so far endured. Traditional Universal Translator technology would fail to process or interpret Tamarian speech. From analysis their language is classified as being purely metaphoric, alluding to ancient tales and deeds of their mytho-culture. They are a technologically advanced race, and appear friendly, and are keen for contact and cultural interchange - if only their language could be translated and understood, and if they could understand us.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TANUGANS">
+    <SingularName>Tanugan</SingularName>
+    <PluralName>Tanugans</PluralName>
+    <Description>The Tanugans have suffered for many years in the aftermath of post-industrial pollution and fossil fuel shortages. Now on the cutting edge of energy research their scientists could provide valuable insights into Krieger Wave technology, and implementing new forms of energy management.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TELLARITES">
+    <SingularName>Tellarite</SingularName>
+    <PluralName>Tellarites</PluralName>
+    <Description>The Tellarites are experts in all areas of industrial innovation and engineering. The advanced industrial infrastructure on Tellar is second to none - its efficiency and output are marvels to behold, and their low environmental impact and industrial costs are a mystery and an envy to those on the outside. The Tellarites will not share their secrets willingly, for they are a stubborn and proud people, and it will be difficult to gain the upper hand in any negotiations with them, for they are skilled talkers and passionate in debate; arguments are considered a sport in Tellarite society. Also, if called upon, the Tellarites make strong and formidable warriors, although their ships are somewhat lacking in offensive capability. The Tellarite prowess for engineering means their ships are heavily armoured however, so they can afford to remain in combat for longer.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TEPLANS">
+    <SingularName>Teplan</SingularName>
+    <PluralName>Teplans</PluralName>
+    <Description>The Teplans have tried every method their science has produced to create a cure for the dreaded Blight. They had once been advanced in many areas of scientific and medical study, but now their entire infrastructure is in decline due to the failing hope that they will ever achieve their goal. The first step in bringing the Teplans into the galactic community is to vanquish their disease once and for all, and re-establish their culture and heritage.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="THOLIANS">
+    <SingularName>Tholian</SingularName>
+    <PluralName>Tholians</PluralName>
+    <Description>The Tholians are a mysterious and vaguely humanoid race, of ambiguous nature and motivation. Being obsessed in the extreme with territorial resources, disputes with their neighbours have been commonplace over the years. They are known to have been involved with a multitude of unscrupulous activities, as they seek to influence the political events of neighbouring powers to their own ends. They are an advanced species, who as soon as they had the technology, at once thrust themselves onto the interstellar stage with aggression and hostility. They do however possess impressive technological skills in engineering materials and metals, which would greatly enhance our research programs in the areas of construction. But trusting them will be difficult.</Description>
+    <HomePlanetType>Volcanic</HomePlanetType>
+  </Race>
+  <Race Key="TILONIANS">
+    <SingularName>Tilonian</SingularName>
+    <PluralName>Tilonians</PluralName>
+    <Description>Tilonus IV has many factions vying for power, one against the other, but all share the same objective and directive: manipulation of the masses, and even foreign powers. In their pursuit of power and influence the Tilonians have achieved much in the nefarious underground science of neurological manipulation and memory extraction. It is with this advanced technology that their operatives work, and thus far their insidious work has been exposed in high circles even in the larger and more powerful races and empires, but it is feared many more are operating as yet undetected.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TLANI">
+    <SingularName>T'Lani</SingularName>
+    <PluralName>T'Lani</PluralName>
+    <Description>The T'Lani race is highly sophisticated, and although they would have you believe otherwise, they are not quite within technological reach of the major powers. However, they would prove to be useful allies, but they are less than cooperative in the diplomatic arena, preferring to remain isolated. In the past they have engaged in many foolish conflicts, but their capability and technology have not matched their ambition. Although their war with the Kellerun is over, their biogenic research in developing the Harvesters weapon may contribute to biotech research.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TRABE">
+    <SingularName>Trabe</SingularName>
+    <PluralName>Trabe</PluralName>
+    <Description>The Trabe are a devious people, who for a long time maintained amiable relations with other races on the surface, but hid unscrupulous deeds and dark designs far beneath. This was their undoing however, for their exploitation of the Kazon resulted in their revolt, and the Trabe were defeated, and their people scattered. The government was dissolved, social structures floundered, and much of their technology was seized. Today the Trabe reside mainly in exile, but the remnants of their people continue to rebuild on their homeworld, determined as they are to rebuild and strike back, for their grudge against the Kazon is bitter.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TRILL">
+    <SingularName>Trill</SingularName>
+    <PluralName>Trill</PluralName>
+    <Description>The Trill are actually two species, both sentient, which share a symbiotic relationship. In a joined Trill, the memories and character of the long-lived symbiont are merged with the body, memories, and skills of the host, and in some cases the personality. Although the majority of Trill are not joined, owing to a disparity in the populations of the two species, the joining is the aspiration of many young Trill. It was not a widely known fact that the Trill were indeed two species joined in synthesis, but they are not considered secretive or deceitful - the matter of host and symbiont was simply a private matter.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="TROGORANS">
+    <SingularName>T-Rogoran</SingularName>
+    <PluralName>T-Rogorans</PluralName>
+    <Description>The T-Rogorans are a fierce, ruthless, and often reckless warrior people native to the Gamma Quadrant. No matter the cost, no matter the cause; even if it means they must lose the greater portion of their forces, the T-Rogorans fight all out to win, to overcome, and to destroy. For the T-Rogorans there is only one true reality, there is only one true ideology, and that is war; it is total war and conquest to lead to ultimate victory...</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+    <Race Key="TZENKETHI">
+    <SingularName>Tzenkethi</SingularName>
+    <PluralName>Tzenkethi</PluralName>
+    <Description>The Tzenkethi are an obscure, reptilian people known for raiding colonies and outposts on the edge of frontier space. The ruler of the Tzenkethi is the Autarch, a totalitarian tsar that leads by ruthless example, following a merciless drive towards expansion, conquest, and obliteration of everything that might stand in the way.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ULLIANS">
+    <SingularName>Ullian</SingularName>
+    <PluralName>Ullians</PluralName>
+    <Description>The vain Ullian persona wallows in their proud reputation as psycho-historians. They are renowned for their particularly powerful telepathy, and of special note is their unique talent for exploring repressed or fragmentary memories. In times past, some unscrupulous Ullians used this ability as a means of psychic assault, but the greatest interest of the Ullians today is their ambitious project to collate and gather a collective library of memories from species across the quadrant. This archive, for their accumulative research, is their ultimate goal.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="VAADWAUR">
+    <SingularName>Vaadwaur</SingularName>
+    <PluralName>Vaadwaur</PluralName>
+    <Description>The Vaadwaur excel in any technology that serves in the expanse and domination of their region of space. They used to control a series of subspace corridors for rapid transit from one colony and outpost to another, which permitted them close control of all their affairs. They could also use this technology to launch sudden attacks without warning, and thus they have become powerful. The Vaadwaur are usually arrogant and deceitful in their dealings with others, using them only to their advantage. They prize dignity and efficiency, and are also described by many as warmongers. They are an uncompromising people, and unforgiving.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="VENTAXIANS">
+    <SingularName>Ventaxian</SingularName>
+    <PluralName>Ventaxians</PluralName>
+    <Description>The Ventaxians believe that a new dark age is coming. With daily regularity, their scholars and philosophers attribute some new occurrence or sign as the harbinger of doom, and another dark age. It was approximately one millennium before, when Ventax suffered from terrible wars and environmental destruction, that they were finally saved by the now mythical figure of Ardra. It was agreed by contract that for one thousand years peace would reign on the planet, but by the calculations of the scribes, that time is almost up, and doom is now near. Ever on the edge of mysticism and fear, the Ventaxians will be a difficult diplomatic prospect. We can offer them protection, but they must be permitted to govern and solve these deep social affairs themselves.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="VHNORI">
+    <SingularName>Vhnori</SingularName>
+    <PluralName>Vhnori</PluralName>
+    <Description>The Vhnori transference ritual, as it is named, describes how, in their customary belief, the disincarnate soul of a person is delivered through spectral ruptures to the 'next emanation'. Generally the Vhnori are a passive and gentle natured people, bound to their spiritual traditions and customs, all of which are essential to them, for they embody the very fabric of their society and cultural heritage. The equilibrium of this society could be upset by the rapid indoctrination of an external alien power, which must be taken into account if they are to be diplomatically approached.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="VIDIIANS">
+    <SingularName>Vidiian</SingularName>
+    <PluralName>Vidiians</PluralName>
+    <Description>The Vidiians are a friendly race, with extremely advanced medical skills, and they preserve life whenever possible. Vidiians are favoured by many races because of their peaceful and caring nature, but they also have a strong military arm, with enormous cruisers as the backbone of their strength - their ships are capable of delivering crippling blows to the enemy's defences. However, they have long been afflicted by an horrifying pandemic known as the Phage. Continuous organ transplantation seems to be the only effective treatment, and they will take these organs and tissues from wherever they can find them, even from alien races whilst foregoing any ethical questions that might arise in their desperate need, and thus a wide variety of alien tissue transplants now severely afflict their appearance. Their disease has brought all but a handful of their race to their knees, and curing it is their obsession.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="VISSIANS">
+    <SingularName>Vissian</SingularName>
+    <PluralName>Vissians</PluralName>
+    <Description>The Vissians are a technologically advanced, space-faring race. They are unusual in that their species consists of three genders. The third, neutral gender, is called the 'cogenitor'. During procreation, the cogenitors provide a vital enzyme necessary for a successful conception. They do not enjoy the same social status as the males and females though, and they only make up three percent of the native population. As a result their services are in high demand. The Vissians are often regarded to be a somewhat boastful race, specifically of their technological achievements.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="VORGONS">
+    <SingularName>Vorgon</SingularName>
+    <PluralName>Vorgons</PluralName>
+    <Description>The Vorgons are an elusive race of unknown agenda and history. They seem particularly interested in advanced technologies, and often deal in this line of trade on the black market. The authorities however may have a hard time tracking down their profiteering activities, for they possess sophisticated, almost magical technology - they can beam great distances, and their ships are difficult even to detect, and it is rumoured they have even attempted to exploit the profit-margins of varying markets at different points in the time-line by dabbling with temporal science. But if we can persuade them to join a larger community, we may benefit from some of their more reputable trade links, though they will not share their scientific knowledge.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="VORI">
+    <SingularName>Vori</SingularName>
+    <PluralName>Vori</PluralName>
+    <Description>The Vori are a fierce and resilient race, who have for a long time fought a war with the Kradin, yet it is not altogether clear why it started, or who were the original aggressors. Each side characterizes the other as inhuman beasts in an attempt to manipulate their people to support the war and fight for the cause. It was the Vori who have in the past been responsible for deviously recruiting off-worlders to fight for the cause. They used psychotropic techniques and holographic generators to portray simulated war scenarios on unsuspecting victims, just to drum up support for their plight. But the original grievance and the true account of the war-history is lost, for each equally accuses the other as the aggressor, and of the same atrocities, and a drive for the ultimate subjugation of the other.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="VULCANS">
+    <SingularName>Vulcan</SingularName>
+    <PluralName>Vulcans</PluralName>
+    <Description>The Vulcan mindset has fluctuated over history. Although calm and emotionless yet compassionate beings in the modern era, they have a violent and chaotic past. The revered philosopher Surak transformed Vulcan society in the distant past, but certain factions opposed his teachings and fled the homeworld to begin their own lineage in the depths of space. But the Vulcan patriots that remained strove to unite their people and regain social harmony, and this they achieved through Surak's teachings, which helped to purify the Vulcan minds by strict mental discipline and logic. Today, the modern Vulcan possesses a distinguished sense of clarity of thought, embodied ultimately by pure logic. Some traces of their violent natures remain however, including their natural procreative impulses, which surface naturally roughly every seven years. The sometimes confusing and destructive symptoms of the mating instinct are described by the syndrome Pon Farr. The Vulcans are also a race which possess telepathic abilities, and although direct telepathy is rarely practiced, the Vulcans can employ a ritual called a Mind Meld which is used to mentally merge two minds.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="WADI">
+    <SingularName>Wadi</SingularName>
+    <PluralName>Wadi</PluralName>
+    <Description>The Wadi are particularly fascinated with gambling and gaming. Their gaming emporiums are among the most elaborate and immense anywhere in the known galaxy. They make a huge profit from administering their games, and selling the gaming rights, and economically they would be a significant boon to any economy. But they can be treacherous, and do not take well to defeat, or worse, being cheated.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="XANTHANS">
+    <SingularName>Xanthan</SingularName>
+    <PluralName>Xanthans</PluralName>
+    <Description>The Xanthans love to trade, and open their bazaar to all traders, traffickers and passers by, and no trade industry is excluded. Whatever goods or produce you may seek, whether it is information, a plasma manifold, or a sex slave, you can find it here amongst the vast Xanthan markets. But caution is advised - no form of trade is regulated here, and all means and methods of business are to be found, with a multitude of alien merchants; from the criminal to the unethical - that is immaterial, as long as it turns a profit...</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="XEPOLITES">
+    <SingularName>Xepolite</SingularName>
+    <PluralName>Xepolites</PluralName>
+    <Description>The Xepolites operate within the dark circles of corrupt, intimidating governments, doing their bidding for small prices, due to fear of persecution. Many of their past dealings have involved the trafficking of illegal goods, particularly in weapons and controlled substances, such as hazardous bio-matter. These they acquire from the black market, and they sell them on to various factions or terrorists - or to any that will pay them the asking price.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="XINDI">
+    <SingularName>Xindi</SingularName>
+    <PluralName>Xindi</PluralName>
+    <Description>There are six sub-species of the Xindi: the Primates, Aquatics, Arboreals, Insectoids, Reptilians, and Avians (extinct). Their history is turbulent and dominated by incidents of inter-species conflict. Their social structures are complex, and each species has distinct characteristics. The Aquatics are the enigmatic thinkers in the hierarchy, and the Primates are the intellectuals. The Reptilians are considered bold and aggressive, the Insectoids cold and devious. The Arboreals are the most peaceful and calm, and would make skilled diplomats.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="XYRILLIANS">
+    <SingularName>Xyrillian</SingularName>
+    <PluralName>Xyrillians</PluralName>
+    <Description>The Xyrillians are an advanced race of reptilians. Their complex physiology is geared towards a water redundant environment, which is seldom seen in sentient races; neither does their metabolism rely on oxygen or other common atmospheric gases. Indeed, their atmosphere would be hallucinogenic to most visiting species, and poisonous to others. Their mating practises are uncommon also, for it is the male of the species that carries and delivers their young. They are a herbivorous people, whose advanced hydroponics permit them to cultivate their primary foodstuff into the very walls and bulkheads of their ships. The Xyrillians overall are a friendly people, and open to conversation and cultural exchange.</Description>
+    <HomePlanetType>Oceanic</HomePlanetType>
+  </Race>
+  <Race Key="YADERANS">
+    <SingularName>Yaderan</SingularName>
+    <PluralName>Yaderans</PluralName>
+    <Description>The Yaderans are a sophisticated people, adept particularly in the field of engineering. They have the ability to holographically recreate entire villages, towns and vistas with life-like precision, and even with sentient occupants. The technology though is burdened by the hazardous omicron radiation emissions, which requires constant surveillance and maintenance. But the expertise of the Yaderans cannot be understated.</Description>
+    <HomePlanetType>Desert</HomePlanetType>
+  </Race>
+  <Race Key="YRIDIANS">
+    <SingularName>Yridian</SingularName>
+    <PluralName>Yridians</PluralName>
+    <Description>The Yridians are known throughout the galaxy as traders of information, providing services of espionage, sabotage and assassinations to the highest bidder; and through means unknown, they invariably have critical knowledge of the politics of the galaxy at their disposal. This often earns them the enmity of those on whom they inform, but their customers are frequently all too happy to protect them.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+  <Race Key="ZAHL">
+    <SingularName>Zahl</SingularName>
+    <PluralName>Zahl</PluralName>
+    <Description>The Zahl will be happy to call you a friend if you are at a similar stage of technical expertise and power. However, if you lag behind them, they will identify that as an exploitable weakness, mercilessly. Some time ago the Zahl fought a conflict with the dangerous Krenim, and systematically disassembled their entire civilization, a fact the Krenim will never forget, and even now homeless renegade Krenim vessels still roam the surrounding region raiding Zahl shipping, making a general nuisance of themselves, but little more. Beyond their obvious hunger for power and influence, the Zahl enjoy the peace and freedom their society has built, and will willingly enter into trade agreements.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ZAKDORN">
+    <SingularName>Zakdorn</SingularName>
+    <PluralName>Zakdorn</PluralName>
+    <Description>The Zakdorn have a long-standing reputation as masters of strategic planning. This reputation is in fact so strong that it has not been tested in recent memory, apart from various popular games such as Strategema. Because of their sharp minds and astute abilities, many Zakdorn find roles as strategists or planners, but the resounding majority serve in bureaucratic or minor political positions. Zakdorn pride themselves in their intellect and assured confidence, a quality that many races find hard to endure. But the Zakdorn would make valuable allies, and formidable enemies for the same reason.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ZALKONIANS">
+    <SingularName>Zalkonian</SingularName>
+    <PluralName>Zalkonians</PluralName>
+    <Description>The Zalkonians are stubborn in their ways, and slow in adapting to change, particularly socially and politically, yet they have progressed far. Resolute in all their endeavours they are keen to expand and branch out, and in their starship hardware they have applied their most advanced technology, which is a match to many major powers. Many citizens of Zalkonian society have recently been experiencing unusual mutations, and periodic isoelectric bursts. This, some believe, is the first evolutionary step to a new level of existence, something that the military hierarchy of Zalkon fiercely challenge and deny. Such is their fear and protestation over this claim that military police have been commissioned to hunt down these 'freaks', and exterminate them. Some though remain determined to fully embrace the change, and learn from it.</Description>
+    <HomePlanetType>Terran</HomePlanetType>
+  </Race>
+  <Race Key="ZIBALIANS">
+    <SingularName>Zibalian</SingularName>
+    <PluralName>Zibalians</PluralName>
+    <Description>The Zibalians are mostly peaceful and non-confrontational, but they are not the richest or most prosperous traders in the quadrant, for they have an affliction for hoarding and collecting much of what comes into their possession, rather than selling on for a profit. Ever on the look out for a bargain, or a rare object of value, the Zibalians have collected thus far an impressive museum of sundries from a plethora of races, some of them priceless - and this is one such marketplace for their economy, for collectors and historians are prepared to come great distances just to glimpse the treasures. However, some of those races may claim the Zibalians acquired their goods via duplicitous means, something which they neither confirm, nor deny.</Description>
+    <HomePlanetType>Jungle</HomePlanetType>
+  </Race>
+</Races>

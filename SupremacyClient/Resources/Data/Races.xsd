@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="Races" 
+           targetNamespace="Supremacy:Races.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:Races.xsd"
+           xmlns:s="Supremacy:Supremacy.xsd" 
+           xmlns:mstns="Supremacy:Races.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="Supremacy:Supremacy.xsd"/>
+  <xs:complexType name="Race">
+    <xs:all minOccurs="1"
+            maxOccurs="1">
+      <xs:element name="SingularName"
+                  type="xs:normalizedString"/>
+      <xs:element name="PluralName"
+                  type="xs:normalizedString"/>
+      <xs:element name="Description"
+                  type="xs:normalizedString"/>
+      <xs:element name="DiplomacyProfile"
+                  type="xs:normalizedString"
+                  minOccurs="0" />
+      <xs:element name="HomePlanetType"
+                  type="s:PlanetType"/>
+    </xs:all>
+    <xs:attribute name="Key"
+                  type="xs:token"/>
+  </xs:complexType>
+  <xs:element name="Race"
+              type="Race"/>
+  <xs:element name="Races">
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element ref="Race"/>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="RaceUniqueKey">
+      <xs:selector xpath="mstns:Race" />
+      <xs:field xpath="@Key" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="Civilizations" 
+           targetNamespace="Supremacy:Civilizations.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:Civilizations.xsd"
+           xmlns:mstns="Supremacy:Civilizations.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:races="Supremacy:Races.xsd"
+           xmlns:s="Supremacy:Supremacy.xsd">
+  <xs:import namespace="Supremacy:Races.xsd"/>
+  <xs:import namespace="Supremacy:Supremacy.xsd"/>
+  <xs:simpleType name="TechCurve">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="TechCurve1"/>
+      <xs:enumeration value="TechCurve2"/>
+      <xs:enumeration value="TechCurve3"/>
+      <xs:enumeration value="TechCurve4"/>
+      <xs:enumeration value="TechCurve5"/>
+      <xs:enumeration value="TechCurve6"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CivilizationType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="MinorPower"/>
+      <xs:enumeration value="DevelopingPower"/>
+      <xs:enumeration value="ExpandingPower"/>
+      <xs:enumeration value="Empire"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SystemBonus">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Dilithium"/>
+      <xs:enumeration value="RawMaterials"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PlanetBonus">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Food"/>
+      <xs:enumeration value="Energy"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="PlanetDefinition">
+    <xs:sequence>
+      <xs:element name="Bonus"
+                  minOccurs="0"
+                  maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="Type"
+                        type="PlanetBonus"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Name"
+                  type="xs:normalizedString"
+                  use="optional"/>
+    <xs:attribute name="Type"
+                  type="s:PlanetType"
+                  use="optional"/>
+    <xs:attribute name="Size"
+                  type="s:PlanetSize"
+                  use="optional"/>
+    <xs:attribute name="Variation"
+                  use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:nonNegativeInteger">
+          <xs:minInclusive value="0"/>
+          <xs:maxInclusive value="2"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="StarSystemDefinition">
+    <xs:sequence>
+      <xs:element name="Bonus"
+                  minOccurs="0"
+                  maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="Type"
+                        type="SystemBonus"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Planets"
+                  minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Planet"
+                        type="PlanetDefinition"
+                        minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Name"
+                  type="xs:normalizedString"
+                  use="required"/>
+    <xs:attribute name="StarType"
+                  type="s:StarType"
+                  use="optional"/>
+  </xs:complexType>
+  <xs:element name="Civilizations">
+    <xs:complexType>
+      <xs:sequence minOccurs="1"
+                   maxOccurs="unbounded">
+        <xs:element name="Civilization">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="Race"
+                          type="xs:token"/>
+              <xs:element name="ShortName"
+                          type="xs:normalizedString"/>
+              <xs:element name="LongName"
+                          type="xs:normalizedString"/>
+              <xs:element name="DiplomacyReport"
+                          type="xs:normalizedString"
+                          minOccurs="0"/>
+              <xs:element name="HomeSystemName"
+                          type="xs:normalizedString"
+                          minOccurs="0"/>
+              <xs:element name="Color"
+                          type="xs:normalizedString"/>
+              <xs:element name="CivilizationType"
+                          type="CivilizationType"/>
+              <xs:element name="HomeQuadrant"
+                          type="s:Quadrant"/>
+              <xs:element name="TechCurve"
+                          type="TechCurve"/>
+              <xs:element name="HomeSystem"
+                          type="StarSystemDefinition"
+                          minOccurs="0"/>
+              <xs:element name="IndustryToCreditsConversionRatio"
+                          type="xs:normalizedString"
+                          minOccurs="0"/>
+            </xs:all>
+            <xs:attribute name="Key"
+                          type="xs:token"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

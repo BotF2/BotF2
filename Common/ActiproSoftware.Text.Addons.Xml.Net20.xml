@@ -1,0 +1,14 @@
+<?xml version="1.0"?><doc><assembly><name>ActiproSoftware.Text.Addons.Xml.Net20</name></assembly><members><member name="T:ActiproSoftware.Products.Text.Addons.Xml.Resources"><summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Xml.Resources.ResourceManager"><summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Xml.Resources.Culture"><summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary></member><member name="T:ActiproSoftware.Products.Text.Addons.Xml.SRName"><summary>
+            Specifies the names of string resources for this assembly.
+            </summary></member><member name="T:ActiproSoftware.Text.Languages.Xml.XmlSyntaxLanguageBase"><summary>
+            Provides an abstract base class for an <c>XML</c> syntax language definition.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.Xml.XmlSyntaxLanguageBase.#ctor"><summary>
+            Initializes a new instance of the <c>XmlSyntaxLanguageBase</c> class.
+            </summary></member></members></doc>

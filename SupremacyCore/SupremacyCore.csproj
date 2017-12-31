@@ -1,0 +1,683 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{04E34C27-6942-4EA8-93FF-DF3C4026B22A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Supremacy</RootNamespace>
+    <AssemblyName>SupremacyCore</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <StartupObject>
+    </StartupObject>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Common\Supremacy.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\lib\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>ReleaseRequires</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\lib\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5, Version=1.0.2.0, Culture=neutral, PublicKeyToken=06a1b38866503b69, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\C5.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ConcurrentHashtable, Version=1.3.3.0, Culture=neutral, PublicKeyToken=17752bf2fea97f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\ConcurrentHashtable.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Composite.UnityExtensions, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.Composite.UnityExtensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Scripting">
+      <HintPath>..\Common\Microsoft.Scripting.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Obtics, Version=1.0.13.0, Culture=neutral, PublicKeyToken=17752bf2fea97f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Obtics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="SoftUni.Wintellect.PowerCollections, Version=1.1.5733.22550, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SoftUni.Wintellect.PowerCollections.1.1.5733.22550\lib\net20\SoftUni.Wintellect.PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.CoreEx, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\System.CoreEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Interactive, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\System.Interactive.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Reactive, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\System.Reactive.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AI\ColonyAI.cs" />
+    <Compile Include="AI\AIColonyHelper.cs" />
+    <Compile Include="AI\DiplomatAI.cs" />
+    <Compile Include="Collections\EnumValueCollection.cs" />
+    <Compile Include="Collections\InitOnlyKeyedCollection.cs" />
+    <Compile Include="Collections\KeyedProjection.cs" />
+    <Compile Include="Collections\SafeEnumerator.cs" />
+    <Compile Include="Collections\StackExtensions.cs" />
+    <Compile Include="Combat\InvasionArena.cs" />
+    <Compile Include="Diplomacy\CreditsClauseData.cs" />
+    <Compile Include="Diplomacy\DiplomacyDataInternal.cs" />
+    <Compile Include="Diplomacy\DiplomacyProfile.cs" />
+    <Compile Include="Diplomacy\DiplomacyStringKey.cs" />
+    <Compile Include="Diplomacy\ForeignPowerStatus.cs" />
+    <Compile Include="Diplomacy\Visitors\AcceptProposalVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\AgreementFulfillmentVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\AgreementVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\BreakAgreementVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\ClauseVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\IAgreementVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\IClauseVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\IProposalVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\ProposalVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\CreditObligationFulfillmentVisitor.cs" />
+    <Compile Include="Diplomacy\Visitors\RejectProposalVisitor.cs" />
+    <Compile Include="Economy\IntelligenceBonusCollection.cs" />
+    <Compile Include="Economy\intelligenceCategory.cs" />
+    <Compile Include="Economy\ShipyardBuildSlot.cs" />
+    <Compile Include="Entities\ICivIdentity.cs" />
+    <Compile Include="Entities\RaceConverter.cs" />
+    <Compile Include="Expressions\ForEachExpression.cs" />
+    <Compile Include="Game\ObjectOwnerPair.cs" />
+    <Compile Include="Game\SectorClaim.cs" />
+    <Compile Include="Markup\ContextualTextEntryExtension.cs" />
+    <Compile Include="Markup\TechObjectTextGroupExtension.cs" />
+    <Compile Include="Orbitals\OrbitalHelper.cs" />
+    <Compile Include="Personnel\AgentAssignmentState.cs" />
+    <Compile Include="Personnel\AgentCareer.cs" />
+    <Compile Include="Personnel\AgentCollection.cs" />
+    <Compile Include="Personnel\AgentEventArgs.cs" />
+    <Compile Include="Personnel\AgentHelper.cs" />
+    <Compile Include="Personnel\AgentSkillMeter.cs" />
+    <Compile Include="Personnel\DiplomaticEnvoyMission.cs" />
+    <Compile Include="Personnel\Mission.cs" />
+    <Compile Include="Personnel\MissionEventArgs.cs" />
+    <Compile Include="Personnel\MissionPhase.cs" />
+    <Compile Include="Personnel\MissionPhaseChangedEventArgs.cs" />
+    <Compile Include="Personnel\TrainingAssignment.cs" />
+    <Compile Include="Scripting\CivilizationScopedEvent.cs" />
+    <Compile Include="Scripting\EventDefinition.cs" />
+    <Compile Include="Scripting\Events\AsteroidImpactEvent.cs" />
+    <Compile Include="Scripting\Events\TerroristsCaptured.cs" />
+    <Compile Include="Scripting\Events\Earthquake.cs" />
+    <Compile Include="Scripting\Events\GammaRayBurst.cs" />
+    <Compile Include="Scripting\Events\CometStrike.cs" />
+    <Compile Include="Scripting\Events\PlagueEvent.cs" />
+    <Compile Include="Scripting\Events\Supernovai.cs" />
+    <Compile Include="Scripting\Events\TerroristBombingOfShipProduction.cs" />
+    <Compile Include="Scripting\Events\TradeGuildStrikes.cs" />
+    <Compile Include="Scripting\Events\Tribbles.cs" />
+    <Compile Include="Scripting\LocationScopedEvent.cs" />
+    <Compile Include="Scripting\ScriptedEventDatabase.cs" />
+    <Compile Include="Scripting\UnitScopedEvent.cs" />
+    <Compile Include="Tech\PlanetaryTechObjectDesign.cs" />
+    <Compile Include="Effects\DynamicPropertyValue.cs" />
+    <Compile Include="Effects\Effect.cs" />
+    <Compile Include="Effects\EffectBinding.cs" />
+    <Compile Include="Effects\EffectParameterBindingExtensions.cs" />
+    <Compile Include="Effects\EffectParameterExtensions.cs" />
+    <Compile Include="Effects\EffectState.cs" />
+    <Compile Include="Effects\IEffectActivation.cs" />
+    <Compile Include="Effects\IEffectBindingCollection.cs" />
+    <Compile Include="Effects\IEffectGroup.cs" />
+    <Compile Include="Effects\IEffectGroupBinding.cs" />
+    <Compile Include="Effects\IEffectGroupBindingCollection.cs" />
+    <Compile Include="Effects\IEffectParameter.cs" />
+    <Compile Include="Effects\IEffectParameterBinding.cs" />
+    <Compile Include="Effects\IEffectParameterBindingCollection.cs" />
+    <Compile Include="Effects\IEffectParameterCollection.cs" />
+    <Compile Include="Effects\IEffectScope.cs" />
+    <Compile Include="Effects\IEffectSource.cs" />
+    <Compile Include="Effects\IEffectTarget.cs" />
+    <Compile Include="Effects\SetPropertyEffect.cs" />
+    <Compile Include="Effects\SetPropertyEffectBinding.cs" />
+    <Compile Include="Markup\EnumStringExtension.cs" />
+    <Compile Include="Markup\LocalizedStringExtension.cs" />
+    <Compile Include="Text\LocalizedTextDatabase.cs" />
+    <Compile Include="Text\RichString.cs" />
+    <Compile Include="Text\RichText.cs" />
+    <Compile Include="Text\RichTextConverter.cs" />
+    <Compile Include="Text\TextEffectStyle.cs" />
+    <Compile Include="Text\TextFormatFlags.cs" />
+    <Compile Include="Text\TextStyle.cs" />
+    <Compile Include="Types\NamedGuid.cs" />
+    <Compile Include="Universe\PlanetTypeFlags.cs" />
+    <Compile Include="Universe\WormholePair.cs" />
+    <Compile Include="Utility\DelegatingWeakCollectionChangedListener.cs" />
+    <Compile Include="Utility\EnumUtilities.cs" />
+    <Compile Include="Utility\GameScheduler.cs" />
+    <Compile Include="Utility\GCHelper.cs" />
+    <Compile Include="Utility\LogExtensions.cs" />
+    <Compile Include="Utility\NameSuffixes.cs" />
+    <Compile Include="Utility\ObjectDumper.cs" />
+    <Compile Include="Utility\TryConvert.cs" />
+    <Compile Include="Utility\XmlWriterEx.cs" />
+    <Compile Include="Xaml\XamlHelper.cs" />
+    <Compile Include="Entities\CivilizationConverter.cs" />
+    <Compile Include="Personnel\AgentAssignment.cs" />
+    <Compile Include="Personnel\AgentDatabase.cs" />
+    <Compile Include="Personnel\AgentPool.cs" />
+    <Compile Include="Personnel\AgentProfileCollection.cs" />
+    <Compile Include="Personnel\AgentSkillsConverter.cs" />
+    <Compile Include="Personnel\AgentSkillValuesSnapshot.cs" />
+    <Compile Include="Personnel\PersonnelConstants.cs" />
+    <Compile Include="Text\LanguageConverter.cs" />
+    <Compile Include="Text\LocalizedString.cs" />
+    <Compile Include="Text\LocalizedStringValue.cs" />
+    <Compile Include="Text\LocalizedStringValueCollection.cs" />
+    <Compile Include="Threading\InterlockedEx.cs" />
+    <Compile Include="Types\Cloneable.cs" />
+    <Compile Include="AI\ConvexHull.cs" />
+    <Compile Include="AI\Enums.cs" />
+    <Compile Include="AI\Goal.cs" />
+    <Compile Include="AI\InfluenceMap.cs" />
+    <Compile Include="AI\InfluenceMapHelper.cs" />
+    <Compile Include="AI\PlayerAI.cs" />
+    <Compile Include="AI\Strategy.cs" />
+    <Compile Include="AI\StrategyDatabase.cs" />
+    <Compile Include="AI\UnitAI.cs" />
+    <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Buildings\BuildingDesign.cs" />
+    <Compile Include="Client\ClientBase.cs" />
+    <Compile Include="Client\EventType.cs" />
+    <Compile Include="Client\IEventReporter.cs" />
+    <Compile Include="Client\IGameObjectIDService.cs" />
+    <Compile Include="Client\IPlayerOrderService.cs" />
+    <Compile Include="Collections\ArrayWrapper.cs" />
+    <Compile Include="Collections\ArrayList.cs" />
+    <Compile Include="Collections\CollectionBase.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\ConcurrentStack.cs" />
+    <Compile Include="Collections\DelegatingIndexedCollection.cs" />
+    <Compile Include="Collections\EmptyKeyedCollection.cs" />
+    <Compile Include="Collections\GameObjectList.cs" />
+    <Compile Include="Collections\ImmutableAvlTree.cs" />
+    <Compile Include="Collections\ImmutableDeque.cs" />
+    <Compile Include="Collections\GameObjectLookupCollection.cs" />
+    <Compile Include="Collections\IndexedEnumerable.cs" />
+    <Compile Include="Collections\Interfaces.cs" />
+    <Compile Include="Collections\IPair.cs" />
+    <Compile Include="Collections\ObservableCollectionExtended.cs" />
+    <Compile Include="Collections\ObservableKeyedCollection.cs" />
+    <Compile Include="Collections\Pair.cs" />
+    <Compile Include="Collections\ReadOnlyCollectionBase.cs" />
+    <Compile Include="Collections\WeakDictionary.cs" />
+    <Compile Include="Collections\WeakList.cs" />
+    <Compile Include="Messages\GameSavedMessage.cs" />
+    <Compile Include="Messages\PlayerTurnFinishedMessage.cs" />
+    <Compile Include="Messages\TurnProgressChangedMessage.cs" />
+    <Compile Include="Messages\TurnStartedMessage.cs" />
+    <Compile Include="Messaging\Channel.cs" />
+    <Compile Include="Messaging\ChannelExtensions.cs" />
+    <Compile Include="Messaging\ChannelOfT.cs" />
+    <Compile Include="Messaging\ChannelSubscription.cs" />
+    <Compile Include="Messaging\ChannelSubscriptionBase.cs" />
+    <Compile Include="Messaging\Guard.cs" />
+    <Compile Include="Messaging\IChannelOfT.cs" />
+    <Compile Include="Messaging\ChannelThreadOption.cs" />
+    <Compile Include="Messaging\WeakChannelSubscription.cs" />
+    <Compile Include="Orbitals\OrbitalBattery.cs" />
+    <Compile Include="Personnel\AgentSkillMeters.cs" />
+    <Compile Include="Personnel\AgentProfile.cs" />
+    <Compile Include="Scripting\IScriptService.cs" />
+    <Compile Include="Scripting\RuntimeScriptParameter.cs" />
+    <Compile Include="Scripting\RuntimeScriptParameters.cs" />
+    <Compile Include="Scripting\ScriptExpression.cs" />
+    <Compile Include="Scripting\ScriptService.cs" />
+    <Compile Include="SR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SR.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Threading\Scheduler.cs" />
+    <Compile Include="Types\CompositeDisposer.cs" />
+    <Compile Include="Types\WeakReference.cs" />
+    <Compile Include="Diplomacy\AgreementMatrix.cs" />
+    <Compile Include="Diplomacy\Statement.cs" />
+    <Compile Include="Effects\DynamicObjectType.cs" />
+    <Compile Include="Effects\DynamicPropertyChangedEventArgs.cs" />
+    <Compile Include="Effects\DynamicPropertyMetadata.cs" />
+    <Compile Include="Effects\DynamicPropertyModifier.cs" />
+    <Compile Include="Effects\EffectSystem.cs" />
+    <Compile Include="Effects\FrugalMap.cs" />
+    <Compile Include="Effects\DynamicObject.cs" />
+    <Compile Include="Effects\DynamicProperty.cs" />
+    <Compile Include="Effects\ItemStructList.cs" />
+    <Compile Include="Expressions\DynamicExpressions.cs" />
+    <Compile Include="Collections\IndexedBindingList.cs" />
+    <Compile Include="Collections\IndexedCollection.cs" />
+    <Compile Include="Collections\INotifyKeyedSetChanged.cs" />
+    <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
+    <Compile Include="Expressions\ExpressionSerializer.cs" />
+    <Compile Include="Expressions\LinqExtensions.cs" />
+    <Compile Include="Collections\ObservableList.cs" />
+    <Compile Include="Collections\ValuePair.cs" />
+    <Compile Include="Combat\AutomatedCombatEngine.cs" />
+    <Compile Include="Combat\CombatAssets.cs" />
+    <Compile Include="Combat\CombatEngine.cs" />
+    <Compile Include="Combat\CombatHelper.cs" />
+    <Compile Include="Combat\CombatOrders.cs" />
+    <Compile Include="Combat\CombatUnit.cs" />
+    <Compile Include="Combat\CombatUpdate.cs" />
+    <Compile Include="Combat\CombatWeapon.cs" />
+    <Compile Include="Data\Table.cs" />
+    <Compile Include="Data\TableMap.cs" />
+    <Compile Include="Data\TableParseException.cs" />
+    <Compile Include="Data\TableRow.cs" />
+    <Compile Include="Diplomacy\DiplomacyState.cs" />
+    <Compile Include="Diplomacy\Diplomat.cs" />
+    <Compile Include="Diplomacy\AttitudeVariable.cs" />
+    <Compile Include="Diplomacy\Clause.cs" />
+    <Compile Include="Diplomacy\DiplomacyData.cs" />
+    <Compile Include="Diplomacy\DiplomacyExtensions.cs" />
+    <Compile Include="Diplomacy\DiplomacyHelper.cs" />
+    <Compile Include="Diplomacy\ForeignPower.cs" />
+    <Compile Include="Diplomacy\IAgreement.cs" />
+    <Compile Include="Diplomacy\IProposal.cs" />
+    <Compile Include="Diplomacy\Enums.cs" />
+    <Compile Include="Diplomacy\Motivation.cs" />
+    <Compile Include="Diplomacy\RegardEvent.cs" />
+    <Compile Include="Diplomacy\RelationshipMemory.cs" />
+    <Compile Include="Economy\BonusDescription.cs" />
+    <Compile Include="Economy\BonusType.cs" />
+    <Compile Include="Economy\BuildQueueItem.cs" />
+    <Compile Include="Economy\BuildSlot.cs" />
+    <Compile Include="Economy\ITradeCenter.cs" />
+    <Compile Include="Economy\ShipBuildProject.cs" />
+    <Compile Include="Economy\StationBuildProject.cs" />
+    <Compile Include="Economy\StructureBuildProject.cs" />
+    <Compile Include="Economy\IProductionCenter.cs" />
+    <Compile Include="Economy\ResearchPool.cs" />
+    <Compile Include="Economy\Treasury.cs" />
+    <Compile Include="Encyclopedia\IEncyclopediaEntry.cs" />
+    <Compile Include="Entities\CivilizationView.cs" />
+    <Compile Include="Entities\CivilizationPairedMap.cs" />
+    <Compile Include="Entities\CivList.cs" />
+    <Compile Include="Expressions\ExpandableExpressionVisitor.cs" />
+    <Compile Include="Expressions\ExpandableQuery.cs" />
+    <Compile Include="Expressions\ExpressionExpander.cs" />
+    <Compile Include="Expressions\Extensions.cs" />
+    <Compile Include="Expressions\Linq.cs" />
+    <Compile Include="Expressions\PredicateBuilder.cs" />
+    <Compile Include="Game\ChatMessage.cs" />
+    <Compile Include="Game\CivHelper.cs" />
+    <Compile Include="Game\CivilizationManager.cs" />
+    <Compile Include="Game\GameEnums.cs" />
+    <Compile Include="Game\GameContext.cs" />
+    <Compile Include="Game\GameEngine.cs" />
+    <Compile Include="Game\GameInitData.cs" />
+    <Compile Include="Game\GameMod.cs" />
+    <Compile Include="Game\GameObject.cs" />
+    <Compile Include="Game\GameObjectID.cs" />
+    <Compile Include="Game\GameOptions.cs" />
+    <Compile Include="Game\GameStartData.cs" />
+    <Compile Include="Game\GameTables.cs" />
+    <Compile Include="Client\IClientContext.cs" />
+    <Compile Include="Game\IGameTurnListener.cs" />
+    <Compile Include="Game\PlayerSlot.cs" />
+    <Compile Include="Personnel\Agent.cs" />
+    <Compile Include="Personnel\AgentSkill.cs" />
+    <Compile Include="Resources\IResourceManager.cs" />
+    <Compile Include="Scripting\Events\ReligiousHolidayEvent.cs" />
+    <Compile Include="Scripting\ScriptedEvent.cs" />
+    <Compile Include="Scripting\ScriptedEventSitRepEntryData.cs" />
+    <Compile Include="Text\ITextDatabase.cs" />
+    <Compile Include="Game\TurnNumber.cs" />
+    <Compile Include="Game\GameUpdateData.cs" />
+    <Compile Include="Game\IGameUnit.cs" />
+    <Compile Include="Game\LobbyData.cs" />
+    <Compile Include="Game\Morale.cs" />
+    <Compile Include="Game\MoraleEvent.cs" />
+    <Compile Include="Game\ObjectVisibilityManager.cs" />
+    <Compile Include="Game\Order.cs" />
+    <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\PlayerContext.cs" />
+    <Compile Include="Game\PlayerOperations.cs" />
+    <Compile Include="Game\SavedGameHeader.cs" />
+    <Compile Include="Game\SavedGameManager.cs" />
+    <Compile Include="Game\SectorClaimGrid.cs" />
+    <Compile Include="Game\SitRepEntry.cs" />
+    <Compile Include="IO\FastSerializer.cs" />
+    <Compile Include="IO\MiniLZO.cs" />
+    <Compile Include="IO\StorageManager.cs" />
+    <Compile Include="IO\StreamUtility.cs" />
+    <Compile Include="Diplomacy\IResponse.cs" />
+    <Compile Include="Resources\PathHelper.cs" />
+    <Compile Include="Tech\TechTreeMap.cs" />
+    <Compile Include="Types\ComparerFromComparison.cs" />
+    <Compile Include="Types\DelegatingEqualityComparer.cs" />
+    <Compile Include="Types\Disposer.cs" />
+    <Compile Include="Types\FreezableBase.cs" />
+    <Compile Include="Types\GameDataException.cs" />
+    <Compile Include="Types\SupportInitializeBase.cs" />
+    <Compile Include="Types\MapLocationCollection.cs" />
+    <Compile Include="Utility\DelegatingWeakEventListener.cs" />
+    <Compile Include="Utility\DoubleUtil.cs" />
+    <Compile Include="Utility\EventExtensions.cs" />
+    <Compile Include="Utility\Guard.cs" />
+    <Compile Include="Utility\ChannelLogAppender.cs" />
+    <Compile Include="Utility\ReaderWriterSpinLock.cs" />
+    <Compile Include="Utility\GameLog.cs" />
+    <Compile Include="Network\NetException.cs" />
+    <Compile Include="Network\NetUtility.cs" />
+    <Compile Include="Orbitals\Fleet.cs" />
+    <Compile Include="Orbitals\FleetHelper.cs" />
+    <Compile Include="Orbitals\FleetOrder.cs" />
+    <Compile Include="Orbitals\FleetOrders.cs" />
+    <Compile Include="Orbitals\FleetView.cs" />
+    <Compile Include="Orbitals\Orbital.cs" />
+    <Compile Include="Orbitals\Ship.cs" />
+    <Compile Include="Orbitals\ShipClass.cs" />
+    <Compile Include="Orbitals\ShipDesign.cs" />
+    <Compile Include="Orbitals\ShipHelper.cs" />
+    <Compile Include="Orbitals\Shipyard.cs" />
+    <Compile Include="Orbitals\ShipyardDesign.cs" />
+    <Compile Include="Orbitals\Station.cs" />
+    <Compile Include="Orbitals\StationDesign.cs" />
+    <Compile Include="Orbitals\Weapon.cs" />
+    <Compile Include="Pathfinding\AStar.cs" />
+    <Compile Include="Pathfinding\PriorityQueue.cs" />
+    <Compile Include="Pathfinding\StandardHeuristics.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\CivString.cs" />
+    <Compile Include="Resources\ResourceManager.cs" />
+    <Compile Include="Resources\StringTable.cs" />
+    <Compile Include="Tech\CivTechTree.cs" />
+    <Compile Include="Tech\TechDatabase.cs" />
+    <Compile Include="Tech\TechObject.cs" />
+    <Compile Include="Tech\TechObjectDesignMap.cs" />
+    <Compile Include="Tech\TechTreeHelper.cs" />
+    <Compile Include="Economy\IBuildable.cs" />
+    <Compile Include="Economy\Personnel.cs" />
+    <Compile Include="Economy\ProductionFacilityBuildProject.cs" />
+    <Compile Include="Economy\ProductionFacilityDesign.cs" />
+    <Compile Include="Economy\BuildProject.cs" />
+    <Compile Include="Economy\ResourcePool.cs" />
+    <Compile Include="Economy\ResourceValueCollection.cs" />
+    <Compile Include="Entities\Civilization.cs" />
+    <Compile Include="Entities\CivDatabase.cs" />
+    <Compile Include="Entities\Race.cs" />
+    <Compile Include="Entities\RaceDatabase.cs" />
+    <Compile Include="Orbitals\OrbitalDesign.cs" />
+    <Compile Include="Tech\TechObjectDesign.cs" />
+    <Compile Include="Tech\ResearchMatrix.cs" />
+    <Compile Include="Text\StringTableDocument.cs" />
+    <Compile Include="Text\StringTableEntry.cs" />
+    <Compile Include="Text\StringTableNode.cs" />
+    <Compile Include="Text\StringTableReader.cs" />
+    <Compile Include="Text\StringTableWriter.cs" />
+    <Compile Include="Types\BitField32.cs" />
+    <Compile Include="Types\Delegates.cs" />
+    <Compile Include="Types\Dimension.cs" />
+    <Compile Include="Types\Distribution.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Economy\Resources.cs" />
+    <Compile Include="Types\DoubleExtensions.cs" />
+    <Compile Include="Types\FlagType.cs" />
+    <Compile Include="Types\INotifyChanged.cs" />
+    <Compile Include="Types\Number.cs" />
+    <Compile Include="Types\Meter.cs" />
+    <Compile Include="Types\INamedItem.cs" />
+    <Compile Include="Types\OutputModifier.cs" />
+    <Compile Include="Types\Percentage.cs" />
+    <Compile Include="Types\StateManager.cs" />
+    <Compile Include="Types\StateScope.cs" />
+    <Compile Include="Types\SupremacyException.cs" />
+    <Compile Include="Types\ValueModifier.cs" />
+    <Compile Include="Types\Wheel.cs" />
+    <Compile Include="Universe\BaseGalaxyLayout.cs" />
+    <Compile Include="Universe\ClusterGalaxyLayout.cs" />
+    <Compile Include="Universe\ColonyBuilder.cs" />
+    <Compile Include="Universe\ColonyView.cs" />
+    <Compile Include="Universe\EllipticalGalaxyLayout.cs" />
+    <Compile Include="Universe\Enums.cs" />
+    <Compile Include="Universe\GalaxyGenerator.cs" />
+    <Compile Include="Universe\IGalaxyLayout.cs" />
+    <Compile Include="Universe\IHealthCenter.cs" />
+    <Compile Include="Universe\IrregularGalaxyLayout.cs" />
+    <Compile Include="Universe\IUniverseObject.cs" />
+    <Compile Include="Universe\MapHelper.cs" />
+    <Compile Include="Universe\MoonHelper.cs" />
+    <Compile Include="Universe\PlanetHelper.cs" />
+    <Compile Include="Universe\StarSystemDescriptor.cs" />
+    <Compile Include="Universe\StarHelper.cs" />
+    <Compile Include="Universe\SupportsPlanetsAttribute.cs" />
+    <Compile Include="Universe\TradeRoute.cs" />
+    <Compile Include="Universe\TravelRoute.cs" />
+    <Compile Include="Universe\Planet.cs" />
+    <Compile Include="Universe\RingGalaxyLayout.cs" />
+    <Compile Include="Universe\Sector.cs" />
+    <Compile Include="Universe\SectorMap.cs" />
+    <Compile Include="Universe\SpiralGalaxyLayout.cs" />
+    <Compile Include="Universe\StarSystem.cs" />
+    <Compile Include="Universe\Colony.cs" />
+    <Compile Include="Universe\StarSystemView.cs" />
+    <Compile Include="Universe\UninhabitableAttribute.cs" />
+    <Compile Include="Universe\UniverseManager.cs" />
+    <Compile Include="Universe\UniverseObject.cs" />
+    <Compile Include="Universe\UniverseObjectSet.cs" />
+    <Compile Include="Universe\UniverseObjectView.cs" />
+    <Compile Include="Utility\AsyncHelper.cs" />
+    <Compile Include="Utility\ChanceTree.cs.cs" />
+    <Compile Include="Utility\DieRoll.cs" />
+    <Compile Include="Utility\FilteredRandom.cs" />
+    <Compile Include="Utility\GameLogManager.cs" />
+    <Compile Include="Utility\MersenneTwister.cs" />
+    <Compile Include="Utility\RandomProvider.cs" />
+    <Compile Include="Utility\RomanNumber.cs" />
+    <Compile Include="Utility\Statistics.cs" />
+    <Compile Include="Utility\StringHelper.cs" />
+    <Compile Include="Utility\TextHelper.cs" />
+    <Compile Include="Utility\WeakEventHelper.cs" />
+    <Compile Include="Utility\XmlHelper.cs" />
+    <Compile Include="VFS\AbstractSource.cs" />
+    <Compile Include="VFS\AbstractWritableSource.cs" />
+    <Compile Include="VFS\CaseCultureStringComparer.cs" />
+    <Compile Include="VFS\CreateOnWriteHardDiskSource.cs" />
+    <Compile Include="VFS\FilesSourceExtensions.cs" />
+    <Compile Include="VFS\HardDiskSource.cs" />
+    <Compile Include="VFS\HardDiskVirtualFileStream.cs" />
+    <Compile Include="VFS\IFilesSource.cs" />
+    <Compile Include="VFS\IVfsService.cs" />
+    <Compile Include="VFS\IVirtualFileInfo.cs" />
+    <Compile Include="VFS\IVirtualFileStream.cs" />
+    <Compile Include="VFS\IVirtualFileStreamInternal.cs" />
+    <Compile Include="VFS\IWritableFilesSource.cs" />
+    <Compile Include="VFS\MemoryFileStream.cs" />
+    <Compile Include="VFS\MemorySource.cs" />
+    <Compile Include="VFS\ReadOnlyHardDiskSource.cs" />
+    <Compile Include="VFS\StreamDecorator.cs" />
+    <Compile Include="VFS\Utility.cs" />
+    <Compile Include="VFS\VfsService.cs" />
+    <Compile Include="VFS\VfsServiceExtensions.cs" />
+    <Compile Include="VFS\VfsUriHelper.cs" />
+    <Compile Include="VFS\VfsWebRequest.cs" />
+    <Compile Include="VFS\VirtualFileInfoExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ClassDiagram.cd" />
+    <None Include="Diplomacy\Supremacy.Diplomacy.cd" />
+    <None Include="Economy\Supremacy.Economy.cd" />
+    <None Include="Effects\Effects.cd" />
+    <None Include="Entities\Supremacy.Entities.cd" />
+    <None Include="Orbitals\Supremacy.Orbitals.cd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Personnel\Personnel.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="VFS\VFS.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Supremacy.Scripting\Supremacy.Scripting.csproj">
+      <Project>{25AEA57E-9376-4B73-93D4-A2DCDB15D2D2}</Project>
+      <Name>Supremacy.Scripting</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SupremacyNative\SupremacyNative.vcxproj">
+      <Project>{b86ce700-6763-44c2-85fa-594f68b50347}</Project>
+      <Name>SupremacyNative</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SR.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

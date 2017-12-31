@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{25AEA57E-9376-4B73-93D4-A2DCDB15D2D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Supremacy.Scripting</RootNamespace>
+    <AssemblyName>Supremacy.Scripting</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\lib\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\lib\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--Reference Include="Microsoft.M, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ProgramFiles)\Microsoft Oslo\1.0\bin\Microsoft.M.Grammar.dll</HintPath>
+    </Reference-->
+    <Reference Include="MGraphXamlReader">
+      <HintPath>..\Common\MGraphXamlReader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic">
+      <HintPath>..\Common\Microsoft.Dynamic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.M, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\Microsoft.M.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Scripting">
+      <HintPath>..\Common\Microsoft.Scripting.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Dataflow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\System.Dataflow.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Annotations.cs" />
+    <Compile Include="Ast\AnonymousObjectInitializer.cs" />
+    <Compile Include="Ast\Argument.cs" />
+    <Compile Include="Ast\Arguments.cs" />
+    <Compile Include="Ast\ArrayCreationExpression.cs" />
+    <Compile Include="Ast\Ast.cs" />
+    <Compile Include="Ast\AstInitializer.cs" />
+    <Compile Include="Ast\AstVisitor.cs" />
+    <Compile Include="Ast\BinaryExpression.cs" />
+    <Compile Include="Ast\BuiltinType.cs" />
+    <Compile Include="Ast\CallExpression.cs" />
+    <Compile Include="Ast\CastExpression.cs" />
+    <Compile Include="Ast\CloneContext.cs" />
+    <Compile Include="Ast\CollectionInitializerExpression.cs" />
+    <Compile Include="Ast\CompilationUnit.cs" />
+    <Compile Include="Ast\CompilerErrorException.cs" />
+    <Compile Include="Ast\CompilerErrors.cs" />
+    <Compile Include="Ast\ComposedCastExpression.cs" />
+    <Compile Include="Ast\ConditionalExpression.cs" />
+    <Compile Include="Ast\ConditionalLogicalOperator.cs" />
+    <Compile Include="Ast\ConstantExpression.cs" />
+    <Compile Include="Ast\CollectionElementInitializer.cs" />
+    <Compile Include="Ast\ConstantFold.cs" />
+    <Compile Include="Ast\ConstraintChecker.cs" />
+    <Compile Include="Ast\ConvertExpression.cs" />
+    <Compile Include="Ast\ElementInitializer.cs" />
+    <Compile Include="Ast\EmptyConstantCastExpression.cs" />
+    <Compile Include="Ast\EnumConstantExpression.cs" />
+    <Compile Include="Ast\ExpressionClass.cs" />
+    <Compile Include="Ast\ExpressionTypeExtensions.cs" />
+    <Compile Include="Ast\ExtensionMethodGroupExpression.cs" />
+    <Compile Include="Ast\FieldExpression.cs" />
+    <Compile Include="Ast\FullNamedExpression.cs" />
+    <Compile Include="Ast\GenericConstraints.cs" />
+    <Compile Include="Ast\GenericTypeExpression.cs" />
+    <Compile Include="Ast\IConstant.cs" />
+    <Compile Include="Ast\IMemberContext.cs" />
+    <Compile Include="Ast\InternalErrorException.cs" />
+    <Compile Include="Ast\LiftedBinaryOperator.cs" />
+    <Compile Include="Ast\LiftedExpression.cs" />
+    <Compile Include="Ast\LiftedNullExpression.cs" />
+    <Compile Include="Ast\MemberExpression.cs" />
+    <Compile Include="Ast\MemberName.cs" />
+    <Compile Include="Ast\MethodGroupExpression.cs" />
+    <Compile Include="Ast\NamespaceExpression.cs" />
+    <Compile Include="Ast\NewExpression.cs" />
+    <Compile Include="Ast\NullableTypeExpression.cs" />
+    <Compile Include="Ast\NullLiteral.cs" />
+    <Compile Include="Ast\ObjectCreationExpression.cs" />
+    <Compile Include="Ast\ObjectInitializerExpression.cs" />
+    <Compile Include="Ast\ParameterizedExpression.cs" />
+    <Compile Include="Ast\Declaration.cs" />
+    <Compile Include="Ast\DefaultValueExpression.cs" />
+    <Compile Include="Ast\ElementAccessExpression.cs" />
+    <Compile Include="Ast\EmptyExpression.cs" />
+    <Compile Include="Ast\ExplicitScope.cs" />
+    <Compile Include="Ast\Expression.cs" />
+    <Compile Include="Ast\ParametersImported.cs" />
+    <Compile Include="Ast\PropertyExpression.cs" />
+    <Compile Include="Ast\QualifiedAliasMember.cs" />
+    <Compile Include="Ast\QueryStartClause.cs" />
+    <Compile Include="Ast\GroupByClause.cs" />
+    <Compile Include="Ast\IAst.cs" />
+    <Compile Include="Ast\IKnownVariable.cs" />
+    <Compile Include="Ast\ImplicitLambdaParameter.cs" />
+    <Compile Include="Ast\IntoClause.cs" />
+    <Compile Include="Ast\InvokeExpression.cs" />
+    <Compile Include="Ast\IParameterData.cs" />
+    <Compile Include="Ast\ISourceLocation.cs" />
+    <Compile Include="Ast\JoinClause.cs" />
+    <Compile Include="Ast\JoinIntoClause.cs" />
+    <Compile Include="Ast\LambdaExpression.cs" />
+    <Compile Include="Ast\LambdaParameter.cs" />
+    <Compile Include="Ast\LetClause.cs" />
+    <Compile Include="Ast\LexicalScope.cs" />
+    <Compile Include="Ast\LinkParents.cs" />
+    <Compile Include="Ast\LocalDeclaration.cs" />
+    <Compile Include="Ast\LocalInfo.cs" />
+    <Compile Include="Ast\MemberAccessExpression.cs" />
+    <Compile Include="Ast\MemberInitializerExpression.cs" />
+    <Compile Include="Ast\NameExpression.cs" />
+    <Compile Include="Ast\NewInitExpression.cs" />
+    <Compile Include="Ast\OrderbyClause.cs" />
+    <Compile Include="Ast\Ordering.cs" />
+    <Compile Include="Ast\ParameterReference.cs" />
+    <Compile Include="Ast\QueryableSignatures.cs" />
+    <Compile Include="Ast\LiteralExpression.cs" />
+    <Compile Include="Ast\QueryClause.cs" />
+    <Compile Include="Ast\QueryDeclaration.cs" />
+    <Compile Include="Ast\QueryExpression.cs" />
+    <Compile Include="Ast\QueryRewriter.cs" />
+    <Compile Include="Ast\QueryScope.cs" />
+    <Compile Include="Ast\QuoteExpression.cs" />
+    <Compile Include="Ast\RangeDeclaration.cs" />
+    <Compile Include="Ast\RangeVariableQueryClause.cs" />
+    <Compile Include="Ast\ReducedExpression.cs" />
+    <Compile Include="Ast\Scope.cs" />
+    <Compile Include="Ast\SelectClause.cs" />
+    <Compile Include="Ast\SelectManyClause.cs" />
+    <Compile Include="Ast\ShimExpression.cs" />
+    <Compile Include="Ast\SideEffectConstantExpression.cs" />
+    <Compile Include="Ast\SimpleQueryExpression.cs" />
+    <Compile Include="Ast\SourceSpanConverter.cs" />
+    <Compile Include="Ast\ConcatExpression.cs" />
+    <Compile Include="Ast\StringExpression.cs" />
+    <Compile Include="Ast\ThenbyClause.cs" />
+    <Compile Include="Ast\TopLevelParameterInfo.cs" />
+    <Compile Include="Ast\TopLevelScope.cs" />
+    <Compile Include="Ast\TypeExpression.cs" />
+    <Compile Include="Ast\TypeNameExpression.cs" />
+    <Compile Include="Ast\TypeofExpression.cs" />
+    <Compile Include="Ast\UnaryExpression.cs" />
+    <Compile Include="Ast\UserOperatorCall.cs" />
+    <Compile Include="Ast\UsingAliasEntry.cs" />
+    <Compile Include="Ast\UsingDirective.cs" />
+    <Compile Include="Ast\WhereClause.cs" />
+    <Compile Include="Runtime\Binders\BinderState.cs" />
+    <Compile Include="Runtime\Binders\BinderExtensions.cs" />
+    <Compile Include="Runtime\Binders\SxeBinaryOperationBinder.cs" />
+    <Compile Include="Runtime\Binders\ScriptBinder.cs" />
+    <Compile Include="Runtime\Binders\SxeBinders.cs" />
+    <Compile Include="Runtime\Binders\SxeInvokeBinder.cs" />
+    <Compile Include="Runtime\Binders\SxeConvertBinder.cs" />
+    <Compile Include="Runtime\Binders\SxeGetIndexBinder.cs" />
+    <Compile Include="Runtime\Binders\SxeGetMemberBinder.cs" />
+    <Compile Include="Runtime\Binders\SxeInvokeMemberBinder.cs" />
+    <Compile Include="Runtime\Binders\SxeUnaryOperationBinder.cs" />
+    <Compile Include="Ast\InterpolatedStringExpression.cs" />
+    <Compile Include="Ast\ErrorInfo.cs" />
+    <Compile Include="Runtime\ParseContext.cs" />
+    <Compile Include="Runtime\ScriptNamespaceAliasAttribute.cs" />
+    <Compile Include="Runtime\ScriptParameter.cs" />
+    <Compile Include="Runtime\ScriptParameters.cs" />
+    <Compile Include="Runtime\ScriptVisibleAttribute.cs" />
+    <Compile Include="Runtime\SourceWriter.cs" />
+    <Compile Include="Runtime\ScriptGenerator.cs" />
+    <Compile Include="Ast\TypeArgument.cs" />
+    <Compile Include="Ast\TypeName.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\ScriptLanguageContext.cs" />
+    <Compile Include="Runtime\ScriptOverloadResolverFactory.cs" />
+    <Compile Include="Runtime\ScriptScope.cs" />
+    <Compile Include="Utility\AnonymousTypeClass.cs" />
+    <Compile Include="Utility\AttributeTester.cs" />
+    <Compile Include="Utility\CommonMembers.cs" />
+    <Compile Include="Utility\MemberCache.cs" />
+    <Compile Include="Utility\Modifiers.cs" />
+    <Compile Include="Utility\OperatorInfo.cs" />
+    <Compile Include="Utility\TrackerExtensions.cs" />
+    <Compile Include="Utility\TypeHandle.cs" />
+    <Compile Include="Utility\TypeInference.cs" />
+    <Compile Include="Utility\TypeManager.CoreTypes.cs" />
+    <Compile Include="Utility\TypeManager.PredefinedAttributes.cs" />
+    <Compile Include="Utility\TypeManager.cs" />
+    <Compile Include="Utility\TypeUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExpressionLanguage.mg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EmbeddedResource Include="ExpressionLanguage.mx" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\Microsoft.Oslo.Internal.dll">
+      <Link>Microsoft.Oslo.Internal.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SupremacyNative\SupremacyNative.vcxproj">
+      <Project>{b86ce700-6763-44c2-85fa-594f68b50347}</Project>
+      <Name>SupremacyNative</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+</Project>

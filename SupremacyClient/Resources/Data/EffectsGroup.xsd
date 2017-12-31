@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<xs:schema id="EffectsGroup" 
+           targetNamespace="Supremacy:EffectsGroup.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:EffectsGroup.xsd"
+           xmlns:mstns="Supremacy:EffectsGroup.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="EffectsGroup">
+    <xs:all>
+      <xs:element name="Activation">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="1">
+            <xs:any namespace="Supremacy:Conditions.xsd" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Scope">
+        <xs:complexType>
+          <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:any namespace="Supremacy:Conditions.xsd" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Effects">
+        <xs:complexType>
+          <xs:choice minOccurs="1" maxOccurs="unbounded">
+            <xs:any namespace="Supremacy:Effects.xsd" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="EffectsGroup" type="EffectsGroup" />
+  <xs:element name="Specials">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Special">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="Target">
+                <xs:complexType>
+                  <xs:choice minOccurs="1" maxOccurs="1">
+                    <xs:any namespace="Supremacy:Conditions.xsd" />
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="EffectsGroups">
+                <xs:complexType>
+                  <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element name="EffectsGroup" type="EffectsGroup" />
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+            <xs:attribute name="Key" type="xs:normalizedString" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Supremacy.Client.Views.LobbyScreen.PlayerSlotView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Supremacy.Client.Views.LobbyScreen"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
+  <Grid Margin="0,0,0,4">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"
+                        SharedSizeGroup="LobbyPlayerInfoColumn0"/>
+      <ColumnDefinition Width="Auto"
+                        SharedSizeGroup="LobbyPlayerInfoColumn1"/>
+      <ColumnDefinition Width="Auto"
+                        MinWidth="200"
+                        SharedSizeGroup="LobbyPlayerInfoColumn2"/>
+      <ColumnDefinition Width="Auto"
+                        SharedSizeGroup="LobbyPlayerInfoColumn3"/>
+      <ColumnDefinition Width="Auto"
+                        MinWidth="200"
+                        SharedSizeGroup="LobbyPlayerInfoColumn4"/>
+      <ColumnDefinition Width="*"
+                        SharedSizeGroup="LobbyPlayerInfoColumn5"/>
+      <ColumnDefinition Width="Auto"
+                        SharedSizeGroup="LobbyPlayerInfoColumn6"/>
+    </Grid.ColumnDefinitions>
+    <Border Grid.Column="0"
+            Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            CornerRadius="14,0,0,14"
+            Width="21"
+            Margin="0,0,0,0"/>
+    <CheckBox x:Name="IsOpenCheckBox"
+              Grid.Column="1"
+              Margin="4,0,0,0"
+              IsEnabled="{Binding Path=(local:PlayerSlotView.Slot).IsFrozen, Converter={StaticResource IsFalseValueConverter}, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PlayerSlotView}}}"
+              Checked="OnIsOpenCheckBoxChecked"
+              Unchecked="OnIsOpenCheckBoxChecked" />
+    <TextBlock x:Name="EmpireNameText"
+               Grid.Column="2"
+               Margin="4,0,4,0"
+               FontSize="18pt"
+               FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               VerticalAlignment="Center"
+               Text="{Binding Path=(local:PlayerSlotView.Slot).EmpireName, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PlayerSlotView}}, Converter={StaticResource UpperCaseConverter}}"/>
+    <Border Grid.Column="3"
+            Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+            Width="21"
+            Margin="0,0,0,0"/>
+    <ComboBox x:Name="PlayerList"
+              Grid.Column="4"
+              Margin="4,0,0,0"
+              IsReadOnly="True"
+              IsEnabled="{Binding Path=(local:PlayerSlotView.Slot).IsClosed, Converter={StaticResource IsFalseValueConverter}, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PlayerSlotView}}}"
+              IsEditable="False"
+              HorizontalAlignment="Stretch"
+              ItemsSource="{Binding Path=(local:PlayerSlotView.AssignablePlayers), Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PlayerSlotView}}}"
+              SelectedItem="{Binding Path=(local:PlayerSlotView.AssignedPlayer), Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PlayerSlotView}}}"
+              DisplayMemberPath="Name" />
+    <Border Grid.Column="5"
+            Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+            Margin="4,0,4,0"/>
+    <Border Grid.Column="6"
+            Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            CornerRadius="0,14,14,0"
+            Width="21"
+            Margin="0,0,0,0"/>
+  </Grid>
+</UserControl>

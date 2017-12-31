@@ -1,0 +1,18 @@
+syntax: glob
+
+.vs/
+bin/
+*.orig
+*.obj
+*/obj/*
+*.pdb
+*.pch
+*.asm
+*.CopyComplete
+packages/*
+Thumbs.db
+*.cache
+*.log
+*.tlog
+_Resources/
+*.VC.db

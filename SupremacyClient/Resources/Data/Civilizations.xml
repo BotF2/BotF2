@@ -1,0 +1,1686 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Civilizations xmlns="Supremacy:Civilizations.xsd">
+  <Civilization Key="FEDERATION">
+    <Race>HUMANS</Race>
+    <ShortName>Federation</ShortName>
+    <LongName>United Federation of Planets</LongName>
+    <DiplomacyReport>The United Federation of Planets is a coalition of worlds bound by a mutual desire for peace, the pursuit of scientific understanding, and trade. By far however, the most numerous of the Federation races is one of the founding members, the Humans of Sol. The people of the Federation live in a society based on the values of liberty and equality. Their strength lies in extremely effective research, which grants them fast access to new technologies. They are also efficient in industry, the mining of raw materials, and the production and supply of energy and vital goods to their planets. Their high-quality products come at the expense of high resource costs, however. Because of their moral convictions, they quickly show weaknesses in the field of espionage, but they make up for this with impressive, well-rounded starships, which function as well individually as in groups. Federation starships are equally likely to be seen conducting trade, exploration, humanitarian, and diplomatic missions, as they are to be seen conducting military patrols and combat manoeuvres.</DiplomacyReport>
+    <HomeSystemName>Sol</HomeSystemName>
+    <Color>Blue</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>Empire</CivilizationType>
+    <TechCurve>TechCurve6</TechCurve>
+  </Civilization>
+  <Civilization Key="ROMULANS">
+    <Race>ROMULANS</Race>
+    <ShortName>Romulans</ShortName>
+    <LongName>Romulan Star Empire</LongName>
+    <DiplomacyReport>To outsiders, the Romulans are an enigmatic race. To the Romulans, however, other races have hardly any mystery left, for their talented intelligence agency, the Tal Shiar, has solved each of those mysteries. Romulan interests are protected by a veil of secrecy and covertness, just as their ships are hidden from prying eyes by powerful cloaking technologies. Their ships move undetected in groups until they are close to their unsuspecting victim, before decloaking and destroying their target in the ambush. Reports on Romulan society show it functions on exceptional research achievements; their industry and mining efforts are not quite as effective, however. The basic supply of energy and food for the populace is sufficient to meet day-to-day needs, and is rigorously regulated to be resource-saving, as are their fleet maintenance costs; Romulan fleets expect to decimate the enemy before they have any chance at mounting a defence. There is therefore little need to equip their vessels with expensive armour plating. This should not be seen as a weakness however; Romulan ships are known equally for their manoeuverability and heavy weapons, and for their ability to disappear at will.</DiplomacyReport>
+    <HomeSystemName>Romulus</HomeSystemName>
+    <Color>Green</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>Empire</CivilizationType>
+    <TechCurve>TechCurve6</TechCurve>
+  </Civilization>
+  <Civilization Key="KLINGONS">
+    <Race>KLINGONS</Race>
+    <ShortName>Klingons</ShortName>
+    <LongName>Klingon Empire</LongName>
+    <DiplomacyReport>The Klingons are some of the most feared warriors in the galaxy. Their quest for glory and honour in battle makes them masters in the field of combat; be it in ground or space-based combat, their weapons arm quickly and strike hard. Some of their battleships possess cloaking devices, with which the Klingons strike from the shadows at their prey. Their vigorous industrial forges process countless masses of raw materials, keeping their resource-hungry war machine running, whilst gigantic hunting parties guarantee the population's food supply. However, all things that do not directly serve battle are of lower importance to them and thus are less effective. The Klingons consider espionage a cowardly and dishonourable act, but are willing to defend themselves through internal security as necessary.</DiplomacyReport>
+    <HomeSystemName>Qo'noS</HomeSystemName>
+    <Color>Crimson</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>Empire</CivilizationType>
+    <TechCurve>TechCurve6</TechCurve>
+  </Civilization>
+  <Civilization Key="CARDASSIANS">
+    <Race>CARDASSIANS</Race>
+    <ShortName>Cardassians</ShortName>
+    <LongName>Cardassian Union</LongName>
+    <DiplomacyReport>The Cardassians use any means necessary to ensure the absolute loyalty of their subjects. A national indoctrination, mixed with effective control methods, promotes an unconditional belief in the Cardassian systems and work ethics, which results in exceptional industrial and mining capacity. These state-promoted plants clearly work far more effectively than their food and energy installations however, and their research advances at a slow rate. Their intelligence services, the Obsidian Order, are also very efficient, and are considered to be as dangerous as their military, both in the acts of espionage and sabotage. Cardassian ships continue the principle of community-controlled actions in space. Individually not very efficient, they are developed to attack in tight formations.</DiplomacyReport>
+    <HomeSystemName>Cardassia</HomeSystemName>
+    <Color>DarkGoldenrod</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>Empire</CivilizationType>
+    <TechCurve>TechCurve6</TechCurve>
+  </Civilization>
+  <Civilization Key="DOMINION">
+    <Race>JEMHADAR</Race>
+    <ShortName>Dominion</ShortName>
+    <LongName>Dominion</LongName>
+    <DiplomacyReport>The Founders, also known as "Changelings" to outsiders, see themselves as the legitimate power that will bring the chaotic universe to order and control it with themselves at the top of their new hierarchical system. For this purpose, the Founders routinely genetically re-engineer races to perform particular roles within their Dominion. These races include the mighty Jem'Hadar, perfect soldiers who are controlled by psychotropically addictive drugs that only the Founders know how to make; and the Vorta, the "face and voice" of the Founders, their diplomats, and the race that permits the Jem'Hadar access to Ketracel White supplies in exchange for their loyalty. The Dominion regularly use their superior genetic manipulation techniques to "improve" all the races under their control, and this policy has allowed them to make astonishing achievements in many areas, including construction, mining, and energy production. The many races under the Dominion now worship the Founders as near-mythical gods, although the Founders themselves rarely leave the homeworld. The shapeshifting abilities of the Founders are very useful in gathering intelligence and performing acts of sabotage, whilst the excellent Jem'Hadar ships and troops carry their will to the far reaches of the galaxy.</DiplomacyReport>
+    <HomeSystemName>Omarion</HomeSystemName>
+    <Color>DarkMagenta</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>Empire</CivilizationType>
+    <TechCurve>TechCurve6</TechCurve>
+  </Civilization>
+  <Civilization Key="ACAMARIANS">
+    <Race>ACAMARIANS</Race>
+    <ShortName>Acamarians</ShortName>
+    <LongName>Acamarians</LongName>
+    <DiplomacyReport>The Acamarians wish to preserve their social structure. We must take steps to ensure that they can.</DiplomacyReport>
+    <HomeSystemName>Acamar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="AKAALI">
+    <Race>AKAALI</Race>
+    <ShortName>Akaali</ShortName>
+    <LongName>Akaali</LongName>
+    <DiplomacyReport>The Akaali are a primitive culture still finding their way, but they are skilled in managing the few resources they have. Any interaction in current planetary affairs would be inadvisable though, for it would hinder rather than benefit their development.</DiplomacyReport>
+    <HomeSystemName>Akaal</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="AKRITIRIANS">
+    <Race>AKRITIRIANS</Race>
+    <ShortName>Akritirians</ShortName>
+    <LongName>Akritirians</LongName>
+    <DiplomacyReport>The Akritirian people are governed by an oppressive and often brutal regime that values obedience above all else, and they are unforgiving if common order is compromised. Their government should be approached with caution.</DiplomacyReport>
+    <HomeSystemName>Akritiri</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ALDEANS">
+    <Race>ALDEANS</Race>
+    <ShortName>Aldeans</ShortName>
+    <LongName>Aldeans</LongName>
+    <DiplomacyReport>The Aldeans are a sophisticated culture, but value their isolationism. If we are to maintain diplomatic relations with them, we must be patient, but the eventual benefits will be immense.</DiplomacyReport>
+    <HomeSystemName>Epsilon Mynos</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="ALGOLIANS">
+    <Race>ALGOLIANS</Race>
+    <ShortName>Algolians</ShortName>
+    <LongName>Algolians</LongName>
+    <DiplomacyReport>The Algolians pride themselves in their distinctive gift for intellectual capacity and diversity. They would be an asset to our cultural exchange group.</DiplomacyReport>
+    <HomeSystemName>Algol</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="ALSAURIANS">
+    <Race>ALSAURIANS</Race>
+    <ShortName>Alsaurians</ShortName>
+    <LongName>Alsaurians</LongName>
+    <DiplomacyReport>The Alsaurians have for long suffered under the oppression of the neighbouring Mokra Order. It would thus be prudent to remain neutral in diplomatic matters until lasting peace is achieved.</DiplomacyReport>
+    <HomeSystemName>Alsauria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="ANDORIANS">
+    <Race>ANDORIANS</Race>
+    <ShortName>Andorians</ShortName>
+    <LongName>Andorians</LongName>
+    <DiplomacyReport>The Andorians are a deeply passionate people with a bloody past, but they desire a more peaceful future.</DiplomacyReport>
+    <HomeSystemName>Andoria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="ANGOSIANS">
+    <Race>ANGOSIANS</Race>
+    <ShortName>Angosians</ShortName>
+    <LongName>Angosians</LongName>
+    <DiplomacyReport>The Angosians have a nearly perfect society, but they pay a high price. Their enhanced soldiers deserve social, as well as military, respect.</DiplomacyReport>
+    <HomeSystemName>Angosia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ANKARI">
+    <Race>ANKARI</Race>
+    <ShortName>Ankari</ShortName>
+    <LongName>Ankari</LongName>
+    <DiplomacyReport>The Ankari have a number of convoluted ritualistic beliefs, but they are a reasonably advanced culture, particularly in propulsion studies.</DiplomacyReport>
+    <HomeSystemName>Ankar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ANTEDEANS">
+    <Race>ANTEDEANS</Race>
+    <ShortName>Antedeans</ShortName>
+    <LongName>Antedeans</LongName>
+    <DiplomacyReport>The Antedeans have advanced technology, particularly in aquatic science, but they find travelling in space alien to their nature.</DiplomacyReport>
+    <HomeSystemName>Antede</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ANTICANS">
+    <Race>ANTICANS</Race>
+    <ShortName>Anticans</ShortName>
+    <LongName>Anticans</LongName>
+    <DiplomacyReport>The Anticans are not as advanced as they would have us believe. An important first step would be a resolution of their conflict with the neighbouring species, the Selay.</DiplomacyReport>
+    <HomeSystemName>Beta Renner</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="ARBAZAN">
+    <Race>ARBAZAN</Race>
+    <ShortName>Arbazan</ShortName>
+    <LongName>Arbazan</LongName>
+    <DiplomacyReport>The Arbazan are a highly conservative, yet sophisticated culture. Due to their temperate moralistic ways, they are seen to be arrogant, thus making diplomatic overtures difficult.</DiplomacyReport>
+    <HomeSystemName>Arbaza</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="ARDANANS">
+    <Race>ARDANANS</Race>
+    <ShortName>Ardanans</ShortName>
+    <LongName>Ardanans</LongName>
+    <DiplomacyReport>The Ardanans live in anti-gravity levitated cities due to the unstable nature of their planet's crust. Various social issues would first need to be addressed if they are to be serious candidates for membership.</DiplomacyReport>
+    <HomeSystemName>Mu Leonis A</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ARGRATHI">
+    <Race>ARGRATHI</Race>
+    <ShortName>Argrathi</ShortName>
+    <LongName>Argrathi</LongName>
+    <DiplomacyReport>The Argrathi are a humanoid race who are prone to suspicion. They are ruled by the Argrathi Authority, who do not take well to any meddling, and should be approached with caution.</DiplomacyReport>
+    <HomeSystemName>Argratha</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ATREANS">
+    <Race>ATREANS</Race>
+    <ShortName>Atreans</ShortName>
+    <LongName>Atreans</LongName>
+    <DiplomacyReport>The Atreans are a generally amiable people, and outwardly friendly to most species, for they see such contact as a chance to improve their knowledge.</DiplomacyReport>
+    <HomeSystemName>Atrea</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="AXANAR">
+    <Race>AXANAR</Race>
+    <ShortName>Axanar</ShortName>
+    <LongName>Axanar</LongName>
+    <DiplomacyReport>The Axanar are an androgynous species with a long life span. They could be useful allies, for they value peace and friendship, but when necessary they are capable of defending themselves.</DiplomacyReport>
+    <HomeSystemName>Axanar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="BAJORANS">
+    <Race>BAJORANS</Race>
+    <ShortName>Bajorans</ShortName>
+    <LongName>Bajorans</LongName>
+    <DiplomacyReport>The Bajorans are an ancient, spiritual race, but have suffered much in recent times. They would be welcome members, but our first priority should be to provide aid for their recovery from the recent military occupation of their world.</DiplomacyReport>
+    <HomeSystemName>Bajor</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="BAKU">
+    <Race>BAKU</Race>
+    <ShortName>Ba'ku</ShortName>
+    <LongName>Ba'ku</LongName>
+    <DiplomacyReport>The Ba'ku are isolationists, who long ago fled from a devastating war. These survivors have now reformed their ways, and enjoy a peaceful and harmonious lifestyle, almost totally free from the trappings of technology.</DiplomacyReport>
+    <HomeSystemName>Briar Patch</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="BANDI">
+    <Race>BANDI</Race>
+    <ShortName>Bandi</ShortName>
+    <LongName>Bandi</LongName>
+    <DiplomacyReport>Despite their lack of warp technology the Bandi have access to a wealth of trade links, and if they are willing to trade, they would be a lucrative ally indeed.</DiplomacyReport>
+    <HomeSystemName>Deneb</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="BANEANS">
+    <Race>BANEANS</Race>
+    <ShortName>Baneans</ShortName>
+    <LongName>Baneans</LongName>
+    <DiplomacyReport>The Baneans are strict when it comes to security and law, due mainly to their many troubles with the Numiri.</DiplomacyReport>
+    <HomeSystemName>Banea</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="BARZANS">
+    <Race>BARZANS</Race>
+    <ShortName>Barzans</ShortName>
+    <LongName>Barzans</LongName>
+    <DiplomacyReport>The Barzans are undergoing an economical crisis, and they have appealed for assistance. In exchange, they are offering operational rights and access to a wormhole they have discovered.</DiplomacyReport>
+    <HomeSystemName>Barzan</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="BENZITES">
+    <Race>BENZITES</Race>
+    <ShortName>Benzites</ShortName>
+    <LongName>Benzites</LongName>
+    <DiplomacyReport>The Benzite culture values industry and efficiency, and their membership would be a boon for our industrial centres.</DiplomacyReport>
+    <HomeSystemName>Benzar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="BETAZOIDS">
+    <Race>BETAZOIDS</Race>
+    <ShortName>Betazoids</ShortName>
+    <LongName>Betazoids</LongName>
+    <DiplomacyReport>Betazoid telepathy is an asset that our rivals may try to exploit. We should offer Betazed our protection.</DiplomacyReport>
+    <HomeSystemName>Beta Veldonna</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="BILANAIANS">
+    <Race>BILANAIANS</Race>
+    <ShortName>Bilanaians</ShortName>
+    <LongName>Bilanaians</LongName>
+    <DiplomacyReport>The Bilanaians are innovators in propulsion, and would be of significant benefit to our own researchers.</DiplomacyReport>
+    <HomeSystemName>Bilana</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="BOLIANS">
+    <Race>BOLIANS</Race>
+    <ShortName>Bolians</ShortName>
+    <LongName>Bolians</LongName>
+    <DiplomacyReport>The Bolians are productive trade merchants. With their resources and connections the economical benefits will be immense.</DiplomacyReport>
+    <HomeSystemName>Bolarus</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="BOMAR">
+    <Race>BOMAR</Race>
+    <ShortName>B'Omar</ShortName>
+    <LongName>B'Omar</LongName>
+    <DiplomacyReport>The B'Omar are slightly xenophobic, and keep mostly to themselves, but they maintain a wide network of colonies due to their ever-growing population levels.</DiplomacyReport>
+    <HomeSystemName>B'Omar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="BOSLICS">
+    <Race>BOSLICS</Race>
+    <ShortName>Boslics</ShortName>
+    <LongName>Boslics</LongName>
+    <DiplomacyReport>The Boslics are a trading race, and have been known to deal in arms and other contraband.</DiplomacyReport>
+    <HomeSystemName>Boslic</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="BOTHANS">
+    <Race>BOTHANS</Race>
+    <ShortName>Bothans</ShortName>
+    <LongName>Bothans</LongName>
+    <DiplomacyReport>The Bothans are an elusive race that are not to be entirely trusted. But if they were on our side, their skill for intelligence gathering would be an asset.</DiplomacyReport>
+    <HomeSystemName>Botha</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="BREELLIANS">
+    <Race>BREELLIANS</Race>
+    <ShortName>Bre'ellians</ShortName>
+    <LongName>Bre'ellians</LongName>
+    <DiplomacyReport>The Bre'ellians suffer with overpopulation. A necessary first step in helping them deal with the problem is terraforming the rest of their system to give them more breathing room.</DiplomacyReport>
+    <HomeSystemName>Bre'el</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="BREEN">
+    <Race>BREEN</Race>
+    <ShortName>Breen</ShortName>
+    <LongName>Breen</LongName>
+    <DiplomacyReport>The Breen have advanced weapons, so we must be extremely cautious. It will take a great diplomatic effort if we are to have any productive dealings with them.</DiplomacyReport>
+    <HomeSystemName>Breen</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="BREKKIANS">
+    <Race>BREKKIANS</Race>
+    <ShortName>Brekkians</ShortName>
+    <LongName>Brekkians</LongName>
+    <DiplomacyReport>The Brekkians are not a very developed race, with only basic interplanetary capability. They are guilty of exploiting the neighbouring Ornaran race for centuries.</DiplomacyReport>
+    <HomeSystemName>Delos A</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="BYNARS">
+    <Race>BYNARS</Race>
+    <ShortName>Bynars</ShortName>
+    <LongName>Bynars</LongName>
+    <DiplomacyReport>The Bynars are an advanced race, and their state-of-the-art computer technology is the very apex of technical sophistication.</DiplomacyReport>
+    <HomeSystemName>Beta Magellan</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="CAIRN">
+    <Race>CAIRN</Race>
+    <ShortName>Cairn</ShortName>
+    <LongName>Cairn</LongName>
+    <DiplomacyReport>The Cairn are greatly skilled diplomats and mediators, due to their gift for telepathy. However, this gift comes at the expense of speech and developed language. Communications with the Cairn will be difficult.</DiplomacyReport>
+    <HomeSystemName>Cairn</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="CALDONIANS">
+    <Race>CALDONIANS</Race>
+    <ShortName>Caldonians</ShortName>
+    <LongName>Caldonians</LongName>
+    <DiplomacyReport>The Caldonians are disciplined researchers, and share our love of knowledge for its own sake.</DiplomacyReport>
+    <HomeSystemName>Caldonia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="CAPELLANS">
+    <Race>CAPELLANS</Race>
+    <ShortName>Capellans</ShortName>
+    <LongName>Capellans</LongName>
+    <DiplomacyReport>The Capellans are a fiercely tribal people with a troubled history. Their social divisions have hindered any endeavour for technological or political advancement.</DiplomacyReport>
+    <HomeSystemName>Capella</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="CHALNOTH">
+    <Race>CHALNOTH</Race>
+    <ShortName>Chalnoth</ShortName>
+    <LongName>Chalnoth</LongName>
+    <DiplomacyReport>The Chalnoth are a brutal race, and should be approached with caution and respect.</DiplomacyReport>
+    <HomeSystemName>Kaus Borealis</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="CORIDAN">
+    <Race>CORIDAN</Race>
+    <ShortName>Coridan</ShortName>
+    <LongName>Coridan</LongName>
+    <DiplomacyReport>The Coridan inhabit a strategically important system, in both position and resources. They would be a great asset to us.</DiplomacyReport>
+    <HomeSystemName>Coridan</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="CORVALLENS">
+    <Race>CORVALLENS</Race>
+    <ShortName>Corvallens</ShortName>
+    <LongName>Corvallens</LongName>
+    <DiplomacyReport>The Corvallens are a neutral race of traders, raiders, smugglers and mercenaries, and cannot be trusted. We must be cautious in any dealings we have with them.</DiplomacyReport>
+    <HomeSystemName>Corval</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="CYTHERIANS">
+    <Race>CYTHERIANS</Race>
+    <ShortName>Cytherians</ShortName>
+    <LongName>Cytherians</LongName>
+    <DiplomacyReport>The Cytherians have reached the peak of corporeal development, but they invest little interest in younger races, thus negotiations will be difficult.</DiplomacyReport>
+    <HomeSystemName>Cytheri</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve6</TechCurve>
+  </Civilization>
+  <Civilization Key="DELTANS">
+    <Race>DELTANS</Race>
+    <ShortName>Deltans</ShortName>
+    <LongName>Deltans</LongName>
+    <DiplomacyReport>The Deltans are a passionate people, and highly sexual, which engenders deep feelings among all who encounter them. But they have much to offer in both diplomatic and scientific fields.</DiplomacyReport>
+    <HomeSystemName>Delta Triciatu</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="DENOBULANS">
+    <Race>DENOBULANS</Race>
+    <ShortName>Denobulans</ShortName>
+    <LongName>Denobulans</LongName>
+    <DiplomacyReport>The amicable Denobulans are a highly sociable race, and they have an interest or point of view in just about anything. They would be an interesting addition to both our scientific and diplomatic circles.</DiplomacyReport>
+    <HomeSystemName>Denobula Triaxa</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="DEVORE">
+    <Race>DEVORE</Race>
+    <ShortName>Devore</ShortName>
+    <LongName>Devore</LongName>
+    <DiplomacyReport>The Devore are a strong and ruthless militaristic people, who have a general dislike and mistrust of any other power.</DiplomacyReport>
+    <HomeSystemName>Devore</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="DOPTERIANS">
+    <Race>DOPTERIANS</Race>
+    <ShortName>Dopterians</ShortName>
+    <LongName>Dopterians</LongName>
+    <DiplomacyReport>The Dopterians are thieves and hoarders - they cannot be trusted. But they do have their uses.</DiplomacyReport>
+    <HomeSystemName>Dopteria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="DOSI">
+    <Race>DOSI</Race>
+    <ShortName>Dosi</ShortName>
+    <LongName>Dosi</LongName>
+    <DiplomacyReport>The Dosi are brokers and intermediary traders, of some sway and influence across many sectors. If we want to open any negotiations with them, we must first recognise and understand the treaties they maintain with existing clients.</DiplomacyReport>
+    <HomeSystemName>Dosin</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="DRAI">
+    <Race>DRAI</Race>
+    <ShortName>Drai</ShortName>
+    <LongName>Drai</LongName>
+    <DiplomacyReport>The Drai are a technologically advanced race, and would be difficult to sweep aside if opposed. But they are fair and open in diplomatic talks.</DiplomacyReport>
+    <HomeSystemName>Drailon</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="DREMANS">
+    <Race>DREMANS</Race>
+    <ShortName>Dremans</ShortName>
+    <LongName>Dremans</LongName>
+    <DiplomacyReport>The Dremans are a primitive, pre-warp civilization, living in harsh conditions on the fourth planet in their system. They would be best left alone until they are ready for full contact and disclosure.</DiplomacyReport>
+    <HomeSystemName>Selcundi Drema</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="EDO">
+    <Race>EDO</Race>
+    <ShortName>Edo</ShortName>
+    <LongName>Edo</LongName>
+    <DiplomacyReport>The Edo enjoy an idyllic existence, but their legal system is a high price to pay for their bliss.</DiplomacyReport>
+    <HomeSystemName>Rubicun</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="ELAURIANS">
+    <Race>ELAURIANS</Race>
+    <ShortName>El-Aurians</ShortName>
+    <LongName>El-Aurians</LongName>
+    <DiplomacyReport>The El-Aurians were invaded long ago, and were dispersed as a people. Now they exist as exiles in space, though lending a friendly ear to any who will take them in.</DiplomacyReport>
+    <HomeSystemName>El-Auria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ELAYSIANS">
+    <Race>ELAYSIANS</Race>
+    <ShortName>Elaysians</ShortName>
+    <LongName>Elaysians</LongName>
+    <DiplomacyReport>The Elaysians come from a small planet with naturally low gravity. This can be a problem for them when adapting to the conditions of most other races.</DiplomacyReport>
+    <HomeSystemName>Elaya</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="ENTHARANS">
+    <Race>ENTHARANS</Race>
+    <ShortName>Entharans</ShortName>
+    <LongName>Entharans</LongName>
+    <DiplomacyReport>The Entharans survive on trade relations with their various partners and affiliates. If we were to gain control of it, it could be a lucrative market indeed...</DiplomacyReport>
+    <HomeSystemName>Enthara</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="EVORA">
+    <Race>EVORA</Race>
+    <ShortName>Evora</ShortName>
+    <LongName>Evora</LongName>
+    <DiplomacyReport>The Evora are relatively new to warp science. If they are to continue to grow and develop in space, they must be protected from any that would seek to exploit them.</DiplomacyReport>
+    <HomeSystemName>Evora</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="EXCALBIANS">
+    <Race>EXCALBIANS</Race>
+    <ShortName>Excalbians</ShortName>
+    <LongName>Excalbians</LongName>
+    <DiplomacyReport>The Excalbians are a rare example of silicon-based life. It would be a worthy study alone just to understand how they function.</DiplomacyReport>
+    <HomeSystemName>Excalbia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="FERENGI">
+    <Race>FERENGI</Race>
+    <ShortName>Ferengi</ShortName>
+    <LongName>Ferengi</LongName>
+    <DiplomacyReport>The Ferengi are a race of hucksters, living for material wealth and possessions, and the constant desire to acquire more by any means necessary. Their traders can be found across most of the known galaxy, and their trading fleet is an unparalleled economic force. But the Ferengi cannot be trusted, and it will be difficult to maintain political links without a financial incentive to keep their interest. The potential boon to our economy that Ferengi membership would bring cannot be overstated, however.</DiplomacyReport>
+    <HomeSystemName>Ferenginar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="FLAXIANS">
+    <Race>FLAXIANS</Race>
+    <ShortName>Flaxians</ShortName>
+    <LongName>Flaxians</LongName>
+    <DiplomacyReport>The Flaxians are a race that specialises in political intrigue and sabotage. They are to be approached with extreme caution.</DiplomacyReport>
+    <HomeSystemName>Flax</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="GORN">
+    <Race>GORN</Race>
+    <ShortName>Gorn</ShortName>
+    <LongName>Gorn</LongName>
+    <DiplomacyReport>The Gorn will be meticulous in any border agreements we make with them. But perhaps they should not be provoked; the Gorn lay claim to a large area of space and trade relations with the species would be particularly lucrative.</DiplomacyReport>
+    <HomeSystemName>Gorn</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="GRAZERITES">
+    <Race>GRAZERITES</Race>
+    <ShortName>Grazerites</ShortName>
+    <LongName>Grazerites</LongName>
+    <DiplomacyReport>The Grazerites are a race of insightful humanoids, who have dedicated themselves to diplomacy and inter-species understanding.</DiplomacyReport>
+    <HomeSystemName>Grazer</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="HAAKONIANS">
+    <Race>HAAKONIANS</Race>
+    <ShortName>Haakonians</ShortName>
+    <LongName>Haakonians</LongName>
+    <DiplomacyReport>The Haakonians are a people that now appreciate peace, after enduring a long war with the Talaxians. They seek above all else to absolve themselves of past misdeeds, but their weapons technology remains.</DiplomacyReport>
+    <HomeSystemName>Haakona</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="HALKANS">
+    <Race>HALKANS</Race>
+    <ShortName>Halkans</ShortName>
+    <LongName>Halkans</LongName>
+    <DiplomacyReport>The Halkans live in total peace, having renounced technology, economics, and strife of any kind.</DiplomacyReport>
+    <HomeSystemName>Omicron Indi</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="HAZARI">
+    <Race>HAZARI</Race>
+    <ShortName>Hazari</ShortName>
+    <LongName>Hazari</LongName>
+    <DiplomacyReport>The Hazari are a people who seek to profit from tasks and missions performed for other races. They make particularly efficient bounty hunters - for the right price.</DiplomacyReport>
+    <HomeSystemName>Hazari</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="HEKARANS">
+    <Race>HEKARANS</Race>
+    <ShortName>Hekarans</ShortName>
+    <LongName>Hekarans</LongName>
+    <DiplomacyReport>The Hekarans have some radical ideas about improving and refining warp science. Their research could be of great benefit to our own propulsion programs.</DiplomacyReport>
+    <HomeSystemName>Hekaras</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="HIROGEN">
+    <Race>HIROGEN</Race>
+    <ShortName>Hirogen</ShortName>
+    <LongName>Hirogen</LongName>
+    <DiplomacyReport>The Hirogen are a militant race of hunters. They long ago abandoned organized social structures in favour of the Hunt.</DiplomacyReport>
+    <HomeSystemName>Hirogea</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="HORTA">
+    <Race>HORTA</Race>
+    <ShortName>Horta</ShortName>
+    <LongName>Horta</LongName>
+    <DiplomacyReport>The Horta are an extraordinary silicon-based lifeform, who have no technology, government, or culture; but they are intelligent, and their world is replete with raw materials.</DiplomacyReport>
+    <HomeSystemName>Janus</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="IYAARANS">
+    <Race>IYAARANS</Race>
+    <ShortName>Iyaarans</ShortName>
+    <LongName>Iyaarans</LongName>
+    <DiplomacyReport>The Iyaarans are a people who have little understanding of the common concepts of emotion, desire, and pleasure. But they are willing to learn.</DiplomacyReport>
+    <HomeSystemName>Iyaara</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="JNAII">
+    <Race>JNAII</Race>
+    <ShortName>J'Naii</ShortName>
+    <LongName>J'Naii</LongName>
+    <DiplomacyReport>The J'Naii are genderless, and regard dual-sexed species as biologically backward, and dissolute.</DiplomacyReport>
+    <HomeSystemName>J'Naii</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="KAELON">
+    <Race>KAELON</Race>
+    <ShortName>Kaelon</ShortName>
+    <LongName>Kaelon</LongName>
+    <DiplomacyReport>The Kaelon are a ritualistic and superstitious race, but they possess many impressive scientists in multiple fields.</DiplomacyReport>
+    <HomeSystemName>Kaelon</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="KAREMMA">
+    <Race>KAREMMA</Race>
+    <ShortName>Karemma</ShortName>
+    <LongName>Karemma</LongName>
+    <DiplomacyReport>The Karemma are a race of prolific trade and commerce. If we want to trade in this quadrant, we will have to involve the Karemma.</DiplomacyReport>
+    <HomeSystemName>Karemma</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="KAZON">
+    <Race>KAZON</Race>
+    <ShortName>Kazon</ShortName>
+    <LongName>Kazon</LongName>
+    <DiplomacyReport>The Kazon have some level of sophistication, but rely on raiding and the intimidation of other races to obtain their technology. There are distinct social divisions in Kazon culture, which will make diplomacy difficult, as favouring one faction over another could result in a substantial shift in political power. But their shipbuilding expertise would be of particular value to the military.</DiplomacyReport>
+    <HomeSystemName>Kazo</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="KELLERUN">
+    <Race>KELLERUN</Race>
+    <ShortName>Kellerun</ShortName>
+    <LongName>Kellerun</LongName>
+    <DiplomacyReport>The Kellerun were for a long while at war with the T'Lani, in which many devastating biological weapons were tragically used. But peace now prevails, and both races are recovering.</DiplomacyReport>
+    <HomeSystemName>Keller</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="KESPRYTT">
+    <Race>KESPRYTT</Race>
+    <ShortName>Kesprytt</ShortName>
+    <LongName>Kesprytt</LongName>
+    <DiplomacyReport>Kesprytt is a planet of two species, physiologically alike, but culturally far apart. Through an uneasy peace, each lives in the shadow of fear, accusation, and suspicion of the other - but there is peace, none the less.</DiplomacyReport>
+    <HomeSystemName>Kesprytt</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="KLAESTRONIANS">
+    <Race>KLAESTRONIANS</Race>
+    <ShortName>Klaestronians</ShortName>
+    <LongName>Klaestronians</LongName>
+    <DiplomacyReport>The Klaestron regime is currently in transition, and any negotiations with them should be delayed until the government has found some stability, and eliminated the long-standing corruption that has afflicted it.</DiplomacyReport>
+    <HomeSystemName>Klaestron</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="KRADIN">
+    <Race>KRADIN</Race>
+    <ShortName>Kradin</ShortName>
+    <LongName>Kradin</LongName>
+    <DiplomacyReport>The Kradin and the Vori are involved in a grim war of mutual hatred and distrust. It may well take a great diplomatic effort to solve the crisis.</DiplomacyReport>
+    <HomeSystemName>Kradin</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="KREETASSANS">
+    <Race>KREETASSANS</Race>
+    <ShortName>Kreetassans</ShortName>
+    <LongName>Kreetassans</LongName>
+    <DiplomacyReport>The Kreetassans are an open and trusting people, but they have complex beliefs. To achieve any lasting relations with them they must be first understood and respected.</DiplomacyReport>
+    <HomeSystemName>Kreetassa</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="KRIOSIANS">
+    <Race>KRIOSIANS</Race>
+    <ShortName>Kriosians</ShortName>
+    <LongName>Kriosians</LongName>
+    <DiplomacyReport>The Kriosians live under a politically unstable regime, where revolt follows conciliation, and conciliation follows revolt. There are many social issues yet to address if the Kriosians are to become productive members of the galactic community.</DiplomacyReport>
+    <HomeSystemName>Krios</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="KTARIANS">
+    <Race>KTARIANS</Race>
+    <ShortName>Ktarians</ShortName>
+    <LongName>Ktarians</LongName>
+    <DiplomacyReport>The Ktarians are a very intelligent and resourceful people, but they have a reputation for cunning, and duplicity. It remains to be seen whether they are indeed trustworthy.</DiplomacyReport>
+    <HomeSystemName>Ktaria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="LEDOSIANS">
+    <Race>LEDOSIANS</Race>
+    <ShortName>Ledosians</ShortName>
+    <LongName>Ledosians</LongName>
+    <DiplomacyReport>The Ledosians are a relatively peaceful people, and they pride themselves on their laws and regulations.</DiplomacyReport>
+    <HomeSystemName>Ledos</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="LISSEPIANS">
+    <Race>LISSEPIANS</Race>
+    <ShortName>Lissepians</ShortName>
+    <LongName>Lissepians</LongName>
+    <DiplomacyReport>The Lissepians are a race of interstellar merchants, but they are neither scrupulous, nor very particular with whom they treat with...</DiplomacyReport>
+    <HomeSystemName>Lissepia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="LOKIRRIM">
+    <Race>LOKIRRIM</Race>
+    <ShortName>Lokirrim</ShortName>
+    <LongName>Lokirrim</LongName>
+    <DiplomacyReport>The Lokirrim are an advanced race with advanced scientific theories, which would be of great benefit to our researchers.</DiplomacyReport>
+    <HomeSystemName>Lokirri</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="LURIANS">
+    <Race>LURIANS</Race>
+    <ShortName>Lurians</ShortName>
+    <LongName>Lurians</LongName>
+    <DiplomacyReport>The Lurians are merchants in their most prolific capacity, but negotiations may be lengthy, for they are not skilled diplomats, and they are slow to enter into open discourse with newly contacted races.</DiplomacyReport>
+    <HomeSystemName>Luria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="MALCORIANS">
+    <Race>MALCORIANS</Race>
+    <ShortName>Malcorians</ShortName>
+    <LongName>Malcorians</LongName>
+    <DiplomacyReport>Malcorian society suffers from xenophobic tendencies, and has entered the warp age before it could fully comprehend the existence of aliens. We will have to be careful when contacting them.</DiplomacyReport>
+    <HomeSystemName>Malcor</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="MALON">
+    <Race>MALON</Race>
+    <ShortName>Malon</ShortName>
+    <LongName>Malon</LongName>
+    <DiplomacyReport>The Malon are advanced industrialists. However, their heavy industries result in hazardous toxic pollutants, to which they have discovered no completely safe and economic method of disposal.</DiplomacyReport>
+    <HomeSystemName>Malon</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="MARKALIANS">
+    <Race>MARKALIANS</Race>
+    <ShortName>Markalians</ShortName>
+    <LongName>Markalians</LongName>
+    <DiplomacyReport>The Markalians will be a difficult race to trust, for many of their markets and business ventures involve illicit activity. But they have contacts throughout the galaxy, and those contacts could bring us lucrative trade contracts indeed.</DiplomacyReport>
+    <HomeSystemName>Markalia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="MERIDIANS">
+    <Race>MERIDIANS</Race>
+    <ShortName>Meridians</ShortName>
+    <LongName>Meridians</LongName>
+    <DiplomacyReport>The Meridian planet is extremely rare and unusual, for it is susceptible to phasing in and out of the space-time continuum. This will naturally hinder diplomatic efforts, but research into the phenomenon would bring great benefits.</DiplomacyReport>
+    <HomeSystemName>Trialus</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="MINTAKANS">
+    <Race>MINTAKANS</Race>
+    <ShortName>Mintakans</ShortName>
+    <LongName>Mintakans</LongName>
+    <DiplomacyReport>Mintakans are a passive bronze age proto-vulcanoid civilization. Although still far from even the industrial age, the highly logical and analytical Mintakans would comfortably accept a rudimentary understanding of interstellar reality and off-world lifeforms.</DiplomacyReport>
+    <HomeSystemName>Mintaka</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="MIRADORN">
+    <Race>MIRADORN</Race>
+    <ShortName>Miradorn</ShortName>
+    <LongName>Miradorn</LongName>
+    <DiplomacyReport>The Miradorn are a symbiogenetic species, coupled as twins, and each set of twins operates as one unit. They are a passionate yet argumentative race, which will complicate diplomacy.</DiplomacyReport>
+    <HomeSystemName>Mirador</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="MIZARIANS">
+    <Race>MIZARIANS</Race>
+    <ShortName>Mizarians</ShortName>
+    <LongName>Mizarians</LongName>
+    <DiplomacyReport>The Mizarians are absolute pacifists. Apparently, this is the main reason that they have survived the last few centuries.</DiplomacyReport>
+    <HomeSystemName>Mizar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="MOKRA">
+    <Race>MOKRA</Race>
+    <ShortName>Mokra</ShortName>
+    <LongName>Mokra</LongName>
+    <DiplomacyReport>The Mokra are governed by the oppressive Mokra Order. War will be assured with this species, even before first contact diplomacy is under way.</DiplomacyReport>
+    <HomeSystemName>Mokra</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="MONEANS">
+    <Race>MONEANS</Race>
+    <ShortName>Moneans</ShortName>
+    <LongName>Moneans</LongName>
+    <DiplomacyReport>The Moneans live in an artificially maintained aquasphere, and the opportunity just to discover how it functions will provide researchers with years of useful data.</DiplomacyReport>
+    <HomeSystemName>Monea</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="NAUSICAANS">
+    <Race>NAUSICAANS</Race>
+    <ShortName>Nausicaans</ShortName>
+    <LongName>Nausicaans</LongName>
+    <DiplomacyReport>The Nausicaans are a proud and strong race, and fearsome in battle. They are always at war, but never have a shortage of new recruits.</DiplomacyReport>
+    <HomeSystemName>Nausicaa</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="NECHANI">
+    <Race>NECHANI</Race>
+    <ShortName>Nechani</ShortName>
+    <LongName>Nechani</LongName>
+    <DiplomacyReport>The Nechani are a superstitious race, and value dogma and ritual as virtues above any other. They are peaceful and open, and will respond well to diplomacy.</DiplomacyReport>
+    <HomeSystemName>Nechani</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="NEZU">
+    <Race>NEZU</Race>
+    <ShortName>Nezu</ShortName>
+    <LongName>Nezu</LongName>
+    <DiplomacyReport>The Nezu system contains a hazardous number of asteroids and meteors, which have long afflicted the Nezu people. They have however endured the affliction, and risen to become a trade race of some influence.</DiplomacyReport>
+    <HomeSystemName>Nezu</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="NORCADIANS">
+    <Race>NORCADIANS</Race>
+    <ShortName>Norcadians</ShortName>
+    <LongName>Norcadians</LongName>
+    <DiplomacyReport>The Norcadians are an advanced race, who possess a number of violent tendencies. But they are open to trade relations.</DiplomacyReport>
+    <HomeSystemName>Norcadia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="NUMIRI">
+    <Race>NUMIRI</Race>
+    <ShortName>Numiri</ShortName>
+    <LongName>Numiri</LongName>
+    <DiplomacyReport>The Numiri have for a time been at war with the Baneans, with whom they once shared a homeworld. Because of the war they are cynical of all other races, and deeply suspicious.</DiplomacyReport>
+    <HomeSystemName>Numiri</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="NUUBARI">
+    <Race>NUUBARI</Race>
+    <ShortName>Nuu'bari</ShortName>
+    <LongName>Nuu'bari</LongName>
+    <DiplomacyReport>The Nuu'bari homeworld is an industrialist planet, and home to some interesting uses for holograms.</DiplomacyReport>
+    <HomeSystemName>Nuu'bar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="NYRIANS">
+    <Race>NYRIANS</Race>
+    <ShortName>Nyrians</ShortName>
+    <LongName>Nyrians</LongName>
+    <DiplomacyReport>The Nyrians are experts in stealth, evasion and subterfuge. It would be wise to observe them closely before forging diplomatic ties.</DiplomacyReport>
+    <HomeSystemName>Nyria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="OCAMPA">
+    <Race>OCAMPA</Race>
+    <ShortName>Ocampa</ShortName>
+    <LongName>Ocampa</LongName>
+    <DiplomacyReport>Ocampa is a harsh desert world, and their people are short lived, but they have achieved much in their subterranean dwellings deep beneath the ground.</DiplomacyReport>
+    <HomeSystemName>Ocampa</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="ORIONS">
+    <Race>ORIONS</Race>
+    <ShortName>Orions</ShortName>
+    <LongName>Orions</LongName>
+    <DiplomacyReport>The Orions were once a culturally rich and spiritual people. But they have been in decline for a long time, and their corrupt government relies on gambling, sybaritism and illicit trade to fuel its sagging economy.</DiplomacyReport>
+    <HomeSystemName>Beta Orionis</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="ORNARANS">
+    <Race>ORNARANS</Race>
+    <ShortName>Ornarans</ShortName>
+    <LongName>Ornarans</LongName>
+    <DiplomacyReport>The Ornarans have for long been reliant on the neighbouring Brekkians to provision them with supplies, most notably a narcotic substance called Felicium. The Ornarans are now unable to even fend off invaders or provide for themselves without provisions of the drug.</DiplomacyReport>
+    <HomeSystemName>Delos B</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="PAKLED">
+    <Race>PAKLED</Race>
+    <ShortName>Pakled</ShortName>
+    <LongName>Pakled</LongName>
+    <DiplomacyReport>The Pakled are a shining example of what happens when a race is prematurely brought into the warp age. However, their skill at obtaining technology is to be admired.</DiplomacyReport>
+    <HomeSystemName>Pakled</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="PARADAS">
+    <Race>PARADAS</Race>
+    <ShortName>Paradas</ShortName>
+    <LongName>Paradas</LongName>
+    <DiplomacyReport>The Paradas are experts in all matters of surveillance and security. They will be of great benefit to all our intelligence efforts.</DiplomacyReport>
+    <HomeSystemName>Parada</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="QUARREN">
+    <Race>QUARREN</Race>
+    <ShortName>Quarren</ShortName>
+    <LongName>Quarren</LongName>
+    <DiplomacyReport>The Quarren have a workforce crisis, and will stop at nothing to recruit foreign labour, and by whatever means necessary. We must observe them carefully.</DiplomacyReport>
+    <HomeSystemName>Quarra</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="RAKHARI">
+    <Race>RAKHARI</Race>
+    <ShortName>Rakhari</ShortName>
+    <LongName>Rakhari</LongName>
+    <DiplomacyReport>The Rakhari abandoned democracy in favour of an oppressive police state to curb crime and maintain order. Their government is wealthy, but corrupt.</DiplomacyReport>
+    <HomeSystemName>Rakhar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="RAKOSANS">
+    <Race>RAKOSANS</Race>
+    <ShortName>Rakosans</ShortName>
+    <LongName>Rakosans</LongName>
+    <DiplomacyReport>Due to a recent spurt in technological development, the Rakosans are no longer vulnerable, or weak. But they do suffer from overpopulation.</DiplomacyReport>
+    <HomeSystemName>Rakosa</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="RAMATIANS">
+    <Race>RAMATIANS</Race>
+    <ShortName>Ramatians</ShortName>
+    <LongName>Ramatians</LongName>
+    <DiplomacyReport>The Ramatians have developed a complex form of communication due to their hearing disability. It has provided them with a unique perspective into the psyche.</DiplomacyReport>
+    <HomeSystemName>Ramatis</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="RISIANS">
+    <Race>RISIANS</Race>
+    <ShortName>Risians</ShortName>
+    <LongName>Risians</LongName>
+    <DiplomacyReport>The Risians live for recreation, entertainment, and enjoyment. Their whole world is a pleasure park for any vacationer, sight-seer, or mere traveller passing through.</DiplomacyReport>
+    <HomeSystemName>Risa</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="RUTIANS">
+    <Race>RUTIANS</Race>
+    <ShortName>Rutians</ShortName>
+    <LongName>Rutians</LongName>
+    <DiplomacyReport>The Rutians are reluctant to align themselves exclusively with any other race, and this is indeed advisable at this time, for they are yet to unify their world government.</DiplomacyReport>
+    <HomeSystemName>Rutia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="SELAY">
+    <Race>SELAY</Race>
+    <ShortName>Selay</ShortName>
+    <LongName>Selay</LongName>
+    <DiplomacyReport>The Selay are not as advanced as they would have us believe. An important first step would be a resolution of their conflict with the Anticans.</DiplomacyReport>
+    <HomeSystemName>Alpha Renner</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="SHELIAK">
+    <Race>SHELIAK</Race>
+    <ShortName>Sheliak</ShortName>
+    <LongName>Sheliak</LongName>
+    <DiplomacyReport>The Sheliak interpret their treaties very strictly. We should exercise extreme caution in making any agreements with them.</DiplomacyReport>
+    <HomeSystemName>Sheliak</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="SIKARIANS">
+    <Race>SIKARIANS</Race>
+    <ShortName>Sikarians</ShortName>
+    <LongName>Sikarians</LongName>
+    <DiplomacyReport>The Sikarians are a scientifically advanced race, with some impressive technology and ideas. But their most common and keenly observed interest is literature.</DiplomacyReport>
+    <HomeSystemName>Sikaris</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="SKRREEA">
+    <Race>SKRREEA</Race>
+    <ShortName>Skrreea</ShortName>
+    <LongName>Skrreea</LongName>
+    <DiplomacyReport>The Skrreea were conquered long ago, and have ever since sought a new homeworld that matches their ideals. If we were to find them such a world, they would forever be in our debt.</DiplomacyReport>
+    <HomeSystemName>Skrreea</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="SONA">
+    <Race>SONA</Race>
+    <ShortName>Son'a</ShortName>
+    <LongName>Son'a</LongName>
+    <DiplomacyReport>The rebellious Son'a were sent into exile from the Ba'ku homeworld. Now they exist as pirates and mercenaries, and are definitely not to be trusted. But they have impressive technology...</DiplomacyReport>
+    <HomeSystemName>Son'ari</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="SULIBAN">
+    <Race>SULIBAN</Race>
+    <ShortName>Suliban</ShortName>
+    <LongName>Suliban</LongName>
+    <DiplomacyReport>The nomadic Suliban are normally a non-threatening race, but they are easily swayed, and quite susceptible to outside influence and coercion. They would make great allies, but cannot be entirely trusted.</DiplomacyReport>
+    <HomeSystemName>Sulvin</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="TAKARANS">
+    <Race>TAKARANS</Race>
+    <ShortName>Takarans</ShortName>
+    <LongName>Takarans</LongName>
+    <DiplomacyReport>The Takarans are incredibly resilient, and highly intelligent. Their people are noted for their proficiency in theoretical physics, as well as their unusual biochemistry.</DiplomacyReport>
+    <HomeSystemName>Takara</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="TAKARIANS">
+    <Race>TAKARIANS</Race>
+    <ShortName>Takarians</ShortName>
+    <LongName>Takarians</LongName>
+    <DiplomacyReport>The Takarians are a bronze age civilization, who are just beginning to expand their commerce and trade network beyond international borders. They are best left to develop on their own.</DiplomacyReport>
+    <HomeSystemName>Takar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="TAKTAK">
+    <Race>TAKTAK</Race>
+    <ShortName>Tak Tak</ShortName>
+    <LongName>Tak Tak</LongName>
+    <DiplomacyReport>The Tak Tak are an unusual race, most notably so in their unconventional method of communication. They are advanced in bio-chemical research, as well as weaponry.</DiplomacyReport>
+    <HomeSystemName>Tak Tak</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="TALARIANS">
+    <Race>TALARIANS</Race>
+    <ShortName>Talarians</ShortName>
+    <LongName>Talarians</LongName>
+    <DiplomacyReport>The Talarians are skilled warriors, highly territorial with strict customs and traditions. They should be respected, though technologically they are no threat for the time being.</DiplomacyReport>
+    <HomeSystemName>Talar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="TALAXIANS">
+    <Race>TALAXIANS</Race>
+    <ShortName>Talaxians</ShortName>
+    <LongName>Talaxians</LongName>
+    <DiplomacyReport>The Talaxians are a personable people who share many of our own ideals. Culturally and diplomatically they would blend in well with us.</DiplomacyReport>
+    <HomeSystemName>Talaxia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="TALOSIANS">
+    <Race>TALOSIANS</Race>
+    <ShortName>Talosians</ShortName>
+    <LongName>Talosians</LongName>
+    <DiplomacyReport>The remnants of the Talosian civilization lack industry, government, even sophisticated technology - but they retain their knowledge, and they have highly advanced mental abilities.</DiplomacyReport>
+    <HomeSystemName>Talos</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="TAMARIANS">
+    <Race>TAMARIANS</Race>
+    <ShortName>Tamarians</ShortName>
+    <LongName>Tamarians</LongName>
+    <DiplomacyReport>The Tamarians appear to have ideals similar to our own. If we can overcome the language barrier, we will both profit from this contact.</DiplomacyReport>
+    <HomeSystemName>Tama</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="TANUGANS">
+    <Race>TANUGANS</Race>
+    <ShortName>Tanugans</ShortName>
+    <LongName>Tanugans</LongName>
+    <DiplomacyReport>The Tanugans have for long suffered from an energy crisis, which they labour continually to resolve. If we assisted them, they might be willing to share their research.</DiplomacyReport>
+    <HomeSystemName>Tanuga</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="TELLARITES">
+    <Race>TELLARITES</Race>
+    <ShortName>Tellarites</ShortName>
+    <LongName>Tellarites</LongName>
+    <DiplomacyReport>The Tellarites are a race of accomplished and highly skilled engineers. Their industrial skills would be a most welcome addition to our empire.</DiplomacyReport>
+    <HomeSystemName>Tellar</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="TEPLANS">
+    <Race>TEPLANS</Race>
+    <ShortName>Teplans</ShortName>
+    <LongName>Teplans</LongName>
+    <DiplomacyReport>The Teplans have long suffered from the deadly Blight, a plague unleashed by a powerful neighbouring empire for defying them. Now their civilization is broken, and dying.</DiplomacyReport>
+    <HomeSystemName>Teplan</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="THOLIANS">
+    <Race>THOLIANS</Race>
+    <ShortName>Tholians</ShortName>
+    <LongName>Tholians</LongName>
+    <DiplomacyReport>The Tholians cannot be trusted, and must be approached with caution. If we can acquire their scientific data, it will aid our metallurgical studies.</DiplomacyReport>
+    <HomeSystemName>Tholia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="TILONIANS">
+    <Race>TILONIANS</Race>
+    <ShortName>Tilonians</ShortName>
+    <LongName>Tilonians</LongName>
+    <DiplomacyReport>The Tilonians live in a state of political anarchy. If we are to have any dealings with them, we must first comprehend the multiple factions involved.</DiplomacyReport>
+    <HomeSystemName>Tilonus</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="TLANI">
+    <Race>TLANI</Race>
+    <ShortName>T'Lani</ShortName>
+    <LongName>T'Lani</LongName>
+    <DiplomacyReport>The T'Lani would prefer to remain independent, so we must approach them cautiously and with respect, for they are as keen on conflict as they are on diplomacy...</DiplomacyReport>
+    <HomeSystemName>T'Lani</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="TRABE">
+    <Race>TRABE</Race>
+    <ShortName>Trabe</ShortName>
+    <LongName>Trabe</LongName>
+    <DiplomacyReport>The Trabe are now a fragmented people in decline. For years they oppressed and dominated the Kazon, but they rose up against them, and a devastating conflict ensued.</DiplomacyReport>
+    <HomeSystemName>Trabe</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="TRILL">
+    <Race>TRILL</Race>
+    <ShortName>Trill</ShortName>
+    <LongName>Trill</LongName>
+    <DiplomacyReport>The joined Trill live several times as long as even the oldest members of our race. Their wisdom could be a great asset to our empire.</DiplomacyReport>
+    <HomeSystemName>Trill</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="TROGORANS">
+    <Race>TROGORANS</Race>
+    <ShortName>T-Rogorans</ShortName>
+    <LongName>T-Rogorans</LongName>
+    <DiplomacyReport>The T-Rogorans are a volatile and extremely violent people. It may be impossible to appease them or negotiate with them diplomatically. It is not a language they understand.</DiplomacyReport>
+    <HomeSystemName>T-Rogora</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="TZENKETHI">
+    <Race>TZENKETHI</Race>
+    <ShortName>Tzenkethi</ShortName>
+    <LongName>Tzenkethi</LongName>
+    <DiplomacyReport>The Tzenkethi are an obscure, reptilian people known for raiding colonies and outposts on the edge of frontier space. The ruler of the Tzenkethi is the Autarch, a totalitarian tsar that leads by ruthless example, following a merciless drive towards expansion, conquest, and obliteration of everything that might stand in the way.</DiplomacyReport>
+    <HomeSystemName>Tzenketh</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ULLIANS">
+    <Race>ULLIANS</Race>
+    <ShortName>Ullians</ShortName>
+    <LongName>Ullians</LongName>
+    <DiplomacyReport>The Ullians act as historians for many alien cultures. Their knowledge of this galaxy would be of enormous academic interest.</DiplomacyReport>
+    <HomeSystemName>Ullia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="VAADWAUR">
+    <Race>VAADWAUR</Race>
+    <ShortName>Vaadwaur</ShortName>
+    <LongName>Vaadwaur</LongName>
+    <DiplomacyReport>The Vaadwaur are an advanced race, and pose a serious threat to peace and stability, for they are a fearless people who thrive on conflict and conquest.</DiplomacyReport>
+    <HomeSystemName>Vaadwa</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="VENTAXIANS">
+    <Race>VENTAXIANS</Race>
+    <ShortName>Ventaxians</ShortName>
+    <LongName>Ventaxians</LongName>
+    <DiplomacyReport>The Ventaxians are a moderately advanced race on the verge of warp capability. But much of their culture lies still in their dark heritage of fear and superstition. A great deal of social change would be needed before they could safely enter the galactic community.</DiplomacyReport>
+    <HomeSystemName>Ventax</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="VHNORI">
+    <Race>VHNORI</Race>
+    <ShortName>Vhnori</ShortName>
+    <LongName>Vhnori</LongName>
+    <DiplomacyReport>The Vhnori have unusual ideas about death, around which they have developed some complex and elaborate rituals.</DiplomacyReport>
+    <HomeSystemName>Vhnor</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve1</TechCurve>
+  </Civilization>
+  <Civilization Key="VIDIIANS">
+    <Race>VIDIIANS</Race>
+    <ShortName>Vidiians</ShortName>
+    <LongName>Vidiians</LongName>
+    <DiplomacyReport>The Vidiians are an advanced race, but they are in decline as their attention is now focused purely on finding a cure for a devastating disease that is sweeping through their civilization. Millions will die if a cure cannot be found...</DiplomacyReport>
+    <HomeSystemName>Vidiia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="VISSIANS">
+    <Race>VISSIANS</Race>
+    <ShortName>Vissians</ShortName>
+    <LongName>Vissians</LongName>
+    <DiplomacyReport>The Vissians are a generally friendly and amiable people, and highly advanced. However, their social divisions are not ideal, and will require further examination before membership is to be considered.</DiplomacyReport>
+    <HomeSystemName>Vissia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="VORGONS">
+    <Race>VORGONS</Race>
+    <ShortName>Vorgons</ShortName>
+    <LongName>Vorgons</LongName>
+    <DiplomacyReport>Little is known of the Vorgon race, except that they trade, but not all that they trade is legal, or all their practises ethical.</DiplomacyReport>
+    <HomeSystemName>Vorg</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="VORI">
+    <Race>VORI</Race>
+    <ShortName>Vori</ShortName>
+    <LongName>Vori</LongName>
+    <DiplomacyReport>The Vori and the Kradin are involved in a grim war of mutual hatred and distrust. It may well take a great diplomatic effort to solve the crisis.</DiplomacyReport>
+    <HomeSystemName>Voria</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve2</TechCurve>
+  </Civilization>
+  <Civilization Key="VULCANS">
+    <Race>VULCANS</Race>
+    <ShortName>Vulcans</ShortName>
+    <LongName>Vulcans</LongName>
+    <DiplomacyReport>The Vulcans have suppressed their emotions in favour of pure logic. They are extremely reasonable and cordial in diplomatic relations, which bodes well, for ultimately their clarity of thought would be a great asset.</DiplomacyReport>
+    <HomeSystemName>Vulcan</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>ExpandingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="WADI">
+    <Race>WADI</Race>
+    <ShortName>Wadi</ShortName>
+    <LongName>Wadi</LongName>
+    <DiplomacyReport>The Wadi are a diplomatically precarious race to deal with. They value entertainment above all else, even if the stakes mean your life.</DiplomacyReport>
+    <HomeSystemName>Tomerela</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="XANTHANS">
+    <Race>XANTHANS</Race>
+    <ShortName>Xanthans</ShortName>
+    <LongName>Xanthans</LongName>
+    <DiplomacyReport>The Xanthan homeworld is a magnet for merchants, traffickers, and various smuggling syndicates. We may welcome their trade, but not all the customers with whom they keep company.</DiplomacyReport>
+    <HomeSystemName>Xanthus</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="XEPOLITES">
+    <Race>XEPOLITES</Race>
+    <ShortName>Xepolites</ShortName>
+    <LongName>Xepolites</LongName>
+    <DiplomacyReport>The Xepolites are a race of free traders, but they should not be trusted too easily due to the questionable company they keep.</DiplomacyReport>
+    <HomeSystemName>Xepoli</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="XINDI">
+    <Race>XINDI</Race>
+    <ShortName>Xindi</ShortName>
+    <LongName>Xindi</LongName>
+    <DiplomacyReport>The Xindi races are diverse and scattered, and each have their own traits, characteristics, and agendas. Unifying them would be a great achievement.</DiplomacyReport>
+    <HomeSystemName>Xindus</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="XYRILLIANS">
+    <Race>XYRILLIANS</Race>
+    <ShortName>Xyrillians</ShortName>
+    <LongName>Xyrillians</LongName>
+    <DiplomacyReport>The Xyrillians have a rare and unusual physiology. But more importantly, they share many of our ideas. They would be useful allies.</DiplomacyReport>
+    <HomeSystemName>Xyrill</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Alpha</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="YADERANS">
+    <Race>YADERANS</Race>
+    <ShortName>Yaderans</ShortName>
+    <LongName>Yaderans</LongName>
+    <DiplomacyReport>The Yaderans have a culture and society that quite belies their technological prowess. Their research into holo-science would be of benefit to our scientists.</DiplomacyReport>
+    <HomeSystemName>Yadera</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Gamma</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="YRIDIANS">
+    <Race>YRIDIANS</Race>
+    <ShortName>Yridians</ShortName>
+    <LongName>Yridians</LongName>
+    <DiplomacyReport>The Yridians survive by selling secret information. We must be extremely cautious and circumspect in dealing with them.</DiplomacyReport>
+    <HomeSystemName>Yridia</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+  <Civilization Key="ZAHL">
+    <Race>ZAHL</Race>
+    <ShortName>Zahl</ShortName>
+    <LongName>Zahl</LongName>
+    <DiplomacyReport>The Zahl are a generally hospitable people, but their swagger hides various conceits, particularly when political matters are concerned.</DiplomacyReport>
+    <HomeSystemName>Zahl</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Delta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve5</TechCurve>
+  </Civilization>
+  <Civilization Key="ZAKDORN">
+    <Race>ZAKDORN</Race>
+    <ShortName>Zakdorn</ShortName>
+    <LongName>Zakdorn</LongName>
+    <DiplomacyReport>The Zakdorn talent for strategy cannot be overstated. Their genius could be a great boon to our officer training programs.</DiplomacyReport>
+    <HomeSystemName>Zakdorn</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ZALKONIANS">
+    <Race>ZALKONIANS</Race>
+    <ShortName>Zalkonians</ShortName>
+    <LongName>Zalkonians</LongName>
+    <DiplomacyReport>The Zalkonians believe they are on the verge of an evolutionary step. But some in the government fear this, and will stop at nothing to prevent it.</DiplomacyReport>
+    <HomeSystemName>Zeta Gelis</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>DevelopingPower</CivilizationType>
+    <TechCurve>TechCurve4</TechCurve>
+  </Civilization>
+  <Civilization Key="ZIBALIANS">
+    <Race>ZIBALIANS</Race>
+    <ShortName>Zibalians</ShortName>
+    <LongName>Zibalians</LongName>
+    <DiplomacyReport>The Zibalians are merchants who maintain a number of trade holdings across multiple sectors. But they are buyers rather than sellers, and some are thieves.</DiplomacyReport>
+    <HomeSystemName>Zibal</HomeSystemName>
+    <Color>White</Color>
+    <HomeQuadrant>Beta</HomeQuadrant>
+    <CivilizationType>MinorPower</CivilizationType>
+    <TechCurve>TechCurve3</TechCurve>
+  </Civilization>
+</Civilizations>

@@ -1,0 +1,25 @@
+﻿<UserControl x:Name="_self"
+             x:Class="Supremacy.Xna.ShipModelViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Grid>
+
+<!--    <Border BorderThickness="2" BorderBrush="{DynamicResource LCARS_OrangeGradient_Top_Bottom}" CornerRadius="4">-->
+      <Image x:Name="_targetImage"
+             x:FieldModifier="private" />
+<!--    </Border>-->
+
+    <TextBlock IsHitTestVisible="False"
+                 HorizontalAlignment="Center"
+    	           VerticalAlignment="Center"
+    	           Foreground="White"
+    	           FontFamily="Futura MdCn BT"
+    	           FontSize="24pt"
+    	           TextAlignment="Center"
+    	           TextWrapping="Wrap"
+                 Text="{Binding ElementName=_self, Path=StatusMessage}" />
+    
+  </Grid>
+
+</UserControl>

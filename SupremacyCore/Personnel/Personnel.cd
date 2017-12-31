@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Supremacy.Personnel.Agent">
+    <Position X="0.5" Y="0.75" Width="4.75" />
+    <Members>
+      <Field Name="_experienceRatings" Hidden="true" />
+      <Field Name="_naturalExperienceCategories" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACCAAAAAAAAAAABAAAAAAgAAAAAQBAgAAAAAAAIAgA=</HashCode>
+      <FileName>Personnel\Agent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Supremacy.Personnel.AgentExperienceRatings" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="0.75" Width="4" />
+    <Members>
+      <Field Name="_values" Hidden="true" />
+      <Field Name="IndexerName" Hidden="true" />
+      <Field Name="MaxValue" Hidden="true" />
+      <Field Name="MinValue" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAKAAAAAABAAAIwJKAAAAAAAgAAAAAAEAAAgAABQADA=</HashCode>
+      <FileName>Personnel\AgentExperienceRatings.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="Supremacy.Personnel.AgentExperienceCategory">
+    <Position X="9.75" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAEAAAABBAAAAAAAAAAABAAAAAgA=</HashCode>
+      <FileName>Personnel\AgentExperienceCategory.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="8.25" />
+</ClassDiagram>

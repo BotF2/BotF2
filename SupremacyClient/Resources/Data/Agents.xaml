@@ -1,0 +1,88 @@
+﻿<AgentDatabase xmlns="http://schemas.startreksupremacy.com/xaml/core">
+  <AgentProfileCollection Owner="FEDERATION">
+    <AgentProfile Name="Archer" Image="Archer.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="HUMANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Archer" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Gaavrin" Image="Gaavrin.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="TELLARITES">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Gaavrin" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Gral" Image="Gral.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="TELLARITES">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Gral" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Hoshi" Image="Hoshi.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Female" Race="HUMANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Hoshi" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Kuvak" Image="Kuvak.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="VULCANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Kuvak" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Mayweather" Image="Mayweather.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="HUMANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Mayweather" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Phlox" Image="Phlox.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="DENOBULANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Phlox" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Reed" Image="Reed.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="HUMANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Reed" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Shran" Image="Shran.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="ANDORIANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Shran" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Soval" Image="Soval.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="VULCANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Soval" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="TPol" Image="TPol.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Female" Race="VULCANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="T'Pol" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+    <AgentProfile Name="Tucker" Image="Tucker.png" MinTechLevelBeforeAppearance="1" MaxTechLevelBeforeAppearance="3" Gender="Male" Race="HUMANS">
+      <AgentProfile.DisplayName>
+        <LocalizedString>
+          <LocalizedStringValue Language="en" Text="Tucker" />
+        </LocalizedString>
+      </AgentProfile.DisplayName>
+    </AgentProfile>
+  </AgentProfileCollection>
+</AgentDatabase>

@@ -1,0 +1,54 @@
+﻿<!--
+  
+   GameOptionsWindow.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<Window x:Class="Supremacy.Client.GameOptionsWindow"
+        xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Supremacy.Client" 
+        xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+        Title="Supremacy.Client"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner">
+  <Border Background="#cc000000"
+          CornerRadius="14"
+          
+          MinWidth="300">
+    <ContentControl Style="{StaticResource LCARS_ThinBorderStyle}">
+      <DockPanel LastChildFill="False">
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    Margin="0,14,0,0"
+                    HorizontalAlignment="Center">
+          <Button x:Name="OkButton"
+                  IsDefault="True"
+                  Style="{StaticResource LCARS_SimpleButtonStyle}"
+                  Click="OkButton_Click">
+              <AccessText Text="{s:StringResource Key=MESSAGE_DIALOG_OK, Case=Upper}" />
+          </Button>
+          <Button x:Name="CancelButton"
+                  IsCancel="True"
+                  Margin="7,0,0,0"
+                  Style="{StaticResource LCARS_SimpleButtonStyle}">
+            <AccessText Text="{s:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
+          </Button>
+        </StackPanel>
+        <local:GameOptionsPanel x:Name="OptionsPanel"
+                                DockPanel.Dock="Top"/>
+      </DockPanel>
+    </ContentControl>
+  </Border>
+</Window>

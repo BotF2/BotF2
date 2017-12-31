@@ -1,0 +1,66 @@
+﻿<UserControl x:Name="userControl"
+             x:Class="Supremacy.Client.ClockControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:gauge="http://schemas.actiprosoftware.com/winfx/xaml/gauge"
+             xmlns:client="clr-namespace:Supremacy.Client"
+             UseLayoutRounding="True">
+  <Grid>
+    <Image Source="../../Resources/UI/Federation/GalaxyScreen/Emblem.png" />
+    <gauge:CircularGauge Name="gauge"
+                         Margin="{Binding ElementName=userControl, Path=ClockMargin, FallbackValue='15,3,15,10'}"
+                         FrameType="CircularEclipseShade"
+                         RimBrush="Transparent"
+                         Background="#1F000000"
+                         RimType="None">
+      <gauge:CircularGauge.ToolTip>
+        <ToolTip DataContext="{x:Reference userControl}"
+                 Content="{Binding Path=(client:ClockControl.CurrentDateTime), Mode=OneWay}"
+                 ContentStringFormat="t" />
+      </gauge:CircularGauge.ToolTip>
+      <gauge:CircularGauge.Scales>
+        <gauge:CircularScale StartAngle="270"
+                             SweepAngle="360"
+                             Background="Transparent">
+          <gauge:CircularScale.TickSets>
+            <gauge:CircularTickSet Minimum="0"
+                                   Maximum="12"
+                                   MajorInterval="1"
+                                   MinorInterval="0.2">
+              <gauge:CircularTickSet.Ticks>
+                <!--<gauge:CircularTickMarkMinor Background="Gainsboro" TickMarkType="Rectangle" TickMarkExtent="7"
+									TickMarkAscent="1" ScalePlacement="Inside" ScaleOffset="2" />-->
+                <gauge:CircularTickMarkMajor Background="#a0a0a0"
+                                             TickMarkType="Rectangle"
+                                             TickMarkExtent="4"
+                                             TickMarkAscent="1.5"
+                                             ScalePlacement="Overlay"
+                                             ScaleOffset="-2" />
+                <!--<gauge:CircularTickLabelMajor Foreground="Gainsboro" FontSize="14" ScalePlacement="Inside"
+									ScaleOffset="12" SkipValues="0" />-->
+              </gauge:CircularTickSet.Ticks>
+              <gauge:CircularTickSet.Pointers>
+                <gauge:CircularPointerNeedle PointerExtent="70%"
+                                             PointerAscent="12%"
+                                             HasDropShadow="True"
+                                             NeedleType="PivotTriangleBlunt"
+                                             SnapsToDevicePixels="True"
+                                             Background="Gainsboro"
+                                             Value="{Binding ElementName=userControl, Path=CurrentHour, FallbackValue=12}"
+                                             DampeningMaximumDuration="0" />
+                <gauge:CircularPointerNeedle PointerExtent="100%"
+                                             PointerAscent="12%"
+                                             HasDropShadow="True"
+                                             NeedleType="PivotTriangleBlunt"
+                                             SnapsToDevicePixels="True"
+                                             Background="Gainsboro"
+                                             Value="{Binding ElementName=userControl, Path=CurrentMinute, FallbackValue=9}"
+                                             DampeningMaximumDuration="0" />
+              </gauge:CircularTickSet.Pointers>
+            </gauge:CircularTickSet>
+          </gauge:CircularScale.TickSets>
+        </gauge:CircularScale>
+      </gauge:CircularGauge.Scales>
+    </gauge:CircularGauge>
+  </Grid>
+</UserControl>

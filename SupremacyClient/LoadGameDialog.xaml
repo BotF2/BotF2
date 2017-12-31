@@ -1,0 +1,79 @@
+﻿<!--
+  
+   LoadGameDialog.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<scc:Dialog x:Class="Supremacy.Client.LoadGameDialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            HasBorder="False"
+            Header="Load Game"
+            Height="360">
+  <Border CornerRadius="16"
+          Background="#cc000000">
+    <GroupBox Header="{s:StringResource LOAD_GAME_DIALOG_HEADER}">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom"
+                    Margin="0,14,0,0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+          <Button x:Name="LoadButton"
+                  IsDefault="True"
+                  Focusable="False"
+                  Style="{StaticResource LCARS_StandardButtonStyle}"
+                  Command="{x:Static local:GenericCommands.AcceptCommand}"
+                  CommandParameter="{Binding ElementName=SaveGameList, Path=SelectedItem}">
+            <AccessText Text="{s:StringResource LOAD_GAME_DIALOG_LOAD_GAME}" />
+          </Button>
+          <Button x:Name="CancelButton"
+                  Focusable="False"
+                  Style="{StaticResource LCARS_StandardButtonStyle}"
+                  Command="{x:Static local:GenericCommands.CancelCommand}"
+                  IsCancel="True"
+                  Margin="7,0,0,0">
+            <AccessText Text="{s:StringResource LOAD_GAME_DIALOG_CANCEL}" />
+          </Button>
+        </StackPanel>
+        <TextBlock x:Name="SaveGameInfoText"
+                   DockPanel.Dock="Right"
+                   Margin="14,0,0,0"
+                   Width="160"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                   FontSize="12pt"
+                   TextTrimming="CharacterEllipsis"
+                   Visibility="Hidden">
+          <Run Text="{Binding Path=LocalPlayerEmpireName, Mode=OneWay}" />
+          <LineBreak />
+          <Run Text="{s:StringResource SAVED_GAME_TURN_NUMBER}" />
+          <Run Text="{Binding Path=TurnNumber, Mode=OneWay}" />
+          <LineBreak />
+          <Run Text="{Binding Path=Options.GalaxySize, Mode=OneWay}" />
+          <Run Text="{Binding Path=Options.GalaxyShape, Mode=OneWay}" />
+          <LineBreak />
+          <Run Text="{Binding Path=Timestamp, StringFormat=g, Mode=OneWay}" />
+        </TextBlock>
+        <ListBox x:Name="SaveGameList"
+                 DockPanel.Dock="Left"
+                 Width="280"
+                 ItemsSource="{Binding}"
+                 IsSynchronizedWithCurrentItem="True"
+                 DisplayMemberPath="Title"
+                 Background="Transparent"
+                 Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                 FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                 FontSize="12pt" />
+      </DockPanel>
+    </GroupBox>
+  </Border>
+</scc:Dialog>

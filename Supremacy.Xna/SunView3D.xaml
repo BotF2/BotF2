@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="Supremacy.Xna.SunView3D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="128"
+             Width="128">
+  <Grid>
+    <Image x:Name="_targetImage"
+           x:FieldModifier="private"
+           Stretch="None">
+      <Image.Clip>
+        <EllipseGeometry Center="64,64" RadiusX="64" RadiusY="64" />
+      </Image.Clip>
+    </Image>
+  </Grid>
+</UserControl>

@@ -1,0 +1,77 @@
+<!--
+  
+   ChatPanel.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<UserControl x:Class="Supremacy.Client.ChatPanel"
+             xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:game="clr-namespace:Supremacy.Game;assembly=SupremacyCore"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
+
+  <UserControl.Resources>
+    <DataTemplate DataType="{x:Type game:ChatMessage}">
+      <DockPanel LastChildFill="True">
+        <TextBlock x:Name="SenderText"
+                   DockPanel.Dock="Left"
+                   VerticalAlignment="Top"
+                   Foreground="Lime">
+              <!--<TextBlock.Effect>
+                <DropShadowEffect ShadowDepth="1.5"
+                                  BlurRadius="3.0"
+                                  Color="Black"
+                                  Opacity="1.0" />
+              </TextBlock.Effect>-->
+          <TextBlock Text="[" />
+          <TextBlock Text="{Binding Path=Sender.Name}" />
+          <TextBlock Text="]" />
+        </TextBlock>
+        <TextBlock DockPanel.Dock="Right"
+                   VerticalAlignment="Top"
+                   Margin="7,0,0,0"
+                   TextWrapping="Wrap"
+                   Text="{Binding Path=Message}" />
+      </DockPanel>
+      <DataTemplate.Triggers>
+        <DataTrigger Binding="{Binding Path=Recipient}"
+                     Value="{x:Null}">
+          <Setter TargetName="SenderText"
+                  Property="Foreground"
+                  Value="{StaticResource LCARS_BlueTextBrush}" />
+        </DataTrigger>
+      </DataTemplate.Triggers>
+    </DataTemplate>
+  </UserControl.Resources>
+
+  <DockPanel LastChildFill="True">
+    <DockPanel DockPanel.Dock="Bottom"
+               Margin="0,4,0,0"
+               LastChildFill="True">
+      <ComboBox x:Name="RecipientBox"
+                DockPanel.Dock="Right"
+                Margin="4,0,0,0" />
+      <TextBox x:Name="InputText"
+               DockPanel.Dock="Left"
+               MinWidth="100"
+               KeyDown="InputText_KeyDown" />
+    </DockPanel>
+    <ScrollViewer DockPanel.Dock="Top"
+                  CanContentScroll="False"
+                  HorizontalScrollBarVisibility="Disabled">
+      <StackPanel x:Name="MessagePanel"
+                  Orientation="Vertical"
+                  CanHorizontallyScroll="False"
+                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                  TextBlock.FontSize="12pt"
+                  TextBlock.Foreground="White" />
+    </ScrollViewer>
+  </DockPanel>
+
+</UserControl>

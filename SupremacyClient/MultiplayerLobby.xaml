@@ -1,0 +1,90 @@
+<!--
+  
+   MultiplayerLobby.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<UserControl x:Class="Supremacy.Client.MultiplayerLobby"
+             xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Supremacy.Client"
+             xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
+  <UserControl.Resources>
+    <DataTemplate DataType="{x:Type s:ChatMessage}">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Left"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Top">
+          <TextBlock Foreground="{StaticResource LCARS_BlueTextBrush}"
+                     Text="{Binding Path=Sender.Name}" />
+          <TextBlock Foreground="{StaticResource LCARS_BlueTextBrush}"
+                     Text=":" />
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Right"
+                   VerticalAlignment="Top"
+                   Margin="12,0,0,0"
+                   TextWrapping="Wrap"
+                   Text="{Binding Path=Message}"/>
+      </DockPanel>
+    </DataTemplate>
+  </UserControl.Resources>
+  <DockPanel LastChildFill="True"
+             Margin="7">
+    <DockPanel DockPanel.Dock="Bottom"
+               LastChildFill="True">
+      <Button x:Name="CancelButton"
+              DockPanel.Dock="Right"
+              Margin="7,0,0,0"
+              Style="{StaticResource LCARS_StandardButtonStyle}"
+              Content="CANCEL"
+              VerticalAlignment="Center"/>
+      <Button x:Name="StartButton"
+              DockPanel.Dock="Right"
+              Margin="7,0,0,0"
+              Style="{StaticResource LCARS_StandardButtonStyle}"
+              Content="START"
+              VerticalAlignment="Center"/>
+      <TextBox x:Name="ChatOutbox"
+               DockPanel.Dock="Left"
+               FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+               FontSize="12pt"
+               Foreground="{StaticResource LCARS_BeigeTextBrush}"
+               Background="Black"
+               VerticalAlignment="Center"/>
+    </DockPanel>
+    <local:GameOptionsPanel x:Name="OptionsPanel"
+                            DockPanel.Dock="Right"
+                            VerticalAlignment="Top"
+                            Margin="14,0,0,14"/>
+    <Border DockPanel.Dock="Left"
+            Margin="0,0,0,14">
+      <DockPanel>
+        <StackPanel x:Name="PlayerInfoPanel"
+                    DockPanel.Dock="Top"
+                    Orientation="Vertical"
+                    CanHorizontallyScroll="False"
+                    Grid.IsSharedSizeScope="True"
+                    Margin="0,0,0,14"/>
+        <ScrollViewer DockPanel.Dock="Bottom"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch"
+                      HorizontalScrollBarVisibility="Hidden">
+          <StackPanel x:Name="ChatPanel"
+                                  Orientation="Vertical"
+                                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                  TextBlock.Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                                  TextBlock.FontSize="12pt"
+                                  CanHorizontallyScroll="False"
+                                  HorizontalAlignment="Stretch" />
+        </ScrollViewer>
+      </DockPanel>
+    </Border>
+  </DockPanel>
+</UserControl>

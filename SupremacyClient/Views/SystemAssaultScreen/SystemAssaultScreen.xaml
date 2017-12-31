@@ -1,0 +1,1348 @@
+﻿<scc:Dialog x:Class="Supremacy.Client.Views.SystemAssaultScreen"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+            xmlns:sxna="http://schemas.startreksupremacy.com/xaml/xna"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:sx="http://schemas.startreksupremacy.com/xaml/core/markup"
+            xmlns:apshared="http://schemas.actiprosoftware.com/winfx/xaml/shared"
+            xmlns:ms="clr-namespace:System;assembly=mscorlib"
+            xmlns:Views="clr-namespace:Supremacy.Client.Views"
+            mc:Ignorable="d"
+            d:DesignHeight="768"
+            d:DesignWidth="1024"
+            d:DataContext="{x:Static scc:SystemAssaultScreenViewModel.DesignInstance}"
+            UseLayoutRounding="True"
+            SnapsToDevicePixels="True"
+            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+            ForceCursor="True"
+            Cursor="{StaticResource DefaultCursor}"
+            RenderOptions.BitmapScalingMode="HighQuality"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            HasBorder="False"
+            IsModal="True"
+            AllowCancel="False">
+  
+  <Control.Background>
+    <ImageBrush Stretch="UniformToFill">
+      <ImageBrush.ImageSource>
+        <BitmapImage UriSource="vfs:///Resources/Images/Backgrounds/Default.png" />
+      </ImageBrush.ImageSource>
+    </ImageBrush>
+  </Control.Background>
+
+  <Control.Resources>
+    <FontFamily x:Key="Eurostyle">pack://application:,,,/Resources/Fonts/#Eurostile LT Std 2</FontFamily>
+    
+    <scc:ComparisonConverter x:Key="RoundNumberOpacityConverter"
+                             ComparisonType="GreaterThanOrEqual">
+      <scc:ComparisonConverter.TrueValue>
+        <ms:Double>1</ms:Double>
+      </scc:ComparisonConverter.TrueValue>
+      <scc:ComparisonConverter.FalseValue>
+        <ms:Double>0.5</ms:Double>
+      </scc:ComparisonConverter.FalseValue>
+    </scc:ComparisonConverter>
+
+    <scc:ComparisonConverter x:Key="IsFirstRoundConverter"
+                             ComparisonType="Equal" />
+
+    <scc:ComparisonConverter x:Key="IsFirstRoundOpacityConverter"
+                             ComparisonType="Equal">
+      <scc:ComparisonConverter.TrueValue>
+        <ms:Double>1</ms:Double>
+      </scc:ComparisonConverter.TrueValue>
+      <scc:ComparisonConverter.FalseValue>
+        <ms:Double>0.5</ms:Double>
+      </scc:ComparisonConverter.FalseValue>
+    </scc:ComparisonConverter>
+
+    <Style x:Key="{x:Type GroupItem}"
+           TargetType="{x:Type GroupItem}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type GroupItem}">
+            <StackPanel>
+              <ContentPresenter Margin="7" />
+              <ItemsPresenter Margin="14,0,7,7" />
+            </StackPanel>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="AssaultUnitToolTipContentStyle"
+           TargetType="ContentControl">
+      <Style.Resources>
+        <DataTemplate x:Key="OrbitalToolTipTemplate"
+                DataType="{x:Type scc:TechObjectDesignViewModel}">
+          <StackPanel Orientation="Vertical"
+                      CanHorizontallyScroll="False"
+                      TextBlock.TextAlignment="Left"
+                      ScrollViewer.CanContentScroll="False">
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                       Margin="0,0,0,7"
+                       TextWrapping="Wrap"
+                       Text="{Binding Path=Design.Name, Converter={StaticResource StringResourceConverter}}" />
+            <scc:AutoGrid x:Name="PrimaryWeapon">
+              <scc:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </scc:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap">
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="{}{0}x {1}">
+                    <Binding Path="Design.(s:OrbitalDesign.PrimaryWeapon).(s:WeaponType.Count)" />
+                    <Binding Path="Design.(s:OrbitalDesign.PrimaryWeaponName)" />
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right">
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="{}{0} / {1}">
+                    <Binding Path="Design.(s:OrbitalDesign.PrimaryWeapon).(s:WeaponType.Damage)" />
+                    <Binding Path="Design.(s:OrbitalDesign.PrimaryWeapon).(s:WeaponType.Refire)" />
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </scc:AutoGrid>
+            <scc:AutoGrid x:Name="SecondaryWeapon">
+              <scc:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </scc:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap">
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="{}{0}x {1}">
+                    <Binding Path="Design.(s:OrbitalDesign.SecondaryWeapon).(s:WeaponType.Count)" />
+                    <Binding Path="Design.(s:OrbitalDesign.SecondaryWeaponName)" />
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         Text="{Binding Path=Design.(s:OrbitalDesign.SecondaryWeapon).(s:WeaponType.Damage)}" />
+            </scc:AutoGrid>
+            <scc:AutoGrid>
+              <scc:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </scc:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap">
+                <TextBlock Text="{s:StringResource 'SHIP_SHIELDS'}" />
+                <TextBlock Text="/" />
+                <TextBlock Text="{s:StringResource 'SHIP_HULL'}" />
+              </TextBlock>
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap">
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="{}{0} / {1}">
+                    <Binding Path="Design.(s:OrbitalDesign.ShieldStrength)" />
+                    <Binding Path="Design.(s:OrbitalDesign.HullStrength)" />
+                  </MultiBinding>
+                </TextBlock.Text>
+              </TextBlock>
+            </scc:AutoGrid>
+            <scc:AutoGrid x:Name="ShieldRechargeRate">
+              <scc:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </scc:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'SHIP_SHIELD_RECHARGE'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         Text="{Binding Path=Design.(s:OrbitalDesign.ShieldRechargeRate)}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+            </scc:AutoGrid>
+          </StackPanel>
+          <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=Design.(s:OrbitalDesign.PrimaryWeapon).(s:WeaponType.Count)}"
+                         Value="0">
+              <Setter TargetName="PrimaryWeapon"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Design.(s:OrbitalDesign.SecondaryWeapon).(s:WeaponType.Count)}"
+                         Value="0">
+              <Setter TargetName="SecondaryWeapon"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Design.(s:OrbitalDesign.ShieldRechargeRate)}"
+                         Value="0">
+              <Setter TargetName="ShieldRechargeRate"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </DataTrigger>
+          </DataTemplate.Triggers>
+        </DataTemplate>
+      </Style.Resources>
+      <Style.Setters>
+        <Setter Property="ContentTemplate">
+          <Setter.Value>
+            <DataTemplate DataType="scc:TechObjectDesignViewModel">
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                         TextWrapping="Wrap"
+                         Text="{Binding Path=Design.Name, Converter={StaticResource StringResourceConverter}}" />
+            </DataTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style.Setters>
+      <Style.Triggers>
+        <DataTrigger Value="True"
+                     Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design), Converter={scc:IsTypeConverter}, ConverterParameter={x:Type s:OrbitalDesign}}">
+          <Setter Property="ContentTemplate"
+                  Value="{StaticResource OrbitalToolTipTemplate}" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+
+    <DataTemplate DataType="{x:Type scc:AssaultUnitViewModel}">
+      <DockPanel LastChildFill="True"
+                 Margin="7,7,7,7">
+        <s:BlockBar x:Name="ShieldsBar"
+                    DockPanel.Dock="Left"
+                    s:BlockBar.IsReadOnly="True"
+                    BlockCount="12"
+                    BlockMargin="3"
+                    BlockBrush="Magenta"
+                    Visibility="Hidden"
+                    Maximum="{Binding Path=ShieldStrength.Maximum, Mode=OneWay}"
+                    Minimum="{Binding Path=ShieldStrength.Minimum, Mode=OneWay}"
+                    Value="{Binding Path=ShieldStrength.CurrentValue, Mode=OneWay}"
+                    Height="5"
+                    Margin="0,0,4,0"
+                    Width="45"
+                    VerticalAlignment="Top">
+          <s:BlockBar.LayoutTransform>
+            <RotateTransform Angle="270" />
+          </s:BlockBar.LayoutTransform>
+          <s:BlockBar.ToolTip>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{s:StringResource SHIP_SHIELD_STRENGTH}" />
+              <TextBlock Text=": " />
+              <TextBlock Text="{Binding Path=ShieldStrength.CurrentValue}" />
+              <TextBlock Text="/" />
+              <TextBlock Text="{Binding Path=ShieldStrength.Maximum}" />
+            </StackPanel>
+          </s:BlockBar.ToolTip>
+        </s:BlockBar>
+        <s:BlockBar DockPanel.Dock="Left"
+                    s:BlockBar.IsReadOnly="True"
+                    BlockCount="12"
+                    BlockMargin="3"
+                    BlockBrush="Lime"
+                    Maximum="{Binding Path=HitPoints.Maximum, Mode=OneWay}"
+                    Minimum="{Binding Path=HitPoints.Minimum, Mode=OneWay}"
+                    Value="{Binding Path=HitPoints.CurrentValue, Mode=OneWay}"
+                    Height="5"
+                    Margin="0,0,4,0"
+                    Width="45"
+                    VerticalAlignment="Top">
+          <s:BlockBar.LayoutTransform>
+            <RotateTransform Angle="270" />
+          </s:BlockBar.LayoutTransform>
+          <s:BlockBar.ToolTip>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{s:StringResource COMBAT_UNIT_HIT_POINTS}" />
+              <TextBlock Text=": " />
+              <TextBlock Text="{Binding Path=HitPoints.CurrentValue}" />
+              <TextBlock Text="/" />
+              <TextBlock Text="{Binding Path=HitPoints.Maximum}" />
+            </StackPanel>
+          </s:BlockBar.ToolTip>
+        </s:BlockBar>
+        <Border x:Name="ImageBorder"
+                DockPanel.Dock="Left"
+                VerticalAlignment="Top"
+                Width="54"
+                Height="45"
+                BorderBrush="White"
+                BorderThickness="2"
+                CornerRadius="8">
+          <Border.Background>
+            <ImageBrush ImageSource="{Binding Path=Design, Converter={StaticResource TechObjectImageConverter}}"
+                        Stretch="UniformToFill" />
+          </Border.Background>
+          <Border.ToolTip>
+            <ToolTip>
+              <ContentControl Style="{StaticResource AssaultUnitToolTipContentStyle}"
+                              FontSize="12">
+                <ContentControl.Content>
+                  <scc:TechObjectDesignViewModel Design="{Binding Path=Design}"
+                                                 Location="{Binding Path=Unit.Source.Location}"
+                                                 Civilization="{Binding Path=Unit.Source.Owner}" />
+                </ContentControl.Content>
+              </ContentControl>
+            </ToolTip>
+          </Border.ToolTip>
+        </Border>
+        <!--
+        <StackPanel Orientation="Vertical"
+                    Margin="6,0,0,0"
+                    TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    TextBlock.FontSize="10pt"
+                    TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
+                    TextBlock.TextAlignment="Left">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                       Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}" />
+            <TextBlock x:Name="DestroyedText"
+                       Foreground="Crimson"
+                       Margin="5,0,0,0"
+                       Visibility="Collapsed"
+                       Text="{s:StringResource Key=COMBAT_DESTROYED}" />
+          </StackPanel>
+          <TextBlock x:Name="ShieldsText"
+                     Visibility="Collapsed">
+            <TextBlock.Text>
+              <MultiBinding StringFormat="{}Shields: {0} / {1}">
+                <Binding Path="ShieldStrength.CurrentValue" />
+                <Binding Path="ShieldStrength.Maximum" />
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+          <TextBlock>
+            <TextBlock.Text>
+              <MultiBinding StringFormat="{}Hit Points: {0} / {1}">
+                <Binding Path="HitPoints.CurrentValue" />
+                <Binding Path="HitPoints.Maximum" />
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </StackPanel>
+-->
+        <Border />
+      </DockPanel>
+      <DataTemplate.Triggers>
+        <DataTrigger Binding="{Binding Path=IsDestroyed}"
+                     Value="True">
+          <!--
+          <Setter TargetName="DestroyedText"
+                  Property="Visibility"
+                  Value="Visible" />
+-->
+          <Setter TargetName="ImageBorder"
+                  Property="Opacity"
+                  Value="0.25" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Path=HasShields}"
+                     Value="True">
+          <Setter TargetName="ShieldsBar"
+                  Property="Visibility"
+                  Value="Visible" />
+          <!--
+          <Setter TargetName="ShieldsText"
+                  Property="Visibility"
+                  Value="Visible" />
+-->
+        </DataTrigger>
+      </DataTemplate.Triggers>
+    </DataTemplate>
+
+    </Control.Resources>
+
+  <Border Background="#66000000">
+    <Grid Margin="3">
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="360" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <Grid Grid.ColumnSpan="7"
+            TextBlock.FontFamily="{StaticResource Eurostyle}"
+            TextBlock.FontSize="11pt">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <scc:Chevron Grid.Column="0"
+                     Background="{StaticResource LCARS_PurpleGradient_Top_Bottom}"
+                     Height="28"
+                     Width="50"
+                     IsInsetOnLeft="False" />
+        <Grid Grid.Column="1"
+              Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=1}">
+          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                       Height="28"
+                       Margin="-11,0,0,0" />
+          <Grid Margin="-11,-1,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='1', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='1', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+        </Grid>
+        <Grid Grid.Column="2"
+              Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=2}">
+          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                       Height="28"
+                       Margin="-11,0,0,0" />
+          <Grid Margin="-11,-1,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='2', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='2', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+        </Grid>
+        <Grid Grid.Column="3"
+              Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=3}">
+          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                       Height="28"
+                       Margin="-11,0,0,0" />
+          <Grid Margin="-11,-1,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='3', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='3', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+
+        </Grid>
+        <Grid Grid.Column="4"
+              Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=4}">
+          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                       Height="28"
+                       Margin="-11,0,0,0" />
+          <Grid Margin="-11,-1,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='4', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='4', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+
+        </Grid>
+        <Grid Grid.Column="5"
+              Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=5}">
+          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                       Height="28"
+                       Margin="-11,0,0,0" />
+          <Grid Margin="-11,-1,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='5', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Source='5', BindsDirectlyToSource=True, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=RoundNumberFormat}}"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+        </Grid>
+        <scc:Chevron Grid.Column="6"
+                     Background="{StaticResource LCARS_PurpleGradient_Top_Bottom}"
+                     Height="28"
+                     Width="50"
+                     Margin="-11,0,0,0"
+                     IsOutsetOnRight="False" />
+
+        <Grid Grid.Column="1"
+              Grid.ColumnSpan="5"
+              Visibility="{Binding Path=InvasionStatus, Converter={scc:ComparisonConverter ComparisonType=Equal, TrueValue={x:Static Visibility.Visible}, FalseValue={x:Static Visibility.Hidden}}, ConverterParameter={x:Static s:InvasionStatus.Victory}}">
+          <scc:Chevron Height="28"
+                       Margin="-11,0,0,0">
+            <scc:Chevron.Background>
+              <LinearGradientBrush EndPoint="0.5,1"
+                                   StartPoint="0.5,0">
+                <GradientStop Color="#FF00F92E"
+                              Offset="0" />
+                <GradientStop Color="#FF00982F"
+                              Offset="1" />
+              </LinearGradientBrush>
+            </scc:Chevron.Background>
+          </scc:Chevron>
+          <Grid Margin="-11,0,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="VICTORY!"
+                       FontSize="12pt"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="VICTORY!"
+                       FontSize="12pt"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Grid.ColumnSpan="5"
+              Visibility="{Binding Path=InvasionStatus, Converter={scc:ComparisonConverter ComparisonType=Equal, TrueValue={x:Static Visibility.Visible}, FalseValue={x:Static Visibility.Hidden}}, ConverterParameter={x:Static s:InvasionStatus.Defeat}}">
+          <scc:Chevron Height="28"
+                       Margin="-11,0,0,0">
+            <scc:Chevron.Background>
+              <LinearGradientBrush EndPoint="0.5,1"
+                                   StartPoint="0.5,0">
+                <GradientStop Color="#FFF9002E"
+                              Offset="0" />
+                <GradientStop Color="#FF98002F"
+                              Offset="1" />
+              </LinearGradientBrush>
+            </scc:Chevron.Background>
+          </scc:Chevron>
+          <Grid Margin="-11,0,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{s:StringResource Key='COMBAT_DEFEAT'}"
+                       FontSize="12pt"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{s:StringResource Key='COMBAT_DEFEAT'}"
+                       FontSize="12pt"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+        </Grid>
+        <Grid Grid.Column="1"
+              Grid.ColumnSpan="5"
+              Visibility="{Binding Path=InvasionStatus, Converter={scc:ComparisonConverter ComparisonType=Equal, TrueValue={x:Static Visibility.Visible}, FalseValue={x:Static Visibility.Hidden}}, ConverterParameter={x:Static s:InvasionStatus.Stalemate}}">
+          <scc:Chevron Height="28"
+                       Margin="-11,0,0,0"
+                       Background="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
+          <Grid Margin="-11,0,0,0"
+                UseLayoutRounding="False">
+            <TextBlock Margin="1,1,-1,-1"
+                       HorizontalAlignment="Center"
+                       Text="{s:StringResource Key='COMBAT_STANDOFF'}"
+                       FontSize="12pt"
+                       Foreground="Black"
+                       FontFamily="{StaticResource Eurostyle}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{s:StringResource Key='COMBAT_STANDOFF'}"
+                       FontSize="12pt"
+                       Foreground="White"
+                       FontFamily="{StaticResource Eurostyle}" />
+          </Grid>
+        </Grid>
+
+      </Grid>
+
+      <Grid Grid.ColumnSpan="7"
+            Grid.Row="1"
+            TextBlock.FontFamily="Eurostar Regular"
+            TextBlock.FontSize="28pt"
+            Margin="7">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"
+                            MinWidth="128" />
+          <ColumnDefinition Width="3*" />
+          <ColumnDefinition Width="Auto"
+                            MinWidth="128" />
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0"
+               Width="48"
+               Height="64"
+               Source="{Binding Path=Invader, Converter={StaticResource CivInsigniaConverter}}" />
+        <Viewbox Grid.Column="1"
+                 Margin="11,0"
+                 VerticalAlignment="Center"
+                 StretchDirection="DownOnly">
+          <TextBlock TextAlignment="Center"
+                     Text="{Binding Path=StarSystem.Name, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=TitleFormat, CharacterCasing=Upper}}"
+                     Foreground="{StaticResource DefaultTextBrush}"
+                     FontFamily="{StaticResource Eurostyle}" />
+        </Viewbox>
+        <Image Grid.Column="2"
+               Width="48"
+               Height="64"
+               Source="{Binding Path=Defender, Converter={StaticResource CivInsigniaConverter}}" />
+      </Grid>
+
+      <Path Grid.Column="0"
+            Grid.Row="2"
+            Data="M 0,42 L 0,14 C 0,5 5,0 14,0 L 21,0 21,28 14,28 C 9,28 7,30 7,35 L 7,42"
+            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Height="42"
+            Width="21" />
+
+      <DockPanel Grid.Column="1"
+                 Grid.Row="2"
+                 LastChildFill="True">
+        <TextBlock DockPanel.Dock="Left"
+                   Margin="5,0"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                   FontSize="18pt"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                   Text="{Binding Path=Invader.ShortName, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter='{}{0} ASSETS'}" />
+
+        <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                   Height="28"
+                   VerticalAlignment="Top"
+                   Margin="0,0,3,0" />
+      </DockPanel>
+
+      <Path Grid.Column="2"
+            Grid.Row="2"
+            Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
+            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Height="42"
+            Stretch="None"
+            Width="21" />
+
+      <DockPanel Grid.Column="3"
+                 Grid.Row="2"
+                 LastChildFill="True">
+        <TextBlock DockPanel.Dock="Left"
+                   Margin="5,0"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                   FontSize="18pt"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                   Text="{Binding Path=Defender.ShortName, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter='{}{0} ASSETS'}" />
+
+        <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                   Height="28"
+                   VerticalAlignment="Top"
+                   Margin="0,0,3,0" />
+      </DockPanel>
+
+
+      <UniformGrid Grid.Column="0"
+                   Grid.Row="3"
+                   Grid.RowSpan="3"
+                   HorizontalAlignment="Left"
+                   Width="7"
+                   Columns="1">
+        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                   Margin="0,3,0,0" />
+        <Rectangle Fill="{StaticResource LCARS_RedGradient_Left_Right}"
+                   Margin="0,3,0,3" />
+        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                   Margin="0,0,0,3" />
+      </UniformGrid>
+
+      <Path Grid.Column="0"
+            Grid.Row="6"
+            Data="M 0,0 L 0,28 C 0,37 5,42 14,42 L 21,42 21,14 14,14 C 9,14 7,12 7,7 L 7,0"
+            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Height="42"
+            Width="21" />
+
+      <Rectangle Grid.Column="1"
+                 Grid.Row="6"
+                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 Height="28"
+                 VerticalAlignment="Bottom"
+                 Margin="3,0,3,0" />
+
+      <Path Grid.Column="2"
+            Grid.Row="6"
+            Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
+            Fill="{StaticResource LCARS_PurpleGradient_BottomLeft_TopRight}"
+            Height="42"
+            Stretch="None"
+            Width="21">
+        <Path.LayoutTransform>
+          <RotateTransform Angle="180" />
+        </Path.LayoutTransform>
+      </Path>
+
+      <Rectangle Grid.Column="3"
+                 Grid.Row="6"
+                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 Height="28"
+                 VerticalAlignment="Bottom"
+                 Margin="3,0,3,0" />
+
+
+      <Path Grid.Column="4"
+            Grid.Row="6"
+            Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
+            Fill="{StaticResource LCARS_PurpleGradient_BottomLeft_TopRight}"
+            Height="42"
+            Stretch="None"
+            Width="21">
+        <Path.LayoutTransform>
+          <RotateTransform Angle="180" />
+        </Path.LayoutTransform>
+      </Path>
+
+
+      <!--<DockPanel Grid.Column="3"
+               Grid.Row="2"
+               LastChildFill="True">
+      <TextBlock DockPanel.Dock="Left"
+                 Margin="5,0"
+                 FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                 FontSize="18pt"
+                 Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                 Text="{s:StringResource Key='FRIENDLY ASSETS'}" />
+      <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 Height="28"
+                 VerticalAlignment="Top"
+                 Margin="0,0,3,0" />
+    </DockPanel>-->
+
+      <UniformGrid Grid.Column="2"
+                   Grid.Row="3"
+                   Grid.RowSpan="3"
+                   HorizontalAlignment="Center"
+                   Width="7"
+                   Columns="1">
+        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                   Margin="0,3,0,0" />
+        <Rectangle Fill="{StaticResource LCARS_RedGradient_Left_Right}"
+                   Margin="0,3,0,3" />
+        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                   Margin="0,0,0,3" />
+      </UniformGrid>
+
+      <Path Grid.Column="4"
+            Grid.Row="2"
+            Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
+            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Height="42"
+            Stretch="None"
+            Width="21" />
+
+      <UniformGrid Grid.Column="4"
+                   Grid.Row="3"
+                   Grid.RowSpan="3"
+                   HorizontalAlignment="Center"
+                   Width="7"
+                   Columns="1">
+        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                   Margin="0,3,0,0" />
+        <Rectangle Fill="{StaticResource LCARS_RedGradient_Left_Right}"
+                   Margin="0,3,0,3" />
+        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                   Margin="0,0,0,3" />
+      </UniformGrid>
+
+      <DockPanel Grid.Column="5"
+                 Grid.Row="2"
+                 LastChildFill="True">
+        <TextBlock DockPanel.Dock="Left"
+                   Margin="5,0"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                   FontSize="18pt"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                   Text="{s:StringResource Key='ORDERS'}" />
+        <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                   Height="28"
+                   VerticalAlignment="Top"
+                   Margin="0,0,3,0" />
+      </DockPanel>
+
+      <ItemsControl Grid.Column="1"
+                    Grid.Row="3"
+                    Grid.RowSpan="3"
+                    ItemsSource="{Binding Path=InvadingUnits}"
+                    Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal"
+                       IsItemsHost="True" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.GroupStyle>
+          <GroupStyle>
+            <GroupStyle.HeaderTemplate>
+              <DataTemplate DataType="{x:Type GroupItem}">
+                <TextBlock FontSize="14pt"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                           Text="{Binding Path=Name, Converter={scc:LocalizedEnumStringConverter}}" />
+              </DataTemplate>
+            </GroupStyle.HeaderTemplate>
+          </GroupStyle>
+        </ItemsControl.GroupStyle>
+      </ItemsControl>
+
+      <ItemsControl Grid.Column="3"
+                    Grid.Row="3"
+                    Grid.RowSpan="3"
+                    ItemsSource="{Binding Path=DefendingUnits}"
+                    Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal"
+                       IsItemsHost="True" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.GroupStyle>
+          <GroupStyle>
+            <GroupStyle.HeaderTemplate>
+              <DataTemplate DataType="{x:Type GroupItem}">
+                <TextBlock FontSize="14pt"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                           Text="{Binding Path=Name, Converter={scc:LocalizedEnumStringConverter}}" />
+              </DataTemplate>
+            </GroupStyle.HeaderTemplate>
+          </GroupStyle>
+        </ItemsControl.GroupStyle>
+      </ItemsControl>
+
+      <DockPanel Grid.Column="5"
+                 Grid.Row="3"
+                 Grid.RowSpan="3"
+                 LastChildFill="True"
+                 Margin="7,0">
+
+        <Border DockPanel.Dock="Top"
+                UseLayoutRounding="False"
+                SnapsToDevicePixels="False">
+          <DockPanel LastChildFill="True">
+            <DockPanel DockPanel.Dock="Left"
+                       LastChildFill="True"
+                       Background="Transparent">
+              <DockPanel.ToolTip>
+                <MultiBinding Converter="{x:Static scc:StringFormatConverter.Instance}"
+                              ConverterParameter="{}Shield Strength: {0}/{1}">
+                  <Binding Path="ColonyShieldStrength.CurrentValue" />
+                  <Binding Path="ColonyShieldStrength.Maximum" />
+                </MultiBinding>
+              </DockPanel.ToolTip>
+              <Border DockPanel.Dock="Bottom"
+                      Width="24"
+                      Height="24"
+                      Margin="0,4,0,0">
+                <Image Source="vfs:///Resources/Images/ScreenIcons/shield.png"
+                       RenderOptions.BitmapScalingMode="HighQuality" />
+              </Border>
+              <s:BlockBar Minimum="0"
+                          Maximum="{Binding Path=ColonyShieldStrength.Maximum}"
+                          Value="{Binding Path=ColonyShieldStrength.CurrentValue}"
+                          BlockMargin="2"
+                          BlockCount="45"
+                          Height="24">
+                <s:BlockBar.LayoutTransform>
+                  <RotateTransform Angle="-90" />
+                </s:BlockBar.LayoutTransform>
+              </s:BlockBar>
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Right"
+                       LastChildFill="True">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="8" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0"
+                           LastChildFill="True"
+                           Background="Transparent">
+                  <DockPanel.ToolTip>
+                    <MultiBinding Converter="{x:Static scc:StringFormatConverter.Instance}"
+                                  ConverterParameter="{}Ground Combat Strength: {0}/{1}">
+                      <Binding Path="DefenderCombatStrength.CurrentValue" />
+                      <Binding Path="DefenderCombatStrength.Maximum" />
+                    </MultiBinding>
+                  </DockPanel.ToolTip>
+                  <Border DockPanel.Dock="Bottom"
+                          Width="24"
+                          Height="24"
+                          Margin="0,4,0,0">
+                    <Image Source="vfs:///Resources/Images/ScreenIcons/combat_strength.png"
+                           RenderOptions.BitmapScalingMode="HighQuality" />
+                  </Border>
+                  <s:BlockBar Grid.Row="0"
+                              Minimum="0"
+                              Maximum="{Binding Path=DefenderCombatStrength.Maximum}"
+                              Value="{Binding Path=DefenderCombatStrength.CurrentValue}"
+                              BlockMargin="2"
+                              BlockCount="20"
+                              Height="24">
+                    <s:BlockBar.LayoutTransform>
+                      <RotateTransform Angle="-90" />
+                    </s:BlockBar.LayoutTransform>
+                  </s:BlockBar>
+                </DockPanel>
+                <DockPanel Grid.Row="2"
+                           LastChildFill="True"
+                           Background="Transparent">
+                  <DockPanel.ToolTip>
+                    <MultiBinding Converter="{x:Static scc:StringFormatConverter.Instance}"
+                                  ConverterParameter="{}Population: {0}/{1}">
+                      <Binding Path="DefenderPopulation.CurrentValue" />
+                      <Binding Path="DefenderPopulation.BaseValue" />
+                    </MultiBinding>
+                  </DockPanel.ToolTip>
+                  <Border DockPanel.Dock="Bottom"
+                          Width="24"
+                          Height="24"
+                          Margin="0,4,0,0">
+                    <Image Source="vfs:///Resources/Images/ScreenIcons/population.png"
+                           RenderOptions.BitmapScalingMode="HighQuality" />
+                  </Border>
+                  <s:BlockBar Grid.Row="0"
+                              Minimum="0"
+                              Maximum="{Binding Path=DefenderPopulation.BaseValue}"
+                              Value="{Binding Path=DefenderPopulation.CurrentValue}"
+                              BlockMargin="2"
+                              BlockCount="20"
+                              Height="24">
+                    <s:BlockBar.LayoutTransform>
+                      <RotateTransform Angle="-90" />
+                    </s:BlockBar.LayoutTransform>
+                  </s:BlockBar>
+                </DockPanel>
+              </Grid>
+            </DockPanel>
+            <Grid Width="256"
+                  Height="256">
+              <s:PlanetView3D Planet="{Binding Path=PrimaryPlanet}"
+                              StarSystem="{Binding Path=StarSystem}"
+                              LightSourceDirection="Front"
+                              ShowPlanetTypeLabels="False"
+                              ShowMoons="False"
+                              RotationDuration="0:3:0"
+                              DimensionOverride="256" />
+              <sxna:BombardmentOverlayRenderer ExplosionInterval="{Binding Path=ExplosionInterval, Mode=OneWay}" />
+            </Grid>
+          </DockPanel>
+        </Border>
+        <Border DockPanel.Dock="Top"
+                Margin="0,14,0,0">
+        </Border>
+
+        <TabControl x:Name="_actionTabs"
+                    x:FieldModifier="private"
+                    DockPanel.Dock="Top"
+                    Margin="0,14,0,0">
+          <TabControl.Template>
+            <ControlTemplate TargetType="TabControl">
+              <Border Padding="{TemplateBinding Padding}">
+                <apshared:TransitionPresenter DefaultDuration="0:0:0.25"
+                                              Content="{TemplateBinding SelectedContent}"
+                                              TransitionSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Views:ItemsControlTransitionSelector.TransitionSelector)}">
+                </apshared:TransitionPresenter>
+              </Border>
+            </ControlTemplate>
+          </TabControl.Template>
+          <TabItem x:Name="_chooseActionTab"
+                   x:FieldModifier="private"
+                   IsSelected="True">
+            <DockPanel LastChildFill="True"
+                       VerticalAlignment="Top">
+              <Border DockPanel.Dock="Left"
+                      Width="16"
+                      CornerRadius="16,0,0,16"
+                      Background="{StaticResource LCARS_HeaderBrush}" />
+              <Border DockPanel.Dock="Right"
+                      Width="16"
+                      CornerRadius="0,16,16,0"
+                      Background="{StaticResource LCARS_HeaderBrush}" />
+              <StackPanel Orientation="Vertical"
+                          scc:GameControlService.Context="VerticalGroupItem"
+                          Margin="2,0">
+                <scc:GameButton Label="{s:StringResource ATTACK_ORBITAL_DEFENSES}"
+                                Command="{Binding Path=SetActionCommand}"
+                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
+                  <scc:GameButton.CommandParameter>
+                    <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.AttackOrbitalDefenses}" />
+                  </scc:GameButton.CommandParameter>
+                </scc:GameButton>
+                <scc:GameButton Label="{s:StringResource BOMBARD_PLANET}"
+                                Margin="0,2,0,0"
+                                Command="{Binding Path=SetActionCommand}"
+                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
+                  <scc:GameButton.CommandParameter>
+                    <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.BombardPlanet}" />
+                  </scc:GameButton.CommandParameter>
+                </scc:GameButton>
+                <scc:GameButton Label="{s:StringResource UNLOAD_ALL_ORDINANCE_ON_PLANET}"
+                                Margin="0,2,0,0"
+                                Command="{Binding Path=SetActionCommand}"
+                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
+                  <scc:GameButton.CommandParameter>
+                    <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.UnloadAllOrdinance}" />
+                  </scc:GameButton.CommandParameter>
+                </scc:GameButton>
+                <scc:GameButton Label="{s:StringResource LAND_TROOPS}"
+                                Margin="0,2,0,0"
+                                Command="{Binding Path=SetActionCommand}"
+                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
+                  <scc:GameButton.CommandParameter>
+                    <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.LandTroops}" />
+                  </scc:GameButton.CommandParameter>
+                </scc:GameButton>
+                <scc:GameButton Label="{s:StringResource STAND_DOWN}"
+                                Margin="0,2,0,0"
+                                Command="{Binding Path=SetActionCommand}"
+                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
+                  <scc:GameButton.CommandParameter>
+                    <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.StandDown}" />
+                  </scc:GameButton.CommandParameter>
+                </scc:GameButton>
+              </StackPanel>
+            </DockPanel>
+          </TabItem>
+          <TabItem x:Name="_bombardActionTab"
+                   x:FieldModifier="private">
+            <StackPanel>
+              <TextBlock DockPanel.Dock="Top"
+                         Margin="0,0,0,0"
+                         Text="{s:StringResource CHOOSE_A_BOMBARDMENT_STRATEGY}"
+                         FontSize="18pt"
+                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                         Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+              <apshared:RadioButtonList FontSize="12pt"
+                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                        ItemTemplateSelector="{x:Static scc:EnumValueItemTemplateSelector.Instance}"
+                                        ItemsSource="{scc:EnumValueCollection {x:Type s:InvasionTargetingStrategy}}"
+                                        SelectedItem="{Binding Path=SelectedTargetingStrategy, Mode=TwoWay}"
+                                        BulletVerticalAlignment="Top"
+                                        BulletMargin="0,7,0,0"
+                                        Margin="14,0,0,0">
+                <FrameworkElement.Resources>
+                  <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.MaximumPrecision}">
+                    <TextBlock TextWrapping="Wrap"
+                               Margin="0,7,0,0">
+                      <Span>Maximum Precision</Span>
+                      <LineBreak />
+                      <Span Foreground="#ffdfdfff"
+                            FontSize="12pt">
+                        Attempt to minimize collateral damage.  Precision is favored at the expense of overall damage.
+                      </Span>
+                    </TextBlock>
+                  </DataTemplate>
+                  <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.Balanced}">
+                    <TextBlock TextWrapping="Wrap"
+                               Margin="0,7,0,0">
+                      <Span>Balanced</Span>
+                      <LineBreak />
+                      <Span Foreground="#ffdfdfff"
+                            FontSize="12pt">
+                        Attempt to balance precision and overall damage.  Moderate levels of collateral damage are acceptable.
+                      </Span>
+                    </TextBlock>
+                  </DataTemplate>
+                  <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.MaximumDamage}">
+                    <TextBlock TextWrapping="Wrap"
+                               Margin="0,7,0,0">
+                      <Span>Maximum Damage</Span>
+                      <LineBreak />
+                      <Span Foreground="#ffdfdfff"
+                            FontSize="12pt">
+                        Inflict the most damage possible at the expense of precision.  Collateral damage is not a concern.
+                      </Span>
+                    </TextBlock>
+                  </DataTemplate>
+                </FrameworkElement.Resources>
+              </apshared:RadioButtonList>
+              <!--
+            <DockPanel LastChildFill="False"
+                       TextBlock.FontSize="12pt">
+              <TextBlock DockPanel.Dock="Top"
+                         Margin="0,0,0,0"
+                         Text="CHOOSE A BOMBARDMENT STRATEGY"
+                         FontSize="18pt"
+                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                         Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+              <StackPanel Orientation="Vertical"
+                          Margin="14,11,0,0">
+                <RadioButton GroupName="TargetingStrategyRadioGroup"
+                             Foreground="#FFFFEDC5">
+                </RadioButton>
+                <RadioButton GroupName="TargetingStrategyRadioGroup"
+                             Foreground="#FFFFEDC5"
+                             Margin="0,11,0,0"
+                             IsChecked="True">
+                </RadioButton>
+                <RadioButton GroupName="TargetingStrategyRadioGroup"
+                             Foreground="#FFFFEDC5"
+                             Margin="0,11,0,0">
+                </RadioButton>
+              </StackPanel>
+            </DockPanel>
+-->
+            </StackPanel>
+          </TabItem>
+          <TabItem x:Name="_landTroopsTab"
+                   x:FieldModifier="private">
+            <DockPanel LastChildFill="True">
+              <scc:AutoGrid DockPanel.Dock="Top"
+                            Margin="0,0,0,2"
+                            Orientation="Vertical"
+                            Height="28">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border CornerRadius="14,0,0,0"
+                        Width="21"
+                        Margin="0,0,2,0"
+                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                <scc:GameButton Label="SELECT ALL"
+                                Padding="16,1,16,2"
+                                DisplayMode="GroupedHorizontally"
+                                CommandTarget="{Binding ElementName=_transportCheckList}"
+                                Command="{x:Static scc:CheckedListBox.SelectAllCommand}" />
+                <scc:GameButton Label="UNSELECT ALL"
+                                Padding="16,1,16,2"
+                                DisplayMode="GroupedHorizontally"
+                                CommandTarget="{Binding ElementName=_transportCheckList}"
+                                Command="{x:Static scc:CheckedListBox.UnselectAllCommand}"
+                                Margin="2,0,0,0" />
+                <Border CornerRadius="0,14,0,0"
+                        Margin="2,0,0,0"
+                        Width="21"
+                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+              </scc:AutoGrid>
+              <scc:AutoGrid DockPanel.Dock="Bottom"
+                            Margin="0,2,0,0"
+                            Orientation="Vertical"
+                            Height="28"
+                            TextBlock.FontSize="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border CornerRadius="0,0,0,14"
+                        Width="21"
+                        Margin="0,0,4,0"
+                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                           Text="{s:StringResource Key='Total (Net) Combat Strength:', Case=Upper}"
+                           VerticalAlignment="Center" />
+                <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                           Text="{Binding Path=SelectedTransportsCombatStrength}"
+                           VerticalAlignment="Center"
+                           TextAlignment="Right" />
+                <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                           scc:TextBlockExtensions.FormattedText="{Binding Path=SelectedTransportsNetCombatStrength, StringFormat='{}[c Lime](+#,0)[/];[c Crimson](-#,0)[/];[c Yellow](+#,0)[/]'}"
+                           Margin="5,0,0,0"
+                           VerticalAlignment="Center"
+                           TextAlignment="Right" />
+                <Border CornerRadius="0,0,14,0"
+                        Width="21"
+                        Margin="4,0,0,0"
+                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+              </scc:AutoGrid>
+              <scc:CheckedListBox x:Name="_transportCheckList"
+                                  x:FieldModifier="private"
+                                  ItemsSource="{Binding Path=TroopTransports}"
+                                  Padding="0,0,0,7">
+                <scc:CheckedListBox.ItemContainerStyle>
+                  <Style TargetType="{x:Type scc:CheckedListBoxItem}">
+                    <Setter Property="scc:CheckedListBoxItem.IsSelected"
+                            Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+                    <Setter Property="Template">
+                      <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type scc:CheckedListBoxItem}">
+                          <DockPanel LastChildFill="True"
+                                     Margin="7,7,7,0">
+                            <Border x:Name="ImageBorder"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Top"
+                                    Width="54"
+                                    Height="45">
+                              <Border.Background>
+                                <ImageBrush
+ImageSource="{Binding Path=Design, Converter={StaticResource TechObjectImageConverter}}"
+Stretch="UniformToFill" />
+                              </Border.Background>
+                              <CheckBox HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsSelected, Mode=TwoWay}" />
+                            </Border>
+                            <StackPanel Orientation="Vertical"
+                                        Margin="6,0,0,0"
+                                        TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        TextBlock.FontSize="14pt"
+                                        TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
+                                        TextBlock.TextAlignment="Left">
+                              <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                                         Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}" />
+                              <TextBlock>
+                                <TextBlock.Text>
+                                  <MultiBinding StringFormat="{}{0}: {1:#,0}">
+                                    <Binding Source="{s:StringResource Key='Ground Combat Strength'}"
+                                             BindsDirectlyToSource="True" />
+                                    <Binding Path="TroopCount" />
+                                  </MultiBinding>
+                                </TextBlock.Text>
+                              </TextBlock>
+                            </StackPanel>
+                            <Border />
+                          </DockPanel>
+                        </ControlTemplate>
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </scc:CheckedListBox.ItemContainerStyle>
+              </scc:CheckedListBox>
+            </DockPanel>
+          </TabItem>
+          <TabItem x:Name="_combatOverTab">
+            <!--
+          <StackPanel>
+            <scc:GameButton DockPanel.Dock="Top"
+                            Label="DONE"
+                            Margin="0,3,0,0"
+                            Command="{Binding Path=DoneCommand}" />
+          </StackPanel>
+-->
+          </TabItem>
+        </TabControl>
+
+      </DockPanel>
+
+      <Grid Grid.Column="5"
+            Grid.Row="6">
+        <UniformGrid Columns="2"
+                     Height="28"
+                     VerticalAlignment="Bottom">
+          <UniformGrid.Visibility>
+            <Binding Path="State">
+              <Binding.Converter>
+                <scc:MapConverter FallbackValue="{x:Static Visibility.Visible}">
+                  <scc:Mapping From="{x:Static scc:SystemAssaultScreenState.Finished}"
+                               To="{x:Static Visibility.Hidden}" />
+                </scc:MapConverter>
+              </Binding.Converter>
+            </Binding>
+          </UniformGrid.Visibility>
+          <scc:GameButton Grid.Column="1"
+                          Label="CHANGE ORDERS"
+                          DisplayMode="GroupedHorizontally"
+                          Click="OnChangeOrdersButtonClick"
+                          Margin="2,0,0,0"
+                          Padding="16,1,16,2">
+            <scc:GameButton.IsEnabled>
+              <MultiBinding>
+                <MultiBinding.Converter>
+                  <apshared:BooleanAndConverter />
+                </MultiBinding.Converter>
+                <Binding Path="State"
+                         Converter="{scc:ComparisonConverter ComparisonType=Equal}"
+                         ConverterParameter="{x:Static scc:SystemAssaultScreenState.AwaitingPlayerOrders}" />
+                <Binding ElementName="_actionTabs"
+                         Path="SelectedIndex"
+                         Converter="{scc:ComparisonConverter ComparisonType=NotEqual}"
+                         ConverterParameter="0" />
+              </MultiBinding>
+            </scc:GameButton.IsEnabled>
+          </scc:GameButton>
+          <scc:GameButton Grid.Column="2"
+                          Label="COMMIT"
+                          Margin="2,0,0,0"
+                          Padding="16,1,16,2"
+                          DisplayMode="GroupedHorizontally"
+                          Command="{Binding Path=CommitOrdersCommand}" />
+        </UniformGrid>
+        <scc:GameButton Label="DONE"
+                        Height="28"
+                        VerticalAlignment="Bottom"
+                        Margin="2,0,0,0"
+                        Padding="16,1,16,2"
+                        DisplayMode="GroupedHorizontally"
+                        Command="{Binding Path=DoneCommand}">
+          <scc:GameButton.Visibility>
+            <Binding Path="State">
+              <Binding.Converter>
+                <scc:MapConverter FallbackValue="{x:Static Visibility.Hidden}">
+                  <scc:Mapping From="{x:Static scc:SystemAssaultScreenState.Finished}"
+                               To="{x:Static Visibility.Visible}" />
+                </scc:MapConverter>
+              </Binding.Converter>
+            </Binding>
+          </scc:GameButton.Visibility>
+        </scc:GameButton>
+      </Grid>
+    </Grid>
+  </Border>
+</scc:Dialog>

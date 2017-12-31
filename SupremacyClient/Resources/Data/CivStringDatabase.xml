@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CivStringDatabase xmlns="Supremacy:CivStringDatabase.xsd">
+
+  <DefaultStrings>
+    <Category Name="Diplomacy">
+      <CivString Key="DIPLOMAT_PROPOSAL">
+        <Value/>
+      </CivString>
+      <CivString Key="DIPLOMAT_COMMEND_WAR" Demeanor="Calm">
+        <Value Language="en">We fully support you in your war against the $MessageParameter.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_COMMEND_RELATIONSHIP" Demeanor="Calm">
+        <Value Language="en">We wish to congratulate you on your new relationship with the $MessageParameter.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_COMMEND_ASSAULT" Demeanor="Calm">
+        <Value Language="en">The $MessageParameter are out of control.  You were right to assault their system.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_COMMEND_INVASION" Demeanor="Calm">
+        <Value Language="en">Any system is better off in the hands of the $Recipient than they are with the $MessageParameter.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_COMMEND_SABOTAGE" Demeanor="Calm">
+        <Value Language="en">We fully support your attempts to undermine the infrastructure of the $MessageParameter.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_DENOUNCE_WAR" Demeanor="Calm">
+        <Value Language="en">Your war against the $MessageParameter is unjustified, and we must protest.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_DENOUNCE_RELATIONSHIP" Demeanor="Calm">
+        <Value Language="en">Your relationship with the $MessageParameter is ill-advised, and we suggest you reconsider.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_DENOUNCE_ASSAULT" Demeanor="Calm">
+        <Value Language="en">It was unnecessary to bomb the $MessageParameter.  We urge you to consider alternative action.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_DENOUNCE_INVASION" Demeanor="Calm">
+        <Value Language="en">You have nothing to gain by invading the $MessageParameter.  We cannot support such actions.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_DENOUNCE_SABOTAGE" Demeanor="Calm">
+        <Value Language="en">We are not impressed by your acts of sabotage against the $MessageParameter, and we reserve the right to inform them of your actions.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_THREAT_SPYING" Demeanor="Calm">
+        <Value Language="en">We must insist that you cease all acts of espionage against the $Sender.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_THREAT_SABOTAGE" Demeanor="Calm">
+        <Value Language="en">We must insist that you cease all acts of sabotage against the $Sender.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_THREAT_AGGRESSION" Demeanor="Calm">
+        <Value Language="en">If your commanders do not learn to hold their fire, you may soon be at war with the $Sender.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_THREAT_ASSAULT" Demeanor="Calm">
+        <Value Language="en">If you do not cease your bombing at once, you will be at war with the $Sender.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_THREAT_EXPANSION" Demeanor="Calm">
+        <Value Language="en">The $Recipient have been extending their territory too near to ours.  If you value peace with the $Sender, we suggest you expand in other directions.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_PROPOSAL" Demeanor="Calm">
+        <Value Language="en">Greetings from the $Sender!  We submit the following proposal for your approval.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_TREATY_LEAD_IN" Demeanor="Calm">
+        <Value Language="en">Greetings from the $Sender!  We believe it is time for us to establish a new relationship:</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_GIFT_LEAD_IN" Demeanor="Calm">
+        <Value Language="en">As a token of respect, we offer you a gift:</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_DEMAND_LEAD_IN" Demeanor="Calm">
+        <Value Language="en">As reparations for your past transgressions, we insist that you provide the following:</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_PROPOSAL_OFFERS_LEAD_IN" Demeanor="Calm">
+        <Value Language="en">We are prepared to offer you the following:</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_PROPOSAL_DEMANDS_LEAD_IN" Demeanor="Calm">
+        <Value Language="en">From you, we ask the following:</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_COUNTER_PROPOSAL" Demeanor="Calm">
+        <Value Language="en">We cannot agree to your terms, but we would be willing to accept these terms instead.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_PROPOSAL_ACCEPTANCE" Demeanor="Calm">
+        <Value Language="en">I think we can agree to that.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_PROPOSAL_REJECTION" Demeanor="Calm">
+        <Value Language="en">I'm afraid we cannot agree to these terms.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_AGREEMENT_TERMINATION" Demeanor="Calm">
+        <Value Language="en">In light of our recent relations, we have decided that our previous agreement is no longer acceptable.</Value>
+      </CivString>
+      <CivString Key="DIPLOMAT_WAR_DECLARATION" Demeanor="Calm">
+        <Value Language="en">We can no longer tolerate your aggressive actions.  The $Sender and the $Recipient are now at war!</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_TRIBUTE">
+        <Value Language="en">The $Offerer shall give $Parameter to the $Receiver $Duration.</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_NON_AGGRESSION_PACT">
+        <Value Language="en">The $Sender and the $Recipient agree to renounce fighting and stay out of each other's territory.</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_TRADE_AGREEMENT">
+        <Value Language="en">The $Sender and the $Recipient agree to allow the establishment of trade routes between them.</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_OPEN_BORDERS">
+        <Value Language="en">The $Sender and the $Recipient agree to open their borders and allow each other's ships passage.</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_ALLIANCE">
+        <Value Language="en">The $Offerer and the $Receiver unify their ambitions by joining together in an alliance.</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_MEMBERSHIP">
+        <Value Language="en">The $Receiver become members of the greater $Offerer.</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_DECLARE_WAR">
+        <Value Language="en">The $Offerer agrees to declare war on the {0}.</Value>
+      </CivString>
+      <CivString Key="STIPULATION_DESC_TERMINATE_AGREEMENTS">
+        <Value Language="en">The $Offerer agrees to terminate all agreements with $Parameter.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_WAR_DECLARATION_US">
+        <Value Language="en">We have declared war on the {0}!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_WAR_DECLARATION_THEM">
+        <Value Language="en">The {0} have declared war on us!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US">
+        <Value Language="en">Aggressive posturing by the {0} has left us no choice but to declare war!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM">
+        <Value Language="en">Truly, the tyranny of the {0} knows no limits.  As of today, they have declared war on us.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_GIFT_US">
+        <Value Language="en">We have presented a gift to the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_GIFT_THEM">
+        <Value Language="en">The {0} have presented us with a gift!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_DEMAND_US">
+        <Value Language="en">We have made a demand to the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_DEMAND_THEM">
+        <Value Language="en">The {0} have made a demand to us!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_STATEMENT_US">
+        <Value Language="en">We have issued a statement to the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_STATEMENT_THEM">
+        <Value Language="en">The {0} have issued a statement to us.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_AGREEMENT_TERMINATION_US">
+        <Value Language="en">We have terminated all of our agreements with the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_AGREEMENT_TERMINATION_THEM">
+        <Value Language="en">The {0} have terminated all of their agreements with us!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_PROPOSAL_US">
+        <Value Language="en">We have sent a proposal to the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_PROPOSAL_THEM">
+        <Value Language="en">The {0} have sent us a proposal.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_PROPOSAL_ACCEPTED_US">
+        <Value Language="en">We have accepted a proposal from the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_PROPOSAL_ACCEPTED_THEM">
+        <Value Language="en">The {0} have accepted our proposal.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_PROPOSAL_REJECTED_US">
+        <Value Language="en">We have rejected a proposal from the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_PROPOSAL_REJECTED_THEM">
+        <Value Language="en">The {0} have rejected our proposal.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_COUNTER_PROPOSAL_US">
+        <Value Language="en">We have replied to the {0} with a counter-proposal.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_COUNTER_PROPOSAL_THEM">
+        <Value Language="en">The {0} have replied with a counter-proposal.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_TREATY_ACCEPTED_US">
+        <Value Language="en">We have signed a treaty with the {0}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_TREATY_ACCEPTED_THEM">
+        <Value Language="en">The {0} have signed a treaty with us.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_ALLIANCE_ACCEPTED_US">
+        <Value Language="en">The {0} and the {1} have formed an Alliance!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_ALLIANCE_ACCEPTED_THEM">
+        <Value Language="en">The {0} and the {1} have formed an Alliance!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_ALLIANCE_ACCEPTED_US">
+        <Value Language="en">This will be a day long remembered.  The {0} and the {1} have joined together to form an Alliance!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_ALLIANCE_ACCEPTED_THEM">
+        <Value Language="en">This will be a day long remembered.  The {0} and the {1} have joined together to form an Alliance!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_MEMBERSHIP_ACCEPTED_US">
+        <Value Language="en">The {0} have been welcomed as members of the {1}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_MEMBERSHIP_ACCEPTED_THEM">
+        <Value Language="en">The {0} have been welcomed as members of the {1}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_MEMBERSHIP_ACCEPTED_US">
+        <Value Language="en">The {0} have joined the {1} as members.  This economic, political, and military consolidation will certainly benefit both parties.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_MEMBERSHIP_ACCEPTED_THEM">
+        <Value Language="en">The {0} have joined the {1} as members.  This economic, political, and military consolidation will certainly benefit both parties.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_HEADER_MEMBERSHIP_REJECTED_US">
+        <Value Language="en">The {0} rejected a membership proposal from the {1}.</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_MEMBERSHIP_REJECTED_THEM">
+        <Value Language="en">The {0} rejected a membership proposal from the {1}.</Value>
+      </CivString>
+    </Category>
+    <Category Name="ScriptedEvents">
+      <CivString Key="RELIGIOUS_HOLIDAY_HEADER_TEXT">
+        <Value Language="en">Religious Holiday</Value>
+      </CivString>
+      <CivString Key="RELIGIOUS_HOLIDAY_SUMMARY_TEXT">
+        <Value Language="en">Production was suspended on {0} due to a religious holiday.</Value>
+      </CivString>
+      <CivString Key="RELIGIOUS_HOLIDAY_DETAIL_TEXT">
+        <Value Language="en">The people of [f {{HeaderTextBrush}}]{0}[/] have declared a religious holiday!  All production in the system was suspended while workers joined in the celebration.[nl/][nl/]Production will resume for the next turn.</Value>
+      </CivString>
+    </Category>
+    <Category Name="Personnel">
+      <CivString Key="MESSAGE_SITREP_HEADER_AGENT_RECRUITED">
+        <Value Language="en">{0} has been recruited!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_AGENT_RECRUITED">
+        <Value Language="en">[f {{HeaderTextBrush}}]{0}[/] has sworn an oath of loyalty to the {1} and is now available for training.[nl/][nl/][f {{HeaderTextBrush}}]Natural Qualities:[/] {2}</Value>
+      </CivString>
+    </Category>
+  </DefaultStrings>
+
+  <CivStrings Civilization="KLINGONS">
+    <Category Name="Diplomacy">
+      <CivString Key="MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US">
+        <Value Language="en">The {0} are not worthy of our friendship!  Instead, we will conquer them in war!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM">
+        <Value Language="en">The honourless {0} have declared war on us!  Cry havoc, and let slip the dogs of war!</Value>
+      </CivString>
+    </Category>
+  </CivStrings>
+
+  <CivStrings Civilization="FEDERATION">
+    <Category Name="Diplomacy">
+      <CivString Key="MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US">
+        <Value Language="en">Aggressive posturing by the {0} has left us no choice but to declare war!</Value>
+      </CivString>
+      <CivString Key="MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM">
+        <Value Language="en">Truly, the tyranny of the {0} knows no limits.  As of today, they have declared war on us.</Value>
+      </CivString>
+    </Category>
+  </CivStrings>
+
+</CivStringDatabase>

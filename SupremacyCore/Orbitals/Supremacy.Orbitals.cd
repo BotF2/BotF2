@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Supremacy.Orbitals.FleetOrder">
+    <Position X="3.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>Orbitals\FleetOrder.cs</FileName>
+      <HashCode>AQAAAAAEBAAAAQQAAgAAEAEAAIAAAEAgAAIABASCEAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Fleet" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="fleet" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Supremacy.Orbitals.Fleet">
+    <Position X="10.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\Fleet.cs</FileName>
+      <HashCode>EAEAAACBAACQDAAAFEIQAABBAAAAIggAAAAQAACAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Order" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="order" Hidden="true" />
+      <Field Name="route" Hidden="true" />
+      <Field Name="ships" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Supremacy.Orbitals.TechObject">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\TechObject.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAIAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="typeId" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Supremacy.Orbitals.FleetOrders">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\FleetOrders.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="EngageOrder" />
+      <Field Name="AvoidOrder" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Supremacy.Orbitals.EngageOrder">
+    <Position X="4.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\FleetOrders.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAgAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Supremacy.Orbitals.AvoidOrder">
+    <Position X="2.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\FleetOrders.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAQAAAAAAAAAAAAAAAEAgAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Supremacy.Orbitals.Orbital">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\Orbital.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Supremacy.Orbitals.OrbitalType">
+    <Position X="2.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\OrbitalType.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Supremacy.Orbitals.Ship">
+    <Position X="7.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\Ship.cs</FileName>
+      <HashCode>AAAAAAAIAAAADAABAAAAAQABAAEAIwgBAQIAAQACAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipClass" />
+      <Property Name="Type" />
+      <Property Name="Fleet" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="cloakStrength" Hidden="true" />
+      <Field Name="camouflagedStrength" Hidden="true" />      
+      <Field Name="fleetId" Hidden="true" />
+      <Field Name="fuelUsage" Hidden="true" />
+      <Field Name="isCloaked" Hidden="true" />
+      <Field Name="isCamouflaged" Hidden="true" />
+      <Field Name="range" Hidden="true" />
+      <Field Name="speed" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Supremacy.Orbitals.ShipType">
+    <Position X="2.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\ShipType.cs</FileName>
+      <HashCode>AAAAAAAIAAAACAABAAEAAQABAAEAAQABAAAAAQAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipClass" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="cloakStrength" Hidden="true" />
+      <Field Name="camouflagedStrength" Hidden="true" />
+      <Field Name="fuelUsage" Hidden="true" />
+      <Field Name="range" Hidden="true" />
+      <Field Name="shipClass" Hidden="true" />
+      <Field Name="speed" Hidden="true" />
+    </Members>
+  </Class>
+  <Enum Name="Supremacy.Orbitals.ShipClass">
+    <Position X="4.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Orbitals\ShipClass.cs</FileName>
+      <HashCode>gAAAAAAAACAAAAAAAAAABAQAAAAAAAAACIAAQAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

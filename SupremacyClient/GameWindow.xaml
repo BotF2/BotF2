@@ -1,0 +1,60 @@
+﻿<!--
+  
+   GameWindow.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<Window x:Class="Supremacy.Client.GameWindow"
+        xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+        xmlns:res="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="http://www.codeplex.com/CompositeWPF"
+        xmlns:scc="http://www.startreksupremacy.com/scc"
+        xmlns:Client="clr-namespace:Supremacy.Client"
+        FocusManager.IsFocusScope="True"
+        Title="{res:StringResource GAME_NAME}"
+        MinHeight="768"
+        MinWidth="1024"
+        Height="768"
+        Width="1024"
+        WindowState="Maximized" 
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Icon="SupremacyXP.ico"
+        ContextMenuService.Placement="Custom"
+        ContextMenuService.ShowOnDisabled="False"
+        SnapsToDevicePixels="True"
+        ShowInTaskbar="True">
+  <Window.Background>
+    <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Images/Backgrounds/Default.png">
+      <!--<ImageBrush.ImageSource>
+        <BitmapImage>
+          <BitmapImage.UriSource>
+            <Binding Source="Resources/Images/Backgrounds/Default.png" Converter="{StaticResource PathToUriConverter}"/>
+          </BitmapImage.UriSource>
+        </BitmapImage>
+      </ImageBrush.ImageSource>-->
+    </ImageBrush>
+  </Window.Background>
+  <Client:GameScreenStack x:Name="GameScreensRegion"
+                          CurrentScreenChanged="ScreenStack_CurrentScreenChanged"
+                          cal:RegionManager.RegionName="{x:Static scc:ClientRegions.GameScreens}" />
+  <!--<TabControl x:Name="GameScreensRegion"
+              SelectionChanged="GameScreensRegion_SelectionChanged"
+              cal:RegionManager.RegionName="{x:Static scc:ClientRegions.GameScreens}">
+    <TabControl.Template>
+      <ControlTemplate TargetType="{x:Type TabControl}">
+        <Border>
+          <ContentPresenter Content="{TemplateBinding SelectedItem}" />
+        </Border>
+      </ControlTemplate>
+    </TabControl.Template>
+  </TabControl>-->
+</Window>

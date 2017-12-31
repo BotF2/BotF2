@@ -1,0 +1,29 @@
+﻿<LocalizedTextGroup xmlns="http://schemas.startreksupremacy.com/xaml/core"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    Key="{x:Static LocalizedTextGroups.ColonyScreen}">
+
+  <LocalizedString Name="SHIP_CONSTRUCTION_TIME_TOOLTIP">
+    <LocalizedStringValue Language="en" Text="Estimated Time to Completion" />
+  </LocalizedString>
+
+  <LocalizedString Name="TURNS_UNTIL_COMPLETION_FORMAT">
+    <LocalizedStringValue Language="en" Text="{}{0} Turns" />
+  </LocalizedString>
+  
+  <LocalizedString Name="BUILT_NEW_SHIP_TOOLTIP">
+    <LocalizedStringValue Language="en" Text="Build a Ship" />
+  </LocalizedString>
+
+  <LocalizedString Name="SHIP_CONSTRUCTION_PROJECT_TOOLTIP">
+    <LocalizedStringValue Language="en" Text="{}{0}&#0010;&#0013;{1} Class&#0010;&#0013;{2} Complete" />
+  </LocalizedString>
+  
+  <LocalizedString Name="TOGGLE_CONSTRUCTION_BAY_BUTTON_TOOLTIP_ONLINE">
+    <LocalizedStringValue Language="en" Text="Construction Bay Online&#0010;&#0013;{0} Energy Consumed" />
+  </LocalizedString>
+
+  <LocalizedString Name="TOGGLE_CONSTRUCTION_BAY_BUTTON_TOOLTIP_OFFLINE">
+    <LocalizedStringValue Language="en" Text="Construction Bay Offline&#0010;&#0013;{0} Energy Required" />
+  </LocalizedString>
+
+</LocalizedTextGroup>

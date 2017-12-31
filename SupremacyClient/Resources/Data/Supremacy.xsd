@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="Supremacy:Supremacy.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:Supremacy.xsd"
+           xmlns:mstns="Supremacy:Supremacy.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="StarTypeSupportingPlanets">
+    <xs:restriction base="StarType">
+      <xs:enumeration value="White" />
+      <xs:enumeration value="Blue" />
+      <xs:enumeration value="Green" />
+      <xs:enumeration value="Yellow" />
+      <xs:enumeration value="Orange" />
+      <xs:enumeration value="Red" />
+      <xs:enumeration value="Nebula" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="StarType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="White" />
+      <xs:enumeration value="Blue" />
+      <xs:enumeration value="Green" />
+      <xs:enumeration value="Yellow" />
+      <xs:enumeration value="Orange" />
+      <xs:enumeration value="Red" />
+      <xs:enumeration value="Nebula" />
+      <xs:enumeration value="NeutronStar" />
+      <xs:enumeration value="RadioPulsar" />
+      <xs:enumeration value="XRayPulsar" />
+      <xs:enumeration value="Quasar" />
+      <xs:enumeration value="BlackHole" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CivilizationType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="MinorPower" />
+      <xs:enumeration value="ExpandingPower" />
+      <xs:enumeration value="Empire" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PlanetEnvironment">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Ideal" />
+      <xs:enumeration value="Comfortable" />
+      <xs:enumeration value="Adequate" />
+      <xs:enumeration value="Inhospitable" />
+      <xs:enumeration value="Terrible" />
+      <xs:enumeration value="Uninhabitable" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PlanetType">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Barren" />
+      <xs:enumeration value="Volcanic" />
+      <xs:enumeration value="Desert" />
+      <xs:enumeration value="Jungle" />
+      <xs:enumeration value="Terran" />
+      <xs:enumeration value="Oceanic" />
+      <xs:enumeration value="Arctic" />
+      <xs:enumeration value="Rogue" />
+      <xs:enumeration value="Crystalline" />
+      <xs:enumeration value="Demon" />
+      <xs:enumeration value="GasGiant" />
+      <xs:enumeration value="Asteroids" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PlanetSize">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="NoWorld" />
+      <xs:enumeration value="Tiny" />
+      <xs:enumeration value="Small" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="Large" />
+      <xs:enumeration value="Giant" />
+      <xs:enumeration value="GasGiant" />
+      <xs:enumeration value="Asteroids" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HabitablePlanetSize">
+    <xs:restriction base="PlanetSize">
+      <xs:enumeration value="NoWorld" />
+      <xs:enumeration value="Tiny" />
+      <xs:enumeration value="Small" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="Large" />
+      <xs:enumeration value="Giant" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Quadrant">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Alpha" />
+      <xs:enumeration value="Beta" />
+      <xs:enumeration value="Delta" />
+      <xs:enumeration value="Gamma" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ShipClass">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Colony" />
+      <xs:enumeration value="Transport" />
+      <xs:enumeration value="Medical" />
+      <xs:enumeration value="Science" />
+      <xs:enumeration value="Scout" />
+      <xs:enumeration value="Destroyer" />
+      <xs:enumeration value="Cruiser" />
+      <xs:enumeration value="Command" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TechCategory">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="BioTech" />
+      <xs:enumeration value="Energy" />
+      <xs:enumeration value="Computers" />
+      <xs:enumeration value="Propulsion" />
+      <xs:enumeration value="Construction" />
+      <xs:enumeration value="Weapons" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProductionCategory">
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Food" />
+      <xs:enumeration value="Industry" />
+      <xs:enumeration value="Energy" />
+      <xs:enumeration value="Research" />
+      <xs:enumeration value="Intelligence" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

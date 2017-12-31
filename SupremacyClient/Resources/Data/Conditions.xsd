@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="Conditions" 
+           targetNamespace="Supremacy:Conditions.xsd"
+           elementFormDefault="qualified"
+           xmlns="Supremacy:Conditions.xsd"
+           xmlns:mstns="Supremacy:Conditions.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="And">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:any namespace="Supremacy:Conditions.xsd" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Or">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:any namespace="Supremacy:Conditions.xsd" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Not">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:any namespace="Supremacy:Conditions.xsd" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Self">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="All">
+    <xs:complexType />
+  </xs:element>
+</xs:schema>

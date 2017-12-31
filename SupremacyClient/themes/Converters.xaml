@@ -1,0 +1,55 @@
+<!--
+  
+   Converters.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:av="http://schemas.codeplex.com/wpfcontrib/xaml/presentation">
+
+  <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+  <Client:UpperCaseConverter xmlns:Client="clr-namespace:Supremacy.Client;assembly=SupremacyWPF" x:Key="UpperCaseConverter"/>
+  <s:TechObjectImageConverter x:Key="TechObjectImageConverter"/>
+  <s:CivInsigniaConverter x:Key="CivInsigniaConverter"/>
+  <s:BonusConverter x:Key="BonusConverter"/>
+  <s:ResourceStringConverter x:Key="ResourceStringConverter"/>
+  <s:MoraleConverter x:Key="MoraleConverter"/>
+  <s:MoraleBrushConverter x:Key="MoraleBrushConverter"/>
+  <s:NetValueBrushConverter x:Key="NetValueBrushConverter"/>
+  <s:NetValueConverter x:Key="NetValueConverter"/>
+  <s:StringResourceConverter x:Key="StringResourceConverter"/>
+  <s:BuildQueueItemDescriptionConverter x:Key="BuildQueueItemDescriptionConverter"/>
+  <s:SectorNameConverter x:Key="SectorNameConverter"/>
+  <s:SectorScanStrengthConverter x:Key="SectorScanStrengthConverter"/>
+  <s:SectorScanStrengthBrushConverter x:Key="SectorScanStrengthBrushConverter"/>
+  <s:BuildRestrictionConverter x:Key="BuildRestrictionConverter"/>
+  <s:ResearchFieldImageConverter x:Key="ResearchFieldImageConverter"/>
+  <s:ResearchFieldDistributionBindingConverter x:Key="ResearchFieldDistributionBindingConverter"/>
+  <scc:EnumStringConverter x:Key="EnumStringConverter"/>
+  <scc:EnumValueCollectionConverter x:Key="EnumValueCollectionConverter"/>
+  <s:CivImageConverter x:Key="CivImageConverter"/>
+  <s:EncyclopediaImageConverter x:Key="EncyclopediaImageConverter"/>
+  <s:ImageUriConverter x:Key="ImageUriConverter"/>
+  <scc:StringFormatConverter x:Key="FormatStringConverter"/>
+  <scc:IsFalseValueConverter x:Key="IsFalseValueConverter"/>
+  <s:NonNullValueConverter x:Key="NonNullValueConverter" />
+  <s:MatchExistsValueConverter x:Key="MatchExistsValueConverter" />
+  <s:WholeCurrencyFormatConverter x:Key="WholeCurrencyFormatConverter" />
+  <s:RelationshipStatusBrushConverter x:Key="RelationshipStatusBrushConverter" />
+  <s:BuildableDesignConverter x:Key="BuildableDesignConverter" />
+  <scc:StringFormatConverter x:Key="StringFormatConverter" />
+  <s:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter" />
+  <av:DarkColorConverter x:Key="DarkColorConverter" Factor="1.25" />
+  <av:LightColorConverter x:Key="LightColorConverter" Factor="1.25" />
+  <av:FormattedTextConverter x:Key="FormattedTextConverter" />
+
+</ResourceDictionary>

@@ -1,0 +1,1505 @@
+<!--
+  
+   ResearchScreen.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Supremacy.Client"
+                    xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
+                    xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:tech="clr-namespace:Supremacy.Tech;assembly=SupremacyCore">
+
+  <DataTemplate DataType="{x:Type local:ResearchFieldData}">
+    <DockPanel LastChildFill="False"
+               Margin="7,0,7,0">
+      <Image DockPanel.Dock="Top"
+             MaxWidth="270"
+             MaxHeight="225"
+             Stretch="Uniform"
+             StretchDirection="DownOnly"
+             Source="{Binding Path=Field, Converter={StaticResource ResearchFieldImageConverter}}"/>
+      <TextBlock DockPanel.Dock="Top"
+                 FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                 FontSize="16pt"
+                 Foreground="{StaticResource HeaderTextBrush}"
+                 Margin="0,7,0,0"
+                 HorizontalAlignment="Center"
+                 TextWrapping="Wrap"
+                 TextTrimming="CharacterEllipsis"
+                 Text="{Binding Path=Field.Name, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}"/>
+      <DockPanel DockPanel.Dock="Top"
+                 Margin="0,7,0,0">
+        <DockPanel DockPanel.Dock="Top">
+          <RepeatButton DockPanel.Dock="Left"
+                        Margin="0,0,2,0"
+                        Command="{x:Static ui:BlockBar.DecrementCommand}"
+                        CommandTarget="{Binding ElementName=ValueBlockBar}"
+                        Delay="150"
+                        Interval="50"
+                        IsTabStop="False"
+                        SnapsToDevicePixels="True">
+            <RepeatButton.Template>
+              <ControlTemplate TargetType="{x:Type RepeatButton}">
+                <Border x:Name="Border"
+                        Width="14"
+                        Height="21"
+                        CornerRadius="10.5,0,0,10.5"
+                        Background="{DynamicResource LCARS_Borg3Gradient_Left_Right}"/>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsMouseOver"
+                           Value="True">
+                    <Setter TargetName="Border"
+                            Property="Background"
+                            Value="{DynamicResource LCARS_Borg2Gradient_Left_Right}"/>
+                  </Trigger>
+                  <Trigger Property="IsPressed"
+                           Value="True">
+                    <Setter TargetName="Border"
+                            Property="Background"
+                            Value="{DynamicResource LCARS_Borg1Gradient_Left_Right}"/>
+                    <Trigger.EnterActions>
+                                            <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
+                    </Trigger.EnterActions>
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </RepeatButton.Template>
+          </RepeatButton>
+          <RepeatButton DockPanel.Dock="Right"
+                        Margin="2,0,0,0"
+                        Command="{x:Static ui:BlockBar.IncrementCommand}"
+                        CommandTarget="{Binding ElementName=ValueBlockBar}"
+                        Delay="150"
+                        Interval="50"
+                        IsTabStop="False"
+                        SnapsToDevicePixels="True">
+            <RepeatButton.Template>
+              <ControlTemplate TargetType="{x:Type RepeatButton}">
+                <Border x:Name="Border"
+                        Width="14"
+                        Height="21"
+                        CornerRadius="0,10.5,10.5,0"
+                        Background="{DynamicResource LCARS_Borg3Gradient_Left_Right}"/>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsMouseOver"
+                           Value="True">
+                    <Setter TargetName="Border"
+                            Property="Background"
+                            Value="{DynamicResource LCARS_Borg2Gradient_Left_Right}"/>
+                  </Trigger>
+                  <Trigger Property="IsPressed"
+                           Value="True">
+                    <Setter TargetName="Border"
+                            Property="Background"
+                            Value="{DynamicResource LCARS_Borg1Gradient_Left_Right}"/>
+                    <Trigger.EnterActions>
+                                            <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
+                    </Trigger.EnterActions>
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </RepeatButton.Template>
+          </RepeatButton>
+          <ui:BlockBar x:Name="ValueBlockBar"
+                       DockPanel.Dock="Top"
+                       BlockCount="20"
+                       BlockMargin="2"
+                       Value="{Binding Path=Distribution.Value, Mode=TwoWay}"/>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Bottom"
+                   Margin="0,7,0,0">
+          <TextBlock DockPanel.Dock="Left"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     FontSize="12pt"
+                     Foreground="{StaticResource LCARS_GreenTextBrush}"
+                     VerticalAlignment="Center">
+            <TextBlock Text="Level"/>
+            <TextBlock Text="{Binding Path=TechLevel}"/>
+            <TextBlock Text=" done"/>
+          </TextBlock>
+          <ToggleButton DockPanel.Dock="Right"
+                        Focusable="False"
+                        IsTabStop="False"
+                        Margin="0,0,0,0"
+                        Style="{DynamicResource LockToggleButtonStyle}"
+                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"/>
+          <TextBlock DockPanel.Dock="Right"
+                     Margin="0,0,7,0"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     FontSize="12pt"
+                     Foreground="{StaticResource LCARS_GreenTextBrush}"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Right"
+                     TextAlignment="Right"
+                     Text="{Binding Path=Distribution.Value}"/>
+        </DockPanel>
+      </DockPanel>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type local:ResearchApplicationData}">
+    <Border x:Name="OuterBorder"
+            BorderThickness="1,1,0,0"
+            BorderBrush="White"
+            Padding="4"
+            SnapsToDevicePixels="True"
+            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+            TextBlock.FontSize="14pt">
+      <Border x:Name="InnerBorder">
+        <TextBlock x:Name="ApplicationName"
+                   Foreground="{DynamicResource DisabledTextBrush}"
+                   Text="{Binding Path=DisplayText, Converter={StaticResource UpperCaseConverter}}"
+                   TextWrapping="Wrap"
+                   TextTrimming="CharacterEllipsis"/>
+      </Border>
+    </Border>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Path=IsResearched}"
+                   Value="True">
+        <Setter TargetName="ApplicationName"
+                Property="Foreground"
+                Value="{DynamicResource DefaultTextBrush}"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Path=IsResearching}"
+                   Value="True">
+        <Setter TargetName="InnerBorder"
+                Property="Opacity"
+                Value="1.0"/>
+        <Setter TargetName="ApplicationName"
+                Property="Foreground"
+                Value="{DynamicResource HeaderTextBrush}"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Path=(Selector.IsSelected), RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                   Value="True">
+        <Setter TargetName="OuterBorder"
+                Property="Background"
+                Value="{DynamicResource {x:Static scc:ClientResources.HighlightBrushKey}}"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+    <!--Image-->
+  <DataTemplate x:Key="TechObjectImageTemplate"
+                DataType="{x:Type tech:TechObjectDesign}">
+    <Border BorderBrush="White"
+            Margin="0,0,7,7"
+            BorderThickness="2"
+            CornerRadius="4"
+            ToolTip="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}">
+      <Border.Background>
+        <ImageBrush Stretch="UniformToFill"
+                    ImageSource="{Binding Path=Image, Converter={StaticResource TechObjectImageConverter}}"/>
+      </Border.Background>
+    </Border>
+  </DataTemplate>
+
+    <!--Details-->
+  <DataTemplate DataType="{x:Type local:ResearchApplicationDetails}">
+    <ScrollViewer CanContentScroll="False"
+                  MaxHeight="320">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.5*"/>
+          <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0"
+                    Orientation="Vertical"
+                    TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    TextBlock.FontSize="12pt"
+                    TextBlock.Foreground="{DynamicResource DefaultTextBrush}">
+          <TextBlock FontSize="16pt"
+                     Foreground="{DynamicResource HeaderTextBrush}"
+                     TextWrapping="Wrap"
+                     Text="{Binding Path=Application.Name, Converter={StaticResource StringResourceConverter}}"
+                     Margin="0,0,0,7"/>
+          <TextBlock TextWrapping="Wrap"
+                     Text="{Binding Path=Application.Description, Converter={StaticResource StringResourceConverter}}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Right">
+          <ItemsControl x:Name="DependentBuildingsView"
+                        ItemsSource="{Binding Path=DependentBuildings}"
+                        ItemTemplate="{StaticResource TechObjectImageTemplate}"
+                        HorizontalAlignment="Left"
+                        Margin="14,0,0,7">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"
+                           ItemHeight="48"
+                           ItemWidth="54"
+                           IsItemsHost="True"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
+          <ItemsControl x:Name="DependentShipsView"
+                        ItemsSource="{Binding Path=DependentShips}"
+                        ItemTemplate="{StaticResource TechObjectImageTemplate}"
+                        HorizontalAlignment="Left"
+                        Margin="14,0,0,0">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"
+                           ItemHeight="48"
+                           ItemWidth="54"
+                           IsItemsHost="True"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
+        </StackPanel>
+      </Grid>
+    </ScrollViewer>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Path=DependentBuildings.Count}"
+                   Value="0">
+        <Setter TargetName="DependentBuildingsView"
+                Property="Visibility"
+                Value="Collapsed"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Path=DependentShips.Count}"
+                   Value="0">
+        <Setter TargetName="DependentShipsView"
+                Property="Visibility"
+                Value="Collapsed"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+  <Style TargetType="{x:Type local:ResearchScreen}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type local:ResearchScreen}">
+          <Border Background="#66000000"
+                  Padding="6">
+            <DockPanel LastChildFill="True"
+                       DataContext="{Binding Path=AppContext.LocalPlayerEmpire.Research, RelativeSource={RelativeSource TemplatedParent}}">
+              <Expander DockPanel.Dock="Left"
+                        Header="{s:StringResource Key=EMPIRE_TECH_INFO, Case=Upper}"
+                        Width="240"
+                        IsExpanded="True"
+                        TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                        TextBlock.FontSize="14pt"
+                        TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
+                        VerticalAlignment="Top">
+                <StackPanel>
+                    
+                    <!--Begin of RESEARCH -->
+                  <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                             Text="RESEARCH"
+                             FontSize="18pt"/>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{s:StringResource Key=RESEARCH_LAST_TURN, Case=Upper}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=CumulativePoints.LastChange}"/>
+                  </DockPanel>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{s:StringResource Key=TOTAL_RESEARCH, Case=Upper}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=CumulativePoints.CurrentValue}"/>
+                  </DockPanel>
+                    
+                    <!--Beginn of PROGRESS-->
+
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                             Text="PROGRESS"
+                             FontSize="18pt"/>
+                        
+                    <DockPanel Margin="14,0,0,0">
+                        <TextBlock DockPanel.Dock="Left"
+                                    Foreground="{DynamicResource HeaderTextBrush}"
+                                    Text="BIOTECH"/>
+                    <TextBlock DockPanel.Dock="Right"
+                                    HorizontalAlignment="Right"
+                                    Text="{Binding Path=IsResearching[BioTech].CurrentValue}"
+                               />
+                    </DockPanel>
+
+                    <DockPanel Margin="14,0,0,0">
+                        <TextBlock DockPanel.Dock="Left"
+                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Text="COMPUTERS"/>
+                        <TextBlock DockPanel.Dock="Right"
+                            HorizontalAlignment="Right"
+                            Text="{Binding Path=DisplayText[Computers]}"
+                        />
+                    </DockPanel>
+
+                    <DockPanel Margin="14,0,0,0">
+                        <TextBlock DockPanel.Dock="Left"
+                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Text="CONSTRUCTION"/>
+                        <TextBlock DockPanel.Dock="Right"
+                            HorizontalAlignment="Right"
+                            Text="{Binding Path=DisplayText[Construction]}"
+                        />
+                    </DockPanel>
+
+                    <DockPanel Margin="14,0,0,0">
+                        <TextBlock DockPanel.Dock="Left"
+                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Text="ENERGY"/>
+                        <TextBlock DockPanel.Dock="Right"
+                            HorizontalAlignment="Right"
+                            Text="{Binding Path=TechCategory.Energy}"
+                        />
+                    </DockPanel>
+
+                    <DockPanel Margin="14,0,0,0">
+                        <TextBlock DockPanel.Dock="Left"
+                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Text="PROPULSION"/>
+                        <TextBlock DockPanel.Dock="Right"
+                            HorizontalAlignment="Right"
+                            Text="{Binding Path=TechCategory.Propulsion}"
+                        />
+                    </DockPanel>
+
+                    <DockPanel Margin="14,0,0,0">
+                        <TextBlock DockPanel.Dock="Left"
+                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Text="WEAPONS"/>
+                        <TextBlock DockPanel.Dock="Right"
+                            HorizontalAlignment="Right"
+                            Text="{Binding Path=DisplayText[Weapons]}"
+                        />
+                    </DockPanel>
+                    <!--End of PROGRESS-->
+
+                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                             Text="{s:StringResource Key=RESEARCH_BONUSES, Case=Upper}"
+                             FontSize="18pt"/>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{Binding Source=TechCategory.BioTech, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=Bonuses[BioTech]}"/>
+                  </DockPanel>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{Binding Source=TechCategory.Computers, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=Bonuses[Computers]}"/>
+                  </DockPanel>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{Binding Source=TechCategory.Construction, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=Bonuses[Construction]}"/>
+                  </DockPanel>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{Binding Source=TechCategory.Energy, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=Bonuses[Energy]}"/>
+                  </DockPanel>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{Binding Source=TechCategory.Propulsion, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=Bonuses[Propulsion]}"/>
+                  </DockPanel>
+                  <DockPanel Margin="14,0,0,0">
+                    <TextBlock DockPanel.Dock="Left"
+                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Text="{Binding Source=TechCategory.Weapons, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path=Bonuses[Weapons]}"/>
+                  </DockPanel>
+                </StackPanel>
+              </Expander>
+
+                <!-- Tab RESEARCH_MATRIX-->
+                <TabControl Margin="4,0,0,0">
+                <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="2*"
+                                     MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>
+                      <RowDefinition Height="*"
+                                     MinHeight="128"/>
+                    </Grid.RowDefinitions>
+                    <Border x:Name="PART_ResearchFieldItemsHost"
+                            Grid.Row="0"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,7"
+                            Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+                    <ScrollViewer x:Name="ResearchMatrixScrollViewer"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Visible"
+                                  CanContentScroll="False"
+                                  Grid.Row="1">
+                      <Border x:Name="PART_ResearchMatrixHost"
+                              BorderBrush="White"
+                              BorderThickness="0,0,1,1"
+                              SnapsToDevicePixels="True"
+                              Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+                    </ScrollViewer>
+                    <ContentControl Grid.Row="2"
+                                    Margin="0,7,0,0"
+                                    Style="{StaticResource LCARS_BorgThinBorderStyle}">
+                      <Border x:Name="PART_ApplicationDetailsHost"/>
+                    </ContentControl>
+                  </Grid>
+                </TabItem>
+                <TabItem Header="{s:StringResource Key=ENCYCLOPEDIA, Case=Upper}">
+                  <!--
+                    ***************************
+                    * BEGIN ENCYCLOPEDIA GRID *
+                    ***************************
+                  -->
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="28"/>
+                      <ColumnDefinition Width="180"/>
+                      <ColumnDefinition Width="28"/>
+                      <ColumnDefinition Width="14"/>
+                      <ColumnDefinition Width="28"/>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="21"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="28"/>
+                      <RowDefinition Height="28"/>
+                      <RowDefinition Height="*"/>
+                      <RowDefinition Height="28"/>
+                      <RowDefinition Height="28"/>
+                    </Grid.RowDefinitions>
+                    <!-- Top Left Rounded Corner -->
+                    <!--<Border Grid.Column="0"
+                            Grid.Row="0"
+                            CornerRadius="14,0,0,14"
+                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"/>-->
+                    <!-- Bottom Left Rounded Corner -->
+                    <!--<Border Grid.Column="0"
+                            Grid.Row="4"
+                            CornerRadius="14,0,0,14"
+                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"/>-->
+                    <!-- Top Right Rounded Corner -->
+                    <!--<Border Grid.Column="6"
+                            Grid.Row="0"
+                            CornerRadius="0,14,14,0"
+                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"/>-->
+
+
+                                        <!-- Bottom Right Rounded Corner -->
+                                        <!--<Border Grid.Column="6"
+                            Grid.Row="4"-->
+                            <!--CornerRadius="0,14,14,0"
+                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"-->
+
+
+                    <!--Begin of Drawing-->
+                    <Path x:Name="LeftEdge" Stroke="SpringGreen" StrokeThickness="2" Opacity="0.5" >
+                        <Path.Data>
+                            <PathGeometry>
+                                <PathGeometry.Figures>
+                                    <PathFigure StartPoint="0,1">
+                                        <PathFigure.Segments>
+                                            <BezierSegment Point1="5,5"
+                                        Point2="6,10"
+                                        Point3="10,12"/>
+                                            <LineSegment Point="14,14" />
+                                            <BezierSegment Point1="14,18"
+                                        Point2="26,20"
+                                        Point3="28,25"/>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry.Figures>
+                            </PathGeometry>
+                        </Path.Data>
+                    </Path>
+                    <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.4" >
+                        <Path.Data>
+                            <PathGeometry>
+                                <PathGeometry.Figures>
+                                    <PathFigure StartPoint="0,28">
+                                        <PathFigure.Segments>
+                                            <BezierSegment Point1="5,25"
+                                        Point2="9,20"
+                                        Point3="13,18"/>
+                                            <LineSegment Point="14,14" />
+                                            <BezierSegment Point1="20,10"
+                                        Point2="22,5"
+                                        Point3="26,3"/>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry.Figures>
+                            </PathGeometry>
+                        </Path.Data>
+                    </Path>
+                    <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.3">
+                        <Path.Data>
+                            <PathGeometry>
+                                <PathGeometry.Figures>
+                                    <PathFigure StartPoint="13,0">
+                                        <PathFigure.Segments>
+                                            <BezierSegment Point1="16,8"
+                                        Point2="11,11"
+                                        Point3="14,14"/>
+                                            <LineSegment Point="19,17" />
+                                            <BezierSegment Point1="13,21"
+                                        Point2="15,24"
+                                        Point3="15,28"/>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry.Figures>
+                            </PathGeometry>
+                        </Path.Data>
+                    </Path>
+                    <Ellipse 
+                        Grid.Column="0" 
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Height="28"
+                        Width="28"
+                        Fill="Green"
+                        Opacity="0.3"
+                        StrokeThickness="4"
+                        Stroke="#1ffe36"/>
+
+                    <Ellipse  
+                        Grid.Column="0" 
+                        Grid.Row="0"
+                        Canvas.Top="15"
+                        Canvas.Left="5"
+                        Height="9"
+                        Width="9"
+                        Fill="#cce259"
+                    Opacity="0.6"
+                    StrokeThickness="2"
+                        Stroke="#1fe336"/>
+                    <Ellipse  
+                        Grid.Column="0" 
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Height="6"
+                        Width="6"
+                        Fill="Azure"
+                        Opacity="0.6"
+                        StrokeThickness="2"
+                        Stroke="Goldenrod"/>
+                    <!--End of Drawing-->
+
+                                        <!-- Top-Center Intersection -->
+                    <Path Grid.Column="2"
+                          Grid.ColumnSpan="3"
+                          Grid.Row="0"
+                          Grid.RowSpan="2"
+                          Width="70"
+                          Height="56"
+                          Stroke="GreenYellow"
+                          StrokeThickness="2"
+                          Fill="{StaticResource LCARS_Borg1Gradient_Top_Bottom}"
+                          Data="F1 M 0,0L 0,28C 9.33333,28 18.6667,28 23.3333,32.6667C 28,37.3333 28,46.6667 28,56L 42,56C 42,46.6667 42,37.3333 46.6667,32.6667C 51.3333,28 60.6667,28 70,28L 70,0L 0,0 Z "/>
+                    <!-- Bottom-Center Intersection -->
+                    <Path Grid.Column="2"
+                          Grid.ColumnSpan="3"
+                          Grid.Row="3"
+                          Grid.RowSpan="2"
+                          Width="70"
+                          Height="56"
+                          Stroke="GreenYellow"
+                          StrokeThickness="2"
+                          Fill="{StaticResource LCARS_Borg1Gradient_Top_Bottom}"
+                          Data="F1 M 70,56L 70,28C 60.6667,28 51.3333,28 46.6667,23.3333C 42,18.6667 42,9.33334 42,0L 28,0C 28,9.33334 28,18.6667 23.3333,23.3333C 18.6667,28 9.33333,28 3.78956e-014,28L 3.78956e-014,56L 70,56 Z "/>
+                    <!-- Upper-Right Edge -->
+                    <DockPanel Grid.Column="5"
+                               Grid.Row="0"
+                               Margin="3,0,3,0"
+                               LastChildFill="True"
+                               >
+                      <TextBlock DockPanel.Dock="Right"
+                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                 FontSize="18pt"
+                                 Foreground="{DynamicResource DefaultTextBrush}"
+                                 Margin="6,0,3,0"
+                                 VerticalAlignment="Center"
+                                 Text="COLLECTIVE KNOWLEDGE"/>
+                                            <!--Part left side in front of COLLECTIVE KNOWLEDGE-->
+                                            <Border 
+                                                BorderBrush="{StaticResource LCARS_Borg3Gradient_Left_Right}"
+                                                BorderThickness="2"
+                                                Background="Transparent"/>
+                                            <!--<Border Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"/>-->
+                        
+                    </DockPanel>
+                    <!-- Lower-Right Edge -->
+                    <!--<Border Grid.Column="5"
+                            Grid.Row="4"
+                            Margin="3,0,3,0"
+                            Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"/>-->
+
+                                        <TextBlock 
+                                 Grid.Column="5"
+                                 Grid.Row="4"   
+                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                 FontSize="18pt"
+                                 Foreground="{DynamicResource DefaultTextBrush}"
+                                 Margin="6,0,3,0"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Right"
+                                 Text="COLLECTIVE KNOWLEDGE"/>
+                                        <!--Part left side in front of COLLECTIVE KNOWLEDGE-->
+                                        <Border
+                                                Grid.Column="5"
+                                                Grid.Row="4"   
+                                                BorderBrush="Green"
+                                                BorderThickness="2"
+                                                Background="Transparent"/>
+
+                                        <!-- Begin of Drawing -->
+                                        <Canvas 
+                                            
+                                 Grid.Column="5"
+                                 Grid.Row="4"             
+                                            Grid.ColumnSpan="2"
+                                 Height="28"
+                                 Margin="3,0,0,0">
+
+                                            <Ellipse 
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Left"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="#cce259"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                            <Ellipse 
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="11"
+                                         Height="7"
+                                         Width="7"
+                                         Fill="Green"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+                                            <Ellipse 
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         Canvas.Top="8"
+                                         Canvas.Left="5"
+                                         Height="7"
+                                         Width="7"
+                                         Fill="Green"
+                                         StrokeThickness="1"
+                                         Stroke="Goldenrod"/>
+
+
+                                            <Path Stroke="WhiteSmoke" StrokeThickness="2" Opacity="0.7">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="18,22"
+                                                            Point2="50,18"
+                                                            Point3="80,20"/>
+                                                                    <LineSegment Point="90,10" />
+                                                                    <BezierSegment Point1="100,18"
+                                                            Point2="120,0"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="GreenYellow" StrokeThickness="4" Opacity="0.3">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="40,25"
+                                                            Point2="50,18"
+                                                            Point3="60,10"/>
+                                                                    <LineSegment Point="80,18" />
+                                                                    <BezierSegment Point1="110,10"
+                                                            Point2="120,5"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.7" >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="20,25"
+                                                            Point2="30,28"
+                                                            Point3="40,10"/>
+                                                                    <LineSegment Point="90,10" />
+                                                                    <BezierSegment Point1="100,10"
+                                                            Point2="110,5"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="SpringGreen" StrokeThickness="2" Opacity="0.7" >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="10,5"
+                                                            Point2="60,15"
+                                                            Point3="75,25"/>
+                                                                    <LineSegment Point="85,20" />
+                                                                    <BezierSegment Point1="110,27"
+                                                            Point2="120,20"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Ellipse 
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="130"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="20"
+                                         Canvas.Left="140"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="130"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="0"
+                                         Canvas.Left="150"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+
+                                            <Path Stroke="GreenYellow" StrokeThickness="2" Opacity="0.7"  >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="190,18"
+                                                            Point2="200,28"
+                                                            Point3="230,0"/>
+                                                                    <LineSegment Point="240,10" />
+                                                                    <BezierSegment Point1="260,18"
+                                                            Point2="290,0"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="170,25"
+                                                            Point2="200,2"
+                                                            Point3="210,28"/>
+                                                                    <LineSegment Point="250,25" />
+                                                                    <BezierSegment Point1="270,10"
+                                                            Point2="285,0"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.7"  >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="200,25"
+                                                            Point2="230,7"
+                                                            Point3="255,20"/>
+                                                                    <LineSegment Point="270,20" />
+                                                                    <BezierSegment Point1="280,10"
+                                                            Point2="290,0"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="SpringGreen" StrokeThickness="2" Opacity="0.7" >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="190,5"
+                                                            Point2="210,22"
+                                                            Point3="230,25"/>
+                                                                    <LineSegment Point="250,20" />
+                                                                    <BezierSegment Point1="265,27"
+                                                            Point2="280,2"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+
+                                            <Ellipse   
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                            <Ellipse
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                                        </Canvas>
+                                        <!-- End of Drawing -->
+
+
+                     <!-- Vertical Intersection -->
+                    <Border Grid.Column="3"
+                            Grid.Row="2"
+                            Margin="0,3,0,3"
+                            Background="Transparent"
+                            BorderBrush="GreenYellow"
+                            BorderThickness="2"
+                            />
+
+                    <!-- Search Bar -->
+                    <Grid Grid.Column="1"
+                          Grid.Row="0"
+                          Margin="3,0,3,0">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0"
+                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                 FontSize="18pt"
+                                 Foreground="{DynamicResource DefaultTextBrush}"
+                                 Margin="3,0,6,0"
+                                 VerticalAlignment="Center"
+                                 Text="SEARCH"/>
+                      <TextBox x:Name="PART_SearchText"
+                               Grid.Column="1"
+                               BorderBrush="GreenYellow"
+                               BorderThickness="2"
+                               />
+                    </Grid>
+
+                    <!-- Slider -->
+                    <!--<Slider x:Name="EncyclopediaSizeSlider"
+                            Grid.Column="1"
+                            Grid.Row="4" 
+                            Margin="3,0,3,0"
+                            Minimum="32"
+                            Maximum="128"
+                            Value="48"
+                            Interval="8"
+                            VerticalAlignment="Center"/>-->
+
+                                        <!--<Border Grid.Column="1"
+                            Grid.Row="4"
+                            Margin="3,0,3,0"
+                            Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"/>-->
+
+                                        <!-- Begin of Drawing -->
+                                        <Canvas 
+                                 Grid.Column="0"
+                                 Grid.Row="4"                                    
+                                 Height="28"
+                                 Margin="3,0,0,0">
+                                            <Ellipse 
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Left"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="#cce259"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                            <Ellipse 
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="11"
+                                         Height="7"
+                                         Width="7"
+                                         Fill="Green"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+                                            <Ellipse 
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         Canvas.Top="8"
+                                         Canvas.Left="5"
+                                         Height="7"
+                                         Width="7"
+                                         Fill="Green"
+                                         StrokeThickness="1"
+                                         Stroke="Goldenrod"/>
+
+
+                                            <Path Stroke="WhiteSmoke" StrokeThickness="2" Opacity="0.7">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="18,22"
+                                                            Point2="50,18"
+                                                            Point3="80,20"/>
+                                                                    <LineSegment Point="90,10" />
+                                                                    <BezierSegment Point1="100,18"
+                                                            Point2="120,0"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="GreenYellow" StrokeThickness="4" Opacity="0.3">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="40,25"
+                                                            Point2="50,18"
+                                                            Point3="60,10"/>
+                                                                    <LineSegment Point="80,18" />
+                                                                    <BezierSegment Point1="110,10"
+                                                            Point2="120,5"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.7" >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="20,25"
+                                                            Point2="30,28"
+                                                            Point3="40,10"/>
+                                                                    <LineSegment Point="90,10" />
+                                                                    <BezierSegment Point1="100,10"
+                                                            Point2="110,5"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="SpringGreen" StrokeThickness="2" Opacity="0.7" >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="18,18">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="10,5"
+                                                            Point2="60,15"
+                                                            Point3="75,25"/>
+                                                                    <LineSegment Point="85,20" />
+                                                                    <BezierSegment Point1="110,27"
+                                                            Point2="120,20"
+                                                            Point3="130,10"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Ellipse 
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="130"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="20"
+                                         Canvas.Left="140"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="130"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="0"
+                                         Canvas.Left="150"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+
+                                            <Path Stroke="GreenYellow" StrokeThickness="2" Opacity="0.7"  >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="190,18"
+                                                            Point2="200,28"
+                                                            Point3="230,0"/>
+                                                                    <LineSegment Point="240,10" />
+                                                                    <BezierSegment Point1="260,18"
+                                                            Point2="290,0"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="170,25"
+                                                            Point2="200,2"
+                                                            Point3="210,28"/>
+                                                                    <LineSegment Point="250,25" />
+                                                                    <BezierSegment Point1="270,10"
+                                                            Point2="285,0"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.7"  >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="200,25"
+                                                            Point2="230,7"
+                                                            Point3="255,20"/>
+                                                                    <LineSegment Point="270,20" />
+                                                                    <BezierSegment Point1="280,10"
+                                                            Point2="290,0"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                            <Path Stroke="SpringGreen" StrokeThickness="2" Opacity="0.7" >
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="150,25">
+                                                                <PathFigure.Segments>
+                                                                    <BezierSegment Point1="190,5"
+                                                            Point2="210,22"
+                                                            Point3="230,25"/>
+                                                                    <LineSegment Point="250,20" />
+                                                                    <BezierSegment Point1="265,27"
+                                                            Point2="280,2"
+                                                            Point3="300,15"/>
+                                                                </PathFigure.Segments>
+                                                            </PathFigure>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+
+                                            <Ellipse   
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+
+                                            <Ellipse  
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                            <Ellipse
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                                        </Canvas>
+                                        <!-- End of Drawing -->
+
+                                        <!--Begin of Drawing-->
+                                        <Canvas
+                                            Grid.Column="6"
+                                            Grid.Row="4">
+                                        <Path  Stroke="SpringGreen" StrokeThickness="2" Opacity="0.5" >
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathGeometry.Figures>
+                                                        <PathFigure StartPoint="0,1">
+                                                            <PathFigure.Segments>
+                                                                <BezierSegment Point1="5,5"
+                                                            Point2="6,10"
+                                                            Point3="10,12"/>
+                                                                <LineSegment Point="14,14" />
+                                                                <BezierSegment Point1="14,18"
+                                                            Point2="26,20"
+                                                            Point3="28,25"/>
+                                                            </PathFigure.Segments>
+                                                        </PathFigure>
+                                                    </PathGeometry.Figures>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                        </Path>
+                                        <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.4" >
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathGeometry.Figures>
+                                                        <PathFigure StartPoint="0,28">
+                                                            <PathFigure.Segments>
+                                                                <BezierSegment Point1="5,25"
+                                                            Point2="9,20"
+                                                            Point3="13,18"/>
+                                                                <LineSegment Point="14,14" />
+                                                                <BezierSegment Point1="20,10"
+                                                            Point2="22,5"
+                                                            Point3="26,3"/>
+                                                            </PathFigure.Segments>
+                                                        </PathFigure>
+                                                    </PathGeometry.Figures>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                        </Path>
+                                        <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.3">
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathGeometry.Figures>
+                                                        <PathFigure StartPoint="13,0">
+                                                            <PathFigure.Segments>
+                                                                <BezierSegment Point1="16,8"
+                                                            Point2="11,11"
+                                                            Point3="14,14"/>
+                                                                <LineSegment Point="19,17" />
+                                                                <BezierSegment Point1="13,21"
+                                                            Point2="15,24"
+                                                            Point3="15,28"/>
+                                                            </PathFigure.Segments>
+                                                        </PathFigure>
+                                                    </PathGeometry.Figures>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                        </Path>
+                                        <Ellipse 
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="28"
+                                         Width="28"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="4"
+                                         Stroke="#1ffe36"/>
+
+                                        <Ellipse  
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="5"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                        <Ellipse  
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                                        </Canvas>
+                                        <!--End of Drawing-->
+
+
+                                        <!-- Encyclopedia Entry List -->
+                    <TreeView x:Name="PART_EncyclopediaEntries"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="3"
+                              Grid.Row="1"
+                              Grid.RowSpan="3"
+                              Margin="0,7,7,7"
+                              Background="Transparent"
+                              BorderBrush="Transparent"
+                              BorderThickness="0"
+                              Padding="0"
+                              FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                              Foreground="{DynamicResource DefaultTextBrush}"
+                              FontSize="12pt"
+                              ScrollViewer.CanContentScroll="False"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                      <!--<TreeView.Resources>
+                        <Style TargetType="{x:Type ScrollViewer}">
+                          <Setter Property="CanContentScroll"
+                                  Value="False"/>
+                        </Style>
+                      </TreeView.Resources>
+                      <TreeView.GroupStyle>
+                        <GroupStyle>
+                          <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                              <Setter Property="Margin"
+                                      Value="0,0,0,5"/>
+                              <Setter Property="Template">
+                                <Setter.Value>
+                                  <ControlTemplate TargetType="{x:Type GroupItem}">
+                                    <Grid>
+                                      <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                      </Grid.ColumnDefinitions>
+                                      <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                      </Grid.RowDefinitions>
+                                      <ToggleButton x:Name="GroupToggleButton"
+                                                    Grid.Column="0"
+                                                    Grid.Row="0"
+                                                    IsChecked="True">
+                                        <ToggleButton.Template>
+                                          <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Border Width="14"
+                                                    Height="14"
+                                                    Margin="0,0,3,0"
+                                                    VerticalAlignment="Center">
+                                              <Path x:Name="TrianglePath"
+                                                    Fill="White"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Data="M 0,0 L 7,7 L 14,0 Z "/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                              <Trigger Property="IsChecked"
+                                                       Value="False">
+                                                <Setter TargetName="TrianglePath"
+                                                        Property="Data"
+                                                        Value="M 0,0 L 0,14 L 7,7 L 0,0 Z "/>
+                                              </Trigger>
+                                            </ControlTemplate.Triggers>
+                                          </ControlTemplate>
+                                        </ToggleButton.Template>
+                                      </ToggleButton>
+                                      <TextBlock Grid.Column="1"
+                                                 Grid.Row="0"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{DynamicResource HeaderTextBrush}"
+                                                 Text="{Binding Path=Name}"/>
+                                      <ItemsPresenter x:Name="GroupItemsPresenter"
+                                                      Grid.Column="1"
+                                                      Grid.Row="1"
+                                                      Margin="7,0,0,0"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                      <Trigger SourceName="GroupToggleButton"
+                                               Property="IsChecked"
+                                               Value="False">
+                                        <Setter TargetName="GroupItemsPresenter"
+                                                Property="Visibility"
+                                                Value="Collapsed"/>
+                                      </Trigger>
+                                    </ControlTemplate.Triggers>
+                                  </ControlTemplate>
+                                </Setter.Value>
+                              </Setter>
+                            </Style>
+                          </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                      </TreeView.GroupStyle>-->
+                    </TreeView>
+
+                    <!-- Encyclopedia Document Viewer -->
+                    <FlowDocumentScrollViewer x:Name="PART_EncyclopediaViewer"
+                                              Grid.Column="4"
+                                              Grid.ColumnSpan="3"
+                                              Grid.Row="1"
+                                              Grid.RowSpan="3"
+                                              Margin="0,7,0,7"
+                                              ContextMenuService.IsEnabled="False"
+                                              IsSelectionEnabled="False"/>
+                  </Grid>
+                  <!--
+                    *************************
+                    * END ENCYCLOPEDIA GRID *
+                    *************************
+                  -->
+                </TabItem>
+              </TabControl>
+            </DockPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=AppContext.IsTurnFinished, RelativeSource={RelativeSource TemplatedParent}}"
+                         Value="True">
+              <Setter Property="IsEnabled"
+                      Value="False"/>
+            </DataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>

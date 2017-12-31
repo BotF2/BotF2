@@ -1,0 +1,604 @@
+<!--
+  
+   Shared.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid">
+
+
+    <!--Usage: {StaticResource HeaderTextBrush}-->
+    <SolidColorBrush x:Key="BorderBrush"
+                   Color="LightBlue" />
+    
+    <SolidColorBrush x:Key="HeaderTextBrush"
+                   Color="#ffdfdfff"/>
+    <SolidColorBrush x:Key="LCARS_HeaderBrush"
+                   Color="#ffdfdfff"/>
+    <SolidColorBrush x:Key="DefaultTextBrush"
+                   Color="#ffe7d490"/>
+  <SolidColorBrush x:Key="DisabledTextBrush"
+                   Color="#ff999999"/>
+  <SolidColorBrush x:Key="SelectionBrush"
+                   Color="#7f146bdc"/>
+  
+  <LinearGradientBrush x:Key="SeparatorBackgroundBrush"
+                       StartPoint="0,0"
+                       EndPoint="0,1">
+    <GradientStop Color="#ffd6bd6b"
+                  Offset="0" />
+    <GradientStop Color="#ffed9300"
+                  Offset="1" />
+  </LinearGradientBrush>
+  
+  <ImageBrush x:Key="FleetSelectionBorderBrush"
+              ImageSource="vfs:///Resources/UI/Federation/GalaxyScreen/FleetSelectionBorder.png" />
+
+    <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
+              ImageSource="vfs:///Resources/UI/Federation/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
+
+    <!--<ImageBrush x:Key="LeftRepeatButton1"
+              ImageSource="vfs:///Resources/UI/Federation/Shared/LeftRepeatButton1.png" />
+
+  <ImageBrush x:Key="LeftRepeatButton2"
+              ImageSource="vfs:///Resources/UI/Federation/Shared/LeftRepeatButton2.png" />
+    
+  <ImageBrush x:Key="RightRepeatButton1"
+              ImageSource="vfs:///Resources/UI/Federation/Shared/RightRepeatButton1.png" />
+
+  <ImageBrush x:Key="RightRepeatButton2"
+              ImageSource="vfs:///Resources/UI/Federation/Shared/RightRepeatButton2.png" />-->
+
+  <Style x:Key="LockToggleButtonStyle"
+         TargetType="{x:Type ToggleButton}">
+    <Setter Property="IsTabStop"
+            Value="False"/>
+    <Setter Property="OverridesDefaultStyle"
+            Value="True"/>
+    <Setter Property="SnapsToDevicePixels"
+            Value="True"/>
+    <Setter Property="Width"
+            Value="21"/>
+    <Setter Property="Height"
+            Value="21"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ToggleButton}">
+          <Image x:Name="LockImage"
+                 Source="vfs:///Resources/UI/Federation/Shared/Unlocked.png"/>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked"
+                     Value="True">
+              <Setter TargetName="LockImage"
+                      Property="Source"
+                      Value="vfs:///Resources/UI/Federation/Shared/Locked.png"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <!--<EventTrigger RoutedEvent="ToggleButton.Click">
+        <EventTrigger.Actions>
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+        </EventTrigger.Actions>
+      </EventTrigger>-->
+    </Style.Triggers>
+  </Style>
+    <Style TargetType="{x:Type s:UnitActivationBar}">
+        <Style.Resources>
+          <!--<ControlTemplate x:Key="LeftRepeatButton1Template"-->
+            <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
+                           TargetType="{x:Type RepeatButton}">
+                <Border x:Name="LeftButton"
+                     Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                     CornerRadius="14,0,0,14" />
+                <ControlTemplate.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver"
+                             Value="True" />
+                            <Condition Property="IsPressed"
+                             Value="False" />
+                        </MultiTrigger.Conditions>
+                            <Setter TargetName="LeftButton"
+                            Property="Background"
+                            Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+                    </MultiTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--<ControlTemplate x:Key="RightRepeatButtonTemplate"
+                           TargetType="{x:Type RepeatButton}">
+            <Border x:Name="RightButton"
+                    Background="{StaticResource RightRepeatButton1 }" />
+                <ControlTemplate.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver"
+                             Value="True" />
+                            <Condition Property="IsPressed"
+                             Value="False" />
+                        </MultiTrigger.Conditions>
+                        <Setter TargetName="RightButton"
+                            Property="Background"
+                            Value="{DynamicResource RightRepeatButton2 }" />
+                    </MultiTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>-->
+            <ControlTemplate x:Key="RightRepeatButtonTemplate"
+                           TargetType="{x:Type RepeatButton}">
+            <Border x:Name="RightButton"
+                    Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                    CornerRadius="0,14,14,0" />
+            <ControlTemplate.Triggers>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsMouseOver"
+                             Value="True" />
+                  <Condition Property="IsPressed"
+                             Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="RightButton"
+                        Property="Background"
+                        Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+              </MultiTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Style.Resources>
+    <Setter Property="UnitBrush"
+            Value="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type s:UnitActivationBar}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <RepeatButton x:Name="PART_DecrementButton"
+                          Command="{x:Static s:UnitActivationBar.DecrementValueCommand}"
+                          Interval="50"
+                          Delay="300"
+                          Content="&lt;"
+                          Grid.Column="0"
+                          Width="24"
+                          Template="{StaticResource LeftRepeatButtonTemplate}" />
+            <Border x:Name="PART_ContentArea"
+                    Grid.Column="1"
+                    Background="#00000000"
+                    IsHitTestVisible="True" />
+            <RepeatButton x:Name="PART_IncrementButton"
+                          Command="{x:Static s:UnitActivationBar.IncrementValueCommand}"
+                          Interval="50"
+                          Delay="300"
+                          Content="&gt;"
+                          Grid.Column="2"
+                          Width="24"
+                          Template="{StaticResource RightRepeatButtonTemplate}" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+              <Setter TargetName="PART_DecrementButton"
+                      Property="Visibility"
+                      Value="Collapsed" />
+              <Setter TargetName="PART_IncrementButton"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!--
+    XCEED DATA GRID 
+  -->
+
+  <Style TargetType="{x:Type xcdg:GroupLevelIndicatorPane}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+  <Style TargetType="{x:Type xcdg:ColumnManagerCell}">
+    <Setter Property="HorizontalAlignment"
+            Value="Left" />
+    <Setter Property="VerticalAlignment"
+            Value="Center" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Left" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+    <Setter Property="Background"
+            Value="Transparent" />
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Padding"
+            Value="6,0,6,0" />
+    <Setter Property="Margin"
+            Value="0,0,0,0" />
+    <Setter Property="Height"
+            Value="28" />
+    <Setter Property="Foreground"
+            Value="{StaticResource HeaderTextBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:ColumnManagerCell}">
+          <Grid SnapsToDevicePixels="true"
+                Height="28">
+            <Border Name="HeaderBorder">
+              <DockPanel LastChildFill="True">
+                <Border Padding="{TemplateBinding Padding}">
+                  <ContentPresenter x:Name="HeaderContent"
+                                    DockPanel.Dock="Left"
+                                    Content="{xcdg:CellContentBinding}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                    Margin="0,0,0,1"
+                                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    TextBlock.Foreground="{StaticResource HeaderTextBrush}"
+                                    TextBlock.FontSize="18pt"
+                                    RecognizesAccessKey="True"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch" />
+                </Border>
+                <Border x:Name="BackgroundBorder"
+                        Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                        MinWidth="14"
+                        HorizontalAlignment="Stretch" />
+              </DockPanel>
+            </Border>
+            <Canvas>
+              <Thumb x:Name="PART_ColumnResizerThumb"
+                     Background="Transparent"
+                     Foreground="Transparent"
+                     BorderBrush="Transparent"
+                     Style="{StaticResource GridViewColumnHeaderGripper}" />
+            </Canvas>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ParentColumn.HasFixedWidth}"
+                         Value="True">
+              <Setter TargetName="PART_ColumnResizerThumb"
+                      Property="IsEnabled"
+                      Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ParentColumn.Visible}"
+                         Value="False">
+              <Setter Property="Visibility"
+                      Value="Collapsed" />
+            </DataTrigger>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+              <Setter TargetName="BackgroundBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+            </Trigger>
+            <Trigger Property="IsPressed"
+                     Value="True">
+              <Setter TargetName="BackgroundBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:ColumnManagerRow}">
+    <Setter Property="HorizontalAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalAlignment"
+            Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+    <Setter Property="Background"
+            Value="Transparent" />
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Padding"
+            Value="0" />
+    <Setter Property="Margin"
+            Value="0,0,0,4" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="xcdg:ColumnManagerRow">
+          <ControlTemplate.Resources>
+            <xcdg:ThicknessConverter x:Key="thicknessConverter"
+                                     InverseValue="True" />
+          </ControlTemplate.Resources>
+          <!-- This Grid is used to layout the GroupLevelIndicatorPane placeholder and the CellsHost panel. -->
+          <Grid x:Name="rootGrid">
+
+            <!-- The border responsible for the visual outline of the row (gridlines and background)
+                       spans the GroupLevelIndicatorPane and CellsHost Panel. Those 2 elements are not children of
+                       the Border because we don't want the border to be displayed in the GroupLevelIndicatorPane. -->
+            <Border x:Name="rootBorder"
+                    Padding="{TemplateBinding Padding}" />
+
+            <Decorator x:Name="indentationDecorator">
+
+              <!-- The PART_CellsHost part designates the Panel to which this Row's Cells should be added.-->
+              <DockPanel LastChildFill="True">
+                <xcdg:FixedCellPanel x:Name="PART_CellsHost"
+                                     DockPanel.Dock="Left"
+                                     Margin="{TemplateBinding BorderThickness}" />
+                <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+              </DockPanel>
+            </Decorator>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(xcdg:DataGridControl.ParentDataGridControl).ViewBindingContext.FixedColumnCount}"
+                           Value="0" />
+                <Condition Value="True">
+                  <Condition.Binding>
+                    <Binding RelativeSource="{RelativeSource Self}"
+                             Path="(xcdg:DataGridControl.ParentDataGridControl).GroupLevelDescriptions.Count">
+                      <Binding.Converter>
+                        <xcdg:GreaterThanZeroConverter />
+                      </Binding.Converter>
+                    </Binding>
+                  </Condition.Binding>
+                </Condition>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(xcdg:DataGridControl.ParentDataGridControl).ViewBindingContext.ShowFixedColumnSplitter}"
+                           Value="True" />
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="indentationDecorator"
+                      Property="Margin"
+                      Value="{Binding ElementName=PART_CellsHost, Path=SplitterWidth, Converter={StaticResource thicknessConverter}, ConverterParameter='Left'}">
+              </Setter>
+            </MultiDataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type xcdg:DataCell}">
+    <Setter Property="HorizontalAlignment"
+            Value="Left" />
+    <Setter Property="VerticalAlignment"
+            Value="Center" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Left" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+    <!--<Setter Property="Background"
+                          Value="Transparent" />
+                  <Setter Property="Foreground"
+                          Value="{StaticResource DefaultTextBrush}" />
+                  <Setter Property="FontFamily"
+                          Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+                  <Setter Property="FontSize"
+                          Value="12pt" />
+                  <Setter Property="BorderBrush"
+                          Value="{x:Null}" />
+                  <Setter Property="BorderThickness"
+                          Value="0" />-->
+    <Setter Property="Padding"
+            Value="6,3,6,3" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:DataCell}">
+          <Border Padding="{TemplateBinding Padding}">
+            <ContentPresenter />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:DataRow}">
+    <Setter Property="HorizontalAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalAlignment"
+            Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment"
+            Value="Stretch" />
+    <Setter Property="VerticalContentAlignment"
+            Value="Stretch" />
+    <Setter Property="Background"
+            Value="Transparent" />
+    <!--<Setter Property="Foreground"
+                          Value="{StaticResource DefaultTextBrush}" />
+                  <Setter Property="FontFamily"
+                          Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+                  <Setter Property="FontSize"
+                          Value="12pt" />-->
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:DataRow}">
+          <Grid x:Name="PART_RowFocusRoot">
+            <Border x:Name="RowBorder"
+                    Background="Transparent">
+              <!--<DockPanel x:Name="PART_CellsHost"
+                                       LastChildFill="True" />-->
+              <xcdg:FixedCellPanel x:Name="PART_CellsHost"
+                                   SplitterStyle="{TemplateBinding xcdg:TableView.FixedColumnSplitterStyle}"
+                                   Margin="{TemplateBinding BorderThickness}" />
+            </Border>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected"
+                     Value="True">
+              <Setter TargetName="RowBorder"
+                      Property="Background"
+                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:TableViewScrollViewer}">
+    <Setter Property="VerticalScrollBarVisibility"
+            Value="Auto" />
+    <Setter Property="HorizontalScrollBarVisibility"
+            Value="Auto" />
+    <Setter Property="CanContentScroll"
+            Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:TableViewScrollViewer}">
+          <DockPanel LastChildFill="True">
+            <xcdg:SynchronizedScrollViewer x:Name="FixedHeadersHostScrollViewer"
+                                           DockPanel.Dock="Top"
+                                           xcdg:TableViewScrollViewer.SynchronizedScrollViewerPosition="Top"
+                                           Focusable="False"
+                                           Height="28">
+              <StackPanel xcdg:DataGridControl.IsFixedHeadersHost="True"
+                          Orientation="Vertical"
+                          HorizontalAlignment="Stretch"
+                          Height="28" />
+              <!--<DockPanel LastChildFill="True"
+                                       xcdg:DataGridControl.IsFixedHeadersHost="True"
+                                       HorizontalAlignment="Stretch"
+                                       Width="{TemplateBinding ScrollViewer.ViewportWidth}"
+                                       Height="28" />-->
+            </xcdg:SynchronizedScrollViewer>
+            <ScrollBar x:Name="PART_VerticalScrollBar"
+                       DockPanel.Dock="Right"
+                       Orientation="Vertical"
+                       Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"
+                       Value="{TemplateBinding ScrollViewer.VerticalOffset}"
+                       ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}"
+                       Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}"
+                       Style="{StaticResource {x:Type ScrollBar}}" />
+            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                       DockPanel.Dock="Bottom"
+                       Orientation="Horizontal"
+                       Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}"
+                       Value="{TemplateBinding ScrollViewer.HorizontalOffset}"
+                       ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}"
+                       Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"
+                       Style="{StaticResource {x:Type ScrollBar}}" />
+            <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
+          </DockPanel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:DataGridControl}">
+    <Setter Property="Background"
+            Value="Transparent" />
+    <Setter Property="Foreground"
+            Value="{StaticResource DefaultTextBrush}" />
+    <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+    <Setter Property="FontSize"
+            Value="12pt" />
+    <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+    <Setter Property="BorderThickness"
+            Value="0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type xcdg:DataGridControl}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <AdornerDecorator>
+              <xcdg:TableViewScrollViewer x:Name="PART_ScrollViewer"
+                                          ShowRowSelectorPane="False"
+                                          xcdg:GroupLevelIndicatorPane.ShowIndicators="False">
+                <ItemsPresenter />
+              </xcdg:TableViewScrollViewer>
+            </AdornerDecorator>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type xcdg:GroupByControl}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+  <Style TargetType="{x:Type xcdg:HierarchicalGroupByControl}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+  <Style TargetType="{x:Type xcdg:GroupHeaderControl}">
+    <Setter Property="Visibility"
+            Value="Collapsed" />
+  </Style>
+
+  <DrawingImage x:Key="Scrap_Indicator_Glyph">
+    <DrawingImage.Drawing>
+      <DrawingGroup>
+        <DrawingGroup.Children>
+          <GeometryDrawing Brush="#FF990000"
+                           Geometry="F1 M 85.0467,338.729L 176.343,247.433L 85.0467,156.139C 77.388,148.479 77.388,136.06 85.0467,128.401L 130.937,82.5107C 138.596,74.852 151.016,74.852 158.675,82.5107L 249.971,173.807L 341.264,82.5107C 348.924,74.852 361.343,74.852 369.003,82.5107L 414.892,128.401C 422.551,136.06 422.551,148.479 414.892,156.139L 323.596,247.433L 414.892,338.729C 422.551,346.388 422.551,358.805 414.892,366.467L 369.003,412.356C 361.343,420.016 348.924,420.016 341.264,412.356L 249.969,321.06L 158.675,412.356C 151.016,420.016 138.596,420.016 130.937,412.356L 85.0467,366.467C 77.388,358.805 77.388,346.388 85.0467,338.729 Z " />
+          <GeometryDrawing Geometry="F1 M 88.4,363.113C 82.5907,357.305 82.5907,347.888 88.4,342.081L 183.047,247.433L 88.4,152.785C 82.5907,146.977 82.5907,137.561 88.4,131.752L 134.289,85.8626C 140.097,80.056 149.515,80.056 155.323,85.8626L 249.971,180.511L 344.617,85.8626C 350.424,80.056 359.841,80.056 365.649,85.8626L 411.539,131.752C 417.348,137.561 417.348,146.977 411.539,152.785L 316.892,247.433L 411.539,342.081C 417.348,347.888 417.348,357.305 411.539,363.113L 365.649,409.003C 359.841,414.811 350.424,414.811 344.617,409.003L 249.969,314.356L 155.323,409.003C 149.515,414.811 140.097,414.811 134.289,409.003L 88.4,363.113 Z ">
+            <GeometryDrawing.Brush>
+              <LinearGradientBrush StartPoint="0.473001,1.01526"
+                                   EndPoint="0.527008,-0.0152552">
+                <LinearGradientBrush.GradientStops>
+                  <GradientStop Color="#FF990000"
+                                Offset="0" />
+                  <GradientStop Color="#FFFF0000"
+                                Offset="0.572433" />
+                  <GradientStop Color="#FFEB7B7B"
+                                Offset="0.990662" />
+                  <GradientStop Color="#FFEB7B7B"
+                                Offset="1" />
+                </LinearGradientBrush.GradientStops>
+              </LinearGradientBrush>
+            </GeometryDrawing.Brush>
+          </GeometryDrawing>
+          <GeometryDrawing Geometry="F1 M 354.664,209.335L 315.38,248.617L 410.028,343.265C 415.836,349.073 415.836,358.489 410.028,364.299L 364.139,410.188C 358.331,415.996 348.915,415.996 343.105,410.188L 248.459,315.54L 153.809,410.188C 148.003,415.996 138.585,415.996 132.777,410.188L 86.888,364.299C 81.0813,358.489 81.08,349.073 86.888,343.265L 181.535,248.617L 169.772,236.772C 225.24,207.999 286.872,198.853 354.664,209.335 Z ">
+            <GeometryDrawing.Brush>
+              <LinearGradientBrush StartPoint="0.652679,1.1282"
+                                   EndPoint="1.90602,1.1282">
+                <LinearGradientBrush.RelativeTransform>
+                  <TransformGroup>
+                    <SkewTransform CenterX="0.652679"
+                                   CenterY="1.1282"
+                                   AngleX="21.0954"
+                                   AngleY="0" />
+                    <RotateTransform CenterX="0.652679"
+                                     CenterY="1.1282"
+                                     Angle="252.176" />
+                  </TransformGroup>
+                </LinearGradientBrush.RelativeTransform>
+                <LinearGradientBrush.GradientStops>
+                  <GradientStop Color="#FF990000"
+                                Offset="0" />
+                  <GradientStop Color="#FFFF0000"
+                                Offset="0.536377" />
+                  <GradientStop Color="#FFEB0202"
+                                Offset="0.89621" />
+                  <GradientStop Color="#FFEB0202"
+                                Offset="1" />
+                </LinearGradientBrush.GradientStops>
+              </LinearGradientBrush>
+            </GeometryDrawing.Brush>
+          </GeometryDrawing>
+        </DrawingGroup.Children>
+      </DrawingGroup>
+    </DrawingImage.Drawing>
+  </DrawingImage>
+  
+</ResourceDictionary>

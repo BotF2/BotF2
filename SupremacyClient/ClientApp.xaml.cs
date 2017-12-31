@@ -1,0 +1,818 @@
+// ClientApp.xaml.cs
+//
+// Copyright (c) 2007 Mike Strobel
+//
+// This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+// For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+//
+// All other rights reserved.
+
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using Avalon.Windows.Controls;
+using log4net;
+using log4net.Core;
+
+// What are "Practices.Unity" and "Practices.Composite"?
+//      - Looks like this application uses
+//          - (old?) PRISM guidelines (Composite Application Library),
+//          - Unity for dependency injection
+//          - Bootstrapper for the initialization of an application built using the Composite Application Library
+//
+//      - StackOverflow             https://stackoverflow.com/questions/6273357/what-is-prism-for-wpf
+//      - Article:                  https://visualstudiomagazine.com/articles/2012/07/01/creating-modularity-with-wpf-prism-and-unity.aspx
+//      - Article:                  https://visualstudiomagazine.com/articles/2013/04/01/unity-vs-mef.aspx
+//      - Original docu (Composite):https://msdn.microsoft.com/en-us/library/ff647752.aspx
+//      - New MS docu(Composite):   https://msdn.microsoft.com/en-us/library/ff921125
+//      - MS docu Unity:            https://msdn.microsoft.com/en-us/library/dn507457(v=pandp.30).aspx
+//      - MS docu Unity:            https://msdn.microsoft.com/en-us/library/ff647202.aspx
+//      - DI pattern                https://en.wikipedia.org/wiki/Dependency_injection#Examples
+//      - Bootstrapper              https://msdn.microsoft.com/en-us/library/ff921139.aspx
+//      - Tutorial:                 https://www.codeproject.com/Articles/37164/Introduction-to-Composite-WPF-CAL-Prism-Part
+using Microsoft.Practices.Composite.Logging;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Presentation.Regions;
+using Microsoft.Practices.Composite.UnityExtensions;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
+using Microsoft.Win32;
+
+using Supremacy.Annotations;
+using Supremacy.Client.Commands;
+using Supremacy.Client.Context;
+using Supremacy.Client.Logging;
+using Supremacy.Client.Services;
+using Supremacy.Resources;
+using Supremacy.Utility;
+using Supremacy.VFS;
+
+using Xceed.Wpf.DataGrid;
+
+using Scheduler = System.Concurrency.Scheduler;
+
+using Supremacy.Collections;
+using Supremacy.Client.Audio;
+using System.Collections;
+
+namespace Supremacy.Client
+{
+    /// <summary>
+    /// Interaction logic for MyApp.xaml
+    /// </summary>
+    public partial class ClientApp : IClientApplication
+    {
+        #region Fields
+        private static readonly ClientCommandLineArguments CmdLineArgs = new ClientCommandLineArguments();
+        private static readonly DispatcherOperationCallback ExitFrameCallback = ExitFrame;
+
+        private static SplashScreen _splashScreen;
+        private static Mutex _singleInstanceMutex;
+        
+        private bool _isShuttingDown;
+        #endregion
+
+        #region Constructors
+        public ClientApp()
+        {
+        }
+        #endregion
+
+        #region Properties and Indexers
+        public new static ClientApp Current
+        {
+            get { return (ClientApp)Application.Current; }
+        }
+
+        public static Version ClientVersion
+        {
+            get
+            {
+                GameLog.Print("Current.Version= {0}", Current.Version);
+                return Current.Version;
+            }
+        }
+
+        public Version Version
+        {
+            get { return Assembly.GetEntryAssembly().GetName().Version; }
+        }
+
+        public bool IsShuttingDown
+        {
+            get { return _isShuttingDown; }
+        }
+
+        public IClientCommandLineArguments CommandLineArguments
+        {
+            get { return CmdLineArgs; }
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Processes all UI messages currently in the message queue.
+        /// </summary>
+        public void DoEvents()
+        {
+            // Create new nested message pump.
+            var nestedFrame = new DispatcherFrame();
+
+            // Dispatch a callback to the current message queue, when getting called, 
+            // this callback will end the nested message loop.
+            // The priority of this callback should be lower than the that of UI event messages.
+            DispatcherOperation exitOperation = Dispatcher.CurrentDispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                ExitFrameCallback,
+                nestedFrame);
+
+            // Pump the nested message loop.  The nested message loop will 
+            // immediately process the messages left inside the message queue.
+            Dispatcher.PushFrame(nestedFrame);
+
+            // If the "ExitFrame" callback doesn't get finished, Abort it.
+            if (exitOperation.Status != DispatcherOperationStatus.Completed)
+            {
+                exitOperation.Abort();
+            }
+        }
+
+        protected void LoadBaseResources()
+        {
+            if (Current.IsShuttingDown)
+                return;
+
+            try
+            {
+                Current.Resources = LoadComponent(
+                                    new Uri(
+                                        "/SupremacyClient;Component/themes/Default.xaml",
+                                        UriKind.RelativeOrAbsolute))
+                                as ResourceDictionary;
+            }
+            catch
+            {
+                GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: Current.Resources = LoadComponent");
+            }
+        }
+
+        public bool LoadDefaultResources()
+        {
+            if (Current.IsShuttingDown)
+                return false;
+
+            ResourceDictionary themeDictionary = null;
+            try
+            {
+                var themeUri = new Uri(
+                    "/SupremacyClient;Component/themes/Generic/Theme.xaml",
+                    UriKind.RelativeOrAbsolute);
+                themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
+            }
+            catch
+            {
+                GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: var themeUri = new Uri");
+            }
+
+            if (themeDictionary == null)
+                return false;
+
+            LoadBaseResources();
+            if (Current.Resources == null)
+                return false;
+
+            Current.Resources.MergedDictionaries.Add(themeDictionary);
+            return true;
+        }
+
+        public bool LoadThemeResources(string theme)
+        {
+            if (Current.IsShuttingDown)
+                return false;
+
+            // Test comment 123
+            // works    GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: UI-Theme={0}", theme);
+
+            // individual UI
+            var themeUri = new Uri(
+                String.Format(
+                    "/SupremacyClient;Component/themes/{0}/Theme.xaml",
+                    theme),
+                UriKind.RelativeOrAbsolute);
+            // works   GameLog.Print("ClientApp.xaml.cs: themeUri={0}", themeUri);
+
+
+            // only FED UI
+            //var themeUri = new Uri(
+            //    String.Format(
+            //        "/SupremacyClient;Component/themes/Federation/Theme.xaml",
+            //        theme),
+            //    UriKind.RelativeOrAbsolute);
+
+            ResourceDictionary themeDictionary = null;
+            try
+            {
+                themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
+                //GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: themeDictionary={0}", themeDictionary.MergedDictionaries.FirstOrDefault);
+            }
+            catch
+            {
+                GameLog.Print("ClientApp.xaml.cs: themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
+            }
+
+            if (themeDictionary == null)
+                return false;
+
+            LoadBaseResources();
+            if (Current.Resources == null)
+                return false;
+
+            // reactive for bringing back XAML-Tracking
+            //printXAMLdata(themeDictionary, themeUri);
+
+            Current.Resources.MergedDictionaries.Add(themeDictionary);
+            return true;
+        }
+
+        // ToDo: Currently this function only prints "theme" data, but it could be made globaly accessible
+        //       if need arise to trace some other XAML files and ResourceDirecotries 
+        private void printXAMLdata(ResourceDictionary resourceDirectory, Uri parentUri, int level = 1)
+        {
+            // How to enumerate loaded images with absolute paths
+            // https://docs.microsoft.com/en-us/windows/uwp/controls-and-patterns/resourcedictionary-and-xaml-resource-references
+            // https://msdn.microsoft.com/en-us/library/system.windows.resourcedictionary(v=vs.110).aspx
+            // https://stackoverflow.com/questions/3783620/how-would-i-access-this-wpf-xaml-resource-programmatically
+            // https://stackoverflow.com/questions/2631604/get-absolute-file-path-from-image-in-wpf
+            // https://msdn.microsoft.com/en-us/library/aa350178(v=vs.110).aspx
+
+            // https://stackoverflow.com/questions/6369184/print-the-source-filename-and-linenumber-in-c-sharp
+            // https://stackoverflow.com/questions/171970/how-can-i-find-the-method-that-called-the-current-method
+            // http://www.csharp-examples.net/reflection-calling-method-name/
+
+            String currentSource = "NOT SET";
+            if (resourceDirectory.Source != null)
+            {
+                currentSource = resourceDirectory.Source.ToString();
+            }
+
+            GameLog.Client.GameData.DebugFormat("");
+            GameLog.Client.GameData.DebugFormat("");
+            GameLog.Client.GameData.DebugFormat("////////////////////////////// XAML TRACE //////////////////////////////");  
+            GameLog.Client.GameData.DebugFormat(" Current source: {0}", currentSource);
+            GameLog.Client.GameData.DebugFormat(" Root source:    {0}", parentUri.ToString());
+            GameLog.Client.GameData.DebugFormat("");
+
+            // Iterate and print all key/data pairs
+            foreach (DictionaryEntry entry in resourceDirectory)
+            {
+                GameLog.Client.GameData.DebugFormat(" Key:   {0}", entry.Key);
+                GameLog.Client.GameData.DebugFormat(" Value: {0}", entry.Value);
+                GameLog.Client.GameData.DebugFormat("");
+
+                if (entry.Value.GetType() == typeof(Style))
+                {
+                    var style = (Style)entry.Value;
+
+                    foreach (DictionaryEntry resourceEntry in style.Resources)
+                    {
+                        GameLog.Client.GameData.DebugFormat(" Resource data, Key:   {0}", resourceEntry.Key);
+                        GameLog.Client.GameData.DebugFormat(" Resource data, Value: {0}", resourceEntry.Value);
+                        GameLog.Client.GameData.DebugFormat("");
+                    }
+                }
+            }
+
+            // Iterate merged directories for current directory if any, 
+            // and recursively print all their data 
+            foreach (ResourceDictionary childResDirectory in resourceDirectory.MergedDictionaries)
+            {
+                printXAMLdata(childResDirectory, parentUri, level++);
+            }
+        }
+
+        public bool LoadThemeResourcesShipyard(string themeShipyard)
+        {
+            if (Current.IsShuttingDown)
+                return false;
+
+            // individual UI
+            var themeUriShipyard = new Uri(
+                String.Format(
+                    "/SupremacyClientComponents;Component/Themes/{0}/ShipyardDockView.xaml",
+                    themeShipyard),
+                UriKind.RelativeOrAbsolute);
+
+
+            // only FED UI
+            //var themeUriShipyard = new Uri(
+            //    String.Format(
+            //        "/SupremacyClientComponents;Component/Themes/Federation/ShipyardDockView.xaml",
+            //        themeShipyard),
+            //    UriKind.RelativeOrAbsolute);
+
+
+            ResourceDictionary themeDictionaryShipyard = null;
+            try
+            {
+                themeDictionaryShipyard = LoadComponent(themeUriShipyard) as ResourceDictionary;
+            }
+            catch
+            {
+                GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: themeDictionaryShipyard = LoadComponent(themeUriShipyard)");
+            }
+
+            if (themeDictionaryShipyard == null)
+                return false;
+
+            //LoadBaseResources();
+            //if (Current.Resources == null)
+            //    return false;
+
+            //Current.Resources.MergedDictionaries.Add(themeDictionaryShipyard);
+
+            //themeDictionaryShipyard = null;
+
+            //themeUriShipyard = new Uri(
+            //    String.Format(
+            //        "/SupremacyClient;Component/Themes/{0}/Global.xaml",
+            //        themeShipyard),
+            //    UriKind.RelativeOrAbsolute);
+            //themeDictionaryShipyard = null;
+
+            //if (themeDictionaryShipyard == null)
+            //    return false;
+
+            Current.Resources.MergedDictionaries.Add(themeDictionaryShipyard);
+
+            return true;
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _isShuttingDown = true;
+            if (!CmdLineArgs.AllowMultipleInstances)
+            {
+                _singleInstanceMutex.ReleaseMutex();
+            }
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var schedulerDispatcher = Scheduler.Dispatcher.Dispatcher;
+            if (schedulerDispatcher != Dispatcher)
+                throw new InvalidOperationException("DispatcherScheduler is not bound to the main application Dispatcher.");
+
+            Licenser.LicenseKey = "DGF20-AUTJ7-3K8MD-DNNA";
+
+            Timeline.DesiredFrameRateProperty.OverrideMetadata(
+               typeof(Timeline),
+               new FrameworkPropertyMetadata(ClientSettings.Current.DesiredAnimationFrameRate));
+
+            LoadDefaultResources();
+
+            var bootstrapper = new Bootstrapper();
+            bootstrapper.Run();
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        internal void HandleError(Exception e)
+        {
+            if (e is AppDomainUnloadedException)
+                return;
+
+            lock (Current)
+            {
+                Exception ie = e;
+
+                while (ie != null)
+                {
+                    Console.Error.WriteLine(ie.Message);
+                    Console.Error.WriteLine();
+                    Console.Error.WriteLine(ie.StackTrace);
+                    Console.Error.WriteLine();
+                    Console.Error.WriteLine("----------------------------------------");
+                    Console.Error.WriteLine();
+                    Console.Error.Flush();
+                    ie = ie.InnerException;
+                }
+
+                MessageBox.Show(
+                    "An unhandled exception has occurred.  Detailed error information is "
+                    + "available in the 'Error.txt' file.",
+                    "Unhandled Exception",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                Environment.Exit(Environment.ExitCode);
+            }
+        }
+
+        private static void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            ServiceLocator.Current.GetInstance<IUnhandledExceptionHandler>().HandleError(e.Exception);
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            ServiceLocator.Current.GetInstance<IUnhandledExceptionHandler>().HandleError((Exception)e.ExceptionObject);
+        }
+
+        private static Object ExitFrame(Object state)
+        {
+            // Exit the nested message loop.
+            var frame = state as DispatcherFrame;
+            if (frame != null)
+            {
+                frame.Continue = false;
+            }
+            return null;
+        }
+        #endregion
+
+        [UsedImplicitly]
+        private static class EntryPoint
+        {
+            [STAThread, UsedImplicitly]
+            private static void Main(string[] args)
+            {
+                GameLogManager.Initialize();
+
+                // add dll subdirectories to current process PATH variable
+                var appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH")
+                    + ";" + appDir + "\\lib");
+
+                if (!CheckNetFxVersion())
+                    return;
+
+                /*var scheduler = new InOrderScheduler();
+
+                var subject = new Subject<int>();
+                subject
+                    .ObserveOn(scheduler)
+                    .Do(Console.WriteLine)
+                    .Subscribe();
+
+                for (int i = 0; i < 5; i++)
+                    subject.OnNext(i + 1);
+
+                Thread.Sleep(TimeSpan.FromSeconds(10));
+
+                for (int i = 5; i < 10; i++)
+                    subject.OnNext(i + 1);
+
+                Thread.Yield();
+
+                subject.OnNext(-1);
+    */
+                //var db = ResourceManager.Database;
+                //var strings = db.ObjectStrings.OfType<ObjectString>().Where(o => o.Culture == "en").ToList();
+
+                //var entries = strings.Select(
+                //    o =>
+                //    new XElement(
+                //        "Entry",
+                //        new XAttribute(
+                //            "Key",
+                //            o.Key),
+                //        new XElement(
+                //            "LocalizedEntries",
+                //            new XElement(
+                //                "LocalizedEntry",
+                //                new XAttribute(
+                //                    "Language",
+                //                    o.Culture),
+                //                new XElement("Name", new XCData(o.Name)),
+                //                new XElement("Description", new XCData(o.Description)),
+                //                new XElement("Custom1", new XCData(o.Custom1)),
+                //                new XElement("Custom2", new XCData(o.Custom2))))));
+
+                //var xml =
+                //    new XElement(
+                //        "TextDatabase",
+                //        new XElement(
+                //            "Tables",
+                //            new XElement(
+                //                "Table",
+                //                new XAttribute(
+                //                    "EntryType",
+                //                    typeof(ITechObjectTextDatabaseEntry).FullName),
+                //                new XElement(
+                //                    "Entries",
+                //                    entries))));
+
+                try
+                {
+                    ShowSplashScreen();
+
+                    var _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
+                    if (File.Exists(_soundfileSplashScreen))
+                    {
+                        GameLog.Print("Playing LoadingSplash.wav");
+                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
+                        player.Play();
+                    }
+                      
+
+
+                    if (File.Exists("Resources\\Geometry\\Glyphs.xaml"))
+                        StartClient(args);
+                    else
+                        MessageBox.Show("Resources\\Geometry\\Glyphs.xaml is missing" + Environment.NewLine + Environment.NewLine + 
+                            "Make sure you have the folder \\Resources !!" + Environment.NewLine + "(only delivered within an original game release)","WARNING",
+                            MessageBoxButton.OK);    
+                }
+                catch (Exception e)
+                {
+                    while (e.InnerException != null)
+                        e = e.InnerException;
+                    throw e;
+                }
+            }
+
+        }
+
+        private static bool CheckNetFxVersion()
+        {
+            try
+            {
+                var netFxVersionKey = Registry.GetValue(
+                    @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5",
+                    "Version",
+                    null);
+                if (netFxVersionKey != null)
+                {
+                    var netFxVersion = new Version(netFxVersionKey.ToString());
+                    if (netFxVersion < new Version(3, 0, 0, 0))
+                    {
+                        MessageBox.Show(
+                            "Star Trek: Supremacy requires the Microsoft .NET Framework v3.5 SP1."
+                            + Environment.NewLine
+                            + "It must be installed before running the game.",
+                            "Star Trek: Supremacy",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Hand);
+                        return false;
+                    }
+                    if (netFxVersion < new Version("3.5.30729.01"))
+                    {
+                        ShowNetFxVersionMissingDialog();
+                        return false;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                GameLog.LogException(e);
+            }
+
+            return true;
+        }
+
+        private static void StartClient(string[] args)
+        {
+            ClientCommandLineArguments.Parse(CmdLineArgs, args);
+
+            if (CmdLineArgs.Debug)
+                Debugger.Break();
+
+            /* If an instance of the game is already running, then exit. */
+            if (!CmdLineArgs.AllowMultipleInstances)
+            {
+                bool mutexIsNew;
+                _singleInstanceMutex = new Mutex(true, "{CC4FD558-0934-451d-A387-738B5DB5619C}", out mutexIsNew);
+                if (!mutexIsNew)
+                {
+                    MessageBox.Show("An instance of Supremacy is already running.");
+                    Environment.Exit(Environment.ExitCode);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(CmdLineArgs.LogLevel))
+            {
+                var logLevel = LogLevelConverter.Instance.ConvertFromInvariantString(CmdLineArgs.LogLevel) as Level;
+                if (logLevel != null)
+                {
+                    LogManager
+                        .GetAllRepositories()
+                        .OfType<log4net.Repository.Hierarchy.Hierarchy>()
+                        .Select(o => o.Root)
+                        .ForEach(
+                            o =>
+                            {
+                                if (logLevel < o.Level)
+                                    o.Level = logLevel;
+                            });
+                }
+            }
+
+            if (CmdLineArgs.TraceLevel != PresentationTraceLevel.None)
+                PresentationTraceSources.Refresh();
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            /*
+             * DEAD CODE
+             *  The Trace class was used only in assertation wrapper class called "Assert" which itself
+             *  was used only in one place in the entire code-base. That one assertation was changed
+             *  to Debug.Assert(), and "Assert" class pronounced dead code.
+
+            try
+            {
+                // What is this? --> https://msdn.microsoft.com/en-us/library/system.diagnostics.trace(v=vs.110).aspx
+
+                // Currently Trace class is used for assertation wrapper class called "Assert" whish itself
+                // was used in only one place in entire code-base 
+
+                var debugWriter = File.CreateText("Trace.txt");
+                var debugListener = new TextWriterTraceListener(debugWriter)
+                {
+#if DEBUG
+                    Filter = new EventTypeFilter(SourceLevels.All),
+#else
+                    Filter = new EventTypeFilter(SourceLevels.Warning),
+#endif
+                    TraceOutputOptions = TraceOptions.Timestamp
+                };
+
+                Trace.AutoFlush = true;
+                Trace.Listeners.Add(debugListener);
+
+                // Examples:
+                //Trace.TraceInformation("Test message.");
+                //Trace.WriteLine("Error message.");
+                //Trace.WriteLineIf(3 > 2, "3 is biffer than 2");
+                //Trace.Assert(false, "Test Assert");
+            }
+            catch
+            {
+                GameLog.Debug.General.DebugFormat("Could not open Trace.txt");
+            }
+            */
+
+            try
+            {
+                var errorFile = File.Open("Error.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                Console.SetError(new StreamWriter(errorFile));
+            }
+            catch
+            {
+                MessageBox.Show(
+                    "The error log could not be created.  You may still run the game,\n"
+                    + "but error details cannot be logged.",
+                    "Warning",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+
+            VfsWebRequestFactory.EnsureRegistered();
+
+            var app = new ClientApp();
+            app.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            app.InitializeComponent();
+            app.Run();
+        }
+
+        private static void ShowSplashScreen()
+        {
+            _splashScreen = new SplashScreen("resources/images/backgrounds/splash.png");
+            _splashScreen.Show(false);
+        }
+
+        private static void ShowNetFxVersionMissingDialog()
+        {
+            var taskDialog =
+                new TaskDialog
+                {
+                    AllowDialogCancellation = false,
+                    Content = "Star Trek: Supremacy requires the Microsoft .NET Framework v3.5 SP1."
+                              + Environment.NewLine
+                              + "It must be installed before running the game.",
+                    MainIcon = TaskDialogIconConverter.ConvertFrom(TaskDialogIcon.Shield),
+                    Header = ".NET Framework v3.5 SP1 Required",
+                    Title = "Star Trek: Supremacy",
+                    CommandLinks =
+                        {
+                            new TaskDialogButtonData(
+                                1,
+                                "Go to Download",
+                                "Take me to the framework download page.",
+                                true),
+                            new TaskDialogButtonData(
+                                0,
+                                "Exit",
+                                "Exit the game without downloading the framework.")
+                        }
+                };
+
+            taskDialog.LayoutUpdated +=
+                delegate
+                {
+                    var window = Window.GetWindow(taskDialog);
+                    if (window == null)
+                        return;
+                    window.Left = (SystemParameters.WorkArea.Width - window.ActualWidth) / 2;
+                    window.Top = (SystemParameters.WorkArea.Height - window.ActualHeight) / 2;
+                };
+
+            taskDialog.Show();
+
+            var result = taskDialog.Result;
+            if (result.ButtonData.Value == 1)
+            {
+                UIHelpers.LaunchBrowser(
+                    new Uri(
+                        "http://www.microsoft.com/downloads/details.aspx?FamilyId=AB99342F-5D1A-413D-8319-81DA479AB0D7"));
+                //DoEvents(); //ToDo: find the object instance to call this
+            }
+        }
+
+        private static void OnGameWindowSourceInitialized(object sender, EventArgs e)
+        {
+            ((Window)sender).SourceInitialized -= OnGameWindowSourceInitialized;
+            _splashScreen.Close(TimeSpan.Zero);
+        }
+
+        #region Bootstrapper Class
+        private class Bootstrapper : UnityBootstrapper
+        {
+            // What is Unity Bootstrapper? --> https://msdn.microsoft.com/en-us/library/ff921139.aspx
+
+            private ClientWindow _shell;
+            private ILoggerFacade _clientLogger;
+
+            protected override ILoggerFacade LoggerFacade
+            {
+                get
+                {
+                    if (_clientLogger == null)
+                    {
+                        TextWriter textWriter;
+                        try { textWriter = new StreamWriter("Log_Bootstrapper.txt", false); }
+                        catch{ textWriter = Console.Out; }
+                        _clientLogger = new FilteredTextLogger(textWriter);
+                    }
+                    return _clientLogger;
+                }
+            }
+
+            protected override IModuleCatalog GetModuleCatalog()
+            {
+                return new ConfigurationModuleCatalog().AddModule(ClientModule.ModuleName, typeof(ClientModule).AssemblyQualifiedName);
+            }
+
+            protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
+            {
+                var baseMappings = base.ConfigureRegionAdapterMappings();
+                baseMappings.RegisterMapping(
+                    typeof(GameScreenStack),
+                    Container.Resolve<GameScreenStackRegionAdapter>());
+                return baseMappings;
+            }
+
+            protected override void ConfigureContainer()
+            {
+                base.ConfigureContainer();
+                Container.RegisterInstance(ResourceManager.VfsService, new ContainerControlledLifetimeManager());
+                Container.RegisterInstance<IApplicationSettingsService>(new ApplicationSettingsService(), new ContainerControlledLifetimeManager());
+                Container.RegisterInstance<IClientApplication>(Current, new ContainerControlledLifetimeManager());
+                Container.RegisterInstance<IDispatcherService>(new DefaultDispatcherService(Dispatcher.CurrentDispatcher), new ContainerControlledLifetimeManager());
+                Container.RegisterType<IUnhandledExceptionHandler, ClientUnhandledExceptionHandler>(new ContainerControlledLifetimeManager());
+                Container.RegisterType<INavigationCommandsProxy, NavigationCommandsProxy>(new ContainerControlledLifetimeManager());
+                Container.RegisterType<IAppContext, AppContext>(new ContainerControlledLifetimeManager());
+                Container.RegisterType<IResourceManager, ClientResourceManager>(new ContainerControlledLifetimeManager());
+                Container.RegisterType<IGameErrorService, GameErrorService>(new ContainerControlledLifetimeManager());
+                Container.RegisterInstance<IAudioEngine>(FMODAudioEngine.Instance, new ContainerControlledLifetimeManager());
+                Container.RegisterType<IMusicPlayer, MusicPlayer>(new ContainerControlledLifetimeManager());
+                Container.RegisterType<ISoundPlayer, SoundPlayer>(new ContainerControlledLifetimeManager());
+            }
+
+            protected override DependencyObject CreateShell()
+            {
+                if (_shell != null)
+                    return _shell;
+                _shell = Container.Resolve<ClientWindow>();
+                _shell.SourceInitialized += OnGameWindowSourceInitialized;
+                Application.Current.MainWindow = _shell;
+                _shell.Show();
+                //ShellIntegration.TaskListManager.PopulateTaskList(
+                //    new Uri(Assembly.GetEntryAssembly().CodeBase, UriKind.Absolute).LocalPath,
+                //    new WindowInteropHelper(_shell).Handle);
+                Container.RegisterInstance<IGameWindow>(_shell, new ContainerControlledLifetimeManager());
+                return _shell;
+            }
+        }
+        #endregion
+    }
+}
+ 

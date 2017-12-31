@@ -1,0 +1,1824 @@
+<!--
+  
+   TechObjectInfo.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+                    xmlns:econ="clr-namespace:Supremacy.Economy;assembly=SupremacyCore"
+                    xmlns:bldg="clr-namespace:Supremacy.Buildings;assembly=SupremacyCore"
+                    xmlns:tech="clr-namespace:Supremacy.Tech;assembly=SupremacyCore"
+                    xmlns:orbitals="clr-namespace:Supremacy.Orbitals;assembly=SupremacyCore"
+                    xmlns:wpf="clr-namespace:Avalon.Windows.Controls;assembly=AvalonLibrary">
+
+  
+  <Style x:Key="TechObjectInfoPanelStyle"
+         TargetType="{x:Type ContentControl}">
+    <Style.Resources>
+
+      <DataTemplate x:Key="TechObjectNameDataTemplate"
+                    DataType="{x:Type tech:TechObjectDesign}">
+        <TextBlock TextWrapping="Wrap"
+                   TextTrimming="CharacterEllipsis"
+                   TextAlignment="Right"
+                   Text="{Binding Path=Name}" />
+      </DataTemplate>
+
+
+      <DataTemplate x:Key="BuildingTemplate"
+                    DataType="{x:Type scc:TechObjectDesignViewModel}">
+        <Border Grid.IsSharedSizeScope="True">
+          <StackPanel Orientation="Vertical"
+                      CanHorizontallyScroll="False"
+                      TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                      TextBlock.TextAlignment="Left"
+                      ScrollViewer.CanContentScroll="False">
+            <wpf:AutoGrid>
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'BUILD_COST'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         Text="{Binding Path=Design.BuildCost}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid x:Name="RawMaterials">
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'RAW_MATERIALS'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         Text="{Binding Path=Design.RawMaterials}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid x:Name="MaintenanceCost">
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'MAINTENANCE_COST'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         Text="{Binding Path=Design.MaintenanceCost}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid x:Name="EnergyCost">
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'ENERGY_COST'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         Text="{Binding Path=Design.(bldg:BuildingDesign.EnergyCost)}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid x:Name="UpgradableDesigns">
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <ItemsControl VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Right"
+                            ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                            ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid x:Name="ObsoletedDesigns">
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <ItemsControl VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Right"
+                            ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                            ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid x:Name="Bonuses">
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'BUILDING_BONUSES'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         TextWrapping="Wrap"
+                         TextTrimming="CharacterEllipsis"
+                         Text="{Binding Path=Design, Converter={StaticResource BonusConverter}}" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid>
+              <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </wpf:AutoGrid.ColumnDefinitions>
+              <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                         FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                         Margin="0,0,7,0"
+                         VerticalAlignment="Top"
+                         Text="{s:StringResource 'BUILDING_RESTRICTIONS'}"
+                         TextTrimming="CharacterEllipsis"
+                         TextWrapping="NoWrap" />
+              <TextBlock VerticalAlignment="Top"
+                         TextAlignment="Right"
+                         TextWrapping="Wrap"
+                         TextTrimming="CharacterEllipsis"
+                         Text="{Binding Path=Design.(bldg:BuildingDesign.Restriction), Converter={StaticResource BuildRestrictionConverter}}" />
+            </wpf:AutoGrid>
+          </StackPanel>
+        </Border>
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+                       Value="0">
+            <Setter TargetName="RawMaterials"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.MaintenanceCost}"
+                       Value="0">
+            <Setter TargetName="MaintenanceCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(bldg:BuildingDesign.EnergyCost)}"
+                       Value="0">
+            <Setter TargetName="EnergyCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=UpgradeableDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="UpgradableDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=ObsoletedDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="ObsoletedDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(bldg:BuildingDesign.Bonuses).Count}"
+                       Value="0">
+            <Setter TargetName="Bonuses"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+        </DataTemplate.Triggers>
+      </DataTemplate>
+
+
+      <DataTemplate x:Key="ShipyardTemplate"
+                    DataType="{x:Type scc:TechObjectDesignViewModel}">
+        <StackPanel Orientation="Vertical"
+                    CanHorizontallyScroll="False"
+                    TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    TextBlock.TextAlignment="Left"
+                    ScrollViewer.CanContentScroll="False">
+          <!--<TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Margin="0,0,0,14"
+                     TextWrapping="Wrap"
+                     Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>-->
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'BUILD_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.BuildCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="RawMaterials">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'RAW_MATERIALS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.RawMaterials}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="MaintenanceCost">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'MAINTENANCE_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.MaintenanceCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="EnergyCost">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'ENERGY_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlotEnergyCost)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIPYARD_CONSTRUCTION_DOCKS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlots)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIPYARD_OUTPUT'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlotOutputString)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="UpgradableDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ObsoletedDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="Bonuses">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'BUILDING_BONUSES'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextWrapping="Wrap"
+                       TextTrimming="CharacterEllipsis"
+                       Text="{Binding Path=Design, Converter={StaticResource BonusConverter}}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'BUILDING_RESTRICTIONS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextWrapping="Wrap"
+                       TextTrimming="CharacterEllipsis"
+                       Text="{Binding Path=Design.(orbitals:ShipyardDesign.Restriction), Converter={StaticResource BuildRestrictionConverter}}" />
+          </wpf:AutoGrid>
+        </StackPanel>
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+                       Value="0">
+            <Setter TargetName="RawMaterials"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.MaintenanceCost}"
+                       Value="0">
+            <Setter TargetName="MaintenanceCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:ShipyardDesign.BuildSlotEnergyCost)}"
+                       Value="0">
+            <Setter TargetName="EnergyCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=UpgradeableDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="UpgradableDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=ObsoletedDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="ObsoletedDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+        </DataTemplate.Triggers>
+      </DataTemplate>
+
+
+      <DataTemplate x:Key="ProductionFacilityTemplate"
+                    DataType="{x:Type scc:TechObjectDesignViewModel}">
+        <StackPanel Orientation="Vertical"
+                    CanHorizontallyScroll="False"
+                    TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    TextBlock.TextAlignment="Left"
+                    ScrollViewer.CanContentScroll="False">
+          <!--<TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Margin="0,0,0,14"
+                     TextWrapping="Wrap"
+                     Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>-->
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'BUILD_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.BuildCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="RawMaterials">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'RAW_MATERIALS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.RawMaterials}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="MaintenanceCost">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'MAINTENANCE_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.MaintenanceCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'FACILITY_CATEGORY'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(econ:ProductionFacilityDesign.Category)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'FACILITY_LABOR_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(econ:ProductionFacilityDesign.LaborCost)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'FACILITY_UNIT_OUTPUT'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(econ:ProductionFacilityDesign.UnitOutput)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="UpgradableDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ObsoletedDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
+          </wpf:AutoGrid>
+        </StackPanel>
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+                       Value="0">
+            <Setter TargetName="RawMaterials"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.MaintenanceCost}"
+                       Value="0">
+            <Setter TargetName="MaintenanceCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=UpgradeableDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="UpgradableDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=ObsoletedDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="ObsoletedDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+        </DataTemplate.Triggers>
+      </DataTemplate>
+
+
+      <DataTemplate x:Key="ShipTemplate"
+                    DataType="{x:Type scc:TechObjectDesignViewModel}">
+        <StackPanel Orientation="Vertical"
+                    CanHorizontallyScroll="False"
+                    TextBlock.TextAlignment="Left"
+                    ScrollViewer.CanContentScroll="False">
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'BUILD_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.BuildCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'DILITHIUM'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipDesign.Dilithium)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="RawMaterials">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'RAW_MATERIALS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.RawMaterials}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="MaintenanceCost">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'MAINTENANCE_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.MaintenanceCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="PrimaryWeapon">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+             <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0}x {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Count)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeaponName)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Damage)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Refire)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="SecondaryWeapon">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+             <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0}x {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Count)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.SecondaryWeaponName)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Damage)}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock Text="{s:StringResource 'SHIP_SHIELDS'}" />
+              <TextBlock Text="/" />
+              <TextBlock Text="{s:StringResource 'SHIP_HULL'}" />
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.ShieldStrength)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.HullStrength)" />
+              </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ShieldRechargeRate">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SHIELD_RECHARGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SPEED_RANGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        TextBlock.Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
+              <TextBlock Text="{Binding Path=Design.(orbitals:ShipDesign.Speed)}" />
+              <TextBlock Text=" / " />
+              <TextBlock Text="{Binding Path=Design.(orbitals:ShipDesign.Range)}" />
+            </StackPanel>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="CloakStrength">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_CLOAK_STRENGTH'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipDesign.CloakStrength)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="CamouflagedStrength">
+            <wpf:AutoGrid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                Margin="0,0,7,0"
+                VerticalAlignment="Top"
+                Text="{s:StringResource 'SHIP_CAMOUFLAGE_STRENGTH'}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+                        <TextBlock VerticalAlignment="Top"
+                TextAlignment="Right"
+                Text="{Binding Path=Design.(orbitals:ShipDesign.CamouflagedStrength)}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+            </wpf:AutoGrid>
+            <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SCAN_STRENGTH_RANGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.ScanStrength)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.SensorRange)" />
+              </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ScienceAbility">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SCIENCE_ABILITY'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ScienceAbility)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="PopulationHealth">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_POPULATION_HEALTH'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(tech:TechObjectDesign.PopulationHealth)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="CrewSize">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_CREW_SIZE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.CrewSize)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_FUEL_CAPACITY'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:ShipDesign.FuelCapacity)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="UpgradableDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ObsoletedDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
+          </wpf:AutoGrid>
+        </StackPanel>
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+                       Value="0">
+            <Setter TargetName="RawMaterials"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.MaintenanceCost}"
+                       Value="0">
+            <Setter TargetName="MaintenanceCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Count)}"
+                       Value="0">
+            <Setter TargetName="PrimaryWeapon"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Count)}"
+                       Value="0">
+            <Setter TargetName="SecondaryWeapon"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
+                       Value="0">
+            <Setter TargetName="ShieldRechargeRate"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:ShipDesign.CloakStrength)}"
+                       Value="0">
+            <Setter TargetName="CloakStrength"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+           <DataTrigger Binding="{Binding Path=Design.(orbitals:ShipDesign.CamouflagedStrength)}"
+                    Value="0">
+                <Setter TargetName="CamouflagedStrength"
+                    Property="Visibility"
+                    Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Design.PopulationHealth}"
+                       Value="0">
+            <Setter TargetName="PopulationHealth"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.ScienceAbility)}"
+                       Value="0">
+            <Setter TargetName="ScienceAbility"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=UpgradeableDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="UpgradableDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=ObsoletedDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="ObsoletedDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+        </DataTemplate.Triggers>
+      </DataTemplate>
+
+      <DataTemplate x:Key="StationTemplate"
+                    DataType="{x:Type scc:TechObjectDesignViewModel}">
+        <StackPanel Orientation="Vertical"
+                    CanHorizontallyScroll="False"
+                    TextBlock.TextAlignment="Left"
+                    ScrollViewer.CanContentScroll="False">
+          <!--<TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Margin="0,0,0,14"
+                     TextWrapping="Wrap"
+                     Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>-->
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'BUILD_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.BuildCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="RawMaterials">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'RAW_MATERIALS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.RawMaterials}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="MaintenanceCost">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'MAINTENANCE_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.MaintenanceCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="PrimaryWeapon">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0}x {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Count)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeaponName)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Damage)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Refire)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="SecondaryWeapon">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0}x {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Count)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.SecondaryWeaponName)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Damage)}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock Text="{s:StringResource 'SHIP_SHIELDS'}" />
+              <TextBlock Text="/" />
+              <TextBlock Text="{s:StringResource 'SHIP_HULL'}" />
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.ShieldStrength)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.HullStrength)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ShieldRechargeRate">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SHIELD_RECHARGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SCAN_STRENGTH_RANGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.ScanStrength)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.SensorRange)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ScienceAbility">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SCIENCE_ABILITY'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ScienceAbility)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <!--<wpf:AutoGrid x:Name="PopulationHealth"><wpf:AutoGrid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock
+                       Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_POPULATION_HEALTH'}"/>
+            <TextBlock
+                      
+                       VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=PopulationHealth}"/>
+          </wpf:AutoGrid>-->
+          <wpf:AutoGrid x:Name="CrewSize">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_CREW_SIZE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.CrewSize)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="UpgradableDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ObsoletedDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
+          </wpf:AutoGrid>
+        </StackPanel>
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+                       Value="0">
+            <Setter TargetName="RawMaterials"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.MaintenanceCost}"
+                       Value="0">
+            <Setter TargetName="MaintenanceCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Count)}"
+                       Value="0">
+            <Setter TargetName="PrimaryWeapon"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Count)}"
+                       Value="0">
+            <Setter TargetName="SecondaryWeapon"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
+                       Value="0">
+            <Setter TargetName="ShieldRechargeRate"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <!--<DataTrigger Binding="{Binding Path=PopulationHealth}"
+                       Value="0">
+            <Setter TargetName="PopulationHealth"
+                    Property="Visibility"
+                    Value="Collapsed"/>
+          </DataTrigger>-->
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.ScienceAbility)}"
+                       Value="0">
+            <Setter TargetName="ScienceAbility"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=UpgradeableDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="UpgradableDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=ObsoletedDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="ObsoletedDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+        </DataTemplate.Triggers>
+      </DataTemplate>
+
+      <DataTemplate x:Key="OrbitalBatteryTemplate"
+                    DataType="{x:Type scc:TechObjectDesignViewModel}">
+        <StackPanel Orientation="Vertical"
+                    CanHorizontallyScroll="False"
+                    TextBlock.TextAlignment="Left"
+                    ScrollViewer.CanContentScroll="False">
+          <!--<TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     Margin="0,0,0,14"
+                     TextWrapping="Wrap"
+                     Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>-->
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'BUILD_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.BuildCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="RawMaterials">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'RAW_MATERIALS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.RawMaterials}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="MaintenanceCost">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'MAINTENANCE_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.MaintenanceCost}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="UnitEnergyCost">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'ENERGY_COST'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalBatteryDesign.UnitEnergyCost)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="PrimaryWeapon">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0}x {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Count)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeaponName)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Damage)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Refire)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="SecondaryWeapon">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0}x {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Count)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.SecondaryWeaponName)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Damage)}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid>
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock Text="{s:StringResource 'SHIP_SHIELDS'}" />
+              <TextBlock Text="/" />
+              <TextBlock Text="{s:StringResource 'SHIP_HULL'}" />
+            </TextBlock>
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.ShieldStrength)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.HullStrength)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ShieldRechargeRate">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SHIELD_RECHARGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="Scanners">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SCAN_STRENGTH_RANGE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap">
+              <TextBlock.Text>
+               <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="Design.(orbitals:OrbitalDesign.ScanStrength)" />
+                <Binding Path="Design.(orbitals:OrbitalDesign.SensorRange)" />
+              </MultiBinding>
+             </TextBlock.Text>
+            </TextBlock>
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ScienceAbility">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_SCIENCE_ABILITY'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.ScienceAbility)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <!--<wpf:AutoGrid x:Name="PopulationHealth"><wpf:AutoGrid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock
+                       Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_POPULATION_HEALTH'}"/>
+            <TextBlock
+                      
+                       VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=PopulationHealth}"/>
+          </wpf:AutoGrid>-->
+          <wpf:AutoGrid x:Name="CrewSize">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'SHIP_CREW_SIZE'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Right"
+                       Text="{Binding Path=Design.(orbitals:OrbitalDesign.CrewSize)}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="UpgradableDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'UPGRADABLE_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=UpgradeableDesignsResolved}" />
+          </wpf:AutoGrid>
+          <wpf:AutoGrid x:Name="ObsoletedDesigns">
+            <wpf:AutoGrid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </wpf:AutoGrid.ColumnDefinitions>
+            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                       Margin="0,0,7,0"
+                       VerticalAlignment="Top"
+                       Text="{s:StringResource 'OBSOLETED_DESIGNS'}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+            <ItemsControl VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          HorizontalContentAlignment="Right"
+                          ItemTemplate="{StaticResource TechObjectNameDataTemplate}"
+                          ItemsSource="{Binding Path=ObsoletedDesignsResolved}" />
+          </wpf:AutoGrid>
+        </StackPanel>
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding Path=Design.RawMaterials}"
+                       Value="0">
+            <Setter TargetName="RawMaterials"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.MaintenanceCost}"
+                       Value="0">
+            <Setter TargetName="MaintenanceCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalBatteryDesign.UnitEnergyCost)}"
+                       Value="0">
+            <Setter TargetName="UnitEnergyCost"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.PrimaryWeapon).(orbitals:WeaponType.Count)}"
+                       Value="0">
+            <Setter TargetName="PrimaryWeapon"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.SecondaryWeapon).(orbitals:WeaponType.Count)}"
+                       Value="0">
+            <Setter TargetName="SecondaryWeapon"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.ShieldRechargeRate)}"
+                       Value="0">
+            <Setter TargetName="ShieldRechargeRate"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <!--<DataTrigger Binding="{Binding Path=PopulationHealth}"
+                       Value="0">
+            <Setter TargetName="PopulationHealth"
+                    Property="Visibility"
+                    Value="Collapsed"/>
+          </DataTrigger>-->
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.ScienceAbility)}"
+                       Value="0">
+            <Setter TargetName="ScienceAbility"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=UpgradeableDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="UpgradableDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=ObsoletedDesignsResolved.Count}"
+                       Value="0">
+            <Setter TargetName="ObsoletedDesigns"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.CrewSize)}"
+                       Value="0">
+            <Setter TargetName="CrewSize"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=Design.(orbitals:OrbitalDesign.ScanStrength)}"
+                       Value="0">
+            <Setter TargetName="Scanners"
+                    Property="Visibility"
+                    Value="Collapsed" />
+          </DataTrigger>
+        </DataTemplate.Triggers>
+      </DataTemplate>
+
+    </Style.Resources>
+    
+    <Style.Triggers>
+      <DataTrigger Value="True"
+                   Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design), Converter={scc:IsTypeConverter}, ConverterParameter={x:Type bldg:BuildingDesign}}">
+        <Setter Property="ContentTemplate"
+                Value="{StaticResource BuildingTemplate}" />
+      </DataTrigger>
+      <DataTrigger Value="True"
+                   Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design), Converter={scc:IsTypeConverter}, ConverterParameter={x:Type orbitals:ShipyardDesign}}">
+        <Setter Property="ContentTemplate"
+                Value="{StaticResource ShipyardTemplate}" />
+      </DataTrigger>
+      <DataTrigger Value="True"
+                   Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design), Converter={scc:IsTypeConverter}, ConverterParameter={x:Type econ:ProductionFacilityDesign}}">
+        <Setter Property="ContentTemplate"
+                Value="{StaticResource ProductionFacilityTemplate}" />
+      </DataTrigger>
+      <DataTrigger Value="True"
+                   Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design), Converter={scc:IsTypeConverter}, ConverterParameter={x:Type orbitals:ShipDesign}}">
+        <Setter Property="ContentTemplate"
+                Value="{StaticResource ShipTemplate}" />
+      </DataTrigger>
+      <DataTrigger Value="True"
+                   Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design), Converter={scc:IsTypeConverter}, ConverterParameter={x:Type orbitals:StationDesign}}">
+        <Setter Property="ContentTemplate"
+                Value="{StaticResource StationTemplate}" />
+      </DataTrigger>
+      <DataTrigger Value="True"
+                   Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design), Converter={scc:IsTypeConverter}, ConverterParameter={x:Type orbitals:OrbitalBatteryDesign}}">
+        <Setter Property="ContentTemplate"
+                Value="{StaticResource OrbitalBatteryTemplate}" />
+      </DataTrigger>
+      <DataTrigger Value="{x:Null}"
+                   Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.(scc:TechObjectDesignViewModel.Design)}">
+        <Setter Property="Visibility"
+                Value="Collapsed" />
+      </DataTrigger>
+    </Style.Triggers>
+
+    <Setter Property="Foreground"
+            Value="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
+    <Setter Property="FontFamily"
+            Value="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+    <Setter Property="FontSize"
+            Value="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}" />
+    <Setter Property="Focusable"
+            Value="False" />
+    <Setter Property="IsTabStop"
+            Value="False" />
+    <Setter Property="FontSize"
+            Value="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}" />
+
+  </Style>
+
+</ResourceDictionary>

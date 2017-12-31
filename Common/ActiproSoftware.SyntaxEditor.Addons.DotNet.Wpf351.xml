@@ -1,0 +1,121 @@
+<?xml version="1.0"?><doc><assembly><name>ActiproSoftware.SyntaxEditor.Addons.DotNet.Wpf351</name></assembly><members><member name="T:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.AssemblyInfo"><summary>
+            Provides a class for retrieving information about the <c>ActiproSoftware.SyntaxEditor</c> assembly.
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.AssemblyInfo.Instance"><summary>
+            Gets the instance of the <see cref="T:ActiproSoftware.Products.AssemblyInfo" /> class for this assembly.
+            </summary><value>The instance of the <see cref="T:ActiproSoftware.Products.AssemblyInfo" /> class for this assembly.</value></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.AssemblyInfo.LicenseType"><summary>
+            Gets the type of license that is available for the assembly.
+            </summary><value>A <see cref="T:ActiproSoftware.Products.AssemblyLicenseType" /> specifying the type of license that is available for the assembly.</value></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.AssemblyInfo.Platform"><summary>
+            Gets the target platform for the assembly.
+            </summary><value>A <see cref="T:ActiproSoftware.Products.AssemblyPlatform" /> specifying the target platform for the assembly.</value></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.AssemblyInfo.ProductCode"><summary>
+            Gets the product code of the assembly.
+            </summary><value>A three-letter product code of the assembly.</value></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.AssemblyInfo.ProductId"><summary>
+            Gets the product ID of the assembly.
+            </summary><value>The product ID of the assembly.</value></member><member name="T:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources"><summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources.ResourceManager"><summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources.Culture"><summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources.ExExtensionMustBeSRExtension"><summary>
+              Looks up a localized string similar to The extension must be of type 'SRExtension'..
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources.ExInvalidStringResourceName"><summary>
+              Looks up a localized string similar to The string resource name '{0}' is not valid.  Please see the 'SRName' enumeration for the valid names..
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources.ExNoStringResource"><summary>
+              Looks up a localized string similar to No string resource name was specified..
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources.UIClassificationTypeXmlDocumentationComment"><summary>
+              Looks up a localized string similar to XML Doc Comment.
+            </summary></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.Resources.UIClassificationTypeXmlDocumentationTag"><summary>
+              Looks up a localized string similar to XML Doc Tag.
+            </summary></member><member name="T:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR"><summary>
+            Provides access to the string resources of this assembly, also allowing for their customization.
+            </summary><remarks>
+            Call the <see cref="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.GetString(System.String)" /> method to return a resolved resource string.
+            If a custom string has been set for a specified string resource name, it will be returned.
+            Otherwise, the default string resource value is returned.
+            <para>
+            If any of the resource strings are customized via a call to <see cref="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.SetCustomString(System.String,System.String)" />,
+            it is best to do so before any other classes in this assembly are referenced,
+            such as in the application startup.
+            </para></remarks></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.ClearCustomStrings"><summary>
+            Removes all custom strings.
+            </summary></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.ContainsCustomString(System.String)"><summary>
+            Returns whether a custom string is defined for the specified string resource.
+            </summary><param name="name">The name of the resource for which to search.</param><returns><c>true</c> if a custom string is defined for the specified string resource; otherwise, <c>false</c>.
+            </returns></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.GetCustomString(System.String)"><summary>
+            Returns custom string that is stored for the specified string resource, if any.
+            </summary><param name="name">The name of the resource to get.</param><returns>The custom string that is stored for the specified string resource, if any.</returns></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.GetString(System.String)"><summary>
+            Returns the resolved value of the specified string resource.
+            </summary><param name="name">The name of the resource to get.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.GetString(ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName)"><summary>
+            Returns the resolved value of the specified string resource.
+            </summary><param name="name">The name of the resource to get.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.GetString(System.String,System.Object[])"><summary>
+            Returns the resolved value of the specified string resource, by calling <c>String.Format</c> using supplied arguments.
+            </summary><param name="name">The name of the resource to get.</param><param name="args">The arguments to pass to <c>String.Format</c>.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.GetString(ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName,System.Object[])"><summary>
+            Returns the resolved value of the specified string resource, by calling <c>String.Format</c> using supplied arguments.
+            </summary><param name="name">The name of the resource to get.</param><param name="args">The arguments to pass to <c>String.Format</c>.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.RemoveCustomString(System.String)"><summary>
+            Removes any custom string that is defined for the specified string resource.
+            </summary><param name="name">The name of the resource to remove.</param></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.SetCustomString(System.String,System.String)"><summary>
+            Sets a custom string value for the specified string resource.
+            </summary><param name="name">The name of the resource to set.</param><param name="value">The value of the resource to set.</param></member><member name="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.ResourceManager"><summary>
+            Gets the <see cref="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.ResourceManager" /> that provides the default resources. 
+            </summary><value>The <see cref="P:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SR.ResourceManager" /> that provides the default resources.</value></member><member name="T:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName"><summary>
+            Specifies the names of string resources for this assembly.
+            </summary></member><member name="F:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName.ExExtensionMustBeSRExtension"><summary>An exception message string.</summary></member><member name="F:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName.ExInvalidStringResourceName"><summary>An exception message string.</summary></member><member name="F:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName.ExNoStringResource"><summary>An exception message string.</summary></member><member name="F:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName.UIClassificationTypeXmlDocumentationComment"><summary>A classification type description.</summary></member><member name="F:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.SRName.UIClassificationTypeXmlDocumentationTag"><summary>A classification type description.</summary></member><member name="T:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.DotNetLanguagesAddonLicenseToken"><summary>
+            Represents the license token class for this assembly that needs to be referenced in Visual Studio licenses.licx files.
+            </summary></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.DotNetLanguagesAddonLicenseToken.#ctor"><summary>
+            Initializes a new instance of the <c>DotNetLanguagesAddonLicenseToken</c> class.
+            </summary></member><member name="M:ActiproSoftware.Products.SyntaxEditor.Addons.DotNet.DotNetLanguagesAddonLicenseToken.#ctor(System.Object)"><summary>
+            Initializes a new instance of the <c>DotNetLanguagesAddonLicenseToken</c> class.
+            </summary><param name="owner">The owner of the token (the object being licensed).</param></member><member name="T:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpSyntaxLanguage"><summary>
+            Represents a <c>C#</c> syntax language definition.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpSyntaxLanguage.OnDocumentTextChanged(ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor,ActiproSoftware.Windows.Controls.SyntaxEditor.EditorSnapshotChangedEventArgs)"><summary>
+            Occurs after a text change occurs to an <see cref="T:ActiproSoftware.Text.IEditorDocument" /> that uses this language.
+            </summary><param name="editor">The <see cref="T:ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor" /> whose <see cref="T:ActiproSoftware.Text.IEditorDocument" /> is changed.</param><param name="e">The <c>EditorSnapshotChangedEventArgs</c> that contains the event data.</param></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpSyntaxLanguage.OnDocumentTextChanging(ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor,ActiproSoftware.Windows.Controls.SyntaxEditor.EditorSnapshotChangingEventArgs)"><summary>
+            Occurs before a text change occurs to an <see cref="T:ActiproSoftware.Text.IEditorDocument" /> that uses this language.
+            </summary><param name="editor">The <see cref="T:ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor" /> whose <see cref="T:ActiproSoftware.Text.IEditorDocument" /> that is changing.</param><param name="e">The <c>EditorSnapshotChangingEventArgs</c> that contains the event data.</param></member><member name="M:ActiproSoftware.Text.Languages.CSharp.Implementation.CSharpSyntaxLanguage.#ctor"><summary>
+            Initializes a new instance of the <c>CSharpSyntaxLanguage</c> class.
+            </summary></member><member name="T:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider"><summary>
+            Represents a provider of <see cref="T:ActiproSoftware.Text.IClassificationType" /> objects for the .NET languages.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.RegisterAll"><summary>
+            Registers all classification types and highlighting styles with the <see cref="T:ActiproSoftware.Windows.Controls.SyntaxEditor.Highlighting.IHighlightingStyleRegistry" /> used by this class.
+            </summary><returns>The collection of <see cref="T:ActiproSoftware.Text.IClassificationType" /> objects that were registered.</returns></member><member name="M:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.#ctor"><summary>
+            Initializes a new instance of the <c>DotNetClassificationTypeProvider</c> class.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.#ctor(ActiproSoftware.Windows.Controls.SyntaxEditor.Highlighting.IHighlightingStyleRegistry)"><summary>
+            Initializes a new instance of the <c>DotNetClassificationTypeProvider</c> class.
+            </summary><param name="registry">The <see cref="T:ActiproSoftware.Windows.Controls.SyntaxEditor.Highlighting.IHighlightingStyleRegistry" /> to use when registering classification types and highlighting styles.</param></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.Comment"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for comments.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for comments.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.Identifier"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for identifiers.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for identifiers.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.Keyword"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for keywords.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for keywords.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.Number"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for numbers.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for numbers.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.PreprocessorKeyword"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for preprocessor keywords.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for preprocessor keywords.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.String"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for strings.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for strings.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.XmlDocumentationComment"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation comments.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation comments.</value></member><member name="P:ActiproSoftware.Text.Languages.DotNet.Implementation.DotNetClassificationTypeProvider.XmlDocumentationTag"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation tags.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.IClassificationType" /> to use for XML documentation tags.</value></member><member name="T:ActiproSoftware.Text.Languages.VB.Implementation.VBSyntaxLanguage"><summary>
+            Represents a <c>Visual Basic</c> syntax language definition.
+            </summary></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBSyntaxLanguage.OnDocumentTextChanged(ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor,ActiproSoftware.Windows.Controls.SyntaxEditor.EditorSnapshotChangedEventArgs)"><summary>
+            Occurs after a text change occurs to an <see cref="T:ActiproSoftware.Text.IEditorDocument" /> that uses this language.
+            </summary><param name="editor">The <see cref="T:ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor" /> whose <see cref="T:ActiproSoftware.Text.IEditorDocument" /> is changed.</param><param name="e">The <c>EditorSnapshotChangedEventArgs</c> that contains the event data.</param></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBSyntaxLanguage.OnDocumentTextChanging(ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor,ActiproSoftware.Windows.Controls.SyntaxEditor.EditorSnapshotChangingEventArgs)"><summary>
+            Occurs before a text change occurs to an <see cref="T:ActiproSoftware.Text.IEditorDocument" /> that uses this language.
+            </summary><param name="editor">The <see cref="T:ActiproSoftware.Windows.Controls.SyntaxEditor.SyntaxEditor" /> whose <see cref="T:ActiproSoftware.Text.IEditorDocument" /> that is changing.</param><param name="e">The <c>EditorSnapshotChangingEventArgs</c> that contains the event data.</param></member><member name="M:ActiproSoftware.Text.Languages.VB.Implementation.VBSyntaxLanguage.#ctor"><summary>
+            Initializes a new instance of the <c>VBSyntaxLanguage</c> class.
+            </summary></member></members></doc>

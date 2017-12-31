@@ -1,0 +1,113 @@
+<?xml version="1.0"?><doc><assembly><name>ActiproSoftware.Text.Addons.Dataflow.Oslo10</name></assembly><members><member name="T:ActiproSoftware.Products.Text.Addons.Dataflow.Resources"><summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Dataflow.Resources.ResourceManager"><summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Dataflow.Resources.Culture"><summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Dataflow.Resources.ExNotSupportedByImplementation"><summary>
+              Looks up a localized string similar to This member is not supported by this implementation..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Dataflow.Resources.ExParserWithNoLexer"><summary>
+              Looks up a localized string similar to The specified Parser did not have a Lexer instance..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Dataflow.Resources.ExTextSnapshotRangeDeleted"><summary>
+              Looks up a localized string similar to The specified TextSnapshotRange cannot be deleted..
+            </summary></member><member name="P:ActiproSoftware.Products.Text.Addons.Dataflow.Resources.ExTextSnapshotRequiresCodeDocument"><summary>
+              Looks up a localized string similar to The specified ITextSnapshot must be for an ICodeDocument..
+            </summary></member><member name="T:ActiproSoftware.Products.Text.Addons.Dataflow.SR"><summary>
+            Provides access to the string resources of this assembly, also allowing for their customization.
+            </summary><remarks>
+            Call the <see cref="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.GetString(System.String)" /> method to return a resolved resource string.
+            If a custom string has been set for a specified string resource name, it will be returned.
+            Otherwise, the default string resource value is returned.
+            <para>
+            If any of the resource strings are customized via a call to <see cref="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.SetCustomString(System.String,System.String)" />,
+            it is best to do so before any other classes in this assembly are referenced,
+            such as in the application startup.
+            </para></remarks></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.ClearCustomStrings"><summary>
+            Removes all custom strings.
+            </summary></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.ContainsCustomString(System.String)"><summary>
+            Returns whether a custom string is defined for the specified string resource.
+            </summary><param name="name">The name of the resource for which to search.</param><returns><c>true</c> if a custom string is defined for the specified string resource; otherwise, <c>false</c>.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.GetCustomString(System.String)"><summary>
+            Returns custom string that is stored for the specified string resource, if any.
+            </summary><param name="name">The name of the resource to get.</param><returns>The custom string that is stored for the specified string resource, if any.</returns></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.GetString(System.String)"><summary>
+            Returns the resolved value of the specified string resource.
+            </summary><param name="name">The name of the resource to get.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.GetString(ActiproSoftware.Products.Text.Addons.Dataflow.SRName)"><summary>
+            Returns the resolved value of the specified string resource.
+            </summary><param name="name">The name of the resource to get.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.GetString(System.String,System.Object[])"><summary>
+            Returns the resolved value of the specified string resource, by calling <c>String.Format</c> using supplied arguments.
+            </summary><param name="name">The name of the resource to get.</param><param name="args">The arguments to pass to <c>String.Format</c>.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.GetString(ActiproSoftware.Products.Text.Addons.Dataflow.SRName,System.Object[])"><summary>
+            Returns the resolved value of the specified string resource, by calling <c>String.Format</c> using supplied arguments.
+            </summary><param name="name">The name of the resource to get.</param><param name="args">The arguments to pass to <c>String.Format</c>.</param><returns>
+            The value of the resource localized for the caller's current culture settings. 
+            If a best match is not possible, <see langword="null" /> is returned.
+            </returns></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.RemoveCustomString(System.String)"><summary>
+            Removes any custom string that is defined for the specified string resource.
+            </summary><param name="name">The name of the resource to remove.</param></member><member name="M:ActiproSoftware.Products.Text.Addons.Dataflow.SR.SetCustomString(System.String,System.String)"><summary>
+            Sets a custom string value for the specified string resource.
+            </summary><param name="name">The name of the resource to set.</param><param name="value">The value of the resource to set.</param></member><member name="P:ActiproSoftware.Products.Text.Addons.Dataflow.SR.ResourceManager"><summary>
+            Gets the <see cref="P:ActiproSoftware.Products.Text.Addons.Dataflow.SR.ResourceManager" /> that provides the default resources. 
+            </summary><value>The <see cref="P:ActiproSoftware.Products.Text.Addons.Dataflow.SR.ResourceManager" /> that provides the default resources.</value></member><member name="T:ActiproSoftware.Products.Text.Addons.Dataflow.SRName"><summary>
+            Specifies the names of string resources for this assembly.
+            </summary></member><member name="F:ActiproSoftware.Products.Text.Addons.Dataflow.SRName.ExParserWithNoLexer"><summary>An exception message string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.Dataflow.SRName.ExNotSupportedByImplementation"><summary>An exception message string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.Dataflow.SRName.ExTextSnapshotRangeDeleted"><summary>An exception message string.</summary></member><member name="F:ActiproSoftware.Products.Text.Addons.Dataflow.SRName.ExTextSnapshotRequiresCodeDocument"><summary>An exception message string.</summary></member><member name="T:ActiproSoftware.Text.DataflowExtensions"><summary>
+            Contains extension methods related to working with a 'M' Language Definitions <see cref="T:System.Dataflow.Parser" />.
+            </summary></member><member name="M:ActiproSoftware.Text.DataflowExtensions.GetClassificationTypeKeys(System.Dataflow.Parser)"><summary>
+            Returns the list of classification type keys used by the <see cref="T:System.Dataflow.Parser" />.
+            </summary><param name="parser">The <see cref="T:System.Dataflow.Parser" /> to examine.</param><returns>The list of classification type keys used by the <see cref="T:System.Dataflow.Parser" />.</returns></member><member name="M:ActiproSoftware.Text.DataflowExtensions.GetTextStream(ActiproSoftware.Text.ITextSnapshot)"><summary>
+            Returns an <see cref="T:System.Dataflow.ITextStream" /> for the <see cref="T:ActiproSoftware.Text.ITextSnapshot" />.
+            </summary><param name="snapshot">The <see cref="T:ActiproSoftware.Text.ITextSnapshot" /> that needs a stream.</param><returns>The <see cref="T:System.Dataflow.ITextStream" /> that was created.</returns></member><member name="M:ActiproSoftware.Text.DataflowExtensions.ToAstString(ActiproSoftware.Text.Parsing.IDataflowParseData)"><summary>
+            Returns a string that contains a string representation of the AST data found in an <see cref="T:ActiproSoftware.Text.Parsing.IDataflowParseData" /> object.
+            </summary><param name="parseData">The <see cref="T:ActiproSoftware.Text.Parsing.IDataflowParseData" /> to examine.</param><returns>A string that contains a string representation of the AST data found in an <see cref="T:ActiproSoftware.Text.Parsing.IDataflowParseData" /> object.</returns></member><member name="M:ActiproSoftware.Text.DataflowExtensions.ToTextPosition(System.Dataflow.SourcePoint)"><summary>
+            Returns a <see cref="T:ActiproSoftware.Text.TextPosition" /> for a <see cref="T:System.Dataflow.SourcePoint" />.
+            </summary><param name="sourcePoint">The <see cref="T:System.Dataflow.SourcePoint" /> to examine.</param><returns>The <see cref="T:ActiproSoftware.Text.TextPosition" /> for a <see cref="T:System.Dataflow.SourcePoint" />.</returns></member><member name="T:ActiproSoftware.Text.Tagging.Implementation.DataflowTokenTaggerProvider"><summary>
+            Provides a factory capable of creating <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" /> objects for an <see cref="T:ActiproSoftware.Text.ICodeDocument" /> instance 
+            that harness a 'M' Language Definitions <see cref="T:System.Dataflow.Parser" />.
+            </summary></member><member name="M:ActiproSoftware.Text.Tagging.Implementation.DataflowTokenTaggerProvider.GetTagger``1(ActiproSoftware.Text.ICodeDocument)"><summary>
+            Returns an <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" /> for the specified <see cref="T:ActiproSoftware.Text.ICodeDocument" />.
+            </summary><typeparam name="T">The type of <see cref="T:ActiproSoftware.Text.Tagging.ITag" /> created by the tagger.</typeparam><param name="document">The <see cref="T:ActiproSoftware.Text.ICodeDocument" /> that requires an <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" />.</param><returns>An <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" /> for the specified <see cref="T:ActiproSoftware.Text.ICodeDocument" />.</returns></member><member name="M:ActiproSoftware.Text.Tagging.Implementation.DataflowTokenTaggerProvider.#ctor(System.Dataflow.Parser,ActiproSoftware.Text.IClassificationTypeRegistry)"><summary>
+            Initializes an instance of the <c>DataflowTokenTaggerProvider</c> class.
+            </summary><param name="parser">The 'M' Language Definitions <see cref="T:System.Dataflow.Parser" /> to use.</param><param name="registry">The <see cref="T:ActiproSoftware.Text.IClassificationTypeRegistry" /> to use, generally <c>AmbientHighlightingStyleRegistry.Instance</c>.</param></member><member name="P:ActiproSoftware.Text.Tagging.Implementation.DataflowTokenTaggerProvider.Key"><summary>
+            Gets the string-based key that identifies the object.
+            </summary><value>The string-based key that identifies the object.</value></member><member name="P:ActiproSoftware.Text.Tagging.Implementation.DataflowTokenTaggerProvider.Orderings"><summary>
+            Gets the collection of <see cref="T:ActiproSoftware.Text.Utility.Ordering" /> objects, used to determine how this object is positioned relative to other objects.
+            </summary><value>The collection of <see cref="T:ActiproSoftware.Text.Utility.Ordering" /> objects, used to determine how this object is positioned relative to other objects.</value></member><member name="P:ActiproSoftware.Text.Tagging.Implementation.DataflowTokenTaggerProvider.TagTypes"><summary>
+            Gets the <see cref="T:ActiproSoftware.Text.Tagging.ITag" /><c>Type</c> objects that are supported by the <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" /> objects created by this factory.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.Tagging.ITag" /><c>Type</c> objects that are supported by the <see cref="T:ActiproSoftware.Text.Tagging.ITagger`1" /> objects created by this factory.</value></member><member name="T:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer"><summary>
+            Implements a lexer (lexical analyzer) for a 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.Parser" />.
+            </summary></member><member name="M:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.Parse(ActiproSoftware.Text.TextSnapshotRange,ActiproSoftware.Text.Lexing.ILexerTarget)"><summary>
+            Lexically parses the specified <see cref="T:ActiproSoftware.Text.TextRange" /> of the <see cref="T:ActiproSoftware.Text.ITextSnapshot" />.
+            </summary><param name="snapshotRange">A <see cref="T:ActiproSoftware.Text.TextSnapshotRange" /> indicating the offset range to parse.</param><param name="parseTarget">The <see cref="T:ActiproSoftware.Text.Lexing.ILexerTarget" /> that receives the parsing output.</param><returns>A <see cref="T:ActiproSoftware.Text.TextRange" /> containing the offset range that was modified.</returns></member><member name="M:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.#ctor(System.Dataflow.Parser)"><summary>
+            Initializes a new instance of the <c>DataflowLexer</c> class.
+            </summary><param name="parser">The 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.Parser" /> to use.</param></member><member name="P:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.Key"><summary>
+            Gets a string that identifies the lexer, generally the related language name.
+            </summary><value>A string that identifies the lexer, generally the related language name.</value></member><member name="P:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.Parser"><summary>
+            Gets the 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.Parser" /> that is used by this class.
+            </summary><value>The 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.Parser" /> that is used by this class.</value></member><member name="P:ActiproSoftware.Text.Lexing.Implementation.DataflowLexer.TokenIdProvider"><summary>
+            Gets or sets the <see cref="T:ActiproSoftware.Text.Lexing.ITokenIdProvider" /> that provides access to all the token IDs and keys used by this lexer.
+            </summary><value>The <see cref="T:ActiproSoftware.Text.Lexing.ITokenIdProvider" /> that provides access to all the token IDs and keys used by this lexer.</value></member><member name="T:ActiproSoftware.Text.Parsing.IDataflowParseData"><summary>
+            Provides the base requirements for a class that contains the results of a 'M' Language Definitions <see cref="T:System.Dataflow.Parser" /> parsing operation.
+            </summary></member><member name="P:ActiproSoftware.Text.Parsing.IDataflowParseData.Ast"><summary>
+            Gets the object that contains the abstract syntax tree result.
+            </summary><value>The object that contains the abstract syntax tree result.</value></member><member name="P:ActiproSoftware.Text.Parsing.IDataflowParseData.GraphBuilder"><summary>
+            Gets the <see cref="T:System.Dataflow.IGraphBuilder" /> that was used by the 'M' Language Definitions <see cref="T:System.Dataflow.Parser" />.
+            </summary><value>The <see cref="T:System.Dataflow.IGraphBuilder" /> that was used by the 'M' Language Definitions <see cref="T:System.Dataflow.Parser" />.</value></member><member name="T:ActiproSoftware.Text.Parsing.Implementation.DataflowParser"><summary>
+            Represents an <see cref="T:ActiproSoftware.Text.Parsing.IParser" /> (syntax/semantic analyzer) implementation that can be used to call an 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Parsing.Implementation.DataflowParser.Parser" />.
+            </summary></member><member name="M:ActiproSoftware.Text.Parsing.Implementation.DataflowParser.Parse(ActiproSoftware.Text.Parsing.IParseRequest)"><summary>
+            Performs a parsing operation using the parameters specified in the supplied <see cref="T:ActiproSoftware.Text.Parsing.IParseRequest" />
+            and returns the resulting parse data.
+            </summary><param name="request">The <see cref="T:ActiproSoftware.Text.Parsing.IParseRequest" /> that contains data about the requested parsing operation.</param><returns>An <see cref="T:ActiproSoftware.Text.Parsing.IParseData" /> that is the result of the parsing operation.</returns><remarks>
+            A <see cref="T:ActiproSoftware.Text.Parsing.IParseRequestDispatcher" /> typically calls this method when a queued parse request is ready to be processed.
+            </remarks></member><member name="M:ActiproSoftware.Text.Parsing.Implementation.DataflowParser.#ctor(System.Dataflow.Parser)"><summary>
+            Initializes a new instance of the <c>DataflowParser</c> class.
+            </summary><param name="parser">The 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Parsing.Implementation.DataflowParser.Parser" /> to use.</param></member><member name="P:ActiproSoftware.Text.Parsing.Implementation.DataflowParser.Parser"><summary>
+            Gets the 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Parsing.Implementation.DataflowParser.Parser" /> that is used by this class.
+            </summary><value>The 'M' Language Definitions <see cref="P:ActiproSoftware.Text.Parsing.Implementation.DataflowParser.Parser" /> that is used by this class.</value></member></members></doc>

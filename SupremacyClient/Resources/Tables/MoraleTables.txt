@@ -1,0 +1,117 @@
+TableStart	MoraleLabels	
+ColumnHeadingsStart	LowerBound	Label
+RowHeadingsStart		
+0	210	Fanatic
+1	190	Loyal
+2	170	Devoted
+3	145	Pleased
+4	110	Content
+5	80	Apathetic
+6	45	Disgruntled
+7	30	Defiant
+8	0	Rebellious
+TableEnd		
+		
+TableStart	MoraleColors	
+ColumnHeadingsStart	LowerBound	Color
+RowHeadingsStart		
+0	170	Lime
+1	80	#ffe7d490
+2	0	Red
+TableEnd
+
+TableStart	BaseMoraleLevels
+ColumnHeadingsStart	Value
+RowHeadingsStart
+(Default)	110
+FEDERATION	110
+CARDASSIANS	110
+ROMULANS	110
+KLINGONS	110
+DOMINION	110
+TableEnd
+
+TableStart	MoraleDriftRate					
+ColumnHeadingsStart	Value
+RowHeadingsStart
+(Default)	1
+FEDERATION	1
+CARDASSIANS	2
+ROMULANS	1
+KLINGONS	1
+DOMINION	3
+TableEnd
+
+TableStart	MoraleEventResults					
+ColumnHeadingsStart	(Default)	FEDERATION	CARDASSIANS	ROMULANS	KLINGONS	DOMINION
+RowHeadingsStart					
+EliminateEmpire	50	50	50	50	50	50
+WinMajorBattle	5	5	4	6	7	5
+WinSignificantBattle	3	3	2	4	5	2
+WinMinorBattle	1	1	1	2	1	1
+LoseMajorBattle	-9	-7	-6	-11	-13	-7
+LoseSignificantBattle	-7	-7	-4	-9	-10	-5
+LoseMinorBattle	-3	-2	-2	-4	-4	-2
+LoseFlagship	-10	-10	-8	-10	-13	-8
+LoseHospitalShip	-3	-7	-1	-5	-1	-1
+EliminateEnemyHospitalShip	0	-4	2	0	-1	1
+EliminateEnemyFlagship	6	6	6	6	6	6
+LoseStarbase	-2	-3	-1	-4	-1	-1
+LoseSpacedock 	-3	-4	-2	-5	-2	-2
+SignMembershipTreaty	5	12	4	5	2	4
+SubjugateSystem	5	-6	8	4	10	8
+ColonizeSystem	3	3	2	4	4	3
+LiberateNonNativeSystem	2	20	-5	2	-1	-5
+LiberateNativeSystem	7	9	5	10	6	4
+OccupyNativeSystem	2	-3	4	3	3	1
+OccupyNonNativeSystem	1	1	1	1	2	1
+SubjugateOccupiedSystem	3	-8	6	2	8	6
+GrantOccupiedSystemIndependence	-2	4	-8	1	-2	-4
+AcceptDependencyRequest	-4	2	-2	-4	-6	-8
+AcceptProtectorateRequest	1	3	-1	2	1	-2
+LoseHomeSystemToInvasion	-22	-20	-20	-20	-20	-30
+LoseNonNativeSystemToInvasion	-9	-10	-7	-10	-10	-10
+LoseSubjugatedSystemToInvasion	-8	-5	-7	-10	-10	-10
+LoseSystemToRebellion	-13	-20	-5	-20	-10	-10
+LoseNativeSystemToBribery	-10	-10	-10	-10	-10	-8
+LoseNonNativeSystemToBribery	-5	-5	-5	-5	-5	-5
+BombardSystemAsDefender	2	-5	4	4	6	2
+BombardSystemAsAggressor	3	-1	5	3	3	5
+BombardNativeRebelSystem	2	-7	5	3	5	5
+EliminateMinorRace	-3	-20	4	-4	2	5
+SufferBombardmentOfSystem	0	-1	2	-1	1	-1
+SufferHalfPopulationLossInHomeSystemBombardment	-10	-10	-10	-10	-10	-10
+EvacuateSystem	-1	3	-3	1	-4	-3
+RelocateEvacuatedCitizens	0	2	-1	1	-1	-2
+LoseEvacuationRefugeesInBattle	-3	-6	-5	-4	1	-2
+DeclareWarOnNeutralEmpire	2	-5	3	1	7	3
+DeclareWarOnPeacefulEmpire	0	-7	3	1	4	1
+DeclareWarOnFriendEmpire	-2	-9	2	-2	-2	1
+DeclareWarOnAffiliateEmpire	-4	-10	-4	-6	-2	1
+DeclareWarOnAlly	-6	-12	-5	-10	-5	1
+WarDeclaredByNeutralEmpire	3	5	3	5	2	1
+WarDeclaredByEmpireWithTreaty	4	7	4	6	4	1
+WarDeclaredByAlly	7	10	6	8	7	2
+AcceptSurrender	-50	-50	-50	-50	-50	-50
+ReceiveSurrender	18	20	20	20	20	10
+AcceptVictoryNonAggressionTreaty	-7	2	-5	-6	-12	-12
+ReceiveVictoryNonAggressionTreatyDemand	8	8	8	6	10	8
+SignFriendshipOrAffiliationTreaty	1	5	2	4	1	-6
+SignAntiBorgAllianceTreaty	2	5	2	2	3	-3
+ReceiveAcceptanceOfWarPact	3	-2	4	3	8	2
+AcceptWarPact	2	-6	4	2	6	2
+ReceiveAcceptanceOfDefencePact	-2	5	-2	1	-6	-8
+AcceptDefencePact	-3	5	-4	-2	-8	-8
+BreakTreaty	-2	-8	-2	-1	-2	5
+RefuseTreaty	0	-5	-2	2	1	5
+AcceptDemand	-3	-1	-2	-6	-4	-4
+ReceiveAcceptanceOfDemand	5	3	5	5	7	4
+AcceptRequest	-1	0	-1	-2	-1	-3
+ReceiveAcceptanceOfRequest	1	1	1	1	1	1
+SignAlliance	13	20	10	16	16	4
+BreakAlliance	-5	-12	-4	-7	-7	4
+AcceptRequestForIndependence	-10	-6	-9	-15	-5	-15
+RefuseRequestForIndependence	1	-4	5	2	2	2
+RepelBorgAttack	8	10	8	12	6	3
+LosePopulationToNaturalEvent	-2	-2	-2	-2	-2	-1
+TableEnd

@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Supremacy.Client.OptionsPages.GeneralOptionsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
+    <scc:AutoGrid Orientation="Vertical">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Empty at the moment"/>
+        <!--<CheckBox Grid.ColumnSpan="2"
+              IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.DominionPlayable), Mode=TwoWay}"
+              Content="{s:StringResource SETTINGS_DOMINION_PLAYABLE}"
+              ToolTip="{s:StringResource SETTINGS_DOMINION_PLAYABLE_TOOLTIP}" />
+        <CheckBox Grid.ColumnSpan="2"
+              IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.BorgPlayable), Mode=TwoWay}"
+              Content="{s:StringResource SETTINGS_BORG_PLAYABLE}"
+              ToolTip="{s:StringResource SETTINGS_BORG_PLAYABLE_TOOLTIP}" />
+        <CheckBox Grid.ColumnSpan="2"
+              IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TerranEmpirePlayable), Mode=TwoWay}"
+              Content="{s:StringResource SETTINGS_TERRAN_EMPIRE_PLAYABLE}"
+              ToolTip="{s:StringResource SETTINGS_TERRAN_EMPIRE_PLAYABLE_TOOLTIP}" />
+        <CheckBox Grid.ColumnSpan="2"
+              IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableAnimation), Mode=TwoWay}"
+              Content="{s:StringResource SETTINGS_USE_ANIMATION}"
+              ToolTip="{s:StringResource SETTINGS_USE_ANIMATION_TOOLTIP}" />
+        <CheckBox Grid.ColumnSpan="2"
+              IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableHighQualityScaling), Mode=TwoWay}"
+              Content="{s:StringResource SETTINGS_USE_HIGH_QUALITY_SCALING}"
+              ToolTip="{s:StringResource SETTINGS_USE_HIGH_QUALITY_SCALING_TOOLTIP}" />
+        <CheckBox Grid.ColumnSpan="2"
+              IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableAntiAliasing), Mode=TwoWay}"
+              Content="{s:StringResource SETTINGS_ENABLE_ANTIALIASING}"
+              ToolTip="{s:StringResource SETTINGS_ENABLE_ANTIALIASING_TOOLTIP}" />
+        <CheckBox Grid.ColumnSpan="2"
+              IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.EnableCombatScreen), Mode=TwoWay}"
+              Content="{s:StringResource SETTINGS_USE_COMBAT_SCREEN}"
+              ToolTip="{s:StringResource SETTINGS_USE_COMBAT_SCREEN_TOOLTIP}" />-->
+    </scc:AutoGrid>
+</UserControl>
