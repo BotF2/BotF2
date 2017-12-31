@@ -143,13 +143,11 @@ namespace Supremacy.Client
         {
             try
             {
-                // not finished yet
-
-                //string playerName = PlayerNameSPInput.Text;
-                //if (playerName.Length > 0)
-                //{
-                //    StorageManager.WriteSetting("LastPlayerName", playerName);
-                //}
+                string playerName = PlayerNameSPInput.Text;
+                if (playerName.Length > 0)
+                {
+                    StorageManager.WriteSetting("LastPlayerName", playerName);
+                }
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
