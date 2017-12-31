@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
              xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:DiplomacyScreen="clr-namespace:Supremacy.Client.Views;assembly=SupremacyClientComponents"
              mc:Ignorable="d"
              Height="320"
