@@ -1175,9 +1175,6 @@ namespace Supremacy.Game
                             {
                                 var shipDesign = Current.TechDatabase.DesignIdMap[ship];
 
-                                if (!colony.Owner.IsEmpire)
-                                GameLog.Client.GameData.DebugFormat("StartingShips: shipDesign={0}, {1}", shipDesign, ship);
-
                                 Current.TechDatabase.ShipDesigns[shipDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                             }
                         }
