@@ -87,11 +87,6 @@ namespace Supremacy.Client
             RequiredValue = CmdArgRequiredValue.No,
             Description = "traces Audio into Log.txt")]
         public bool TraceAudio { get; set; }
-
-        //[CmdArg(
-        //    RequiredValue = CmdArgRequiredValue.No,
-        //    Description = "makes Borg a ExpandingPower (= not playable as empire)")]
-        //public bool BorgNotEmpire { get; set; }
         #endregion
 
         #region ICmdArgs Members
