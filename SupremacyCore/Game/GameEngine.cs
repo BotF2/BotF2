@@ -495,23 +495,6 @@ namespace Supremacy.Game
                     }
                 }
 
-                /*
-                 * If the fleet went into a wormhole, then try to top off the reserves of
-                 * each ship in the fleet.  We do this now in case a ship is out of fuel, but
-                 * is now through the wormhole, thus ensuring the ship will be able to move.
-                 */
-
-                if (fleet.IsInWormhole)
-                {
-                    foreach (var ship in fleet.Ships)
-                    {
-                        //fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
-
-                        ship.FuelReserve.AdjustCurrent(+3);
-                        //civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
-                    }
-                }
-
                 for (var i = 0; i < fleet.Speed; i++)
                 {
                     if (fleet.MoveAlongRoute())

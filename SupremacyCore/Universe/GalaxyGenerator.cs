@@ -45,6 +45,8 @@ namespace Supremacy.Universe
         private static readonly DoubleKeyedSet<PlanetSize, MoonSize, int> PlanetSizeModToMoonSizeDist;
         private static readonly DoubleKeyedSet<PlanetType, MoonSize, int> PlanetTypeModToMoonSizeDist;
 
+        private static bool m_TraceWormholes = true;
+
         static GalaxyGenerator()
         {
             UniverseTables = UniverseManager.Tables;
@@ -227,9 +229,7 @@ namespace Supremacy.Universe
                         Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToStringCached()]["Width"]),
                         Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToStringCached()]["Height"]));
 
-                    var universe = new UniverseManager(mapSize);
-
-                    GameContext.Current.Universe = universe;
+                    GameContext.Current.Universe = new UniverseManager(mapSize);
 
                     var starPositions = GetStarPositions();
                     var starNames = GetStarNames();
@@ -243,6 +243,7 @@ namespace Supremacy.Universe
 
                     GenerateSystems(starPositions, starNames, homeLocations);
                     PlaceMoons();
+                    LinkWormholes();
 
                     break;
                 }
@@ -378,20 +379,10 @@ namespace Supremacy.Universe
                                            ? homeSystemDatabase[civ.Key]
                                            : GenerateHomeSystem(civ);
 
-            //EnumHelper.TryParse((string)element.Element(ns + "CivilizationType"), out _civType);
 
             var planets = new List<Planet>();
             var race = civ.Race;
             var homeSystem = new StarSystem();
-            //var civType = new CivilizationType();
-
-            //CivilizationType NotInGameRace = default(CivilizationType);
-
-            //if (civType == NotInGameRace)
-            //{
-            //    GameLog.Client.GameData.DebugFormat("GalaxyGenerator.cs: CivilizationType={0} for _civ.Name={1}", civ.CivilizationType, civ.Name);
-            //    return;
-            //}
 
             if (!homeSystemDescriptor.IsNameDefined)
             {
@@ -526,8 +517,6 @@ namespace Supremacy.Universe
                     chosenCivs.Add(empireCivs[index]);
 
                     GameLog.Print("Civilization {0} placed as {2}", empireCivs[index].ShortName, location, empireCivs[index].CivilizationType);
-                    // within Location        GameLog.Print("Civilization {0} placed at location {1} as {2}", empireCivs[index].ShortName, location, empireCivs[index].CivilizationType);
-                    // old                     GameLog.Print("Civilization {0} placed", empireCivs[index].ShortName);
 
                     positions.RemoveAt(iPosition);
 
@@ -543,232 +532,6 @@ namespace Supremacy.Universe
             }
 
             return true;
-        }
-
-
-        private static void PlaceWormholes()
-        {
-            MapLocation location = new MapLocation();
-            int _galaxyWidth = GameContext.Current.Universe.Map.Width;
-            int _galaxyHeigth = GameContext.Current.Universe.Map.Height;
-            int _wormholeNumber = 4;
-
-
-            if (GameContext.Current.Options.GalaxySize > GalaxySize.Small)
-                _wormholeNumber = 8;
-
-            if (GameContext.Current.Options.GalaxySize > GalaxySize.Large)
-                _wormholeNumber = 12;
-
-            int _wormholePairs = _wormholeNumber / 2;
-
-            GameLog.Print("will generate {0} wormholes equal to {1} pairs", _wormholeNumber, _wormholePairs);
-
-            // here 4 wormholes in 4 corners
-
-            // wormhole 1:   3,2 
-            var system = new StarSystem
-            {
-                Location = new MapLocation((int)3, (int)2),
-                StarType = StarType.Wormhole,
-            };
-            system.Name = StarType.Wormhole.ToString() + system.Location;
-            GameContext.Current.Universe.Objects.Add(system);
-            GameContext.Current.Universe.Map[location].System = system;
-            //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-            var wormhole_1_Location = system.Location;
-            StorageManager.WriteSetting("wormhole_1_Location", system.Location);
-            //GameLog.Print("writing {0}, Location = {1}", wormhole_1_Location, system.Location);
-
-
-            // wormhole 2: 
-            system = new StarSystem
-            {
-                Location = new MapLocation((int)_galaxyWidth - 3, (int) 5),
-                StarType = StarType.Wormhole
-            };
-            system.Name = StarType.Wormhole.ToString() + system.Location;
-            GameContext.Current.Universe.Objects.Add(system);
-            GameContext.Current.Universe.Map[location].System = system;
-            //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-            var wormhole_2_Location = system.Location;
-            StorageManager.WriteSetting("wormhole_2_Location", system.Location);
-            //GameLog.Print("writing {0}, Location = {1}", wormhole_2_Location, system.Location);
-
-
-
-            // wormhole 3:  
-            system = new StarSystem
-            {
-                Location = new MapLocation((int) 4, (int)_galaxyHeigth - 4),
-                StarType = StarType.Wormhole
-
-            };
-            system.Name = StarType.Wormhole.ToString() + system.Location;
-            GameContext.Current.Universe.Objects.Add(system);
-            GameContext.Current.Universe.Map[location].System = system;
-            //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-            var wormhole_3_Location = system.Location;
-            StorageManager.WriteSetting("wormhole_3_Location", system.Location);
-            //GameLog.Print("writing {0}, Location = {1}", wormhole_3_Location, system.Location);
-
-
-            // wormhole 4:   
-            system = new StarSystem
-            {
-                Location = new MapLocation((int)_galaxyWidth-3, (int)_galaxyHeigth-4),
-                StarType = StarType.Wormhole
-            };
-            system.Name = StarType.Wormhole.ToString() + system.Location;
-            GameContext.Current.Universe.Objects.Add(system);
-            GameContext.Current.Universe.Map[location].System = system;
-            //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-            var wormhole_4_Location = system.Location;
-            StorageManager.WriteSetting("wormhole_4_Location", system.Location);
-            //GameLog.Print("writing {0}, Location = {1}", wormhole_4_Location, system.Location);
-
-            var wormholePair1 = wormhole_1_Location.ToString() + wormhole_2_Location.ToString();
-            var wormholePair2 = wormhole_2_Location.ToString() + wormhole_4_Location.ToString();
-            GameLog.Print("defined wormholePair1 = {0}", wormhole_1_Location.ToString() + wormhole_3_Location.ToString());
-            GameLog.Print("defined wormholePair2 = {0}", wormhole_2_Location.ToString() + wormhole_4_Location.ToString());
-
-            //GameLog.Print("Wormholes 1 to 4: {0} and {1} and {2} and {3}", wormhole_1_Location, wormhole_2_Location, wormhole_3_Location, wormhole_4_Location);
-
-
-            if (_wormholeNumber == 8)
-            {
-                // here another 4 wormholes calculated from the center
-
-                // wormhole 5:   
-                system = new StarSystem
-                {
-                    Location = new MapLocation(((int)_galaxyWidth / 2) - 3, ((int)_galaxyHeigth / 2) - 4),
-                    StarType = StarType.Wormhole,
-                };
-                system.Name = StarType.Wormhole.ToString() + system.Location;
-                GameContext.Current.Universe.Objects.Add(system);
-                GameContext.Current.Universe.Map[location].System = system;
-                //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-                var wormhole_5_Location = system.Location;
-                StorageManager.WriteSetting("wormhole_5_Location", system.Location);
-                //GameLog.Print("writing {0}, Location = {1}", wormhole_5_Location, system.Location);
-
-
-                // wormhole 6: 
-                system = new StarSystem
-                {
-                    Location = new MapLocation(((int)_galaxyWidth / 2) + 3, ((int)_galaxyHeigth / 2) - 4),
-                    StarType = StarType.Wormhole
-                };
-                system.Name = StarType.Wormhole.ToString() + system.Location;
-                GameContext.Current.Universe.Objects.Add(system);
-                GameContext.Current.Universe.Map[location].System = system;
-                //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-                var wormhole_6_Location = system.Location;
-                StorageManager.WriteSetting("wormhole_6_Location", system.Location);
-                //GameLog.Print("writing {0}, Location = {1}", wormhole_6_Location, system.Location);
-
-
-                // wormhole 7:  
-                system = new StarSystem
-                {
-                    Location = new MapLocation(((int)_galaxyWidth / 2) - 3, ((int)_galaxyHeigth / 2) + 4),
-                    StarType = StarType.Wormhole
-                };
-                system.Name = StarType.Wormhole.ToString() + system.Location;
-                GameContext.Current.Universe.Objects.Add(system);
-                GameContext.Current.Universe.Map[location].System = system;
-                //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-                var wormhole_7_Location = system.Location;
-                StorageManager.WriteSetting("wormhole_7_Location", system.Location);
-                //GameLog.Print("writing {0}, Location = {1}", wormhole_7_Location, system.Location);
-
-
-                var wormholeList = new List<Object>
-                {
-                    wormhole_1_Location,
-                    wormhole_2_Location,
-                    wormhole_3_Location,
-                    wormhole_4_Location
-                };
-                GameLog.Print("Wormholes: {0} and {1} and {2} and {3}", wormhole_1_Location, wormhole_2_Location, wormhole_3_Location, wormhole_4_Location);
-
-
-                // wormhole 8:   
-                system = new StarSystem
-                {
-                    Location = new MapLocation(((int)_galaxyWidth / 2) + 3, ((int)_galaxyHeigth / 2) + 4),
-                    StarType = StarType.Wormhole
-                };
-                system.Name = StarType.Wormhole.ToString() + system.Location;
-                GameContext.Current.Universe.Objects.Add(system);
-                GameContext.Current.Universe.Map[location].System = system;
-                //GameLog.Print("Wormhole placed at {0}", system.Location);
-
-
-                var wormhole_8_Location = system.Location;
-                StorageManager.WriteSetting("wormhole_8_Location", system.Location);
-                //GameLog.Print("writing {0}, Location = {1}", wormhole_8_Location, system.Location);
-
-                var wormholePair3 = wormhole_5_Location.ToString() + wormhole_7_Location.ToString();
-                var wormholePair4 = wormhole_6_Location.ToString() + wormhole_8_Location.ToString();
-                GameLog.Print("defined wormholePair3 = {0}", wormhole_5_Location.ToString() + wormhole_7_Location.ToString());
-                GameLog.Print("defined wormholePair4 = {0}", wormhole_6_Location.ToString() + wormhole_8_Location.ToString());
-
-                //GameLog.Print("Wormholes 5 to 8: {0} and {1} and {2} and {3}", wormhole_5_Location, wormhole_6_Location, wormhole_7_Location, wormhole_8_Location);
-
-                //end if number = 8 
-            }
-
-            //var _pairName = "";
-            var _wormholeName = "";
-            var _wormholeLocationString = "";
-
-            //try
-            //{
-            //    for (int i = 1; i < _wormholePairs +1; i++)
-            //    {
-            //        _pairName = "wormholepair" + i.ToString();
-            //        _wormholeLocationString = "wormholePair" + i.ToString();
-            //        StorageManager.WriteSetting(_pairName, wormhole_1_Location.ToString() + wormhole_3_Location.ToString());
-            //        GameLog.Print("{0} = {1}", _pairName, wormhole_1_Location.ToString() + wormhole_3_Location.ToString());
-            //    }
-
-            StorageManager.WriteSetting("numberDefinedWormholes", _wormholeNumber);
-
-            //for (int i = 1; i < _wormholeNumber + 1; i++)
-            //
-            //    _wormholeName = "wormholeName" + i.ToString();
-            //    //doesn't work the way i like     _wormholeLocationString = "wormhole_" + i.ToString() + "_location";
-
-            //    StorageManager.WriteSetting(_wormholeName, _wormholeLocationString);
-            //    GameLog.Print("_wormholeName = {0}, Location = {1}", _wormholeName, _wormholeLocationString);
-            //}
-
-
-            //    //}
-            //}
-            //catch (Exception e) //ToDo: Just log or additional handling necessary?
-            //{
-            //    GameLog.LogException(e);
-            //}
-
-
-            //var wormholeList = new List<Object>
-            //{
-            //    wormhole_1_Location,
-            //    wormhole_2_Location,
-            //    wormhole_3_Location,
-            //    wormhole_4_Location
-            //};
-
         }
 
         private static void PlaceMinorRaceHomeworlds(Collections.CollectionBase<MapLocation> positions,
@@ -955,8 +718,6 @@ namespace Supremacy.Universe
 
             homeLocations = new Collections.CollectionBase<MapLocation>();
             var chosenCivs = new List<Civilization>();
-
-            PlaceWormholes();
 
             Boolean result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, !GameContext.Current.IsMultiplayerGame);
             if (minorRaceFrequency != MinorRaceFrequency.None)
@@ -1241,6 +1002,7 @@ namespace Supremacy.Universe
                         system.StarType = starType;
                         system.Location = position;
 
+                        //Set the name
                         switch (system.StarType)
                         {
                             case StarType.BlackHole:
@@ -1263,12 +1025,12 @@ namespace Supremacy.Universe
                                     break;
                                 system.Name = nebulaNames[0];
                                 nebulaNames.RemoveAt(0);
-                                GameLog.Print("Nebula at {0}", system.Location);  // just for comparing with wormholes - in StarSystemHelper Nebula = -8, Wormhole = -2 (atm)
                                 break;
                             case StarType.Wormhole:
                                 system.Name = wormholeNames[0];
                                 wormholeNames.RemoveAt(0);
-                                GameLog.Print("Wormhole at {0}", system.Location);
+                                if (m_TraceWormholes)
+                                    GameLog.Print("Wormhole placed at {0}", system.Location);
                                 break;
                             default:
                                 if (starNames.Count == 0)
@@ -1281,6 +1043,7 @@ namespace Supremacy.Universe
                                 break;
                         }
 
+                        //If the system supports planets, generate them
                         if (starType.SupportsPlanets())
                         {
                             for (var i = 0; i < maxPlanets - 1; i++)
@@ -1304,36 +1067,31 @@ namespace Supremacy.Universe
                                     break;
                             }
 
-                            var rndSystemBonusType = Statistics.Random(8);
-                            switch (rndSystemBonusType)
+                            if (planets.Count > 0)
                             {
-                                case 1:
-                                    system.AddBonus(SystemBonus.Dilithium);
-                                    break;
-                                case 2:
-                                case 3:
-                                case 4:
-                                    system.AddBonus(SystemBonus.RawMaterials);
-                                    break;
-                                case 5:
-                                    system.AddBonus(SystemBonus.Dilithium);
-                                    system.AddBonus(SystemBonus.RawMaterials);
-                                    break;
-                                default:
-                                    break;
+                                var rndSystemBonusType = Statistics.Random(8);
+                                switch (rndSystemBonusType)
+                                {
+                                    case 1:
+                                        system.AddBonus(SystemBonus.Dilithium);
+                                        break;
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                        system.AddBonus(SystemBonus.RawMaterials);
+                                        break;
+                                    case 5:
+                                        system.AddBonus(SystemBonus.Dilithium);
+                                        system.AddBonus(SystemBonus.RawMaterials);
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
 
                             system.AddPlanets(planets);
                             SetPlanetNames(system);
                             PlaceBonuses(system);
-                        }
-
-                        // There's no planet to have resources so doesn't make sense to have bonuses for them
-                        if (system.Planets.Count == 0)
-                        {
-                            system.RemoveBonus(SystemBonus.Dilithium);
-                            system.RemoveBonus(SystemBonus.Random);
-                            system.RemoveBonus(SystemBonus.RawMaterials);
                         }
 
                         GameContext.Current.Universe.Objects.Add(system);
@@ -1344,6 +1102,22 @@ namespace Supremacy.Universe
                         GameContext.PopThreadContext();
                     }
                 });
+        }
+
+        private static void LinkWormholes()
+        {
+            var wormholes = GameContext.Current.Universe.Find<StarSystem>(s => s.StarType == StarType.Wormhole).ToList();
+
+            while (wormholes.Count > 1)
+            {
+                GameContext.Current.Universe.Map[wormholes[0].Sector.Location].System.WormholeDestination = wormholes[1].Sector.Location;
+                GameContext.Current.Universe.Map[wormholes[1].Sector.Location].System.WormholeDestination = wormholes[0].Sector.Location;
+                //Call this twice to remove the first 2 wormholes which are now linked
+                if (m_TraceWormholes)
+                    GameLog.Print("Wormholes at {0} and {1} linked", wormholes[0].Sector.Location, wormholes[1].Sector.Location);
+                wormholes.RemoveAt(0);
+                wormholes.RemoveAt(0);
+            }
         }
 
         private static StarType GetStarType()

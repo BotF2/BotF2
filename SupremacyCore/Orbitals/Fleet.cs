@@ -30,7 +30,6 @@ namespace Supremacy.Orbitals
         #region Fields
         private CollectionBase<Ship> _ships;
         private bool _isInTow;
-        private bool _isInWormhole;
         private bool _areShipsLocked;
         private bool _isRouteLocked;
         private bool _isOrderLocked;
@@ -189,23 +188,6 @@ namespace Supremacy.Orbitals
             {
                 _isInTow = value;
                 OnPropertyChanged("IsInTow");
-                OnPropertyChanged("IsVisible");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Fleet"/> is in wormhole.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this <see cref="Fleet"/> is in wormhole; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsInWormhole
-        {
-            get { return _isInWormhole; }
-            set
-            {
-                _isInWormhole = value;
-                OnPropertyChanged("IsInWormhole");
                 OnPropertyChanged("IsVisible");
             }
         }
@@ -581,12 +563,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                foreach (Ship ship in Ships)
-                {
-                    if (ship.Sector.System.StarType == StarType.Wormhole)
-                        return true;
-                }
-                return false;
+                return this.Sector.System.StarType == StarType.Wormhole;
             }
         }
 
@@ -945,7 +922,6 @@ namespace Supremacy.Orbitals
             base.SerializeOwnedData(writer, context);
             writer.Write(_areShipsLocked);
             writer.Write(_isInTow);
-            writer.Write(_isInWormhole);
             writer.Write(_isOrderLocked);
             writer.Write(_isRouteLocked);
             writer.WriteObject(_order);
@@ -963,7 +939,6 @@ namespace Supremacy.Orbitals
 
             _areShipsLocked = reader.ReadBoolean();
             _isInTow = reader.ReadBoolean();
-            _isInWormhole = reader.ReadBoolean();
             _isOrderLocked = reader.ReadBoolean();
             _isRouteLocked = reader.ReadBoolean();
             _order = reader.Read<FleetOrder>();

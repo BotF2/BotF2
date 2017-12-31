@@ -360,5 +360,7 @@ namespace Supremacy.Universe
             _planets = new ArrayWrapper<Planet>((Planet[])reader.ReadOptimizedObjectArray(typeof(Planet)));
             _starType = (StarType)reader.ReadByte();
         }
+
+        public MapLocation? WormholeDestination { get; set; }
     }
 }

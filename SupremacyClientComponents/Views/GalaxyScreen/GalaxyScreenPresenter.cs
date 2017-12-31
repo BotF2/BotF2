@@ -451,6 +451,7 @@ namespace Supremacy.Client.Views
             PlayerOrderService.AddOrder(new CamouflageFleetOrder(fleetView.Source));
             Model.SelectedTaskForce = null;
         }
+
         private IEnumerable<FleetViewWrapper> GenerateFleetViews(MapLocation location)
         {
             //GameLog.Print("LocalPlayerEmpire Homesystem = {0} ", AppContext.LocalPlayerEmpire.HomeSystem );
@@ -468,22 +469,6 @@ namespace Supremacy.Client.Views
             return wrapperList;
         }
 
-        //private IEnumerable<IntelFleetViewWrapper> GenerateIntelFleetViews(MapLocation location)
-        //{
-        //    if (!base.AppContext.LocalPlayerEmpire.MapData.IsScanned(location))
-        //        return null;
-
-        //    IList<IntelFleetView> intelfleets = base.AppContext.CurrentGame.Universe.FindAt<IntelFleet>(location)
-        //        .Where(o => o.IsVisible)
-        //        .Select(o => IntelFleetView.Create(this.AppContext.LocalPlayerEmpire.Civilization, o))
-        //        .ToList();
-
-        //    List<IntelFleetViewWrapper> wrapperList = new List<IntelFleetViewWrapper>();
-        //    foreach (IntelFleetView intelfleet in intelfleets)
-        //        wrapperList.Add(new IntelFleetViewWrapper(intelfleet));
-        //    return wrapperList;
-        //}
-
         private void OnAvailableShipsChanged(object sender, EventArgs e)
         {
             var availableShips = Model.AvailableShips;
@@ -494,17 +479,6 @@ namespace Supremacy.Client.Views
                 Model.SelectedShip = null;
             }
         }
-
-        //private void OnAvailableIntelsChanged(object sender, EventArgs e)
-        //{
-        //    var availableIntels = this.Model.AvailableIntels;
-        //    var selectedIntel = this.Model.SelectedIntel;
-        //    if ((availableIntels == null) ||
-        //        ((selectedIntel != null) && !availableIntels.Any(o => Equals(o.ObjectID, selectedIntel.ObjectID))))
-        //    {
-        //        this.Model.SelectedIntel = null;
-        //    }
-        //}
 
         private void OnFleetRouteUpdated(Fleet fleet)
         {
@@ -517,18 +491,13 @@ namespace Supremacy.Client.Views
             {
                 case GalaxyScreenInputMode.Normal:
                     Model.AvailableShips = Enumerable.Empty<Ship>();
-                    //this.Model.AvailableIntels = Enumerable.Empty<Intel>();
                     Model.SelectedTaskForce = null;
-                    //this.Model.SelectedIntelForce = null;
                     Model.SelectedShipInTaskForce = null;
-                    //this.Model.SelectedIntelInIntelForce = null;
                     Model.SelectedShip = null;
-                    //this.Model.SelectedIntel = null;
                     break;
             }
 
             Model.SelectedShip = null;
-            //this.Model.SelectedIntel = null;
             Model.SelectedTradeRoute = null;
 
             _setInputModeCommand.RaiseCanExecuteChanged();
@@ -594,7 +563,6 @@ namespace Supremacy.Client.Views
 
                 Model.TradeRoutes = tradeRoutes;
                 Model.TaskForces = GenerateFleetViews(selectedSector.Location);
-                //this.Model.IntelForces = GenerateIntelFleetViews(selectedSector.Location);
                 Model.GeneratePlayerTaskForces(playerEmpire.Civilization);
                 Model.SelectedSectorAllegiance = selectedSectorAllegiance;
                 Model.SelectedSectorInhabitants = selectedSectorInhabitants;
@@ -647,10 +615,6 @@ namespace Supremacy.Client.Views
         {
             UpdateShipViews();
         }
-        //private void OnSelectedIntelForceChanged(object sender, EventArgs e)
-        //{
-        //    UpdateIntelViews();
-        //}
 
         private void UpdateShipViews()
         {
@@ -705,59 +669,6 @@ namespace Supremacy.Client.Views
 
             Model.SelectedShipInTaskForce = selectedShipInTaskForce;
         }
-        //private void UpdateIntelViews()
-        //{
-        //    var selectedIntelForce = this.Model.SelectedIntelForce;
-        //    IEnumerable<Intel> availableIntels;
-        //    IntelView selectedIntelInIntelForce = null;
-
-        //    if (selectedIntelForce == null)
-        //    {
-        //        availableIntels = Enumerable.Empty<Intel>();
-        //    }
-        //    else if (this.Model.OverviewMode == GalaxyScreenOverviewMode.Economic)
-        //    {
-        //        availableIntels = Enumerable.Empty<Intel>();
-        //        this.Model.SelectedIntelForce = null;
-        //    }
-        //    else
-        //    {
-        //        var sector = this.Model.SelectedSector;
-
-        //        if (sector == null)
-        //        {
-        //            availableIntels = Enumerable.Empty<Intel>();
-        //        }
-        //        else
-        //        {
-        //            var ownedIntelsAtLocation = this.AppContext.CurrentGame.Universe.FindAt<Intel>(
-        //                this.Model.SelectedSector.Location,
-        //               intel => intel.OwnerID == this.AppContext.LocalPlayer.EmpireID);
-        //            availableIntels = ownedIntelsAtLocation.Where(
-        //                intel => !selectedIntelForce.View.Intels.Any(o => Equals(o.Source, intel)));
-        //        }
-
-        //        var selectedIntel = this.Model.SelectedIntel;
-
-        //        if ((selectedIntel != null) && selectedIntelForce.View.Intels.Select(o => o.Source).Contains(selectedIntel))
-        //        {
-        //            selectedIntelInIntelForce = selectedIntelForce.View.Intels.FirstOrDefault(o => o.Source == selectedIntel);
-        //        }
-        //        else
-        //        {
-        //            selectedIntelInIntelForce = this.Model.SelectedIntelInIntelForce;
-
-        //            if (!selectedIntelForce.View.Intels.Contains(selectedIntelInIntelForce))
-        //            {
-        //                selectedIntelInIntelForce = null;
-        //            }
-        //        }
-        //    }
-
-        //    this.Model.AvailableIntels = availableIntels;
-
-        //    this.Model.SelectedIntelInIntelForce = selectedIntelInIntelForce;
-        //}
         private void OnSelectedTradeRouteChanged(object sender, EventArgs e)
         {
             _cancelTradeRouteCommand.RaiseCanExecuteChanged();
@@ -773,16 +684,6 @@ namespace Supremacy.Client.Views
 
             Model.GeneratePlayerTaskForces(AppContext.LocalPlayerEmpire.Civilization);
         }
-        //private void OnIntelForcesChanged(object sender, EventArgs e)
-        //{
-        //    var intelForces = this.Model.IntelForces;
-        //    var selectedIntelForce = this.Model.SelectedIntelForce;
-        //    //this.Model.SelectedIntelForce = (intelForces == null)
-        //                                   ? null
-        //                                   : intelForces.FirstOrDefault(o => Equals(o, selectedIntelForce));
-
-        //    this.Model.GeneratePlayerTaskForces(base.AppContext.LocalPlayerEmpire.Civilization);
-        //}
 
         private void OnTradeRouteChanged(TradeRoute tradeRoute)
         {
@@ -817,8 +718,6 @@ namespace Supremacy.Client.Views
             NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
 
             RefreshTaskForceList();
-
-            //RefreshIntelForceList();
         }
 
         private void OnAllTurnEnded(ClientEventArgs obj)
@@ -851,16 +750,6 @@ namespace Supremacy.Client.Views
             }
             Model.TaskForces = GenerateFleetViews(selectedSector.Location);
         }
-        //private void RefreshIntelForceList()
-        //{
-        //    var selectedSector = this.Model.SelectedSector;
-        //    if (selectedSector == null)
-        //    {
-        //        this.Model.IntelForces = Enumerable.Empty<IntelFleetViewWrapper>();
-        //        return;
-        //    }
-        //    this.Model.IntelForces = GenerateIntelFleetViews(selectedSector.Location);
-        //}
         #endregion
     }
 }
