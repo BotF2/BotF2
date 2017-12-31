@@ -33,10 +33,8 @@ namespace Supremacy.Client.Views
     {
         private readonly DelegateCommand<BuildProject> _addToPlanetaryBuildQueueCommand;
         private readonly DelegateCommand<BuildProject> _addToShipyardBuildQueueCommand;
-        //private readonly DelegateCommand<BuildProject> _addToIntelyardBuildQueueCommand;
         private readonly DelegateCommand<BuildQueueItem> _removeFromPlanetaryBuildQueueCommand;
         private readonly DelegateCommand<BuildQueueItem> _removeFromShipyardBuildQueueCommand;
-        //private readonly DelegateCommand<BuildQueueItem> _removeFromIntelyardBuildQueueCommand;
         private readonly DelegateCommand<BuildProject> _cancelBuildProjectCommand;
         private readonly DelegateCommand<BuildProject> _buyBuildProjectCommand;
         private readonly DelegateCommand<ProductionCategory> _activateFacilityCommand;
@@ -46,9 +44,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _toggleBuildingScrapCommand;
         private readonly DelegateCommand<Building> _toggleBuildingIsActiveCommand;
         private readonly DelegateCommand<ShipyardBuildSlot> _toggleShipyardBuildSlotCommand;
-        //private readonly DelegateCommand<IntelyardBuildSlot> _toggleIntelyardBuildSlotCommand;
         private readonly DelegateCommand<ShipyardBuildSlot> _selectShipBuildProjectCommand;
-        //private readonly DelegateCommand<IntelyardBuildSlot> _selectBuildIntelProjectCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _previousColonyCommand;
         private readonly DelegateCommand<object> _nextColonyCommand;
@@ -69,10 +65,6 @@ namespace Supremacy.Client.Views
                 ExecuteAddToShipyardBuildQueueCommand,
                 CanExecuteAddToShipyardBuildQueueCommand);
 
-            //_addToIntelyardBuildQueueCommand = new DelegateCommand<BuildProject>(
-            //    this.ExecuteAddToIntelyardBuildQueueCommand,
-            //    this.CanExecuteAddToIntelyardBuildQueueCommand);
-
             _removeFromPlanetaryBuildQueueCommand = new DelegateCommand<BuildQueueItem>(
                 ExecuteRemoveFromPlanetaryBuildQueueCommand,
                 CanExecuteRemoveFromPlanetaryBuildQueueCommand);
@@ -80,10 +72,6 @@ namespace Supremacy.Client.Views
             _removeFromShipyardBuildQueueCommand = new DelegateCommand<BuildQueueItem>(
                 ExecuteRemoveFromShipyardBuildQueueCommand,
                 CanExecuteRemoveFromShipyardBuildQueueCommand);
-
-            //_removeFromIntelyardBuildQueueCommand = new DelegateCommand<BuildQueueItem>(
-            //    this.ExecuteRemoveFromIntelyardBuildQueueCommand,
-            //    this.CanExecuteRemoveFromIntelyardBuildQueueCommand);
 
             _cancelBuildProjectCommand = new DelegateCommand<BuildProject>(
                 ExecuteCancelBuildProjectCommand,
@@ -121,17 +109,9 @@ namespace Supremacy.Client.Views
                 ExecuteToggleShipyardBuildSlotCommand,
                 CanExecuteToggleShipyardBuildSlotCommand);
 
-            //_toggleIntelyardBuildSlotCommand = new DelegateCommand<IntelyardBuildSlot>(
-            //    this.ExecuteToggleIntelyardBuildSlotCommand,
-            //    this.CanExecuteToggleIntelyardBuildSlotCommand);
-
             _selectShipBuildProjectCommand = new DelegateCommand<ShipyardBuildSlot>(
                 ExecuteSelectShipBuildProjectCommand,
                 CanExecuteSelectShipBuildProjectCommand);
-
-            //_selectBuildIntelProjectCommand = new DelegateCommand<IntelyardBuildSlot>(
-            //    this.ExecuteSelectBuildIntelProjectCommand,
-            //    this.CanExecuteSelectBuildIntelProjectCommand);
 
             _selectSectorCommand = new DelegateCommand<Sector>(
                 sector =>
@@ -293,86 +273,7 @@ namespace Supremacy.Client.Views
             
             PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
         }
-        ////private bool CanExecuteToggleIntelyardBuildSlotCommand(IntelyardBuildSlot buildSlot)
-        ////{
-        ////    if (buildSlot == null)
-        ////        return false;
 
-        ////    var colony = this.Model.SelectedColony;
-        ////    if (colony == null || colony.Intelyard != buildSlot.Intelyard)
-        ////        return false;
-
-        ////    return true;
-        ////}
-        //private void ExecuteToggleIntelyardBuildSlotCommand(IntelyardBuildSlot buildSlot)
-        //{
-        //    if (buildSlot == null)
-        //        return;
-
-        //    var colony = this.Model.SelectedColony;
-        //    if (colony == null || colony.Intelyard != buildSlot.Intelyard)
-        //        return;
-
-        //    if (buildSlot.IsActive)
-        //        colony.DeactivateIntelyardBuildSlot(buildSlot);
-        //    else
-        //        colony.ActivateIntelyardBuildSlot(buildSlot);
-
-        //    this.PlayerOrderService.AddOrder(new ToggleIntelyardBuildSlotOrder(buildSlot));
-        //}
-
-        //private bool CanExecuteSelectBuildIntelProjectCommand(IntelyardBuildSlot buildSlot)
-        //{
-        //    if (buildSlot == null)
-        //        return false;
-
-        //    var colony = this.Model.SelectedColony;
-        //    if (colony == null || colony.Intelyard != buildSlot.Intelyard)
-        //        return false;
-
-        //    return buildSlot.IsActive && !buildSlot.HasProject;
-        //}
-
-        //private void ExecuteSelectBuildIntelProjectCommand(IntelyardBuildSlot buildSlot)
-        //{
-        //    if (buildSlot == null)
-        //        return;
-
-        //    var colony = this.Model.SelectedColony;
-        //    if (colony == null || colony.Intelyard != buildSlot.Intelyard)
-        //        return;
-
-        //    if (!buildSlot.IsActive || buildSlot.HasProject)
-        //        return;
-
-        //    //var view = new NewIntelSelectionView(buildSlot);
-        //    var view= new NewIntelSelectionView(buildSlot);
-        //    var statsViewModel = new TechObjectDesignViewModel();
-
-        //    BindingOperations.SetBinding(
-        //        statsViewModel,
-        //        TechObjectDesignViewModel.DesignProperty,
-        //        new Binding
-        //        {
-        //            Source = view,
-        //            Path = new PropertyPath("SelectedBuildProject.BuildDesign")
-        //        });
-
-        //    view.AdditionalContent = statsViewModel;
-
-        //    var result = view.ShowDialog();
-
-        //    if (!result.HasValue || !result.Value)
-        //        return;
-
-        //    var project = view.SelectedBuildProject;
-        //    if (project == null)
-        //        return;
-
-        //    buildSlot.Project = project;
-
-        //    this.PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Intelyard));
-        //}
         private bool CanExecuteToggleBuildingScrapCommand(object parameter)
         {
             var checkableParameter = parameter as ICheckableCommandParameter;
@@ -680,28 +581,10 @@ namespace Supremacy.Client.Views
                     Model.ShipyardBuildProjects = Enumerable.Empty<BuildProject>();
                 //GameLog disabled due to giving a crash when double clicking the (new) colony, maybe because having no Shipyard yet (Gamelog last value)
                 //GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, shipyard: {1} Build-list is empty", selectedColony.Name, selectedColony.Shipyard.Name);
-
-                //if (selectedColony.Intelyard != null)
-                //{
-                //            //GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, intelyard: {1} existing!", selectedColony.Name, selectedColony.Intelyard.Name);
-                //    //IList<BuildProject> intelList = TechTreeHelper.GetIntelyardBuildProjects(selectedColony.Intelyard);
-                //    //        GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, intelyard: {1}, intelDesign_FIRST: {2}", selectedColony.Name, selectedColony.Intelyard.Name, intelList.First());
-
-                //    //BuildProject[] intelListArray = Algorithms.Sort(intelList.AsEnumerable<BuildProject>(),
-                //    //    new Comparison<BuildProject>(
-                //    //        delegate (BuildProject a, BuildProject b) { return a.BuildDesign.BuildCost.CompareTo(b.BuildDesign.BuildCost) * -1 /*to reverse the order */; }));
-
-                //    //this.Model.IntelyardBuildProjects = intelListArray;
-                //            //GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, intelyard: {1}, intelListArray_FIRST: {2}", selectedColony.Name, selectedColony.Intelyard.Name, intelListArray.First());
-                //}
-                //else
-                //    this.Model.IntelyardBuildProjects = Enumerable.Empty<BuildProject>();
-                //            GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, intelyard: {1} Build-list is empty", selectedColony.Name, selectedColony.Intelyard.Name);
             }
             else
             {
                 Model.PlanetaryBuildProjects = Enumerable.Empty<BuildProject>();
-                //GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, intelyard: {1} Build-list for whole system is empty", selectedColony.Name, selectedColony.Intelyard.Name);
             }
         }
 
@@ -711,10 +594,8 @@ namespace Supremacy.Client.Views
 
             _addToPlanetaryBuildQueueCommand.RaiseCanExecuteChanged();
             _addToShipyardBuildQueueCommand.RaiseCanExecuteChanged();
-            //_addToIntelyardBuildQueueCommand.RaiseCanExecuteChanged();
             _removeFromPlanetaryBuildQueueCommand.RaiseCanExecuteChanged();
             _removeFromShipyardBuildQueueCommand.RaiseCanExecuteChanged();
-            //_removeFromIntelyardBuildQueueCommand.RaiseCanExecuteChanged();
             _cancelBuildProjectCommand.RaiseCanExecuteChanged();
             _buyBuildProjectCommand.RaiseCanExecuteChanged();
             _activateFacilityCommand.RaiseCanExecuteChanged();
@@ -724,9 +605,7 @@ namespace Supremacy.Client.Views
             _toggleBuildingScrapCommand.RaiseCanExecuteChanged();
             _toggleBuildingIsActiveCommand.RaiseCanExecuteChanged();
             _toggleShipyardBuildSlotCommand.RaiseCanExecuteChanged();
-            //_toggleIntelyardBuildSlotCommand.RaiseCanExecuteChanged();
             _selectShipBuildProjectCommand.RaiseCanExecuteChanged();
-            //_selectBuildIntelProjectCommand.RaiseCanExecuteChanged();
         }
 
         protected override void RegisterCommandAndEventHandlers()
@@ -735,10 +614,8 @@ namespace Supremacy.Client.Views
 
             Model.AddToPlanetaryBuildQueueCommand = _addToPlanetaryBuildQueueCommand;
             Model.AddToShipyardBuildQueueCommand = _addToShipyardBuildQueueCommand;
-            ////this.Model.AddToIntelyardBuildQueueCommand = _addToIntelyardBuildQueueCommand;
             Model.RemoveFromPlanetaryBuildQueueCommand = _removeFromPlanetaryBuildQueueCommand;
             Model.RemoveFromShipyardBuildQueueCommand = _removeFromShipyardBuildQueueCommand;
-            //this.Model.RemoveFromIntelyardBuildQueueCommand = _removeFromIntelyardBuildQueueCommand;
             Model.CancelBuildProjectCommand = _cancelBuildProjectCommand;
             Model.BuyBuildProjectCommand = _buyBuildProjectCommand;
             Model.ScrapFacilityCommand = _scrapFacilityCommand;
@@ -748,9 +625,7 @@ namespace Supremacy.Client.Views
             Model.ToggleBuildingIsActiveCommand = _toggleBuildingIsActiveCommand;
             Model.ToggleBuildingScrapCommand = _toggleBuildingScrapCommand;
             Model.ToggleShipyardBuildSlotCommand = _toggleShipyardBuildSlotCommand;
-            //this.Model.ToggleIntelyardBuildSlotCommand = _toggleIntelyardBuildSlotCommand;
             Model.SelectShipBuildProjectCommand = _selectShipBuildProjectCommand;
-            //this.Model.SelectBuildIntelProjectCommand = _selectBuildIntelProjectCommand;
 
             Model.SelectedColonyChanged += OnSelectedColonyChanged;
             Model.ActiveOrbitalBatteriesChanged += OnActiveOrbitalBatteriesChanged;
@@ -780,9 +655,6 @@ namespace Supremacy.Client.Views
 
             if (project is ShipBuildProject)
                 return (Model.SelectedColony.Shipyard != null);
-
-            //if (project is BuildIntelProject)
-            //    return (this.Model.SelectedColony.Intelyard != null);
 
             return true;
         }
@@ -922,22 +794,6 @@ namespace Supremacy.Client.Views
 
             RemoveItemFromBuildQueue(item, colony.Shipyard);
         }
-        //private bool CanExecuteRemoveFromIntelyardBuildQueueCommand(BuildQueueItem item)
-        //{
-        //    return ((this.Model.SelectedColony != null) && (this.Model.SelectedColony.Intelyard != null));
-        //}
-
-        ////private void ExecuteRemoveFromIntelyardBuildQueueCommand(BuildQueueItem item)
-        ////{
-        ////    var colony = this.Model.SelectedColony;
-        ////    if (colony == null)
-        ////        return;
-
-        ////    if (colony.Intelyard == null)
-        ////        return;
-
-        ////    RemoveItemFromBuildQueue(item, colony.Intelyard);
-        ////}
 
         private bool CanExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
         {
@@ -969,22 +825,7 @@ namespace Supremacy.Client.Views
 
             AddProjectToBuildQueue(project, colony.Shipyard);
         }
-        //private bool CanExecuteAddToIntelyardBuildQueueCommand(BuildProject project)
-        //{
-        //    return ((this.Model.SelectedColony != null) && (this.Model.SelectedColony.Intelyard != null));
-        //}
 
-        //private void ExecuteAddToIntelyardBuildQueueCommand(BuildProject project)
-        //{
-        //    var colony = this.Model.SelectedColony;
-        //    if (colony == null)
-        //        return;
-
-        //    if (colony.Intelyard == null)
-        //        return;
-
-        //    AddProjectToBuildQueue(project, colony.Intelyard);
-        //}
         protected void RemoveItemFromBuildQueue([NotNull] BuildQueueItem item, [NotNull] IProductionCenter productionCenter)
         {
             if (item == null)
@@ -1028,8 +869,6 @@ namespace Supremacy.Client.Views
                 Model.SelectedPlanetaryBuildProject = null;
             else if (productionCenter is Shipyard)
                 Model.SelectedShipyardBuildProject = null;
-            //else if (productionCenter is Intelyard)
-            //    this.Model.SelectedIntelyardBuildProject = null;
 
             UpdateBuildLists();
         }
@@ -1040,10 +879,8 @@ namespace Supremacy.Client.Views
 
             Model.AddToPlanetaryBuildQueueCommand = null;
             Model.AddToShipyardBuildQueueCommand = null;
-            //this.Model.AddToIntelyardBuildQueueCommand = null;
             Model.RemoveFromPlanetaryBuildQueueCommand = null;
             Model.RemoveFromShipyardBuildQueueCommand = null;
-            //this.Model.RemoveFromIntelyardBuildQueueCommand = null;
             Model.CancelBuildProjectCommand = null;
             Model.BuyBuildProjectCommand = null;
             Model.ScrapFacilityCommand = null;

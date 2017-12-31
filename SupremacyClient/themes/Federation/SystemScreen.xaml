@@ -195,42 +195,9 @@
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
-                    <!--<ItemsControl ItemsSource="{Binding Path=SelectedColony.Intelyard.BuildSlots, Mode=OneWay}"
-                            Grid.Column="1"  
-                            Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type s:IntelyardBuildSlot}">
-                                <scc:IntelyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>-->
                 </Grid>
                 </TabItem>
  
-                <!--<TabItem x:Name="IntelbuildingTab" Header="INTELLIGENCE">
-                    <Grid x:Name="IntelbuildingTabContent">
-                        <ItemsControl ItemsSource="{Binding Path=SelectedColony.Intelyard.BuildSlots, Mode=OneWay}"
-                            Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type s:IntelyardBuildSlot}">
-                                    <scc:IntelyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Grid>
-                </TabItem>-->
-                  
                 <TabItem x:Name="StructuresTab" Header="STRUCTURES">
                     <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.StructureList}" />
                 </TabItem>
@@ -266,21 +233,6 @@
                       Property="Visibility"
                       Value="Hidden" />
             </MultiDataTrigger>
-            <!--<MultiDataTrigger>
-               <MultiDataTrigger.Conditions>
-                  <Condition Binding="{Binding Path=SelectedColony.Intelyard, Mode=OneWay}"
-                           Value="{x:Null}" />
-               </MultiDataTrigger.Conditions>
-                  <Setter TargetName="IntelbuildingTab"
-                      Property="IsEnabled"
-                      Value="False" />
-                  <Setter TargetName="IntelbuildingTab"
-                      Property="IsSelected"
-                      Value="False" />
-                  <Setter TargetName="IntelbuildingTabContent"
-                      Property="Visibility"
-                      Value="Hidden" />
-            </MultiDataTrigger>-->
                         <DataTrigger Binding="{Binding Path=AppContext.IsTurnFinished, RelativeSource={RelativeSource TemplatedParent}}"
                          Value="True">
               <Setter Property="IsEnabled"

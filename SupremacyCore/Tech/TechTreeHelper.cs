@@ -132,18 +132,6 @@ namespace Supremacy.Tech
                             .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
                     break;
 
-                //case TechObjectType.Intels:
-                //    results.AddRange(
-                //        techTree.IntelDesigns
-                //            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
-                //    break;
-
-                //case TechObjectType.Intelyards:
-                //    results.AddRange(
-                //        techTree.IntelyardDesigns
-                //            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
-                //    break;
-
                 case TechObjectType.Stations:
                     results.AddRange(
                         techTree.StationDesigns
@@ -221,58 +209,6 @@ namespace Supremacy.Tech
                 .Cast<BuildProject>()
                 .ToList();
         }
-    //    /// <summary>
-    //    /// Gets the potential intelbuilding projects for the specified intelyard.
-    //    /// </summary>
-    //    /// <param name="intelyard">The intelyard.</param>
-    //    /// <returns>The intelbuilding projects.</returns>
-    //    //public static IList<BuildProject> GetIntelyardBuildProjects(Intelyard intelyard)
-    //    //{
-    //    //    var civManager = GameContext.Current.CivilizationManagers[intelyard.OwnerID];
-    //    //    var intelDesigns = new List<IntelDesign>();
-    //    //    var intelyardDesign = intelyard.IntelyardDesign;
-    //    //    var unavailableIntelDesigns = new List<IntelDesign>();
-
-    //        /* 
-    //         * Find all intel designs whose tech requirements have been met.
-    //         */
-    //        //intelDesigns.AddRange(
-    //        //    civManager.TechTree.IntelDesigns.Where(
-    //        //        o => MeetsTechLevels(civManager, o)));
-    //        // doesn't work: GameLog.Client.GameData.DebugFormat("TechTreeHelper.cs: IntelDesigns {0}", intelDesigns.Select(GetIntelyardBuildProjects.GetType));
-    //////////////////////////////////        intelDesigns.AddRange(
-    //////////////////////////////////civManager.TechTree.IntelDesigns);
-
-    //        /*
-    //         * Mark all obsolete designs for removal.
-    //         */
-    //        // doesn't work: GameLog.Client.GameData.DebugFormat("TechTreeHelper.cs: IntelDesigns {0}", unavailableIntelDesigns.SelectMany(o => MeetsTechLevels(civManager, o)));
-    //        unavailableIntelDesigns.AddRange(
-    //            intelDesigns.SelectMany(
-    //                o => o.ObsoletedDesigns.OfType<IntelDesign>()));
-
-    //        /* 
-    //         * Check for any designs that cannot be built because their tech levels exceed
-    //         * the capabilities of the local intelyard and mark them for removal.  This check
-    //         * was deferred to ensure that any other designs obsoleted by these designs were
-    //         * properly marked for removal.
-    //         */
-    //        unavailableIntelDesigns.AddRange(
-    //            intelDesigns.Where(
-    //                o => !IsIntelDesignWithinIntelyardCapabilities(o, intelyardDesign)));
-
-    //        /*
-    //         * Construct the list of BuildIntelProjects from the remaining designs.
-    //         */
-    //        var colony = intelyard.Sector.System.Colony;
-    //        //GameLog.Client.GameData.DebugFormat("TechTreeHelper.cs: colony:{0}, intelyard:{1}, intelDesign_FIRST:{2}", colony, intelyard, intelDesigns.First());
-    //        return intelDesigns
-    //            .Except(unavailableIntelDesigns)
-    //            .Where(o => MeetsPrerequisites(colony, o))
-    //            .Select(o => new BuildIntelProject(intelyard, o))
-    //            .Cast<BuildProject>()
-    //            .ToList();
-    //    }
 
         /// <summary>
         /// Gets the potential planetary build projects for the specified colony.
@@ -541,45 +477,6 @@ namespace Supremacy.Tech
                                      o.UpgradeTarget,
                                      o.UpgradeDesign)));
             }
-            //if (CanBuildIntelyard(colony))
-            //{
-            //    var buildableIntelyards =
-            //        (from design in civManager.TechTree.IntelyardDesigns
-            //         where CanBuildIntelyard(colony) &&
-            //               MeetsTechLevels(civManager, design) &&
-            //               MeetsRestrictions(colony, design) &&
-            //               !IsIntelyardObsolete(colony, design) &&
-            //               MeetsPrerequisites(colony, design)
-            //         select design).ToHashSet();
-
-            //    buildableIntelyards.ExceptWith(results.Select(o => o.BuildDesign).OfType<IntelyardDesign>());
-
-            //    results.AddRange(buildableIntelyards.Select(o => new StructureBuildProject(colony, o)));
-            //}
-
-            //if (colony.Intelyard != null)
-            //{
-            //    results.AddRange(
-            //        colony.Intelyard.IntelyardDesign.UpgradableDesigns
-            //                         .Where(ud => civManager.TechTree.Contains(ud))
-            //                         .OfType<IntelyardDesign>()
-            //                         .Select(
-            //                             ud => new
-            //                             {
-            //                                 UpgradeTarget = colony.Intelyard,
-            //                                 UpgradeDesign = ud
-            //                             })
-            //            .Where(
-            //                o => !colony.HasIntelyard(o.UpgradeDesign) &&
-            //                     !colony.IsBuilding(o.UpgradeDesign) &&
-            //                     MeetsTechLevels(civManager, o.UpgradeDesign) &&
-            //                     MeetsRestrictions(colony, o.UpgradeDesign) &&
-            //                     MeetsPrerequisites(colony, o.UpgradeDesign))
-            //            .Select(
-            //                o => new IntelyardUpgradeProject(
-            //                         o.UpgradeTarget,
-            //                         o.UpgradeDesign)));
-            //}
 
             Algorithms.SortInPlace(
                 results,
@@ -606,25 +503,6 @@ namespace Supremacy.Tech
             return !colony.BuildSlots.Any(o => o.HasProject && o.Project.BuildDesign is ShipyardDesign) &&
                    !colony.BuildQueue.Any(o => o.Project.BuildDesign is ShipyardDesign);
         }
-
-        /// <summary>
-        /// Determines whether a new intelyard can be constructed at the specified colony.
-        /// </summary>
-        /// <param name="colony">The colony.</param>
-        /// <returns>
-        /// <c>true</c> if a new intelyard can be constructed; otherwise, <c>false</c>.
-        /// </returns>
-        //private static bool CanBuildIntelyard([NotNull] Colony colony)
-        //{
-        //    if (colony == null)
-        //        throw new ArgumentNullException("colony");
-
-        //    if (colony.Intelyard != null)
-        //        return false;
-
-        //    return !colony.BuildSlots.Any(o => o.HasProject && o.Project.BuildDesign is IntelyardDesign) &&
-        //           !colony.BuildQueue.Any(o => o.Project.BuildDesign is IntelyardDesign);
-        //}
 
         /// <summary>
         /// Determines whether the specified building design is obsolete at a given colony.
@@ -669,28 +547,6 @@ namespace Supremacy.Tech
                                MeetsTechLevels(civManager, otherDesign) &&
                                GetObsoletedTree(civManager, otherDesign).Contains(design));
         }
-
-        /// <summary>
-        /// Determines whether the specified intelyard design is obsolete at a given colony.
-        /// </summary>
-        /// <param name="colony">The colony.</param>
-        /// <param name="design">The intelyard design.</param>
-        /// <returns>
-        /// <c>true</c> if obsolete; otherwise, <c>false</c>.
-        /// </returns>
-        //private static bool IsIntelyardObsolete(
-        //    Colony colony,
-        //    /* ReSharper disable SuggestBaseTypeForParameter */
-        //    IntelyardDesign design
-        //    /* ReSharper restore SuggestBaseTypeForParameter */)
-        //{
-        //    var civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
-
-        //    return civManager.TechTree.IntelyardDesigns.Any(
-        //        otherDesign => colony.HasIntelyard(otherDesign) &&
-        //                       MeetsTechLevels(civManager, otherDesign) &&
-        //                       GetObsoletedTree(civManager, otherDesign).Contains(design));
-        //}
 
         /// <summary>
         /// Determines whether the specified orbital battery design is obsolete at a given colony.
@@ -875,29 +731,6 @@ namespace Supremacy.Tech
                 techCategory => shipDesign.TechRequirements[techCategory] <=
                                 shipyardDesign.MaxBuildTechLevel);
         }
-        /// <summary>
-        /// Determines whether the specified intel design can be built at a given intelyard.
-        /// </summary>
-        /// <param name="intelDesign">The intel design.</param>
-        /// <param name="intelyardDesign">The design of the intelyard.</param>
-        /// <returns>
-        /// <c>true</c> if the intel can be built at the intelyard; otherwise, <c>false</c>.
-        /// </returns>
-        //private static bool IsIntelDesignWithinIntelyardCapabilities(
-        //    // ReSharper disable SuggestBaseTypeForParameter
-        //    [NotNull] IntelDesign intelDesign,
-        //    // ReSharper restore SuggestBaseTypeForParameter
-        //    [NotNull] IntelyardDesign intelyardDesign)
-        //{
-        //    if (intelDesign == null)
-        //        throw new ArgumentNullException("intelDesign");
-        //    if (intelyardDesign == null)
-        //        throw new ArgumentNullException("intelyardDesign");
-
-        //    return EnumHelper.GetValues<TechCategory>().All(
-        //        techCategory => intelDesign.TechRequirements[techCategory] <=
-        //                        intelyardDesign.MaxBuildTechLevel);
-        //}
 
         /// <summary>
         /// Gets the best facility design in the specified category that can be built at the given colony.

@@ -461,8 +461,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            GameLog.Client.GameData.DebugFormat("-----------------------------------------------------------------------");
-            GameLog.Client.GameData.DebugFormat("TurnNumber: {0}", TurnNumber);
+            GameLog.Client.GameData.DebugFormat("------------------------------ TURN {0} ------------------------------", TurnNumber);
             var handler = TurnNumberChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
@@ -704,7 +703,6 @@ namespace Supremacy.Game
                     GalaxyShape = GalaxyShape.Irregular,
                     StartingTechLevel = StartingTechLevel.Developed,
 
-                    //FederationPlayable = FederationPlayable.Federation,   // old, now YES/NO
                     IntroPlayable = EmpirePlayable.No,
                     FederationPlayable = EmpirePlayable.Yes,
                     RomulanPlayable = EmpirePlayable.Yes,
@@ -875,25 +873,25 @@ namespace Supremacy.Game
             {
                 _gameMod = GameModLoader.GetModFromCommandLine();
                 _races = RaceDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: loaded Races ...");
+                        GameLog.Client.GameData.DebugFormat("Races loaded");
                 _civilizations = CivDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: loaded Civilizations ...");
+                        GameLog.Client.GameData.DebugFormat("Civilizations loaded");
                 _civManagers = new CivilizationManagerMap();
                 _tables = GameTables.Load();
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: loaded Tables ...");
+                        GameLog.Client.GameData.DebugFormat("Tables loaded");
                 _techDatabase = TechDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: loaded TechDatabase ...");
+                        GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
                 //_intelDatabase = IntelDatabase.Load();  // on some point we tried to make Intel the same like research (levels, abilities). at the moment we stopped it and made Spy ships etc. 
                 _researchMatrix = ResearchMatrix.Load();
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: loaded ResearchMatrix ...");
+                        GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
                 //_intelligenceMatrix = IntelligenceMatrix.Load();
                 _techTrees = new TechTreeMap();
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: loaded TechTree ...");
+                        GameLog.Client.GameData.DebugFormat("TechTree loaded");
                 //_intelTrees = new IntelTreeMap();
                 _strategyDatabase = StrategyDatabase.Load();
                 _scriptedEvents = new List<ScriptedEvent>();
                 _agentDatabase = AgentDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: loaded Agents ...");
+                        GameLog.Client.GameData.DebugFormat("Agents loaded");
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 
@@ -914,7 +912,7 @@ namespace Supremacy.Game
                         scriptedEvent.Initialize(eventId, eventDefinition.Options);
 
                         _scriptedEvents.Add(scriptedEvent);
-                        GameLog.Client.GameData.DebugFormat("GameContext.cs: scriptedEvent_read: {0}", scriptedEvent.GetType());
+                        GameLog.Client.GameData.DebugFormat("Scripted Event {0} loaded", scriptedEvent.GetType());
                     }
                     catch (Exception e)
                     {
@@ -927,7 +925,7 @@ namespace Supremacy.Game
                 }
 
                 GalaxyGenerator.GenerateGalaxy(this);
-                    GameLog.Client.GameData.DebugFormat("GameContext.cs: Galaxy generated...");
+                    GameLog.Client.GameData.DebugFormat("Galaxy generated...");
 
                 TechTree.LoadTechTrees(this);
 
@@ -1151,25 +1149,6 @@ namespace Supremacy.Game
                             }
                         }
 
-                        // Starting intelyards
-                        //foreach (string intelyard in homeSystemDescriptor.StartingIntelyards)
-                        //{
-                        //    if (GameContext.Current.TechDatabase.DesignIdMap.ContainsKey(intelyard))
-                        //    {
-                        //        var intelyardDesign = GameContext.Current.TechDatabase.DesignIdMap[intelyard];
-
-                        //        TechObject instance = null;
-                        //        GameContext.Current.TechDatabase.IntelyardDesigns[intelyardDesign].TrySpawn(colony.Location, colony.Owner, out instance);
-                        //                GameLog.Client.GameData.DebugFormat("GameContext.cs: Starting Intelyards: shipyardDesign={0}, {1}", intelyardDesign, intelyard);
-                        //        if (instance != null)
-                        //        {
-                        //            Intelyard newIntelyard = instance as Intelyard;
-                        //            foreach (IntelyardBuildSlot buildSlot in newIntelyard.BuildSlots)
-                        //                colony.ActivateIntelyardBuildSlot(buildSlot);
-                        //        }
-                        //    }
-                        //}
-
                         // Starting Shipyards
                         foreach (string shipyard in homeSystemDescriptor.StartingShipyards)
                         {
@@ -1197,23 +1176,11 @@ namespace Supremacy.Game
                                 var shipDesign = Current.TechDatabase.DesignIdMap[ship];
 
                                 if (!colony.Owner.IsEmpire)
-                                GameLog.Client.GameData.DebugFormat("GameContext.cs: StartingShips: shipDesign={0}, {1}", shipDesign, ship);
+                                GameLog.Client.GameData.DebugFormat("StartingShips: shipDesign={0}, {1}", shipDesign, ship);
 
                                 Current.TechDatabase.ShipDesigns[shipDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                             }
                         }
-
-                        // Starting Intels Vessels
-                        //foreach (string intel in homeSystemDescriptor.StartingIntels)
-                        //{
-                        //    if (GameContext.Current.TechDatabase.DesignIdMap.ContainsKey(intel))
-                        //    {
-                        //        var shipDesign = GameContext.Current.TechDatabase.DesignIdMap[intel];
-                        //        GameLog.Client.GameData.DebugFormat("GameContext.cs: StartingIntels: shipDesign={0}, {1}", shipDesign, intel);
-                        //        TechObject instance = null;
-                        //        GameContext.Current.TechDatabase.ShipDesigns[shipDesign].TrySpawn(colony.Location, colony.Owner, out instance);
-                        //    }
-                        //}
 
                         // Starting Outposts
                         foreach (string outpost in homeSystemDescriptor.StartingOutposts)
@@ -1243,20 +1210,20 @@ namespace Supremacy.Game
                         }
                     }
                 }
-                GameLog.Client.GameData.DebugFormat("GameContext.cs: starting items are done !");
+                GameLog.Client.GameData.DebugFormat("starting items are done !");
                 _sectorClaims = new SectorClaimGrid();
                 _diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
 
                 foreach (var civManager in _civManagers)
                 {
                     //GameLog.Client.GameData.DebugFormat("GameContext.cs: civType={0} for ", civManager.Civilization.CivilizationType.ToString(), civManager.Civilization.Name);
-                    if (civManager.Civilization.CivilizationType.ToString() != "NotInGameRace")
+                    if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
                     {
                         _diplomats.Add(new Diplomat(civManager.Civilization));
                         civManager.EnsureSeatOfGovernment();
                     }
                 }
-                GameLog.Client.GameData.DebugFormat("GameContext.cs: SeatOfGovernment ensured...");
+                GameLog.Client.GameData.DebugFormat("SeatOfGovernment ensured...");
 
                 _diplomats.ForEach(d => d.EnsureForeignPowers());
 

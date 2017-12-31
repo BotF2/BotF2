@@ -36,8 +36,6 @@ namespace Supremacy.Tech
         private readonly HashSet<int> _buildingDesigns;
         private readonly HashSet<int> _shipyardDesigns;
         private readonly HashSet<int> _shipDesigns;
-        //private readonly HashSet<int> _intelyardDesigns;
-        //private readonly HashSet<int> _intelDesigns;
         private readonly HashSet<int> _stationDesigns;
         private readonly HashSet<int> _productionFacilityDesigns;
         private readonly HashSet<int> _orbitalBatteryDesigns;
@@ -73,21 +71,6 @@ namespace Supremacy.Tech
         }
 
         /// <summary>
-        /// Gets the subset of intelyard designs in this <see cref="TechTree"/>.
-        /// </summary>
-        /// <value>The intelyard designs.</value>
-        //public IEnumerable<IntelyardDesign> IntelyardDesigns
-        //{
-        //    get
-        //    {
-        //        return _intelyardDesigns
-        //            .Select(i => GameContext.Current.TechDatabase[i])
-        //            .OfType<IntelyardDesign>();
-        //    }
-
-        //}
-
-        /// <summary>
         /// Gets the subset of ship designs in this <see cref="TechTree"/>.
         /// </summary>
         /// <value>The ship designs.</value>
@@ -100,19 +83,6 @@ namespace Supremacy.Tech
                     .OfType<ShipDesign>();
             }
         }
-        /// <summary>
-        /// Gets the subset of intel designs in this <see cref="TechTree"/>.
-        /// </summary>
-        /// <value>The intel designs.</value>
-        //public IEnumerable<IntelDesign> IntelDesigns
-        //{
-        //    get
-        //    {
-        //        return _intelDesigns
-        //            .Select(i => GameContext.Current.TechDatabase[i])
-        //            .OfType<IntelDesign>();
-        //    }
-        //}
 
         /// <summary>
         /// Gets the subset of station designs in this <see cref="TechTree"/>.
@@ -169,8 +139,6 @@ namespace Supremacy.Tech
                 return _buildingDesigns.Count == 0 &&
                        _shipyardDesigns.Count == 0 &&
                        _shipDesigns.Count == 0 &&
-                       //_intelyardDesigns.Count == 0 &&
-                       //_intelDesigns.Count == 0 &&
                        _stationDesigns.Count == 0 &&
                        _productionFacilityDesigns.Count == 0 &&
                        _orbitalBatteryDesigns.Count == 0;
@@ -205,14 +173,6 @@ namespace Supremacy.Tech
             if (shDesign != null && _shipDesigns.Contains(shDesign.DesignID))
                 return true;
 
-            //var iyDesign = design as IntelyardDesign;
-            //if (iyDesign != null && _intelyardDesigns.Contains(iyDesign.DesignID))
-            //    return true;
-
-            //var ihDesign = design as IntelDesign;
-            //if (ihDesign != null && _intelDesigns.Contains(ihDesign.DesignID))
-            //    return true;
-
             var stDesign = design as StationDesign;
             if (stDesign != null && _stationDesigns.Contains(stDesign.DesignID))
                 return true;
@@ -232,8 +192,6 @@ namespace Supremacy.Tech
             _buildingDesigns = new HashSet<int>();
             _shipyardDesigns = new HashSet<int>();
             _shipDesigns = new HashSet<int>();
-            //_intelyardDesigns = new HashSet<int>();
-            //_intelDesigns = new HashSet<int>();
             _stationDesigns = new HashSet<int>();
             _productionFacilityDesigns = new HashSet<int>();
             _orbitalBatteryDesigns = new HashSet<int>();
@@ -264,8 +222,6 @@ namespace Supremacy.Tech
             _buildingDesigns.UnionWith(tree.BuildingDesigns.Select(o => o.DesignID));
             _shipyardDesigns.UnionWith(tree.ShipyardDesigns.Select(o => o.DesignID));
             _shipDesigns.UnionWith(tree.ShipDesigns.Select(o => o.DesignID));
-            //_intelyardDesigns.UnionWith(tree.IntelyardDesigns.Select(o => o.DesignID));
-            //_intelDesigns.UnionWith(tree.IntelDesigns.Select(o => o.DesignID));
             _stationDesigns.UnionWith(tree.StationDesigns.Select(o => o.DesignID));
             _orbitalBatteryDesigns.UnionWith(tree.OrbitalBatteryDesigns.Select(o => o.DesignID));
         }
@@ -340,34 +296,6 @@ namespace Supremacy.Tech
                         _shipDesigns.Add(design.DesignID);
                 }
             }
-
-            //xmlRoot = xmlElement["Intelyards"];
-            //if (xmlRoot != null)
-            //{
-            //    foreach (var xmlIntelyard in xmlRoot.GetElementsByTagName("Intelyard").Cast<XmlElement>())
-            //    {
-            //        string designKey = xmlIntelyard.InnerText.Trim();
-            //        if (!db.DesignIdMap.ContainsKey(designKey))
-            //            continue;
-            //        //var design = db.IntelyardDesigns[db.DesignIdMap[designKey]];
-            //        //if ((design != null) && !design.IsUniversallyAvailable)
-            //        //    _intelyardDesigns.Add(design.DesignID);
-            //    }
-            //}
-
-            //xmlRoot = xmlElement["Intels"];
-            //if (xmlRoot != null)
-            //{
-            //    foreach (var xmlIntel in xmlRoot.GetElementsByTagName("Intel").Cast<XmlElement>())
-            //    {
-            //        string designKey = xmlIntel.InnerText.Trim();
-            //        if (!db.DesignIdMap.ContainsKey(designKey))
-            //            continue;
-            //        var design = db.IntelDesigns[db.DesignIdMap[designKey]];
-            //        if ((design != null) && !design.IsUniversallyAvailable)
-            //            _intelDesigns.Add(design.DesignID);
-            //    }
-            //}
 
             xmlRoot = xmlElement["SpaceStations"];
             if (xmlRoot != null)

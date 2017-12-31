@@ -255,7 +255,6 @@ namespace Supremacy.Entities
             try
             {
                 var civDatabase = new CivDatabase();
-                //var _borgPlayable = new BorgPlayable();
                 var ns = XNamespace.Get("Supremacy:Civilizations.xsd");
                 var xmlDoc = XDocument.Load(ResourceManager.GetResourcePath(DefaultDatabasePath));
 
@@ -266,21 +265,7 @@ namespace Supremacy.Entities
 
                 foreach (var civElement in xmlDoc.Root.Elements(ns + "Civilization"))
                 {
-                    //var _terranEmpirePlayable = GameContext.Current.Options.TerranEmpirePlayable;
-
-                    //if (civElement.Name == "TERRANEMPIRE")
-                    //    if (_terranEmpirePlayable.ToString() == "Yes")
-                    //        continue;
-
                     civDatabase.Add(new Civilization(civElement));
-
-
-
-                    //if (Client.ClientBase.Current.IsTerranEmpirePlayable == true)
-                    //{
-                    //    GameLog.Client.GameData.DebugFormat("CivDatabase.cs: IsBorgPlayable={0}, {1} will be removed", Client.ClientBase.Current.IsBorgPlayable, civElement.Name);
-                    //    //civDatabase.Remove(new Civilization(civElement));
-                    //}
                 }
                 return civDatabase;
             }

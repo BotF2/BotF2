@@ -66,28 +66,6 @@ namespace Supremacy.Game
             }
         }
 
-        //public static void ActivateIntelyardBuildSlot([NotNull] IntelyardBuildSlot buildSlot)
-        //{
-        //    if (buildSlot == null)
-        //        throw new ArgumentNullException("buildSlot");
-        //    if (buildSlot.IsActive)
-        //        return;
-        //    if (!buildSlot.Intelyard.Sector.System.Colony.ActivateIntelyardBuildSlot(buildSlot))
-        //        return;
-        //    PlayerOrderService.AddOrder(new ToggleIntelyardBuildSlotOrder(buildSlot));
-        //}
-
-        //public static void DeactivateIntelyardBuildSlot([NotNull] IntelyardBuildSlot buildSlot)
-        //{
-        //    if (buildSlot == null)
-        //        throw new ArgumentNullException("buildSlot");
-        //    if (!buildSlot.IsActive)
-        //        return;
-        //    if (!buildSlot.Intelyard.Sector.System.Colony.DeactivateIntelyardBuildSlot(buildSlot))
-        //        return;
-        //    PlayerOrderService.AddOrder(new ToggleIntelyardBuildSlotOrder(buildSlot));
-        //}
-
         public static void ActivateShipyardBuildSlot([NotNull] ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
