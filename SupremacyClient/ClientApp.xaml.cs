@@ -197,34 +197,21 @@ namespace Supremacy.Client
             if (Current.IsShuttingDown)
                 return false;
 
-            // Test comment 123
-            // works    GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: UI-Theme={0}", theme);
-
             // individual UI
             var themeUri = new Uri(
                 String.Format(
                     "/SupremacyClient;Component/themes/{0}/Theme.xaml",
                     theme),
                 UriKind.RelativeOrAbsolute);
-            // works   GameLog.Print("ClientApp.xaml.cs: themeUri={0}", themeUri);
-
-
-            // only FED UI
-            //var themeUri = new Uri(
-            //    String.Format(
-            //        "/SupremacyClient;Component/themes/Federation/Theme.xaml",
-            //        theme),
-            //    UriKind.RelativeOrAbsolute);
-
+            
             ResourceDictionary themeDictionary = null;
             try
             {
                 themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
-                //GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: themeDictionary={0}", themeDictionary.MergedDictionaries.FirstOrDefault);
             }
             catch
             {
-                GameLog.Print("ClientApp.xaml.cs: themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
+                GameLog.Print("themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
             }
 
             if (themeDictionary == null)
@@ -233,9 +220,6 @@ namespace Supremacy.Client
             LoadBaseResources();
             if (Current.Resources == null)
                 return false;
-
-            // reactive for bringing back XAML-Tracking
-            //printXAMLdata(themeDictionary, themeUri);
 
             Current.Resources.MergedDictionaries.Add(themeDictionary);
             return true;
@@ -309,15 +293,6 @@ namespace Supremacy.Client
                     themeShipyard),
                 UriKind.RelativeOrAbsolute);
 
-
-            // only FED UI
-            //var themeUriShipyard = new Uri(
-            //    String.Format(
-            //        "/SupremacyClientComponents;Component/Themes/Federation/ShipyardDockView.xaml",
-            //        themeShipyard),
-            //    UriKind.RelativeOrAbsolute);
-
-
             ResourceDictionary themeDictionaryShipyard = null;
             try
             {
@@ -325,29 +300,11 @@ namespace Supremacy.Client
             }
             catch
             {
-                GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: themeDictionaryShipyard = LoadComponent(themeUriShipyard)");
+                GameLog.Client.GameData.DebugFormat("themeDictionaryShipyard = LoadComponent(themeUriShipyard)");
             }
 
             if (themeDictionaryShipyard == null)
                 return false;
-
-            //LoadBaseResources();
-            //if (Current.Resources == null)
-            //    return false;
-
-            //Current.Resources.MergedDictionaries.Add(themeDictionaryShipyard);
-
-            //themeDictionaryShipyard = null;
-
-            //themeUriShipyard = new Uri(
-            //    String.Format(
-            //        "/SupremacyClient;Component/Themes/{0}/Global.xaml",
-            //        themeShipyard),
-            //    UriKind.RelativeOrAbsolute);
-            //themeDictionaryShipyard = null;
-
-            //if (themeDictionaryShipyard == null)
-            //    return false;
 
             Current.Resources.MergedDictionaries.Add(themeDictionaryShipyard);
 
@@ -455,62 +412,6 @@ namespace Supremacy.Client
                 if (!CheckNetFxVersion())
                     return;
 
-                /*var scheduler = new InOrderScheduler();
-
-                var subject = new Subject<int>();
-                subject
-                    .ObserveOn(scheduler)
-                    .Do(Console.WriteLine)
-                    .Subscribe();
-
-                for (int i = 0; i < 5; i++)
-                    subject.OnNext(i + 1);
-
-                Thread.Sleep(TimeSpan.FromSeconds(10));
-
-                for (int i = 5; i < 10; i++)
-                    subject.OnNext(i + 1);
-
-                Thread.Yield();
-
-                subject.OnNext(-1);
-    */
-                //var db = ResourceManager.Database;
-                //var strings = db.ObjectStrings.OfType<ObjectString>().Where(o => o.Culture == "en").ToList();
-
-                //var entries = strings.Select(
-                //    o =>
-                //    new XElement(
-                //        "Entry",
-                //        new XAttribute(
-                //            "Key",
-                //            o.Key),
-                //        new XElement(
-                //            "LocalizedEntries",
-                //            new XElement(
-                //                "LocalizedEntry",
-                //                new XAttribute(
-                //                    "Language",
-                //                    o.Culture),
-                //                new XElement("Name", new XCData(o.Name)),
-                //                new XElement("Description", new XCData(o.Description)),
-                //                new XElement("Custom1", new XCData(o.Custom1)),
-                //                new XElement("Custom2", new XCData(o.Custom2))))));
-
-                //var xml =
-                //    new XElement(
-                //        "TextDatabase",
-                //        new XElement(
-                //            "Tables",
-                //            new XElement(
-                //                "Table",
-                //                new XAttribute(
-                //                    "EntryType",
-                //                    typeof(ITechObjectTextDatabaseEntry).FullName),
-                //                new XElement(
-                //                    "Entries",
-                //                    entries))));
-
                 try
                 {
                     ShowSplashScreen();
@@ -523,8 +424,6 @@ namespace Supremacy.Client
                         player.Play();
                     }
                       
-
-
                     if (File.Exists("Resources\\Geometry\\Glyphs.xaml"))
                         StartClient(args);
                     else
@@ -553,7 +452,8 @@ namespace Supremacy.Client
                 if (netFxVersionKey != null)
                 {
                     var netFxVersion = new Version(netFxVersionKey.ToString());
-                    if (netFxVersion < new Version(3, 0, 0, 0))
+                    GameLog.Print(netFxVersion.ToString());
+                    if (netFxVersion < new Version("3.5.30729.01"))
                     {
                         MessageBox.Show(
                             "Star Trek: Supremacy requires the Microsoft .NET Framework v3.5 SP1."
@@ -562,11 +462,6 @@ namespace Supremacy.Client
                             "Star Trek: Supremacy",
                             MessageBoxButton.OK,
                             MessageBoxImage.Hand);
-                        return false;
-                    }
-                    if (netFxVersion < new Version("3.5.30729.01"))
-                    {
-                        ShowNetFxVersionMissingDialog();
                         return false;
                     }
                 }
@@ -619,46 +514,7 @@ namespace Supremacy.Client
             if (CmdLineArgs.TraceLevel != PresentationTraceLevel.None)
                 PresentationTraceSources.Refresh();
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
-            /*
-             * DEAD CODE
-             *  The Trace class was used only in assertation wrapper class called "Assert" which itself
-             *  was used only in one place in the entire code-base. That one assertation was changed
-             *  to Debug.Assert(), and "Assert" class pronounced dead code.
-
-            try
-            {
-                // What is this? --> https://msdn.microsoft.com/en-us/library/system.diagnostics.trace(v=vs.110).aspx
-
-                // Currently Trace class is used for assertation wrapper class called "Assert" whish itself
-                // was used in only one place in entire code-base 
-
-                var debugWriter = File.CreateText("Trace.txt");
-                var debugListener = new TextWriterTraceListener(debugWriter)
-                {
-#if DEBUG
-                    Filter = new EventTypeFilter(SourceLevels.All),
-#else
-                    Filter = new EventTypeFilter(SourceLevels.Warning),
-#endif
-                    TraceOutputOptions = TraceOptions.Timestamp
-                };
-
-                Trace.AutoFlush = true;
-                Trace.Listeners.Add(debugListener);
-
-                // Examples:
-                //Trace.TraceInformation("Test message.");
-                //Trace.WriteLine("Error message.");
-                //Trace.WriteLineIf(3 > 2, "3 is biffer than 2");
-                //Trace.Assert(false, "Test Assert");
-            }
-            catch
-            {
-                GameLog.Debug.General.DebugFormat("Could not open Trace.txt");
-            }
-            */
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; 
 
             try
             {
@@ -687,54 +543,6 @@ namespace Supremacy.Client
         {
             _splashScreen = new SplashScreen("resources/images/backgrounds/splash.png");
             _splashScreen.Show(false);
-        }
-
-        private static void ShowNetFxVersionMissingDialog()
-        {
-            var taskDialog =
-                new TaskDialog
-                {
-                    AllowDialogCancellation = false,
-                    Content = "Star Trek: Supremacy requires the Microsoft .NET Framework v3.5 SP1."
-                              + Environment.NewLine
-                              + "It must be installed before running the game.",
-                    MainIcon = TaskDialogIconConverter.ConvertFrom(TaskDialogIcon.Shield),
-                    Header = ".NET Framework v3.5 SP1 Required",
-                    Title = "Star Trek: Supremacy",
-                    CommandLinks =
-                        {
-                            new TaskDialogButtonData(
-                                1,
-                                "Go to Download",
-                                "Take me to the framework download page.",
-                                true),
-                            new TaskDialogButtonData(
-                                0,
-                                "Exit",
-                                "Exit the game without downloading the framework.")
-                        }
-                };
-
-            taskDialog.LayoutUpdated +=
-                delegate
-                {
-                    var window = Window.GetWindow(taskDialog);
-                    if (window == null)
-                        return;
-                    window.Left = (SystemParameters.WorkArea.Width - window.ActualWidth) / 2;
-                    window.Top = (SystemParameters.WorkArea.Height - window.ActualHeight) / 2;
-                };
-
-            taskDialog.Show();
-
-            var result = taskDialog.Result;
-            if (result.ButtonData.Value == 1)
-            {
-                UIHelpers.LaunchBrowser(
-                    new Uri(
-                        "http://www.microsoft.com/downloads/details.aspx?FamilyId=AB99342F-5D1A-413D-8319-81DA479AB0D7"));
-                //DoEvents(); //ToDo: find the object instance to call this
-            }
         }
 
         private static void OnGameWindowSourceInitialized(object sender, EventArgs e)
