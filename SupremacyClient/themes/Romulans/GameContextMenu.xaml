@@ -81,8 +81,8 @@
                     <Border Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}">
-                        <Canvas Width="560"
-                    Height="490">
+                        <Canvas Width="364"
+                    Height="319">
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
@@ -90,8 +90,8 @@
                                 </Image.Source>
                             </Image>
                             <MenuItem x:Name="MenuItem_Main"
-                                Canvas.Left="32"
-                                Canvas.Top="46"
+                                Canvas.Left="26"
+                                Canvas.Top="32"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -117,8 +117,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Systems"
-                        Canvas.Left="200"
-                        Canvas.Top="46"
+                        Canvas.Left="131"
+                        Canvas.Top="32"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -144,8 +144,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Dip"
-                            Canvas.Left="368"
-                            Canvas.Top="46"
+                            Canvas.Left="236"
+                            Canvas.Top="32"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -171,8 +171,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Science"
-                            Canvas.Left="32"
-                            Canvas.Top="248"
+                            Canvas.Left="26"
+                            Canvas.Top="162"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -198,8 +198,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Intel"
-                        Canvas.Left="200"
-                        Canvas.Top="248"
+                        Canvas.Left="131"
+                        Canvas.Top="162"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.PersonnelScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -225,8 +225,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Menu"
-                        Canvas.Left="368"
-                        Canvas.Top="248"
+                        Canvas.Left="236"
+                        Canvas.Top="162"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
