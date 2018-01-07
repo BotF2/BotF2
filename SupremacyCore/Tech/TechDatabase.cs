@@ -34,12 +34,10 @@ namespace Supremacy.Tech
 
         private readonly TechObjectDesignMap<BuildingDesign> _buildingDesigns;
         private readonly TechObjectDesignMap<ShipDesign> _shipDesigns;
-        //private readonly TechObjectDesignMap<IntelDesign> _intelDesigns;
         private readonly TechObjectDesignMap<StationDesign> _stationDesigns;
         private readonly TechObjectDesignMap<ProductionFacilityDesign> _productionFacilityDesigns;
         private readonly TechObjectDesignMap<OrbitalBatteryDesign> _orbitalBatteryDesigns;
         private readonly TechObjectDesignMap<ShipyardDesign> _shipyardDesigns;
-        //private readonly TechObjectDesignMap<IntelyardDesign> _intelyardDesigns;
         private int _nextDesignId;
 
         [NonSerialized]
@@ -61,10 +59,6 @@ namespace Supremacy.Tech
                     return _shipyardDesigns[designId];
                 if (_shipDesigns.Contains(designId))
                     return _shipDesigns[designId];
-                //if (_intelyardDesigns.Contains(designId))
-                //    return _intelyardDesigns[designId];
-                //if (_intelDesigns.Contains(designId))
-                //    return _intelDesigns[designId];
                 if (_stationDesigns.Contains(designId))
                     return _stationDesigns[designId];
                 if (_orbitalBatteryDesigns.Contains(designId))
@@ -109,23 +103,6 @@ namespace Supremacy.Tech
         {
             get { return _shipDesigns; }
         }
-        /// <summary>
-        /// Gets the subset of intelyard designs in this <see cref="TechDatabase"/>.
-        /// </summary>
-        /// <value>The intelyard designs.</value>
-        //public TechObjectDesignMap<IntelyardDesign> IntelyardDesigns
-        //{
-        //    get { return _intelyardDesigns; }
-        //}
-
-        /// <summary>
-        /// Gets the subset of intel designs in this <see cref="TechDatabase"/>.
-        /// </summary>
-        /// <value>The intel designs.</value>
-        //public TechObjectDesignMap<IntelDesign> IntelDesigns
-        //{
-        //    get { return _intelDesigns; }
-        //}
 
         /// <summary>
         /// Gets the subset of station designs in this <see cref="TechDatabase"/>.
@@ -171,8 +148,6 @@ namespace Supremacy.Tech
             _buildingDesigns = new TechObjectDesignMap<BuildingDesign>();
             _shipyardDesigns = new TechObjectDesignMap<ShipyardDesign>();
             _shipDesigns = new TechObjectDesignMap<ShipDesign>();
-            //_intelyardDesigns = new TechObjectDesignMap<IntelyardDesign>();
-            //_intelDesigns = new TechObjectDesignMap<IntelDesign>();
             _stationDesigns = new TechObjectDesignMap<StationDesign>();
             _productionFacilityDesigns = new TechObjectDesignMap<ProductionFacilityDesign>();
             _orbitalBatteryDesigns = new TechObjectDesignMap<OrbitalBatteryDesign>();
@@ -534,131 +509,6 @@ namespace Supremacy.Tech
                 }
             }
 
-            //XmlElement xmlIntelyards = xmlDoc.DocumentElement["Intelyards"];
-            //foreach (XmlElement xmlIntelyard in xmlIntelyards.GetElementsByTagName("Intelyard"))
-            //{
-            //    IntelyardDesign intelyard = new IntelyardDesign(xmlIntelyard);
-            //    intelyard.DesignID = db.GetNewDesignID();
-            //    designIdMap[intelyard.Key] = intelyard.DesignID;
-            //    //GameLog works
-            //    //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: intelyard.DesignID={0}, {1}", intelyard.DesignID, intelyard.LocalizedName);
-            //    db.IntelyardDesigns.Add(intelyard);
-            //}
-            //foreach (XmlElement xmlIntelyard in xmlIntelyards.GetElementsByTagName("Intelyard"))
-            //{
-            //    string sourceKey = xmlIntelyard.GetAttribute("Key");
-            //    if (xmlIntelyard["ObsoletedItems"] != null)
-            //    {
-            //        foreach (XmlElement xmlObsoleted in
-            //            xmlIntelyard["ObsoletedItems"].GetElementsByTagName("ObsoletedItem"))
-            //        {
-            //            string obsoletedKey = xmlObsoleted.InnerText.Trim();
-            //            if (designIdMap.ContainsKey(obsoletedKey)
-            //                && db.IntelyardDesigns.Contains(designIdMap[obsoletedKey]))
-            //            {
-            //                db.IntelyardDesigns[designIdMap[sourceKey]].ObsoletedDesigns.Add(
-            //                    db.IntelyardDesigns[designIdMap[obsoletedKey]]);
-            //            }
-            //        }
-            //    }
-            //    if (xmlIntelyard["Prerequisites"] != null)
-            //    {
-            //        foreach (XmlElement xmlEquivPrereq in
-            //            xmlIntelyard["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
-            //        {
-            //            var equivPrereqs = new PrerequisiteGroup();
-            //            foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
-            //            {
-            //                string prereqKey = xmlPrereq.InnerText.Trim();
-            //                if (designIdMap.ContainsKey(prereqKey)
-            //                    && db.IntelyardDesigns.Contains(designIdMap[prereqKey]))
-            //                {
-            //                    equivPrereqs.Add(db.IntelyardDesigns[designIdMap[prereqKey]]);
-            //                }
-            //            }
-            //            if (equivPrereqs.Count > 0)
-            //                db.IntelyardDesigns[designIdMap[sourceKey]].Prerequisites.Add(equivPrereqs);
-            //        }
-            //    }
-            //    if (xmlIntelyard["UpgradeOptions"] != null)
-            //    {
-            //        foreach (XmlElement xmlUpgrade in
-            //            xmlIntelyard["UpgradeOptions"].GetElementsByTagName("UpgradeOption"))
-            //        {
-            //            string upgradeKey = xmlUpgrade.InnerText.Trim();
-            //            if (designIdMap.ContainsKey(upgradeKey)
-            //                && db.IntelyardDesigns.Contains(designIdMap[upgradeKey]))
-            //            {
-            //                db.IntelyardDesigns[designIdMap[sourceKey]].UpgradableDesigns.Add(
-            //                    db.IntelyardDesigns[designIdMap[upgradeKey]]);
-            //            }
-            //        }
-            //    }
-            //}
-
-            ///*********
-            // * Intels *
-            // *********/
-            //XmlElement xmlIntels = xmlDoc.DocumentElement["Intels"];
-            //foreach (XmlElement xmlIntel in xmlIntels.GetElementsByTagName("Intel"))
-            //{
-            //    IntelDesign intel = new IntelDesign(xmlIntel);
-            //    intel.DesignID = db.GetNewDesignID();
-            //    designIdMap[intel.Key] = intel.DesignID;
-            //    //GameLog works
-            //    //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: intel.DesignID={0}, {1}", intel.DesignID, intel.LocalizedName);
-            //    db.IntelDesigns.Add(intel);
-            //}
-            //foreach (XmlElement xmlIntel in xmlIntels.GetElementsByTagName("Intel"))
-            //{
-            //    string sourceKey = xmlIntel.GetAttribute("Key");
-            //    if (xmlIntel["ObsoletedItems"] != null)
-            //    {
-            //        foreach (XmlElement xmlObsoleted in
-            //            xmlIntel["ObsoletedItems"].GetElementsByTagName("ObsoletedItem"))
-            //        {
-            //            string obsoletedKey = xmlObsoleted.InnerText.Trim();
-            //            if (designIdMap.ContainsKey(obsoletedKey)
-            //                && db.IntelDesigns.Contains(designIdMap[obsoletedKey]))
-            //            {
-            //                db.IntelDesigns[designIdMap[sourceKey]].ObsoletedDesigns.Add(
-            //                    db.IntelDesigns[designIdMap[obsoletedKey]]);
-            //            }
-            //        }
-            //    }
-            //    if (xmlIntel["Prerequisites"] != null)
-            //    {
-            //        foreach (XmlElement xmlEquivPrereq in
-            //            xmlIntel["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
-            //        {
-            //            var equivPrereqs = new PrerequisiteGroup();
-            //            foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
-            //            {
-            //                string prereqKey = xmlPrereq.InnerText.Trim();
-            //                if (designIdMap.ContainsKey(prereqKey))
-            //                {
-            //                    equivPrereqs.Add(db[designIdMap[prereqKey]]);
-            //                }
-            //            }
-            //            if (equivPrereqs.Count > 0)
-            //                db.IntelDesigns[designIdMap[sourceKey]].Prerequisites.Add(equivPrereqs);
-            //        }
-            //    }
-            //    if (xmlIntel["UpgradeOptions"] != null)
-            //    {
-            //        foreach (XmlElement xmlUpgrade in
-            //            xmlIntel["UpgradeOptions"].GetElementsByTagName("UpgradeOption"))
-            //        {
-            //            string upgradeKey = xmlUpgrade.InnerText.Trim();
-            //            if (designIdMap.ContainsKey(upgradeKey)
-            //                && db.IntelDesigns.Contains(designIdMap[upgradeKey]))
-            //            {
-            //                db.IntelDesigns[designIdMap[sourceKey]].UpgradableDesigns.Add(
-            //                    db.IntelDesigns[designIdMap[upgradeKey]]);
-            //            }
-            //        }
-            //    }
-            //}
             /************
              * Stations *
              ************/
@@ -856,24 +706,6 @@ namespace Supremacy.Tech
                         xmlRoot.AppendChild(groupElement);
                 }
 
-                //if (_intelyardDesigns.Count > 0)
-                //{
-                //    XmlElement groupElement = xmlDoc.CreateElement("Intelyards");
-                //    foreach (IntelyardDesign design in _intelyardDesigns)
-                //    {
-                //        IntelyardDesign intelyardDesign = design as IntelyardDesign;
-                //        if (intelyardDesign != null)
-                //        {
-                //            XmlElement designElement = xmlDoc.CreateElement("Intelyard");
-                //            GameLog.Client.GameData.DebugFormat("design text Intelyard={0}, {1}", design, designElement);
-                //            intelyardDesign.AppendXml(designElement);
-                //            groupElement.AppendChild(designElement);
-                //        }
-                //    }
-                //    if (groupElement.ChildNodes.Count > 0)
-                //        xmlRoot.AppendChild(groupElement);
-                //}
-
                 if (_stationDesigns.Count > 0)
                 {
                     XmlElement groupElement = xmlDoc.CreateElement("SpaceStations");
@@ -898,18 +730,6 @@ namespace Supremacy.Tech
                     xmlRoot.AppendChild(groupElement);
                 }
 
-                //if (_intelDesigns.Count > 0)
-                //{
-                //    XmlElement groupElement = xmlDoc.CreateElement("Intel");
-                //    foreach (IntelDesign design in _intelDesigns)
-                //    {
-                //        XmlElement designElement = xmlDoc.CreateElement("Intel");
-                //        design.AppendXml(designElement);
-                //        groupElement.AppendChild(designElement);
-                //    }
-                //    xmlRoot.AppendChild(groupElement);
-                //}
-
                 xmlDoc.WriteTo(xmlWriter);
             }
         }
@@ -929,10 +749,6 @@ namespace Supremacy.Tech
                 yield return design;
             foreach (var design in _shipDesigns)
                 yield return design;
-            //foreach (var design in _intelyardDesigns)
-            //    yield return design;
-            //foreach (var design in _intelDesigns)
-            //    yield return design;
             foreach (var design in _stationDesigns)
                 yield return design;
             foreach (var design in _orbitalBatteryDesigns)
@@ -964,14 +780,10 @@ namespace Supremacy.Tech
                 _buildingDesigns.Add((BuildingDesign)design);
             else if (design is ShipyardDesign)
                 _shipyardDesigns.Add((ShipyardDesign)design);
-            //else if (design is IntelyardDesign)
-            //    _intelyardDesigns.Add((IntelyardDesign)design);
             else if (design is ProductionFacilityDesign)
                 _productionFacilityDesigns.Add((ProductionFacilityDesign)design);
             else if (design is ShipDesign)
                 _shipDesigns.Add((ShipDesign)design);
-            //else if (design is IntelDesign)
-            //    _intelDesigns.Add((IntelDesign)design);
             else if (design is StationDesign)
                 _stationDesigns.Add((StationDesign)design);
             else if (design is OrbitalBatteryDesign)
@@ -1001,10 +813,8 @@ namespace Supremacy.Tech
             _designIdMap.Clear();
             _buildingDesigns.Clear();
             _shipyardDesigns.Clear();
-            //_intelyardDesigns.Clear();
             _productionFacilityDesigns.Clear();
             _shipDesigns.Clear();
-            //_intelDesigns.Clear();
             _stationDesigns.Clear();
             _orbitalBatteryDesigns.Clear();
         }
@@ -1015,14 +825,10 @@ namespace Supremacy.Tech
                 return _buildingDesigns.Remove((BuildingDesign)design);
             if (design is ShipyardDesign)
                 return _shipyardDesigns.Remove((ShipyardDesign)design);
-            //if (design is IntelyardDesign)
-            //    return _intelyardDesigns.Remove((IntelyardDesign)design);
             if (design is ProductionFacilityDesign)
                 return _productionFacilityDesigns.Remove((ProductionFacilityDesign)design);
             if (design is ShipDesign)
                 return _shipDesigns.Remove((ShipDesign)design);
-            //if (design is IntelDesign)
-            //    return _intelDesigns.Remove((IntelDesign)design);
             if (design is StationDesign)
                 return _stationDesigns.Remove((StationDesign)design);
             if (design is OrbitalBatteryDesign)

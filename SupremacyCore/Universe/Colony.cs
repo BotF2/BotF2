@@ -98,7 +98,6 @@ namespace Supremacy.Universe
         private Meter _shieldStrength;
 
         private int _shipyardId;
-        //private int _intelyardId;
         private int _systemId = GameObjectID.InvalidID;
         private CollectionBase<TradeRoute> _tradeRoutes;
 
@@ -125,7 +124,6 @@ namespace Supremacy.Universe
             _inhabitantId = inhabitants.Key;
 
             _shipyardId = GameObjectID.InvalidID;
-            //_intelyardId = GameObjectID.InvalidID;
             _systemId = system.ObjectID;
 
             if (system.HasRawMaterialsBonus)
@@ -399,29 +397,6 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
-        /// Gets or sets the intelyard present at this <see cref="Colony"/>.
-        /// </summary>
-        /// <value>The intelyard.</value>
-        //public Intelyard Intelyard
-        //{
-        //    get
-        //    {
-        //        if (_intelyardId == GameObjectID.InvalidID)
-        //            return null;
-        //        return GameContext.Current.Universe.Objects[_intelyardId] as Intelyard;
-        //    }
-        //    set
-        //    {
-        //        if (value == null)
-        //            _intelyardId = GameObjectID.InvalidID;
-        //        else
-        //            _intelyardId = value.ObjectID;
-
-        //        OnPropertyChanged("Intelyard");
-        //    }
-        //}
-
-        /// <summary>
         /// Gets the population of this <see cref="Colony"/>.
         /// </summary>
         /// <value>The population.</value>
@@ -588,14 +563,6 @@ namespace Supremacy.Universe
                         .Where(o => o.IsActive)
                         .Sum(o => shipyard.ShipyardDesign.BuildSlotEnergyCost);
                 }
-
-                //var intelyard = this.Intelyard;
-                //if (intelyard != null)
-                //{
-                //    energyUsed += intelyard.BuildSlots
-                //        .Where(o => o.IsActive)
-                //        .Sum(o => intelyard.IntelyardDesign.BuildSlotEnergyCost);
-                //}
 
                 var orbitalBatteryDesign = OrbitalBatteryDesign;
                 if (orbitalBatteryDesign != null)
@@ -848,9 +815,6 @@ namespace Supremacy.Universe
             if (Shipyard != null)
                 Shipyard.Owner = newOwner;
 
-            //if (this.Intelyard != null)
-            //    this.Intelyard.Scrap = true;
-
             currentOwnerManager.Colonies.Remove(this);
             newOwnerManager.Colonies.Add(this);
 
@@ -899,8 +863,6 @@ namespace Supremacy.Universe
             _buildings.Remove(building);
             if (Shipyard == building)
                 Shipyard = null;
-            //if (Intelyard == building)
-            //    Intelyard = null;
             if (building.BuildingDesign.Bonuses.Any(o => o.BonusType == BonusType.MaxPopulationPerMoonSize))
                 Population.Maximum = MaxPopulation;
         }
@@ -1321,8 +1283,6 @@ namespace Supremacy.Universe
             this.InvalidateBuildTimes();
             if (Shipyard != null)
                 Shipyard.InvalidateBuildTimes();
-            //if (this.Intelyard != null)
-            //    this.Intelyard.InvalidateBuildTimes();
             return true;
         }
 
@@ -1360,8 +1320,6 @@ namespace Supremacy.Universe
             this.InvalidateBuildTimes();
             if (Shipyard != null)
                 Shipyard.InvalidateBuildTimes();
-            //if (this.Intelyard != null)
-            //    this.Intelyard.InvalidateBuildTimes();
             return true;
         }
 
@@ -1403,19 +1361,6 @@ namespace Supremacy.Universe
             return shipyard != null &&
                    shipyard.ShipyardDesign == design;
         }
-        /// <summary>
-        /// Determines whether a <see cref="Intelyard"/> of the specified design exists at this <see cref="Colony"/>.
-        /// </summary>
-        /// <param name="design">The intelyard design.</param>
-        /// <returns><c>true</c> if an intelyard of the specified design exists; otherwise, <c>false</c>.</returns>
-        /// 
-        //internal bool HasIntelyard(IntelyardDesign design)
-        //{
-        //    var intelyard = this.Intelyard;
-
-        //    return intelyard != null &&
-        //           intelyard.IntelyardDesign == design;
-        //}
 
         /// <summary>
         /// Determines whether a <see cref="Building"/> of the specified design exists at this <see cref="Colony"/>.
@@ -1447,7 +1392,6 @@ namespace Supremacy.Universe
         {
             var shutDown = 0;
             var shipyard = Shipyard;
-            //var intelyard = this.Intelyard;
 
             while (true)
             {
@@ -1472,23 +1416,6 @@ namespace Supremacy.Universe
                         goto Next;
                     }
                 }
-                /*
-                 * First try to shut down any unutilized intelyard build slots.  Those can be considered
-                 * less critical than active buildings.
-                 */
-                //if (intelyard != null)
-                //{
-                //    var deactivatedBuildSlot = intelyard.BuildSlots
-                //        .Where(o => o.IsActive && !o.HasProject)
-                //        .Where(DeactivateIntelyardBuildSlot)
-                //        .FirstOrDefault();
-
-                //    if (deactivatedBuildSlot != null)
-                //    {
-                //        ++shutDown;
-                //        goto Next;
-                //    }
-                //}
 
                 /*
                  * Next, try to shut down some buildings.  First check to see if we can get away with shutting
@@ -1541,24 +1468,6 @@ namespace Supremacy.Universe
                         goto Next;
                     }
                 }
-
-                /*
-                 * Lastly, try to shut down some intelyard build slots.  To be fair to the player, we'll favor
-                 * shutting down build slots with the least build progress.
-                 */
-                //if (intelyard != null)
-                //{
-                //    var deactivatedBuildSlot = intelyard.BuildSlots
-                //        .Where(o => o.IsActive && !o.HasProject)
-                //        .Where(DeactivateIntelyardBuildSlot)
-                //        .FirstOrDefault();
-
-                //    if (deactivatedBuildSlot != null)
-                //    {
-                //        ++shutDown;
-                //        goto Next;
-                //    }
-                //}
                 break;
             Next:
                 continue;
@@ -1781,46 +1690,7 @@ namespace Supremacy.Universe
 
             return true;
         }
-        //public bool ActivateIntelyardBuildSlot(IntelyardBuildSlot buildSlot)
-        //{
-        //    if (buildSlot == null)
-        //        return false;
 
-        //    var intelyard = this.Intelyard;
-        //    if (intelyard == null || !Equals(intelyard, buildSlot.Intelyard))
-        //        return false;
-
-        //    if (buildSlot.IsActive)
-        //        return true;
-
-        //    if (intelyard.IntelyardDesign.BuildSlotEnergyCost > this.NetEnergy)
-        //        return false;
-
-        //    buildSlot.IsActive = true;
-
-        //    this.OnPropertyChanged("NetEnergy");
-
-        //    return true;
-        //}
-
-        //public bool DeactivateIntelyardBuildSlot(IntelyardBuildSlot buildSlot)
-        //{
-        //    if (buildSlot == null)
-        //        return false;
-
-        //    var intelyard = this.Intelyard;
-        //    if (intelyard == null || !Equals(intelyard, buildSlot.Intelyard))
-        //        return false;
-
-        //    if (!buildSlot.IsActive)
-        //        return true;
-
-        //    buildSlot.IsActive = false;
-
-        //    this.OnPropertyChanged("NetEnergy");
-
-        //    return true;
-        //}
         private bool SetBuildingActive(Building building, bool value)
         {
             if (building == null)
@@ -2003,7 +1873,6 @@ namespace Supremacy.Universe
             writer.WriteOptimized(_originalOwnerId);
             writer.WriteOptimized(_inhabitantId);
             writer.Write(_shipyardId);
-            //writer.Write(_intelyardId);
             writer.Write(_health);
             _population.SerializeOwnedData(writer, context);
             _shieldStrength.SerializeOwnedData(writer, context);
@@ -2103,7 +1972,6 @@ namespace Supremacy.Universe
             _originalOwnerId = reader.ReadOptimizedInt16();
             _inhabitantId = reader.ReadOptimizedString();
             _shipyardId = reader.ReadInt32();
-            //_intelyardId = reader.ReadInt32();
             _health = reader.ReadSingle();
             _population.DeserializeOwnedData(reader, context);
             _shieldStrength.DeserializeOwnedData(reader, context);
@@ -2144,9 +2012,6 @@ namespace Supremacy.Universe
 
             _shipyardId = typedSource._shipyardId;
             OnPropertyChanged("Shipyard");
-
-            //_intelyardId = typedSource._intelyardId;
-            //this.OnPropertyChanged("Intelyard");
 
             _originalOwnerId = typedSource._originalOwnerId;
             OnPropertyChanged("OriginalOwner");

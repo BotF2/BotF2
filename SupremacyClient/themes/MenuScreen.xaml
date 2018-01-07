@@ -17,108 +17,69 @@
                     xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
 
-
     <Style TargetType="{x:Type local:MenuScreen}">
-    <Setter Property="Template">
-      <Setter.Value>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MenuScreen}">
+                    <Grid>
+                        <Image Source="vfs:///Resources/Images/Backgrounds/Title.png" Stretch="Uniform"/>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="250" Margin="0,0,16,16">
+                            <Border CornerRadius="16,16,0,0" Height="16"
+                                    Background="{DynamicResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                            <scc:GameItemsControl Context="VerticalGroupItem">
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.ContinueGame}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_CONTINUE}" />
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.StartSinglePlayerGame}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_SINGLE_PLAYER}" />
+                                <scc:GameButton Command="{x:Static local:MenuScreen.MultiplayerCommand}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_MULTIPLAYER}" />
+                                <scc:GameButton Command="{x:Static local:MenuScreen.LoadGameCommand}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_LOAD_GAME}" />
+                                <scc:GameButton Command="{x:Static local:MenuScreen.SaveGameCommand}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_SAVE_GAME}" />
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.OptionsCommand}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_OPTIONS}" />
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.ShowCreditsDialog}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_CREDITS}" />
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.EndGame}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_RETIRE}">
+                                    <scc:GameButton.CommandParameter>
+                                        <sys:Boolean>True</sys:Boolean>
+                                    </scc:GameButton.CommandParameter>
+                                </scc:GameButton>
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.Exit}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_EXIT}">
+                                    <scc:GameButton.CommandParameter>
+                                        <sys:Boolean>True</sys:Boolean>
+                                    </scc:GameButton.CommandParameter>
+                                </scc:GameButton>
+                            </scc:GameItemsControl>
+                            <Border CornerRadius="0,0,16,16" Margin="0,2,0,0" Height="16"
+                                    Background="{DynamicResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                        </StackPanel>
 
-        <ControlTemplate TargetType="{x:Type local:MenuScreen}">
-
-         <Grid>
-            <Grid Margin="10,0,0,0">
-                <Grid.Background>
-                    <ImageBrush Stretch="Uniform">
-                        <ImageBrush.ImageSource>
-                            <BitmapImage UriSource="vfs:///Resources/Images/Backgrounds/Title.png" />
-                        </ImageBrush.ImageSource>
-                    </ImageBrush>
-                </Grid.Background>
-            </Grid>
-            <Grid Margin="16">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-              </Grid.RowDefinitions>
-              <StackPanel Orientation="Vertical"
-                          Grid.Column="1"
-                          Grid.Row="2">
-                <Border CornerRadius="16,16,0,0"
-                        Height="16"
-                        Background="{DynamicResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
-                <scc:GameItemsControl Context="VerticalGroupItem">
-                  <scc:GameButton Command="{x:Static scc:ClientCommands.ContinueGame}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_CONTINUE}" />
-                  <scc:GameButton Command="{x:Static scc:ClientCommands.StartSinglePlayerGame}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_SINGLE_PLAYER}" />
-                  <scc:GameButton Command="{x:Static local:MenuScreen.MultiplayerCommand}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_MULTIPLAYER}" />
-                  <scc:GameButton Command="{x:Static local:MenuScreen.LoadGameCommand}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_LOAD_GAME}" />
-                  <scc:GameButton Command="{x:Static local:MenuScreen.SaveGameCommand}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_SAVE_GAME}" />
-                  <scc:GameButton Command="{x:Static scc:ClientCommands.OptionsCommand}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_OPTIONS}" />
-                  <scc:GameButton Command="{x:Static scc:ClientCommands.ShowCreditsDialog}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_CREDITS}" />
-                  <scc:GameButton Command="{x:Static scc:ClientCommands.EndGame}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_RETIRE}">
-                    <scc:GameButton.CommandParameter>
-                      <sys:Boolean>True</sys:Boolean>
-                    </scc:GameButton.CommandParameter>
-                  </scc:GameButton>
-                  <scc:GameButton Command="{x:Static scc:ClientCommands.Exit}"
-                                  Margin="0,2,0,0"
-                                  Label="{s:StringResource MAIN_MENU_EXIT}">
-                    <scc:GameButton.CommandParameter>
-                      <sys:Boolean>True</sys:Boolean>
-                    </scc:GameButton.CommandParameter>
-                  </scc:GameButton>
-                </scc:GameItemsControl>
-                <Border CornerRadius="0,0,16,16"
-                        Margin="0,2,0,0"
-                        Height="16"
-                        Background="{DynamicResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
-              </StackPanel>
-            </Grid>
-              
                         <!--<ui:Animation HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="576" Height="480"/>-->
 
                         <!--<ui:AsteroidsView HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="300" Height="200"/>-->
 
                         <!--<ui:Animation HorizontalAlignment="Right" VerticalAlignment="Top" Width="300" Height="200"/>-->
-
                         <TextBlock Foreground="{StaticResource LCARS_ParagraphBrush}"
-                       FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                       FontSize="12"
-                       Margin="16"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Bottom"
-                       SnapsToDevicePixels="True">
-            	<TextBlock.Text>
-            		<Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="{}Development Build&#0013;Version {0}" />
-            	</TextBlock.Text>
-            </TextBlock>
-            <!--<views:SystemAssaultScreen/>-->
-            <!--<sxna:InvasionExplosionsOverlay Width="256" Height="256" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
-            <!--<local:PopupTest />-->
-          </Grid>
-
-        </ControlTemplate>
-
-      </Setter.Value>
-    </Setter>
-  </Style>
+                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                            FontSize="12"
+                            Margin="16"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            SnapsToDevicePixels="True">
+                            <TextBlock.Text>
+                                <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="{}Development Build&#0013;Version {0}" />
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <!--<views:SystemAssaultScreen/>-->
+                        <!--<sxna:InvasionExplosionsOverlay Width="256" Height="256" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+                        <!--<local:PopupTest />-->
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

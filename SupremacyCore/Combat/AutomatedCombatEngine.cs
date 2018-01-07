@@ -325,7 +325,7 @@ namespace Supremacy.Combat
             //return target.IsDestroyed;
             //             if (_automatedCombatTracing == true) ; 
             //GameLog.Print("{0} = target.IsAssmilated, {1} = source.Owner, {2} = target.Owner.Name", target.IsAssimilated, source.Owner.ToString(), target.Owner.Name.ToString());
-            if (target.ShieldIntegrity < 90 && source.Owner.ToString() == "Borg" && target.Owner.Name.ToString() != "Borg")
+            if (target.ShieldIntegrity < 90 && source.Owner.Name == "Borg" && target.Owner.Name != "Borg")
             {
                 if (_automatedCombatTracing) 
                     GameLog.Print("{0} = target.IsAssmilated, {1} = source.Owner, {2} = target.Owner.Name", target.IsAssimilated, source.Owner.ToString(), target.Owner.Name.ToString());

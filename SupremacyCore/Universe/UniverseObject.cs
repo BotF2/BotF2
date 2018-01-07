@@ -456,7 +456,6 @@ namespace Supremacy.Universe
         //IntelObject,
         Building,
         Shipyard,
-        //Intelyard,
         Orbital,
         Ship,
         //Intel,

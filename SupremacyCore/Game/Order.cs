@@ -818,48 +818,6 @@ namespace Supremacy.Game
         }
     }
 
-    //[Serializable]
-    //public sealed class ToggleIntelyardBuildSlotOrder : Order
-    //{
-    //    private readonly int _intelyardId;
-    //    private readonly int _slotId;
-    //    private readonly bool _isActive;
-
-    //    public ToggleIntelyardBuildSlotOrder(IntelyardBuildSlot buildSlot)
-    //        : base(Guard.ArgumentNotNull(buildSlot, "buildSlot").Intelyard.Owner)
-    //    {
-    //        _intelyardId = buildSlot.Intelyard.ObjectID;
-    //        _slotId = buildSlot.SlotID;
-    //        _isActive = buildSlot.IsActive;
-    //    }
-
-    //    public override bool DoExecute()
-    //    {
-    //        var intelyard = GameContext.Current.Universe.Objects[_intelyardId] as Intelyard;
-    //        if (intelyard == null)
-    //            return false;
-
-    //        if (_slotId >= intelyard.BuildSlots.Count)
-    //            return false;
-
-    //        var buildSlot = intelyard.BuildSlots[_slotId];
-
-    //        if (_isActive)
-    //            return intelyard.Sector.System.Colony.ActivateIntelyardBuildSlot(buildSlot);
-
-    //        return intelyard.Sector.System.Colony.DeactivateIntelyardBuildSlot(buildSlot);
-    //    }
-
-    //    public override bool Overrides(Order o)
-    //    {
-    //        var otherOrder = o as ToggleIntelyardBuildSlotOrder;
-    //        if (otherOrder == null)
-    //            return false;
-
-    //        return otherOrder._intelyardId == _intelyardId &&
-    //               otherOrder._slotId == _slotId;
-    //    }
-    //}
     [Serializable]
     public sealed class SetShipyardBuildSlotProjectOrder : Order
     {
@@ -913,58 +871,6 @@ namespace Supremacy.Game
         }
     }
 
-    //[Serializable]
-    //public sealed class SetIntelyardBuildSlotProjectOrder : Order
-    //{
-    //    private readonly int _intelyardId;
-    //    private readonly int _slotId;
-    //    private readonly BuildProject _project;
-
-    //    //public SetIntelyardBuildSlotProjectOrder(IntelyardBuildSlot buildSlot)
-    //    //    : base(Guard.ArgumentNotNull(buildSlot, "buildSlot").Intelyard.Owner)
-    //    //{
-    //    //    _intelyardId = buildSlot.Intelyard.ObjectID;
-    //    //    _slotId = buildSlot.SlotID;
-    //    //    _project = buildSlot.Project;
-    //    //}
-
-    //    public override bool DoExecute()
-    //    {
-    //        var intelyard = GameContext.Current.Universe.Objects[_intelyardId] as Intelyard;
-    //        if (intelyard == null)
-    //            return false;
-
-    //        if (_slotId >= intelyard.BuildSlots.Count)
-    //            return false;
-
-    //        var buildSlot = intelyard.BuildSlots[_slotId];
-
-    //        if (buildSlot.HasProject)
-    //        {
-    //            if (buildSlot.Project == _project)
-    //                return true;
-
-    //            if (!buildSlot.Project.IsCancelled)
-    //                buildSlot.Project.Cancel();
-
-    //            buildSlot.Project = null;
-    //        }
-
-    //        buildSlot.Project = _project;
-
-    //        return true;
-    //    }
-
-        //public override bool Overrides(Order o)
-        //{
-        //    var otherOrder = o as SetIntelyardBuildSlotProjectOrder;
-        //    if (otherOrder == null)
-        //        return false;
-
-        //    return otherOrder._intelyardId == _intelyardId &&
-        //           otherOrder._slotId == _slotId;
-        //}
-    //}
     [Serializable]
     public sealed class SetFleetRouteOrder : Order
     {

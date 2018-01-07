@@ -348,7 +348,7 @@ namespace Supremacy.Combat
         {
             foreach (var assets in Assets)
             {
-                if (assets.Owner.Name.ToString() == "Borg")
+                if (assets.Owner.Name == "Borg")
                     break;
 
                 for (var i = 0; i < assets.CombatShips.Count; i++)
@@ -401,7 +401,7 @@ namespace Supremacy.Combat
 
                 for (var i = 0; i < assets.CombatShips.Count; i++)
                 {
-                    if (assets.CombatShips[i].Owner.Name.ToString() == "Borg")
+                    if (assets.CombatShips[i].Owner.Name == "Borg")
                         break;
 
                     if (GetOrder(assets.CombatShips[i].Source) != CombatOrder.Retreat)
@@ -412,7 +412,7 @@ namespace Supremacy.Combat
 
                 for (var i = 0; i < assets.NonCombatShips.Count; i++)
                 {
-                    if (assets.NonCombatShips[i].Owner.Name.ToString() == "Borg")
+                    if (assets.NonCombatShips[i].Owner.Name == "Borg")
                         break;
 
                     if (GetOrder(assets.NonCombatShips[i].Source) != CombatOrder.Retreat)

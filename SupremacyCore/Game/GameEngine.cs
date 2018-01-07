@@ -1234,13 +1234,14 @@ namespace Supremacy.Game
                             totalRes[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
                             ResourceValueCollection totalResClone = totalRes.Clone();
 
-                            GameLog.Print("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
-                                civ.Name,
-                                colony.BuildSlots[0].Project.BuildDesign.Name,
-                                colony.Name,
-                                civManager.Resources.Deuterium.CurrentValue,
-                                civManager.Resources.Dilithium.CurrentValue,
-                                civManager.Resources.RawMaterials.CurrentValue);
+                            if (m_TraceProduction)
+                                GameLog.Print("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
+                                    civ.Name,
+                                    colony.BuildSlots[0].Project.BuildDesign.Name,
+                                    colony.Name,
+                                    civManager.Resources.Deuterium.CurrentValue,
+                                    civManager.Resources.Dilithium.CurrentValue,
+                                    civManager.Resources.RawMaterials.CurrentValue);
 
                             //Try to finish the projects
                             if (colony.BuildSlots[0].Project.IsRushed)

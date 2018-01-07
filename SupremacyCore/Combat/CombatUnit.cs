@@ -128,7 +128,7 @@ namespace Supremacy.Combat
             get
             {
                 // works   GameLog.Print("{0}, = Combat Unit.cs Owner.Name", Owner.Name.ToString());
-                if (Owner.Name.ToString() == "Borg")
+                if (Owner.Name == "Borg")
                 {
                     _isAssimilated = false;
                     return false;

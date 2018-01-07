@@ -187,30 +187,6 @@ namespace Supremacy.Client
             try
             {
 
-                // needed, before turned back to YES/NO instead of Federations/Terrans/No
-
-                //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: in general...  lstFederationPlayable={0}; lstTerranEmpirePlayable={0}",
-                //                                        lstFederationPlayable.SelectedValue, lstTerranEmpirePlayable.SelectedValue);
-
-                //if (lstFederationPlayable.SelectedIndex == 0)   //ToString() == "Federation")
-                //{
-                //    //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: lstFederationPlayable={0}; lstTerranEmpirePlayable={1}",
-                //    //                                                       lstFederationPlayable.SelectedValue, lstTerranEmpirePlayable.SelectedValue);
-                //    lstTerranEmpirePlayable.SelectedIndex = 0;   // 0 = No Terran,   1 = Terran YES
-                //}
-
-                //if (lstFederationPlayable.SelectedIndex == 1)    // ToString() == "Terrans")
-                //{
-                //    //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: lstFederationPlayable={0}; lstTerranEmpirePlayable={1}",
-                //    //                                                       lstFederationPlayable.SelectedValue, lstTerranEmpirePlayable.SelectedValue);
-                //    lstTerranEmpirePlayable.SelectedIndex = 1;   // 0 = No Terran,   1 = Terran YES
-                //}
-
-                //if (lstFederationPlayable.SelectedIndex == 2)    //   ToString() == "No")
-                //{ 
-                //    //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: lstFederationPlayable={0}; lstTerranEmpirePlayable={1}",
-                //    //                                                        lstFederationPlayable.SelectedValue, lstTerranEmpirePlayable.SelectedValue);
-                //}
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
@@ -222,33 +198,7 @@ namespace Supremacy.Client
         {
             try
             {
-                //lst
-                // needed, before turned back to YES/NO instead of Federations/Terrans/No
 
-
-                //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: in general...  lstTerranEmpirePlayable={0}; lstFederationPlayable={0}",
-                //                                        lstTerranEmpirePlayable.SelectedValue, lstFederationPlayable.SelectedValue);
-
-                //if (lstTerranEmpirePlayable.SelectedIndex == 0)   //   "No")
-                //{
-                //    //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: lstTerranEmpirePlayable={0}; lstFederationPlayable={1}",
-                //    //lstTerranEmpirePlayable.SelectedValue, lstFederationPlayable.SelectedValue);
-                //    lstFederationPlayable.SelectedIndex = 0;   // 0 = Federation
-                //}
-
-                //if (lstTerranEmpirePlayable.SelectedIndex == 1)    //  "Yes")
-                //{
-                //    //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: lstTerranEmpirePlayable={0}; lstFederationPlayable={1}",
-                //    //lstTerranEmpirePlayable.SelectedValue, lstFederationPlayable.SelectedValue);
-                //    lstFederationPlayable.SelectedIndex = 1;   // 1 = Terrans 
-                //}
-
-                //// Terrans just have YES or NO
-                ////if (lstTerranEmpirePlayable.SelectedIndex == 2)    //   ToString() == "No")
-                ////{
-                ////    //GameLog.Client.GameData.DebugFormat("GameOptionsPanel.xaml.cs: lstTerranEmpirePlayable={0}; lstFederationPlayable={1}",
-                ////    lstTerranEmpirePlayable.SelectedValue, lstFederationPlayable.SelectedValue);
-                ////}
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
@@ -308,13 +258,7 @@ namespace Supremacy.Client
         {
             try
             {
-                // at the moment no idea
-                
-                //var imageSource = new BitmapImage(
-                //    new Uri(
-                //        "vfs:///Resources/Images/Galaxies/" + this.lstGalaxyShape.SelectedItem + ".png",
-                //        UriKind.Absolute));
-                //GalaxyImage.Source = imageSource;
+
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {

@@ -42,12 +42,6 @@ namespace Supremacy.Game
         GameObjectID EmpireID { get; }
 
         /// <summary>
-        /// Gets or sets the selected ID for Borg or Terrans ("extended empires")
-        /// </summary>
-        /// <value>The selected empire ID.</value>
-        GameObjectID EmpireExtID { get; }
-
-        /// <summary>
         /// Gets or sets the selected empire.
         /// </summary>
         /// <value>The selected empire.</value>
@@ -186,16 +180,6 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The selected empire ID.</value>
         public GameObjectID EmpireID
-        {
-            get { return _empireId; }
-            set { _empireId = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the selected empire ID.
-        /// </summary>
-        /// <value>The selected empire ID.</value>
-        public GameObjectID EmpireExtID
         {
             get { return _empireId; }
             set { _empireId = value; }

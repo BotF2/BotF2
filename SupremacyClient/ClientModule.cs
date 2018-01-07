@@ -365,7 +365,6 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.GalaxyGrid, typeof(GalaxyGridView));
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.TradeRouteList, typeof(TradeRouteListView));
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.TaskForceList, typeof(TaskForceListView));
-            //_regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.IntelForceList, typeof(IntelForceListView));
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.AssignedShipList, typeof(AssignedShipListView));
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.AvailableShipList, typeof(AvailableShipListView));
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.ShipStats, typeof(ShipInfoPanel));
@@ -377,10 +376,7 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo, ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo, typeof(ColonyBuildProjectInfoView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ShipyardBuildQueue, ColonyScreenRegions.ShipyardBuildQueue, typeof(ColonyShipyardBuildQueueView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ShipyardBuildList, ColonyScreenRegions.ShipyardBuildList, typeof(ColonyShipyardBuildListView));
-            //_regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.IntelyardBuildQueue, ColonyScreenRegions.IntelyardBuildQueue, typeof(ColonyIntelyardBuildQueueView));
-            //_regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.IntelyardBuildList, ColonyScreenRegions.IntelyardBuildList, typeof(ColonyIntelyardBuildListView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.SelectedShipyardBuildProjectInfo, ColonyScreenRegions.SelectedShipyardBuildProjectInfo, typeof(ColonyBuildProjectInfoView));
-            //_regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.SelectedIntelyardBuildProjectInfo, ColonyScreenRegions.SelectedIntelyardBuildProjectInfo, typeof(ColonyBuildProjectInfoView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.StructureList, ColonyScreenRegions.StructureList, typeof(ColonyStructureListView));
         }
 
@@ -508,8 +504,6 @@ namespace Supremacy.Client
 
             if (_appContext.IsGameInPlay)
             {
-                //    GameLog.Client.GameData.DebugFormat("ClientModule.cs: LocalPlayerRace={0}, EmpireKey={1}", _appContext.LocalPlayer.Empire.Race.Name, _appContext.LocalPlayer.Empire.Key);
-
                 if (_appContext.LocalPlayer.Empire.Key == "INTRO")
                     LoadTheme("Intro");
                 else if (_appContext.LocalPlayer.Empire.Key == "FEDERATION")
@@ -528,22 +522,7 @@ namespace Supremacy.Client
                     LoadTheme("TerranEmpire");
                 else
                     LoadDefaultTheme();
-
-                //    //"else"....old version
-                //    LoadTheme(_appContext.LocalPlayer.Empire.Key);
             }
-            //else
-
-            //GameLog.Client.GameData.DebugFormat("ClientModule.cs: ...ELSE... LocalPlayerCivName={0}, EmpireKey={1}", _appContext.LocalPlayerEmpire.Civilization.Name, _appContext.LocalPlayer.Empire.Key);
-
-            //if (_appContext.LocalPlayer.Empire.Key == "BORG")
-            //    LoadTheme("BORG");
-
-            //if (_appContext.LocalPlayer.Empire.Key == "TERRANEMPIRE")
-            //    LoadTheme("TERRANEMPIRE");
-
-            //LoadTheme("Klingons");
-            //LoadDefaultTheme();
         }
 
         public void LoadDefaultTheme()
@@ -559,10 +538,8 @@ namespace Supremacy.Client
                 _app.LoadDefaultResources();
 
             themeShipyard = theme;
-            //themeIntelyard = theme;
 
             _app.LoadThemeResourcesShipyard(themeShipyard);
-            //_app.LoadThemeResourcesIntelyard(themeIntelyard);
 
             // load theme music
             _appContext.ThemeMusicLibrary.Load(Path.Combine(MusicThemeBasePath, theme, MusicPackFileName));
@@ -839,6 +816,5 @@ namespace Supremacy.Client
         }
 
         public string themeShipyard { get; set; }
-        //public string themeIntelyard { get; set; }
     }
 }
