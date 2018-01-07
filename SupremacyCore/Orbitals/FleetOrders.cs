@@ -1487,50 +1487,11 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class WormholeOrder : FleetOrder
     {
-        private int _targetFleetId = GameObjectID.InvalidID;
-        private bool _shipsLocked;
-        private bool _orderLocked;
-        private FleetOrder _lastOrder;
-
-
-        public override object Target
-        {
-            get { return TargetFleet; }
-            set
-            {
-                if (value == null)
-                    TargetFleet = null;
-
-                if (value is Fleet)
-                {
-                    if (Fleet.Sector.System.StarType == StarType.Wormhole)
-                        TargetFleet = value as Fleet;
-                }
-                else
-                    throw new ArgumentException("Target must be of type Supremacy.Orbitals.Fleet");
-                OnPropertyChanged("Target");
-            }
-        }
-
-        public Fleet TargetFleet
-        {
-            get { return GameContext.Current.Universe.Objects[_targetFleetId] as Fleet; }
-            private set
-            {
-                var currentTarget = this.TargetFleet;
-                if (currentTarget != null)
-                    EndWormhole();
-                if (value == null)
-                    _targetFleetId = GameObjectID.InvalidID;
-                else
-                    _targetFleetId = value.ObjectID;
-                OnPropertyChanged("TargetFleet");
-            }
-        }
+        private MapLocation _startingLocation;
 
         public override string OrderName
         {
-            get { return ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE" + "WHO"); }
+            get { return ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"); }
         }
 
         public override string Status
@@ -1539,7 +1500,7 @@ namespace Supremacy.Orbitals
             {
                 return String.Format(
                     ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"),
-                    TargetFleet);
+                    Fleet);
             }
         }
 
@@ -1547,19 +1508,9 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                if (!Fleet.Route.IsEmpty)
-                {
-                    int turns = Fleet.Route.Length / Fleet.Speed;
-                    string formatString;
-                    if ((Fleet.Route.Length % Fleet.Speed) != 0)
-                        turns++;
-                    if (turns == 1)
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURN_MULTILINE");
-                    else
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURNS_MULTILINE");
-                    return String.Format(formatString, Status, turns);
-                }
-                return Status;
+                return String.Format(
+                    ResourceManager.GetString("ORDER_ENTER_WORMHOLE"),
+                    Status);
             }
         }
 
@@ -1570,11 +1521,7 @@ namespace Supremacy.Orbitals
 
         public override bool IsComplete
         {
-            get
-            {
-                var targetFleet = this.TargetFleet;
-                return (targetFleet != null) && targetFleet.IsInWormhole && !targetFleet.IsStranded && Fleet.Route.IsEmpty;
-            }
+            get { return Fleet.Location != _startingLocation; }
         }
 
         public override FleetOrder Create()
@@ -1584,369 +1531,56 @@ namespace Supremacy.Orbitals
 
         public override bool IsTargetRequired(Fleet fleet)
         {
-            return true;
-        }
-
-        private void BeginWormhole()
-        {
-
-            var _fleetLocation_old = "";
-            var _fleetLocation_new = "";
-
-            var targetWormholesCollection = new List<Object>();
-
-
-            try
-            {
-                int _wormholeNumber = 0;
-                _wormholeNumber = StorageManager.ReadSetting<string, int>("numberDefinedWormholes");
-
-                var wormhole1 = StorageManager.ReadSetting<string, MapLocation>("wormhole_1_Location");
-                var wormhole2 = StorageManager.ReadSetting<string, MapLocation>("wormhole_2_Location");
-                var wormhole3 = StorageManager.ReadSetting<string, MapLocation>("wormhole_3_Location");
-                var wormhole4 = StorageManager.ReadSetting<string, MapLocation>("wormhole_4_Location");
-                var wormhole5 = StorageManager.ReadSetting<string, MapLocation>("wormhole_5_Location");
-                var wormhole6 = StorageManager.ReadSetting<string, MapLocation>("wormhole_6_Location");
-                var wormhole7 = StorageManager.ReadSetting<string, MapLocation>("wormhole_7_Location");
-                var wormhole8 = StorageManager.ReadSetting<string, MapLocation>("wormhole_8_Location");
-                //var wormhole9 = StorageManager.ReadSetting<string, MapLocation>("wormhole_9_Location");  // not done yet
-                //var wormhole10 = StorageManager.ReadSetting<string, MapLocation>("wormhole_10_Location");
-                //var wormhole11 = StorageManager.ReadSetting<string, MapLocation>("wormhole_11_Location");
-                //var wormhole12 = StorageManager.ReadSetting<string, MapLocation>("wormhole_12_Location");
-
-                //doesn't work ?      GameLog.Print("wormhole1 (read from Settings) at = {0}", wormhole1.ToString());
-
-                var fleet = TargetFleet;
-
-                if (_wormholeNumber > 3)
-                {
-                    if (fleet.Location != wormhole1)
-                        targetWormholesCollection.Add(wormhole1);
-                    if (fleet.Location != wormhole2)
-                        targetWormholesCollection.Add(wormhole2);
-                    if (fleet.Location != wormhole3)
-                        targetWormholesCollection.Add(wormhole3);
-                    if (fleet.Location != wormhole4)
-                        targetWormholesCollection.Add(wormhole4);
-                    GameLog.Print("READING defined wormholePair1 = {0}", wormhole1.ToString() + wormhole3.ToString());
-                    GameLog.Print("READING defined wormholePair2 = {0}", wormhole2.ToString() + wormhole4.ToString());
-                }
-                if (_wormholeNumber > 7)
-                {
-                    if (fleet.Location != wormhole5)
-                        targetWormholesCollection.Add(wormhole5);
-                    if (fleet.Location != wormhole6)
-                        targetWormholesCollection.Add(wormhole6);
-                    if (fleet.Location != wormhole7)
-                        targetWormholesCollection.Add(wormhole7);
-                    if (fleet.Location != wormhole8)
-                        targetWormholesCollection.Add(wormhole8);
-                    GameLog.Print("READING defined wormholePair3 = {0}", wormhole5.ToString() + wormhole7.ToString());
-                    GameLog.Print("READING defined wormholePair4 = {0}", wormhole6.ToString() + wormhole8.ToString());
-                }
-                //if (_wormholeNumber <= 12)   // not done yet
-                //{
-                //    if (fleet.Location != wormhole9)
-                //        targetWormholesCollection.Add(wormhole9);
-                //    if (fleet.Location != wormhole10)
-                //        targetWormholesCollection.Add(wormhole10);
-                //    if (fleet.Location != wormhole11)
-                //        targetWormholesCollection.Add(wormhole11);
-                //    if (fleet.Location != wormhole12)
-                //        targetWormholesCollection.Add(wormhole12);
-                //    GameLog.Print("READ wormholePair5 = {0}", wormhole9.ToString() + wormhole11.ToString());
-                //    GameLog.Print("READ wormholePair6 = {0}", wormhole10.ToString() + wormhole12.ToString());
-                //}
-
-                _fleetLocation_old = fleet.Location.ToString();
-
-                // not working yet ...let see, how it's done, if a new route is set
-                if (fleet.Location == wormhole1)  // from 1 to 3
-                    fleet.Location = wormhole3;
-                if (fleet.Location == wormhole2)
-                    fleet.Location = wormhole4;
-                if (fleet.Location == wormhole3)  // from 3 to 1
-                    fleet.Location = wormhole1;
-                if (fleet.Location == wormhole4)
-                    fleet.Location = wormhole2;
-
-                if (fleet.Location == wormhole5)
-                    fleet.Location = wormhole7;
-                if (fleet.Location == wormhole6)
-                    fleet.Location = wormhole8;
-                if (fleet.Location == wormhole7)
-                    fleet.Location = wormhole5;
-                if (fleet.Location == wormhole8)
-                    fleet.Location = wormhole6;
-
-                int x = 0;
-                int y = 0;
-                //destination = wormhole1.
-                fleet.Location = wormhole1;
-
-                //foreach (var shipStats in assets.EscapedShips)
-                //    ((Ship)shipStats.Source).Fleet.Location = destination.Location;
-
-                _fleetLocation_new = fleet.Location.ToString();
-                GameLog.Print("not working yet: Using Wormhole: FleetID = {0} was moved from {1} to {2}", fleet.ObjectID, _fleetLocation_old, _fleetLocation_new);
-
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-            if (TargetFleet.IsInWormhole)
-                return;
-
-            TargetFleet.IsInWormhole = true;
-
-            //if (!TargetFleet.Order.IsCancelledOnRouteChange)
-            //{
-            //    _lastOrder = TargetFleet.Order;
-            //    _orderLocked = TargetFleet.IsOrderLocked;
-            //}
-
-            //_shipsLocked = TargetFleet.AreShipsLocked;
-
-            //TargetFleet.LockShips();
-
-            //if (_orderLocked)
-            //    TargetFleet.UnlockOrder();
-
-            //TargetFleet.SetOrder(FleetOrders.AvoidOrder.Create());
-            //TargetFleet.LockOrder();
-
-            if (TargetFleet.IsRouteLocked)
-                TargetFleet.UnlockRoute();
-
-            TargetFleet.SetRoute(TravelRoute.Empty);
-            TargetFleet.LockRoute();
-
-            //Fleet.LockShips();
-        }
-
-        private void EndWormhole()
-        {
-            if (!TargetFleet.IsInWormhole)
-                return;
-
-            TargetFleet.UnlockOrder();
-            TargetFleet.UnlockRoute();
-
-            if (_lastOrder != null)
-                TargetFleet.SetOrder(_lastOrder);
-            else
-                TargetFleet.SetOrder(TargetFleet.GetDefaultOrder());
-
-            //if (_orderLocked)
-            //    TargetFleet.LockOrder();
-
-            if (!_shipsLocked)
-                TargetFleet.UnlockShips();
-
-            TargetFleet.IsInWormhole = false;
-
-            Fleet.UnlockShips();
+            return false;
         }
 
         protected internal override void OnOrderAssigned()
         {
             base.OnOrderAssigned();
-            if (TargetFleet != null)
-                BeginWormhole();
+            if (Fleet != null)
+                _startingLocation = Fleet.Location;
         }
 
-        protected internal override void OnOrderCancelled()
-        {
-            if (TargetFleet != null)
-                EndWormhole();
-            base.OnOrderCancelled();
-        }
-
-        protected internal override void OnOrderCompleted()
-        {
-            if (TargetFleet != null)
-                EndWormhole();
-            base.OnOrderCompleted();
-        }
-
-        protected internal override void OnTurnBeginning()
-        {
-            base.OnTurnBeginning();
-
-            var targetFleet = this.TargetFleet;
-            if ((targetFleet != null) && targetFleet.IsInWormhole)
-                TargetFleet.SetRoute(TravelRoute.Empty);
-        }
 
         protected internal override void OnTurnEnding()
         {
-            base.OnTurnEnding();
 
-            var targetFleet = this.TargetFleet;
-            var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
-
-            if (targetFleet != null)
+            if (Fleet != null)
             {
-                var ship = targetFleet.Ships.SingleOrDefault();
-                if ((ship != null) && (!FleetHelper.IsFleetInFuelRange(targetFleet)))
+                //Wormhole leads nowhere so destroy the fleet
+                if (Fleet.Sector.System.WormholeDestination == null)
                 {
-                    int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
-                    ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+                    var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+                    GameLog.Print("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
+                    Fleet.Destroy();
+                }
+                else
+                {
+                    Fleet.Location = (MapLocation)Fleet.Sector.System.WormholeDestination;
+                    GameLog.Print("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
+
+                    if (IsComplete)
+                        Fleet.SetOrder(Fleet.GetDefaultOrder());
                 }
             }
-
-            if (this.IsComplete)
-                Fleet.SetOrder(Fleet.GetDefaultOrder());
-
-            Fleet.Location = civManager.HomeSystem.Location;
-            //Fleet.LocationChanged;
-            //GameEngine.OnFleetLocationChanged(Fleet);
-            //Fleet.LocationChanged += GameEngine.HandleFleetLocationChanged(Fleet, Fleet.Location);
-            GameLog.Print("Fleet moved to {0}", Fleet.Location.ToString());
-        }
-
-        protected internal override void OnFleetMoved()
-        {
-            base.OnFleetMoved();
-            if (TargetFleet != null)
-                TargetFleet.Location = Fleet.Location;
         }
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            //if (fleet.Sector.System.StarType == StarType.Wormhole)
-            //    return true;
-
-            //if (!base.IsValidOrder(fleet))
-            //    return false;
-            //if (fleet.Ships.Count != 1)
-            //    return false;
-            //if (fleet == Fleet && fleet.IsStranded)
-            //    return false;
+            if (fleet.Sector.System.StarType == StarType.Wormhole)
+                return true;
 
             return false;
         }
 
-        public override IEnumerable<object> FindTargets(Fleet fleet)
+        public override bool IsCancelledOnRouteChange
         {
-            var targetWormholesCollection = new List<Object>();
+            get { return true; }
+        }
 
-            //GameContext.Current.Universe.FindAt<Fleet>(fleet.Location);
-
-            //var _shipLocation = GameContext.Current.Universe.FindAt<Fleet>(fleet.Location);
-
-            //targetWormholes = MapHelper.Wormholelist(_shipLocation);
-
-            var targetWormhole = "";
-            // WORKS but turned off atm     var targetWormhole = new MapHelper.Wormholelist(source.Location);
-
-            var _fleetLocation_old = "";
-            var _fleetLocation_new = "";
-
-
-            try
-            {
-                int _wormholeNumber = 0;
-                _wormholeNumber = StorageManager.ReadSetting<string, int>("numberDefinedWormholes");
-
-                var wormhole1 = StorageManager.ReadSetting<string, MapLocation>("wormhole_1_Location");
-                var wormhole2 = StorageManager.ReadSetting<string, MapLocation>("wormhole_2_Location");
-                var wormhole3 = StorageManager.ReadSetting<string, MapLocation>("wormhole_3_Location");
-                var wormhole4 = StorageManager.ReadSetting<string, MapLocation>("wormhole_4_Location");
-                var wormhole5 = StorageManager.ReadSetting<string, MapLocation>("wormhole_5_Location");
-                var wormhole6 = StorageManager.ReadSetting<string, MapLocation>("wormhole_6_Location");
-                var wormhole7 = StorageManager.ReadSetting<string, MapLocation>("wormhole_7_Location");
-                var wormhole8 = StorageManager.ReadSetting<string, MapLocation>("wormhole_8_Location");
-                //var wormhole9 = StorageManager.ReadSetting<string, MapLocation>("wormhole_9_Location");  // not done yet
-                //var wormhole10 = StorageManager.ReadSetting<string, MapLocation>("wormhole_10_Location");
-                //var wormhole11 = StorageManager.ReadSetting<string, MapLocation>("wormhole_11_Location");
-                //var wormhole12 = StorageManager.ReadSetting<string, MapLocation>("wormhole_12_Location");
-
-                //doesn't work ?      GameLog.Print("wormhole1 (read from Settings) at = {0}", wormhole1.ToString());
-
-
-                if (_wormholeNumber > 3)
-                {
-                    if (fleet.Location != wormhole1)
-                        targetWormholesCollection.Add(wormhole1);
-                    if (fleet.Location != wormhole2)
-                        targetWormholesCollection.Add(wormhole2);
-                    if (fleet.Location != wormhole3)
-                        targetWormholesCollection.Add(wormhole3);
-                    if (fleet.Location != wormhole4)
-                        targetWormholesCollection.Add(wormhole4);
-                    GameLog.Print("READING defined wormholePair1 = {0}", wormhole1.ToString() + wormhole3.ToString());
-                    GameLog.Print("READING defined wormholePair2 = {0}", wormhole2.ToString() + wormhole4.ToString());
-                }
-                if (_wormholeNumber > 7)
-                {
-                    if (fleet.Location != wormhole5)
-                        targetWormholesCollection.Add(wormhole5);
-                    if (fleet.Location != wormhole6)
-                        targetWormholesCollection.Add(wormhole6);
-                    if (fleet.Location != wormhole7)
-                        targetWormholesCollection.Add(wormhole7);
-                    if (fleet.Location != wormhole8)
-                        targetWormholesCollection.Add(wormhole8);
-                    GameLog.Print("READING defined wormholePair3 = {0}", wormhole5.ToString() + wormhole7.ToString());
-                    GameLog.Print("READING defined wormholePair4 = {0}", wormhole6.ToString() + wormhole8.ToString());
-                }
-                //if (_wormholeNumber <= 12)   // not done yet
-                //{
-                //    if (fleet.Location != wormhole9)
-                //        targetWormholesCollection.Add(wormhole9);
-                //    if (fleet.Location != wormhole10)
-                //        targetWormholesCollection.Add(wormhole10);
-                //    if (fleet.Location != wormhole11)
-                //        targetWormholesCollection.Add(wormhole11);
-                //    if (fleet.Location != wormhole12)
-                //        targetWormholesCollection.Add(wormhole12);
-                //    GameLog.Print("READ wormholePair5 = {0}", wormhole9.ToString() + wormhole11.ToString());
-                //    GameLog.Print("READ wormholePair6 = {0}", wormhole10.ToString() + wormhole12.ToString());
-                //}
-
-                _fleetLocation_old = fleet.Location.ToString();
-
-                // not working yet ...let see, how it's done, if a new route is set
-                if (fleet.Location == wormhole1)  // from 1 to 3
-                    fleet.Location = wormhole3;
-                if (fleet.Location == wormhole2)
-                    fleet.Location = wormhole4;
-                if (fleet.Location == wormhole3)  // from 3 to 1
-                    fleet.Location = wormhole1;
-                if (fleet.Location == wormhole4)
-                    fleet.Location = wormhole2;
-
-                if (fleet.Location == wormhole5)
-                    fleet.Location = wormhole7;
-                if (fleet.Location == wormhole6)
-                    fleet.Location = wormhole8;
-                if (fleet.Location == wormhole7)
-                    fleet.Location = wormhole5;
-                if (fleet.Location == wormhole8)
-                    fleet.Location = wormhole6;
-
-                int x = 0;
-                int y = 0;
-                //destination = wormhole1.
-                fleet.Location = wormhole1;
-
-                //foreach (var shipStats in assets.EscapedShips)
-                //    ((Ship)shipStats.Source).Fleet.Location = destination.Location;
-
-                _fleetLocation_new = fleet.Location.ToString();
-                GameLog.Print("not working yet: Using Wormhole: FleetID = {0} was moved from {1} to {2}", fleet.ObjectID, _fleetLocation_old, _fleetLocation_new);
-
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-
-            // works     GameLog.Print("adding {0} targetWormholes", targetWormholesCollection.Count);
-
-            return targetWormholesCollection;
+        public override bool IsRouteCancelledOnAssign
+        {
+            get { return true; }
         }
     }
     #endregion

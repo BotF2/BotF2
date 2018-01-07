@@ -147,27 +147,6 @@ namespace Supremacy.Client.Views
                 orderMenu.Items.Add(new Separator());
             }
 
-            if (fleetView.Source.Sector.System.StarType == Universe.StarType.Wormhole)
-            {
-                var enterWormholeItem = new MenuItem
-                {
-                    //IsCheckable = true,
-                    Header = "Enter Wormhole",
-                    //Command = GalaxyScreenCommands.ToggleTaskForceCloak,
-                    CommandParameter = fleetView
-                };
-
-                //var cloakBinding = new Binding
-                //{
-                //    Source = fleetView.Source,
-                //    Path = new PropertyPath("IsCloaked", new object[0]),
-                //    Mode = BindingMode.OneWay
-                //};
-                
-                //enterWormholeItem.SetBinding(MenuItem.IsCheckedProperty, cloakBinding);
-                orderMenu.Items.Add(enterWormholeItem);
-                //orderMenu.Items.Add(new Separator());
-            }
             foreach (var order in FleetOrders.GetAvailableOrders(fleetView.Source))
             {
                 var orderItem = new MenuItem

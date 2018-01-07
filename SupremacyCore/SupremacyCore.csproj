@@ -259,7 +259,6 @@
     <Compile Include="Text\TextStyle.cs" />
     <Compile Include="Types\NamedGuid.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
-    <Compile Include="Universe\WormholePair.cs" />
     <Compile Include="Utility\DelegatingWeakCollectionChangedListener.cs" />
     <Compile Include="Utility\EnumUtilities.cs" />
     <Compile Include="Utility\GameScheduler.cs" />

@@ -107,27 +107,19 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                Fleet fleet = Fleet;
                 string displayText;
                 Percentage? percentComplete = PercentComplete;
                 
-                if (fleet.IsInTow)
+                if (Fleet.IsInTow)
                 {
                     displayText = String.Format(
                         ResourceManager.GetString("ORDER_IN_TOW"),
                         Status);
                 }
-                else if (fleet.IsStranded)
+                else if (Fleet.IsStranded)
                 {
                     displayText = String.Format(
                         ResourceManager.GetString("ORDER_STRANDED"),
-                        Status);
-                }
-
-                else if (fleet.IsInWormhole)
-                {
-                    displayText = String.Format(
-                        ResourceManager.GetString("ORDER_ENTER_WORMHOLE"),
                         Status);
                 }
                 else
@@ -261,20 +253,6 @@ namespace Supremacy.Orbitals
                     return false;
                 if (Fleet.IsInTow)
                     return false;
-                //if (this.Fleet.IsCamouflaged)
-                //    return false;
-                return true;
-            }
-        }
-        public virtual bool EnterWormhole
-        {
-            get
-            {
-                //GameLog.Print("Fleet.Owner={0}, Fleet.Name={1})", Fleet.Owner, Fleet.Name);
-                if (Fleet == null)
-                    return false;
-                //if (Fleet.IsInTow)
-                //    return false;
                 //if (this.Fleet.IsCamouflaged)
                 //    return false;
                 return true;
