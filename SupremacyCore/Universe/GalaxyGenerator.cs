@@ -45,7 +45,7 @@ namespace Supremacy.Universe
         private static readonly DoubleKeyedSet<PlanetSize, MoonSize, int> PlanetSizeModToMoonSizeDist;
         private static readonly DoubleKeyedSet<PlanetType, MoonSize, int> PlanetTypeModToMoonSizeDist;
 
-        private static bool m_TraceWormholes = true;
+        private static bool m_TraceWormholes = false;
 
         static GalaxyGenerator()
         {
@@ -153,28 +153,6 @@ namespace Supremacy.Universe
             var reader = new StreamReader(file);
             var names = new List<string>();
             
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                if (line == null)
-                    break;
-
-                names.Add(line.Trim());
-            }
-
-            return names;
-        }
-
-        private static IList<string> GetWormholeNames()
-        {
-            var file = new FileStream(
-                ResourceManager.GetResourcePath("Resources/Tables/WormholeNames.txt"),
-                FileMode.Open,
-                FileAccess.Read);
-
-            var reader = new StreamReader(file);
-            var names = new List<string>();
-
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
@@ -963,7 +941,6 @@ namespace Supremacy.Universe
         {
             int maxPlanets;
             var nebulaNames = GetNebulaNames();
-            var wormholeNames = GetWormholeNames();
 
             switch (GameContext.Current.Options.PlanetDensity)
             {
@@ -979,7 +956,6 @@ namespace Supremacy.Universe
             }
 
             Algorithms.RandomShuffleInPlace(nebulaNames);
-            Algorithms.RandomShuffleInPlace(wormholeNames);
 
             var gameContext = GameContext.Current;
 
@@ -1027,8 +1003,6 @@ namespace Supremacy.Universe
                                 nebulaNames.RemoveAt(0);
                                 break;
                             case StarType.Wormhole:
-                                system.Name = wormholeNames[0];
-                                wormholeNames.RemoveAt(0);
                                 if (m_TraceWormholes)
                                     GameLog.Print("Wormhole placed at {0}", system.Location);
                                 break;
@@ -1107,6 +1081,15 @@ namespace Supremacy.Universe
         private static void LinkWormholes()
         {
             var wormholes = GameContext.Current.Universe.Find<StarSystem>(s => s.StarType == StarType.Wormhole).ToList();
+
+            foreach (var wormhole in wormholes)
+            {
+                //Everything less than Nebula is a proper star
+                wormhole.Name = GameContext.Current.Universe.FindNearest<StarSystem>(wormhole.Location,
+                    s => s.StarType < StarType.Nebula, false).Name;
+                if (m_TraceWormholes)
+                    GameLog.Print("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
+            }
 
             while (wormholes.Count > 1)
             {
