@@ -77,10 +77,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5, Version=1.0.2.0, Culture=neutral, PublicKeyToken=06a1b38866503b69, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Common\C5.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="C5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
+      <HintPath>..\packages\C5.2.5.3\lib\net40\C5.dll</HintPath>
     </Reference>
     <Reference Include="ConcurrentHashtable, Version=1.3.3.0, Culture=neutral, PublicKeyToken=17752bf2fea97f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

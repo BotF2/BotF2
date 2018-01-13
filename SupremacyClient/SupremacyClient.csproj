@@ -109,10 +109,6 @@
       <HintPath>..\Common\ActiproSoftware.Shared.Wpf351.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AsyncCtpLibrary">
-      <HintPath>..\Common\AsyncCtpLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="AvalonLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\AvalonLibrary.dll</HintPath>
