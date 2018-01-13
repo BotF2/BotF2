@@ -360,23 +360,23 @@ namespace Supremacy.UI
                         break;
 
                     default:
-                        var pop = new TextBlock();
-                        var maxPop = new TextBlock();
+                        var morale = new TextBlock();
+                        var population = new TextBlock();
                         var growth = new TextBlock();
                         var race = new TextBlock();
                         var orbitals = new TextBlock();
 
-                        pop.FontFamily = FontFamily;
-                        maxPop.FontFamily = FontFamily;
+                        morale.FontFamily = FontFamily;
+                        population.FontFamily = FontFamily;
                         growth.FontFamily = FontFamily;
                         race.FontFamily = FontFamily;
                         orbitals.FontFamily = FontFamily;
 
-                        pop.FontSize = maxPop.FontSize = growth.FontSize = race.FontSize =
+                        morale.FontSize = population.FontSize = growth.FontSize = race.FontSize =
                                                                            orbitals.FontSize =
                                                                            (double)fontSize.ConvertFrom("11pt");
 
-                        pop.Foreground = maxPop.Foreground = growth.Foreground =
+                        morale.Foreground = population.Foreground = growth.Foreground =
                                                              race.Foreground = orbitals.Foreground = Brushes.Beige;
 
                         if (system.StarType == StarType.Nebula)
@@ -390,23 +390,32 @@ namespace Supremacy.UI
                             name.Text = system.Name;
                         }
 
-                        pop.Text = string.Format("Morale: {0} of ", system.HasColony ? system.Colony.Morale.CurrentValue : 0) + 
-                            string.Format(
-                            "{0}:  {1:#,##0}",
-                            ResourceManager.GetString("SYSTEM_POPULATION"),
-                            system.HasColony ? system.Colony.Population.CurrentValue : 0);
+                        morale.Text = string.Format("{0}: {1}", ResourceManager.GetString("MORALE"),
+                            system.HasColony ? system.Colony.Morale.CurrentValue : 0);
 
-                        maxPop.Text = string.Format(
-                            "{0}:  {1:#,##0}",
-                            ResourceManager.GetString("SYSTEM_MAX_POPULATION"),
+
+                        if (system.HasColony) {
+                            population.Text = string.Format(
+                            "{0}: {1:#,##0} of {2:#,##0}",
+                            ResourceManager.GetString("SYSTEM_POPULATION"),
+                            system.HasColony ? system.Colony.Population.CurrentValue : 0,
                             maxPopulation);
+
+                        }
+                        else
+                        {
+                            population.Text = string.Format("{0}: {1:#,##0}",
+                                ResourceManager.GetString("SYSTEM_MAX_POPULATION"),
+                                maxPopulation);
+                        }
+
                         growth.Text = string.Format(
-                            "{0}:  {1:0.#}%",
+                            "{0}: {1:0.#}%",
                             ResourceManager.GetString("SYSTEM_GROWTH_RATE"),
                             growthRate * 100);
                         race.Text = system.HasColony
                                         ? string.Format(
-                                              "{0}:  {1}",
+                                              "{0}: {1}",
                                               ResourceManager.GetString("SYSTEM_INHABITANTS"),
                                               system.Colony.Inhabitants.PluralName)
                                         : ResourceManager.GetString("SYSTEM_UNINHABITED");
@@ -441,8 +450,8 @@ namespace Supremacy.UI
 
                         statsPanel.Children.Add(race);
                         if (system.IsInhabited)
-                            statsPanel.Children.Add(pop);
-                        statsPanel.Children.Add(maxPop);
+                            statsPanel.Children.Add(morale);
+                        statsPanel.Children.Add(population);
                         statsPanel.Children.Add(growth);
                         statsPanel.Children.Add(orbitals);
                         break;
