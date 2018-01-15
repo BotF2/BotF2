@@ -24,6 +24,7 @@ using Supremacy.Utility;
 using Wintellect.PowerCollections;
 using System.Threading.Tasks;
 using Supremacy.IO;
+using Supremacy.Messages;
 
 namespace Supremacy.Universe
 {
@@ -221,7 +222,81 @@ namespace Supremacy.Universe
 
                     GenerateSystems(starPositions, starNames, homeLocations);
                     PlaceMoons();
+
                     LinkWormholes();
+
+                    //Find somewhere to place the Bajoran end of the wormhole
+                    StarSystem bajoranSystem;
+                    MapLocation? bajoranWormholeLocation = null;
+                    if (GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Name == "Bajor", out bajoranSystem))
+                    {
+                        foreach (var sector in bajoranSystem.Sector.GetNeighbors())
+                        {
+                            if ((sector.System == null) && (GameContext.Current.Universe.Map.GetQuadrant(sector) == Quadrant.Alpha))
+                            {
+                                bajoranWormholeLocation = sector.Location;
+                                if (m_TraceWormholes)
+                                    GameLog.Print("Place for Bajoran wormhole found at {0}", sector.Location);
+                                break;
+                            }
+                        }
+                    }
+
+                    //Find somewhere to place the Gamma end of the wormhole
+                    MapLocation? gammaWormholeLocation = null;
+                    MapLocation desiredLocation = new MapLocation(GameContext.Current.Universe.Map.Width / 4, GameContext.Current.Universe.Map.Height / 4);
+                    if (GameContext.Current.Universe.Map[desiredLocation].System != null)
+                    {
+                        foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
+                        {
+                            if (sector.System == null)
+                            {
+                                gammaWormholeLocation = sector.Location;
+                                if (m_TraceWormholes)
+                                    GameLog.Print("Place for Gamma wormhole found at {0}", sector.Location);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        gammaWormholeLocation = desiredLocation;
+                        if (m_TraceWormholes)
+                            GameLog.Print("Place for Gamma wormhole found at {0}", desiredLocation);
+                    }
+
+                    //We've found somewhere to place the wormholes. Now to actually do it
+                    if ((gammaWormholeLocation != null) && (bajoranWormholeLocation != null))
+                    {
+                        StarSystem bajorWormhole = new StarSystem
+                        {
+                            StarType = StarType.Wormhole,
+                            Name = "Bajoran Wormhole",
+                            WormholeDestination = gammaWormholeLocation,
+                            Location = (MapLocation)bajoranWormholeLocation
+                        };
+                        GameContext.Current.Universe.Objects.Add(bajorWormhole);
+                        GameContext.Current.Universe.Map[(MapLocation)bajoranWormholeLocation].System = bajorWormhole;
+                        if (m_TraceWormholes)
+                            GameLog.Print("Bajoran wormhole placed");
+
+                        StarSystem gammaWormhole = new StarSystem
+                        {
+                            StarType = StarType.Wormhole,
+                            Name = "Gamma Wormhole",
+                            WormholeDestination = bajoranWormholeLocation,
+                            Location = (MapLocation)gammaWormholeLocation
+                        };
+                        GameContext.Current.Universe.Objects.Add(gammaWormhole);
+                        GameContext.Current.Universe.Map[(MapLocation)gammaWormholeLocation].System = gammaWormhole;
+                        if (m_TraceWormholes)
+                            GameLog.Print("Gamma wormhole placed");
+                    }
+                    else
+                    {
+                        if (m_TraceWormholes)
+                            GameLog.Print("Unable to place Bajoran and/or Gamma wormholes");
+                    }
 
                     break;
                 }
@@ -354,9 +429,8 @@ namespace Supremacy.Universe
             GameContext.Current.CivilizationManagers.Add(civManager);
 
             var homeSystemDescriptor = (homeSystemDatabase.ContainsKey(civ.Key))
-                                           ? homeSystemDatabase[civ.Key]
-                                           : GenerateHomeSystem(civ);
-
+                                        ? homeSystemDatabase[civ.Key]
+                                        : GenerateHomeSystem(civ);
 
             var planets = new List<Planet>();
             var race = civ.Race;
@@ -431,7 +505,6 @@ namespace Supremacy.Universe
                                 break;
                         }
                     }
-
                     planet.PlanetType = planetDescriptor.Type.Value;
                 }
 
@@ -459,7 +532,6 @@ namespace Supremacy.Universe
 
             GameContext.Current.Universe.Objects.Add(homeSystem);
             GameContext.Current.Universe.Objects.Add(homeSystem.Colony);
-            // works: GameLog.Client.GameData.DebugFormat("GalaxyGenerator.cs: HomeSystemsGeneration is done at={0} for={1}", homeSystem.Colony.Location, homeSystem.Owner.Name);
         }
 
         private static bool PlaceEmpireHomeworlds(Collections.CollectionBase<MapLocation> positions,
