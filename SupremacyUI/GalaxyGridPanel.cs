@@ -893,15 +893,21 @@ namespace Supremacy.UI
                             ? s_colonyNameBrushes[system.OwnerID]
                             : Brushes.White;
             string nameText;
-            if (system.StarType == StarType.Nebula)
+            switch (system.StarType)
             {
-                nameText = String.Format(
-                    ResourceManager.GetString("NEBULA_NAME_FORMAT"),
-                    system.Name);
-            }
-            else
-            {
-                nameText = system.Name;
+                case StarType.Nebula:
+                    nameText = String.Format(
+                        ResourceManager.GetString("NEBULA_NAME_FORMAT"),
+                        system.Name);
+                    break;
+                case StarType.Wormhole:
+                    nameText = String.Format(
+                        ResourceManager.GetString("WORMHOLE_NAME_FORMAT"),
+                        system.Name);
+                    break;
+                default:
+                    nameText = system.Name;
+                    break;
             }
 
             var starName = new FormattedText(
@@ -947,11 +953,9 @@ namespace Supremacy.UI
 
         private static bool IsStarNameVisible(StarSystem starSystem)
         {
-            return ((starSystem != null)
-                && IsExplored(starSystem.Location)
-                && StarHelper.SupportsPlanets(starSystem)
-                //&& (starSystem.StarType != StarType.Nebula)
-                );
+            return ((starSystem != null) && 
+                    IsExplored(starSystem.Location) &&
+                    starSystem.StarType <= StarType.Wormhole);
         }
 
         private static bool IsValidTradeEndpoint(TradeRoute route, Colony colony)
