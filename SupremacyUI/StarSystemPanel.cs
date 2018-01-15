@@ -331,7 +331,8 @@ namespace Supremacy.UI
                         statsPanel.Children.Add(details);
                         break;
                     case StarType.Wormhole:
-                        name.Text = ResourceManager.GetString("STAR_TYPE_WORMHOLE");
+                        name.Text = String.Format(ResourceManager.GetString("WORMHOLE_NAME_FORMAT"),
+                            system.Name);
                         details.Text = ResourceManager.GetString("STAR_TYPE_WORMHOLE_DESCRIPTION");
                         statsPanel.Children.Add(details);
                         break;
@@ -372,12 +373,15 @@ namespace Supremacy.UI
                         race.FontFamily = FontFamily;
                         orbitals.FontFamily = FontFamily;
 
-                        morale.FontSize = population.FontSize = growth.FontSize = race.FontSize =
-                                                                           orbitals.FontSize =
-                                                                           (double)fontSize.ConvertFrom("11pt");
+                        morale.FontSize = population.FontSize
+                                        = growth.FontSize 
+                                        = race.FontSize 
+                                        = orbitals.FontSize 
+                                        = (double)fontSize.ConvertFrom("11pt");
 
-                        morale.Foreground = population.Foreground = growth.Foreground =
-                                                             race.Foreground = orbitals.Foreground = Brushes.Beige;
+                        morale.Foreground = population.Foreground 
+                                            = growth.Foreground 
+                                            = race.Foreground = orbitals.Foreground = Brushes.Beige;
 
                         if (system.StarType == StarType.Nebula)
                         {
