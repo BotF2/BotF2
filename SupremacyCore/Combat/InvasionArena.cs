@@ -507,6 +507,12 @@ namespace Supremacy.Combat
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
             _canLandTroops = _invadingUnits.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Any(o => o.ShipType == ShipType.Transport);
 
+            GameLog.Print("_canLandTroops(Transport Ships) = {0}, and/but ColonyShieldStrength = {1}, Last Value = {2}", 
+                _canLandTroops, ColonyShieldStrength.CurrentValue, ColonyShieldStrength.LastValue);
+            if (ColonyShieldStrength.CurrentValue > 0)
+                _canLandTroops = false;
+
+
             if (_status != InvasionStatus.InProgress)
                 return;
 
@@ -768,11 +774,20 @@ namespace Supremacy.Combat
 
             if (_orders.Action == InvasionAction.BombardPlanet || _orders.Action == InvasionAction.UnloadAllOrdinance)
             {
+                if (_orders.Action == InvasionAction.BombardPlanet)
+                    GameLog.Print("Order is Bombardment (same like UnloadAllOrdinance");
+
+                if (_orders.Action == InvasionAction.UnloadAllOrdinance)
+                    GameLog.Print("Order is UnloadAllOrdinance (same like Bombardment");
+
                 ProcessBombardment();
             }
 
             if (_orders.Action == InvasionAction.LandTroops)
+            {
+                GameLog.Print("Order is LandTroops");
                 ProcessGroundCombat();
+            }
 
             ++_invasionArena.RoundNumber;
 
@@ -812,6 +827,8 @@ namespace Supremacy.Combat
             _invasionArena.Update();
 
             var defenderCombatStrength = _invasionArena.DefenderCombatStrength;
+                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? : defenderCombatStrength = {0}, attacking Transports = {1}",
+                //    defenderCombatStrength, transports.Count);
 
             var colony = _invasionArena.Colony;
             var invader = GameContext.Current.Civilizations[_invasionArena.InvaderID];
@@ -819,6 +836,9 @@ namespace Supremacy.Combat
             while (defenderCombatStrength > 0 &&
                    transports.Count != 0)
             {
+                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                    defenderCombatStrength, transports.Count);
+
                 var transport = transports[0];
 
                 var transportCombatStrength = CombatHelper.ComputeGroundCombatStrength(
@@ -833,6 +853,13 @@ namespace Supremacy.Combat
                     transports.RemoveAt(0);
                     transport.Destroy();
                 }
+
+                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = {0}, attacking Transports = {1}",
+                    defenderCombatStrength, transports.Count);
+
+
+                //        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? : Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                //targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
             }
 
             if (defenderCombatStrength > 0 || transports.Count == 0)
@@ -898,20 +925,28 @@ namespace Supremacy.Combat
                             {
                                 if (chanceTree.IsEmpty)
                                     chanceTree = GetBaseGroundTargetHitChanceTree();
+                                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
 
                             if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumDamage ||
-                                _orders.Action == InvasionAction.UnloadAllOrdinance)
+                                _orders.Action == InvasionAction.UnloadAllOrdinance)     // here UnloadAllOrdinance is used
                             {
                                 totalPopDamage += 0.5 * actualDamage;
+                                    //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - MAXIMUM DAMAGE: Target Name = {0}, ID = {1} Design = {2}, health = {3}", 
+                                    //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                             else if (_orders.TargetingStrategy == InvasionTargetingStrategy.Balanced)
                             {
                                 totalPopDamage += 0.25 * actualDamage;
+                                    //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - BALANCED: Target Name = {0}, ID = {1} Design = {2}, health = {3}", 
+                                    //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                             else if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumPrecision)
                             {
                                 totalPopDamage += 0.125 * actualDamage;
+                                    //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - maximum PRECISION: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                    //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                         }
                         //else if (target == colony)
@@ -1046,7 +1081,7 @@ namespace Supremacy.Combat
                     if (confirmedHit)
                     {
                         target.TakeDamage(maxDamage);
-                        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: : Target Name = {0}, ID = {1} Hull Strength = {2}, health = {3}", target.Name, target.ObjectID, target.HullStrength, target.Health);
+                        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: AttackingOrbitals = SpaceCombat: Target Name = {0}, ID = {1} Hull Strength = {2}, health = {3}", target.Name, target.ObjectID, target.HullStrength, target.Health);
                         if (target.IsDestroyed)
                         {
                             var targetIndex = unitsAbleToAttack.IndexOf(target);
