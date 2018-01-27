@@ -541,29 +541,79 @@ namespace Supremacy.Universe
             Collections.CollectionBase<MapLocation> empireHomeLocations,
             List<Civilization> chosenCivs,
             bool mustRespectQuadrants)
+           
         {
             var minHomeDistance = GetMinDistanceBetweenHomeworlds();
 
             for (var index = 0; index < empireCivs.Count; index++)
             {
+                
                 var localIndex = index;
                 int iPosition = Algorithms.FindFirstIndexWhere(
-                                            positions,
-                                            delegate(MapLocation location)
-                                            {
-                                                if (mustRespectQuadrants)
-                                                {
-                                                    if (GameContext.Current.Universe.Map.GetQuadrant(location) != empireCivs[localIndex].HomeQuadrant)
-                                                        return false;
-                                                }
-
-                                                return empireHomeLocations.All(t => MapLocation.GetDistance(location, t) >= minHomeDistance);
-                                            });
+                        positions,
+                        delegate (MapLocation location)
+                        {
+                        if (mustRespectQuadrants)
+                        {
+                            if (GameContext.Current.Universe.Map.GetQuadrant(location) != empireCivs[localIndex].HomeQuadrant)
+                                return false;
+                        }
+                           
+                        return empireHomeLocations.All(t => MapLocation.GetDistance(location, t) >= minHomeDistance);
+                               
+                        });
 
                 if (iPosition >= 0)
                 {
+                    
+                    
                     var location = positions[iPosition];
-                    empireHomeLocations.Add(location);
+                    if (empireCivs[index].ShortName == "Dominion")
+                    {
+                        //Place Dominion in upper left one-quater of Gamma quadrant                        
+                        MapLocation desiredLocation = new MapLocation(GameContext.Current.Universe.Map.Width / 8, GameContext.Current.Universe.Map.Height / 8);
+
+                        foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
+                        {
+                            if (sector.System == null)
+                            {
+                                location = sector.Location;
+                                empireHomeLocations.Add(location);
+                                if (m_TraceWormholes)
+                                {
+                                    GameLog.Print("Upper left 1/8 of map place for Dominion found at {0}", sector.Location);
+                                }
+
+                            }
+
+                        }
+
+                    }
+                    else if (empireCivs[index].ShortName == "Borg")
+                    {
+                        //Place Borg in upper left one-quater of Gamma quadrant                        
+                        MapLocation desiredLocation = new MapLocation((GameContext.Current.Universe.Map.Width - 3), GameContext.Current.Universe.Map.Height / 8);
+
+                        foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
+                        {
+                            if (sector.System == null)
+                            {
+                                location = sector.Location;
+                                empireHomeLocations.Add(location);
+                                if (m_TraceWormholes)
+                                {
+                                    GameLog.Print("Upper left 1/8 of map place for Borg found at {0}", sector.Location);
+                                }
+
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        empireHomeLocations.Add(location);
+                    }
                     chosenCivs.Add(empireCivs[index]);
 
                     GameLog.Print("Civilization {0} placed as {2}", empireCivs[index].ShortName, location, empireCivs[index].CivilizationType);
@@ -571,6 +621,7 @@ namespace Supremacy.Universe
                     positions.RemoveAt(iPosition);
 
                     FinalizaHomeworldPlacement(starNames, homeSystemDatabase, empireCivs[localIndex], location);
+                    
                 }
                 else
                 {
@@ -1044,6 +1095,7 @@ namespace Supremacy.Universe
 
                         StarType starType;
 
+                        MapLocation location = new MapLocation();
                         do { starType = GetStarType(); }
                         while (!StarHelper.CanPlaceStar(starType, position, homeLocations));
 
@@ -1075,6 +1127,14 @@ namespace Supremacy.Universe
                                 nebulaNames.RemoveAt(0);
                                 break;
                             case StarType.Wormhole:
+                                if (system.Quadrant == Quadrant.Delta) // No wormholes near Borg in Delta Quadrant
+                                {
+                                    system.StarType = StarType.BlackHole;
+                                    system.Name = "Black Hole";
+                                    if (m_TraceWormholes)
+                                        GameLog.Print("BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
+                                    break;
+                                }
                                 if (m_TraceWormholes)
                                     GameLog.Print("Wormhole placed at {0}", system.Location);
                                 break;
