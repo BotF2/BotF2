@@ -46,7 +46,7 @@ namespace Supremacy.Universe
         private static readonly DoubleKeyedSet<PlanetSize, MoonSize, int> PlanetSizeModToMoonSizeDist;
         private static readonly DoubleKeyedSet<PlanetType, MoonSize, int> PlanetTypeModToMoonSizeDist;
 
-        private static bool m_TraceWormholes = true;
+        private static bool m_TraceWormholes = false;
 
         static GalaxyGenerator()
         {
