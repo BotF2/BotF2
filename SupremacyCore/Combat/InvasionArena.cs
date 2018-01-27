@@ -13,21 +13,6 @@ using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.Serialization;
-
-using Supremacy.Annotations;
-using Supremacy.Buildings;
-using Supremacy.Collections;
-using Supremacy.Economy;
-using Supremacy.Entities;
-using Supremacy.Game;
-using Supremacy.Orbitals;
-using Supremacy.Tech;
-using Supremacy.Types;
-using Supremacy.Universe;
 
 using System.Linq;
 
