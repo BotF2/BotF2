@@ -1095,6 +1095,7 @@ namespace Supremacy.Universe
 
                         StarType starType;
 
+                        MapLocation location = new MapLocation();
                         do { starType = GetStarType(); }
                         while (!StarHelper.CanPlaceStar(starType, position, homeLocations));
 
@@ -1126,6 +1127,14 @@ namespace Supremacy.Universe
                                 nebulaNames.RemoveAt(0);
                                 break;
                             case StarType.Wormhole:
+                                if (system.Quadrant == Quadrant.Delta) // No wormholes near Borg in Delta Quadrant
+                                {
+                                    system.StarType = StarType.BlackHole;
+                                    system.Name = "Black Hole";
+                                    if (m_TraceWormholes)
+                                        GameLog.Print("BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
+                                    break;
+                                }
                                 if (m_TraceWormholes)
                                     GameLog.Print("Wormhole placed at {0}", system.Location);
                                 break;
