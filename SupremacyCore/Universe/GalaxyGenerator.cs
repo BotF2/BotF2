@@ -589,6 +589,27 @@ namespace Supremacy.Universe
                         }
 
                     }
+                    else if (empireCivs[index].ShortName == "Borg")
+                    {
+                        //Place Borg in upper left one-quater of Gamma quadrant                        
+                        MapLocation desiredLocation = new MapLocation((GameContext.Current.Universe.Map.Width - 3), GameContext.Current.Universe.Map.Height / 8);
+
+                        foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
+                        {
+                            if (sector.System == null)
+                            {
+                                location = sector.Location;
+                                empireHomeLocations.Add(location);
+                                if (m_TraceWormholes)
+                                {
+                                    GameLog.Print("Upper left 1/8 of map place for Borg found at {0}", sector.Location);
+                                }
+
+                            }
+
+                        }
+
+                    }
                     else
                     {
                         empireHomeLocations.Add(location);
