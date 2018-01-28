@@ -565,8 +565,7 @@ namespace Supremacy.Universe
 
                 if (iPosition >= 0)
                 {
-                    
-                    
+                     
                     var location = positions[iPosition];
                     if (empireCivs[index].ShortName == "Dominion")
                     {
@@ -771,6 +770,27 @@ namespace Supremacy.Universe
                     {
                         var chosenLocation = positions[iPosition];
 
+                        if (minor.ShortName == "Bajorans")
+                        {
+                            //Place Bajor in lower half of Alpha quadrant                        
+                            MapLocation desiredLocation = new MapLocation(GameContext.Current.Universe.Map.Width / 4, (GameContext.Current.Universe.Map.Height - 3));
+
+                            foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
+                            {
+                                if (sector.System == null)
+                                {
+                                    chosenLocation = sector.Location;
+                                    minorHomeLocations.Add(chosenLocation);
+                                    if (m_TraceWormholes)
+                                    {
+                                        GameLog.Print("lower 1/4 of map is place for Bajor at {0}", sector.Location);
+                                    }
+
+                                }
+
+                            }
+
+                        }
                         minorHomeLocations.Add(chosenLocation);
                         chosenCivs.Add(minor);
                         chosenMinorRaces[quadrantWithLessMinors].Add(minor);
