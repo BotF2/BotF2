@@ -875,10 +875,10 @@
                  LastChildFill="True"
                  Margin="7,0">
 
-        <Border DockPanel.Dock="Top"
+                <Border DockPanel.Dock="Top"
                 UseLayoutRounding="False"
                 SnapsToDevicePixels="False">
-          <DockPanel LastChildFill="True">
+                    <DockPanel LastChildFill="True">
             <DockPanel DockPanel.Dock="Left"
                        LastChildFill="True"
                        Background="Transparent">
@@ -889,12 +889,23 @@
                   <Binding Path="ColonyShieldStrength.Maximum" />
                 </MultiBinding>
               </DockPanel.ToolTip>
-              <Border DockPanel.Dock="Bottom"
+                <Border DockPanel.Dock="Top"
+                    Width="24"
+                    Height="24"
+                    Margin="0,4,0,4">
+                <Image Source="vfs:///Resources/Images/ScreenIcons/shield.png"
+                    RenderOptions.BitmapScalingMode="HighQuality" />
+                </Border>
+                <Border DockPanel.Dock="Bottom"
                       Width="24"
                       Height="24"
                       Margin="0,4,0,0">
-                <Image Source="vfs:///Resources/Images/ScreenIcons/shield.png"
-                       RenderOptions.BitmapScalingMode="HighQuality" />
+                <TextBlock 
+                   Margin="5,0"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                   FontSize="18pt"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                   Text="{Binding Path=ColonyShieldStrength.CurrentValue}" />   
               </Border>
               <s:BlockBar Minimum="0"
                           Maximum="{Binding Path=ColonyShieldStrength.Maximum}"
@@ -1052,7 +1063,14 @@
                   <scc:GameButton.CommandParameter>
                     <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.LandTroops}" />
                   </scc:GameButton.CommandParameter>
-                </scc:GameButton>
+                                    <!--<scc:GameButton.ToolTip Label="{s:StringResource LAND_TROOPS_REQUIREMENTS}"
+                         DisplayMode="Tiny"
+                          Margin="4,0,8,8"
+                          StaysOpenOnClick="True"
+                          HorizontalAlignment="Stretch"
+                                  />-->
+                          <!--Label="{xs:LocalizedStringExtension Group={x:Static s:LocalizedTextGroups.PersonnelText}, Entry=CancelAgentRecallCommandText, CharacterCasing=Upper}"--> 
+                                </scc:GameButton>
                 <scc:GameButton Label="{s:StringResource STAND_DOWN}"
                                 Margin="0,2,0,0"
                                 Command="{Binding Path=SetActionCommand}"
@@ -1084,37 +1102,45 @@
                                         Margin="14,0,0,0">
                 <FrameworkElement.Resources>
                   <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.MaximumPrecision}">
-                    <TextBlock TextWrapping="Wrap"
+                      <StackPanel>
+                         <TextBlock Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_PRECISION_SELECTION}"    
                                Margin="0,7,0,0">
-                      <Span>Maximum Precision</Span>
-                      <LineBreak />
-                      <Span Foreground="#ffdfdfff"
-                            FontSize="12pt">
-                        Attempt to minimize collateral damage.  Precision is favored at the expense of overall damage.
-                      </Span>
-                    </TextBlock>
+                         </TextBlock>
+                         <TextBlock TextWrapping="Wrap"
+                               Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_PRECISION_TEXT}"  
+                               Foreground="#ffdfdfff"
+                               FontSize="12pt"                                 
+                               Margin="0,3,0,0">
+                         </TextBlock>
+                      </StackPanel>
                   </DataTemplate>
-                  <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.Balanced}">
-                    <TextBlock TextWrapping="Wrap"
-                               Margin="0,7,0,0">
-                      <Span>Balanced</Span>
-                      <LineBreak />
-                      <Span Foreground="#ffdfdfff"
-                            FontSize="12pt">
-                        Attempt to balance precision and overall damage.  Moderate levels of collateral damage are acceptable.
-                      </Span>
-                    </TextBlock>
-                  </DataTemplate>
+
+                    <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.Balanced}">
+                            <StackPanel>
+                                <TextBlock Text="{s:StringResource BOMBARDMENT_STRATEGY_BALANCED_SELECTION}"    
+                                    Margin="0,7,0,0">
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap"
+                                    Text="{s:StringResource BOMBARDMENT_STRATEGY_BALANCED_TEXT}"  
+                                    Foreground="#ffdfdfff"
+                                    FontSize="12pt"                                 
+                                    Margin="0,3,0,0">
+                                </TextBlock>
+                            </StackPanel>
+                    </DataTemplate>
+                    
                   <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.MaximumDamage}">
-                    <TextBlock TextWrapping="Wrap"
-                               Margin="0,7,0,0">
-                      <Span>Maximum Damage</Span>
-                      <LineBreak />
-                      <Span Foreground="#ffdfdfff"
-                            FontSize="12pt">
-                        Inflict the most damage possible at the expense of precision.  Collateral damage is not a concern.
-                      </Span>
-                    </TextBlock>
+                            <StackPanel>
+                                <TextBlock Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_DAMAGE_SELECTION}"    
+                                    Margin="0,7,0,0">
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap"
+                                    Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_DAMAGE_TEXT}"  
+                                    Foreground="#ffdfdfff"
+                                    FontSize="12pt"                                 
+                                    Margin="0,3,0,0">
+                                </TextBlock>
+                            </StackPanel>
                   </DataTemplate>
                 </FrameworkElement.Resources>
               </apshared:RadioButtonList>
@@ -1232,8 +1258,8 @@
                                     Height="45">
                               <Border.Background>
                                 <ImageBrush
-ImageSource="{Binding Path=Design, Converter={StaticResource TechObjectImageConverter}}"
-Stretch="UniformToFill" />
+                                    ImageSource="{Binding Path=Design, Converter={StaticResource TechObjectImageConverter}}"
+                                    Stretch="UniformToFill" />
                               </Border.Background>
                               <CheckBox HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
