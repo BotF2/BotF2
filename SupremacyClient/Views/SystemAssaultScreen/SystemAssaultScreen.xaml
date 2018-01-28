@@ -873,7 +873,7 @@
                  Grid.Row="3"
                  Grid.RowSpan="3"
                  LastChildFill="True"
-                 Margin="7,0">
+                 Margin="3,0">
 
                 <Border DockPanel.Dock="Top"
                 UseLayoutRounding="False"
@@ -892,7 +892,7 @@
                 <Border DockPanel.Dock="Top"
                     Width="24"
                     Height="24"
-                    Margin="0,4,0,4">
+                    Margin="0,4,0,2">
                 <Image Source="vfs:///Resources/Images/ScreenIcons/shield.png"
                     RenderOptions.BitmapScalingMode="HighQuality" />
                 </Border>
@@ -911,7 +911,7 @@
                           Maximum="{Binding Path=ColonyShieldStrength.Maximum}"
                           Value="{Binding Path=ColonyShieldStrength.CurrentValue}"
                           BlockMargin="2"
-                          BlockCount="45"
+                          BlockCount="40"
                           Height="24">
                 <s:BlockBar.LayoutTransform>
                   <RotateTransform Angle="-90" />
@@ -936,25 +936,34 @@
                       <Binding Path="DefenderCombatStrength.Maximum" />
                     </MultiBinding>
                   </DockPanel.ToolTip>
-                  <Border DockPanel.Dock="Bottom"
+                  <Border DockPanel.Dock="Top"
                           Width="24"
                           Height="24"
-                          Margin="0,4,0,0">
+                          Margin="0,0,0,2">
                     <Image Source="vfs:///Resources/Images/ScreenIcons/combat_strength.png"
                            RenderOptions.BitmapScalingMode="HighQuality" />
-                  </Border>
+                  </Border>                      
+                  <TextBlock DockPanel.Dock="Bottom"
+                   HorizontalAlignment="Center"
+                   Margin="0,0"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                   FontSize="18pt"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                   Text="{Binding Path=DefenderCombatStrength.CurrentValue}" />                      
+
                   <s:BlockBar Grid.Row="0"
                               Minimum="0"
                               Maximum="{Binding Path=DefenderCombatStrength.Maximum}"
                               Value="{Binding Path=DefenderCombatStrength.CurrentValue}"
-                              BlockMargin="2"
-                              BlockCount="20"
+                              BlockMargin="3"
+                              BlockCount="10"
                               Height="24">
                     <s:BlockBar.LayoutTransform>
                       <RotateTransform Angle="-90" />
                     </s:BlockBar.LayoutTransform>
                   </s:BlockBar>
-                </DockPanel>
+
+                                </DockPanel>
                 <DockPanel Grid.Row="2"
                            LastChildFill="True"
                            Background="Transparent">
@@ -965,19 +974,26 @@
                       <Binding Path="DefenderPopulation.BaseValue" />
                     </MultiBinding>
                   </DockPanel.ToolTip>
-                  <Border DockPanel.Dock="Bottom"
+                  <Border DockPanel.Dock="Top"
                           Width="24"
                           Height="24"
-                          Margin="0,4,0,0">
+                          Margin="0,0,0,2">
                     <Image Source="vfs:///Resources/Images/ScreenIcons/population.png"
                            RenderOptions.BitmapScalingMode="HighQuality" />
                   </Border>
-                  <s:BlockBar Grid.Row="0"
+                  <TextBlock DockPanel.Dock="Bottom"
+                       HorizontalAlignment="Center"
+                       Margin="0,0"
+                       FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                       FontSize="18pt"
+                       Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       Text="{Binding Path=DefenderPopulation.CurrentValue}" />
+                    <s:BlockBar Grid.Row="0"
                               Minimum="0"
                               Maximum="{Binding Path=DefenderPopulation.BaseValue}"
                               Value="{Binding Path=DefenderPopulation.CurrentValue}"
-                              BlockMargin="2"
-                              BlockCount="20"
+                              BlockMargin="3"
+                              BlockCount="10"
                               Height="24">
                     <s:BlockBar.LayoutTransform>
                       <RotateTransform Angle="-90" />
