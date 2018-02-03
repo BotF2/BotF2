@@ -238,6 +238,8 @@ namespace Supremacy.Combat
 
             var result = population * weaponTechMod * raceMod * localGroundCombatMod;
 
+            GameLog.Print("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
+
             return (int)result;
         }
     }

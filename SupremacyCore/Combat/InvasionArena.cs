@@ -775,10 +775,10 @@ namespace Supremacy.Combat
             if (_orders.Action == InvasionAction.BombardPlanet || _orders.Action == InvasionAction.UnloadAllOrdinance)
             {
                 if (_orders.Action == InvasionAction.BombardPlanet)
-                    GameLog.Print("Order is Bombardment (same like UnloadAllOrdinance");
+                    GameLog.Print("Order is Bombardment");
 
                 if (_orders.Action == InvasionAction.UnloadAllOrdinance)
-                    GameLog.Print("Order is UnloadAllOrdinance (same like Bombardment");
+                    GameLog.Print("Order is UnloadAllOrdinance");
 
                 ProcessBombardment();
             }
@@ -836,8 +836,8 @@ namespace Supremacy.Combat
             while (defenderCombatStrength > 0 &&
                    transports.Count != 0)
             {
-                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
-                    defenderCombatStrength, transports.Count);
+                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                //    defenderCombatStrength, transports.Count);
 
                 var transport = transports[0];
 
@@ -845,6 +845,18 @@ namespace Supremacy.Combat
                     invader,
                     colony.Location,
                     ((Ship)transport.Source).ShipDesign.WorkCapacity);
+                    GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
+                            transportCombatStrength);
+
+                Random rnd = new Random();
+                int randomResult = rnd.Next(1, 21);   //  limits random to 20 %
+                transportCombatStrength = transportCombatStrength - (transportCombatStrength * randomResult / 100);
+                //                                 100 -             (     100                * 15        / 100)    
+                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                        defenderCombatStrength, transports.Count);
+
+                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
+                    transportCombatStrength, randomResult );
 
                 defenderCombatStrength -= transportCombatStrength;
 

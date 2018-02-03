@@ -533,6 +533,7 @@ namespace Supremacy.Client.Views
                 _selectedTransportsCombatStrength = value;
 
                 OnSelectedTransportsCombatStrengthChanged();
+                OnGroundCombatOddsChanged();
             }
         }
 
@@ -560,6 +561,8 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler SelectedTransportsNetCombatStrengthChanged;
 
+
+
         public int SelectedTransportsNetCombatStrength
         {
             get { return SelectedTransportsCombatStrength - DefenderCombatStrength.CurrentValue; }
@@ -569,6 +572,34 @@ namespace Supremacy.Client.Views
         {
             SelectedTransportsNetCombatStrengthChanged.Raise(this);
             OnPropertyChanged("SelectedTransportsNetCombatStrength");
+        }
+
+        #endregion
+
+
+        #region GroundCombatOdds Property
+
+        [field: NonSerialized]
+        public event EventHandler GroundCombatOddsChanged;
+
+
+
+        public int GroundCombatOddsStrength
+        {
+            get
+            {
+                int GroundCombatOdds = 50 + (SelectedTransportsCombatStrength / _defenderCombatStrength.CurrentValue);
+                GameLog.Print("SelectedTransportsCombatStrength = {0}, _defenderCombatStrength.CurrentValue = {1}, GroundCombatOdds = {2}",
+                    SelectedTransportsCombatStrength, _defenderCombatStrength.CurrentValue, GroundCombatOdds);
+
+                return GroundCombatOdds;
+            }
+        }
+
+        protected virtual void OnGroundCombatOddsChanged()
+        {
+            GroundCombatOddsChanged.Raise(this);
+            OnPropertyChanged("GroundCombatOdds");
         }
 
         #endregion
