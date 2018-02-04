@@ -723,37 +723,65 @@
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <Rectangle x:Name="LeftTopEdge"
-                                Grid.Column="1"
+                            <Grid Grid.Column="1"
+                    Grid.Row="0"
+                    
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle x:Name="LeftTopEdge"
+                                Grid.Column="0"
                                 Grid.Row="0"
                                 Height="36"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Top" >
-                                <Rectangle.Fill>
-                                    <DrawingBrush>
-                                        <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="Transparent"
+
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <GeometryDrawing Brush="Transparent"
                                                Geometry="F1 M 0,0 197,0 200,28 150,28 150,36 4,36 Z " >
-                                                <GeometryDrawing.Pen>
-                                                    <Pen LineJoin="Bevel" Thickness="2">
-                                                        <Pen.Brush>
-                                                            <LinearGradientBrush StartPoint="0.0,0.0"
+                                                    <GeometryDrawing.Pen>
+                                                        <Pen LineJoin="Bevel" Thickness="2">
+                                                            <Pen.Brush>
+                                                                <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
-                                                                <LinearGradientBrush.GradientStops>
-                                                                    <GradientStop Color="Goldenrod"
+                                                                    <LinearGradientBrush.GradientStops>
+                                                                        <GradientStop Color="Goldenrod"
                                                                                 Offset="0" />
-                                                                    <GradientStop Color="OrangeRed"
+                                                                        <GradientStop Color="OrangeRed"
                                                                                 Offset="1" />
-                                                                </LinearGradientBrush.GradientStops>
-                                                            </LinearGradientBrush>
-                                                        </Pen.Brush>
-                                                    </Pen>
-                                                </GeometryDrawing.Pen>
-                                            </GeometryDrawing>
-                                        </DrawingBrush.Drawing>
-                                    </DrawingBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
+                                                                    </LinearGradientBrush.GradientStops>
+                                                                </LinearGradientBrush>
+                                                            </Pen.Brush>
+                                                        </Pen>
+                                                    </GeometryDrawing.Pen>
+                                                </GeometryDrawing>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+
+                                    </Rectangle.Fill>
+
+                                </Rectangle>
+                                <!--<Rectangle x:Name="TopEdge"
+                           Grid.Column="0"
+                           Margin="3,0,0,0"
+                           Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />-->
+
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           FontSize="13pt"
+                           Height="28"
+                           Foreground="Goldenrod"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{s:StringResource INFO_SHORTCUTS}" />
+
+                            </Grid>
+
+                            
                             <Grid Grid.Column="2"
                     Grid.Row="0"
                     Height="28"
