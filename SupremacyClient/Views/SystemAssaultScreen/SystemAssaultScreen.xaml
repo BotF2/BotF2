@@ -673,11 +673,12 @@
                  Grid.Row="5"
                  LastChildFill="True">
                 <TextBlock DockPanel.Dock="Left"
-                   Margin="5,0"
-                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                   FontSize="14pt"
-                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                   Text="{s:StringResource SYSTEM_ASSAULT_LAND_TROOPS_HINT}" />
+                           TextWrapping="Wrap"
+                           Margin="5,0"
+                           FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                           FontSize="14pt"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                           Text="{s:StringResource SYSTEM_ASSAULT_LAND_TROOPS_HINT}" />
 
                 <!--<Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
                    Height="28"
@@ -1274,7 +1275,6 @@
                            VerticalAlignment="Center"
                            TextAlignment="Right" />-->
                  <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                           TextWrapping="Wrap"
                            Text="{s:StringResource SYSTEM_ASSAULT_ODDS_OF_SUCCESS}"
                            VerticalAlignment="Center" />
                  <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"

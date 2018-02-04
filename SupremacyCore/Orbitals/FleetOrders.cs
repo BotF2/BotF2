@@ -125,12 +125,15 @@ namespace Supremacy.Orbitals
         {
             get { return LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "Description"); }
         }
+        //             get { return ResourceManager.GetString("SYSTEM_ASSAULT_DESCRIPTION"); }
+        //             get { return LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "Description"); }
 
         public override string Status
         {
             get
             {
                 var statusFormat = LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "StatusFormat");
+                //var statusFormat = ResourceManager.GetString("SYSTEM_ASSAULT_STATUS_FORMAT");
                 if (statusFormat == null)
                     return OrderName;
 
