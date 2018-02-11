@@ -5,6 +5,7 @@
                 xmlns:dialogs="clr-namespace:Supremacy.Client.Dialogs">
   <StackPanel Orientation="Vertical">
     <ListBox x:Name="TargetsListBox"
+             PreviewMouseDoubleClick="OnTargetsListMouseDoubleClick"
              ItemsSource="{Binding Path=Targets, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:TargetSelectionDialog}}}"
              DisplayMemberPath="{Binding Path=TargetDisplayMember, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:TargetSelectionDialog}}}"
              SelectedItem="{Binding Path=SelectedTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type dialogs:TargetSelectionDialog}}, Mode=TwoWay}"
@@ -13,7 +14,8 @@
              Foreground="{DynamicResource LCARS_BeigeTextBrush}"
              Background="Transparent"
              Height="128">
-      <ListBox.ItemContainerStyle>
+      
+            <ListBox.ItemContainerStyle>
         <Style TargetType="{x:Type ListBoxItem}">
           <Setter Property="TextBlock.FontSize"
                   Value="12pt" />
@@ -41,13 +43,25 @@
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center"
                 Margin="0,12,0,0">
-      <Button Margin="3,0,3,0"
+            <!--<TextBlock Grid.ColumnSpan="1"
+               FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+               Foreground="Black"
+               Margin="1,1,0,0"
+               FontSize="24pt"
+               Text="{scc:StringResource Key=DOUBLE_CLICK}" />-->
+            <TextBlock Grid.ColumnSpan="1"
+               FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+               Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+               FontSize="24pt"
+               Text="{scc:StringResource Key=DOUBLE_CLICK}" />
+                <!-- OK button not working -->
+      <!--<Button Margin="3,0,3,0"
               IsDefault="True"
               Command="dialogs:TargetSelectionDialog.SelectTargetCommand"
               CommandParameter="{Binding ElementName=TargetsListBox, Path=SelectedItem}"
               Style="{DynamicResource {x:Static scc:ClientResources.MessageDialogButtonStyleKey}}">
         <AccessText Text="{scc:StringResource Key=MESSAGE_DIALOG_OK, Case=Upper}" />
-      </Button>
+      </Button>-->
       <Button Margin="3,0,3,0"
               IsCancel="True"
               Style="{DynamicResource {x:Static scc:ClientResources.MessageDialogButtonStyleKey}}">

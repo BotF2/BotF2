@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 using Supremacy.Resources;
@@ -122,6 +123,19 @@ namespace Supremacy.Client.Dialogs
                 return null;
 
             return dialog.SelectedTarget as TTarget;
+        }
+
+        private void OnTargetsListMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var source = e.OriginalSource as DependencyObject;
+            if (source == null)
+                return;
+
+            var contanier = source.FindVisualAncestorByType<ListBoxItem>();
+            if (contanier == null)
+                return;
+
+            DialogResult = true;
         }
     }
 }
