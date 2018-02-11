@@ -839,13 +839,54 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="21" />
-                                <ColumnDefinition Width="310" />
+                                <ColumnDefinition Width="170" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="21" />
                             </Grid.ColumnDefinitions>
                             <!-- Begin of Drawing -->
-                            <Canvas x:Name="LeftTopEdge"
+                            <Rectangle x:Name="TopLeftCorner"
+                         Grid.Column="0"
+                         Grid.Row="0"
+                         Height="42"
+                         Width="21">
+                                <Rectangle.RenderTransform>
+                                    <ScaleTransform ScaleX="1"
+                                  ScaleY="1"
+                                  CenterX="10.5" />
+                                </Rectangle.RenderTransform>
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing Brush="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"
+                                       Geometry="F1 M -7.62939e-006,56L 3.8147e-006,18.6666C 2.96699e-006,12.4445 2.11928e-006,6.22229 3.11111,3.11121C 6.22222,0 12.4444,0 18.6667,0L 28,0L 28,37.3333L 18.6667,37.3333C 15.5556,37.3333 12.4444,37.3333 10.8889,40.4445C 9.33334,43.5556 9.33334,49.7778 9.33334,56L -7.62939e-006,56 Z " />
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Grid Grid.Column="1"
+                    Grid.Row="0"
+                    Height="28"
+                    Margin="0,0,3,0"
+                    VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle x:Name="TopEdge"
+                           Grid.Column="0"
+                           Margin="3,0,0,0"
+                           Fill="{StaticResource LCARS_Borg3Gradient_Top_Bottom}" />
+
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           FontSize="13pt"
+                           Foreground="Black"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{s:StringResource INFO_SHORTCUTS}" />
+
+                            </Grid>
+                            <!--<Canvas x:Name="LeftTopEdge"
                                  Grid.Column="0"
                                  Grid.Row="0"                                    
                                  Height="28"
@@ -1116,27 +1157,27 @@
                                          Opacity="0.6"
                                          StrokeThickness="2"
                                          Stroke="Goldenrod"/>
-              </Canvas>
+              </Canvas>-->
                 <!-- End of Drawing -->
-                            
-                <Grid Grid.Column="2"
+
+                            <Grid Grid.Column="2"
                     Grid.Row="0"
                     Height="28"
                     Margin="3,0,3,0"
                     VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*" />
-                  <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="28" />
-                </Grid.ColumnDefinitions>
-                <!--<Border x:Name="LeftCenterTopEdge"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!--<Border x:Name="LeftCenterTopEdge"
                       Grid.Column="0"
                       HorizontalAlignment="Stretch"                   
                       Background="Transparent"
 
                       BorderBrush="DarkGreen"
                       BorderThickness="2" />-->
-              <Rectangle Grid.Column="0"
+                                <Rectangle Grid.Column="0"
                          Grid.Row="0"
                          Margin="0,0,3,0"
                          Height="28"
@@ -1157,47 +1198,327 @@
                                         </DrawingBrush>
                                     </Rectangle.Fill>
                                 </Rectangle>
-                <StackPanel Grid.Column="1"
+                                <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             Margin="0,0,0,0">
-                  <StackPanel x:Name="MapButtonsPanel"
+                                    <StackPanel x:Name="MapButtonsPanel"
                               Orientation="Horizontal"
                               Margin="0,0,0,0">
-                    <Button x:Name="EconomyButton"
+                                        <Button x:Name="EconomyButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ECONOMY_BUTTON_TEXT, Case=Upper}"
                             Margin="3,0,0,0"
                             Command="{x:Static scc:GalaxyScreenCommands.SetOverviewMode}"
                             CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Economic}" />
-                    <Button x:Name="MilitaryButton"
+                                        <Button x:Name="MilitaryButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=MILITARY_BUTTON_TEXT, Case=Upper}"
                             Margin="3,0,0,0"
                             Command="{x:Static scc:GalaxyScreenCommands.SetOverviewMode}"
                             CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Military}" />
-                    <Button x:Name="ZoomInButton"
+                                        <Button x:Name="ZoomInButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ZOOM_IN_BUTTON_TEXT, Case=Upper}"
                             Margin="3,0,0,0"
                             Command="{x:Static scc:GalaxyScreenCommands.MapZoomIn}" />
-                    <Button x:Name="ZoomOutButton"
+                                        <Button x:Name="ZoomOutButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ZOOM_OUT_BUTTON_TEXT, Case=Upper}"
                             Margin="3,0,3,0"
                             Command="{x:Static scc:GalaxyScreenCommands.MapZoomOut}" />
-                  </StackPanel>
-                  <ToggleButton x:Name="ChatButton"
+                                    </StackPanel>
+                                    <ToggleButton x:Name="ChatButton"
                                 Focusable="False"
                                 Style="{StaticResource LCARS_BorderToggleButtonStyle}"
                                 Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
                                 Margin="0,0,3,0">
-                    <ToggleButton.Foreground>
-                      <SolidColorBrush x:Name="ChatButtonForeground"
+                                        <ToggleButton.Foreground>
+                                            <SolidColorBrush x:Name="ChatButtonForeground"
                                        Color="Black" />
-                    </ToggleButton.Foreground>
-                  </ToggleButton>
-                </StackPanel>
-                                <Ellipse Grid.Column="2"
+                                        </ToggleButton.Foreground>
+                                    </ToggleButton>
+                                </StackPanel>
+                                
+                                    <Canvas x:Name="RightTopEdge"
+                                 Grid.Column="2"
+                                 Grid.Row="0"                                    
+                                 Height="28"
+                                 Margin="3,0,0,0">
+                                    <!--<Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>-->
+                                    <Ellipse x:Name="TopRightCanvas"
+                                         Grid.Column="2" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Left"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="#cce259"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                    <Ellipse 
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="11"
+                                         Height="7"
+                                         Width="7"
+                                         Fill="Green"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+                                    <Ellipse 
+                                         Grid.Column="2" 
+                                         Grid.Row="0"
+                                         Canvas.Top="8"
+                                         Canvas.Left="5"
+                                         Height="7"
+                                         Width="7"
+                                         Fill="Green"
+                                         StrokeThickness="1"
+                                         Stroke="Goldenrod"/>
+
+
+                                    <Path Stroke="WhiteSmoke" StrokeThickness="2" Opacity="0.7">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="18,18">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="18,22"
+                                                            Point2="50,18"
+                                                            Point3="80,20"/>
+                                                            <LineSegment Point="90,10" />
+                                                            <BezierSegment Point1="100,18"
+                                                            Point2="120,0"
+                                                            Point3="130,10"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path Stroke="GreenYellow" StrokeThickness="4" Opacity="0.3">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="18,18">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="40,25"
+                                                            Point2="50,18"
+                                                            Point3="60,10"/>
+                                                            <LineSegment Point="80,18" />
+                                                            <BezierSegment Point1="110,10"
+                                                            Point2="120,5"
+                                                            Point3="130,10"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.7" >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="18,18">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="20,25"
+                                                            Point2="30,28"
+                                                            Point3="40,10"/>
+                                                            <LineSegment Point="90,10" />
+                                                            <BezierSegment Point1="100,10"
+                                                            Point2="110,5"
+                                                            Point3="130,10"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path Stroke="SpringGreen" StrokeThickness="2" Opacity="0.7" >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="18,18">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="10,5"
+                                                            Point2="60,15"
+                                                            Point3="75,25"/>
+                                                            <LineSegment Point="85,20" />
+                                                            <BezierSegment Point1="110,27"
+                                                            Point2="120,20"
+                                                            Point3="130,10"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Ellipse 
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="130"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+
+                                    <Ellipse  
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="20"
+                                         Canvas.Left="140"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                    <Ellipse  
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="10"
+                                         Canvas.Left="130"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                                    <Ellipse  
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="0"
+                                         Canvas.Left="150"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+
+                                    <Path Stroke="GreenYellow" StrokeThickness="2" Opacity="0.7"  >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="150,25">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="190,18"
+                                                            Point2="200,28"
+                                                            Point3="230,0"/>
+                                                            <LineSegment Point="240,10" />
+                                                            <BezierSegment Point1="260,18"
+                                                            Point2="290,0"
+                                                            Point3="300,15"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="150,25">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="170,25"
+                                                            Point2="200,2"
+                                                            Point3="210,28"/>
+                                                            <LineSegment Point="250,25" />
+                                                            <BezierSegment Point1="270,10"
+                                                            Point2="285,0"
+                                                            Point3="300,15"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path Stroke="GreenYellow" StrokeThickness="1" Opacity="0.7"  >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="150,25">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="200,25"
+                                                            Point2="230,7"
+                                                            Point3="255,20"/>
+                                                            <LineSegment Point="270,20" />
+                                                            <BezierSegment Point1="280,10"
+                                                            Point2="290,0"
+                                                            Point3="300,15"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path Stroke="SpringGreen" StrokeThickness="2" Opacity="0.7" >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="150,25">
+                                                        <PathFigure.Segments>
+                                                            <BezierSegment Point1="190,5"
+                                                            Point2="210,22"
+                                                            Point3="230,25"/>
+                                                            <LineSegment Point="250,20" />
+                                                            <BezierSegment Point1="265,27"
+                                                            Point2="280,2"
+                                                            Point3="300,15"/>
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+
+                                    <Ellipse   
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="20"
+                                         Width="20"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="2"
+                                         Stroke="#1ffe36"/>
+
+                                    <Ellipse  
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                    <Ellipse
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="300"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+
+                                </Canvas>
+
+                           
+                            <!--<Ellipse Grid.Column="2"
                                          VerticalAlignment="Center"
                                          HorizontalAlignment="Center"
                                          Height="28"
@@ -1292,7 +1613,7 @@
                                             </PathGeometry.Figures>
                                         </PathGeometry>
                                     </Path.Data>
-                                </Path>
+                                </Path>-->
               </Grid>
               <Grid Grid.Column="3"
                     Grid.Row="0"

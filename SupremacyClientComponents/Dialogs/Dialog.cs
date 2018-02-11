@@ -535,7 +535,10 @@ namespace Supremacy.Client.Dialogs
                 GameLog.Print("ShowDialog was already opened problem");
                 //throw new InvalidOperationException("Cannot call ShowDialog() on a dialog that was already opened with ShowDialog().");
             if (IsOpen)
-                throw new InvalidOperationException("Cannot call ShowDialog() on a dialog that is already open.");
+
+
+
+                new InvalidOperationException("Cannot call ShowDialog() on a dialog that is already open.");
 
             //_ownerHandle = IntPtr.Zero;
             _showingAsDialog = true;

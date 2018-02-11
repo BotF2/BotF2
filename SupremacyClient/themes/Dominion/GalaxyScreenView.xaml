@@ -700,7 +700,29 @@
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
-              <Rectangle x:Name="LeftTopEdge"
+                            <Grid Grid.Column="1"
+                    Grid.Row="0"
+                    Height="28"
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle x:Name="TopEdge"
+                           Grid.Column="0"
+                           Margin="3,0,0,0"
+                           Fill="{StaticResource LCARS_Dom3Gradient_Top_Bottom}" />
+
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           FontSize="13pt"
+                           Foreground="Black"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{s:StringResource INFO_SHORTCUTS}" />
+
+                            </Grid>
+                            <!--<Rectangle x:Name="LeftTopEdge"
                          Grid.Column="1"
                          Height="28"
                          VerticalAlignment="Top" >
@@ -742,7 +764,7 @@
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>
-                            </Rectangle>
+                            </Rectangle>-->
               <Grid Grid.Column="2"
                     Grid.Row="0"
                     Height="28"

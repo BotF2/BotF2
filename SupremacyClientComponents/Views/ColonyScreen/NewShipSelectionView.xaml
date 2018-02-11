@@ -82,21 +82,20 @@
                LastChildFill="True"
                Width="360"
                Margin="22,0,0,0">
-        
-            <!-- To do: Implement ship image due to most of models are missing
-             <TextBlock Grid.ColumnSpan="2"
-               FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
-               Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="24pt"
-               Text="SHIP IMAGE" />
-            -->
-        
-      <!-- -->
+
+            <Image DockPanel.Dock="Top"
+             MaxWidth="270"
+             MaxHeight="225"
+             Stretch="Uniform"
+             StretchDirection="DownOnly"
+             Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}"/>
+
+            <!-- 
         <sx:ShipModelViewer DockPanel.Dock="Top"
                           Height="240"
                           CameraDistanceMultiplier="2"  
                           ModelFile="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.ModelFile}" />
-      <!-- -->
+      -->
       <ScrollViewer Margin="0,15,0,0"
                     VerticalScrollBarVisibility="Auto">
         <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
