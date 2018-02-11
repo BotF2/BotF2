@@ -18,6 +18,7 @@ using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
@@ -194,14 +195,14 @@ namespace Supremacy.Combat
             if (colony == null)
                 return 0;
 
-            //GameLog.Print("GroundCombat?: Colony={0}, ComputeGroundDefenseMultiplier={1}", 
-            //    colony.Name,
-            //    Math.Max(
-            //    0.1,
-            //    1.0 + (0.01 * colony.Buildings
-            //                       .Where(o => o.IsActive)
-            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
-            //                       .Sum(b => b.Amount))));
+            GameLog.Print("GroundCombat?: Colony={0}, ComputeGroundDefenseMultiplier={1}",
+                colony.Name,
+                Math.Max(
+                0.1,
+                1.0 + (0.01 * colony.Buildings
+                                   .Where(o => o.IsActive)
+                                   .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
+                                   .Sum(b => b.Amount))));
 
             return Math.Max(
                 0.1,
@@ -236,6 +237,8 @@ namespace Supremacy.Combat
             var localGroundCombatMod = 1.0 + (0.01 * localGroundCombatBonus);
 
             var result = population * weaponTechMod * raceMod * localGroundCombatMod;
+
+            GameLog.Print("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
 
             return (int)result;
         }

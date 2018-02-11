@@ -75,7 +75,7 @@ namespace Supremacy.Orbitals
                           RaidOrder,
                           SabotageOrder,
                           InfluenceOrder,
-                          TowOrder,
+                          //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
                           //EscortOrder,
@@ -125,12 +125,15 @@ namespace Supremacy.Orbitals
         {
             get { return LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "Description"); }
         }
+        //             get { return ResourceManager.GetString("SYSTEM_ASSAULT_DESCRIPTION"); }
+        //             get { return LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "Description"); }
 
         public override string Status
         {
             get
             {
                 var statusFormat = LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "StatusFormat");
+                //var statusFormat = ResourceManager.GetString("SYSTEM_ASSAULT_STATUS_FORMAT");
                 if (statusFormat == null)
                     return OrderName;
 
@@ -1567,6 +1570,7 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
+
             if (fleet.Sector.System != null && fleet.Sector.System.StarType == StarType.Wormhole)
                 return true;
 

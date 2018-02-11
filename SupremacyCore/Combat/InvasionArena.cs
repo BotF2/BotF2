@@ -53,7 +53,7 @@ namespace Supremacy.Combat
         private readonly GameObjectID[] _selectedTransports;
 
         public InvasionOrders(int invasionId, InvasionAction action, InvasionTargetingStrategy targetingStrategy, params InvasionUnit[] selectedTransports)
-        : this(invasionId, action, targetingStrategy, (IEnumerable<InvasionUnit>)selectedTransports) {}
+        : this(invasionId, action, targetingStrategy, (IEnumerable<InvasionUnit>)selectedTransports) { }
 
         public InvasionOrders(int invasionId, InvasionAction action, InvasionTargetingStrategy targetingStrategy, IEnumerable<InvasionUnit> selectedTransports)
         {
@@ -161,7 +161,7 @@ namespace Supremacy.Combat
             return Health.AdjustCurrent(-damage);
         }
 
-        public virtual void CommitSourceChanges() {}
+        public virtual void CommitSourceChanges() { }
 
         public virtual bool Equals(InvasionUnit other)
         {
@@ -259,7 +259,7 @@ namespace Supremacy.Combat
 
             var orbital = Source;
             var shieldDamage = orbital.ShieldStrength.AdjustCurrent(-damage);
-            
+
             return shieldDamage + orbital.HullStrength.AdjustCurrent(-(damage - shieldDamage));
         }
 
@@ -272,7 +272,7 @@ namespace Supremacy.Combat
                 orbital.Destroy();
                 return;
             }
-            
+
             orbital.ShieldStrength.UpdateAndReset();
             orbital.HullStrength.UpdateAndReset();
         }
@@ -292,7 +292,7 @@ namespace Supremacy.Combat
     public class InvasionUnitCollection : KeyedCollectionBase<GameObjectID, InvasionUnit>
     {
         public InvasionUnitCollection()
-            : base(o => o.ObjectID) {}
+            : base(o => o.ObjectID) { }
     }
 
     [Serializable]
@@ -344,8 +344,8 @@ namespace Supremacy.Combat
             _defendingUnits = new List<InvasionUnit>();
             _invadingUnits = new List<InvasionUnit>();
 
-            foreach(OrbitalBattery OB in colony.OrbitalBatteries)
-                if(OB.IsActive)
+            foreach (OrbitalBattery OB in colony.OrbitalBatteries)
+                if (OB.IsActive)
                     _defendingUnits.Add(new InvasionOrbital(OB));
             _defendingUnits.AddRange(colony.Buildings.Select(b => new InvasionStructure(b)));
 
@@ -507,6 +507,12 @@ namespace Supremacy.Combat
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
             _canLandTroops = _invadingUnits.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Any(o => o.ShipType == ShipType.Transport);
 
+            GameLog.Print("_canLandTroops(Transport Ships) = {0}, and/but ColonyShieldStrength = {1}, Last Value = {2}",
+                _canLandTroops, ColonyShieldStrength.CurrentValue, ColonyShieldStrength.LastValue);
+            if (ColonyShieldStrength.CurrentValue > 0)
+                _canLandTroops = false;
+
+
             if (_status != InvasionStatus.InProgress)
                 return;
 
@@ -514,7 +520,7 @@ namespace Supremacy.Combat
                 _status = InvasionStatus.Victory;
             else if (_invadingUnits.All(o => o.IsDestroyed))
                 _status = InvasionStatus.Defeat;
-            else if (IsMultiplayerGame &  RoundNumber == 3)
+            else if (IsMultiplayerGame & RoundNumber == 3)
                 _status = InvasionStatus.Stalemate;
             else if (RoundNumber > MaxRounds)
                 _status = InvasionStatus.Stalemate;
@@ -693,7 +699,7 @@ namespace Supremacy.Combat
 
             _experienceAccuracy = new Dictionary<ExperienceRank, double>();
 
-            foreach (var rank in EnumHelper.GetValues <ExperienceRank>())
+            foreach (var rank in EnumHelper.GetValues<ExperienceRank>())
                 _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
 
             SendUpdate();
@@ -768,11 +774,20 @@ namespace Supremacy.Combat
 
             if (_orders.Action == InvasionAction.BombardPlanet || _orders.Action == InvasionAction.UnloadAllOrdinance)
             {
+                if (_orders.Action == InvasionAction.BombardPlanet)
+                    GameLog.Print("Order is Bombardment");
+
+                if (_orders.Action == InvasionAction.UnloadAllOrdinance)
+                    GameLog.Print("Order is UnloadAllOrdinance");
+
                 ProcessBombardment();
             }
 
             if (_orders.Action == InvasionAction.LandTroops)
+            {
+                GameLog.Print("Order is LandTroops");
                 ProcessGroundCombat();
+            }
 
             ++_invasionArena.RoundNumber;
 
@@ -796,7 +811,7 @@ namespace Supremacy.Combat
                 return;
 
             var defendingUnits = _invasionArena.DefendingUnits.Where(o => !o.IsDestroyed).OfType<InvasionOrbital>().ToList();
-            
+
             /*
              * Any remaining orbital weapons platforms which have charged weapons will have a chance to shoot down
              * the invader's troop transports as they try to land.
@@ -812,6 +827,8 @@ namespace Supremacy.Combat
             _invasionArena.Update();
 
             var defenderCombatStrength = _invasionArena.DefenderCombatStrength;
+            //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? : defenderCombatStrength = {0}, attacking Transports = {1}",
+            //    defenderCombatStrength, transports.Count);
 
             var colony = _invasionArena.Colony;
             var invader = GameContext.Current.Civilizations[_invasionArena.InvaderID];
@@ -819,12 +836,27 @@ namespace Supremacy.Combat
             while (defenderCombatStrength > 0 &&
                    transports.Count != 0)
             {
+                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                //    defenderCombatStrength, transports.Count);
+
                 var transport = transports[0];
 
                 var transportCombatStrength = CombatHelper.ComputeGroundCombatStrength(
                     invader,
                     colony.Location,
                     ((Ship)transport.Source).ShipDesign.WorkCapacity);
+                    GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
+                            transportCombatStrength);
+
+                Random rnd = new Random();
+                int randomResult = rnd.Next(1, 21);   //  limits random to 20 %
+                transportCombatStrength = transportCombatStrength - (transportCombatStrength * randomResult / 100);
+                //                                 100 -             (     100                * 15        / 100)    
+                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                        defenderCombatStrength, transports.Count);
+
+                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
+                    transportCombatStrength, randomResult );
 
                 defenderCombatStrength -= transportCombatStrength;
 
@@ -833,6 +865,13 @@ namespace Supremacy.Combat
                     transports.RemoveAt(0);
                     transport.Destroy();
                 }
+
+                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = {0}, attacking Transports = {1}",
+                    defenderCombatStrength, transports.Count);
+
+
+                //        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? : Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                //targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
             }
 
             if (defenderCombatStrength > 0 || transports.Count == 0)
@@ -898,20 +937,28 @@ namespace Supremacy.Combat
                             {
                                 if (chanceTree.IsEmpty)
                                     chanceTree = GetBaseGroundTargetHitChanceTree();
+                                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
 
                             if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumDamage ||
-                                _orders.Action == InvasionAction.UnloadAllOrdinance)
+                                _orders.Action == InvasionAction.UnloadAllOrdinance)     // here UnloadAllOrdinance is used
                             {
                                 totalPopDamage += 0.5 * actualDamage;
+                                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - MAXIMUM DAMAGE: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                             else if (_orders.TargetingStrategy == InvasionTargetingStrategy.Balanced)
                             {
                                 totalPopDamage += 0.25 * actualDamage;
+                                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - BALANCED: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                             else if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumPrecision)
                             {
                                 totalPopDamage += 0.125 * actualDamage;
+                                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - maximum PRECISION: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                         }
                         //else if (target == colony)
@@ -945,7 +992,7 @@ namespace Supremacy.Combat
 
             _invasionArena.Population.AdjustCurrent(-Math.Max(1, (int)damage));
 
-            if (_invasionArena.Population.CurrentValue < 5)   // Bombardment ends with pop below 5 to avoid and an never ending bombardment, never going below 1 
+            if (_invasionArena.Population.CurrentValue < 5)   // Bombardment ends with pop below 5 to avoid and an never ending bombardment, never going below 1
                 _invasionArena.Population.AdjustCurrent(-1 * _invasionArena.Population.CurrentValue);
 
             // just for testing
@@ -1046,14 +1093,14 @@ namespace Supremacy.Combat
                     if (confirmedHit)
                     {
                         target.TakeDamage(maxDamage);
-                        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: : Target Name = {0}, ID = {1} Hull Strength = {2}, health = {3}", target.Name, target.ObjectID, target.HullStrength, target.Health);
+                        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: AttackingOrbitals = SpaceCombat: Target Name = {0}, ID = {1} Hull Strength = {2}, health = {3}", target.Name, target.ObjectID, target.HullStrength, target.Health);
                         if (target.IsDestroyed)
                         {
                             var targetIndex = unitsAbleToAttack.IndexOf(target);
                             if (targetIndex < i)
                                 --i;
                             if (targetIndex > -1) // if targetIndex is 0 or greater there is a target to remove
-                            unitsAbleToAttack.RemoveAt(targetIndex);
+                                unitsAbleToAttack.RemoveAt(targetIndex);
                             targetList.Remove(target);
                         }
                     }
@@ -1096,78 +1143,78 @@ namespace Supremacy.Combat
         private void AddDiplomacyMemories()
         {
             // TODO: Hook in with new diplomacy system.
-/*
-            if (!_invasionArena.AttackOccurred &&
-                !_invasionArena.BombardmentOccurred &&
-                !_invasionArena.UnloadAllOrdinanceOccurred)
-            {
-                return;
-            }
+            /*
+                        if (!_invasionArena.AttackOccurred &&
+                            !_invasionArena.BombardmentOccurred &&
+                            !_invasionArena.UnloadAllOrdinanceOccurred)
+                        {
+                            return;
+                        }
 
-            var invader = _invasionArena.Invader;
-            var defender = _invasionArena.Defender;
+                        var invader = _invasionArena.Invader;
+                        var defender = _invasionArena.Defender;
 
-            var inContact = DiplomacyHelper.GetCivilizationsHavingContact(invader).Intersect(DiplomacyHelper.GetCivilizationsHavingContact(defender));
+                        var inContact = DiplomacyHelper.GetCivilizationsHavingContact(invader).Intersect(DiplomacyHelper.GetCivilizationsHavingContact(defender));
 
-            var defenderRelationship = GameContext.Current.Relationships[defender, invader];
+                        var defenderRelationship = GameContext.Current.Relationships[defender, invader];
 
-            if (_invasionArena.AttackOccurred)
-                defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.AttackedUs));
-            
-            if (_invasionArena.BombardmentOccurred)
-            {
-                if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                    defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.HeavilyBombardedUs));
-                else
-                    defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.BombardedUs));
-            }
+                        if (_invasionArena.AttackOccurred)
+                            defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.AttackedUs));
 
-            if (_invasionArena.InvasionOccurred)
-                defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.InvadedUs));
+                        if (_invasionArena.BombardmentOccurred)
+                        {
+                            if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
+                                defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.HeavilyBombardedUs));
+                            else
+                                defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.BombardedUs));
+                        }
 
-            foreach (var civ in inContact)
-            {
-                var relationship = GameContext.Current.Relationships[civ, invader];
-                
-                if (_invasionArena.AttackOccurred)
-                {
-                    if (DiplomacyHelper.AreFriendly(civ, defender))
-                        relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedFriend));
-                    else if (DiplomacyHelper.AreEnemies(civ, defender))
-                        relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedEnemy));
-                    else
-                        relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedNeutral));
-                }
+                        if (_invasionArena.InvasionOccurred)
+                            defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.InvadedUs));
 
-                if (_invasionArena.BombardmentOccurred)
-                {
-                    if (DiplomacyHelper.AreFriendly(civ, defender))
-                    {
-                        if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                            relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedFriend));
-                        else
-                            relationship.AddMemory(relationship.CreateMemory(MemoryType.BombardedFriend));
-                    }
-                    else if (DiplomacyHelper.AreEnemies(civ, defender))
-                    {
-                        if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                            relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedEnemy));
-                        else
-                            relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedEnemy));
-                    }
-                    else
-                    {
-                        if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                            relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedNeutral));
-                        else
-                            relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedNeutral));
-                    }
-                }
+                        foreach (var civ in inContact)
+                        {
+                            var relationship = GameContext.Current.Relationships[civ, invader];
 
-                if (_invasionArena.InvasionOccurred && DiplomacyHelper.AreFriendly(civ, defender))
-                    relationship.AddMemory(relationship.CreateMemory(MemoryType.InvadedFriend));
-            }
-*/
+                            if (_invasionArena.AttackOccurred)
+                            {
+                                if (DiplomacyHelper.AreFriendly(civ, defender))
+                                    relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedFriend));
+                                else if (DiplomacyHelper.AreEnemies(civ, defender))
+                                    relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedEnemy));
+                                else
+                                    relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedNeutral));
+                            }
+
+                            if (_invasionArena.BombardmentOccurred)
+                            {
+                                if (DiplomacyHelper.AreFriendly(civ, defender))
+                                {
+                                    if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
+                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedFriend));
+                                    else
+                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.BombardedFriend));
+                                }
+                                else if (DiplomacyHelper.AreEnemies(civ, defender))
+                                {
+                                    if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
+                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedEnemy));
+                                    else
+                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedEnemy));
+                                }
+                                else
+                                {
+                                    if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
+                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedNeutral));
+                                    else
+                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedNeutral));
+                                }
+                            }
+
+                            if (_invasionArena.InvasionOccurred && DiplomacyHelper.AreFriendly(civ, defender))
+                                relationship.AddMemory(relationship.CreateMemory(MemoryType.InvadedFriend));
+                        }
+            */
         }
 
         protected void VerifyInvasionInProgress()

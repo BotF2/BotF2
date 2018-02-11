@@ -533,6 +533,7 @@ namespace Supremacy.Client.Views
                 _selectedTransportsCombatStrength = value;
 
                 OnSelectedTransportsCombatStrengthChanged();
+                OnGroundCombatOddsChanged();
             }
         }
 
@@ -560,6 +561,8 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler SelectedTransportsNetCombatStrengthChanged;
 
+
+
         public int SelectedTransportsNetCombatStrength
         {
             get { return SelectedTransportsCombatStrength - DefenderCombatStrength.CurrentValue; }
@@ -568,7 +571,60 @@ namespace Supremacy.Client.Views
         protected virtual void OnSelectedTransportsNetCombatStrengthChanged()
         {
             SelectedTransportsNetCombatStrengthChanged.Raise(this);
+            GroundCombatOddsChanged.Raise(this);
             OnPropertyChanged("SelectedTransportsNetCombatStrength");
+        }
+
+        #endregion
+
+
+        #region GroundCombatOdds Property
+
+        [field: NonSerialized]
+        public event EventHandler GroundCombatOddsChanged;
+
+
+
+        public int GroundCombatOdds
+        {
+            get
+            {
+                int GroundCombatOddsValue = 100; 
+                try
+                {
+                    int attack = SelectedTransportsCombatStrength ;   // minus ? - 5
+                    int defend = _defenderCombatStrength.CurrentValue ;  // plus + 5
+
+                    GroundCombatOddsValue = 100 + attack - defend;
+
+                    GameLog.Print("SelectedTransportsCombatStrength = {0}, _defenderCombatStrength.CurrentValue = {1}, GroundCombatOdds = {2}",
+                        SelectedTransportsCombatStrength, _defenderCombatStrength.CurrentValue, GroundCombatOddsValue);
+
+                    // 
+                }
+                catch
+                {
+                    //GroundCombatOdds = 99;
+                }
+
+                //GroundCombatOddsValue = GroundCombatOddsValue / 100;
+
+                if (GroundCombatOddsValue > 100)
+                    GroundCombatOddsValue = 100;
+
+                if (GroundCombatOddsValue < 0)
+                    GroundCombatOddsValue = 0;
+
+                //GroundCombatOddsValue = 99;
+                return GroundCombatOddsValue;
+            }
+        }
+
+        protected virtual void OnGroundCombatOddsChanged()
+        {
+            GroundCombatOddsChanged.Raise(this);
+            OnPropertyChanged("SelectedTransportsNetCombatStrength");
+            OnPropertyChanged("GroundCombatOdds");
         }
 
         #endregion

@@ -578,13 +578,13 @@
             <TextBlock Margin="1,1,-1,-1"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Text="{s:StringResource Key='COMBAT_DEFEAT'}"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_DEFEAT}"
                        FontSize="12pt"
                        Foreground="Black"
                        FontFamily="{StaticResource Eurostyle}" />
             <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Text="{s:StringResource Key='COMBAT_DEFEAT'}"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_DEFEAT}"
                        FontSize="12pt"
                        Foreground="White"
                        FontFamily="{StaticResource Eurostyle}" />
@@ -600,17 +600,17 @@
                 UseLayoutRounding="False">
             <TextBlock Margin="1,1,-1,-1"
                        HorizontalAlignment="Center"
-                       Text="{s:StringResource Key='COMBAT_STANDOFF'}"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF}"
                        FontSize="12pt"
                        Foreground="Black"
                        FontFamily="{StaticResource Eurostyle}" />
-            <TextBlock HorizontalAlignment="Center"
+                        <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Text="{s:StringResource Key='COMBAT_STANDOFF'}"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF}"
                        FontSize="12pt"
                        Foreground="White"
                        FontFamily="{StaticResource Eurostyle}" />
-          </Grid>
+                    </Grid>
         </Grid>
 
       </Grid>
@@ -669,7 +669,24 @@
                    Margin="0,0,3,0" />
       </DockPanel>
 
-      <Path Grid.Column="2"
+            <DockPanel Grid.Column="1"
+                 Grid.Row="5"
+                 LastChildFill="True">
+                <TextBlock DockPanel.Dock="Left"
+                           TextWrapping="Wrap"
+                           Margin="5,0"
+                           FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                           FontSize="14pt"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                           Text="{s:StringResource SYSTEM_ASSAULT_LAND_TROOPS_HINT}" />
+
+                <!--<Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                   Height="28"
+                   VerticalAlignment="Top"
+                   Margin="0,0,3,0" />-->
+            </DockPanel>
+
+            <Path Grid.Column="2"
             Grid.Row="2"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
             Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
@@ -714,6 +731,8 @@
             Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
             Height="42"
             Width="21" />
+        
+        
 
       <Rectangle Grid.Column="1"
                  Grid.Row="6"
@@ -814,7 +833,7 @@
                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                    FontSize="18pt"
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                   Text="{s:StringResource Key='ORDERS'}" />
+                   Text="{s:StringResource SYSTEM_ASSAULT_ORDERS_HEADLINE}" />
         <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
                    Height="28"
                    VerticalAlignment="Top"
@@ -873,12 +892,12 @@
                  Grid.Row="3"
                  Grid.RowSpan="3"
                  LastChildFill="True"
-                 Margin="7,0">
+                 Margin="3,0">
 
-        <Border DockPanel.Dock="Top"
+                <Border DockPanel.Dock="Top"
                 UseLayoutRounding="False"
                 SnapsToDevicePixels="False">
-          <DockPanel LastChildFill="True">
+                    <DockPanel LastChildFill="True">
             <DockPanel DockPanel.Dock="Left"
                        LastChildFill="True"
                        Background="Transparent">
@@ -889,18 +908,29 @@
                   <Binding Path="ColonyShieldStrength.Maximum" />
                 </MultiBinding>
               </DockPanel.ToolTip>
-              <Border DockPanel.Dock="Bottom"
+                <Border DockPanel.Dock="Top"
+                    Width="24"
+                    Height="24"
+                    Margin="0,4,0,2">
+                <Image Source="vfs:///Resources/Images/ScreenIcons/shield.png"
+                    RenderOptions.BitmapScalingMode="HighQuality" />
+                </Border>
+                <Border DockPanel.Dock="Bottom"
                       Width="24"
                       Height="24"
                       Margin="0,4,0,0">
-                <Image Source="vfs:///Resources/Images/ScreenIcons/shield.png"
-                       RenderOptions.BitmapScalingMode="HighQuality" />
+                <TextBlock 
+                   Margin="0,0"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                   FontSize="18pt"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                   Text="{Binding Path=ColonyShieldStrength.CurrentValue}" />   
               </Border>
               <s:BlockBar Minimum="0"
                           Maximum="{Binding Path=ColonyShieldStrength.Maximum}"
                           Value="{Binding Path=ColonyShieldStrength.CurrentValue}"
                           BlockMargin="2"
-                          BlockCount="45"
+                          BlockCount="40"
                           Height="24">
                 <s:BlockBar.LayoutTransform>
                   <RotateTransform Angle="-90" />
@@ -919,54 +949,72 @@
                            LastChildFill="True"
                            Background="Transparent">
                   <DockPanel.ToolTip>
+                      <!--TO DO: STRING IS HARDCODED ATM-->
                     <MultiBinding Converter="{x:Static scc:StringFormatConverter.Instance}"
                                   ConverterParameter="{}Ground Combat Strength: {0}/{1}">
                       <Binding Path="DefenderCombatStrength.CurrentValue" />
                       <Binding Path="DefenderCombatStrength.Maximum" />
                     </MultiBinding>
                   </DockPanel.ToolTip>
-                  <Border DockPanel.Dock="Bottom"
+                  <Border DockPanel.Dock="Top"
                           Width="24"
                           Height="24"
-                          Margin="0,4,0,0">
+                          Margin="0,0,0,2">
                     <Image Source="vfs:///Resources/Images/ScreenIcons/combat_strength.png"
                            RenderOptions.BitmapScalingMode="HighQuality" />
-                  </Border>
+                  </Border>                      
+                  <TextBlock DockPanel.Dock="Bottom"
+                   HorizontalAlignment="Center"
+                   Margin="0,0"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                   FontSize="18pt"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                   Text="{Binding Path=DefenderCombatStrength.CurrentValue}" />                      
+
                   <s:BlockBar Grid.Row="0"
                               Minimum="0"
                               Maximum="{Binding Path=DefenderCombatStrength.Maximum}"
                               Value="{Binding Path=DefenderCombatStrength.CurrentValue}"
-                              BlockMargin="2"
-                              BlockCount="20"
+                              BlockMargin="3"
+                              BlockCount="10"
                               Height="24">
                     <s:BlockBar.LayoutTransform>
                       <RotateTransform Angle="-90" />
                     </s:BlockBar.LayoutTransform>
                   </s:BlockBar>
-                </DockPanel>
+
+                                </DockPanel>
                 <DockPanel Grid.Row="2"
                            LastChildFill="True"
                            Background="Transparent">
                   <DockPanel.ToolTip>
+                      <!--TO DO: STRING IS HARDCODED ATM-->
                     <MultiBinding Converter="{x:Static scc:StringFormatConverter.Instance}"
                                   ConverterParameter="{}Population: {0}/{1}">
                       <Binding Path="DefenderPopulation.CurrentValue" />
                       <Binding Path="DefenderPopulation.BaseValue" />
                     </MultiBinding>
                   </DockPanel.ToolTip>
-                  <Border DockPanel.Dock="Bottom"
+                  <Border DockPanel.Dock="Top"
                           Width="24"
                           Height="24"
-                          Margin="0,4,0,0">
+                          Margin="0,0,0,2">
                     <Image Source="vfs:///Resources/Images/ScreenIcons/population.png"
                            RenderOptions.BitmapScalingMode="HighQuality" />
                   </Border>
-                  <s:BlockBar Grid.Row="0"
+                  <TextBlock DockPanel.Dock="Bottom"
+                       HorizontalAlignment="Center"
+                       Margin="0,0"
+                       FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                       FontSize="18pt"
+                       Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       Text="{Binding Path=DefenderPopulation.CurrentValue}" />
+                    <s:BlockBar Grid.Row="0"
                               Minimum="0"
                               Maximum="{Binding Path=DefenderPopulation.BaseValue}"
                               Value="{Binding Path=DefenderPopulation.CurrentValue}"
-                              BlockMargin="2"
-                              BlockCount="20"
+                              BlockMargin="3"
+                              BlockCount="10"
                               Height="24">
                     <s:BlockBar.LayoutTransform>
                       <RotateTransform Angle="-90" />
@@ -1037,14 +1085,15 @@
                     <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.BombardPlanet}" />
                   </scc:GameButton.CommandParameter>
                 </scc:GameButton>
-                <scc:GameButton Label="{s:StringResource UNLOAD_ALL_ORDINANCE_ON_PLANET}"
+                  <!--we have attacks to: 1 = Orbitals = OB + Shields, 2 = Bombard = Planet, 3 = Land Troops = Ground Combat - UNLOAD Ordinance just not neccessary-->
+                <!--<scc:GameButton Label="{s:StringResource UNLOAD_ALL_ORDINANCE_ON_PLANET}"
                                 Margin="0,2,0,0"
                                 Command="{Binding Path=SetActionCommand}"
                                 IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
                   <scc:GameButton.CommandParameter>
                     <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.UnloadAllOrdinance}" />
                   </scc:GameButton.CommandParameter>
-                </scc:GameButton>
+                </scc:GameButton>-->
                 <scc:GameButton Label="{s:StringResource LAND_TROOPS}"
                                 Margin="0,2,0,0"
                                 Command="{Binding Path=SetActionCommand}"
@@ -1052,7 +1101,14 @@
                   <scc:GameButton.CommandParameter>
                     <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.LandTroops}" />
                   </scc:GameButton.CommandParameter>
-                </scc:GameButton>
+                                    <!--<scc:GameButton.ToolTip Label="{s:StringResource LAND_TROOPS_REQUIREMENTS}"
+                         DisplayMode="Tiny"
+                          Margin="4,0,8,8"
+                          StaysOpenOnClick="True"
+                          HorizontalAlignment="Stretch"
+                                  />-->
+                          <!--Label="{xs:LocalizedStringExtension Group={x:Static s:LocalizedTextGroups.PersonnelText}, Entry=CancelAgentRecallCommandText, CharacterCasing=Upper}"--> 
+                                </scc:GameButton>
                 <scc:GameButton Label="{s:StringResource STAND_DOWN}"
                                 Margin="0,2,0,0"
                                 Command="{Binding Path=SetActionCommand}"
@@ -1084,37 +1140,45 @@
                                         Margin="14,0,0,0">
                 <FrameworkElement.Resources>
                   <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.MaximumPrecision}">
-                    <TextBlock TextWrapping="Wrap"
+                      <StackPanel>
+                         <TextBlock Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_PRECISION_SELECTION}"    
                                Margin="0,7,0,0">
-                      <Span>Maximum Precision</Span>
-                      <LineBreak />
-                      <Span Foreground="#ffdfdfff"
-                            FontSize="12pt">
-                        Attempt to minimize collateral damage.  Precision is favored at the expense of overall damage.
-                      </Span>
-                    </TextBlock>
+                         </TextBlock>
+                         <TextBlock TextWrapping="Wrap"
+                               Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_PRECISION_TEXT}"  
+                               Foreground="#ffdfdfff"
+                               FontSize="12pt"                                 
+                               Margin="0,3,0,0">
+                         </TextBlock>
+                      </StackPanel>
                   </DataTemplate>
-                  <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.Balanced}">
-                    <TextBlock TextWrapping="Wrap"
-                               Margin="0,7,0,0">
-                      <Span>Balanced</Span>
-                      <LineBreak />
-                      <Span Foreground="#ffdfdfff"
-                            FontSize="12pt">
-                        Attempt to balance precision and overall damage.  Moderate levels of collateral damage are acceptable.
-                      </Span>
-                    </TextBlock>
-                  </DataTemplate>
+
+                    <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.Balanced}">
+                            <StackPanel>
+                                <TextBlock Text="{s:StringResource BOMBARDMENT_STRATEGY_BALANCED_SELECTION}"    
+                                    Margin="0,7,0,0">
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap"
+                                    Text="{s:StringResource BOMBARDMENT_STRATEGY_BALANCED_TEXT}"  
+                                    Foreground="#ffdfdfff"
+                                    FontSize="12pt"                                 
+                                    Margin="0,3,0,0">
+                                </TextBlock>
+                            </StackPanel>
+                    </DataTemplate>
+                    
                   <DataTemplate x:Key="{x:Static s:InvasionTargetingStrategy.MaximumDamage}">
-                    <TextBlock TextWrapping="Wrap"
-                               Margin="0,7,0,0">
-                      <Span>Maximum Damage</Span>
-                      <LineBreak />
-                      <Span Foreground="#ffdfdfff"
-                            FontSize="12pt">
-                        Inflict the most damage possible at the expense of precision.  Collateral damage is not a concern.
-                      </Span>
-                    </TextBlock>
+                            <StackPanel>
+                                <TextBlock Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_DAMAGE_SELECTION}"    
+                                    Margin="0,7,0,0">
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap"
+                                    Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_DAMAGE_TEXT}"  
+                                    Foreground="#ffdfdfff"
+                                    FontSize="12pt"                                 
+                                    Margin="0,3,0,0">
+                                </TextBlock>
+                            </StackPanel>
                   </DataTemplate>
                 </FrameworkElement.Resources>
               </apshared:RadioButtonList>
@@ -1163,11 +1227,13 @@
                         Width="21"
                         Margin="0,0,2,0"
                         Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                  <!--TO DO: STRING IS HARDCODED ATM-->
                 <scc:GameButton Label="SELECT ALL"
                                 Padding="16,1,16,2"
                                 DisplayMode="GroupedHorizontally"
                                 CommandTarget="{Binding ElementName=_transportCheckList}"
                                 Command="{x:Static scc:CheckedListBox.SelectAllCommand}" />
+                  <!--TO DO: STRING IS HARDCODED ATM-->
                 <scc:GameButton Label="UNSELECT ALL"
                                 Padding="16,1,16,2"
                                 DisplayMode="GroupedHorizontally"
@@ -1195,10 +1261,11 @@
                         Width="21"
                         Margin="0,0,4,0"
                         Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
-                <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                           Text="{s:StringResource Key='Total (Net) Combat Strength:', Case=Upper}"
-                           VerticalAlignment="Center" />
-                <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                <!--<TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                           Text="{s:StringResource SYSTEM_ASSAULT_LAND_TROOPS_STRENGTH}"
+                           VerticalAlignment="Center" />-->
+
+                <!--<TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                            Text="{Binding Path=SelectedTransportsCombatStrength}"
                            VerticalAlignment="Center"
                            TextAlignment="Right" />
@@ -1206,7 +1273,15 @@
                            scc:TextBlockExtensions.FormattedText="{Binding Path=SelectedTransportsNetCombatStrength, StringFormat='{}[c Lime](+#,0)[/];[c Crimson](-#,0)[/];[c Yellow](+#,0)[/]'}"
                            Margin="5,0,0,0"
                            VerticalAlignment="Center"
-                           TextAlignment="Right" />
+                           TextAlignment="Right" />-->
+                 <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                           Text="{s:StringResource SYSTEM_ASSAULT_ODDS_OF_SUCCESS}"
+                           VerticalAlignment="Center" />
+                 <TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                           Text="{Binding Path=GroundCombatOdds}"
+                           VerticalAlignment="Center"
+                           TextAlignment="Right" />   
+                  
                 <Border CornerRadius="0,0,14,0"
                         Width="21"
                         Margin="4,0,0,0"
@@ -1232,8 +1307,8 @@
                                     Height="45">
                               <Border.Background>
                                 <ImageBrush
-ImageSource="{Binding Path=Design, Converter={StaticResource TechObjectImageConverter}}"
-Stretch="UniformToFill" />
+                                    ImageSource="{Binding Path=Design, Converter={StaticResource TechObjectImageConverter}}"
+                                    Stretch="UniformToFill" />
                               </Border.Background>
                               <CheckBox HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
@@ -1250,7 +1325,7 @@ Stretch="UniformToFill" />
                               <TextBlock>
                                 <TextBlock.Text>
                                   <MultiBinding StringFormat="{}{0}: {1:#,0}">
-                                    <Binding Source="{s:StringResource Key='Ground Combat Strength'}"
+                                    <Binding Source="{s:StringResource SYSTEM_ASSAULT_GROUND_DEFENDING_STRENGTH}"
                                              BindsDirectlyToSource="True" />
                                     <Binding Path="TroopCount" />
                                   </MultiBinding>
@@ -1296,6 +1371,7 @@ Stretch="UniformToFill" />
               </Binding.Converter>
             </Binding>
           </UniformGrid.Visibility>
+            <!--TO DO: STRING IS HARDCODED ATM-->
           <scc:GameButton Grid.Column="1"
                           Label="CHANGE ORDERS"
                           DisplayMode="GroupedHorizontally"
@@ -1324,6 +1400,7 @@ Stretch="UniformToFill" />
                           DisplayMode="GroupedHorizontally"
                           Command="{Binding Path=CommitOrdersCommand}" />
         </UniformGrid>
+          <!--TO DO: STRING IS HARDCODED ATM-->
         <scc:GameButton Label="DONE"
                         Height="28"
                         VerticalAlignment="Bottom"
