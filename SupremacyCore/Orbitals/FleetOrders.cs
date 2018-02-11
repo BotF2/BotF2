@@ -1567,7 +1567,7 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            if (fleet.Sector.System.StarType == StarType.Wormhole)
+            if (fleet.Sector.System != null && fleet.Sector.System.StarType == StarType.Wormhole)
                 return true;
 
             return false;
