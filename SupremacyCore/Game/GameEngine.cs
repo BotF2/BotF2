@@ -1364,6 +1364,11 @@ namespace Supremacy.Game
                                     slot.Project.Finish();
                                     slot.Project = null;
                                 }
+                                else
+                                {
+                                    //if there is a gap for raw materials than code would go into never ending loop without the break
+                                    break;
+                                }
                             }
 
                             /* Check to see if we tapped into the global resource stockpiles */
