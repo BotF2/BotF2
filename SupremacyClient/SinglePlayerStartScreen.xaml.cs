@@ -53,7 +53,7 @@ namespace Supremacy.Client
                 CivSelector.SelectionChanged += CivSelector_SelectionChanged;
 
                 // Pre-Setting in Options would be fine, just for coding issues
-                CivSelector.SelectedIndex = 1;  // jumps over first selection ("Intro" race) and jumps to Federation  
+                CivSelector.SelectedIndex = 0;  // jumps over first selection ("Intro" race) and jumps to Federation  
             }
             finally
             {
@@ -129,7 +129,10 @@ namespace Supremacy.Client
             {
                 //switch (CivSelector.SelectedIndex)
                 //{
-                if (CivSelector.SelectedIndex == 0)  // 
+
+                int IntroRaceIsIn = 1;   //  0 = in the game,  1 = if out of the game
+
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 0 )  // 
                 {
                     if (Options.IntroPlayable == EmpirePlayable.No)
                     {
@@ -138,7 +141,7 @@ namespace Supremacy.Client
                         return;
                     }
                 }
-                if (CivSelector.SelectedIndex == 1)  // 
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 1 )  // 
                 {
                     if (Options.FederationPlayable == EmpirePlayable.No)
                     {
@@ -148,7 +151,7 @@ namespace Supremacy.Client
                     }
                 }
                 //return;
-                if (CivSelector.SelectedIndex == 2)  // 
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 2  )  // 
                 {
                     if (Options.TerranEmpirePlayable == EmpirePlayable.No)
                     {
@@ -158,7 +161,7 @@ namespace Supremacy.Client
                     }
                 }
                 //return;
-                if (CivSelector.SelectedIndex == 3)  // 
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 3  )  // 
                 {
                     if (Options.RomulanPlayable == EmpirePlayable.No)
                     {
@@ -168,7 +171,7 @@ namespace Supremacy.Client
                     }
                 }
                 //return;
-                if (CivSelector.SelectedIndex == 4)  // 
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 4)  // 
                 {
                     if (Options.KlingonPlayable == EmpirePlayable.No)
                     {
@@ -178,7 +181,7 @@ namespace Supremacy.Client
                     }
                 }
                 //return;
-                if (CivSelector.SelectedIndex == 5)  // 
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 5)  // 
                 {
                     if (Options.CardassianPlayable == EmpirePlayable.No)
                     {
@@ -188,7 +191,7 @@ namespace Supremacy.Client
                     }
                 }
                 //return;
-                if (CivSelector.SelectedIndex == 6)  // 
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 6)  // 
                 {
                     if (Options.DominionPlayable == EmpirePlayable.No)
                     {
@@ -198,7 +201,7 @@ namespace Supremacy.Client
                     }
                 }
                 //return;
-                if (CivSelector.SelectedIndex == 7)  // Borg
+                if (CivSelector.SelectedIndex + IntroRaceIsIn == 7)  // Borg
                 {
                     if (Options.BorgPlayable == EmpirePlayable.No)
                     {

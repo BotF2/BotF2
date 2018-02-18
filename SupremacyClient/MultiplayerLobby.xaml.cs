@@ -147,53 +147,55 @@ namespace Supremacy.Client
             //if (empireCheck == "Intro")
             //    continue;
 
+            int IntroRaceIsIn = 1;   //  0 = in the game,  1 = if out of the game
+
 
             // IMPORTANT: at the moment only LocalPlayer is checked whether it's set to NOT Playable. At the moment NO check for the other players in Multi Player
 
-                if (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID == 1)  // 1 = Federation  ( 0 = Cochrane aka Intro)
-                {
+            if (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 1)  
+            {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
                 }
 
-                if (OptionsPanel.Options.TerranEmpirePlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID == 2)  // 2 = Terran
+                if (OptionsPanel.Options.TerranEmpirePlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 2)  // 2 = Terran
                 {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
                 }
 
-                if (OptionsPanel.Options.RomulanPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID == 3)
+                if (OptionsPanel.Options.RomulanPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 3)
                 {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
                 }
 
-                if (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID == 4)
+                if (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 4)
                 {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
                 }
 
-                if (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID == 5)
+                if (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 5)
                 {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
                 }
 
-                if (OptionsPanel.Options.DominionPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID == 6)
+                if (OptionsPanel.Options.DominionPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 6)
                 {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
                 }
 
 
-                if (OptionsPanel.Options.BorgPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID == 7)
+                if (OptionsPanel.Options.BorgPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 7)
                 {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
                 }
 
-                if (AppContext.LocalPlayer.EmpireID == 0)  // hardcoded   ToDo: find a way to compare String = "INTRO" (if Intro is removed, Fed is 0)
+                if (AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 0)  // hardcoded   ToDo: find a way to compare String = "INTRO" (if Intro is removed, Fed is 0)
                 {
                     var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
                     return;
