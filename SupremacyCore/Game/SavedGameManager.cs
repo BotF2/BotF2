@@ -203,7 +203,7 @@ namespace Supremacy.Game
         public static bool SaveGame([NotNull] string fileName, [NotNull] GameContext game, [NotNull] Player localPlayer, [NotNull] LobbyData lobbyData)
         {
             if (fileName == null)
-                fileName = "_manual_save";
+                fileName = "_manual_save_(CTRL+S)";
             //throw new ArgumentNullException("fileName");
 
             GameLog.Print("SaveGame: localPlayer={1}, fileName= '{0}'",

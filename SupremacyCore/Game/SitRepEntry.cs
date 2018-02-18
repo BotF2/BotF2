@@ -395,7 +395,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("[SITREP_CONSTRUCTED_UNPOWERED]"),
+                return String.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_UNPOWERED"),
                     ResourceManager.GetString(ItemType.Name),
                     GameContext.Current.Universe.Map[Location].Name,
                     _isActive ? "" : " (unpowered)");
