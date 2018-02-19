@@ -289,6 +289,9 @@ namespace Supremacy.Diplomacy
                    diplomacyData.Status >=ForeignPowerStatus.Friendly;
         }
 
+        /// <summary>
+        ///  Determines whether two particular civilizations are at war
+        /// </summary>
         public static bool AreAtWar(Civilization who, Civilization whoElse)
         {
             if (who == null)
@@ -302,6 +305,14 @@ namespace Supremacy.Diplomacy
                    diplomacyData.Status == ForeignPowerStatus.AtWar;
         }
 
+        /// <summary>
+        /// Determines whether the given civilization is at war with anybody
+        /// </summary>
+        public static bool IsAtWar(Civilization who)
+        {
+            return (GameContext.Current.DiplomacyData.CountWhere(c => c.Status == ForeignPowerStatus.AtWar) > 0);
+        }
+
         public static bool AreNeutral(Civilization who, Civilization whoElse)
         {
             if (who == null)
@@ -313,11 +324,6 @@ namespace Supremacy.Diplomacy
 
             return diplomacyData != null &&
                    diplomacyData.Status == ForeignPowerStatus.Neutral;
-        }
-
-        public static bool AreEnemies(Civilization who, Civilization whoElse)
-        {
-            return AreAtWar(who, whoElse);
         }
 
         public static bool IsIndependent([NotNull] Civilization minorPower)
