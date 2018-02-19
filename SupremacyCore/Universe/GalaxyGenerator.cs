@@ -1056,18 +1056,13 @@ namespace Supremacy.Universe
         {
             var civManager = GameContext.Current.CivilizationManagers[civ];
             var colony = new Colony(system, inhabitants);
-            var baseMorale = GameContext.Current.Tables.MoraleTables["BaseMoraleLevels"];
 
             colony.Population.BaseValue = (int)(0.6f * system.GetMaxPopulation(inhabitants));
             colony.Population.Reset();
             colony.Name = system.Name;
 
             system.Colony = colony;
-
-            if (baseMorale[civ.Key] != null)
-                colony.Morale.BaseValue = Number.ParseInt32(baseMorale[civ.Key][0]);
-            else
-                colony.Morale.BaseValue = Number.ParseInt32(baseMorale[0][0]);
+            colony.Morale.BaseValue = civManager.Civilization.BaseMoraleLevel;
 
             colony.Morale.Reset();
 

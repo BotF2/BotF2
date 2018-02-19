@@ -304,7 +304,6 @@ namespace Supremacy.Orbitals
         {
             var colony = new Colony(system, civ.Race);
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
-            var baseMoraleTable = GameContext.Current.Tables.MoraleTables["BaseMoraleLevels"];
 
             colony.ObjectID = GameContext.Current.GenerateID();
             colony.Population.BaseValue = population;
@@ -317,11 +316,7 @@ namespace Supremacy.Orbitals
 
             GameContext.Current.Universe.Objects.Add(colony);
             civManager.Colonies.Add(colony);
-
-            if (baseMoraleTable[civ.Key] != null)
-                colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[civ.Key][0]);
-            else
-                colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[0][0]);
+            colony.Morale.BaseValue = civManager.Civilization.BaseMoraleLevel;
 
             colony.Morale.Reset();
 
@@ -483,75 +478,14 @@ namespace Supremacy.Orbitals
                 gainedOfTotalResearchPoints = gainedOfTotalResearchPoints + infiltrated.NetResearch;
                 var infiltratedColony = infiltrated;
 
-
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ Beginn of this system");
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedResearchPoints={0}, Sum={1}", gainedResearchPoints, gainedResearchPointsSum);
-
-
-
-                //GameLog.Print("FleetOrders.cs: Owner= {0}, system= {1} at {2} (infiltrated): ResearchProd={3}, Gained={4}, TotalSum={5} ",
-                                                    //Energy={3} out of facilities={4}, 
-                       // system.Owner, infiltrated.Name, infiltrated.Location, 
-                                                    //infiltrated.GetEnergyUsage(), 
-                                                    //infiltrated.GetActiveFacilities(ProductionCategory.Energy), 
-                       //infiltrated.NetResearch, gainedResearchPoints, gainedResearchPointsSum);
-                                                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: our research before={0}", GameContext.Current.CivilizationManagers[civ].Research.CumulativePoints);
-
                 GameContext.Current.CivilizationManagers[civ].Research.UpdateResearch(gainedResearchPoints);
 
-                        //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: our research after={0}", GameContext.Current.CivilizationManagers[civ].Research.CumulativePoints);
-                        //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ End of this system");
-
-                //here each single colony = without "Sum"
-                //if (gainedResearchPoints > 0)
-                //    {
-                //    //civManager.ApplyMoraleEvent(MoraleEvent.InfiltrateSystem, system.Location);
-                //    //int _gainedResearchPointsSum = gainedResearchPointsSum;
-                //    civManager.SitRepEntries.Add(new NewInfiltrateSitRepEntry(civ, infiltrated, gainedResearchPoints));
-                //    }
-
-
             }
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedResearchPointsSum={0}", gainedResearchPointsSum);
 
-            //if (gainedResearchPointsSum > 0)
-            //{
-                //civManager.ApplyMoraleEvent(MoraleEvent.InfiltrateSystem, system.Location);
-                //int _gainedResearchPointsSum = gainedResearchPointsSum;
-                civManager.SitRepEntries.Add(new NewInfiltrateSitRepEntry(civ, system.Colony, gainedResearchPointsSum, gainedOfTotalResearchPoints));
-            //}
+            civManager.SitRepEntries.Add(new NewInfiltrateSitRepEntry(civ, system.Colony, gainedResearchPointsSum, gainedOfTotalResearchPoints));
+
             gainedResearchPointsSum = 0;
             gainedOfTotalResearchPoints = 0;
-
-
-            // old stuff: civManager.SitRepEntries.Add(new NewColonySitRepEntry(civ, colony));
-
-            //var baseMoraleTable = GameContext.Current.Tables.MoraleTables["BaseMoraleLevels"];
-
-            //colony.ObjectID = GameContext.Current.GenerateID();
-            //colony.Population.BaseValue = population;
-            //colony.Population.Reset();
-            //colony.Name = system.Name;
-            //colony.Owner = civ;
-
-            //system.Owner = civ;
-            //system.Colony = colony;
-
-            //GameContext.Current.Universe.Objects.Add(colony);
-            //civManager.Colonies.Add(colony);
-
-            //if (baseMoraleTable[civ.Key] != null)
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[civ.Key][0]);
-            //else
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[0][0]);
-
-            //colony.Morale.Reset();
-
-            //ColonyBuilder.Build(colony);
-
-            //civManager.MapData.SetScanned(colony.Location, true, 1);
-            ////civManager.ApplyMoraleEvent(MoraleEvent.InfiltrateSystem, system.Location);
-            //civManager.SitRepEntries.Add(new NewInfiltrateSitRepEntry(civ, infiltrate));
 
         }
     }
@@ -722,61 +656,14 @@ namespace Supremacy.Orbitals
                 GameContext.Current.CivilizationManagers[civ].Credits.AdjustCurrent(gainedCredits);
                 GameContext.Current.CivilizationManagers[system.Owner].Credits.AdjustCurrent(gainedCredits* -1);
 
-                GameLog.Print("FleetOrders.cs: our credits after={0}, their credits ={1}", GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
-     
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ End of this system");
-
-                //here each single colony = without "Sum"
-                //if (gainedCredits > 0)
-                //    {
-                //    //civManager.ApplyMoraleEvent(MoraleEvent.raidSystem, system.Location);
-                //    //int _gainedCreditsSum = gainedCreditsSum;
-                //    civManager.SitRepEntries.Add(new NewRaidSitRepEntry(civ, raided, gainedCredits));
-                //    }
-
+                GameLog.Print("FleetOrders.cs: our credits after={0}, their credits ={1}", GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);     
 
             }
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedCreditsSum={0}", gainedCreditsSum);
-
-            //if (gainedCreditsSum > 0)
-            //{
-                //civManager.ApplyMoraleEvent(MoraleEvent.RaidSystem, system.Location);
-                //int _gainedCreditsSum = gainedCreditsSum;
-                civManager.SitRepEntries.Add(new NewRaidSitRepEntry(civ, system.Colony, gainedCreditsSum, gainedOfTotalCredits));
-            //}
+            
+            civManager.SitRepEntries.Add(new NewRaidSitRepEntry(civ, system.Colony, gainedCreditsSum, gainedOfTotalCredits));
 
             gainedCreditsSum = 0;
             gainedOfTotalCredits = 0;
-
-
-            // old stuff: civManager.SitRepEntries.Add(new NewColonySitRepEntry(civ, colony));
-
-            //var baseMoraleTable = GameContext.Current.Tables.MoraleTables["BaseMoraleLevels"];
-
-            //colony.ObjectID = GameContext.Current.GenerateID();
-            //colony.Population.BaseValue = population;
-            //colony.Population.Reset();
-            //colony.Name = system.Name;
-            //colony.Owner = civ;
-
-            //system.Owner = civ;
-            //system.Colony = colony;
-
-            //GameContext.Current.Universe.Objects.Add(colony);
-            //civManager.Colonies.Add(colony);
-
-            //if (baseMoraleTable[civ.Key] != null)
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[civ.Key][0]);
-            //else
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[0][0]);
-
-            //colony.Morale.Reset();
-
-            //ColonyBuilder.Build(colony);
-
-            //civManager.MapData.SetScanned(colony.Location, true, 1);
-            ////civManager.ApplyMoraleEvent(MoraleEvent.RaidSystem, system.Location);
-            //civManager.SitRepEntries.Add(new NewRaidSitRepEntry(civ, raid));
 
         }
     }
@@ -916,114 +803,41 @@ namespace Supremacy.Orbitals
                                                     system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
-            //int gainedResearchPointsSum = 0;
-            //int gainedOfTotalResearchPoints = 0;
+            GameLog.Print("FleetOrders.cs: Owner= {0}, system= {1} at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}", //, ResearchProd={5}, Gained={6}, Sum={7} ",
+                                                system.Owner, system.Name, system.Location,
+                                                system.Colony.GetEnergyUsage(),
+                                                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
+                                                system.Colony.GetTotalFacilities(ProductionCategory.Energy)
+                                                //sabotaged.NetResearch, gainedResearchPoints, gainedResearchPointsSum
+                                                );
+            GameLog.Print("FleetOrders.cs: {0}: TotalEnergyFacilities before={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
 
-            //foreach (var sabotaged in sabotagedCiv)
-            //{
-                ////int gainedResearchPoints = sabotaged.NetResearch;
+            //Effect of sabatoge
+            int removeEnergyFacilities = 0;
+            if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            {
+                removeEnergyFacilities = 1;
+                system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
+            }
 
-                ////if (gainedResearchPoints > 10)
-                ////    gainedResearchPoints = gainedResearchPoints * ratio / 10;
+            // if ratio > 2 than remove one more  EnergyFacility
+            if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            {
+                removeEnergyFacilities = 3;  //  2 and one from before
+                system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
+            }
 
-                ////gainedResearchPointsSum = gainedResearchPointsSum + gainedResearchPoints;
-                ////gainedOfTotalResearchPoints = gainedOfTotalResearchPoints + sabotaged.NetResearch;
-                //var sabotagedColony = sabotaged;
-
-
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ Beginn of this system");
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedResearchPoints={0}, Sum={1}", gainedResearchPoints, gainedResearchPointsSum);
-
-
-
-                GameLog.Print("FleetOrders.cs: Owner= {0}, system= {1} at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}", //, ResearchProd={5}, Gained={6}, Sum={7} ",
-                                                    system.Owner, system.Name, system.Location,
-                                                    system.Colony.GetEnergyUsage(),
-                                                    system.Colony.GetActiveFacilities(ProductionCategory.Energy),
-                                                    system.Colony.GetTotalFacilities(ProductionCategory.Energy)
-                                                    //sabotaged.NetResearch, gainedResearchPoints, gainedResearchPointsSum
-                                                    );
-                GameLog.Print("FleetOrders.cs: {0}: TotalEnergyFacilities before={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-
-                //Effect of sabatoge
-                int removeEnergyFacilities = 0;
-                if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-                {
-                    removeEnergyFacilities = 1;
-                    system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
-                }
-
-                // if ratio > 2 than remove one more  EnergyFacility
-                if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-                {
-                    removeEnergyFacilities = 3;  //  2 and one from before
-                    system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
-                }
-
-                // if ratio > 3 than remove one more  EnergyFacility
-                if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-                {
-                    removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-                    system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
-                }
+            // if ratio > 3 than remove one more  EnergyFacility
+            if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            {
+                removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
+                system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
+            }
 
             //GameContext.Current.CivilizationManagers[civ].Research.UpdateResearch(gainedResearchPoints);
 
             GameLog.Client.GameData.DebugFormat("FleetOrders.cs: {0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ End of this system");
-
-                //here each single colony = without "Sum"
-                //if (gainedResearchPoints > 0)
-                //    {
-                //    //civManager.ApplyMoraleEvent(MoraleEvent.sabotageSystem, system.Location);
-                //    //int _gainedResearchPointsSum = gainedResearchPointsSum;
-                //    civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, sabotaged, gainedResearchPoints));
-                //    }
-
-
-                //if (removeEnergyFacilities > 0)
-                //{
-                    //civManager.ApplyMoraleEvent(MoraleEvent.SabotageSystem, system.Location);
-                    //int _gainedResearchPointsSum = gainedResearchPointsSum;
-                    civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
-                //}
-                //removeEnergyFacilities = 0;  // back to default
-
-            //}
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedResearchPointsSum={0}", gainedResearchPointsSum);
-
-            //gainedResearchPointsSum = 0;
-            //gainedOfTotalResearchPoints = 0;
-
-
-            // old stuff: civManager.SitRepEntries.Add(new NewColonySitRepEntry(civ, colony));
-
-            //var baseMoraleTable = GameContext.Current.Tables.MoraleTables["BaseMoraleLevels"];
-
-            //colony.ObjectID = GameContext.Current.GenerateID();
-            //colony.Population.BaseValue = population;
-            //colony.Population.Reset();
-            //colony.Name = system.Name;
-            //colony.Owner = civ;
-
-            //system.Owner = civ;
-            //system.Colony = colony;
-
-            //GameContext.Current.Universe.Objects.Add(colony);
-            //civManager.Colonies.Add(colony);
-
-            //if (baseMoraleTable[civ.Key] != null)
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[civ.Key][0]);
-            //else
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[0][0]);
-
-            //colony.Morale.Reset();
-
-            //ColonyBuilder.Build(colony);
-
-            //civManager.MapData.SetScanned(colony.Location, true, 1);
-            ////civManager.ApplyMoraleEvent(MoraleEvent.SabotageSystem, system.Location);
-            //civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, sabotage));
+            civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
     }
@@ -1180,11 +994,6 @@ namespace Supremacy.Orbitals
                     //system.Colony.  // don't know how to access foreignPower.Add(regardEvent)
                 }
 
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ Beginn of this system");
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedCredits={0}, Sum={1}", gainedCredits, gainedCreditsSum);
-
-
-
                 GameLog.Print("FleetOrders.cs: Owner= {0}, system= {1} at {2} (influenced): TaxCredits={3} ",
                                                  //Energy ={ 3} out of facilities = { 4 },
                                                  system.Owner, Influenced.Name, Influenced.Location,
@@ -1193,48 +1002,7 @@ namespace Supremacy.Orbitals
                                                             Influenced.TaxCredits);
                 GameLog.Print("FleetOrders.cs: our credits before={0}, their credits ={1}", GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
 
-                //GameContext.Current.CivilizationManagers[civ].Research.UpdateResearch(gainedCredits);
-
-                //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ End of this system");
-
             }
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedCreditsSum={0}", gainedCreditsSum);
-
-            //if (gainedCreditsSum > 0)
-            //{
-            //civManager.ApplyMoraleEvent(MoraleEvent.RaidSystem, system.Location);
-            //int _gainedCreditsSum = gainedCreditsSum;
-
-            //}
-
-            // old stuff: civManager.SitRepEntries.Add(new NewColonySitRepEntry(civ, colony));
-
-            //var baseMoraleTable = GameContext.Current.Tables.MoraleTables["BaseMoraleLevels"];
-
-            //colony.ObjectID = GameContext.Current.GenerateID();
-            //colony.Population.BaseValue = population;
-            //colony.Population.Reset();
-            //colony.Name = system.Name;
-            //colony.Owner = civ;
-
-            //system.Owner = civ;
-            //system.Colony = colony;
-
-            //GameContext.Current.Universe.Objects.Add(colony);
-            //civManager.Colonies.Add(colony);
-
-            //if (baseMoraleTable[civ.Key] != null)
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[civ.Key][0]);
-            //else
-            //    colony.Morale.BaseValue = Number.ParseInt32(baseMoraleTable[0][0]);
-
-            //colony.Morale.Reset();
-
-            //ColonyBuilder.Build(colony);
-
-            //civManager.MapData.SetScanned(colony.Location, true, 1);
-            ////civManager.ApplyMoraleEvent(MoraleEvent.RaidSystem, system.Location);
-            //civManager.SitRepEntries.Add(new NewRaidSitRepEntry(civ, raid));
 
         }
     }

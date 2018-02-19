@@ -94,8 +94,8 @@ namespace Supremacy.Entities
         private string _shortName;
         private string _shipPrefix;
         private float _industryToCreditsConversionRatio = 0.0f;
-        //private readonly IClientApplication _app;
-        //private DependencyObject d;
+        private int _baseMoraleLevel = 100;
+        private int _moraleDriftRate = 1;
         #endregion
 
         #region Constructors
@@ -103,8 +103,6 @@ namespace Supremacy.Entities
         /// Initializes a new instance of the <see cref="Civilization"/> class.
         /// </summary>
         public Civilization() {}
-
-        //public static readonly DependencyProperty BorgPlayableProperty = ClientSettings.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class.
@@ -149,89 +147,69 @@ namespace Supremacy.Entities
             _homeSystemName = (string)element.Element(ns + "HomeSystemName");
             _color = (string)element.Element(ns + "Color");
             _shipPrefix = (string)element.Element(ns + "ShipPrefix");
-
-            EnumHelper.TryParse((string)element.Element(ns + "HomeQuadrant"), out _homeQuadrant);
-
-            //            var _throwOutRace = "";
-
-            EnumHelper.TryParse((string)element.Element(ns + "CivilizationType"), out _civType);
-
-
-            // When starting a game, options is null
-            if (GameContext.Current.Options != null)
+            if (element.Element(ns + "BaseMoraleLevel") != null)
             {
-                if (_key == "FEDERATION")
-                {
-                    if (GameContext.Current.Options.FederationPlayable == EmpirePlayable.No)
-                    {
-                        _civType = CivilizationType.ExpandingPower;
-                        GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
-                    }
-                }
-
-                if (_key == "ROMULANS")
-                {
-                    if (GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No)
-                    {
-                        _civType = CivilizationType.ExpandingPower;
-                        GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
-                    }
-                }
-
-                if (_key == "KLINGONS")
-                {
-                    if (GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No)
-                    {
-                        _civType = CivilizationType.ExpandingPower;
-                        GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
-                    }
-                }
-
-                if (_key == "CARDASSIANS")
-                {
-                    if (GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No)
-                    {
-                        _civType = CivilizationType.ExpandingPower;
-                        GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
-                    }
-                }
-
-                if (_key == "DOMINION")
-                {
-                    if (GameContext.Current.Options.DominionPlayable == EmpirePlayable.No)
-                    {
-                        _civType = CivilizationType.ExpandingPower;
-                        GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
-                    }
-                }
-
-                if (_key == "BORG")
-                {
-                    if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.No)
-                    {
-                        _civType = CivilizationType.ExpandingPower;
-                        GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
-                    }
-                }
-
-                if (_key == "TERRANEMPIRE")
-                {
-                    if (GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No)
-                    {
-                        _civType = CivilizationType.ExpandingPower;
-                        GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
-                    }
-                }
+                _baseMoraleLevel = (int)element.Element(ns + "BaseMoraleLevel");
             }
-
+            if (element.Element(ns + "MoraleDriftRate") != null)
+            {
+                _moraleDriftRate = (int)element.Element(ns + "MoraleDriftRate");
+            }
+            EnumHelper.TryParse((string)element.Element(ns + "HomeQuadrant"), out _homeQuadrant);
+            EnumHelper.TryParse((string)element.Element(ns + "CivilizationType"), out _civType);
             EnumHelper.TryParse((string)element.Element(ns + "TechCurve"), out _techCurve);
-
             string indConvRation = (string)element.Element(ns + "IndustryToCreditsConversionRatio");
             if (!string.IsNullOrEmpty(indConvRation))
             {
                 var convRatio = Number.ParseUInt16(indConvRation);
                 if (convRatio > 0)
                     _industryToCreditsConversionRatio = (float)convRatio / 100.0f;
+            }
+
+            // When starting a game, options is null
+            if (GameContext.Current.Options != null)
+            {
+                if ((_key == "FEDERATION") && (GameContext.Current.Options.FederationPlayable == EmpirePlayable.No))
+                {
+                    _civType = CivilizationType.ExpandingPower;
+                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                }
+
+                if ((_key == "ROMULANS") && (GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No))
+                {
+                    _civType = CivilizationType.ExpandingPower;
+                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                }
+
+                if ((_key == "KLINGONS") && (GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No))
+                {
+                    _civType = CivilizationType.ExpandingPower;
+                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                }
+
+                if ((_key == "CARDASSIANS") && (GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No))
+                {
+                    _civType = CivilizationType.ExpandingPower;
+                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                }
+
+                if ((_key == "DOMINION") && (GameContext.Current.Options.DominionPlayable == EmpirePlayable.No))
+                {
+                    _civType = CivilizationType.ExpandingPower;
+                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                }
+
+                if ((_key == "BORG") && (GameContext.Current.Options.BorgPlayable == EmpirePlayable.No))
+                {
+                    _civType = CivilizationType.ExpandingPower;
+                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                }
+
+                if ((_key == "TERRANEMPIRE") && (GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No))
+                {
+                    _civType = CivilizationType.ExpandingPower;
+                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                }
             }
 
             if (string.IsNullOrEmpty(_raceId))
@@ -464,6 +442,22 @@ namespace Supremacy.Entities
         {
             get { return _shipPrefix; }
         }
+
+        /// <summary>
+        /// Return the base morale level for this civilization
+        /// </summary>
+        public int BaseMoraleLevel
+        {
+            get { return _baseMoraleLevel; }
+        }
+
+        /// <summary>
+        /// The morale drift rate for the civilization
+        /// </summary>
+        public int MoraleDriftRate
+        {
+            get { return _moraleDriftRate; }
+        }
         #endregion
 
         #region INamedItem Members
@@ -558,8 +552,10 @@ namespace Supremacy.Entities
             writer.WriteElementString("HomeQuadrant", HomeQuadrant.ToString());
             writer.WriteElementString("CivilizationType", CivilizationType.ToString());
             writer.WriteElementString("TechCurve", TechCurve.ToString());
-            writer.WriteElementString("IndustryToCreditsConversionRatio", (string)((int)(IndustryToCreditsConversionRatio * 100)).ToString());
+            writer.WriteElementString("IndustryToCreditsConversionRatio", ((int)(IndustryToCreditsConversionRatio * 100)).ToString());
             writer.WriteElementString("ShipPrefix", _shipPrefix);
+            writer.WriteElementString("BaseMoraleLevel", _baseMoraleLevel.ToString());
+            writer.WriteElementString("MoraleDriftRate", _moraleDriftRate.ToString());
             writer.WriteEndElement();
         }
 
@@ -609,7 +605,13 @@ namespace Supremacy.Entities
                         ),
                     new XElement(
                         ns + "ShipPrefix",
-                        ShipPrefix)
+                        ShipPrefix),
+                    new XElement(
+                        ns + "BaseMoraleLevel",
+                        _baseMoraleLevel),
+                    new XElement(
+                        ns + "MoraleDriftRate",
+                        _moraleDriftRate)
                     );
 
             return parentElement;

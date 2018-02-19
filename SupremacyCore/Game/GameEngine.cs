@@ -1439,13 +1439,6 @@ namespace Supremacy.Game
         void DoMorale(GameContext game)
         {
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
-            /*
-             * We want to update the morale level of each star system.  For each civilization,
-             * we use two modifiers: a baseline morale level, and the rate at which morale
-             * drifts towards that baseline when no other morale changes occur during a turn.
-             */
-            var baseMoraleTable = game.Tables.MoraleTables["BaseMoraleLevels"];
-            var driftRateTable = game.Tables.MoraleTables["MoraleDriftRate"];
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
@@ -1484,24 +1477,19 @@ namespace Supremacy.Game
                          */
                         if (colony.Morale.CurrentChange == 0)
                         {
-                            int drift;
-                            int baseMorale;
-                            var ownerId = colony.OriginalOwner.Key;
+                            int drift = 0;
+                            var originalCiv = colony.OriginalOwner;
 
-                            if (baseMoraleTable[ownerId] != null)
-                                baseMorale = Number.ParseInt32(baseMoraleTable[ownerId][0]);
-                            else
-                                baseMorale = Number.ParseInt32(baseMoraleTable[0][0]);
-
-                            if (driftRateTable[ownerId] != null)
-                                drift = Number.ParseInt32(driftRateTable[ownerId][0]);
-                            else
-                                drift = Number.ParseInt32(driftRateTable[0][0]);
-
-                            if (baseMorale > colony.Morale.CurrentValue)
-                                drift = Math.Min(drift, baseMorale - colony.Morale.CurrentValue);
-                            else if (colony.Morale.CurrentValue > baseMorale)
-                                drift = Math.Max(-drift, baseMorale - colony.Morale.CurrentValue);
+                            //We're below the base, so drift up to it
+                            if (colony.Morale.CurrentValue < originalCiv.BaseMoraleLevel)
+                            {
+                                drift = originalCiv.MoraleDriftRate;
+                            }
+                            //We're above the base, so drift down to it
+                            else if (colony.Morale.CurrentValue > originalCiv.BaseMoraleLevel)
+                            {
+                                drift = -originalCiv.MoraleDriftRate;
+                            }
 
                             colony.Morale.AdjustCurrent(drift);
                         }
