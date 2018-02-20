@@ -241,6 +241,17 @@ namespace Supremacy.Orbitals
         }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="FleetOrder"/> is cancelled when the
+        /// location of this fleet is changed
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this <see cref="FleetOrder"/> is cancelled; otherwise, <c>false</c></value>.
+        public virtual bool IsCancelledOnMove
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether a fleet will engage hostiles when assigned this <see cref="FleetOrder"/>.
         /// </summary>
         /// <value><c>true</c> if fleet will engage hostiles; otherwise, <c>false</c>.</value>
@@ -323,13 +334,24 @@ namespace Supremacy.Orbitals
         /// </summary>
         protected internal virtual void OnFleetRouteChanged()
         {
+            Fleet fleet = Fleet;
+            if ((fleet != null) && IsCancelledOnRouteChange)
+            {
+                fleet.SetOrder(fleet.GetDefaultOrder());
+            }
             OnPropertyChanged("DisplayText");
         }
 
         /// <summary>
         /// Called when a fleet moves while this <see cref="FleetOrder"/> is assigned.
         /// </summary>
-        protected internal virtual void OnFleetMoved() { }
+        public virtual void OnFleetMoved() {
+            Fleet fleet = Fleet;
+            if ((fleet != null) && IsCancelledOnMove)
+            {
+                fleet.SetOrder(fleet.GetDefaultOrder());
+            }
+        }
 
         /// <summary>
         /// Called when ships are added or removed from a fleet when this <see cref="FleetOrder"/> is assigned.

@@ -627,6 +627,11 @@ namespace Supremacy.Orbitals
                 civManager.MapData.SetScanned(Location, true, SensorRange);
             }
 
+            if (_order != null)
+            {
+                _order.OnFleetMoved();
+            }
+
             if (Interlocked.CompareExchange(ref _movementSempaphore, 0, 0) == 0)
                 return;
 
@@ -812,11 +817,7 @@ namespace Supremacy.Orbitals
             Interlocked.Increment(ref _movementSempaphore);
             try
             {
-                var lastLocation = Location;
                 Location = nextSector.Location;
-
-                if ((_order != null) && (Location != lastLocation))
-                    _order.OnFleetMoved();
             }
             finally
             {
