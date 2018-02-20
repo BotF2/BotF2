@@ -1719,6 +1719,10 @@ namespace Supremacy.Orbitals
             get { return true; }
         }
 
+        public override bool IsCancelledOnMove {
+            get { return true; }
+        }
+
         public override bool IsComplete
         {
             get { return (BuildProject != null) && BuildProject.IsCompleted; }
