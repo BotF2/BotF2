@@ -1215,7 +1215,7 @@ namespace Supremacy.Orbitals
                 Fleet.SetOrder(Fleet.GetDefaultOrder());
         }
 
-        protected internal override void OnFleetMoved()
+        public override void OnFleetMoved()
         {
             base.OnFleetMoved();
             if (TargetFleet != null)
@@ -1719,6 +1719,10 @@ namespace Supremacy.Orbitals
             get { return true; }
         }
 
+        public override bool IsCancelledOnMove {
+            get { return true; }
+        }
+
         public override bool IsComplete
         {
             get { return (BuildProject != null) && BuildProject.IsCompleted; }
@@ -1868,6 +1872,13 @@ namespace Supremacy.Orbitals
             var destroyedShip = Fleet.Ships.FirstOrDefault(o => o.ShipType == ShipType.Construction);
             if (destroyedShip != null)
                 GameContext.Current.Universe.Destroy(destroyedShip);
+        }
+
+        public override void OnFleetMoved()
+        {
+            base.OnFleetMoved();
+            if (BuildProject != null)
+                BuildProject.Cancel();
         }
 
         #region FleetProductionCenter Class
