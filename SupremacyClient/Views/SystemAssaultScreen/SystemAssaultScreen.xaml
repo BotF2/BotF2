@@ -540,21 +540,49 @@
               </LinearGradientBrush>
             </scc:Chevron.Background>
           </scc:Chevron>
+            
           <Grid Margin="-11,0,0,0"
                 UseLayoutRounding="False">
-            <TextBlock Margin="1,1,-1,-1"
+                        <TextBlock Margin="1,1,-1,-1"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Text="VICTORY!"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
                        FontSize="12pt"
                        Foreground="Black"
                        FontFamily="{StaticResource Eurostyle}" />
+                        <TextBlock Name="InvasionStatus"
+                           Margin="1,1,-1,-1"
+                           Width="1500"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
+                           FontSize="14pt"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           FontFamily="{StaticResource Eurostyle}">
+                <TextBlock.Triggers>
+                    <EventTrigger  RoutedEvent="TextBlock.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="InvasionStatus"
+                                    Storyboard.TargetProperty="(TextBlock.Width)"
+                                    To="0.0"
+                                    Duration="0:0:8"
+                                    AutoReverse="True"
+                                    RepeatBehavior="Forever" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </TextBlock.Triggers>
+            </TextBlock>
             <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Text="VICTORY!"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
                        FontSize="12pt"
                        Foreground="White"
                        FontFamily="{StaticResource Eurostyle}" />
+
           </Grid>
         </Grid>
 
@@ -590,15 +618,15 @@
                        FontFamily="{StaticResource Eurostyle}" />
           </Grid>
         </Grid>
-        <Grid Grid.Column="1"
+                <Grid Grid.Column="1"
               Grid.ColumnSpan="5"
               Visibility="{Binding Path=InvasionStatus, Converter={scc:ComparisonConverter ComparisonType=Equal, TrueValue={x:Static Visibility.Visible}, FalseValue={x:Static Visibility.Hidden}}, ConverterParameter={x:Static s:InvasionStatus.Stalemate}}">
-          <scc:Chevron Height="28"
+                    <scc:Chevron Height="28"
                        Margin="-11,0,0,0"
                        Background="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
-          <Grid Margin="-11,0,0,0"
+                    <Grid Margin="-11,0,0,0"
                 UseLayoutRounding="False">
-            <TextBlock Margin="1,1,-1,-1"
+                        <TextBlock Margin="1,1,-1,-1"
                        HorizontalAlignment="Center"
                        Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF}"
                        FontSize="12pt"
@@ -611,9 +639,8 @@
                        Foreground="White"
                        FontFamily="{StaticResource Eurostyle}" />
                     </Grid>
-        </Grid>
-
-      </Grid>
+                </Grid>
+            </Grid>
 
       <Grid Grid.ColumnSpan="7"
             Grid.Row="1"
