@@ -543,46 +543,45 @@
             
           <Grid Margin="-11,0,0,0"
                 UseLayoutRounding="False">
-                        <TextBlock Margin="1,1,-1,-1"
+                <TextBlock Margin="1,1,-1,-1"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
                        FontSize="12pt"
                        Foreground="Black"
                        FontFamily="{StaticResource Eurostyle}" />
-                        <TextBlock Name="InvasionStatus"
-                           Margin="1,1,-1,-1"
-                           Width="1500"
-                           HorizontalAlignment="Right"
+                <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
-                           FontSize="14pt"
-                           FontWeight="Bold"
+                           FontSize="12pt"
                            Foreground="White"
-                           FontFamily="{StaticResource Eurostyle}">
-                <TextBlock.Triggers>
-                    <EventTrigger  RoutedEvent="TextBlock.Loaded">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation
-                                    Storyboard.TargetName="InvasionStatus"
-                                    Storyboard.TargetProperty="(TextBlock.Width)"
-                                    To="0.0"
-                                    Duration="0:0:8"
-                                    AutoReverse="True"
-                                    RepeatBehavior="Forever" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </TextBlock.Triggers>
-            </TextBlock>
-            <TextBlock HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
-                       FontSize="12pt"
-                       Foreground="White"
-                       FontFamily="{StaticResource Eurostyle}" />
-
+                           FontFamily="{StaticResource Eurostyle}" />
+                <TextBlock Name="InvasionStatus"
+                    Margin="1,1,-1,-1"
+                    Width="1500"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_VICTORY}"
+                    FontSize="14pt"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    FontFamily="{StaticResource Eurostyle}">
+                    <TextBlock.Triggers>
+                        <EventTrigger  RoutedEvent="TextBlock.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                Storyboard.TargetName="InvasionStatus"
+                                Storyboard.TargetProperty="(TextBlock.Width)"
+                                To="0.0"
+                                Duration="0:0:8"
+                                AutoReverse="True"
+                                RepeatBehavior="Forever" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
           </Grid>
         </Grid>
 
