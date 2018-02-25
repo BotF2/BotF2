@@ -7,13 +7,12 @@
 //
 // All other rights reserved.
 
-using System;
-using System.ComponentModel;
-using System.Linq;
-
 using Supremacy.Annotations;
 using Supremacy.Entities;
 using Supremacy.Utility;
+using System;
+using System.ComponentModel;
+using System.Linq;
 
 namespace Supremacy.Game
 {
@@ -261,31 +260,8 @@ namespace Supremacy.Game
                 var civDatabase = CivDatabase.Load();
                 var empires = civDatabase.Where(o => o.IsEmpire).Select(o => new { o.Name, o.CivID });
 
-                //  || o.Key == "BORG" || o.Key == "TERRANEMPIRE"
-
-                //var fed = civDatabase.FirstOrDefault();   //.Where(o => o.IsEmpire).FirstOrDefault());
-                //var stringkling = "Klingons";
-
-
-                //var klingID = empires.ElementAt(2);
-
-                // var klingID = civDatabase.TryGetValue(string stringkling, out civDatabase.ToString() );
-
-                // civDatabase.IndexOf(Civilization.LocalPlayerEmpireID);
-
-                // 
-                // _civIds.Remove(civ.CivID);
-
-
-
-                //if (kling == "Klingons")
-                //GameLog.Client.GameData.DebugFormat("GameEngine.cs - DoPreGameSetup: Fed={0}, var kling = {1}", fed,  klingID.Name);
-
-                //if (this.LocalPlayerEmpireID + 1 == 2)
-                //{
                 EmpireIDs = empires.Select(o => (int)o.CivID).ToArray();
                     EmpireNames = empires.Select(o => o.Name).ToArray();
-                //}
             }
             finally
             {

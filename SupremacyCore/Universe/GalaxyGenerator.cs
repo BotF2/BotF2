@@ -7,12 +7,7 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using log4net;
-
 using Supremacy.Collections;
 using Supremacy.Data;
 using Supremacy.Entities;
@@ -20,11 +15,12 @@ using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Utility;
-
-using Wintellect.PowerCollections;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Supremacy.IO;
-using Supremacy.Messages;
+using Wintellect.PowerCollections;
 
 namespace Supremacy.Universe
 {
@@ -1110,7 +1106,6 @@ namespace Supremacy.Universe
 
                         StarType starType;
 
-                        MapLocation location = new MapLocation();
                         do { starType = GetStarType(); }
                         while (!StarHelper.CanPlaceStar(starType, position, homeLocations));
 
