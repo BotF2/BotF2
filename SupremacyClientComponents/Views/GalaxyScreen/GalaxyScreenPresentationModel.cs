@@ -157,7 +157,7 @@ namespace Supremacy.Client.Views
 
         #region Events
         public event EventHandler AvailableShipsChanged;
-        public event EventHandler AvailableIntelsChanged;
+    /*    public event EventHandler AvailableIntelsChanged*/
         public event EventHandler InputModeChanged;
         public event EventHandler OverviewModeChanged;
         public event EventHandler SelectedSectorAllegianceChanged;
@@ -165,19 +165,19 @@ namespace Supremacy.Client.Views
         public event EventHandler HoveredSectorChanged;
         public event EventHandler SelectedSectorInhabitantsChanged;
         public event EventHandler SelectedShipChanged;
-        public event EventHandler SelectedIntelChanged;
+        //public event EventHandler SelectedIntelChanged;
         public event EventHandler SelectedShipInTaskForceChanged;
-        public event EventHandler SelectedIntelInIntelForceChanged;
+        //public event EventHandler SelectedIntelInIntelForceChanged;
         public event EventHandler SelectedShipsInTaskForceChanged;
-        public event EventHandler SelectedIntelsInIntelForceChanged;
+        //public event EventHandler SelectedIntelsInIntelForceChanged;
         public event EventHandler SelectedTaskForceChanged;
-        public event EventHandler SelectedIntelForceChanged;
+        //public event EventHandler SelectedIntelForceChanged;
         public event EventHandler TaskForcesChanged;
-        public event EventHandler IntelForcesChanged;
+        //public event EventHandler IntelForcesChanged;
         public event EventHandler LocalPlayerTaskForcesChanged;
-        public event EventHandler LocalPlayerIntelForcesChanged;
+        //public event EventHandler LocalPlayerIntelForcesChanged;
         public event EventHandler VisibleTaskForcesChanged;
-        public event EventHandler VisibleIntelForcesChanged;
+        //public event EventHandler VisibleIntelForcesChanged;
         public event EventHandler SelectedTradeRouteChanged;
         public event EventHandler TradeRoutesChanged;
         public event EventHandler SelectedSectorStationChanged;
@@ -619,12 +619,12 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        private void OnAvailableIntelsChanged()
-        {
-            var handler = AvailableIntelsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnAvailableIntelsChanged()
+        //{
+        //    var handler = AvailableIntelsChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
         private void OnInputModeChanged()
         {
             var handler = InputModeChanged;
@@ -680,24 +680,24 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        private void OnSelectedIntelChanged()
-        {
-            var handler = SelectedIntelChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnSelectedIntelChanged()
+        //{
+        //    var handler = SelectedIntelChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
         private void OnSelectedShipInTaskForceChanged()
         {
             var handler = SelectedShipInTaskForceChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        private void OnSelectedIntelInIntelForceChanged()
-        {
-            var handler = SelectedIntelInIntelForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnSelectedIntelInIntelForceChanged()
+        //{
+        //    var handler = SelectedIntelInIntelForceChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
         private void OnSelectedShipsInTaskForceChanged()
         {
             var handler = SelectedShipsInTaskForceChanged;
@@ -705,12 +705,12 @@ namespace Supremacy.Client.Views
                 handler(this, EventArgs.Empty);
         }
 
-        private void OnSelectedIntelsInIntelForceChanged()
-        {
-            var handler = SelectedIntelsInIntelForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnSelectedIntelsInIntelForceChanged()
+        //{
+        //    var handler = SelectedIntelsInIntelForceChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
 
         private void OnSelectedTaskForceChanged()
         {
@@ -718,12 +718,12 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        private void OnSelectedIntelForceChanged()
-        {
-            var handler = SelectedIntelForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnSelectedIntelForceChanged()
+        //{
+        //    var handler = SelectedIntelForceChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
 
         private void OnSelectedTradeRouteChanged()
         {
@@ -738,12 +738,12 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        private void OnIntelForcesChanged()
-        {
-            var handler = IntelForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnIntelForcesChanged()
+        //{
+        //    var handler = IntelForcesChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
 
         private void OnLocalPlayerTaskForcesChanged()
         {
@@ -751,12 +751,12 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        private void OnLocalPlayerIntelForcesChanged()
-        {
-            var handler = LocalPlayerIntelForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnLocalPlayerIntelForcesChanged()
+        //{
+        //    var handler = LocalPlayerIntelForcesChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
 
         private void OnVisibleTaskForcesChanged()
         {
@@ -764,12 +764,12 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        private void OnVisibleIntelForcesChanged()
-        {
-            var handler = VisibleIntelForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        }
+        //private void OnVisibleIntelForcesChanged()
+        //{
+        //    var handler = VisibleIntelForcesChanged;
+        //    if (handler != null)
+        //        handler(this, EventArgs.Empty);
+        //}
 
 
         private void OnTradeRoutesChanged()
