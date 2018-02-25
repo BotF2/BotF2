@@ -7,16 +7,12 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Windows.Media.Imaging;
-
 using Microsoft.Practices.ServiceLocation;
-
 using Supremacy.Game;
 using Supremacy.Types;
 using Supremacy.Utility;
-using System.Windows.Controls;
-using Supremacy.IO;
+using System;
+using System.Windows.Media.Imaging;
 
 namespace Supremacy.Client
 {
@@ -38,7 +34,7 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
-            //PlayerNameSPInput.Text = "choice your name";
+            //PlayerNameSPInput.Text = "Choose your name";
             lstGalaxySize.ItemsSource = EnumHelper.GetValues<GalaxySize>();
             lstGalaxyShape.ItemsSource = EnumHelper.GetValues<GalaxyShape>();
             lstPlanetDensity.ItemsSource = EnumHelper.GetValues<PlanetDensity>();
@@ -61,14 +57,14 @@ namespace Supremacy.Client
             lstStarDensity.SelectionChanged += (sender, args) => OnOptionsChanged();
             lstMinorRaces.SelectionChanged += (sender, args) => OnOptionsChanged();
             lstTechLevel.SelectionChanged += (sender, args) => OnOptionsChanged();
-            //lstIntroPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateIntroPlayable(); };
-            lstFederationPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateFederationPlayable(); };
-            lstRomulanPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateRomulanPlayable(); };
-            lstKlingonPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateKlingonPlayable(); };
-            lstCardassianPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateCardassianPlayable(); };
-            lstDominionPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateDominionPlayable(); };
-            lstBorgPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateBorgPlayable(); };
-            lstTerranEmpirePlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); UpdateTerranEmpirePlayable(); };
+            //lstIntroPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            lstFederationPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            lstRomulanPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            lstKlingonPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            lstCardassianPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged();  };
+            lstDominionPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged();  };
+            lstBorgPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged();  };
+            lstTerranEmpirePlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
 
             //try
             //{
@@ -157,19 +153,6 @@ namespace Supremacy.Client
             }
         }
 
-
-        private void UpdateIntroPlayable()
-        {
-            try
-            {
-
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
         private void UpdatePlayerNameSP()
         {
             try
@@ -181,92 +164,6 @@ namespace Supremacy.Client
                 GameLog.LogException(e);
             }
         }
-
-        private void UpdateFederationPlayable()
-        {
-            try
-            {
-
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateTerranEmpirePlayable()
-        {
-            try
-            {
-
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateRomulanPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateKlingonPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateCardassianPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateDominionPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateBorgPlayable()
-        {
-            try
-            {
-
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-
         
         #endregion
     }

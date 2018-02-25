@@ -7,17 +7,16 @@
 //
 // All other rights reserved.
 
+using Supremacy.Annotations;
+using Supremacy.Client.Audio;
+using Supremacy.Client.Dialogs;
+using Supremacy.Entities;
+using Supremacy.Game;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
-using System.Collections.Generic;
-using Supremacy.Entities;
-using Supremacy.Game;
-using Supremacy.Client.Audio;
-using Supremacy.Annotations;
-using System;
-using Supremacy.Utility;
-using Supremacy.Client.Dialogs;
 
 
 namespace Supremacy.Client
@@ -47,13 +46,20 @@ namespace Supremacy.Client
             try
             {
                 DataContext = CivDatabase.Load()
-                    .Where(civ => civ.CivilizationType == CivilizationType.Empire || civ.Key == "BORG" || civ.Key == "TERRANEMPIRE" || 
-                            civ.Key == "FEDERATION" || civ.Key == "ROMULANS" || civ.Key == "KLINGONS" || civ.Key == "CARDASSIANS" || civ.Key == "DOMINION")  
+                    .Where(civ => civ.CivilizationType == CivilizationType.Empire)
                     .ToList();
                 CivSelector.SelectionChanged += CivSelector_SelectionChanged;
 
-                // Pre-Setting in Options would be fine, just for coding issues
-                CivSelector.SelectedIndex = 0;  // jumps over first selection ("Intro" race) and jumps to Federation  
+                //Select Federation to begin with
+                List<Civilization> tmp = (List<Civilization>)DataContext;                
+                if (tmp[0].ShortName == "Intro")
+                {
+                    CivSelector.SelectedIndex = 1;
+                }
+                else
+                {
+                    CivSelector.SelectedIndex = 0;
+                }
             }
             finally
             {
@@ -68,21 +74,21 @@ namespace Supremacy.Client
                 _startAudio = true;
                 return;
             }
-            var civlist = DataContext as List<Civilization>;
-            if(CivSelector.SelectedIndex >= 0)
+            if (CivSelector.SelectedIndex >= 0)
             {
-                switch(civlist[CivSelector.SelectedIndex].Name)
+                switch(CivSelector.SelectedValue.ToString())
                 {
                     case "Federation":
                         _soundPlayer.Play("Menu", "FedSelection");
-                        //GameLog.Client.GameData.DebugFormat("SPStartScreen.cs: CivID={0}, Name={1}", civlist[CivSelector.SelectedIndex].CivID, civlist[CivSelector.SelectedIndex].Name);
+                        break;
+                    case "Terran Empire":
+                        _soundPlayer.Play("Menu", "TerranSelection");
                         break;
                     case "Romulans":
                         _soundPlayer.Play("Menu", "RomSelection");
                         break;
                     case "Klingons":
                         _soundPlayer.Play("Menu", "KlingSelection");
-                        //GameLog.Client.GameData.DebugFormat("SPStartScreen.cs: CivID={0}, Name={1}", civlist[CivSelector.SelectedIndex].CivID, civlist[CivSelector.SelectedIndex].Name);
                         break;
                     case "Cardassians":
                         _soundPlayer.Play("Menu", "CardSelection");
@@ -92,10 +98,6 @@ namespace Supremacy.Client
                         break;
                     case "Borg":
                         _soundPlayer.Play("Menu", "BorgSelection");
-                        break;
-                    case "Terran Empire":
-                        _soundPlayer.Play("Menu", "TerranSelection");
-                        //GameLog.Client.GameData.DebugFormat("SPStartScreen.cs: CivID={0}, Name={1}", civlist[CivSelector.SelectedIndex].CivID, civlist[CivSelector.SelectedIndex].Name);
                         break;
                 }
             }
@@ -124,202 +126,80 @@ namespace Supremacy.Client
             // Just usage of civ and stuff in en.txt must fit manually, in en.txt Terran Empire can be translated into french "Empire"
             // only INSIDE CODE we use names like "RomulanPlayable" instead of "Civ_3_Playable"
 
-            var civlist = DataContext as List<Civilization>;
             if (CivSelector.SelectedIndex >= 0)
             {
-                //switch (CivSelector.SelectedIndex)
-                //{
-
-                int IntroRaceIsIn = 1;   //  0 = in the game,  1 = if out of the game
-
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 0 )  // 
+                switch (CivSelector.SelectedValue.ToString())
                 {
-                    if (Options.IntroPlayable == EmpirePlayable.No)
-                    {
-                        var result0 = MessageDialog.Show(Environment.NewLine +
-                        Supremacy.Resources.ResourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
+                    case "Intro":
+                        if (Options.IntroPlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
+                    case "Federation":
+                        if (Options.FederationPlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
+                    case "Terran Empire":
+                        if (Options.TerranEmpirePlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
+                    case "Romulans":
+                        if (Options.RomulanPlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
+                    case "Klingons":
+                        if (Options.KlingonPlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
+                    case "Cardassians":
+                        if (Options.CardassianPlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
+                    case "Dominion":
+                        if (Options.DominionPlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
+                    case "Borg":
+                        if (Options.BorgPlayable == EmpirePlayable.No)
+                        {
+                            MessageDialog.Show(Environment.NewLine +
+                                Supremacy.Resources.ResourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            return;
+                        }
+                        break;
                 }
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 1 )  // 
-                {
-                    if (Options.FederationPlayable == EmpirePlayable.No)
-                    {
-                        var result1 = MessageDialog.Show(Environment.NewLine +
-                        Supremacy.Resources.ResourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
-                }
-                //return;
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 2  )  // 
-                {
-                    if (Options.TerranEmpirePlayable == EmpirePlayable.No)
-                    {
-                        var result2 = MessageDialog.Show(Environment.NewLine +
-                           Supremacy.Resources.ResourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
-                }
-                //return;
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 3  )  // 
-                {
-                    if (Options.RomulanPlayable == EmpirePlayable.No)
-                    {
-                        var result3 = MessageDialog.Show(Environment.NewLine +
-                       Supremacy.Resources.ResourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
-                }
-                //return;
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 4)  // 
-                {
-                    if (Options.KlingonPlayable == EmpirePlayable.No)
-                    {
-                        var result4 = MessageDialog.Show(Environment.NewLine +
-                        Supremacy.Resources.ResourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
-                }
-                //return;
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 5)  // 
-                {
-                    if (Options.CardassianPlayable == EmpirePlayable.No)
-                    {
-                        var result5 = MessageDialog.Show(Environment.NewLine +
-                        Supremacy.Resources.ResourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
-                }
-                //return;
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 6)  // 
-                {
-                    if (Options.DominionPlayable == EmpirePlayable.No)
-                    {
-                        var result6 = MessageDialog.Show(Environment.NewLine +
-                        Supremacy.Resources.ResourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
-                }
-                //return;
-                if (CivSelector.SelectedIndex + IntroRaceIsIn == 7)  // Borg
-                {
-                    if (Options.BorgPlayable == EmpirePlayable.No)
-                    {
-                        var result7 = MessageDialog.Show(Environment.NewLine +
-                       Supremacy.Resources.ResourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
-                        return;
-                    }
-                }
-                //return;
-
             }
-
-            // ## old code ##
-            //if (CivSelector.SelectedIndex == 7)  // Borg
-            //{
-            //    if (Options.BorgPlayable == EmpirePlayable.No)
-            //    {
-            //        var result = MessageDialog.Show(Environment.NewLine + "Borg Empire is set to NOT playable on the right",
-            //                                MessageDialogButtons.Ok);
-            //        //CivSelector.SelectedIndex = 1;
-            //        return;   // return = not starting the game
-            //    }
-            //}
 
             _soundPlayer.Play("Menu", "LoadingGame");
             GameOptionsManager.SaveDefaults(OptionsPanel.Options);
             DialogResult = true;
-        }
-
-        private void UpdateFederationPlayable()
-        {
-            try
-            {
-                // at the moment no idea 
-                // we don't want to disallow Fed + Terran being inside the game - this can or better must decided each player on his own
-
-                //var imageSource = new BitmapImage(
-                //    new Uri(
-                //        "vfs:///Resources/Images/Galaxies/" + this.lstGalaxyShape.SelectedItem + ".png",
-                //        UriKind.Absolute));
-                //GalaxyImage.Source = imageSource;
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateRomulanPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateKlingonPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateCardassianPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateDominionPlayable()
-        {
-            try
-            {
-                // at least if "no" on the right side then grey out the left side
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateBorgPlayable()
-        {
-            try
-            {
-                // at the moment no idea
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
-        }
-
-        private void UpdateTerranEmpirePlayable()
-        {
-            try
-            {
-                // at the moment no idea
-            }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
-            {
-                GameLog.LogException(e);
-            }
         }
 
         #endregion

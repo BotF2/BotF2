@@ -7,26 +7,22 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Concurrency;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Windows;
-
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
-
 using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
+using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
 using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Client.OptionsPages;
 using Supremacy.Client.Services;
 using Supremacy.Client.Views;
+using Supremacy.Client.Views.DiplomacyScreen;
 using Supremacy.Game;
 using Supremacy.Messages;
 using Supremacy.Messaging;
@@ -36,11 +32,13 @@ using Supremacy.Types;
 using Supremacy.UI;
 using Supremacy.Utility;
 using Supremacy.WCF;
-using System.Linq;
-using Supremacy.Client.Audio;
-using Supremacy.Client.Context;
+using System;
+using System.Concurrency;
 using System.IO;
-using Supremacy.Client.Views.DiplomacyScreen;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows;
 
 namespace Supremacy.Client
 {
@@ -674,28 +672,7 @@ namespace Supremacy.Client
             if (!dialogResult.HasValue || !dialogResult.Value)
                 return;
 
-            var themeID = startScreen.EmpireID;
-
-            // works    GameLog.Client.GameData.DebugFormat("ClientModule.cs: startScreen.EmpireID={0}", startScreen.EmpireID);
-
-            if (startScreen.EmpireID == 0)
-                themeID = 0;
-            if (startScreen.EmpireID == 1)
-                themeID = 1;
-            if (startScreen.EmpireID == 2)
-                themeID = 2;
-            if (startScreen.EmpireID == 3)
-                themeID = 3;
-            if (startScreen.EmpireID == 4)
-                themeID = 4;
-            if (startScreen.EmpireID == 5)
-                themeID = 5;
-            if (startScreen.EmpireID == 6)
-                themeID = 6;
-            if (startScreen.EmpireID == 7)
-                themeID = 7;
-
-            var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, themeID);
+            var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, startScreen.EmpireID);
 
             //if (startScreen.EmpireID = 5)
             //    var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, themeID);

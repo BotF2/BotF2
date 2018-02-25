@@ -7,31 +7,27 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
-
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity.Utility;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;
+using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
 using Supremacy.Client.Events;
 using Supremacy.Client.Views;
 using Supremacy.Client.Views.LobbyScreen;
 using Supremacy.Game;
 using Supremacy.Resources;
-
-using System.Linq;
-
-using NavigationCommands = Supremacy.Client.Commands.NavigationCommands;
-using Supremacy.Client.Context;
 using Supremacy.Utility;
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
+using NavigationCommands = Supremacy.Client.Commands.NavigationCommands;
 
 namespace Supremacy.Client
 {
@@ -131,75 +127,59 @@ namespace Supremacy.Client
             if (!AppContext.IsGameHost)
                 return;
 
-            // first check for races available
-
-            //foreach (var empireCheck in AppContext.LobbyData.Empires)
-            //{
-                //if (AppContext.LobbyData.UnassignedPlayers.Any())
-                //    continue;
-
-                //GameLog.Client.GameData.DebugFormat("MultiplayerLobby.xaml.cs - playercHeck={0}, EmpireID={1}", empireCheck.ToString(), AppContext.LocalPlayer.EmpireID  );
-
-
-
             GameLog.Print("EmpireID-Selected={0} ", AppContext.LocalPlayer.EmpireID);
 
-            //if (empireCheck == "Intro")
-            //    continue;
-
-            int IntroRaceIsIn = 1;   //  0 = in the game,  1 = if out of the game
-
-
             // IMPORTANT: at the moment only LocalPlayer is checked whether it's set to NOT Playable. At the moment NO check for the other players in Multi Player
+            int IntroRaceIsIn = 1; //  1 = Out of game, 0 = In game
+            // Todo: find a way to compare String = "INTRO" (if Intro is removed, Fed is 0)
 
-            if (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 1)  
+            if (OptionsPanel.Options.IntroPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 0)
             {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
-                if (OptionsPanel.Options.TerranEmpirePlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 2)  // 2 = Terran
-                {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
+            if (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 1)
+            {
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
-                if (OptionsPanel.Options.RomulanPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 3)
-                {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
+            if (OptionsPanel.Options.TerranEmpirePlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 2)
+            {
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
-                if (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 4)
-                {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
+            if (OptionsPanel.Options.RomulanPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 3)
+            {
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
-                if (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 5)
-                {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
+            if (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 4)
+            {
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
-                if (OptionsPanel.Options.DominionPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 6)
-                {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
+            if (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 5)
+            {
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
+            if (OptionsPanel.Options.DominionPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 6)
+            {
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
-                if (OptionsPanel.Options.BorgPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 7)
-                {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
-
-                if (AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 0)  // hardcoded   ToDo: find a way to compare String = "INTRO" (if Intro is removed, Fed is 0)
-                {
-                    var result = MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
-                    return;
-                }
+            if (OptionsPanel.Options.BorgPlayable == EmpirePlayable.No && AppContext.LocalPlayer.EmpireID + IntroRaceIsIn == 7)
+            {
+                MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
+                return;
+            }
 
             GameLog.Print("EmpireID STARTING Game={0}", AppContext.LocalPlayer.EmpireID);
 
@@ -213,7 +193,7 @@ namespace Supremacy.Client
                 if (result == MessageDialogResult.No)
                     return;
             }
-            if ((int) OptionsPanel.Options.GalaxySize > (int) GalaxySize.Small)
+            if (OptionsPanel.Options.GalaxySize > GalaxySize.Small)
             {
                 var result = MessageDialog.Show(
                     "Warning",
@@ -335,49 +315,47 @@ namespace Supremacy.Client
                 return;
             }
 
-            //{
-                foreach (var slotView in PlayerInfoPanel.Children.OfType<PlayerSlotView>())
-                {
-                    var playerSlot = lobbyData.Slots[slotView.Slot.SlotID];
-                    var assignablePlayers = lobbyData.Players.ToList();
+            foreach (var slotView in PlayerInfoPanel.Children.OfType<PlayerSlotView>())
+            {
+                var playerSlot = lobbyData.Slots[slotView.Slot.SlotID];
+                var assignablePlayers = lobbyData.Players.ToList();
 
-                    if (localPlayer.IsGameHost)
+                if (localPlayer.IsGameHost)
+                {
+                    //GameLog.Print("localPlayer.Name={0}, is hosting...", localPlayer.Name);
+                    assignablePlayers.Add(Player.Unassigned);
+                    assignablePlayers.Add(Player.Computer);
+                    //assignablePlayers.Add(Player.TurnedToMinor);
+                    //assignablePlayers.Add(Player.TurnedToExpandingPower);
+                }
+                else
+                {
+                    GameLog.Print("localplayer.Name={0} is NOT hosting...", localPlayer.Name);
+                    assignablePlayers.RemoveAll(o => !Equals(o, localPlayer) && !Equals(o, playerSlot.Player));
+                    if (playerSlot.IsVacant)
                     {
-                        //GameLog.Print("localPlayer.Name={0}, is hosting...", localPlayer.Name);
                         assignablePlayers.Add(Player.Unassigned);
-                        assignablePlayers.Add(Player.Computer);
-                        //assignablePlayers.Add(Player.TurnedToMinor);
-                        //assignablePlayers.Add(Player.TurnedToExpandingPower);
                     }
                     else
                     {
-                        GameLog.Print("localplayer.Name={0} is NOT hosting...", localPlayer.Name);
-                        assignablePlayers.RemoveAll(o => !Equals(o, localPlayer) && !Equals(o, playerSlot.Player));
-                        if (playerSlot.IsVacant)
+                        if (Equals(playerSlot.Player, localPlayer))
                         {
                             assignablePlayers.Add(Player.Unassigned);
                         }
                         else
                         {
-                            if (Equals(playerSlot.Player, localPlayer))
-                            {
-                                assignablePlayers.Add(Player.Unassigned);
-                            }
-                            else
-                            {
-                                assignablePlayers.RemoveAll(o => Equals(o, localPlayer));
-                                if (Equals(playerSlot.Player, Player.Computer))
-                                    assignablePlayers.Add(Player.Computer);
-                            }
+                            assignablePlayers.RemoveAll(o => Equals(o, localPlayer));
+                            if (Equals(playerSlot.Player, Player.Computer))
+                                assignablePlayers.Add(Player.Computer);
                         }
                     }
-                    using (slotView.EnterUpdateScope())
-                    {
-                        slotView.AssignablePlayers = assignablePlayers.ToList();
-                        slotView.Slot = playerSlot;
-                    }
                 }
-            //}   // end of if (IsMultiplayer)
+                using (slotView.EnterUpdateScope())
+                {
+                    slotView.AssignablePlayers = assignablePlayers.ToList();
+                    slotView.Slot = playerSlot;
+                }
+            }
         }
 
         private void OnChatOutboxKeyDown(object sender, KeyEventArgs e)
