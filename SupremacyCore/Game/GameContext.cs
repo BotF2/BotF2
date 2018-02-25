@@ -7,14 +7,10 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
-using System.Windows;
-
+using Supremacy.AI;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
+using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -26,12 +22,13 @@ using Supremacy.Scripting;
 using Supremacy.Tech;
 using Supremacy.Text;
 using Supremacy.Universe;
-using Supremacy.Collections;
-using Supremacy.AI;
-
-using System.Linq;
-
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
+using System.Windows;
 //using Supremacy.Intel;
 
 namespace Supremacy.Game
@@ -859,9 +856,9 @@ namespace Supremacy.Game
             {
                 _gameMod = GameModLoader.GetModFromCommandLine();
                 _races = RaceDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("Races loaded");
+                    GameLog.Client.GameData.DebugFormat("Races loaded");
                 _civilizations = CivDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("Civilizations loaded");
+                    GameLog.Client.GameData.DebugFormat("Civilizations loaded");
                 _civManagers = new CivilizationManagerMap();
                 _tables = GameTables.Load();
                         GameLog.Client.GameData.DebugFormat("Tables loaded");
@@ -1209,48 +1206,6 @@ namespace Supremacy.Game
 
                 FixupDiplomacyData();
 
-                // TODO: Remove before release
-                /*var federation = _civilizations["FEDERATION"];
-                var fedManager = CivilizationManagers[federation];
-
-                var turn = GameContext.Current.TurnNumber;
-                GameContext.Current.TurnNumber = 1;
-                fedManager.AgentPool.Update();
-
-                var futureAgents = fedManager.AgentPool.FutureAgents;
-
-                while (futureAgents.Count != 0)
-                {
-                    fedManager.AgentPool.CurrentAgents.Add(new Agent(futureAgents[0].Profile, federation));
-                    futureAgents.RemoveAt(0);
-                }*/
-
-/*
-                _diplomacyData.GetValuesForOwner(federation).ForEach(
-                    o =>
-                    {
-                        var counterparty = Civilizations[o.CounterpartyID];
-
-                        DiplomacyHelper.EnsureContact(
-                            federation,
-                            counterparty,
-                            CivilizationManagers[o.CounterpartyID].HomeColony.Location,
-                            1);
-
-                        if (!counterparty.IsEmpire)
-                            return;
-                        
-                        var agent = fedManager.AgentPool.CurrentAgents.FirstOrDefault(a => !a.HasMission);
-                        if (agent == null)
-                            return;
-
-                        var envoyMission = new DiplomaticEnvoyMission(federation, counterparty, fedManager.HomeColony.Location);
-
-                        envoyMission.Assign(agent);
-                        envoyMission.Begin();
-                    });
-*/
-                //GameContext.Current.TurnNumber = turn;
             }
             finally
             {

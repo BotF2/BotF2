@@ -7,6 +7,26 @@
 //
 // All other rights reserved.
 
+using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.ServiceLocation;
+using Supremacy.Annotations;
+using Supremacy.Client;
+using Supremacy.Client.Audio;
+using Supremacy.Client.Commands;
+using Supremacy.Client.Context;
+using Supremacy.Client.Dialogs;
+using Supremacy.Client.Events;
+using Supremacy.Client.Input;
+using Supremacy.Client.Views;
+using Supremacy.Diplomacy;
+using Supremacy.Entities;
+using Supremacy.Game;
+using Supremacy.Orbitals;
+using Supremacy.Pathfinding;
+using Supremacy.Resources;
+using Supremacy.Types;
+using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Concurrency;
@@ -22,28 +42,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-
-using Microsoft.Practices.Composite.Presentation.Events;
-using Microsoft.Practices.ServiceLocation;
-
-using Supremacy.Annotations;
-using Supremacy.Client;
-using Supremacy.Client.Commands;
-using Supremacy.Client.Dialogs;
-using Supremacy.Client.Events;
-using Supremacy.Client.Input;
-using Supremacy.Client.Views;
-using Supremacy.Diplomacy;
-using Supremacy.Entities;
-using Supremacy.Game;
-using Supremacy.Orbitals;
-using Supremacy.Pathfinding;
-using Supremacy.Resources;
-using Supremacy.Types;
-using Supremacy.Universe;
-using Supremacy.Utility;
-using Supremacy.Client.Context;
-using Supremacy.Client.Audio;
 
 namespace Supremacy.UI
 {
@@ -231,8 +229,7 @@ namespace Supremacy.UI
             //Instead of loading the civilizations from the gamecontext,
             //load them straight from the db, as this panel is only constructed once.
             //Failure to do so will cause crashes when starting a second game
-            CivDatabase newCivDB = CivDatabase.Load();
-            foreach (var civ in newCivDB)
+            foreach (var civ in MasterResources.CivDB)
             {
                 var color = (Color) ColorConverter.ConvertFromString(civ.Color);
                 var textColor = Color.Add(color, Colors.Gray);
