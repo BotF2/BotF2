@@ -210,6 +210,7 @@
     <Compile Include="Personnel\MissionPhase.cs" />
     <Compile Include="Personnel\MissionPhaseChangedEventArgs.cs" />
     <Compile Include="Personnel\TrainingAssignment.cs" />
+    <Compile Include="Resources\MasterResources.cs" />
     <Compile Include="Scripting\CivilizationScopedEvent.cs" />
     <Compile Include="Scripting\EventDefinition.cs" />
     <Compile Include="Scripting\Events\AsteroidImpactEvent.cs" />

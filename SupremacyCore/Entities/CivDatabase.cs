@@ -7,16 +7,16 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
+using Supremacy.Game;
+using Supremacy.Resources;
+using Supremacy.Types;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Xml.Schema;
-
-using Supremacy.Collections;
-using Supremacy.Resources;
-using Supremacy.Types;
-using Supremacy.Game;
 
 namespace Supremacy.Entities
 {
@@ -252,6 +252,7 @@ namespace Supremacy.Entities
         /// <returns></returns>
         public static CivDatabase Load()
         {
+            GameLog.Print("Loading civilization database....");
             try
             {
                 var civDatabase = new CivDatabase();
@@ -267,6 +268,7 @@ namespace Supremacy.Entities
                 {
                     civDatabase.Add(new Civilization(civElement));
                 }
+                GameLog.Print("Civilization database loaded");
                 return civDatabase;
             }
             catch (SupremacyException)

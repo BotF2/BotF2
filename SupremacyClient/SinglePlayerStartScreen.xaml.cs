@@ -12,6 +12,7 @@ using Supremacy.Client.Audio;
 using Supremacy.Client.Dialogs;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace Supremacy.Client
                 CivSelector.SelectionChanged += CivSelector_SelectionChanged;
 
                 //Select Federation to begin with
-                List<Civilization> tmp = (List<Civilization>)DataContext;                
+                List<Civilization> tmp = (List<Civilization>)DataContext;
                 if (tmp[0].ShortName == "Intro")
                 {
                     CivSelector.SelectedIndex = 1;
@@ -134,7 +135,7 @@ namespace Supremacy.Client
                         if (Options.IntroPlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;
@@ -142,7 +143,7 @@ namespace Supremacy.Client
                         if (Options.FederationPlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;
@@ -150,7 +151,7 @@ namespace Supremacy.Client
                         if (Options.TerranEmpirePlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;
@@ -158,7 +159,7 @@ namespace Supremacy.Client
                         if (Options.RomulanPlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;
@@ -166,7 +167,7 @@ namespace Supremacy.Client
                         if (Options.KlingonPlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;
@@ -174,7 +175,7 @@ namespace Supremacy.Client
                         if (Options.CardassianPlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;
@@ -182,7 +183,7 @@ namespace Supremacy.Client
                         if (Options.DominionPlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;
@@ -190,7 +191,7 @@ namespace Supremacy.Client
                         if (Options.BorgPlayable == EmpirePlayable.No)
                         {
                             MessageDialog.Show(Environment.NewLine +
-                                Supremacy.Resources.ResourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
+                                ResourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
                             return;
                         }
                         break;

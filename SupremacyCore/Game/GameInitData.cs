@@ -9,6 +9,7 @@
 
 using Supremacy.Annotations;
 using Supremacy.Entities;
+using Supremacy.Resources;
 using Supremacy.Utility;
 using System;
 using System.ComponentModel;
@@ -257,11 +258,10 @@ namespace Supremacy.Game
 
             try
             {
-                var civDatabase = CivDatabase.Load();
-                var empires = civDatabase.Where(o => o.IsEmpire).Select(o => new { o.Name, o.CivID });
+                var empires = CivDatabase.Load().Where(o => o.IsEmpire).Select(o => new { o.Name, o.CivID });
 
                 EmpireIDs = empires.Select(o => (int)o.CivID).ToArray();
-                    EmpireNames = empires.Select(o => o.Name).ToArray();
+                EmpireNames = empires.Select(o => o.Name).ToArray();
             }
             finally
             {
