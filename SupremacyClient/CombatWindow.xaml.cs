@@ -124,6 +124,16 @@ namespace Supremacy.Client
                 }
             }
 
+            RushButton.IsEnabled = true;
+            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
+            {
+                if (friendlyAssets.CombatShips.Count == 0)
+                {
+                    RushButton.IsEnabled = false;
+                    break;
+                }
+            }
+
             RetreatButton.IsEnabled = true;
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {

@@ -20,6 +20,7 @@ namespace Supremacy.Combat
     public enum CombatOrder : byte
     {
         Engage,
+        Rush,
         Retreat,
         Hail,
         Standby,

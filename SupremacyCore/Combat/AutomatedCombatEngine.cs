@@ -21,6 +21,8 @@ namespace Supremacy.Combat
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private const double BaseChanceToRetreat = 0.25;
+        private const double BaseRiskToRush = 0.25;
+        private const double BaseBustToFormation = 0.25;
         private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         private readonly List<Pair<CombatUnit, CombatWeapon[]>> _combatShips;
         private Pair<CombatUnit, CombatWeapon[]> _combatStation;
@@ -105,7 +107,8 @@ namespace Supremacy.Combat
                         {
                             if (weapon.CanFire)
                             {
-                                Attack(_combatStation.First, target, weapon);
+                                CombatOrder order = default(CombatOrder);
+                                Attack(_combatStation.First, target, weapon, order);
                                 combatOccurred = true;
                                 break;
                             }
@@ -123,6 +126,44 @@ namespace Supremacy.Combat
                     {
                         continue;
                     }
+                    // might have if CombatOrder.Rush then use statistics what rushing ship is lost if defender is in formation
+                    if (order == CombatOrder.Rush)
+                    {
+                        int chanceToSurviveRush = Statistics.Random(10000) % 100;
+                        if (chanceToSurviveRush <= (int)(BaseRiskToRush * 100))
+                        {
+                           
+                            if (_combatShips[i].First.Source.IsCombatant)
+                            {
+                                ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                            }
+                            else
+                            {
+                                ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                            }
+                            _combatShips.RemoveAt(i--);
+                        }
+                        continue;
+                    }
+
+                    //if (order == CombatOrder.Formation)
+                    //{
+                    //    int chanceToSurviveRush = Statistics.Random(10000) % 100;
+                    //    if (chanceToSurviveRush <= (int)(BaseRiskToRush * 100))
+                    //    {
+
+                    //        if (_combatShips[i].First.Source.IsCombatant)
+                    //        {
+                    //            ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                    //        }
+                    //        else
+                    //        {
+                    //            ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                    //        }
+                    //        _combatShips.RemoveAt(i--);
+                    //    }
+                    //    continue;
+                    //}
 
                     if (order == CombatOrder.Retreat)
                     {
@@ -162,7 +203,7 @@ namespace Supremacy.Combat
                                 }
                             }
                             combatOccurred = true;
-                            if (Attack(_combatShips[i].First, target, weapon))
+                            if (Attack(_combatShips[i].First, target, weapon, order))
                             {
                                 if (targetIndex < i)
                                     --i;
@@ -274,9 +315,11 @@ namespace Supremacy.Combat
             return result;
         }
 
-        private bool Attack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
+        private bool Attack(CombatUnit source, CombatUnit target, CombatWeapon weapon, CombatOrder order)
         {
+            
             int accuracy = (int)(_experienceAccuracy[source.Source.ExperienceRank] * 100);
+            
             if (Statistics.Random(100) >= (100 - accuracy))
             {
                 target.TakeDamage(weapon.MaxDamage.CurrentValue);

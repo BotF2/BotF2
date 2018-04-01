@@ -1135,7 +1135,8 @@ namespace Supremacy.WCF
             else if (!engine.IsCombatOver)
             {
                 var hail = (update.RoundNumber == 1);
-                
+                // var rush = (update.RoundNumber == 1);
+
                 var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
                 if (ownerAssets == null)
                     return;
@@ -1145,10 +1146,15 @@ namespace Supremacy.WCF
                     .Any(hostileAssets => !DiplomacyHelper.AreNeutral(ownerAssets.Owner, hostileAssets.Owner)))
                 {
                     hail = false;
+                    // rush = true;
                 }
 
                 if (hail)
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Hail));
+
+                //else if (rush)
+                //    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Rush));
+
                 else if (ownerAssets.CombatShips.Count > 0)   // original
                                                               //else if (ownerAssets.CombatShips.Count > 0 && update.HostileAssets.Count > 0)
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Engage));

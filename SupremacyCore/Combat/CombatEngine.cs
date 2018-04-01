@@ -225,6 +225,10 @@ namespace Supremacy.Combat
                     continue;
                 }
 
+                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Rush))
+                {
+                    result = false;
+                }
                 result = false;
                 break;
 

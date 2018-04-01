@@ -180,6 +180,7 @@ namespace Supremacy.Combat
             foreach (var ship in assets.NonCombatShips)
             {
                 orders.SetOrder(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
+                //orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)
@@ -188,6 +189,28 @@ namespace Supremacy.Combat
             }
 
             return orders;
+        }
+
+        public static double ComputeCombatOrderMultiplier(AutomatedCombatEngine automatedCombatEngine) // considering a way to get combat orders into outcome 
+        {
+            //if (colony == null)
+                return 0;
+
+            //GameLog.Print("GroundCombat?: Colony={0}, ComputeGroundDefenseMultiplier={1}",
+            //    colony.Name,
+            //    Math.Max(
+            //    0.1,
+            //    1.0 + (0.01 * colony.Buildings
+            //                       .Where(o => o.IsActive)
+            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
+            //                       .Sum(b => b.Amount))));
+
+            //return Math.Max(
+            //    0.1,
+            //    1.0 + (0.01 * colony.Buildings
+            //                       .Where(o => o.IsActive)
+            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
+            //                       .Sum(b => b.Amount)));
         }
 
         public static double ComputeGroundDefenseMultiplier(Colony colony)
