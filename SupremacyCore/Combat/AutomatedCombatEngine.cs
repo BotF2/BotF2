@@ -27,7 +27,7 @@ namespace Supremacy.Combat
         private readonly List<Pair<CombatUnit, CombatWeapon[]>> _combatShips;
         private Pair<CombatUnit, CombatWeapon[]> _combatStation;
 
-        private bool _automatedCombatTracing = false;    // turn to true if you want
+        private bool _automatedCombatTracing = true;    // turn to true if you want
         //private bool _automatedCombatTracing = false;    // turn to true if you want
 
         public AutomatedCombatEngine(
@@ -133,7 +133,7 @@ namespace Supremacy.Combat
                     //    int chanceToSurviveRush = Statistics.Random(10000) % 100;
                     //    if (chanceToSurviveRush <= (int)(BaseRiskToRush * 100))
                     //    {
-                           
+
                     //        if (_combatShips[i].First.Source.IsCombatant)
                     //        {
                     //            ownerAssets.CombatShips.Remove(_combatShips[i].First);
@@ -313,25 +313,29 @@ namespace Supremacy.Combat
                 }
             }
 
+
             for (int i = 0; i < _combatShips.Count; i++)
             {
-                //if (CombatHelper.)   if order is Raid Unarmed
                 try
                 {
-                    //GameLog.Print("ChooseTarget - IsCombatant == True ?? {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
-                    //_shipClass = _combatShips[i].First.Source.OrbitalDesign.ShipType;
-                    if (_combatShips[i].First.Source.OrbitalDesign.IsCombatant == false)
+                    CombatOrder order = GetOrder(_combatShips[i].First.Source);
+                    if (order == CombatOrder.Rush)
                     {
-                        result = _combatShips[i].First;
-                        if (_automatedCombatTracing)
-                            GameLog.Print("ChooseTarget - IsCombatant is FALSE  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
-                        // _combatShips[i].First.Source.OrbitalDesign.ShipType
-                        break;
+                        //GameLog.Print("ChooseTarget - IsCombatant == True ?? {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+                        //_shipClass = _combatShips[i].First.Source.OrbitalDesign.ShipType;
+                        if (_combatShips[i].First.Source.OrbitalDesign.IsCombatant == false)
+                        {
+                            result = _combatShips[i].First;
+                            if (_automatedCombatTracing)
+                                GameLog.Print("ChooseTarget - IsCombatant is FALSE  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+                            // _combatShips[i].First.Source.OrbitalDesign.ShipType
+                            break;
+                        }
                     }
                 }
                 catch
                 {
-                    GameLog.Print("ChooseTarget - Problem !!! (why ever)IsCombatant is FALSE  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+                    GameLog.Print("ChooseTarget - Problem !!! (why ever)", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
                 }
             }
 

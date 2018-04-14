@@ -354,6 +354,10 @@ namespace Supremacy.Client
             CombatOrder order = CombatOrder.Retreat;
             if (sender == EngageButton)
                 order = CombatOrder.Engage;
+            if (sender == RaidUnarmedButton)
+                order = CombatOrder.Engage;
+            if (sender == RushButton)
+                order = CombatOrder.Rush;
             else if (sender == HailButton)
                 order = CombatOrder.Hail;
             ButtonsPanel.IsEnabled = false;
