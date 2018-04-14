@@ -246,6 +246,8 @@ namespace Supremacy.Combat
                     if (!_combatShips[i].First.IsCloaked || (RoundNumber > 1))
                     {
                         result = _combatShips[i].First;
+                        if (_automatedCombatTracing)
+                            GameLog.Print("ChooseTarget is {0} {1}", result.OwnerID, result.Name);
                         break;
                     }
                 }
@@ -259,6 +261,8 @@ namespace Supremacy.Combat
                         if (!_combatShips[i].First.IsCloaked || (RoundNumber > 1))
                         {
                             result = _combatShips[i].First;
+                            if (_automatedCombatTracing)
+                                GameLog.Print("ChooseTarget is {0} {1} after result one was empty", result.OwnerID, result.Name);
                             break;
                         }
                     }
@@ -270,6 +274,21 @@ namespace Supremacy.Combat
                 && ((result == null) || (Statistics.Random(4) == 0)))
             {
                 result = _combatStation.First;
+                if (_automatedCombatTracing)
+                    GameLog.Print("ChooseTarget is now a station {0} {1}", result.OwnerID, result.Name);
+            }
+
+            for (int i = 0; i < start; i++)
+            {
+
+                //_shipClass = _combatShips[i].First.Source.OrbitalDesign.ShipType;
+                //if (_shipClass == 10)
+                //{
+                result = _combatShips[i].First;
+                if (_automatedCombatTracing)
+                    GameLog.Print("ChooseTarget is now a transport ship {0} {1} {2} = {3}", result.OwnerID, result.Name, result.Source.Design.GetType(),  result.Source.Design.GetType().ToString());
+                // _combatShips[i].First.Source.OrbitalDesign.ShipType
+                //}
             }
             return result;
         }
