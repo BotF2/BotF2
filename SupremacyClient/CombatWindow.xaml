@@ -232,6 +232,11 @@
             Margin="6,0,0,0"
             Content="{s:StringResource COMBAT_RUSH}"
             Click="OnOrderButtonClicked"/>
+        <Button x:Name="RaidUnarmedButton"
+            Style="{DynamicResource StandardButtonStyle}"
+            Margin="6,0,0,0"
+            Content="{s:StringResource COMBAT_RAID_UNARMED_SHIPS}"
+            Click="OnOrderButtonClicked"/>
         <Button x:Name="HailButton"
             Style="{DynamicResource StandardButtonStyle}"
             Margin="6,0,0,0"

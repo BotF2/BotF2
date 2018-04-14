@@ -124,6 +124,16 @@ namespace Supremacy.Client
                 }
             }
 
+            RaidUnarmedButton.IsEnabled = true;
+            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
+            {
+                if (friendlyAssets.CombatShips.Count == 0)
+                {
+                    RaidUnarmedButton.IsEnabled = false;
+                    break;
+                }
+            }
+
             RushButton.IsEnabled = true;
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
