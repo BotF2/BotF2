@@ -21,13 +21,13 @@ namespace Supremacy.Combat
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private const double BaseChanceToRetreat = 0.25;
-        private const double BaseRiskToRush = 0.25;
+        //private const double BaseRiskToRush = 0.25;
         private const double BaseBustToFormation = 0.25;
         private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         private readonly List<Pair<CombatUnit, CombatWeapon[]>> _combatShips;
         private Pair<CombatUnit, CombatWeapon[]> _combatStation;
 
-        private bool _automatedCombatTracing = true;    // turn to true if you want
+        private bool _automatedCombatTracing = false;    // turn to true if you want
         //private bool _automatedCombatTracing = false;    // turn to true if you want
 
         public AutomatedCombatEngine(
@@ -127,24 +127,25 @@ namespace Supremacy.Combat
                         continue;
                     }
                     // might have if CombatOrder.Rush then use statistics what rushing ship is lost if defender is in formation
-                    if (order == CombatOrder.Rush)
-                    {
-                        int chanceToSurviveRush = Statistics.Random(10000) % 100;
-                        if (chanceToSurviveRush <= (int)(BaseRiskToRush * 100))
-                        {
+
+                    //if (order == CombatOrder.Rush)
+                    //{
+                    //    int chanceToSurviveRush = Statistics.Random(10000) % 100;
+                    //    if (chanceToSurviveRush <= (int)(BaseRiskToRush * 100))
+                    //    {
                            
-                            if (_combatShips[i].First.Source.IsCombatant)
-                            {
-                                ownerAssets.CombatShips.Remove(_combatShips[i].First);
-                            }
-                            else
-                            {
-                                ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
-                            }
-                            _combatShips.RemoveAt(i--);
-                        }
-                        continue;
-                    }
+                    //        if (_combatShips[i].First.Source.IsCombatant)
+                    //        {
+                    //            ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                    //        }
+                    //        else
+                    //        {
+                    //            ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                    //        }
+                    //        _combatShips.RemoveAt(i--);
+                    //    }
+                    //    continue;
+                    //}
 
                     //if (order == CombatOrder.Formation)
                     //{
@@ -280,6 +281,7 @@ namespace Supremacy.Combat
         {
             CombatUnit result = null;
             int start = Statistics.Random(_combatShips.Count);
+
             for (int i = start; i < _combatShips.Count; i++)
             {
                 if (CombatHelper.WillEngage(_combatShips[i].First.Owner, sourceOwner))
@@ -293,6 +295,7 @@ namespace Supremacy.Combat
                     }
                 }
             }
+
             if (result == null)
             {
                 for (int i = 0; i < start; i++)
@@ -302,13 +305,36 @@ namespace Supremacy.Combat
                         if (!_combatShips[i].First.IsCloaked || (RoundNumber > 1))
                         {
                             result = _combatShips[i].First;
-                            if (_automatedCombatTracing)
-                                GameLog.Print("ChooseTarget is {0} {1} after result one was empty", result.OwnerID, result.Name);
+                            //if (_automatedCombatTracing)
+                            //    GameLog.Print("ChooseTarget is {0} {1} after result one was empty", result.OwnerID, result.Name);
                             break;
                         }
                     }
                 }
             }
+
+            for (int i = 0; i < _combatShips.Count; i++)
+            {
+                //if (CombatHelper.)   if order is Raid Unarmed
+                try
+                {
+                    //GameLog.Print("ChooseTarget - IsCombatant == True ?? {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+                    //_shipClass = _combatShips[i].First.Source.OrbitalDesign.ShipType;
+                    if (_combatShips[i].First.Source.OrbitalDesign.IsCombatant == false)
+                    {
+                        result = _combatShips[i].First;
+                        if (_automatedCombatTracing)
+                            GameLog.Print("ChooseTarget - IsCombatant is FALSE  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+                        // _combatShips[i].First.Source.OrbitalDesign.ShipType
+                        break;
+                    }
+                }
+                catch
+                {
+                    GameLog.Print("ChooseTarget - Problem !!! (why ever)IsCombatant is FALSE  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+                }
+            }
+
             if ((_combatStation.First != null)
                 && !_combatStation.First.IsDestroyed
                 && (sourceOwner != _combatStation.First.Owner)
@@ -319,18 +345,19 @@ namespace Supremacy.Combat
                     GameLog.Print("ChooseTarget is now a station {0} {1}", result.OwnerID, result.Name);
             }
 
-            for (int i = 0; i < start; i++)
-            {
-
-                //_shipClass = _combatShips[i].First.Source.OrbitalDesign.ShipType;
-                //if (_shipClass == 10)
-                //{
-                result = _combatShips[i].First;
-                if (_automatedCombatTracing)
-                    GameLog.Print("ChooseTarget is now a transport ship {0} {1} {2} = {3}", result.OwnerID, result.Name, result.Source.Design.GetType(),  result.Source.Design.GetType().ToString());
-                // _combatShips[i].First.Source.OrbitalDesign.ShipType
-                //}
-            }
+            //for (int i = 0; i < _combatShips.Count; i++)
+            //{
+            //    //GameLog.Print("ChooseTarget - IsCombatant == True ?? {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+            //    //_shipClass = _combatShips[i].First.Source.OrbitalDesign.ShipType;
+            //    if (_combatShips[i].First.Source.OrbitalDesign.IsCombatant == false)
+            //    {
+            //        result = _combatShips[i].First;
+            //        if (_automatedCombatTracing)
+            //            GameLog.Print("ChooseTarget - IsCombatant is FALSE  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.IsCombatant);
+            //        // _combatShips[i].First.Source.OrbitalDesign.ShipType
+            //        break;
+            //    }
+            //}
             return result;
         }
 
