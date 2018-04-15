@@ -31,6 +31,7 @@ namespace Supremacy.Orbitals
         private byte _sensorRange;
         private WeaponType _primaryWeapon;
         private WeaponType _secondaryWeapon;
+        private int _shipClass;
         private string _modelFile;
 
         /// <summary>
