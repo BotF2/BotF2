@@ -124,12 +124,22 @@ namespace Supremacy.Client
                 }
             }
 
-            RaidUnarmedButton.IsEnabled = true;
+            TransportsButton.IsEnabled = true;
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
                 if (friendlyAssets.CombatShips.Count == 0)
                 {
-                    RaidUnarmedButton.IsEnabled = false;
+                    TransportsButton.IsEnabled = false;
+                    break;
+                }
+            }
+
+            FormationButton.IsEnabled = true;
+            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
+            {
+                if (friendlyAssets.CombatShips.Count == 0)
+                {
+                    FormationButton.IsEnabled = false;
                     break;
                 }
             }
@@ -155,9 +165,11 @@ namespace Supremacy.Client
             }
 
             HailButton.IsEnabled = (update.RoundNumber == 1);
-            ButtonsPanel.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+            ButtonsPanel0.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+            ButtonsPanel1.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             CloseButton.Visibility = update.IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
-            ButtonsPanel.IsEnabled = true;
+            ButtonsPanel0.IsEnabled = true;
+            ButtonsPanel1.IsEnabled = true;
 
             if (!IsVisible)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
@@ -354,13 +366,16 @@ namespace Supremacy.Client
             CombatOrder order = CombatOrder.Retreat;
             if (sender == EngageButton)
                 order = CombatOrder.Engage;
-            if (sender == RaidUnarmedButton)
-                order = CombatOrder.Engage;
+            if (sender == TransportsButton)
+                order = CombatOrder.Transports;
+            if (sender == FormationButton)
+                order = CombatOrder.Formation;
             if (sender == RushButton)
                 order = CombatOrder.Rush;
             else if (sender == HailButton)
                 order = CombatOrder.Hail;
-            ButtonsPanel.IsEnabled = false;
+            ButtonsPanel0.IsEnabled = false;
+            ButtonsPanel1.IsEnabled = false;
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
         }
 

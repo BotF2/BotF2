@@ -164,6 +164,7 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
     <StackPanel Grid.Column="0"
@@ -216,37 +217,50 @@
       </ScrollViewer>
     </GroupBox>
 
-    <StackPanel x:Name="ButtonsPanel"
+        <StackPanel x:Name="ButtonsPanel0"
                 Margin="6"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Grid.Row="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
-      <Button x:Name="EngageButton"
-              Style="{DynamicResource StandardButtonStyle}"
-              Content="{s:StringResource COMBAT_ENGAGE}"
-              Click="OnOrderButtonClicked"/>
-        <Button x:Name="RushButton"
-            Style="{DynamicResource StandardButtonStyle}"
-            Margin="6,0,0,0"
-            Content="{s:StringResource COMBAT_RUSH}"
-            Click="OnOrderButtonClicked"/>
-        <Button x:Name="RaidUnarmedButton"
-            Style="{DynamicResource StandardButtonStyle}"
-            Margin="6,0,0,0"
-            Content="{s:StringResource COMBAT_RAID_UNARMED_SHIPS}"
-            Click="OnOrderButtonClicked"/>
-        <Button x:Name="HailButton"
-            Style="{DynamicResource StandardButtonStyle}"
-            Margin="6,0,0,0"
-            Content="{s:StringResource COMBAT_HAIL}"
-            Click="OnOrderButtonClicked"/>
-      <Button x:Name="RetreatButton"
-              Style="{DynamicResource StandardButtonStyle}"
-              Margin="6,0,0,0"
-              Content="{s:StringResource COMBAT_RETREAT}"
-              Click="OnOrderButtonClicked"/>
+            <Button x:Name="EngageButton"
+                  Style="{DynamicResource StandardButtonStyle}"
+                  Content="{s:StringResource COMBAT_ENGAGE}"
+                  Click="OnOrderButtonClicked"/>
+            <Button x:Name="RushButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_RUSH}"
+                Click="OnOrderButtonClicked"/>
+            <Button x:Name="TransportsButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_TRANSPORTS}"
+                Click="OnOrderButtonClicked"/>
+        </StackPanel>
+        <StackPanel x:Name="ButtonsPanel1"
+                Margin="6"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="3"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+            <Button x:Name="FormationButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_FORMATION}"
+                Click="OnOrderButtonClicked"/>
+            <Button x:Name="HailButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_HAIL}"
+                Click="OnOrderButtonClicked"/>
+            <Button x:Name="RetreatButton"
+                    Style="{DynamicResource StandardButtonStyle}"
+                    Margin="6,0,0,0"
+                    Content="{s:StringResource COMBAT_RETREAT}"
+                    Click="OnOrderButtonClicked"/>
     </StackPanel>
     <Button x:Name="CloseButton"
             Style="{DynamicResource StandardButtonStyle}"
