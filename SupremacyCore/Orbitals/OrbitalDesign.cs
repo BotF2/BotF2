@@ -114,6 +114,20 @@ namespace Supremacy.Orbitals
         }
 
         /// <summary>
+        /// Gets an int for ship type from enum ShipType <see cref="OrbitalDesign"/> ShipTypeNumber Transport = 2 <see cref="ShipDesign"/> enum.
+        /// </summary>
+        /// <value>
+        /// <c>int</c>  <see cref="OrbitalDesign"/> ; Transport =2 <c>int</c>.
+        /// </value>
+        public int ShipTypeNumber 
+        {
+            get
+            {
+                return _shipClass;
+            }
+
+        }
+        /// <summary>
         /// Gets or sets the scan strength.
         /// </summary>
         /// <value>The scan strength.</value>
@@ -303,6 +317,13 @@ namespace Supremacy.Orbitals
             {
                 newElement = doc.CreateElement("ScanPower");
                 newElement.InnerText = ScanStrength.ToString();
+                baseElement.AppendChild(newElement);
+            }
+
+            if (ShipTypeNumber != null)
+            {
+                newElement = doc.CreateElement("ShipTypeNumber");
+                newElement.InnerText = ShipTypeNumber.ToString();
                 baseElement.AppendChild(newElement);
             }
 
