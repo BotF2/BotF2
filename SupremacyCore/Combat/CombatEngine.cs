@@ -195,42 +195,35 @@ namespace Supremacy.Combat
                 //if (_combatEngineTraceLocally == true)
                     //GameLog.Print("civAssets: {0}", civAssets.);
 
-                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage))
+                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports ))
                 {
                     result = false;
                 }
+                if (!result) { break; }
 
-                if (!result)
-                {
-                    break;
-                }
-
-                if (civAssets.NonCombatShips.Any(unit => GetOrder(unit.Source) == CombatOrder.Engage))
+                if (civAssets.NonCombatShips.Any(unit => GetOrder(unit.Source) == CombatOrder.Engage || GetOrder(unit.Source) == CombatOrder.Rush || GetOrder(unit.Source) == CombatOrder.Transports))
                 {
                     result = false;
                 }
+                if (!result) { break; }
 
-                if (!result)
-                {
-                    break;
-                }
-
+                // Station
                 if (civAssets.Station == null)
                 {
                     continue;
                 }
 
-                if (GetOrder(civAssets.Station.Source) != CombatOrder.Engage)
+                if (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports)
                 {
                     continue;
                 }
 
-                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Rush))
-                {
-                    result = false;
-                }
-                result = false;
-                break;
+                //if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Rush))
+                //{
+                //    result = false;
+                //}
+                //result = false;
+                //break;
 
             }
             //foreach (var ship in this.Assets)
@@ -472,13 +465,17 @@ namespace Supremacy.Combat
         {
             try
             {
+                //GameLog.Print("source.ObjectID {0}, source.Name {1}", source.ObjectID, source.Name);
+                GameLog.Print("source.ObjectID {0}, source.Name {1}, Order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
                 return Orders[source.OwnerID].GetOrder(source);
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
+                GameLog.Print("Problem for GetOrder for source.ObjectID {0}, source.Name {1}", source.ObjectID, source.Name);
                 GameLog.LogException(e);
             }
 
+            GameLog.Print("source.ObjectID {0}, source.Name {1}, returning RETREAT is backup order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
             return CombatOrder.Retreat;
         }
 
