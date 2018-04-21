@@ -12,7 +12,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Markup;
 using System.Xml;
-
+using Supremacy.Orbitals;
 using Supremacy.Annotations;
 using Supremacy.Tech;
 using Supremacy.Types;
@@ -29,9 +29,9 @@ namespace Supremacy.Orbitals
         private Percentage _scienceAbility;
         private byte _scanPower;
         private byte _sensorRange;
+        private string _shipType;
         private WeaponType _primaryWeapon;
         private WeaponType _secondaryWeapon;
-        private int _shipClass;
         private string _modelFile;
 
         /// <summary>
@@ -115,18 +115,15 @@ namespace Supremacy.Orbitals
         }
 
         /// <summary>
-        /// Gets an int for ship type from enum ShipType <see cref="OrbitalDesign"/> ShipTypeNumber Transport = 2 <see cref="ShipDesign"/> enum.
+        /// Gets string ShipType from TechObjectDatabase.xml <see cref="OrbitalDesign"/> ShipType.
         /// </summary>
         /// <value>
         /// <c>int</c>  <see cref="OrbitalDesign"/> ; Transport =2 <c>int</c>.
         /// </value>
-        public int ShipTypeNumber 
-        {
-            get
-            {
-                return _shipClass;
-            }
-
+        public string ShipType
+        { 
+            get { return _shipType; }
+            set { _shipType = value; } 
         }
         /// <summary>
         /// Gets or sets the scan strength.
@@ -283,6 +280,11 @@ namespace Supremacy.Orbitals
                 //_secondaryWeaponName = element["TorpedoType"].GetAttribute("Name").Trim();
             }
 
+            if (element["ShipType"] != null)
+            {
+                _shipType = element["ShipType"].InnerText.Trim();
+            }
+
             if (element["ModelFile"] != null)
             {
                 _modelFile = element["ModelFile"].InnerText.Trim();
@@ -318,13 +320,6 @@ namespace Supremacy.Orbitals
             {
                 newElement = doc.CreateElement("ScanPower");
                 newElement.InnerText = ScanStrength.ToString();
-                baseElement.AppendChild(newElement);
-            }
-
-            if (ShipTypeNumber != null)
-            {
-                newElement = doc.CreateElement("ShipTypeNumber");
-                newElement.InnerText = ShipTypeNumber.ToString();
                 baseElement.AppendChild(newElement);
             }
 
