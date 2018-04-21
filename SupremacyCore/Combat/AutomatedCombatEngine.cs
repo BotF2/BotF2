@@ -27,7 +27,7 @@ namespace Supremacy.Combat
         private Pair<CombatUnit, CombatWeapon[]> _combatStation;
 
         //private bool _automatedCombatTracing = true;    // turn to true if you want
-        private bool _automatedCombatTracing = true;    // turn to true if you want
+        private bool _automatedCombatTracing = false;    // turn to true if you want
 
         public AutomatedCombatEngine(
             IList<CombatAssets> assets,
@@ -100,7 +100,10 @@ namespace Supremacy.Combat
                 if ((_combatStation.First != null) && !_combatStation.First.IsDestroyed )
                 {
                     CombatUnit target = ChooseTarget(_combatStation.First.Owner);  // first fighting station ? ....seems so 
-                    GameLog.Print("target is a station = {0} {1}", target.Source.ObjectID, target.Source.Name);
+
+                    if (_automatedCombatTracing)
+                        GameLog.Print("target is a station = {0} {1}", target.Source.ObjectID, target.Source.Name);
+
                     if (target != null)
                     {
                         foreach (CombatWeapon weapon in _combatStation.Second)
@@ -147,7 +150,8 @@ namespace Supremacy.Combat
                     }
 
                     target = ChooseTarget(_combatShips[i].First.Owner);
-                    GameLog.Print("target = {0} {1}", target.Source.ObjectID, target.Source.Name);
+                    if (_automatedCombatTracing)
+                        GameLog.Print("target = {0} {1}", target.Source.ObjectID, target.Source.Name);
 
                     if (target == null)
                         continue;
@@ -235,7 +239,10 @@ namespace Supremacy.Combat
                 else if (order == CombatOrder.Transports)
                 {
                     CombatUnit target = ChooseTarget(_combatShips[i].First.Owner);
-                    GameLog.Print("Transport-Button: target = {0} {1}", target.Source.ObjectID, target.Source.Name);
+
+                    if (_automatedCombatTracing)
+                        GameLog.Print("Transport-Button: target = {0} {1}", target.Source.ObjectID, target.Source.Name);
+
                     for (int j = 0; j < _combatShips.Count; j++)
                     {
                         
@@ -250,7 +257,8 @@ namespace Supremacy.Combat
                                     Attack(_combatShips[j].First, target, weapon, order);
                                     combatOccurred = true;
                                     CombatUnit result = _combatShips[j].First;
-                                    GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                                    if (_automatedCombatTracing)
+                                        GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
                                     break;
                                 }
                             }
@@ -316,19 +324,21 @@ namespace Supremacy.Combat
                 CombatOrder order = GetOrder(_combatShips[i].First.Source);
                 if (order == CombatOrder.Transports)
                 {
-                    GameLog.Print("ChooseTarget - own order was TransportsButton, ShipType = {0}", _combatShips[i].First.Source.OrbitalDesign.ShipType);
+                    if (_automatedCombatTracing)
+                        GameLog.Print("ChooseTarget - own order was TransportsButton, ShipType = {0}", _combatShips[i].First.Source.OrbitalDesign.ShipType);
 
                     for (int j = 0; j < _combatShips.Count; j++)
                     {
                         if (CombatHelper.WillEngage(_combatShips[j].First.Owner, sourceOwner) && _combatShips[j].First.Source.OrbitalDesign.ShipType == "Transport")
-                        { 
+                        {
                             //if (_combatShips[j].First.Source.IsCombatant == true && _combatShips[i].First.Source.OrbitalDesign.ShipType == "Transport")
                             //if ()
                             //{
-                                //if (_automatedCombatTracing)
-                                        GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                            if (_automatedCombatTracing)
+                                GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
                                 result = _combatShips[j].First;
-                                        GameLog.Print("ChooseTarget is a transport {0} {1}", result.OwnerID, result.Name);
+                            if (_automatedCombatTracing)
+                                GameLog.Print("ChooseTarget is a transport {0} {1}", result.OwnerID, result.Name);
                         }
 
                     }
