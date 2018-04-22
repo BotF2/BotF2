@@ -16,6 +16,7 @@ using Supremacy.Entities;
 using Supremacy.Game;
 using System.Windows.Media.Imaging;
 using Supremacy.Diplomacy;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -132,9 +133,16 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsOwned || IsDesignOfShipsKnown)
-                    return Source.ClassName;
-                //    return "ClassName Known";
-                //return Source.Cl
+                {
+                    try
+                    {
+                        return Source.ClassName;
+                    }
+                    catch
+                    {
+                        GameLog.Print("Problem with null ClassName ObjectID = {0} Name = {1}", Source.ObjectID, Source.Name);
+                    }
+                }
                 return "ClassNameManually";
             }
         }
