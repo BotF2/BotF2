@@ -469,16 +469,20 @@ namespace Supremacy.Combat
             try
             {
                 //GameLog.Print("source.ObjectID {0}, source.Name {1}", source.ObjectID, source.Name);
-                GameLog.Print("source.ObjectID {0}, source.Name {1}, Order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
+
+                //if (_combatEngineTraceLocally == true)
+                //    GameLog.Print("source.ObjectID {0}, source.Name {1}, Order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
                 return Orders[source.OwnerID].GetOrder(source);
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
-                GameLog.Print("Problem for GetOrder for source.ObjectID {0}, source.Name {1}", source.ObjectID, source.Name);
+                // no - always get this error message     if (_combatEngineTraceLocally == true)
+                    GameLog.Print("Problem for GetOrder for source.ObjectID {0}, source.Name {1}", source.ObjectID, source.Name);
                 GameLog.LogException(e);
             }
 
-            GameLog.Print("source.ObjectID {0}, source.Name {1}, returning RETREAT is backup order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
+            if (_combatEngineTraceLocally == true)
+                GameLog.Print("source.ObjectID {0}, source.Name {1}, returning RETREAT is backup order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
             return CombatOrder.Retreat;
         }
 
