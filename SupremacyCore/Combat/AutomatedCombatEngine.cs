@@ -28,6 +28,7 @@ namespace Supremacy.Combat
 
         //private bool _automatedCombatTracing = true;    // turn to true if you want
         private bool _automatedCombatTracing = false;    // turn to true if you want
+        private Civilization sourceOwner;
 
         public AutomatedCombatEngine(
             IList<CombatAssets> assets,
@@ -132,42 +133,50 @@ namespace Supremacy.Combat
 
                     if (order == CombatOrder.Retreat)
                     {
-                        int chanceToRetreat = Statistics.Random(10000) % 100;   // 10000 / 100 = 0 to 100
-                        if (chanceToRetreat <= (int) (BaseChanceToRetreat * 100))   // BaseChance = 25
+                        for (int j = 0; j < _combatShips.Count; j++)
                         {
-                            ownerAssets.EscapedShips.Add(_combatShips[i].First);
-                            if (_combatShips[i].First.Source.IsCombatant)
+                            if (_combatShips[j].First.Source.IsCombatant == true)  // friends or foe ?
                             {
-                                ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                                if (order == CombatOrder.Rush)
+                                {
+                                    int chanceToRetreat = Statistics.Random(10000) % 100;
+                                    if (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 10))
+                                    {
+                                        ownerAssets.EscapedShips.Add(_combatShips[i].First);
+                                        if (_combatShips[i].First.Source.IsCombatant)
+                                        {
+                                            ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                                        }
+                                        else
+                                        {
+                                            ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                                        }
+                                        _combatShips.RemoveAt(i--);
+                                    }
+                                    break;
+                                }
                             }
                             else
                             {
-                                ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                                int chanceToRetreat = Statistics.Random(10000) % 100;
+                                if (chanceToRetreat <= (int)(BaseChanceToRetreat * 100))
+                                {
+                                    ownerAssets.EscapedShips.Add(_combatShips[i].First);
+                                    if (_combatShips[i].First.Source.IsCombatant)
+                                    {
+                                        ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                                    }
+                                    else
+                                    {
+                                        ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                                    }
+                                    _combatShips.RemoveAt(i--);
+                                }
                             }
-                            _combatShips.RemoveAt(i--);
+                                        continue;
+                                
                         }
-                        continue;
-                    }
 
-                    if (order == CombatOrder.Formation)
-                    {
-                        int chanceToRetreat = Statistics.Random(10000) % 100;   // 10000 / 100 = 0 to 100
-                        GameLog.Print("Traditional chance to retreat: {0} {1}", chanceToRetreat, (int)(BaseChanceToRetreat * 100));
-                        GameLog.Print("RUSHED increased chance to retreat: {0} {1}", chanceToRetreat + 50, (int)(BaseChanceToRetreat * 100));
-                        if (chanceToRetreat + 50 <= (int)(BaseChanceToRetreat * 100))   // chanceToRetreat = 25 + 50 = 75
-                        {
-                            ownerAssets.EscapedShips.Add(_combatShips[i].First);
-                            if (_combatShips[i].First.Source.IsCombatant)
-                            {
-                                ownerAssets.CombatShips.Remove(_combatShips[i].First);
-                            }
-                            else
-                            {
-                                ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
-                            }
-                            _combatShips.RemoveAt(i--);
-                        }
-                        continue;
                     }
 
                     target = ChooseTarget(_combatShips[i].First.Owner);
