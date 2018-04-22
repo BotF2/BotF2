@@ -213,7 +213,7 @@ namespace Supremacy.Combat
                     continue;
                 }
 
-                if (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports)
+                if (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports || GetOrder(civAssets.Station.Source) == CombatOrder.Rush)
                 {
                     continue;
                 }
@@ -222,6 +222,9 @@ namespace Supremacy.Combat
                 //{
                 //    result = false;
                 //}
+
+
+            // turned off but it is unclear whether needed or not
                 //result = false;
                 //break;
 
@@ -229,7 +232,7 @@ namespace Supremacy.Combat
             //foreach (var ship in this.Assets)
             //{
 
-            //    if (ship.NonCombatShips.Any(ShipType => ShipType.IsCamouflaged))
+            //    if (ship.NonCombatShips.Any(ShipType => ShipType.IsCamouflaged))   // added info by Reginald: camouflaged ships should not be part of a combat battle
             //    return true;
             //    break;
             //}

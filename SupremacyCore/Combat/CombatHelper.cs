@@ -31,6 +31,8 @@ namespace Supremacy.Combat
             var results = new List<CombatAssets>();
             var sector = GameContext.Current.Universe.Map[location];
 
+            bool _combatHelperTracing = false; // turn true if you want
+
             // double code ?? see below
             //if (sector.Station != null)
             //{
@@ -115,6 +117,8 @@ namespace Supremacy.Combat
 
         public static bool WillEngage(Civilization firstCiv, Civilization secondCiv)
         {
+            bool _willEngageTracing = false; // turn true if you want
+
             if (firstCiv == null)
                 throw new ArgumentNullException("firstCiv");
             if (secondCiv == null)
@@ -127,8 +131,8 @@ namespace Supremacy.Combat
             if (diplomacyData == null)
                 return false;
 
-            // works 
-            // GameLog.Print("diplomacyData.Status={2} for {0} vs {1}, ", firstCiv, secondCiv, diplomacyData.Status.ToString());
+            if (_willEngageTracing == true)
+                GameLog.Print("diplomacyData.Status={2} for {0} vs {1}, ", firstCiv, secondCiv, diplomacyData.Status.ToString());
 
             switch (diplomacyData.Status)
             {
@@ -174,18 +178,31 @@ namespace Supremacy.Combat
             var owner = assets.Owner;
             var orders = new CombatOrders(owner, assets.CombatID);
 
-            foreach (var ship in assets.CombatShips)
-                orders.SetOrder(ship.Source, order);
+            bool _generateBlanketOrdersTracing = true; // turn true if you want
 
-            foreach (var ship in assets.NonCombatShips)
+            foreach (var ship in assets.CombatShips)  // CombatShips
+            {
+                orders.SetOrder(ship.Source, order);  
+                if (_generateBlanketOrdersTracing == true)
+                    GameLog.Print("{0} {1} {2}", ship.Source.ObjectID, ship.Source.Name, ship.Source, order);
+            }
+
+            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
                 orders.SetOrder(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
+                orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
+                orders.SetOrder(ship.Source, (order == CombatOrder.Transports) ? CombatOrder.Standby : order);
+                orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
+                if (_generateBlanketOrdersTracing == true)
+                    GameLog.Print("{0} {1} {2}", ship.Source.ObjectID, ship.Source.Name, ship.Source, order);
                 //orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
             }
 
-            if (assets.Station != null && assets.Station.Owner == owner)
+            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
                 orders.SetOrder(assets.Station.Source, (order == CombatOrder.Retreat) ? CombatOrder.Engage : order);
+                if (_generateBlanketOrdersTracing == true)
+                    GameLog.Print("{0} {1} {2}", assets.Station.Source.ObjectID, assets.Station.Source.Name, assets.Station.Source, order);
             }
 
             return orders;

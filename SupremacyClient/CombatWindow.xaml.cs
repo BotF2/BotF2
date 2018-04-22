@@ -372,8 +372,13 @@ namespace Supremacy.Client
                 order = CombatOrder.Formation;
             if (sender == RushButton)
                 order = CombatOrder.Rush;
-            else if (sender == HailButton)
+
+            //else if (sender == HailButton)
+                if (sender == HailButton)
                 order = CombatOrder.Hail;
+
+            GameLog.Print("OnOrderButtonClicked:  sender = {0}, order = {1}", sender, order);
+
             ButtonsPanel0.IsEnabled = false;
             ButtonsPanel1.IsEnabled = false;
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
