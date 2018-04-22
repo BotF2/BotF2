@@ -195,13 +195,13 @@ namespace Supremacy.Combat
                 //if (_combatEngineTraceLocally == true)
                     //GameLog.Print("civAssets: {0}", civAssets.);
 
-                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports ))
+                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports ||  order == CombatOrder.Formation))
                 {
                     result = false;
                 }
                 if (!result) { break; }
 
-                if (civAssets.NonCombatShips.Any(unit => GetOrder(unit.Source) == CombatOrder.Engage || GetOrder(unit.Source) == CombatOrder.Rush || GetOrder(unit.Source) == CombatOrder.Transports))
+                if (civAssets.NonCombatShips.Any(unit => GetOrder(unit.Source) == CombatOrder.Engage || GetOrder(unit.Source) == CombatOrder.Rush || GetOrder(unit.Source) == CombatOrder.Transports || GetOrder(unit.Source) == CombatOrder.Formation))
                 {
                     result = false;
                 }
@@ -213,7 +213,7 @@ namespace Supremacy.Combat
                     continue;
                 }
 
-                if (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports || GetOrder(civAssets.Station.Source) == CombatOrder.Rush)
+                if (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports || GetOrder(civAssets.Station.Source) == CombatOrder.Rush || GetOrder(civAssets.Station.Source) == CombatOrder.Formation)
                 {
                     continue;
                 }

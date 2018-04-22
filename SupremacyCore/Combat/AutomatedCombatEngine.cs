@@ -132,8 +132,29 @@ namespace Supremacy.Combat
 
                     if (order == CombatOrder.Retreat)
                     {
-                        int chanceToRetreat = Statistics.Random(10000) % 100;
-                        if (chanceToRetreat <= (int) (BaseChanceToRetreat * 100))
+                        int chanceToRetreat = Statistics.Random(10000) % 100;   // 10000 / 100 = 0 to 100
+                        if (chanceToRetreat <= (int) (BaseChanceToRetreat * 100))   // BaseChance = 25
+                        {
+                            ownerAssets.EscapedShips.Add(_combatShips[i].First);
+                            if (_combatShips[i].First.Source.IsCombatant)
+                            {
+                                ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                            }
+                            else
+                            {
+                                ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                            }
+                            _combatShips.RemoveAt(i--);
+                        }
+                        continue;
+                    }
+
+                    if (order == CombatOrder.Formation)
+                    {
+                        int chanceToRetreat = Statistics.Random(10000) % 100;   // 10000 / 100 = 0 to 100
+                        GameLog.Print("Traditional chance to retreat: {0} {1}", chanceToRetreat, (int)(BaseChanceToRetreat * 100));
+                        GameLog.Print("RUSHED increased chance to retreat: {0} {1}", chanceToRetreat + 50, (int)(BaseChanceToRetreat * 100));
+                        if (chanceToRetreat + 50 <= (int)(BaseChanceToRetreat * 100))   // chanceToRetreat = 25 + 50 = 75
                         {
                             ownerAssets.EscapedShips.Add(_combatShips[i].First);
                             if (_combatShips[i].First.Source.IsCombatant)
