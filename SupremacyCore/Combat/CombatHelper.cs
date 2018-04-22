@@ -184,7 +184,7 @@ namespace Supremacy.Combat
             {
                 orders.SetOrder(ship.Source, order);  
                 if (_generateBlanketOrdersTracing == true)
-                    GameLog.Print("{0} {1} {2} -> {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source, order);
+                    GameLog.Print("{0} {1} {2} -> HAIL (default) or really: {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.OrbitalDesign.ShipType, order);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
@@ -194,7 +194,7 @@ namespace Supremacy.Combat
                 orders.SetOrder(ship.Source, (order == CombatOrder.Transports) ? CombatOrder.Standby : order);
                 orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
                 if (_generateBlanketOrdersTracing == true)
-                    GameLog.Print("{0} {1} {2} -> {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source, order);
+                    GameLog.Print("{0} {1} {2} -> HAIL (default) or really: {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.OrbitalDesign.ShipType, order);
                 //orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
             }
 
@@ -202,7 +202,7 @@ namespace Supremacy.Combat
             {
                 orders.SetOrder(assets.Station.Source, (order == CombatOrder.Retreat) ? CombatOrder.Engage : order);
                 if (_generateBlanketOrdersTracing == true)
-                    GameLog.Print("{0} {1} {2} -> {3}", assets.Station.Source.ObjectID, assets.Station.Source.Name, assets.Station.Source, order);
+                    GameLog.Print("{0} {1} -> {2}", assets.Station.Source.ObjectID, assets.Station.Source, order);
             }
 
             return orders;

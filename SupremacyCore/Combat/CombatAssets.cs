@@ -14,6 +14,7 @@ using System.Linq;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
@@ -44,12 +45,18 @@ namespace Supremacy.Combat
             _escapedShips = new List<CombatUnit>();
             _destroyedShips = new List<CombatUnit>();
             _assimilatedShips = new List<CombatUnit>();
+
+
         }
 
         public int CombatID
         {
             get { return _combatId; }
-            internal set { _combatId = value; }
+            internal set
+            {
+                GameLog.Print("_combatId = {0}", value);
+                _combatId = value;
+            }
         }
 
         public int OwnerID
@@ -121,6 +128,45 @@ namespace Supremacy.Combat
         {
             get { return _station; }
             set { _station = value; }
+        }
+
+        public bool IsTransport
+        {
+            get
+            {
+                var _shipType = "";
+                bool _isTransport = false;
+
+                foreach (CombatUnit shipStats in _combatShips)
+                {
+                    _shipType = shipStats.Source.OrbitalDesign.ShipType;
+                            //GameLog.Print("ShipType is {0}", _shipType.ToString());
+                    if (_shipType.ToString() == "Transport")
+                    {
+                        _isTransport = true;
+                        goto End;
+                    }
+                }
+
+                foreach (CombatUnit shipStats in _nonCombatShips)
+                {
+                    _shipType = shipStats.Source.OrbitalDesign.ShipType;
+                            //GameLog.Print("ShipType is {0}", _shipType.ToString());
+                    if (_shipType.ToString() == "Transport")
+                    {
+                        _isTransport = true;
+                        goto End;
+                    }
+                }
+
+                End:
+                if (_isTransport == true)
+                    return true;
+
+                return false;
+            }
+
+
         }
 
         public bool HasSurvivingAssets

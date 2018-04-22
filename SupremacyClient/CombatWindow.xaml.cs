@@ -115,6 +115,7 @@ namespace Supremacy.Client
             PopulateUnitTrees();
 
             EngageButton.IsEnabled = true;
+            
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
                 if (friendlyAssets.CombatShips.Count == 0 && friendlyAssets.NonCombatShips.Count != 0 && friendlyAssets.Station == null)
@@ -124,14 +125,21 @@ namespace Supremacy.Client
                 }
             }
 
-            TransportsButton.IsEnabled = true;
+            TransportsButton.IsEnabled = false;
+            foreach (CombatAssets hostileAssets in _update.HostileAssets)
+            {
+                if (hostileAssets.IsTransport == true)
+                {
+                            //GameLog.Print("hostileAssets.IsTransport is {0} ", hostileAssets.IsTransport.ToString());
+                    TransportsButton.IsEnabled = true;
+                }
+                break;
+            }
+
+
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-                if (friendlyAssets.CombatShips.Count == 0)
-                {
-                    TransportsButton.IsEnabled = false;
-                    break;
-                }
+
             }
 
             FormationButton.IsEnabled = true;
@@ -377,7 +385,7 @@ namespace Supremacy.Client
                 if (sender == HailButton)
                 order = CombatOrder.Hail;
 
-            GameLog.Print("OnOrderButtonClicked:  sender = {0}, order = {1}", sender, order);
+            GameLog.Print("OnOrderButtonClicked:  Combat Window: Order Button clicked by Player = {1}", sender, order);
 
             ButtonsPanel0.IsEnabled = false;
             ButtonsPanel1.IsEnabled = false;
