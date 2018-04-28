@@ -288,7 +288,7 @@ namespace Supremacy.Client
             nonCombatantItems.Header = "Non-Combatant Units";
             escapedItems.Header = "Escaped Units";
             destroyedItems.Header = "Destroyed Units";
-            destroyedItems.Header = "Assimilated Units";
+            assimilatedItems.Header = "Assimilated Units";
 
             combatantItems.IsExpanded = true;
             nonCombatantItems.IsExpanded = true;
