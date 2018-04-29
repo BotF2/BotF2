@@ -129,21 +129,28 @@ namespace Supremacy.Combat
                                 GameLog.Print("ShipType = {0}, IsCombatant = {1}, CombatOrder = {2}, _combatShip[i] = {3}", _combatShips[j].First.Source.OrbitalDesign.ShipType, _combatShips[j].First.Source.IsCombatant, order, _combatShips[i].First.Source);
                                 target = result; // target the transport combatant ship j for our ship i with raid transport order?
                                 if (target != null && otherOrder != CombatOrder.Formation)
-                                { 
-                                    foreach (CombatWeapon weapon in _combatShips[i].Second) // for each weapon ship i has 
+                                {
+                                    try
                                     {
-                                        if (weapon.CanFire) // if it can fire at a target
+                                        foreach (CombatWeapon weapon in _combatShips[i].Second) // for each weapon ship i has 
                                         {
-                                            //order = CombatOrder.Engage;
-                                            Attack(_combatShips[i].First, target, weapon, order); // our ship i exicutes the Attach function on it's target with xyz result for ship j target
-                                            combatOccurred = true;
-                                           
-                                            if (_automatedCombatTracing)
-                                                GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
-                                            if (_iautomatedCombatTracing)
-                                                GameLog.Print("Attack Tranport _combateship j = {0} with Attacker _combatShip i = {1}", j, i);
-                                            /* break;*/ // done with this pair of weapons from the foreach
+                                            if (weapon.CanFire) // if it can fire at a target
+                                            {
+                                                //order = CombatOrder.Engage;
+                                                Attack(_combatShips[i].First, target, weapon, order); // our ship i exicutes the Attach function on it's target with xyz result for ship j target
+                                                combatOccurred = true;
+
+                                                if (_automatedCombatTracing)
+                                                    GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                                                if (_iautomatedCombatTracing)
+                                                    GameLog.Print("Attack Tranport _combateship j = {0} with Attacker _combatShip i = {1}", j, i);
+                                                /* break;*/ // done with this pair of weapons from the foreach
+                                            }
                                         }
+                                    }
+                                    catch
+                                    {
+                                        GameLog.Print("try catch");
                                     }
                                 }
                                 if (otherOrder == CombatOrder.Formation)
@@ -153,6 +160,7 @@ namespace Supremacy.Combat
                                     {
                                         if (target != null)
                                         {
+                                            try
                                             {
                                                 if (weapon.CanFire) // if it can fire at a target
                                                 {
@@ -167,6 +175,10 @@ namespace Supremacy.Combat
                                                     /* break;*/ // done with this pair of weapons from the foreach
                                                 }
                                             }
+                                            catch
+                                            {
+                                                GameLog.Print("try catch");
+                                            }
                                         }
                                     }
                                 }
@@ -176,21 +188,28 @@ namespace Supremacy.Combat
                             {
                                 target = result;// target the non transport ship j instead with our ship i
                                 if (target != null)
-                                { 
-                                    foreach (CombatWeapon weapon in _combatShips[i].Second) // for each weapon ship i has 
+                                {
+                                    try
                                     {
-                                        if (weapon.CanFire) // if it can fire
+                                        foreach (CombatWeapon weapon in _combatShips[i].Second) // for each weapon ship i has 
                                         {
-                                            //order = CombatOrder.Engage;                                       
-                                            Attack(_combatShips[i].First, target, weapon, order);
-                                            combatOccurred = true;
-                                          
-                                            if (_automatedCombatTracing)
-                                                GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
-                                            if (_iautomatedCombatTracing)
-                                                GameLog.Print("Attack NonTransport _combateship j = {0} with Attacker _combatShip i = {1} inside Raid Transports", j, i);
-                                            /*break;*/ // done with this pair of weapons from the foreach
+                                            if (weapon.CanFire) // if it can fire
+                                            {
+                                                //order = CombatOrder.Engage;                                       
+                                                Attack(_combatShips[i].First, target, weapon, order);
+                                                combatOccurred = true;
+
+                                                if (_automatedCombatTracing)
+                                                    GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                                                if (_iautomatedCombatTracing)
+                                                    GameLog.Print("Attack NonTransport _combateship j = {0} with Attacker _combatShip i = {1} inside Raid Transports", j, i);
+                                                /*break;*/ // done with this pair of weapons from the foreach
+                                            }
                                         }
+                                    }
+                                    catch
+                                    {
+                                        GameLog.Print("try catch");
                                     }
                                 }
                             }                          
@@ -267,32 +286,39 @@ namespace Supremacy.Combat
                         //        GameLog.Print("target = {0} {1}", target.Source.ObjectID, target.Source.Name);
                         if (target != null)
                         {
-                            foreach (CombatWeapon weapon in _combatShips[i].Second)
+                            try
                             {
-                                if (weapon.CanFire)
+                                foreach (CombatWeapon weapon in _combatShips[i].Second)
                                 {
-                                    int targetIndex = -1;
-                                    for (int m = 0; m < _combatShips.Count; m++)
+                                    if (weapon.CanFire)
                                     {
-                                        if (_combatShips[m].First.Source == target.Source)
+                                        int targetIndex = -1;
+                                        for (int m = 0; m < _combatShips.Count; m++)
                                         {
-                                            targetIndex = m;
-                                            if (_iautomatedCombatTracing)
-                                                GameLog.Print("targetIndex m = {0} _combatShip i = {1} near end of while combatOccured", m, i);
-                                            break;
+                                            if (_combatShips[m].First.Source == target.Source)
+                                            {
+                                                targetIndex = m;
+                                                if (_iautomatedCombatTracing)
+                                                    GameLog.Print("targetIndex m = {0} _combatShip i = {1} near end of while combatOccured", m, i);
+                                                break;
+                                            }
                                         }
-                                    }
-                                    combatOccurred = true;
-                                    if (Attack(_combatShips[i].First, target, weapon, order))
-                                    {
-                                        if (targetIndex < i)
-                                            --i; //???
-                                        if (_iautomatedCombatTracing)
-                                            GameLog.Print("_combatShip i = {1} at end of while combatOccured", i);
-                                    }
+                                        combatOccurred = true;
+                                        if (Attack(_combatShips[i].First, target, weapon, order))
+                                        {
+                                            if (targetIndex < i)
+                                                --i; //???
+                                            if (_iautomatedCombatTracing)
+                                                GameLog.Print("_combatShip i = {1} at end of while combatOccured", i);
+                                        }
 
-                                    break;
+                                        break;
+                                    }
                                 }
+                            }
+                            catch
+                            {
+                                GameLog.Print("try catch");
                             }
                         }
                     }
@@ -306,15 +332,22 @@ namespace Supremacy.Combat
 
                     if (target != null)
                     {
-                        foreach (CombatWeapon weapon in _combatStation.Second) // each station weapon
+                        try
                         {
-                            if (weapon.CanFire)
+                            foreach (CombatWeapon weapon in _combatStation.Second) // each station weapon
                             {
-                                CombatOrder order = default(CombatOrder);
-                                Attack(_combatStation.First, target, weapon, order);
-                                combatOccurred = true;
-                                break;
+                                if (weapon.CanFire)
+                                {
+                                    CombatOrder order = default(CombatOrder);
+                                    Attack(_combatStation.First, target, weapon, order);
+                                    combatOccurred = true;
+                                    break;
+                                }
                             }
+                        }
+                        catch
+                        {
+                            GameLog.Print("try catch");
                         }
                     }
                 }
