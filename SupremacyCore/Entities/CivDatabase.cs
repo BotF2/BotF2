@@ -266,7 +266,14 @@ namespace Supremacy.Entities
 
                 foreach (var civElement in xmlDoc.Root.Elements(ns + "Civilization"))
                 {
-                    civDatabase.Add(new Civilization(civElement));
+                    try
+                    {
+                        civDatabase.Add(new Civilization(civElement));
+                    }
+                    catch
+                    {
+                        GameLog.Print("#### Problem adding a new Civilization - maybe CivDatabase already loaded ?? {0}", civElement.ToString());
+                    }
                 }
                 GameLog.Print("Civilization database loaded");
                 return civDatabase;
