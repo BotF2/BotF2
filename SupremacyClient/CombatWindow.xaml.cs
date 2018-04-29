@@ -125,6 +125,15 @@ namespace Supremacy.Client
                 }
             }
 
+            RushButton.IsEnabled = true;
+            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
+            {
+                if (friendlyAssets.CombatShips.Count == 0)
+                {
+                    RushButton.IsEnabled = false;
+                    break;
+                }
+            }
             TransportsButton.IsEnabled = false;
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
@@ -136,28 +145,22 @@ namespace Supremacy.Client
                 break;
             }
 
-
-            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
-            {
-
-            }
-
             FormationButton.IsEnabled = true;
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-                if (friendlyAssets.CombatShips.Count == 0)
+                if (friendlyAssets.CombatShips.Count <= 2)
                 {
                     FormationButton.IsEnabled = false;
                     break;
                 }
             }
 
-            RushButton.IsEnabled = true;
+            HailButton.IsEnabled = true;
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-                if (friendlyAssets.CombatShips.Count == 0)
+                if (friendlyAssets.CombatShips.Count == 0 && friendlyAssets.NonCombatShips.Count == 0 && friendlyAssets.Station != null)
                 {
-                    RushButton.IsEnabled = false;
+                    RetreatButton.IsEnabled = false;
                     break;
                 }
             }

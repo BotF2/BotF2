@@ -73,7 +73,7 @@ namespace Supremacy.Combat
             }
         }
 
-        #region ResolveCombateRoundCore()
+        #region ***ResolveCombateRoundCore
 
         protected override void ResolveCombatRoundCore()
         {
@@ -94,7 +94,7 @@ namespace Supremacy.Combat
                 for (int j = 0; j < _combatShips[i].Second.Length; j++)
                     _combatShips[i].Second[j].Recharge();
             }
-            #region do while 'combatOccured' loop in ResolveCombatRoundCore
+            #region ** do while 'combatOccured' loop in ResolveCombatRoundCore
             do // run this code at least once then check at the 'while' for combatOccured = true
             {
                 combatOccurred = false;
@@ -118,7 +118,9 @@ namespace Supremacy.Combat
                         //    GameLog.Print("Transport-Button: target = {0} {1}", target.Source.ObjectID, target.Source.Name);
                         for (int j = 0; j < _combatShips.Count; j++) // look through all the other ships j
                         {
+                            
                             CombatUnit result = _combatShips[j].First; // identify the selected ship for targeting, bypass the ChooseTarget() here
+                            CombatOrder otherOrder = GetOrder(_combatShips[j].First.Source); // get the orders for the targeted ship j
                             if (_iautomatedCombatTracing)
                                 GameLog.Print("Raid Transports, find Target _combateShip j = {0} for Attacker _combatShip i {1}", j, i);
 
@@ -126,14 +128,14 @@ namespace Supremacy.Combat
                             {
                                 GameLog.Print("ShipType = {0}, IsCombatant = {1}, CombatOrder = {2}, _combatShip[i] = {3}", _combatShips[j].First.Source.OrbitalDesign.ShipType, _combatShips[j].First.Source.IsCombatant, order, _combatShips[i].First.Source);
                                 target = result; // target the transport combatant ship j for our ship i with raid transport order?
-                                if (target != null)
+                                if (target != null && otherOrder != CombatOrder.Formation)
                                 { 
                                     foreach (CombatWeapon weapon in _combatShips[i].Second) // for each weapon ship i has 
                                     {
                                         if (weapon.CanFire) // if it can fire at a target
                                         {
                                             //order = CombatOrder.Engage;
-                                            Attack(_combatShips[i].First, target, weapon, order);
+                                            Attack(_combatShips[i].First, target, weapon, order); // our ship i exicutes the Attach function on it's target with xyz result for ship j target
                                             combatOccurred = true;
                                            
                                             if (_automatedCombatTracing)
@@ -142,7 +144,30 @@ namespace Supremacy.Combat
                                                 GameLog.Print("Attack Tranport _combateship j = {0} with Attacker _combatShip i = {1}", j, i);
                                             /* break;*/ // done with this pair of weapons from the foreach
                                         }
+                                    }
+                                }
+                                if (otherOrder == CombatOrder.Formation)
+                                {
+                                    target = ChooseTarget(_combatShips[i].First.Owner); // If the ships J Transport, to target, is in Formation then use the ChooseTarget() to find a random target for ship i
+                                    foreach (CombatWeapon weapon in _combatShips[i].Second) // for each weapon ship i has 
+                                    {
+                                        if (target != null)
+                                        {
+                                            {
+                                                if (weapon.CanFire) // if it can fire at a target
+                                                {
+                                                    //order = CombatOrder.Engage;
+                                                    Attack(_combatShips[i].First, target, weapon, order); // our ship i exicutes the Attach function on it's target with xyz result for ship j target
+                                                    combatOccurred = true;
 
+                                                    if (_automatedCombatTracing)
+                                                        GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                                                    if (_iautomatedCombatTracing)
+                                                        GameLog.Print("Attack Tranport _combateship j = {0} with Attacker _combatShip i = {1}", j, i);
+                                                    /* break;*/ // done with this pair of weapons from the foreach
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 continue;
@@ -168,9 +193,7 @@ namespace Supremacy.Combat
                                         }
                                     }
                                 }
-
-                            }
-                            
+                            }                          
                         }
                         continue; // move on to the next ship i with raid transports order to find other target
                     }
@@ -182,6 +205,7 @@ namespace Supremacy.Combat
                             {
                                 if (order == CombatOrder.Rush) // attacking ship j has a rush order
                                 {
+                                    // ToDo: if fast attack ship odds of retreat reduced more than if no fast attack ships
                                     if (_iautomatedCombatTracing)
                                         GameLog.Print("Rush _combateship k = {0}", k);
                                     int chanceToRetreat = Statistics.Random(10000) % 100;
@@ -202,7 +226,6 @@ namespace Supremacy.Combat
                                     }
                                     if (_iautomatedCombatTracing)
                                         GameLog.Print("After RemoveAt(i--) index Rushed Retreating _combateship i = {0} with Attacker _combatShip k = {1} inside Retreat", i, k);
-
                                 }
 
                                 else // if none of the attacking ships have the rush order you are left with Base Change to Retreat
@@ -226,9 +249,9 @@ namespace Supremacy.Combat
 
                                 }
                             }
-                            continue; // look for more ships trying to retreat
+                            continue; 
                         }
-                        continue; // look for more ships trying to retreat
+                        continue; 
                     }
                     if (_iautomatedCombatTracing)
                         GameLog.Print("End of Retreating _combateship i = {0}", i);
@@ -296,7 +319,7 @@ namespace Supremacy.Combat
                     }
                 }
             } while (combatOccurred); // continue code past here when combat is over but otherwise back to do in this loop
-            #endregion End - combatOccured loop
+            #endregion ** End - combatOccured loop
 
             // Check for IsAssmilated and in combat with Borg? or is that in CombatEngine
             for (int i = 0; i < _combatShips.Count; i++)
@@ -329,7 +352,7 @@ namespace Supremacy.Combat
             if (_automatedCombatTracing)
                 GameLog.Print("ResolveCombatRoundCore is done...");
         }
-        #endregion End - ResolveCombat...
+        #endregion *** End - ResolveCombat...
 
         #region ChooseTarget
         private CombatUnit ChooseTarget(Civilization sourceOwner)

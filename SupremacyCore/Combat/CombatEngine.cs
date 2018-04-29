@@ -85,7 +85,9 @@ namespace Supremacy.Combat
                 if (_allSidesStandDown)
                     return true;
                 //if (_assets.Count(assets => assets.CombatShips.);
+                GameLog.Print("IsCombatOver assets.Count = {0} survual true/false = {1}", _assets.Count, _assets.Count(assets => assets.HasSurvivingAssets));
                 return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1);
+
             }
         }
 
