@@ -74,6 +74,7 @@ namespace Supremacy.Combat
         }
 
         #region ***ResolveCombateRoundCore
+        int iCount = 0;
 
         protected override void ResolveCombatRoundCore()
         {
@@ -106,6 +107,7 @@ namespace Supremacy.Combat
                     CombatOrder order = GetOrder(_combatShips[i].First.Source);
                     CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
                     CombatUnit target; // did not set target to ChoseTarget methode here for spesific ship as in station, see = ChooseTarget(_combatShips[i].First.Owner);
+                    
                     if (_iautomatedCombatTracing)
                         GameLog.Print("CombatOccured List<Pair<CombatUnit, CombatWeapon[]>> _combateship i = {0}", i);
                     if (order == CombatOrder.Hail)
@@ -114,6 +116,12 @@ namespace Supremacy.Combat
                     }
                     if (order == CombatOrder.Transports) // found ship with order to attack transports
                     {
+                        if (_combatShips.Count == i)
+                        {
+                            break; // stop iteration as the counter i is out of range, was getting i out of range with _combatShips.Count = to i, something still not right?
+                        }
+                        iCount = _combatShips[i].First.GetHashCode();
+                        GameLog.Print("combatShip i value of iCount = {0}", iCount);
                         //if (_automatedCombatTracing)
                         //    GameLog.Print("Transport-Button: target = {0} {1}", target.Source.ObjectID, target.Source.Name);
                         for (int j = 0; j < _combatShips.Count; j++) // look through all the other ships j
@@ -151,6 +159,7 @@ namespace Supremacy.Combat
                                     catch
                                     {
                                         GameLog.Print("try catch");
+                                        continue;
                                     }
                                 }
                                 if (otherOrder == CombatOrder.Formation)
@@ -178,6 +187,7 @@ namespace Supremacy.Combat
                                             catch
                                             {
                                                 GameLog.Print("try catch");
+                                                continue;
                                             }
                                         }
                                     }
@@ -210,6 +220,8 @@ namespace Supremacy.Combat
                                     catch
                                     {
                                         GameLog.Print("try catch");
+                                        continue;
+
                                     }
                                 }
                             }                          
@@ -295,7 +307,7 @@ namespace Supremacy.Combat
                                         int targetIndex = -1;
                                         for (int m = 0; m < _combatShips.Count; m++)
                                         {
-                                            if (_combatShips[m].First.Source == target.Source)
+                                            if (_combatShips[m].First.Source == target.Source) // if ship i has weapon that can fire and we find a target for the weapon set targetIndex here and break
                                             {
                                                 targetIndex = m;
                                                 if (_iautomatedCombatTracing)
@@ -303,10 +315,10 @@ namespace Supremacy.Combat
                                                 break;
                                             }
                                         }
-                                        combatOccurred = true;
-                                        if (Attack(_combatShips[i].First, target, weapon, order))
+                                        combatOccurred = true; // found the target above so now combat occurred
+                                        if (Attack(_combatShips[i].First, target, weapon, order))  // execute Attack() methode on ship i
                                         {
-                                            if (targetIndex < i)
+                                            if (targetIndex < i) // if the targetIndex for weapon is prior to current ship i attacking then move backup on i by subtract one and break? Do not increment onto next ship but stay here and do while another loop for more weapons?
                                                 --i; //???
                                             if (_iautomatedCombatTracing)
                                                 GameLog.Print("_combatShip i = {1} at end of while combatOccured", i);
@@ -319,6 +331,8 @@ namespace Supremacy.Combat
                             catch
                             {
                                 GameLog.Print("try catch");
+                                continue;
+
                             }
                         }
                     }
@@ -348,6 +362,8 @@ namespace Supremacy.Combat
                         catch
                         {
                             GameLog.Print("try catch");
+                            continue;
+
                         }
                     }
                 }
@@ -438,7 +454,7 @@ namespace Supremacy.Combat
         }
         #endregion End - ChooseTarget
 
-        private bool Attack(CombatUnit source, CombatUnit target, CombatWeapon weapon, CombatOrder order)
+        private bool Attack(CombatUnit source, CombatUnit target, CombatWeapon weapon, CombatOrder order) // bool Attack
         {
 
             int accuracy = (int)(_experienceAccuracy[source.Source.ExperienceRank] * 100);
@@ -462,6 +478,7 @@ namespace Supremacy.Combat
                             {
                                 targetAssets.DestroyedShips.Add(targetAssets.CombatShips[i]);
                                 targetAssets.CombatShips.RemoveAt(i);
+                                GameLog.Print("Combatships[i] at target.Isdestroyed, i = {0}", i);
                                 break;
                             }
                         }
