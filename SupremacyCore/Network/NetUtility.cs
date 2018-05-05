@@ -11,29 +11,26 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Net;
-
-using Wintellect.PowerCollections;
-
 namespace Supremacy.Network
 {
     public static class NetUtility
     {
         private static readonly TimeSpan CacheTimeout;
-        private static Dictionary<string, Pair<IPHostEntry, DateTime>> cache;
+        private static Dictionary<string, Tuple<IPHostEntry, DateTime>> cache;
 
         static NetUtility()
         {
-            cache = new Dictionary<string, Pair<IPHostEntry, DateTime>>();
+            cache = new Dictionary<string, Tuple<IPHostEntry, DateTime>>();
             CacheTimeout = new TimeSpan(0, 5, 0);
         }
 
         public static IPHostEntry Resolve(string host)
         {
             if ((cache.ContainsKey(host))
-                && (cache[host].First != null)
-                && ((DateTime.Now - cache[host].Second) <= CacheTimeout))
+                && (cache[host].Item1 != null)
+                && ((DateTime.Now - cache[host].Item2) <= CacheTimeout))
             {
-                return cache[host].First;
+                return cache[host].Item1;
             }
             else
             {
@@ -50,7 +47,7 @@ namespace Supremacy.Network
 
                 lock (cache)
                 {
-                    cache[host] = new Pair<IPHostEntry, DateTime>(
+                    cache[host] = new Tuple<IPHostEntry, DateTime>(
                         hostEntry, DateTime.Now);
                     if (hostEntry != null)
                         cache[hostEntry.HostName] = cache[host];

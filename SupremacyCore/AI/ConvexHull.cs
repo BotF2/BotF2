@@ -16,8 +16,6 @@ using Supremacy.Collections;
 using Supremacy.Game;
 using Supremacy.Universe;
 
-using Wintellect.PowerCollections;
-
 namespace Supremacy.AI
 {
     [Serializable]
@@ -42,7 +40,7 @@ namespace Supremacy.AI
 
         public IList<ConvexHull> Items
         {
-            get { return Algorithms.ReadOnly(_items); }
+            get {return _items.AsReadOnly(); }
         }
 
         public IEnumerable<MapLocation> CombinedInterior

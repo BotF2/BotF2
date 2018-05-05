@@ -23,14 +23,14 @@ using Supremacy.Client;
 using Supremacy.Resources;
 using Supremacy.Universe;
 
-using Wintellect.PowerCollections;
+
 
 namespace Supremacy.UI
 {
     public class Star2D : FrameworkElement, IAnimationsHost
     {
         #region Fields
-        private static readonly Dictionary<StarType, Pair<Color, Color>> Colors;
+        private static readonly Dictionary<StarType, Tuple<Color, Color>> Colors;
         private static readonly ImageBrush[] Frames;
 
         private readonly Grid _grid;
@@ -47,23 +47,23 @@ namespace Supremacy.UI
                     null,
                     (d, baseValue) => null));
 
-            Colors = new Dictionary<StarType, Pair<Color, Color>>
+            Colors = new Dictionary<StarType, Tuple<Color, Color>>
                      {
                          {
                              StarType.Yellow,
-                             new Pair<Color, Color>(
+                             new Tuple<Color, Color>(
                                 Color.FromArgb(0xFF, 0xEA, 0xEB, 0xBF),
                                 Color.FromArgb(0xFF, 0x3D, 0x21, 0x0D))
                          },
                          {
                              StarType.White,
-                             new Pair<Color, Color>(
+                             new Tuple<Color, Color>(
                                 Color.FromArgb(0xFF, 0xE7, 0xE7, 0xE8),
                                 Color.FromArgb(0xFF, 0x2C, 0x2E, 0x37))
                          },
                          {
                              StarType.Blue,
-                             new Pair<Color, Color>(
+                             new Tuple<Color, Color>(
                                 Color.FromArgb(0xFF, 0xE2, 0xE8, 0xF4),
                                 Color.FromArgb(0xFF, 0x0D, 0x26, 0x37))
                          },
@@ -75,13 +75,13 @@ namespace Supremacy.UI
                          //},
                          {
                              StarType.Red,
-                             new Pair<Color, Color>(
+                             new Tuple<Color, Color>(
                                 Color.FromArgb(0xFF, 0xF4, 0xE3, 0xE2),
                                 Color.FromArgb(0xFF, 0x37, 0x0D, 0x0D))
                          },
                          {
                              StarType.Orange,
-                             new Pair<Color, Color>(
+                             new Tuple<Color, Color>(
                                 Color.FromArgb(0xFF, 0xF1, 0xDF, 0xDB),
                                 Color.FromArgb(0xFF, 0x39, 0x2C, 0x0A))
                          }
@@ -252,8 +252,8 @@ namespace Supremacy.UI
                               {
                                   Desaturation = 0.0,
                                   Toned = 1.91693,
-                                  LightColor = Colors[starType].First,
-                                  DarkColor = Colors[starType].Second
+                                  LightColor = Colors[starType].Item1,
+                                  DarkColor = Colors[starType].Item2
                               },
                               new LightStreakEffect
                               {

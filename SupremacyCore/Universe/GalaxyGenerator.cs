@@ -209,7 +209,7 @@ namespace Supremacy.Universe
                     var starPositions = GetStarPositions();
                     var starNames = GetStarNames();
 
-                    Algorithms.RandomShuffleInPlace(starNames);
+                    starNames.ShuffleInPlace();
 
                     Collections.CollectionBase<MapLocation> homeLocations;
 
@@ -690,7 +690,7 @@ namespace Supremacy.Universe
             wantedMinorRaceCount = Math.Min(wantedMinorRaceCount, minorRaceLimit);
 
             foreach (var quadrant in EnumUtilities.GetValues<Quadrant>())
-                Algorithms.RandomShuffleInPlace(minorRaces[quadrant]);
+                minorRaces[quadrant].ShuffleInPlace();
 
             /* -- Dead code, commented out to suppress compiler warnings 
             if (false)
@@ -760,7 +760,7 @@ namespace Supremacy.Universe
 
                     int iPosition = Algorithms.FindFirstIndexWhere(
                         positions,
-                        location => (GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant));
+                        location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
 
                     if (iPosition >= 0)
                     {
@@ -819,7 +819,7 @@ namespace Supremacy.Universe
             var empires = new List<Civilization>();
             var minorRaces = new List<Civilization>();
 
-            Algorithms.RandomShuffleInPlace(positions);
+            positions.ShuffleInPlace();
 
             foreach (var civ in GameContext.Current.Civilizations)
             {
@@ -1089,7 +1089,7 @@ namespace Supremacy.Universe
                     break;
             }
 
-            Algorithms.RandomShuffleInPlace(nebulaNames);
+            nebulaNames.ShuffleInPlace();
 
             var gameContext = GameContext.Current;
 

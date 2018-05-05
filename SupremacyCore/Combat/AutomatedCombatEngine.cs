@@ -7,14 +7,14 @@
 //
 // All other rights reserved.
 
-using System.Collections.Generic;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Types;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
 
-using Wintellect.PowerCollections;
 
 namespace Supremacy.Combat
 {
@@ -22,8 +22,8 @@ namespace Supremacy.Combat
     {
         private const double BaseChanceToRetreat = 0.25;
         private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
-        private readonly List<Pair<CombatUnit, CombatWeapon[]>> _combatShips;
-        private Pair<CombatUnit, CombatWeapon[]> _combatStation;
+        private readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
+        private Tuple<CombatUnit, CombatWeapon[]> _combatStation;
 
         private bool _automatedCombatTracing = true;    // turn to true if you want
         //private bool _automatedCombatTracing = false;    // turn to true if you want
@@ -44,25 +44,25 @@ namespace Supremacy.Combat
             }
             ///////////////////
 
-            _combatShips = new List<Pair<CombatUnit, CombatWeapon[]>>();
+            _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
             foreach (CombatAssets civAssets in Assets)
             {
                 if (civAssets.Station != null)
                 {
-                    _combatStation = new Pair<CombatUnit, CombatWeapon[]>(
+                    _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
                         civAssets.Station,
                         CombatWeapon.CreateWeapons(civAssets.Station.Source));
                 }
                 foreach (CombatUnit shipStats in civAssets.CombatShips)
                 {
-                    _combatShips.Add(new Pair<CombatUnit, CombatWeapon[]>(
+                    _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
                 }
                 foreach (CombatUnit shipStats in civAssets.NonCombatShips)
                 {
-                    _combatShips.Add(new Pair<CombatUnit, CombatWeapon[]>(
+                    _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
                 }
@@ -74,11 +74,11 @@ namespace Supremacy.Combat
             bool combatOccurred;
 
 
-            if (_combatStation.First != null)
+            if (_combatStation.Item1 != null)
             {
                 //GameLog.Print("_combatStation.Count={0}", _combatStation.Count);
-                for (int i = 0; i < _combatStation.Second.Length; i++)
-                    _combatStation.Second[i].Recharge();
+                for (int i = 0; i < _combatStation.Item2.Length; i++)
+                    _combatStation.Item2[i].Recharge();
             }
 
             if (_automatedCombatTracing)    
@@ -86,26 +86,26 @@ namespace Supremacy.Combat
 
             for (int i = 0; i < _combatShips.Count; i++)
             {
-                for (int j = 0; j < _combatShips[i].Second.Length; j++)
-                    _combatShips[i].Second[j].Recharge();
+                for (int j = 0; j < _combatShips[i].Item2.Length; j++)
+                    _combatShips[i].Item2[j].Recharge();
             }
 
             do
             {
                 combatOccurred = false;
 
-                Algorithms.RandomShuffleInPlace(_combatShips);
+                _combatShips.ShuffleInPlace();
 
-                if ((_combatStation.First != null) && !_combatStation.First.IsDestroyed )
+                if ((_combatStation.Item1 != null) && !_combatStation.Item1.IsDestroyed )
                 {
-                    CombatUnit target = ChooseTarget(_combatStation.First.Owner);  // first fighting station ? ....seems so 
+                    CombatUnit target = ChooseTarget(_combatStation.Item1.Owner);  // first fighting station ? ....seems so 
                     if (target != null)
                     {
-                        foreach (CombatWeapon weapon in _combatStation.Second)
+                        foreach (CombatWeapon weapon in _combatStation.Item2)
                         {
                             if (weapon.CanFire)
                             {
-                                Attack(_combatStation.First, target, weapon);
+                                Attack(_combatStation.Item1, target, weapon);
                                 combatOccurred = true;
                                 break;
                             }
@@ -115,8 +115,8 @@ namespace Supremacy.Combat
 
                 for (int i = 0; i < _combatShips.Count; i++)
                 {
-                    CombatOrder order = GetOrder(_combatShips[i].First.Source);
-                    CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
+                    CombatOrder order = GetOrder(_combatShips[i].Item1.Source);
+                    CombatAssets ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
                     CombatUnit target;
 
                     if (order == CombatOrder.Hail)
@@ -129,40 +129,40 @@ namespace Supremacy.Combat
                         int chanceToRetreat = Statistics.Random(10000) % 100;
                         if (chanceToRetreat <= (int) (BaseChanceToRetreat * 100))
                         {
-                            ownerAssets.EscapedShips.Add(_combatShips[i].First);
-                            if (_combatShips[i].First.Source.IsCombatant)
+                            ownerAssets.EscapedShips.Add(_combatShips[i].Item1);
+                            if (_combatShips[i].Item1.Source.IsCombatant)
                             {
-                                ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                                ownerAssets.CombatShips.Remove(_combatShips[i].Item1);
                             }
                             else
                             {
-                                ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                                ownerAssets.NonCombatShips.Remove(_combatShips[i].Item1);
                             }
                             _combatShips.RemoveAt(i--);
                         }
                         continue;
                     }
 
-                    target = ChooseTarget(_combatShips[i].First.Owner);
+                    target = ChooseTarget(_combatShips[i].Item1.Owner);
 
                     if (target == null)
                         continue;
 
-                    foreach (CombatWeapon weapon in _combatShips[i].Second)
+                    foreach (CombatWeapon weapon in _combatShips[i].Item2)
                     {
                         if (weapon.CanFire)
                         {
                             int targetIndex = -1;
                             for (int j = 0; j < _combatShips.Count; j++)
                             {
-                                if (_combatShips[j].First.Source == target.Source)
+                                if (_combatShips[j].Item1.Source == target.Source)
                                 {
                                     targetIndex = j;
                                     break;
                                 }
                             }
                             combatOccurred = true;
-                            if (Attack(_combatShips[i].First, target, weapon))
+                            if (Attack(_combatShips[i].Item1, target, weapon))
                             {
                                 if (targetIndex < i)
                                     --i;
@@ -176,7 +176,7 @@ namespace Supremacy.Combat
             // Check for IsAssmilated and in combat with Borg
             for (int i = 0; i < _combatShips.Count; i++)
             {
-                CombatAssets ownerBorg = GetAssets(_combatShips[i].First.Owner);
+                CombatAssets ownerBorg = GetAssets(_combatShips[i].Item1.Owner);
                 if (ownerBorg.Owner.Name.ToString() != "Borg") continue;
 
                 goto Next;
@@ -209,24 +209,24 @@ namespace Supremacy.Combat
             */
 
             Next:
-                CombatOrder order = GetOrder(_combatShips[i].First.Source);
+                CombatOrder order = GetOrder(_combatShips[i].Item1.Source);
                 if (order == CombatOrder.Retreat)
                 {
-                    CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
-                    ownerAssets.EscapedShips.Add(_combatShips[i].First);
-                    if (_combatShips[i].First.Source.IsCombatant)
+                    CombatAssets ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
+                    ownerAssets.EscapedShips.Add(_combatShips[i].Item1);
+                    if (_combatShips[i].Item1.Source.IsCombatant)
                     {
-                        ownerAssets.CombatShips.Remove(_combatShips[i].First);
+                        ownerAssets.CombatShips.Remove(_combatShips[i].Item1);
                     }
                     else
                     {
-                        ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
+                        ownerAssets.NonCombatShips.Remove(_combatShips[i].Item1);
                     }
                     _combatShips.RemoveAt(i--);
                 }
-                else if (_combatShips[i].First.IsCloaked)
+                else if (_combatShips[i].Item1.IsCloaked)
                 {
-                    _combatShips[i].First.Decloak();
+                    _combatShips[i].Item1.Decloak();
                 }
 
             }
@@ -241,11 +241,11 @@ namespace Supremacy.Combat
             int start = Statistics.Random(_combatShips.Count);
             for (int i = start; i < _combatShips.Count; i++)
             {
-                if (CombatHelper.WillEngage(_combatShips[i].First.Owner, sourceOwner))
+                if (CombatHelper.WillEngage(_combatShips[i].Item1.Owner, sourceOwner))
                 {
-                    if (!_combatShips[i].First.IsCloaked || (RoundNumber > 1))
+                    if (!_combatShips[i].Item1.IsCloaked || (RoundNumber > 1))
                     {
-                        result = _combatShips[i].First;
+                        result = _combatShips[i].Item1;
                         break;
                     }
                 }
@@ -254,22 +254,22 @@ namespace Supremacy.Combat
             {
                 for (int i = 0; i < start; i++)
                 {
-                    if (CombatHelper.WillEngage(_combatShips[i].First.Owner, sourceOwner))
+                    if (CombatHelper.WillEngage(_combatShips[i].Item1.Owner, sourceOwner))
                     {
-                        if (!_combatShips[i].First.IsCloaked || (RoundNumber > 1))
+                        if (!_combatShips[i].Item1.IsCloaked || (RoundNumber > 1))
                         {
-                            result = _combatShips[i].First;
+                            result = _combatShips[i].Item1;
                             break;
                         }
                     }
                 }
             }
-            if ((_combatStation.First != null)
-                && !_combatStation.First.IsDestroyed
-                && (sourceOwner != _combatStation.First.Owner)
+            if ((_combatStation.Item1 != null)
+                && !_combatStation.Item1.IsDestroyed
+                && (sourceOwner != _combatStation.Item1.Owner)
                 && ((result == null) || (Statistics.Random(4) == 0)))
             {
-                result = _combatStation.First;
+                result = _combatStation.Item1;
             }
             return result;
         }
@@ -314,7 +314,7 @@ namespace Supremacy.Combat
                     }
                     for (int i = 0; i < _combatShips.Count; i++)
                     {
-                        if (_combatShips[i].First.Source == target.Source)
+                        if (_combatShips[i].Item1.Source == target.Source)
                         {
                             _combatShips.RemoveAt(i);
                             break;
@@ -378,7 +378,7 @@ namespace Supremacy.Combat
                     }
                     for (int i = 0; i < _combatShips.Count; i++)
                     {
-                        if (_combatShips[i].First.Source == target.Source)
+                        if (_combatShips[i].Item1.Source == target.Source)
                         {
                             _combatShips.RemoveAt(i);
                             break;
