@@ -109,10 +109,8 @@
       <HintPath>..\Common\ActiproSoftware.Shared.Wpf351.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AvalonLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Common\AvalonLibrary.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AvalonLibrary, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonLibrary.2.3.0.0\lib\net40\AvalonLibrary.dll</HintPath>
     </Reference>
     <Reference Include="BindingOriented.SyncLinq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1645360add590f18, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

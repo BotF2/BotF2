@@ -45,10 +45,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AvalonLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Common\AvalonLibrary.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AvalonLibrary, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b5d01516e28df45f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonLibrary.2.3.0.0\lib\net40\AvalonLibrary.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
