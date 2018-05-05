@@ -76,6 +76,8 @@ namespace Supremacy.Combat
         #region ***ResolveCombateRoundCore
         int iCount = 0;
 
+        //public static bool IsAssimilated { get; internal set; }
+
         protected override void ResolveCombatRoundCore()
         {
             bool combatOccurred;
@@ -110,16 +112,19 @@ namespace Supremacy.Combat
                     
                     if (_iautomatedCombatTracing)
                         GameLog.Print("CombatOccured List<Pair<CombatUnit, CombatWeapon[]>> _combateship i = {0}", i);
+                    if (_combatShips.Count == i)
+                    {
+                        break; // stop iteration as the counter i is out of range, was getting i out of range with _combatShips.Count = to i, something still not right?
+                    }
+
                     if (order == CombatOrder.Hail)
                     {
                         continue;
                     }
-                    if (order == CombatOrder.Transports) // found ship with order to attack transports
+
+                    else if (order == CombatOrder.Transports) // found ship with order to attack transports
                     {
-                        if (_combatShips.Count == i)
-                        {
-                            break; // stop iteration as the counter i is out of range, was getting i out of range with _combatShips.Count = to i, something still not right?
-                        }
+
                         iCount = _combatShips[i].First.GetHashCode();
                         GameLog.Print("combatShip i value of iCount = {0}", iCount);
                         //if (_automatedCombatTracing)
@@ -162,7 +167,7 @@ namespace Supremacy.Combat
                                         continue;
                                     }
                                 }
-                                if (otherOrder == CombatOrder.Formation)
+                                else if (otherOrder == CombatOrder.Formation)
                                 {
                                     target = ChooseTarget(_combatShips[i].First.Owner); // If the ships J Transport, to target, is in Formation then use the ChooseTarget() to find a random target for ship i
                                     foreach (CombatWeapon weapon in _combatShips[i].Second) // for each weapon ship i has 
@@ -228,7 +233,7 @@ namespace Supremacy.Combat
                         }
                         continue; // move on to the next ship i with raid transports order to find other target
                     }
-                    if (order == CombatOrder.Retreat) // found a ship i trying to retreat
+                    else if (order == CombatOrder.Retreat) // found a ship i trying to retreat
                     {
                         for (int k = 0; k < _combatShips.Count; k++) // look at all the other ships j
                         {
@@ -286,7 +291,7 @@ namespace Supremacy.Combat
                     }
                     if (_iautomatedCombatTracing)
                         GameLog.Print("End of Retreating _combateship i = {0}", i);
-                    if (i < _combatShips.Count && i > 0)// Is there still a ship i not retreating and not raiding transports? if so go find a target
+                    else if (i < _combatShips.Count && i > 0)// Is there still a ship i not retreating and not raiding transports? if so go find a target
                     {
                         target = ChooseTarget(_combatShips[i].First.Owner); // use ChooseTarget to find something to shoot at
                         if (target == null)
