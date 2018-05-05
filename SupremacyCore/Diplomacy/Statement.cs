@@ -17,9 +17,9 @@ namespace Supremacy.Diplomacy
     [Serializable]
     public class Statement : IDiplomaticExchange
     {
-        public Statement(Civilization sender, Civilization recipient, StatementType statementType, Tone tone, object parameter = null, TurnNumber turnNumber = default(TurnNumber))
+        public Statement(Civilization sender, Civilization recipient, StatementType statementType, Tone tone, object parameter = null, int turnNumber = 0)
         {
-            TurnSent = turnNumber.IsUndefined ? GameContext.Current.TurnNumber : turnNumber;
+            TurnSent = turnNumber == 0 ? GameContext.Current.TurnNumber : turnNumber;
             Sender = sender;
             Recipient = recipient;
             StatementType = statementType;
@@ -27,7 +27,7 @@ namespace Supremacy.Diplomacy
             Parameter = parameter;
         }
 
-        public TurnNumber TurnSent { get; private set; }
+        public int TurnSent { get; private set; }
         public Civilization Sender { get; private set; }
         public Civilization Recipient { get; private set; }
         public StatementType StatementType { get; private set; }

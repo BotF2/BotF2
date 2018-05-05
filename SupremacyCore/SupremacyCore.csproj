@@ -437,7 +437,6 @@
     <Compile Include="Scripting\ScriptedEvent.cs" />
     <Compile Include="Scripting\ScriptedEventSitRepEntryData.cs" />
     <Compile Include="Text\ITextDatabase.cs" />
-    <Compile Include="Game\TurnNumber.cs" />
     <Compile Include="Game\GameUpdateData.cs" />
     <Compile Include="Game\IGameUnit.cs" />
     <Compile Include="Game\LobbyData.cs" />

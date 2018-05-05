@@ -18,7 +18,7 @@ namespace Supremacy.Diplomacy
 {
     public interface IResponse : IDiplomaticExchange
     {
-        TurnNumber TurnSent { get; }
+        int TurnSent { get; }
         ResponseType ResponseType { get; }
         IProposal Proposal { get; }
         IProposal CounterProposal { get; }
@@ -31,14 +31,14 @@ namespace Supremacy.Diplomacy
         private ResponseType _responseType;
         private IProposal _proposal;
         private IProposal _counterProposal;
-        private TurnNumber _turnSent;
+        private int _turnSent;
 
-        public Response(ResponseType responseType, [NotNull] IProposal proposal, [CanBeNull] IProposal counterProposal = null, TurnNumber turnSent = default(TurnNumber))
+        public Response(ResponseType responseType, [NotNull] IProposal proposal, [CanBeNull] IProposal counterProposal = null, int turnSent = 0)
         {
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
 
-            _turnSent = turnSent.IsUndefined ? GameContext.Current.TurnNumber + 1 : turnSent;
+            _turnSent = turnSent == 0 ? GameContext.Current.TurnNumber + 1 : turnSent;
             _responseType = responseType;
             _proposal = proposal;
             _counterProposal = counterProposal;
@@ -47,7 +47,7 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of IResponse
 
-        public TurnNumber TurnSent
+        public int TurnSent
         {
             get { return _turnSent; }
         }

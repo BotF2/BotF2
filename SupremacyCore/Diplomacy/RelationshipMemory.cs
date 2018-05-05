@@ -18,8 +18,8 @@ namespace Supremacy.Diplomacy
         string Description { get; }
         bool IsNegative { get; }
         int Value { get; }
-        TurnNumber TurnCreated { get; }
-        TurnNumber TurnLastUpdated { get; }
+        int TurnCreated { get; }
+        int TurnLastUpdated { get; }
     }
 
     [Serializable]
@@ -27,7 +27,7 @@ namespace Supremacy.Diplomacy
     {
         public const int RecentThreshold = 10;
 
-        private readonly TurnNumber _turnCreated;
+        private readonly int _turnCreated;
         private readonly object _parameter;
         private readonly MemoryType _memoryType;
         private int _value;
@@ -37,12 +37,12 @@ namespace Supremacy.Diplomacy
             get { return _memoryType; }
         }
 
-        public TurnNumber TurnCreated
+        public int TurnCreated
         {
             get { return _turnCreated; }
         }
 
-        public TurnNumber TurnLastUpdated
+        public int TurnLastUpdated
         {
             get { return _turnCreated; }
         }
@@ -64,7 +64,7 @@ namespace Supremacy.Diplomacy
         public RelationshipMemory(MemoryType memoryType, int value, object parameter)
             : this(memoryType, GameContext.Current.TurnNumber, value, parameter) {}
 
-        public RelationshipMemory(MemoryType memoryType, TurnNumber turnCreated, int value, object parameter)
+        public RelationshipMemory(MemoryType memoryType, int turnCreated, int value, object parameter)
         {
             if (turnCreated < 0)
                 throw new ArgumentOutOfRangeException("turnCreated", "must be >= 0");

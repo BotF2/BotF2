@@ -14,9 +14,9 @@ namespace Supremacy.Diplomacy
         private CollectionBase<Motivation> _motivations;
         //private InfluenceMap _threatMap;
 
-        public TurnNumber LastTotalWarAttack { get; protected set; }
-        public TurnNumber LastColdWarAttack { get; protected set; }
-        public TurnNumber LastIncursion { get; protected set; }
+        public int LastTotalWarAttack { get; protected set; }
+        public int LastColdWarAttack { get; protected set; }
+        public int LastIncursion { get; protected set; }
 
         public DiplomacyDataInternal(GameObjectID ownerId, GameObjectID counterpartyid)
         {
@@ -115,10 +115,9 @@ namespace Supremacy.Diplomacy
             GameLog.Print("this.LastIncursion-TurnNumber={0}", LastIncursion);
         }
 
-        public void SetContactTurn(TurnNumber contactTurn)
+        public void SetContactTurn(int contactTurn)
         {
-            if (ContactTurn.IsUndefined)
-                ContactTurn = contactTurn.IsUndefined ? GameContext.Current.TurnNumber : contactTurn;
+                ContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
         }
 
         #endregion
@@ -140,7 +139,7 @@ namespace Supremacy.Diplomacy
             get { return _baseData.EffectiveRegard; }
         }
 
-        public TurnNumber ContactTurn
+        public int ContactTurn
         {
             get { return _baseData.ContactTurn; }
             protected set { _baseData.ContactTurn = value; }
@@ -157,7 +156,7 @@ namespace Supremacy.Diplomacy
             internal set { _baseData.Status = value; }
         }
 
-        public TurnNumber LastStatusChange
+        public int LastStatusChange
         {
             get { return _baseData.LastStatusChange; }
             internal set { _baseData.LastStatusChange = value; }

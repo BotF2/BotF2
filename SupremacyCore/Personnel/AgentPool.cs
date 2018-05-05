@@ -236,20 +236,20 @@ namespace Supremacy.Personnel
         [Serializable]
         public class FutureAgent : IOwnedDataSerializableAndRecreatable
         {
-            private TurnNumber _appearanceTurnNumber;
+            private int _appearanceTurnNumber;
             private GameObjectID _ownerId;
             private string _profileName;
 
             private Lazy<AgentProfile> _profile;
 
-            public FutureAgent(TurnNumber appearanceTurnNumber, [NotNull] Civilization owner, [NotNull] AgentProfile profile)
+            public FutureAgent(int appearanceTurnNumber, [NotNull] Civilization owner, [NotNull] AgentProfile profile)
             {
                 if (owner == null)
                     throw new ArgumentNullException("owner");
                 if (profile == null)
                     throw new ArgumentNullException("profile");
 
-                if (appearanceTurnNumber.IsUndefined)
+                if (appearanceTurnNumber == 0)
                     appearanceTurnNumber = 1;
 
                 _appearanceTurnNumber = appearanceTurnNumber;
@@ -264,7 +264,7 @@ namespace Supremacy.Personnel
                 return GameContext.Current.AgentDatabase[Owner][_profileName];
             }
 
-            public TurnNumber AppearanceTurnNumber
+            public int AppearanceTurnNumber
             {
                 get { return _appearanceTurnNumber; }
             }

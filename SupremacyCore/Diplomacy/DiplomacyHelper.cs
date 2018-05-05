@@ -419,7 +419,7 @@ namespace Supremacy.Diplomacy
             return 0.0;
         }
 
-        public static void EnsureContact([NotNull] Civilization firstCiv, [NotNull] Civilization secondCiv, MapLocation location, TurnNumber contactTurn = default(TurnNumber))
+        public static void EnsureContact([NotNull] Civilization firstCiv, [NotNull] Civilization secondCiv, MapLocation location, int contactTurn = 0)
         {
             if (firstCiv == null)
                 throw new ArgumentNullException("firstCiv");
@@ -433,7 +433,7 @@ namespace Supremacy.Diplomacy
             if (foreignPower.IsContactMade)
                 return;
 
-            var actualContactTurn = contactTurn.IsUndefined ? GameContext.Current.TurnNumber : contactTurn;
+            var actualContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
 
             foreignPower.MakeContact(actualContactTurn);
 
@@ -501,7 +501,7 @@ namespace Supremacy.Diplomacy
             if (diplomacyData == null)
                 throw new ArgumentNullException("diplomacyData");
 
-            return !diplomacyData.ContactTurn.IsUndefined;
+            return diplomacyData.ContactTurn != 0;
         }
 
         public static bool IsFirstContact(Civilization source, Civilization target)
