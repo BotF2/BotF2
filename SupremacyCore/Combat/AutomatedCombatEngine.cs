@@ -74,7 +74,7 @@ namespace Supremacy.Combat
             bool combatOccurred;
 
 
-            if (_combatStation.Item1 != null)
+            if (_combatStation != null)
             {
                 //GameLog.Print("_combatStation.Count={0}", _combatStation.Count);
                 for (int i = 0; i < _combatStation.Item2.Length; i++)
@@ -96,7 +96,7 @@ namespace Supremacy.Combat
 
                 _combatShips.ShuffleInPlace();
 
-                if ((_combatStation.Item1 != null) && !_combatStation.Item1.IsDestroyed )
+                if ((_combatStation!= null) && !_combatStation.Item1.IsDestroyed )
                 {
                     CombatUnit target = ChooseTarget(_combatStation.Item1.Owner);  // first fighting station ? ....seems so 
                     if (target != null)
@@ -264,7 +264,7 @@ namespace Supremacy.Combat
                     }
                 }
             }
-            if ((_combatStation.Item1 != null)
+            if ((_combatStation != null)
                 && !_combatStation.Item1.IsDestroyed
                 && (sourceOwner != _combatStation.Item1.Owner)
                 && ((result == null) || (Statistics.Random(4) == 0)))
