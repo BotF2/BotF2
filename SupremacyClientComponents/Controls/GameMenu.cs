@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-using ActiproSoftware.Windows;
 using ActiproSoftware.Windows.Media;
 
 namespace Supremacy.Client.Controls
@@ -65,7 +64,7 @@ namespace Supremacy.Client.Controls
             CanUnhighlightWhenFocusedProperty.OverrideMetadata(typeof(System.Windows.Controls.Primitives.TextBoxBase), new FrameworkPropertyMetadata(false));
 
             // Attach to routed events
-            EventManager.RegisterClassHandler(typeof(GameMenu), GameMenuItem.IsSelectedChangedEvent, new EventHandler<BooleanPropertyChangedRoutedEventArgs>(OnMenuItemIsSelectedChangedEvent));
+            EventManager.RegisterClassHandler(typeof(GameMenu), GameMenuItem.IsSelectedChangedEvent, new EventHandler<RoutedPropertyChangedEventArgs<bool>>(OnMenuItemIsSelectedChangedEvent));
         }
 
         internal GameMenuItem CurrentSelection
@@ -131,7 +130,7 @@ namespace Supremacy.Client.Controls
             }
         }
 
-        private static void OnMenuItemIsSelectedChangedEvent(object sender, BooleanPropertyChangedRoutedEventArgs e)
+        private static void OnMenuItemIsSelectedChangedEvent(object sender, RoutedPropertyChangedEventArgs<bool> e)
         {
             var originalSource = e.OriginalSource as GameMenuItem;
             if (originalSource == null)

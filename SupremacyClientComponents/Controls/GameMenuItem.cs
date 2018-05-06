@@ -6,8 +6,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
-using ActiproSoftware.Windows;
-
 namespace Supremacy.Client.Controls
 {
     [DesignTimeVisible(false)]
@@ -41,7 +39,7 @@ namespace Supremacy.Client.Controls
         internal static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
             "IsSelectedChanged",
             RoutingStrategy.Bubble,
-            typeof(EventHandler<BooleanPropertyChangedRoutedEventArgs>),
+            typeof(EventHandler<RoutedPropertyChangedEventArgs<bool>>),
             typeof(GameMenuItem));
 
         #endregion
@@ -167,10 +165,10 @@ namespace Supremacy.Client.Controls
             }
 
             control.RaiseEvent(
-                new BooleanPropertyChangedRoutedEventArgs(
-                    IsSelectedChangedEvent,
+                new RoutedPropertyChangedEventArgs<bool>(
                     (bool)e.OldValue,
-                    (bool)e.NewValue));
+                    (bool)e.NewValue,
+                    IsSelectedChangedEvent));
         }
 
         public bool IsContentEnabled
