@@ -597,7 +597,7 @@ namespace Supremacy.Client
                 Container.RegisterInstance<IDispatcherService>(new DefaultDispatcherService(Dispatcher.CurrentDispatcher), new ContainerControlledLifetimeManager());
                 Container.RegisterType<IUnhandledExceptionHandler, ClientUnhandledExceptionHandler>(new ContainerControlledLifetimeManager());
                 Container.RegisterType<INavigationCommandsProxy, NavigationCommandsProxy>(new ContainerControlledLifetimeManager());
-                Container.RegisterType<IAppContext, AppContext>(new ContainerControlledLifetimeManager());
+                Container.RegisterType<IAppContext, Context.AppContext>(new ContainerControlledLifetimeManager());
                 Container.RegisterType<IResourceManager, ClientResourceManager>(new ContainerControlledLifetimeManager());
                 Container.RegisterType<IGameErrorService, GameErrorService>(new ContainerControlledLifetimeManager());
                 Container.RegisterInstance<IAudioEngine>(FMODAudioEngine.Instance, new ContainerControlledLifetimeManager());
