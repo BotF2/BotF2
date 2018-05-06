@@ -27,7 +27,7 @@ namespace Supremacy.Orbitals
     public abstract class FleetOrder : INotifyPropertyChanged
     {
         private int _fleetId;
-        private TurnNumber _turnAssigned;
+        private int _turnAssigned;
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="FleetOrder"/> has been
@@ -38,7 +38,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool IsAssigned
         {
-            get { return !TurnAssigned.IsUndefined; }
+            get { return TurnAssigned != 0; }
             private set
             {
                 if (value)
@@ -48,12 +48,12 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    TurnAssigned = TurnNumber.Undefined;
+                    TurnAssigned = 0;
                 }
             }
         }
 
-        public TurnNumber TurnAssigned
+        public int TurnAssigned
         {
             get { return _turnAssigned; }
             private set

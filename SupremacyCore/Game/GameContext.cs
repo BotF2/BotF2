@@ -104,7 +104,7 @@ namespace Supremacy.Game
         /// Gets or sets the turn number for the current game.
         /// </summary>
         /// <value>The turn number.</value>
-        TurnNumber TurnNumber { get; set; }
+        int TurnNumber { get; set; }
 
         /// <summary>
         /// Gets the research matrix for the current game.
@@ -166,7 +166,7 @@ namespace Supremacy.Game
         #region Instance Members
         #region Fields
         private int _nextObjectId;
-        private TurnNumber _turnNumber = 0;
+        private int _turnNumber = 0;
         private GameOptions _options;
         private GameMod _gameMod;
         private CivDatabase _civilizations;
@@ -467,7 +467,7 @@ namespace Supremacy.Game
         /// Gets or sets the turn number for the current game.
         /// </summary>
         /// <value>The turn number.</value>
-        public TurnNumber TurnNumber
+        public int TurnNumber
         {
             get { return _turnNumber; }
             set

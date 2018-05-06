@@ -68,9 +68,9 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler StartTurnChanged;
 
-        private TurnNumber _startTurn;
+        private int _startTurn;
 
-        public TurnNumber StartTurn
+        public int StartTurn
         {
             get { return _startTurn; }
             private set
@@ -97,9 +97,9 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler EndTurnChanged;
 
-        private TurnNumber _endTurn;
+        private int _endTurn;
 
-        public TurnNumber EndTurn
+        public int EndTurn
         {
             get { return _endTurn; }
             private set
@@ -226,7 +226,7 @@ namespace Supremacy.Client.Views
         {
             DiplomacyStringID leadInId;
 
-            var hasDuration = !_agreement.EndTurn.IsUndefined;
+            var hasDuration = _agreement.EndTurn != 0;
             var proposal = _agreement.Proposal;
 
             if (proposal.IsGift())

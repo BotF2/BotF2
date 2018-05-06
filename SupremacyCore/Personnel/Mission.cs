@@ -21,7 +21,7 @@ namespace Supremacy.Personnel
         private readonly CollectionBase<ObjectOwnerPair> _assignedAgents;
         private readonly DelegatingIndexedCollection<Agent, IIndexedCollection<ObjectOwnerPair>> _assignedAgentsView;
 
-        private TurnNumber _cancellationTurn;
+        private int _cancellationTurn;
         private MissionPhase _currentPhase;
         [NonSerialized] private MissionPhase _previousPhase;
         private MapLocation? _currentLocation;
@@ -88,7 +88,7 @@ namespace Supremacy.Personnel
 
         public bool IsCancelled
         {
-            get { return !_cancellationTurn.IsUndefined; }
+            get { return _cancellationTurn != 0; }
         }
 
         public bool IsInPlanningStage
@@ -103,7 +103,7 @@ namespace Supremacy.Personnel
 
         public bool CompletedSuccessfully
         {
-            get { return IsCompleted && _cancellationTurn.IsUndefined; }
+            get { return IsCompleted && _cancellationTurn != 0; }
         }
 
         [NotNull]
@@ -150,7 +150,7 @@ namespace Supremacy.Personnel
 
             if (!CancelCore(force))
             {
-                _cancellationTurn = TurnNumber.Undefined;
+                _cancellationTurn = 0;
                 return false;
             }
 
@@ -167,7 +167,7 @@ namespace Supremacy.Personnel
 
             var cancelledPhase = _currentPhase;
 
-            _cancellationTurn = TurnNumber.Undefined;
+            _cancellationTurn = 0;
             _currentPhase = _previousPhase;
             _previousPhase = null;
 

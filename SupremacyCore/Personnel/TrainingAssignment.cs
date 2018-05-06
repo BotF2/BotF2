@@ -10,8 +10,8 @@ namespace Supremacy.Personnel
     public class TrainingAssignment : AgentAssignment
     {
         private readonly AgentCareer _career;
-        private readonly TurnNumber _startTurn;
-        private readonly TurnNumber _endTurn;
+        private readonly int _startTurn;
+        private readonly int _endTurn;
 
         public TrainingAssignment(Civilization owner, AgentCareer career)
             : base(owner)

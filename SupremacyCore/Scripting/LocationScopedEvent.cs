@@ -115,11 +115,11 @@ namespace Supremacy.Scripting
         protected sealed class LocationTargetHistoryEntry
         {
             private readonly MapLocation _location;
-            private readonly TurnNumber _turnNumber;
+            private readonly int _turnNumber;
 
-            public LocationTargetHistoryEntry(MapLocation location, TurnNumber turnNumber)
+            public LocationTargetHistoryEntry(MapLocation location, int turnNumber)
             {
-                if (turnNumber.IsUndefined)
+                if (turnNumber == 0)
                     throw new ArgumentOutOfRangeException("turnNumber", "Turn number was undefined.");
 
                 _location = location;
@@ -131,7 +131,7 @@ namespace Supremacy.Scripting
                 get { return _location; }
             }
 
-            public TurnNumber TurnNumber
+            public int TurnNumber
             {
                 get { return _turnNumber; }
             }

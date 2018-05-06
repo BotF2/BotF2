@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 using Supremacy.Utility;
 
-using Wintellect.PowerCollections;
+
 
 namespace Supremacy.Universe
 {
@@ -31,8 +31,8 @@ namespace Supremacy.Universe
             int i;
             int attempts;
 
-            List<Pair<Pair<double, double>, Pair<double, double>>> clustersPosition = 
-                new List<Pair<Pair<double,double>,Pair<double,double>>>();
+            List<Tuple<Tuple<double, double>, Tuple<double, double>>> clustersPosition = 
+                new List<Tuple<Tuple<double,double>,Tuple<double,double>>>();
 
             int averageClusters = Math.Min(width, height) / 20;
             int clusters;
@@ -52,8 +52,8 @@ namespace Supremacy.Universe
                 int j;
                 for (j = 0; j < clustersPosition.Count; j++)
                 {
-                    if ((((clustersPosition[j].First.First - x) * (clustersPosition[j].First.First - x))
-                        + ((clustersPosition[j].First.Second - y) * (clustersPosition[j].First.Second - y)))
+                    if ((((clustersPosition[j].Item1.Item1 - x) * (clustersPosition[j].Item1.Item1 - x))
+                        + ((clustersPosition[j].Item1.Item2 - y) * (clustersPosition[j].Item1.Item2 - y)))
                         < (2.0 / clusters))
                     {
                         break;
@@ -70,9 +70,9 @@ namespace Supremacy.Universe
                 double rotation = random.NextDouble() * Math.PI;
 
                 clustersPosition.Add(
-                    new Pair<Pair<double, double>, Pair<double, double>>(
-                        new Pair<double, double>(x, y),
-                        new Pair<double, double>(Math.Sin(rotation), Math.Cos(rotation))));
+                    new Tuple<Tuple<double, double>, Tuple<double, double>>(
+                        new Tuple<double, double>(x, y),
+                        new Tuple<double, double>(Math.Sin(rotation), Math.Cos(rotation))));
             }
 
             for (i = 0, attempts = 0; (i < number) && (attempts < 100); i++, attempts++)
@@ -102,13 +102,13 @@ namespace Supremacy.Universe
                     x1 = radius * Math.Cos(angle);
                     y1 = radius * Math.Sign(angle) * ellipseWidthVsHeight;
 
-                    x = (x1 * clustersPosition[cluster].Second.Second)
-                        + (y1 * clustersPosition[cluster].Second.First);
-                    y = (-x1 * clustersPosition[cluster].Second.First)
-                        + (y1 * clustersPosition[cluster].Second.Second);
+                    x = (x1 * clustersPosition[cluster].Item2.Item2)
+                        + (y1 * clustersPosition[cluster].Item2.Item1);
+                    y = (-x1 * clustersPosition[cluster].Item2.Item1)
+                        + (y1 * clustersPosition[cluster].Item2.Item2);
 
-                    x = (x / Math.Sqrt(clusters)) + clustersPosition[cluster].First.First;
-                    y = (y / Math.Sqrt(clusters)) + clustersPosition[cluster].First.Second;
+                    x = (x / Math.Sqrt(clusters)) + clustersPosition[cluster].Item1.Item1;
+                    y = (y / Math.Sqrt(clusters)) + clustersPosition[cluster].Item1.Item2;
                 }
 
                 x = ((x + 1) * width) / 2.0;

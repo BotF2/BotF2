@@ -37,7 +37,7 @@ namespace Supremacy.Diplomacy.Visitors
             get { return _agreementData; }
         }
 
-        public static IAgreement Visit([NotNull] IProposal proposal, TurnNumber turnAccepted = default(TurnNumber))
+        public static IAgreement Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
@@ -48,7 +48,7 @@ namespace Supremacy.Diplomacy.Visitors
 
             var agreement = new NewAgreement(
                 proposal,
-                turnAccepted.IsUndefined ? GameContext.Current.TurnNumber : turnAccepted,
+                turnAccepted == 0 ? GameContext.Current.TurnNumber : turnAccepted,
                 visitor._agreementData);
 
             var diplomat = Diplomat.Get(proposal.Recipient);

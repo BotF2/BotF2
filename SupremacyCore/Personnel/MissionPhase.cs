@@ -9,7 +9,7 @@ namespace Supremacy.Personnel
     public abstract class MissionPhase : IEquatable<MissionPhase>
     {
         private readonly Mission _mission;
-        private readonly TurnNumber _turnStarted;
+        private readonly int _turnStarted;
 
         protected MissionPhase([NotNull] Mission mission)
         {
@@ -26,7 +26,7 @@ namespace Supremacy.Personnel
             get { return _mission; }
         }
 
-        protected TurnNumber TurnStarted
+        protected int TurnStarted
         {
             get { return _turnStarted; }
         }

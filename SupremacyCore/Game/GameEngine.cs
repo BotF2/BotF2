@@ -7,13 +7,9 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-
 using Supremacy.AI;
 using Supremacy.Annotations;
+using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Data;
 using Supremacy.Diplomacy;
@@ -25,9 +21,10 @@ using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
-using Wintellect.PowerCollections;
-
-using Supremacy.Collections;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Supremacy.Game
@@ -1156,7 +1153,7 @@ namespace Supremacy.Game
                      * will help prevent the same colonies from getting priority when
                      * the global stockpiles are low.
                      */
-                    Algorithms.RandomShuffleInPlace(colonies);
+                    colonies.ShuffleInPlace();
 
                     /*
                      * Update the civilization's treasury to include any credits that
@@ -1312,7 +1309,7 @@ namespace Supremacy.Game
                      * will help prevent the same colonies from getting priority when
                      * the global stockpiles are low.
                      */
-                    Algorithms.RandomShuffleInPlace(colonies);
+                    colonies.ShuffleInPlace();
 
                     foreach (var colony in colonies)
                     {

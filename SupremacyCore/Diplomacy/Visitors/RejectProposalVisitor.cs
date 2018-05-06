@@ -33,7 +33,7 @@ namespace Supremacy.Diplomacy.Visitors
             get { return _agreementData; }
         }
 
-        public static void Visit([NotNull] IProposal proposal, TurnNumber turnAccepted = default(TurnNumber))
+        public static void Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {
             if (proposal == null)
                 throw new ArgumentNullException("proposal");

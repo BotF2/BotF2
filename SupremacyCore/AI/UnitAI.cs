@@ -20,7 +20,6 @@ using Supremacy.Orbitals;
 using Supremacy.Pathfinding;
 using Supremacy.Universe;
 
-using Wintellect.PowerCollections;
 using Supremacy.Utility;
 
 namespace Supremacy.AI
@@ -473,7 +472,7 @@ namespace Supremacy.AI
 
         public static IEnumerable<Sector> GetSectorsVisibleToFleet(Fleet fleet, MapLocation location)
         {
-            var sectors = new Set<Sector>();
+            var sectors = new HashSet<Sector>();
             SectorMap map = GameContext.Current.Universe.Map;
             int startX = Math.Max(0, location.X - fleet.SensorRange);
             int startY = Math.Max(0, location.Y - fleet.SensorRange);

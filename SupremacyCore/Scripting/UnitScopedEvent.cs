@@ -142,13 +142,13 @@ namespace Supremacy.Scripting
         {
             private readonly GameObjectID _targetId;
             private readonly GameObjectID _ownerId;
-            private readonly TurnNumber _turnNumber;
+            private readonly int _turnNumber;
 
-            public UnitTargetHistoryEntry([NotNull] TUnit target, TurnNumber turnNumber)
+            public UnitTargetHistoryEntry([NotNull] TUnit target, int turnNumber)
             {
                 if (target == null)
                     throw new ArgumentNullException("target");
-                if (turnNumber.IsUndefined)
+                if (turnNumber == 0)
                     throw new ArgumentOutOfRangeException("turnNumber", "Turn number was undefined.");
 
                 _targetId = target.ObjectID;
@@ -176,7 +176,7 @@ namespace Supremacy.Scripting
                 get { return _ownerId; }
             }
 
-            public TurnNumber TurnNumber
+            public int TurnNumber
             {
                 get { return _turnNumber; }
             }

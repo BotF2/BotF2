@@ -21,7 +21,7 @@ namespace Supremacy.Diplomacy
 {
     public interface IProposal : IDiplomaticExchange
     {
-        TurnNumber TurnSent { get; }
+        int TurnSent { get; }
         IIndexedCollection<IClause> Clauses { get; }
         Tone Tone { get; }
     }
@@ -29,7 +29,7 @@ namespace Supremacy.Diplomacy
     [Serializable]
     public class NewProposal : IProposal
     {
-        private readonly TurnNumber _turnSent;
+        private readonly int _turnSent;
         private readonly GameObjectID _sender;
         private readonly GameObjectID _recipient;
         private readonly CollectionBase<IClause> _clauses;
@@ -40,10 +40,10 @@ namespace Supremacy.Diplomacy
         public NewProposal(Civilization sender, Civilization recipient, IEnumerable<IClause> clauses)
             : this(GameContext.Current.TurnNumber, sender, recipient, clauses) {}
 
-        public NewProposal(TurnNumber turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] params IClause[] clauses)
+        public NewProposal(int turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] params IClause[] clauses)
             : this(turnSent, sender, recipient, (IEnumerable<IClause>)clauses) {}
 
-        public NewProposal(TurnNumber turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] IEnumerable<IClause> clauses)
+        public NewProposal(int turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] IEnumerable<IClause> clauses)
         {
             if (sender == null)
                 throw new ArgumentNullException("sender");
@@ -62,7 +62,7 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of IProposal
 
-        public TurnNumber TurnSent
+        public int TurnSent
         {
             get { return _turnSent; }
         }

@@ -98,7 +98,7 @@ namespace Supremacy.Diplomacy
             get { return _diplomacyData.IsContactMade(); }
         }
 
-        public TurnNumber LastStatusChange
+        public int LastStatusChange
         {
             get { return _diplomacyData.LastStatusChange; }
         }
@@ -163,12 +163,12 @@ namespace Supremacy.Diplomacy
             get { return GameContext.Current.Diplomats[CounterpartyID].GetForeignPower(Owner); }
         }
 
-        public void MakeContact(TurnNumber contactTurn = default(TurnNumber))
+        public void MakeContact(int contactTurn = 0)
         {
             if (IsContactMade)
                 return;
 
-            if (contactTurn.IsUndefined)
+            if (contactTurn == 0)
                 contactTurn = GameContext.Current.TurnNumber;
 
             DiplomacyData.SetContactTurn(contactTurn);
