@@ -210,13 +210,13 @@ namespace Supremacy.Tech
             var techDatabase = GameContext.Current.TechDatabase;
             var nativeFacilities = (from id in _productionFacilityDesigns
                                     let design = techDatabase.ProductionFacilityDesigns[id]
-                                    group design by new Pair<ProductionCategory, int>(
+                                    group design by new Tuple<ProductionCategory, int>(
                                         design.Category,
                                         GetMaxTechLevel(design))).ToLookup(o => o.Key, o => o);
 
             _productionFacilityDesigns.UnionWith(
                 tree.ProductionFacilityDesigns
-                    .Where(o => !nativeFacilities[new Pair<ProductionCategory, int>(o.Category, GetMaxTechLevel(o))].Any())
+                    .Where(o => !nativeFacilities[new Tuple<ProductionCategory, int>(o.Category, GetMaxTechLevel(o))].Any())
                     .Select(o => o.DesignID));
 
             _buildingDesigns.UnionWith(tree.BuildingDesigns.Select(o => o.DesignID));
