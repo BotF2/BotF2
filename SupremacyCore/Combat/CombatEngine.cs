@@ -85,7 +85,7 @@ namespace Supremacy.Combat
                 if (_allSidesStandDown)
                     return true;
                 //if (_assets.Count(assets => assets.CombatShips.);
-                GameLog.Print("IsCombatOver assets.Count = {0} survual true/false = {1}", _assets.Count, _assets.Count(assets => assets.HasSurvivingAssets));
+               // made a crash on change to assets.Count in retreat GameLog.Print("IsCombatOver assets.Count = {0} survual true/false = {1}", _assets.Count, _assets.Count(assets => assets.HasSurvivingAssets));
                 return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1);
 
             }
@@ -350,10 +350,14 @@ namespace Supremacy.Combat
         {
             foreach (var assets in Assets)
             {
+                var BorgOwnerID = 0;
                 if (assets.Owner.Name == "Borg")
+                {
+                    BorgOwnerID = assets.OwnerID;
                     break;
+                }
 
-                for (var i = 0; i < assets.CombatShips.Count; i++)
+                    for (var i = 0; i < assets.CombatShips.Count; i++)
                 {
                     if (assets.CombatShips[i].IsAssimilated)
                     {
@@ -382,12 +386,17 @@ namespace Supremacy.Combat
                 foreach (var shipStats in assets.AssimilatedShips)
                 {
                     var _ship = ((Ship)shipStats.Source);
-
-                    _ship.Fleet.OwnerID = 7;
-                    _ship.Fleet.SetOrder(_ship.Fleet.GetDefaultOrder());
+                 
+               
+                    _ship.Fleet.OwnerID = BorgOwnerID;
+                    _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;
-                    GameLog.Print("Fleet={0}, FleetID ={1}, FleetOrder ={2}, FleetOwner ={3}, FleetOwnerID ={4}, ShipName={5}, ShipID={6}",
-                        _ship.Fleet.Name, _ship.Fleet.ObjectID, _ship.Fleet.Order.ToString(), _ship.Fleet.Owner.Name, _ship.Fleet.OwnerID.ToString(), _ship.Name, _ship.ObjectID);
+                    _ship.Fleet.Name = "Borg";
+                    
+
+                    //GameContext.Current.Civilizations[OwnerID] ="Borg";
+                 //   GameLog.Print("Fleet={0}, FleetID ={1}, FleetOrder ={2}, FleetOwner ={3}, FleetOwnerID ={4}, ShipName={5}, ShipID={6}",
+                      //  _ship.Fleet.Name, _ship.Fleet.ObjectID, _ship.Fleet.Order.ToString(), _ship.Fleet.Owner.Name, _ship.Fleet.OwnerID.ToString(), _ship.Name, _ship.ObjectID);
                 }
             }
         }

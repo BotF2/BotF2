@@ -21,15 +21,15 @@ namespace Supremacy.Combat
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private const double BaseChanceToRetreat = 0.25;
-        //private const double BaseRushVsFormation = 0.25;
+        private const double BaseChangeAssimilation = 0.1;
         private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         private readonly List<Pair<CombatUnit, CombatWeapon[]>> _combatShips;
         private Pair<CombatUnit, CombatWeapon[]> _combatStation;
 
         //private bool _automatedCombatTracing = true;    // turn to true if you want gamelogs
         private bool _automatedCombatTracing = false;    // turn to true if you want
-        //private bool _iautomatedCombatTracing = true;
-        private bool _iautomatedCombatTracing = false;
+        private bool _iautomatedCombatTracing = true;
+        //private bool _iautomatedCombatTracing = false;
         private Civilization sourceOwner;
 
         public AutomatedCombatEngine(
@@ -107,8 +107,18 @@ namespace Supremacy.Combat
                 for (int i = 0; i < _combatShips.Count; i++)
                 {
                     CombatOrder order = GetOrder(_combatShips[i].First.Source);
+                    if (order != CombatOrder.Engage ||
+                        order != CombatOrder.Formation ||
+                        order != CombatOrder.Hail ||
+                        order != CombatOrder.Retreat ||
+                        order != CombatOrder.Rush ||
+                        order != CombatOrder.Transports)
+                        {
+                            order = CombatOrder.Engage;
+                        }
+
                     CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
-                    CombatUnit target; // did not set target to ChoseTarget methode here for spesific ship as in station, see = ChooseTarget(_combatShips[i].First.Owner);
+                    CombatUnit target; // did not get target from ChoseTarget methode here for spesific ship as in station, see = ChooseTarget(_combatShips[i].First.Owner);
                     
                     if (_iautomatedCombatTracing)
                         GameLog.Print("CombatOccured List<Pair<CombatUnit, CombatWeapon[]>> _combateship i = {0}", i);
@@ -124,7 +134,10 @@ namespace Supremacy.Combat
 
                     else if (order == CombatOrder.Transports) // found ship with order to attack transports
                     {
-
+                        if (_combatShips[i].First.Source.OrbitalDesign.ShipType.ToString() == "Spy" || _combatShips[i].First.Source.OrbitalDesign.ShipType.ToString() == "Construction") // skip over spy ships
+                        {
+                            continue;
+                        }
                         iCount = _combatShips[i].First.GetHashCode();
                         GameLog.Print("combatShip i value of iCount = {0}", iCount);
                         //if (_automatedCombatTracing)
@@ -137,9 +150,9 @@ namespace Supremacy.Combat
                             if (_iautomatedCombatTracing)
                                 GameLog.Print("Raid Transports, find Target _combateShip j = {0} for Attacker _combatShip i {1}", j, i);
 
-                            if (_combatShips[j].First.Source.IsCombatant == true && _combatShips[j].First.Source.OrbitalDesign.ShipType == "Transport") // find a comatant transport ship j
+                            if (_combatShips[j].First.Source.IsCombatant == true && _combatShips[j].First.Source.OrbitalDesign.ShipType.ToString() == "Transport") // find a combatant transport ship j
                             {
-                                GameLog.Print("ShipType = {0}, IsCombatant = {1}, CombatOrder = {2}, _combatShip[i] = {3}", _combatShips[j].First.Source.OrbitalDesign.ShipType, _combatShips[j].First.Source.IsCombatant, order, _combatShips[i].First.Source);
+                                GameLog.Print("Target ShipType = {0}, IsCombatant = {1}, Attach Ship CombatOrder = {2}, _combatShip[i] = {3}", _combatShips[j].First.Source.OrbitalDesign.ShipType.ToString(), _combatShips[j].First.Source.IsCombatant, order, _combatShips[i].First.Source);
                                 target = result; // target the transport combatant ship j for our ship i with raid transport order?
                                 if (target != null && otherOrder != CombatOrder.Formation)
                                 {
@@ -154,7 +167,7 @@ namespace Supremacy.Combat
                                                 combatOccurred = true;
 
                                                 if (_automatedCombatTracing)
-                                                    GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                                                    GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType.ToString());
                                                 if (_iautomatedCombatTracing)
                                                     GameLog.Print("Attack Tranport _combateship j = {0} with Attacker _combatShip i = {1}", j, i);
                                                 /* break;*/ // done with this pair of weapons from the foreach
@@ -163,7 +176,7 @@ namespace Supremacy.Combat
                                     }
                                     catch
                                     {
-                                        GameLog.Print("try catch");
+                                        GameLog.Print("Order Transport try catch");
                                         continue;
                                     }
                                 }
@@ -183,7 +196,7 @@ namespace Supremacy.Combat
                                                     combatOccurred = true;
 
                                                     if (_automatedCombatTracing)
-                                                        GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                                                        GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType.ToString());
                                                     if (_iautomatedCombatTracing)
                                                         GameLog.Print("Attack Tranport _combateship j = {0} with Attacker _combatShip i = {1}", j, i);
                                                     /* break;*/ // done with this pair of weapons from the foreach
@@ -191,7 +204,7 @@ namespace Supremacy.Combat
                                             }
                                             catch
                                             {
-                                                GameLog.Print("try catch");
+                                                GameLog.Print("Order Formation try catch");
                                                 continue;
                                             }
                                         }
@@ -215,7 +228,7 @@ namespace Supremacy.Combat
                                                 combatOccurred = true;
 
                                                 if (_automatedCombatTracing)
-                                                    GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType);
+                                                    GameLog.Print("ChooseTarget - Transport  {0} {1} {2} = {2}", result.OwnerID, result.Name, result.Source.OrbitalDesign.ShipType.ToString());
                                                 if (_iautomatedCombatTracing)
                                                     GameLog.Print("Attack NonTransport _combateship j = {0} with Attacker _combatShip i = {1} inside Raid Transports", j, i);
                                                 /*break;*/ // done with this pair of weapons from the foreach
@@ -224,7 +237,7 @@ namespace Supremacy.Combat
                                     }
                                     catch
                                     {
-                                        GameLog.Print("try catch");
+                                        GameLog.Print("No transport found so try looking for other targets; try catch");
                                         continue;
 
                                     }
@@ -235,11 +248,12 @@ namespace Supremacy.Combat
                     }
                     else if (order == CombatOrder.Retreat) // found a ship i trying to retreat
                     {
-                        for (int k = 0; k < _combatShips.Count; k++) // look at all the other ships j
+                        for (int k = 0; k < _combatShips.Count; k++) // look at all the other ships k
                         {
-                            if (_combatShips[k].First.Source.IsCombatant == true) // true = found a ship j that is a combatant for retreater ship i, I hope
+                            if (_combatShips[k].First.Source.IsCombatant == true) // true = found a ship k that is a combatant for retreater ship i, I hope
                             {
-                                if (order == CombatOrder.Rush) // attacking ship j has a rush order
+                                CombatOrder otherOrder = GetOrder(_combatShips[k].First.Source);
+                                if (otherOrder == CombatOrder.Rush) // attacking ship k has a rush order
                                 {
                                     // ToDo: if fast attack ship odds of retreat reduced more than if no fast attack ships
                                     if (_iautomatedCombatTracing)
@@ -258,10 +272,10 @@ namespace Supremacy.Combat
                                         }
                                         if (_iautomatedCombatTracing)
                                             GameLog.Print("Remove Rushed Retreating _combateship i = {0} with Attacker _combatShip k = {1} inside Retreat", i, k);
-                                        _combatShips.RemoveAt(i--); // take ship off the _combatships list at the prior index
+                                        _combatShips.RemoveAt(i); // take ship off the _combatships list at the prior index
                                     }
                                     if (_iautomatedCombatTracing)
-                                        GameLog.Print("After RemoveAt(i--) index Rushed Retreating _combateship i = {0} with Attacker _combatShip k = {1} inside Retreat", i, k);
+                                        GameLog.Print("After RemoveAt(i) index Rushed Retreating _combateship i = {0} with Attacker _combatShip k = {1} inside Retreat", i, k);
                                 }
 
                                 else // if none of the attacking ships have the rush order you are left with Base Change to Retreat
@@ -280,17 +294,17 @@ namespace Supremacy.Combat
                                         }
                                         if (_iautomatedCombatTracing)
                                             GameLog.Print("Remove not Rushed Retreating _combateship i = {0} with Attacker _combatShip k = {1} inside Retreat", i, k);
-                                        _combatShips.RemoveAt(i--);
+                                        _combatShips.RemoveAt(i);
                                     }
 
                                 }
                             }
                             continue; 
                         }
+                        if (_iautomatedCombatTracing)
+                            GameLog.Print("End of Retreating _combateship i = {0}", i);
                         continue; 
-                    }
-                    if (_iautomatedCombatTracing)
-                        GameLog.Print("End of Retreating _combateship i = {0}", i);
+                    }                
                     else if (i < _combatShips.Count && i > 0)// Is there still a ship i not retreating and not raiding transports? if so go find a target
                     {
                         target = ChooseTarget(_combatShips[i].First.Owner); // use ChooseTarget to find something to shoot at
@@ -513,7 +527,7 @@ namespace Supremacy.Combat
             //return target.IsDestroyed;
             //             if (_automatedCombatTracing == true) ; 
             //GameLog.Print("{0} = target.IsAssmilated, {1} = source.Owner, {2} = target.Owner.Name", target.IsAssimilated, source.Owner.ToString(), target.Owner.Name.ToString());
-            if (target.ShieldIntegrity < 90 && source.Owner.Name == "Borg" && target.Owner.Name != "Borg")
+            if (target.ShieldIntegrity < 5 && source.Owner.Name == "Borg" && target.Owner.Name != "Borg")
             {
                 if (_automatedCombatTracing)
                     GameLog.Print("{0} = target.IsAssmilated, {1} = source.Owner, {2} = target.Owner.Name", target.IsAssimilated, source.Owner.ToString(), target.Owner.Name.ToString());
@@ -522,7 +536,7 @@ namespace Supremacy.Combat
                 CombatAssets sourceAssets = GetAssets(source.Owner);
                 if (target.Source is Ship)
                 {
-                    target.Source.Scrap = true;
+                    //target.Source.Scrap = true;
                     if (target.Source.IsCombatant)
                     {
                         for (int i = 0; i < targetAssets.CombatShips.Count; i++)
@@ -534,14 +548,13 @@ namespace Supremacy.Combat
                                 target.Source.OwnerID = source.OwnerID;
                                 targetAssets.AssimilatedShips.Add(targetAssets.CombatShips[i]);
                                 sourceAssets.CombatShips.Add(targetAssets.CombatShips[i]);
-
-                                if (_automatedCombatTracing)
-                                    GameLog.Print("Combate Assimilated target.Source.Name {0}, ID {1}, newOwner.Name {2}", target.Source.Name, target.Source.ObjectID, target.Source.Owner.Name);
-
                                 targetAssets.CombatShips.RemoveAt(i);
                                 targetAssets.UpdateAllSources();
                                 break;
                             }
+                            if (_automatedCombatTracing)
+                                GameLog.Print("Combate Assimilated target.Source.Name {0}, ID {1}, newOwner.Name {2}", target.Source.Name, target.Source.ObjectID, target.Source.Owner.Name);
+
                         }
                     }
                     else
@@ -554,14 +567,13 @@ namespace Supremacy.Combat
                                 target.Source.OwnerID = source.OwnerID;
                                 targetAssets.AssimilatedShips.Add(targetAssets.NonCombatShips[i]);
                                 sourceAssets.CombatShips.Add(targetAssets.CombatShips[i]);
-
-                                if (_automatedCombatTracing)
-                                    GameLog.Print("NonCombate Assimilated target.Source.Name {0}, ID {1}, newOwner.Name {2}", target.Source.Name, target.Source.ObjectID, target.Source.Owner.Name);
-
                                 targetAssets.NonCombatShips.RemoveAt(i);
-                                //targetAssets.UpdateAllSources();
+                                targetAssets.UpdateAllSources();
                                 break;
+
                             }
+                            if (_automatedCombatTracing)
+                                GameLog.Print("NonCombate Assimilated target.Source.Name {0}, ID {1}, newOwner.Name {2}", target.Source.Name, target.Source.ObjectID, target.Source.Owner.Name);
                         }
                     }
                     for (int i = 0; i < _combatShips.Count; i++)

@@ -139,6 +139,11 @@ namespace Supremacy.Client
             {
                 if (hostileAssets.IsTransport == true)
                 {
+                    foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
+                        if (friendlyAssets.CombatShips.Count < 1)
+                        {
+                            break; 
+                        }
                             //GameLog.Print("hostileAssets.IsTransport is {0} ", hostileAssets.IsTransport.ToString());
                     TransportsButton.IsEnabled = true;
                 }
