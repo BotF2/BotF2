@@ -158,7 +158,7 @@ namespace Supremacy.Combat
                     //        }
 
                     //    }
-                    }
+                    //}
 
                     CombatOrder order = GetOrder(_combatShips[i].First.Source);
                     if (order != CombatOrder.Engage ||
