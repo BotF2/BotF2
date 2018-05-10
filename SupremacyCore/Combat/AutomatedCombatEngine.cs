@@ -21,15 +21,15 @@ namespace Supremacy.Combat
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private const double BaseChanceToRetreat = 0.25;
-        private const double BaseChangeAssimilation = 0.1;
+        private const double BaseChangeAssimilation = 1;
         private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         private readonly List<Pair<CombatUnit, CombatWeapon[]>> _combatShips;
         private Pair<CombatUnit, CombatWeapon[]> _combatStation;
 
         //private bool _automatedCombatTracing = true;    // turn to true if you want gamelogs
         private bool _automatedCombatTracing = false;    // turn to true if you want
-        private bool _iautomatedCombatTracing = true;
-        //private bool _iautomatedCombatTracing = false;
+        //private bool _iautomatedCombatTracing = true;
+        private bool _iautomatedCombatTracing = false;
         private Civilization sourceOwner;
 
         public AutomatedCombatEngine(
@@ -74,7 +74,7 @@ namespace Supremacy.Combat
         }
 
         #region ***ResolveCombateRoundCore
-        int iCount = 0;
+        //int iCount = 0;
 
         //public static bool IsAssimilated { get; internal set; }
 
@@ -106,6 +106,60 @@ namespace Supremacy.Combat
 
                 for (int i = 0; i < _combatShips.Count; i++)
                 {
+                    if (_combatShips.Count == i)
+                    {
+                        break; 
+                    }
+                    CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
+                    CombatUnit target;
+                    //if (_combatShips[i].First.Owner.Name == "Borg") //attacher is Borg
+                    //{
+
+                    //    for (int a = 0; a < _combatShips.Count; a++)
+                    //    {
+                    //        CombatAssets targetAssets = GetAssets(_combatShips[a].First.Owner);
+                    //        CombatAssets sourceAssets = GetAssets(_combatShips[i].First.Owner);
+                    //        CombatUnit result = _combatShips[a].First;
+
+                    //        if (_combatShips[a].First.Source is Ship && _combatShips[a].First.Source.IsCombatant == true && _combatShips[a].First.ShieldIntegrity <= 100)
+                    //        {
+                    //            target = result; // target the ship [a] we just found without shields with the borg ship [i] we found
+
+                    //            int chanceToAssimilate = Statistics.Random(10000) % 100;
+                    //            if (chanceToAssimilate <= (int)(BaseChangeAssimilation * 100))
+                    //            {
+
+                    //                target.Source.Owner = _combatShips[i].First.Owner;
+                    //                target.Source.OwnerID = _combatShips[i].First.OwnerID;
+                    //                //assets.AssimilatedShips.Add(assets.CombatShips[i]);
+                    //                //assets.CombatShips.RemoveAt(i--);
+                                 
+                    //                targetAssets.AssimilatedShips.Add(targetAssets.CombatShips[a]);
+                    //                targetAssets.CombatShips.RemoveAt(a--);
+                    //                //sourceAssets.CombatShips.Add(targetAssets.CombatShips[a]);
+
+                    //                targetAssets.UpdateAllSources();
+                    //                combatOccurred = true;
+                    //                //GameLog.Print("targetAssets.CombatShips[a] null? {0}", targetAssets.CombatShips[a]);
+                    //                break; // one target ship
+                    //            }
+                    //            //for (int b = 0; b < _combatShips.Count; b++)
+                    //            //{
+                    //            //    if (_combatShips[b].First.Source == target.Source)
+                    //            //    {
+                    //            //        _combatShips.RemoveAt(b);
+                    //            //        break;
+                    //            //    }
+                    //            //}
+                    //            if (target == null)
+                    //            {
+                    //                continue;
+                    //            }
+                    //        }
+
+                    //    }
+                    }
+
                     CombatOrder order = GetOrder(_combatShips[i].First.Source);
                     if (order != CombatOrder.Engage ||
                         order != CombatOrder.Formation ||
@@ -114,18 +168,13 @@ namespace Supremacy.Combat
                         order != CombatOrder.Rush ||
                         order != CombatOrder.Transports)
                         {
-                            order = CombatOrder.Engage;
+                            order = CombatOrder.Engage; // if there is no order make it engage
                         }
 
-                    CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
-                    CombatUnit target; // did not get target from ChoseTarget methode here for spesific ship as in station, see = ChooseTarget(_combatShips[i].First.Owner);
-                    
+
                     if (_iautomatedCombatTracing)
                         GameLog.Print("CombatOccured List<Pair<CombatUnit, CombatWeapon[]>> _combateship i = {0}", i);
-                    if (_combatShips.Count == i)
-                    {
-                        break; // stop iteration as the counter i is out of range, was getting i out of range with _combatShips.Count = to i, something still not right?
-                    }
+
 
                     if (order == CombatOrder.Hail)
                     {
@@ -138,8 +187,8 @@ namespace Supremacy.Combat
                         {
                             continue;
                         }
-                        iCount = _combatShips[i].First.GetHashCode();
-                        GameLog.Print("combatShip i value of iCount = {0}", iCount);
+                        //iCount = _combatShips[i].First.GetHashCode();
+                        //GameLog.Print("combatShip i value of iCount = {0}", iCount);
                         //if (_automatedCombatTracing)
                         //    GameLog.Print("Transport-Button: target = {0} {1}", target.Source.ObjectID, target.Source.Name);
                         for (int j = 0; j < _combatShips.Count; j++) // look through all the other ships j
@@ -305,13 +354,13 @@ namespace Supremacy.Combat
                             GameLog.Print("End of Retreating _combateship i = {0}", i);
                         continue; 
                     }                
-                    else if (i < _combatShips.Count && i > 0)// Is there still a ship i not retreating and not raiding transports? if so go find a target
+                    else // if (i < _combatShips.Count && i > 0)// Is there still a ship i not retreating and not raiding transports? if so go find a target
                     {
                         target = ChooseTarget(_combatShips[i].First.Owner); // use ChooseTarget to find something to shoot at
-                        if (target == null)
-                        {
-                            continue;
-                        }
+                        //if (target == null)
+                        //{
+                        //    continue;
+                        //}
 
                         //if (_automatedCombatTracing)
                         //        GameLog.Print("target = {0} {1}", target.Source.ObjectID, target.Source.Name);
@@ -335,12 +384,13 @@ namespace Supremacy.Combat
                                             }
                                         }
                                         combatOccurred = true; // found the target above so now combat occurred
-                                        if (Attack(_combatShips[i].First, target, weapon, order))  // execute Attack() methode on ship i
+                                        if (Attack(_combatShips[i].First, target, weapon, order))  // execute Attack() methode for ship i target ship m
                                         {
-                                            if (targetIndex < i) // if the targetIndex for weapon is prior to current ship i attacking then move backup on i by subtract one and break? Do not increment onto next ship but stay here and do while another loop for more weapons?
-                                                --i; //???
+                                            if (targetIndex < i) // if the targetIndex for weapon is prior to current ship i being targeted then move backup on i by subtract one and break? Do not increment onto next ship but stay here and do while another loop for more weapons?
+                                                --i; // 
                                             if (_iautomatedCombatTracing)
                                                 GameLog.Print("_combatShip i = {1} at end of while combatOccured", i);
+
                                         }
 
                                         break;
@@ -356,6 +406,9 @@ namespace Supremacy.Combat
                         }
                     }
                 }
+
+                
+
                 if ((_combatStation.First != null) && !_combatStation.First.IsDestroyed) // there is a station
                 {
                     CombatUnit target = ChooseTarget(_combatStation.First.Owner);  // use ChooseTarget to find target for station? 
@@ -389,27 +442,13 @@ namespace Supremacy.Combat
             } while (combatOccurred); // continue code past here when combat is over but otherwise back to do in this loop
             #endregion ** End - combatOccured loop
 
-            // Check for IsAssmilated and in combat with Borg? or is that in CombatEngine
             for (int i = 0; i < _combatShips.Count; i++)
             {
                 //CombatAssets ownerBorg = GetAssets(_combatShips[i].First.Owner);
                 //if (ownerBorg.Owner.Name.ToString() != "Borg") continue;
 
-                CombatOrder order = GetOrder(_combatShips[i].First.Source);
-                //if (order == CombatOrder.Retreat) // second time looking for the retreat order but now combat is over and we are cleaning up the sector?
-                //{
-                //    CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
-                //    ownerAssets.EscapedShips.Add(_combatShips[i].First);
-                //    if (_combatShips[i].First.Source.IsCombatant)
-                //    {
-                //        ownerAssets.CombatShips.Remove(_combatShips[i].First);
-                //    }
-                //    else
-                //    {
-                //        ownerAssets.NonCombatShips.Remove(_combatShips[i].First);
-                //    }
-                //    _combatShips.RemoveAt(i--);
-                //}
+                //CombatOrder order = GetOrder(_combatShips[i].First.Source);
+
                 if (_combatShips[i].First.IsCloaked)
                 {
                     _combatShips[i].First.Decloak();
@@ -524,72 +563,67 @@ namespace Supremacy.Combat
                     }
                 }
             }
-            //return target.IsDestroyed;
-            //             if (_automatedCombatTracing == true) ; 
-            //GameLog.Print("{0} = target.IsAssmilated, {1} = source.Owner, {2} = target.Owner.Name", target.IsAssimilated, source.Owner.ToString(), target.Owner.Name.ToString());
-            if (target.ShieldIntegrity < 5 && source.Owner.Name == "Borg" && target.Owner.Name != "Borg")
-            {
-                if (_automatedCombatTracing)
-                    GameLog.Print("{0} = target.IsAssmilated, {1} = source.Owner, {2} = target.Owner.Name", target.IsAssimilated, source.Owner.ToString(), target.Owner.Name.ToString());
-
-                CombatAssets targetAssets = GetAssets(target.Owner);
-                CombatAssets sourceAssets = GetAssets(source.Owner);
-                if (target.Source is Ship)
-                {
-                    //target.Source.Scrap = true;
-                    if (target.Source.IsCombatant)
-                    {
-                        for (int i = 0; i < targetAssets.CombatShips.Count; i++)
-                        {
-                            if (targetAssets.CombatShips[i].Source == target.Source && target.Source.Name.ToString() != "Borg")
-                            {
-
-                                target.Source.Owner = source.Owner;
-                                target.Source.OwnerID = source.OwnerID;
-                                targetAssets.AssimilatedShips.Add(targetAssets.CombatShips[i]);
-                                sourceAssets.CombatShips.Add(targetAssets.CombatShips[i]);
-                                targetAssets.CombatShips.RemoveAt(i);
-                                targetAssets.UpdateAllSources();
-                                break;
-                            }
-                            if (_automatedCombatTracing)
-                                GameLog.Print("Combate Assimilated target.Source.Name {0}, ID {1}, newOwner.Name {2}", target.Source.Name, target.Source.ObjectID, target.Source.Owner.Name);
-
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < targetAssets.NonCombatShips.Count; i++)
-                        {
-                            if (targetAssets.NonCombatShips[i].Source == target.Source && target.Source.Name.ToString() != "Borg")
-                            {
-                                target.Source.Owner = source.Owner;
-                                target.Source.OwnerID = source.OwnerID;
-                                targetAssets.AssimilatedShips.Add(targetAssets.NonCombatShips[i]);
-                                sourceAssets.CombatShips.Add(targetAssets.CombatShips[i]);
-                                targetAssets.NonCombatShips.RemoveAt(i);
-                                targetAssets.UpdateAllSources();
-                                break;
-
-                            }
-                            if (_automatedCombatTracing)
-                                GameLog.Print("NonCombate Assimilated target.Source.Name {0}, ID {1}, newOwner.Name {2}", target.Source.Name, target.Source.ObjectID, target.Source.Owner.Name);
-                        }
-                    }
-                    for (int i = 0; i < _combatShips.Count; i++)
-                    {
-                        if (_combatShips[i].First.Source == target.Source)
-                        {
-                            _combatShips.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }
-               //return target.IsAssimilated;
-            }
             return target.IsDestroyed;
-
         }
+
+        //private bool TryAssimilation(CombatUnit source, CombatUnit target) // bool 
+        //{
+
+        //    if (_automatedCombatTracing)
+        //        GameLog.Print("{0} = target.IsAssmilated, {1} = source.Owner, {2} = target.Owner.Name", target.IsAssimilated, source.Owner.ToString(), target.Owner.Name.ToString());
+
+        //    CombatAssets targetAssets = GetAssets(target.Owner);
+        //    CombatAssets sourceAssets = GetAssets(source.Owner);
+        //    if (target.Source is Ship)
+        //    {
+        //        //target.Source.Scrap = true;
+        //        if (target.Source.IsCombatant)
+        //        {
+        //            for (int i = 0; i < targetAssets.CombatShips.Count; i++)
+        //            {
+        //                if (targetAssets.CombatShips[i].Source == target.Source && target.ShieldIntegrity == 0)
+        //                {
+
+        //                    target.Source.Owner = source.Owner;
+        //                    target.Source.OwnerID = source.OwnerID;
+        //                    targetAssets.AssimilatedShips.Add(targetAssets.CombatShips[i]);
+        //                    sourceAssets.CombatShips.Add(targetAssets.CombatShips[i]);
+        //                    targetAssets.CombatShips.RemoveAt(i);
+        //                    targetAssets.UpdateAllSources();
+        //                    break;
+        //                }
+                        
+        //            }
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        for (int i = 0; i < targetAssets.NonCombatShips.Count; i++)
+        //        {
+        //            if (targetAssets.NonCombatShips[i].Source == target.Source && target.ShieldIntegrity == 0)
+        //            {
+        //                target.Source.Owner = source.Owner;
+        //                target.Source.OwnerID = source.OwnerID;
+        //                targetAssets.AssimilatedShips.Add(targetAssets.NonCombatShips[i]);
+        //                sourceAssets.CombatShips.Add(targetAssets.CombatShips[i]);
+        //                targetAssets.NonCombatShips.RemoveAt(i);
+        //                targetAssets.UpdateAllSources();
+        //                break;
+        //            }
+                    
+        //        }
+        //    }
+        //    for (int i = 0; i < _combatShips.Count; i++)
+        //    {
+        //        if (_combatShips[i].First.Source == target.Source)
+        //        {
+        //            _combatShips.RemoveAt(i);
+        //            break;
+        //        }
+        //    }
+        
+        //}
         
     }
 }
