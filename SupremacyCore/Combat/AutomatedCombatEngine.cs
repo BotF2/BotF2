@@ -21,7 +21,7 @@ namespace Supremacy.Combat
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private const double BaseChanceToRetreat = 0.25;
-        private const double BaseChangeAssimilation = 0.70;
+        private const double BaseChangeAssimilation = 1;
         private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         private readonly List<Pair<CombatUnit, CombatWeapon[]>> _combatShips;
         private Pair<CombatUnit, CombatWeapon[]> _combatStation;
@@ -106,10 +106,10 @@ namespace Supremacy.Combat
 
                 for (int i = 0; i < _combatShips.Count; i++)
                 {
-                    if (_combatShips.Count < i || i < 0)
-                    {
-                        break;
-                    }
+                    //if (_combatShips.Count < i || i < 0)
+                    //{
+                    //    break;
+                    //}
                     CombatAssets ownerAssets = GetAssets(_combatShips[i].First.Owner);
                     CombatUnit target = _combatShips[i].First;
                     if (target == null)
@@ -120,7 +120,7 @@ namespace Supremacy.Combat
                     {
                         //if (_combatShips[i].First.Owner == null)
                         //{
-                        Algorithms.RandomShuffleInPlace(_combatShips);
+                        //Algorithms.RandomShuffleInPlace(_combatShips);
 
                         //}
                         for (int a = 0; a < _combatShips.Count; a++)
@@ -136,17 +136,30 @@ namespace Supremacy.Combat
                                 int chanceToAssimilate = Statistics.Random(10000) % 100;
                                 if (chanceToAssimilate <= (int)(BaseChangeAssimilation * 100))
                                 {
-                                    if (target.ShieldIntegrity <= 5) 
+                                    if ( target.ShieldIntegrity <= 100 && sourceAssets.AssimilatedShips.Count <=1) // && a >=1 && target != sourceAssets.AssimilatedShips[a--])
                                     {
                                         targetAssets.CombatShips.Remove(target);
                                         sourceAssets.AssimilatedShips.Add(target);
+                                        targetAssets.UpdateAllSources();
+                                        sourceAssets.UpdateAllSources();
+                                        combatOccurred = true;
+                                        break;
+                                        //target.Source.Owner = sourceAssets.Owner; //_combatShips[i].First.Owner;
+                                        //target.Source.OwnerID = sourceAssets.OwnerID; //_combatShips[i].First.OwnerID;
                                     }
-                                    else if (target.ShieldIntegrity <= 5)
+                                    else if ( target.ShieldIntegrity <= 100 && sourceAssets.AssimilatedShips.Count <= 1) // && a >=1 && target != sourceAssets.AssimilatedShips[a--])
+
                                     {
                                         targetAssets.NonCombatShips.Remove(target);
                                         sourceAssets.AssimilatedShips.Add(target);
+                                        targetAssets.UpdateAllSources();
+                                        sourceAssets.UpdateAllSources();
+                                        combatOccurred = true;
+                                        break;
+                                        //target.Source.Owner = sourceAssets.Owner; //_combatShips[i].First.Owner;
+                                        //target.Source.OwnerID = sourceAssets.OwnerID; //_combatShips[i].First.OwnerID;
                                     }
-                                    
+                                    //break;
                                     //targetAssets.AssimilatedShips.Add(target);
 
                                     //sourceAssets.CombatShips.Add(target);
@@ -156,23 +169,23 @@ namespace Supremacy.Combat
                                     //    continue;
                                     //}
 
-                                    foreach (var shipStats in targetAssets.AssimilatedShips)
-                                    {
-                                        var _ship = ((Ship)shipStats.Source);
+                                    //foreach (var shipStats in targetAssets.AssimilatedShips)
+                                    //{
+                                    //    var _ship = ((Ship)shipStats.Source);
 
 
-                                        _ship.Fleet.OwnerID = sourceAssets.OwnerID;
-                                        _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
-                                        _ship.Scrap = false;
-                                        _ship.Fleet.Name = "Borg";
-                                        break;
+                                    //    _ship.Fleet.OwnerID = sourceAssets.OwnerID;
+                                    //    _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
+                                    //    _ship.Scrap = false;
+                                    //    _ship.Fleet.Name = "Borg";
 
-                                    }
+
+                                    //}
                                     //    //GameContext.Current.Civilizations[OwnerID] ="Borg";
                                     //    //   GameLog.Print("Fleet={0}, FleetID ={1}, FleetOrder ={2}, FleetOwner ={3}, FleetOwnerID ={4}, ShipName={5}, ShipID={6}",
                                     //    //  _ship.Fleet.Name, _ship.Fleet.ObjectID, _ship.Fleet.Order.ToString(), _ship.Fleet.Owner.Name, _ship.Fleet.OwnerID.ToString(), _ship.Name, _ship.ObjectID);
                                     //}
-                                    break;
+
                                     //CombatEngine.PerformAssimilation();
                                     //    target.Source.Owner = ownerAssets.Owner; //_combatShips[i].First.Owner;
                                     //    target.Source.OwnerID = ownerAssets.OwnerID; //_combatShips[i].First.OwnerID;
@@ -193,7 +206,7 @@ namespace Supremacy.Combat
                                     //    break; // one target ship
 
                                 }
-                                break;
+                                //break;
                                 //for (int b = 0; b < _combatShips.Count; b++)
                                 //{
                                 //    if (_combatShips[b].First.Source == target.Source)
@@ -207,8 +220,9 @@ namespace Supremacy.Combat
                                 //    continue;
                                 //}
                             }
-                            break;  
+                            break;
                         }
+                        break;
                     }
 
                     CombatOrder order = GetOrder(_combatShips[i].First.Source);

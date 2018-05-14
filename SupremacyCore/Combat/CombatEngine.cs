@@ -348,35 +348,35 @@ namespace Supremacy.Combat
 
         private void PerformAssimilation()
         {
+            var BorgOwnerID = 0;
             foreach (var assets in Assets)
-            {
-                var BorgOwnerID = 0;
+            { 
                 if (assets.Owner.Name == "Borg")
                 {
                     BorgOwnerID = assets.OwnerID;
-                    break;
+                    continue;
                 }
 
-                    for (var i = 0; i < assets.CombatShips.Count; i++)
-                {
-                    if (assets.CombatShips[i].IsAssimilated)
-                    {
-                        assets.AssimilatedShips.Add(assets.CombatShips[i]);
-                        assets.CombatShips.RemoveAt(i--);
-                    }
-                }
+                //    for (var i = 0; i < assets.CombatShips.Count; i++)
+                //{
+                //    if (assets.CombatShips[i].IsAssimilated)
+                //    {
+                //        assets.AssimilatedShips.Add(assets.CombatShips[i]);
+                //        assets.CombatShips.RemoveAt(i--);
+                //    }
+                //}
 
-                for (var i = 0; i < assets.NonCombatShips.Count; i++)
-                {
-                    if (assets.NonCombatShips[i].IsAssimilated)
-                    {
-                        assets.AssimilatedShips.Add(assets.NonCombatShips[i]);
-                        assets.NonCombatShips.RemoveAt(i--);
-                    }
-                }
+                //for (var i = 0; i < assets.NonCombatShips.Count; i++)
+                //{
+                //    if (assets.NonCombatShips[i].IsAssimilated)
+                //    {
+                //        assets.AssimilatedShips.Add(assets.NonCombatShips[i]);
+                //        assets.NonCombatShips.RemoveAt(i--);
+                //    }
+                //}
                 
                 if (assets.AssimilatedShips.Count == 0)
-                    continue;
+                    break;
 
                 //var destination = CalculateRetreatDestination(assets);
 
@@ -387,7 +387,7 @@ namespace Supremacy.Combat
                 {
                     var _ship = ((Ship)shipStats.Source);
                  
-               
+                    
                     _ship.Fleet.OwnerID = BorgOwnerID;
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;
