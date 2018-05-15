@@ -125,7 +125,7 @@ namespace Supremacy.Combat
                         //}
                         for (int a = 0; a < _combatShips.Count; a++)
                         {
-                            CombatAssets targetAssets = GetAssets(_combatShips[a].First.Owner);
+                            //CombatAssets targetAssets = GetAssets(_combatShips[a].First.Owner);
                             CombatAssets sourceAssets = GetAssets(_combatShips[i].First.Owner);
                             CombatUnit result = _combatShips[a].First;
 
@@ -138,10 +138,11 @@ namespace Supremacy.Combat
                                 {
                                     if ( target.ShieldIntegrity <= 100 && sourceAssets.AssimilatedShips.Count <=1) // && a >=1 && target != sourceAssets.AssimilatedShips[a--])
                                     {
-                                        targetAssets.CombatShips.Remove(target);
+                                        ownerAssets.CombatShips.Remove(target);
                                         sourceAssets.AssimilatedShips.Add(target);
-                                        targetAssets.UpdateAllSources();
-                                        sourceAssets.UpdateAllSources();
+                                        ownerAssets.EscapedShips.Add(target);
+                                        ownerAssets.UpdateAllSources();
+                                        // sourceAssets.UpdateAllSources();
                                         combatOccurred = true;
                                         break;
                                         //target.Source.Owner = sourceAssets.Owner; //_combatShips[i].First.Owner;
@@ -150,10 +151,11 @@ namespace Supremacy.Combat
                                     else if ( target.ShieldIntegrity <= 100 && sourceAssets.AssimilatedShips.Count <= 1) // && a >=1 && target != sourceAssets.AssimilatedShips[a--])
 
                                     {
-                                        targetAssets.NonCombatShips.Remove(target);
+                                        ownerAssets.NonCombatShips.Remove(target);
                                         sourceAssets.AssimilatedShips.Add(target);
-                                        targetAssets.UpdateAllSources();
-                                        sourceAssets.UpdateAllSources();
+                                        ownerAssets.EscapedShips.Add(target);
+                                        ownerAssets.UpdateAllSources();
+                                       // sourceAssets.UpdateAllSources();
                                         combatOccurred = true;
                                         break;
                                         //target.Source.Owner = sourceAssets.Owner; //_combatShips[i].First.Owner;
