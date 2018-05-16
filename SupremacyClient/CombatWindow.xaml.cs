@@ -25,6 +25,7 @@ using Supremacy.Client.Context;
 using System.Media;
 using System.IO;
 using Supremacy.Utility;
+using System.Linq;
 
 namespace Supremacy.Client
 {
@@ -114,73 +115,19 @@ namespace Supremacy.Client
 
             PopulateUnitTrees();
 
-            EngageButton.IsEnabled = true;
-            
-            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
-            {
-                if (friendlyAssets.CombatShips.Count == 0 && friendlyAssets.NonCombatShips.Count != 0 && friendlyAssets.Station == null)
-                {
-                    EngageButton.IsEnabled = false;
-                    break;
-                }
-            }
-
-            RushButton.IsEnabled = true;
-            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
-            {
-                if (friendlyAssets.CombatShips.Count == 0)
-                {
-                    RushButton.IsEnabled = false;
-                    break;
-                }
-            }
-            TransportsButton.IsEnabled = false;
-            foreach (CombatAssets hostileAssets in _update.HostileAssets)
-            {
-                if (hostileAssets.IsTransport == true)
-                {
-                    foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
-                        if (friendlyAssets.CombatShips.Count < 1)
-                        {
-                            break; 
-                        }
-                            //GameLog.Print("hostileAssets.IsTransport is {0} ", hostileAssets.IsTransport.ToString());
-                    TransportsButton.IsEnabled = true;
-                }
-                break;
-            }
-
-            FormationButton.IsEnabled = true;
-            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
-            {
-                if (friendlyAssets.CombatShips.Count <= 2)
-                {
-                    FormationButton.IsEnabled = false;
-                    break;
-                }
-            }
-
-            HailButton.IsEnabled = true;
-            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
-            {
-                if (friendlyAssets.CombatShips.Count == 0 && friendlyAssets.NonCombatShips.Count == 0 && friendlyAssets.Station != null)
-                {
-                    RetreatButton.IsEnabled = false;
-                    break;
-                }
-            }
-
-            RetreatButton.IsEnabled = true;
-            foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
-            {
-                if (friendlyAssets.CombatShips.Count == 0 && friendlyAssets.NonCombatShips.Count == 0 && friendlyAssets.Station != null)
-                {
-                    RetreatButton.IsEnabled = false;
-                    break;
-                }
-            }
-
+            //We need combat assets to be able to engage
+            EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null));
+            //We need combat assets to be able to rush the opposition
+            RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
+            //There needs to be transports in the opposition to be able to target them
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.IsTransport);
+            //We need at least 3 ships to create a formation
+            FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
+            //We need assets to be able to retreat
+            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0) || (fa.Station != null));
+            //Can only hail on the first round
             HailButton.IsEnabled = (update.RoundNumber == 1);
+
             ButtonsPanel0.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             ButtonsPanel1.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             CloseButton.Visibility = update.IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
@@ -388,9 +335,7 @@ namespace Supremacy.Client
                 order = CombatOrder.Formation;
             if (sender == RushButton)
                 order = CombatOrder.Rush;
-
-            //else if (sender == HailButton)
-                if (sender == HailButton)
+            if (sender == HailButton)
                 order = CombatOrder.Hail;
 
             GameLog.Print("OnOrderButtonClicked:  Combat Window: Order Button clicked by Player = {1}", sender, order);

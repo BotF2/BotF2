@@ -134,39 +134,18 @@ namespace Supremacy.Combat
         {
             get
             {
-                var _shipType = "";
-                bool _isTransport = false;
-
-                foreach (CombatUnit shipStats in _combatShips)
+                if (_combatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Transport"))
                 {
-                    _shipType = shipStats.Source.OrbitalDesign.ShipType;
-                            //GameLog.Print("ShipType is {0}", _shipType.ToString());
-                    if (_shipType.ToString() == "Transport")
-                    {
-                        _isTransport = true;
-                        goto End;
-                    }
-                }
-
-                foreach (CombatUnit shipStats in _nonCombatShips)
-                {
-                    _shipType = shipStats.Source.OrbitalDesign.ShipType;
-                            //GameLog.Print("ShipType is {0}", _shipType.ToString());
-                    if (_shipType.ToString() == "Transport")
-                    {
-                        _isTransport = true;
-                        goto End;
-                    }
-                }
-
-                End:
-                if (_isTransport == true)
                     return true;
+                }
+
+                if (_nonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))
+                {
+                    return true;
+                }
 
                 return false;
             }
-
-
         }
 
         public bool HasSurvivingAssets
