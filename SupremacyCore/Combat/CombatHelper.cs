@@ -24,78 +24,37 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
-        public static IList<CombatAssets> GetCombatAssets(MapLocation location)
+        public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {
             var assets = new Dictionary<Civilization, CombatAssets>();
-            var allFleets = new List<Fleet>();
             var results = new List<CombatAssets>();
             var sector = GameContext.Current.Universe.Map[location];
 
-            bool _combatHelperTracing = false; // turn true if you want
+            bool _combatHelperTracing = false;
 
-            // double code ?? see below
-            //if (sector.Station != null)
-            //{
-            //    if (!assets.ContainsKey(sector.Station.Owner))
-            //        assets[sector.Station.Owner] = new CombatAssets(sector.Station.Owner, location);
-            //}
-
-            allFleets.AddRange(GameContext.Current.Universe.FindAt<Fleet>(location));
-
-            //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: allFleets.Count BEFORE Camouflaged: {0}", allFleets.Count);
-            for (var i = 0; i < allFleets.Count; i++)
-            {
-                if (allFleets[i].IsCamouflaged)
-                {
-                    allFleets.RemoveAt(i--);
-                    //
-                    // makes crashes   GameLog.Client.GameData.DebugFormat("CombatHelper.cs: allFleets.[i] NAME: {0} is camouflaged", allFleets[i].Name);
-                }
-            }
-            //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: allFleets.Count AFTER Camouflaged: {0}", allFleets.Count);
-
-            // Make sure that at least one fleet is engaging, if not, then no combat
-            var engagingFleets = allFleets.Where(fleet => fleet.Order.WillEngageHostiles).ToList();
+            var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).Where(f => !f.IsCamouflaged).ToList();
 
             if ((engagingFleets.Count == 0) && (sector.Station == null))
-                return results;
-
-            // Since at least one fleet is engaging, all fleets must be considered.
-            //engagingFleets.AddRange(
-            //    from fleet in allFleets.Where(fleet => !fleet.Order.WillEngageHostiles)
-            //    let fleetCopy = fleet
-            //    where engagingFleets.Any(
-            //        otherFleet =>
-            //            WillEngage(fleetCopy.Owner, otherFleet.Owner) &&
-            //            Equals(fleetCopy.Sector.GetOwner(), otherFleet.Owner))
-            //    select fleet);
-
-            foreach (var fleet in allFleets)
             {
-                var owner = fleet.Owner;
+                return results;
+            }
 
-                if (!assets.ContainsKey(owner))
+            foreach (var fleet in engagingFleets)
+            {
+                if (!assets.ContainsKey(fleet.Owner))
                 {
-                    assets[owner] = new CombatAssets(owner, location);
-                    //doesn't work    GameLog.Client.GameData.DebugFormat("CombatHelper.cs: new assets[owner]={0}, first one={1} !!!", assets[owner], assets[owner].CombatUnits.FirstOrDefault().Name);
-                    
-                    // this one works       
-                    //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: new assets[owner]={0} !!!", assets[owner].Owner.ToString());
+                    assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
                 }
 
                 foreach (var ship in fleet.Ships)
                 {
                     if (ship.IsCombatant)
                     {
-                        // works     
-                        //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: Ship={0}, Owner={1}, ShipName={2} is IsCombatant...", ship.ObjectID, ship.Owner, ship.Name);
-                        assets[owner].CombatShips.Add(new CombatUnit(ship));
+                        assets[fleet.Owner].CombatShips.Add(new CombatUnit(ship));
                     }
                     else
                     {
-                        // works     
-                        // GameLog.Client.GameData.DebugFormat("CombatHelper.cs: Ship={0}, Owner={1}, ShipName={2} is NONCombat...", ship.ObjectID, ship.Owner, ship.Name);
-                        assets[owner].NonCombatShips.Add(new CombatUnit(ship));
+                        assets[fleet.Owner].NonCombatShips.Add(new CombatUnit(ship));
                     }
                 }
             }

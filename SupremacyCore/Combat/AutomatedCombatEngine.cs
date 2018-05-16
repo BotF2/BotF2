@@ -26,7 +26,7 @@ namespace Supremacy.Combat
         private readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
         private Tuple<CombatUnit, CombatWeapon[]> _combatStation;
 
-        private bool _automatedCombatTracing = false;
+        private bool _automatedCombatTracing = true;
 
         public AutomatedCombatEngine(
             IList<CombatAssets> assets,
@@ -72,7 +72,7 @@ namespace Supremacy.Combat
         protected override void ResolveCombatRoundCore()
         {
             //Recharge all of the weapons
-            if (_combatStation.Item1 != null)
+            if (_combatStation != null)
             {
                 foreach (var weapon in _combatStation.Item2)
                 {
@@ -89,23 +89,31 @@ namespace Supremacy.Combat
 
             Algorithms.RandomShuffleInPlace(_combatShips);
 
-            foreach (var combatShip in _combatShips)
+            for (int i = 0; i < _combatShips.Count; i++)
             {
-                var ownerAssets = GetAssets(combatShip.Item1.Owner);
-                var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(combatShip.Item1.Owner, cs.Item1.Owner));
-                var order = GetOrder(combatShip.Item1.Source);
+                var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
+                var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
+                var order = GetOrder(_combatShips[i].Item1.Source);
                 switch (order)
                 {
                     case CombatOrder.Engage:
                     case CombatOrder.Rush:
                     case CombatOrder.Transports:
                     case CombatOrder.Formation:
-                        var target = ChooseTarget(combatShip.Item1);
+                        var target = ChooseTarget(_combatShips[i].Item1);
+                        if (target == null)
+                        {
+                            GameLog.Print("No target for {0}", _combatShips[i].Item1.Name);
+                        }
                         if (target != null)
                         {
+                            if (_automatedCombatTracing)
+                            {
+                                GameLog.Print("Target for {0} = {1}", _combatShips[i].Item1.Name, target.Name);
+                            }
                             bool assimilationSuccessful = false;
                             //If the attacker is Borg, try and assimilate before you try destroying it
-                            if (combatShip.Item1.Owner.Name == "Borg")
+                            if (_combatShips[i].Item1.Owner.Name == "Borg")
                             {
                                 int chanceToAssimilate = Statistics.Random(10000) % 100;
                                 assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
@@ -115,7 +123,10 @@ namespace Supremacy.Combat
                             if (assimilationSuccessful && target.Source is Ship)
                             {
                                 var oppositionAssets = GetAssets(target.Owner);
-                                oppositionAssets.AssimilatedShips.Add(target);
+                                if (!oppositionAssets.AssimilatedShips.Contains(target))
+                                {
+                                    oppositionAssets.AssimilatedShips.Add(target);
+                                }
                                 if (target.Source.IsCombatant)
                                 {
                                     oppositionAssets.CombatShips.Remove(target);
@@ -124,15 +135,14 @@ namespace Supremacy.Combat
                                 {
                                     oppositionAssets.NonCombatShips.Remove(target);
                                 }
-                                ownerAssets.UpdateAllSources();
                             }
 
                             //Otherwise attack as normal
                             else
                             {
-                                foreach (var weapon in combatShip.Item2.Where(w => w.CanFire))
+                                foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
                                 {
-                                    Attack(combatShip.Item1, target, weapon);
+                                    Attack(_combatShips[i].Item1, target, weapon);
                                 }
                             }
                         }
@@ -155,17 +165,20 @@ namespace Supremacy.Combat
                         //Perform the retreat
                         if (retreatSuccessful)
                         {
-                            ownerAssets.EscapedShips.Add(combatShip.Item1);
-                            if (combatShip.Item1.Source.IsCombatant)
+                            if (!ownerAssets.EscapedShips.Contains(_combatShips[i].Item1))
                             {
-                                ownerAssets.CombatShips.Remove(combatShip.Item1);
+                                ownerAssets.EscapedShips.Add(_combatShips[i].Item1);
+                            }
+                            if (_combatShips[i].Item1.Source.IsCombatant)
+                            {
+                                ownerAssets.CombatShips.Remove(_combatShips[i].Item1);
                             }
                             else
                             {
-                                ownerAssets.NonCombatShips.Remove(combatShip.Item1);
+                                ownerAssets.NonCombatShips.Remove(_combatShips[i].Item1);
                             }
 
-                            _combatShips.Remove(combatShip);
+                            _combatShips.Remove(_combatShips[i]);
                         }
                         break;
 
@@ -176,9 +189,20 @@ namespace Supremacy.Combat
             }
 
             //Make sure that the station has a go at the enemy too
-            if ((_combatStation.Item1 != null) && !_combatStation.Item1.IsDestroyed)
+            if ((_combatStation != null) && !_combatStation.Item1.IsDestroyed)
             {
-                CombatUnit target = ChooseTarget(_combatStation.Item1);
+                var order = GetOrder(_combatStation.Item1.Source);
+
+                CombatUnit target = null;
+                switch (order)
+                {
+                    case CombatOrder.Engage:
+                    case CombatOrder.Rush:
+                    case CombatOrder.Transports:
+                    case CombatOrder.Formation:
+                        target = ChooseTarget(_combatStation.Item1);
+                        break;
+                }
 
                 if (target != null)
                 {
@@ -217,9 +241,9 @@ namespace Supremacy.Combat
                 switch (attackerOrder)
                 {
                     case CombatOrder.Engage:
-                        bool hasOppositionStation = (_combatStation.Item1 != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
+                        bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
                         //Get a list of all of the opposition ships
-                        var oppositionTargets = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked);
+                        var oppositionTargets = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed);
                         //Only ships to target
                         if (!hasOppositionStation && (oppositionTargets.Count() > 0))
                         {
@@ -247,7 +271,7 @@ namespace Supremacy.Combat
 
                     case CombatOrder.Rush:
                         //Get a list of any opposition that are retreating
-                        var oppositionRetreating = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (GetOrder(cs.Item1.Source) == CombatOrder.Retreat));
+                        var oppositionRetreating = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (GetOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
                         //If there are any, target it
                         if (oppositionRetreating.Count() > 0)
                         {
@@ -259,7 +283,7 @@ namespace Supremacy.Combat
 
                     case CombatOrder.Transports:
                         //Get a list of all the transports
-                        var oppositionTransports = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (cs.Item1.Source.OrbitalDesign.ShipType == "TRANSPORT"));
+                        var oppositionTransports = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (cs.Item1.Source.OrbitalDesign.ShipType == "TRANSPORT") && !cs.Item1.IsDestroyed);
                         //If there are any, return one as the target
                         if (oppositionTransports.Count() > 0)
                         {
@@ -290,7 +314,10 @@ namespace Supremacy.Combat
                     var ownerAssets = GetAssets(source.Owner);
                     var oppositionAssets = GetAssets(target.Owner);
 
-                    oppositionAssets.DestroyedShips.Add(target);
+                    if (!oppositionAssets.DestroyedShips.Contains(target))
+                    {
+                        oppositionAssets.DestroyedShips.Add(target);
+                    }
                     if (target.Source.IsCombatant)
                     {
                         oppositionAssets.CombatShips.Remove(target);

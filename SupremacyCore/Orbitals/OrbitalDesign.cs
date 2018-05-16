@@ -104,14 +104,7 @@ namespace Supremacy.Orbitals
         /// </value>
         public virtual bool IsCombatant
         {
-            get
-            {
-                if (_primaryWeapon.Count > 0)
-                    return true;
-                if (_secondaryWeapon.Count > 0)
-                    return true;
-                return false;
-            }
+            get { return _primaryWeapon.Count + _secondaryWeapon.Count > 0; }
         }
 
         /// <summary>
