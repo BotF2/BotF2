@@ -21,7 +21,7 @@ namespace Supremacy.Combat
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private const double BaseChanceToRetreat = 0.25;
-        private const double BaseChanceToAssimilate = 0.1;
+        private const double BaseChanceToAssimilate = 1;
         private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         private readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
         private Tuple<CombatUnit, CombatWeapon[]> _combatStation;
@@ -100,6 +100,7 @@ namespace Supremacy.Combat
                     case CombatOrder.Rush:
                     case CombatOrder.Transports:
                     case CombatOrder.Formation:
+                        var attackingShip = _combatShips[i].Item1;
                         var target = ChooseTarget(_combatShips[i].Item1);
                         if (target == null && _automatedCombatTracing)
                         {
@@ -113,7 +114,7 @@ namespace Supremacy.Combat
                             }
                             bool assimilationSuccessful = false;
                             //If the attacker is Borg, try and assimilate before you try destroying it
-                            if (_combatShips[i].Item1.Owner.Name == "Borg")
+                            if (attackingShip.Owner.Name == "Borg") //&& target.ShieldIntegrity <= 100)
                             {
                                 if (_automatedCombatTracing)
                                 {
@@ -153,7 +154,7 @@ namespace Supremacy.Combat
                                 {
                                     if (!target.IsDestroyed)
                                     {
-                                        Attack(_combatShips[i].Item1, target, weapon);
+                                        Attack(attackingShip, target, weapon);
                                     }
                                 }
                             }
