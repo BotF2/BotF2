@@ -20,53 +20,13 @@ namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
-        private const double BaseChanceToRetreat = 0.25;
-        private const double BaseChanceToAssimilate = 1;
-        private readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
-        private readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
-        private Tuple<CombatUnit, CombatWeapon[]> _combatStation;
-
-        private bool _automatedCombatTracing = true;
-
         public AutomatedCombatEngine(
-            IList<CombatAssets> assets,
+            List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)
         {
-            // TODO: This looks like a waste of time, table is not going to change from one combat to the other
-            // Consider creating the table once instead
-            var accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
-            _experienceAccuracy = new Dictionary<ExperienceRank, double>();
-            foreach (ExperienceRank rank in EnumUtilities.GetValues<ExperienceRank>())
-            {
-                _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
-            }
-            ///////////////////
-
-            _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-
-            foreach (CombatAssets civAssets in Assets)
-            {
-                if (civAssets.Station != null)
-                {
-                    _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
-                        civAssets.Station,
-                        CombatWeapon.CreateWeapons(civAssets.Station.Source));
-                }
-                foreach (CombatUnit shipStats in civAssets.CombatShips)
-                {
-                    _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
-                        shipStats,
-                        CombatWeapon.CreateWeapons(shipStats.Source)));
-                }
-                foreach (CombatUnit shipStats in civAssets.NonCombatShips)
-                {
-                    _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
-                        shipStats,
-                        CombatWeapon.CreateWeapons(shipStats.Source)));
-                }
-            }
+            
         }
 
         protected override void ResolveCombatRoundCore()
@@ -102,21 +62,21 @@ namespace Supremacy.Combat
                     case CombatOrder.Formation:
                         var attackingShip = _combatShips[i].Item1;
                         var target = ChooseTarget(_combatShips[i].Item1);
-                        if (target == null && _automatedCombatTracing)
+                        if (target == null && _traceCombatEngine)
                         {
                             GameLog.Print("No target for {0}", _combatShips[i].Item1.Name);
                         }
                         if (target != null)
                         {
-                            if (_automatedCombatTracing)
+                            if (_traceCombatEngine)
                             {
                                 GameLog.Print("Target for {0} = {1}", _combatShips[i].Item1.Name, target.Name);
                             }
                             bool assimilationSuccessful = false;
                             //If the attacker is Borg, try and assimilate before you try destroying it
-                            if (attackingShip.Owner.Name == "Borg") //&& target.ShieldIntegrity <= 100)
+                            if (attackingShip.Owner.Name == "Borg")
                             {
-                                if (_automatedCombatTracing)
+                                if (_traceCombatEngine)
                                 {
                                     GameLog.Print("Borg attempting assimilation on {0}", _combatShips[i].Item1.Name);
                                 }
@@ -127,24 +87,22 @@ namespace Supremacy.Combat
                             //Perform the assimilation, but only on ships
                             if (assimilationSuccessful && target.Source is Ship)
                             {
-                                if (_automatedCombatTracing)
+                                if (_traceCombatEngine)
                                 {
                                     GameLog.Print("Assimilation of {0} successfull", _combatShips[i].Item1.Name);
                                 }
-                                var oppositionAssets = GetAssets(target.Owner);
-                                if (!oppositionAssets.AssimilatedShips.Contains(target))
+                                if (!ownerAssets.AssimilatedShips.Contains(target))
                                 {
-                                    oppositionAssets.AssimilatedShips.Add(target);
+                                    ownerAssets.AssimilatedShips.Add(target);
                                 }
                                 if (target.Source.IsCombatant)
                                 {
-                                    oppositionAssets.CombatShips.Remove(target);
+                                    ownerAssets.CombatShips.Remove(target);
                                 }
                                 else
                                 {
-                                    oppositionAssets.NonCombatShips.Remove(target);
+                                    ownerAssets.NonCombatShips.Remove(target);
                                 }
-                                _combatShips[i].Item1.Source.Owner = GameContext.Current.Civilizations.First(c => c.Name == "Borg");    
                             }
 
                             //Otherwise attack as normal
@@ -154,7 +112,7 @@ namespace Supremacy.Combat
                                 {
                                     if (!target.IsDestroyed)
                                     {
-                                        Attack(attackingShip, target, weapon);
+                                        PerformAttack(attackingShip, target, weapon);
                                     }
                                 }
                             }
@@ -178,7 +136,7 @@ namespace Supremacy.Combat
                         //Perform the retreat
                         if (retreatSuccessful)
                         {
-                            if (_automatedCombatTracing)
+                            if (_traceCombatEngine)
                             {
                                 GameLog.Print("{0} successfully retreated", _combatShips[i].Item1.Name);
                             }
@@ -226,7 +184,7 @@ namespace Supremacy.Combat
                 {
                     foreach (CombatWeapon weapon in _combatStation.Item2.Where(w => w.CanFire))
                     {
-                        Attack(_combatStation.Item1, target, weapon);
+                        PerformAttack(_combatStation.Item1, target, weapon);
                     }
                 }
             }
@@ -261,20 +219,21 @@ namespace Supremacy.Combat
                     case CombatOrder.Engage:
                         bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
                         //Get a list of all of the opposition ships
-                        var oppositionTargets = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed);
+                        List<Tuple<CombatUnit, CombatWeapon[]>> oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed).ToList();
+
                         //Only ships to target
-                        if (!hasOppositionStation && (oppositionTargets.Count() > 0))
+                        if (!hasOppositionStation && (oppositionShips.Count() > 0))
                         {
-                            return oppositionTargets.First().Item1;
+                            return oppositionShips.First().Item1;
                         }
                         //Has both ships and station to target
-                        if (hasOppositionStation && (oppositionTargets.Count() > 0))
+                        if (hasOppositionStation && (oppositionShips.Count() > 0))
                         {
                             if (Statistics.Random(4) == 0)
                             {
                                 return _combatStation.Item1;
                             }
-                            return oppositionTargets.First().Item1;
+                            return oppositionShips.First().Item1;
                         }
                         //Only has a station to target
                         if (hasOppositionStation)
@@ -301,7 +260,7 @@ namespace Supremacy.Combat
 
                     case CombatOrder.Transports:
                         //Get a list of all the transports
-                        var oppositionTransports = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (cs.Item1.Source.OrbitalDesign.ShipType == "TRANSPORT") && !cs.Item1.IsDestroyed);
+                        var oppositionTransports = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (cs.Item1.Source.OrbitalDesign.ShipType == "Transport") && !cs.Item1.IsDestroyed);
                         //If there are any, return one as the target
                         if (oppositionTransports.Count() > 0)
                         {
@@ -314,13 +273,24 @@ namespace Supremacy.Combat
             }
         }
 
-        private void Attack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
+        /// <summary>
+        /// Deals damage to the target, and calculates whether the target has been destroyed
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="weapon"></param>
+        private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
         {
             int accuracy = (int)(_experienceAccuracy[source.Source.ExperienceRank] * 100);
 
             if (target.IsDestroyed)
             {
                 return;
+            }
+
+            if (_traceCombatEngine)
+            {
+                GameLog.Print("{0} is attacking {1}...", source.Name, target.Name);
             }
 
             if (Statistics.Random(100) >= (100 - accuracy))
@@ -331,7 +301,7 @@ namespace Supremacy.Combat
 
             if (target.IsDestroyed)
             {
-                if (_automatedCombatTracing)
+                if (_traceCombatEngine)
                 {
                     GameLog.Print("{0} was destroyed", target.Name);
                 }
@@ -354,9 +324,8 @@ namespace Supremacy.Combat
                         oppositionAssets.NonCombatShips.Remove(target);
                     }
                     _combatShips.RemoveAll(cs => cs.Item1 == target);
-
                 }
             }
-        }        
+        }
     }
 }

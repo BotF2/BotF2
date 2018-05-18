@@ -873,7 +873,7 @@ namespace Supremacy.WCF
                 heartbeat.Dispose();
         }
 
-        private void OnCombatOccurring(IList<CombatAssets> assets)
+        private void OnCombatOccurring(List<CombatAssets> assets)
         {
             _combatEngine = new AutomatedCombatEngine(
                 assets,

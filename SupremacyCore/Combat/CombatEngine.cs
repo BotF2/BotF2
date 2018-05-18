@@ -25,37 +25,26 @@ namespace Supremacy.Combat
     public abstract class CombatEngine
     {
         public readonly object SyncLock;
-
+        protected const double BaseChanceToRetreat = 0.25;
+        protected const double BaseChanceToAssimilate = 1;
+        protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
+        protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
+        protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         private readonly int _combatId;
         private int _roundNumber;
         private bool _running;
         private bool _allSidesStandDown;
         private bool _ready;
-        private readonly List<CombatAssets> _assets;
+        protected readonly List<CombatAssets> _assets;
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders;
 
-        private bool _combatEngineTraceLocally = false;    // turn to true if you want
+        protected bool _traceCombatEngine = true;
 
         protected int CombatID
         {
             get { return _combatId; }
-        }
-
-        protected int RoundNumber
-        {
-            get { return _roundNumber;  }
-        }
-
-        protected List<CombatAssets> Assets
-        {
-            get { return _assets; }
-        }
-
-        protected Dictionary<int, CombatOrders> Orders
-        {
-            get { return _orders; }
         }
 
         protected bool Running
@@ -83,11 +72,10 @@ namespace Supremacy.Combat
             get
             {
                 if (_allSidesStandDown)
+                {
                     return true;
-                //if (_assets.Count(assets => assets.CombatShips.);
-               // made a crash on change to assets.Count in retreat GameLog.Print("IsCombatOver assets.Count = {0} survual true/false = {1}", _assets.Count, _assets.Count(assets => assets.HasSurvivingAssets));
+                }
                 return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1);
-
             }
         }
 
@@ -126,6 +114,40 @@ namespace Supremacy.Combat
             _orders = new Dictionary<int, CombatOrders>();
 
             SyncLock = _orders;
+
+            // TODO: This looks like a waste of time, table is not going to change from one combat to the other
+            // Consider creating the table once instead
+            var accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
+            _experienceAccuracy = new Dictionary<ExperienceRank, double>();
+            foreach (ExperienceRank rank in EnumUtilities.GetValues<ExperienceRank>())
+            {
+                _experienceAccuracy[rank] = Double.Parse(accuracyTable[rank.ToString()][0]);
+            }
+            ///////////////////
+
+            _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+
+            foreach (CombatAssets civAssets in _assets)
+            {
+                if (civAssets.Station != null)
+                {
+                    _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
+                        civAssets.Station,
+                        CombatWeapon.CreateWeapons(civAssets.Station.Source));
+                }
+                foreach (CombatUnit shipStats in civAssets.CombatShips)
+                {
+                    _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+                        shipStats,
+                        CombatWeapon.CreateWeapons(shipStats.Source)));
+                }
+                foreach (CombatUnit shipStats in civAssets.NonCombatShips)
+                {
+                    _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+                        shipStats,
+                        CombatWeapon.CreateWeapons(shipStats.Source)));
+                }
+            }
         }
 
         public void SubmitOrders(CombatOrders orders)
@@ -135,7 +157,7 @@ namespace Supremacy.Combat
                 if (!_orders.ContainsKey(orders.OwnerID))
                     _orders[orders.OwnerID] = orders;
 
-                var outstandingOrders = Assets.Select(assets => assets.OwnerID).ToList();
+                var outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList();
 
                 lock (_orders)
                 {
@@ -156,22 +178,24 @@ namespace Supremacy.Combat
             {
                 Running = true;
 
-                foreach (var asset in _assets)
-                    asset.CombatID = _combatId;
+                _assets.ForEach(a => a.CombatID = _combatId);
 
-                if ((RoundNumber > 1) || !CheckAllSidesStandDown())
+                _allSidesStandDown = CheckAllSidesStandDown();
+                if ((_roundNumber > 1) || _allSidesStandDown)
+                {
                     ResolveCombatRoundCore();
-
-                UpdateOrbitals();
+                }
 
                 PerformAssimilation();
-
                 PerformRetreat();
+                UpdateOrbitals();
 
                 isCombatOver = IsCombatOver;
 
                 if (!isCombatOver)
+                {
                     _roundNumber++;
+                }
 
                 _orders.Clear();
             }
@@ -190,56 +214,28 @@ namespace Supremacy.Combat
 
         private bool CheckAllSidesStandDown()
         {
-            var result = true;
-
-            foreach (var civAssets in Assets)
+            foreach (var civAssets in _assets)
             {
+                // Combat ships
                 if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports ||  order == CombatOrder.Formation))
                 {
-                    result = false;
+                    return false;
                 }
-                if (!result) { break; }
 
-                if (civAssets.NonCombatShips.Any(unit => GetOrder(unit.Source) == CombatOrder.Engage || GetOrder(unit.Source) == CombatOrder.Rush || GetOrder(unit.Source) == CombatOrder.Transports || GetOrder(unit.Source) == CombatOrder.Formation))
+                // Non-combat ships
+                if (civAssets.NonCombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
-                    result = false;
+                    return false;
                 }
-                if (!result) { break; }
 
                 // Station
-                if (civAssets.Station == null)
+                if ((civAssets.Station != null) && (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports || GetOrder(civAssets.Station.Source) == CombatOrder.Rush || GetOrder(civAssets.Station.Source) == CombatOrder.Formation))
                 {
-                    continue;
+                    return false;
                 }
-
-                if (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports || GetOrder(civAssets.Station.Source) == CombatOrder.Rush || GetOrder(civAssets.Station.Source) == CombatOrder.Formation)
-                {
-                    continue;
-                }
-
-                //if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Rush))
-                //{
-                //    result = false;
-                //}
-
-
-            // turned off but it is unclear whether needed or not
-                //result = false;
-                //break;
-
             }
-            //foreach (var ship in this.Assets)
-            //{
 
-            //    if (ship.NonCombatShips.Any(ShipType => ShipType.IsCamouflaged))   // added info by Reginald: camouflaged ships should not be part of a combat battle
-            //    return true;
-            //    break;
-            //}
-
-                _allSidesStandDown = result;
-            // this game is confussing      GameLog.Client.GameData.DebugFormat("Combat: allSidesStandDown={0}", result);
-
-            return result;
+            return true;
         }
 
         public void SendInitialUpdate()
@@ -265,31 +261,26 @@ namespace Supremacy.Combat
                     if (CombatHelper.WillEngage(owner, otherAssets.Owner))
                     {
                         hostileAssets.Add(otherAssets);
-                        // works 
-                        //GameLog.Print("Combat: otherAssets of Owner {0}", otherAssets.Owner);
                     }
                     else
                     {
                         friendlyAssets.Add(otherAssets);
-                        if (_combatEngineTraceLocally)
+                        if (_traceCombatEngine)
+                        {
                             GameLog.Print("Combat: add other asset to friendly assets, otherAssets.Owner= {0}", otherAssets.Owner);
+                        }
                     } 
 
                 }
 
-                //new stuff
                 if (hostileAssets.Count == 0)
                 {
-                    //if (_combatEngineTraceLocally == true)   // next GameLog please always into Log.txt
                         GameLog.Print("Combat: hostileAssets.Count == 0, no combat will be shown due to missing enemy");
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);   // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
                     break;
-                    //return;
-                    //continue;
                 }
 
-                //GameLog.Client.GameData.DebugFormat("Combat: new CombatUpdate");
                 var update = new CombatUpdate(
                     _combatId,
                     _roundNumber,
@@ -299,18 +290,16 @@ namespace Supremacy.Combat
                     friendlyAssets,
                     hostileAssets);
 
-                //GameLog.Client.GameData.DebugFormat("CombatUpdate: Location={4} ## ID={0} Turn={1} ##  {2}_to_AllSideStandDown, AmountFriendlyUnits={5}, AmountHostileUnits={6} Owner= ## {3}",
-
-                if (_combatEngineTraceLocally)
+                if (_traceCombatEngine)
+                {
                     GameLog.Print("CombatUpdate: Location={4} ## ID={0} Turn={1} ##  {2}_to_AllSideStandDown, Owner = ## {3}",
-                    _combatId,
-                    _roundNumber,
-                    _allSidesStandDown,
-                    owner,
-                    playerAssets.Location
-                    //friendlyAssets.Count,  // doesn't work, always counting 1 friendly (race), maybe 2   (e.g. Fed+Rom)
-                    //hostileAssets.Count    // doesn't work, mostly counting 1 hostile (race)             (e.g. Kling+Dom)
+                        _combatId,
+                        _roundNumber,
+                        _allSidesStandDown,
+                        owner,
+                        playerAssets.Location
                     );
+                }
 
                 if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
                 {
@@ -329,61 +318,29 @@ namespace Supremacy.Combat
             for (int i = 0; i < _assets.Count; i++)
             {
                 if (!_assets[i].HasSurvivingAssets)
+                {
                     _assets.RemoveAt(i--);
+                }
             }
         }
 
         private void UpdateOrbitals()
         {
-            foreach (CombatAssets assets in Assets)
-            {
-                assets.UpdateAllSources();
-            }
+            _assets.ForEach(a => a.UpdateAllSources());
         }
 
+        /// <summary>
+        /// Performs the assimilation of ships that have been assimilated
+        /// </summary>
         private void PerformAssimilation()
         {
-            var BorgOwnerID = 0;
-            foreach (var assets in Assets)
-            { 
-                if (assets.Owner.Name == "Borg")
+            var borgCivID = GameContext.Current.Civilizations.First(c => c.Name == "Borg").CivID;
+            foreach (var assets in _assets)
+            {
+                foreach (var assimilatedShip in assets.AssimilatedShips)
                 {
-                    BorgOwnerID = assets.OwnerID;
-                    continue;
-                }
-
-                //    for (var i = 0; i < assets.CombatShips.Count; i++)
-                //{
-                //    if (assets.CombatShips[i].IsAssimilated)
-                //    {
-                //        assets.AssimilatedShips.Add(assets.CombatShips[i]);
-                //        assets.CombatShips.RemoveAt(i--);
-                //    }
-                //}
-
-                //for (var i = 0; i < assets.NonCombatShips.Count; i++)
-                //{
-                //    if (assets.NonCombatShips[i].IsAssimilated)
-                //    {
-                //        assets.AssimilatedShips.Add(assets.NonCombatShips[i]);
-                //        assets.NonCombatShips.RemoveAt(i--);
-                //    }
-                //}
-                
-                if (assets.AssimilatedShips.Count == 0)
-                    break;
-
-                //var destination = CalculateRetreatDestination(assets);
-
-                //if (destination == null)
-                //    continue;
-
-                foreach (var shipStats in assets.AssimilatedShips)
-                {
-                    var _ship = ((Ship)shipStats.Source);
-                 
-                    
-                    _ship.Fleet.OwnerID = BorgOwnerID;
+                    var _ship = (Ship)assimilatedShip.Source;
+                    _ship.Fleet.OwnerID = borgCivID;
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;
                     _ship.Fleet.Name = "Borg";
@@ -391,49 +348,12 @@ namespace Supremacy.Combat
             }
         }
 
-        private void PerformRetreat()
-        {
-            foreach (var assets in Assets)
-            {
-                //if (assets.AssimilatedShips.First == true)
-                //    break;
-
-                for (var i = 0; i < assets.CombatShips.Count; i++)
-                {
-                    if (assets.CombatShips[i].Owner.Name == "Borg")
-                        break;
-
-                    if (GetOrder(assets.CombatShips[i].Source) != CombatOrder.Retreat)
-                        continue;
-                    assets.EscapedShips.Add(assets.CombatShips[i]);
-                    assets.CombatShips.RemoveAt(i--);
-                }
-
-                for (var i = 0; i < assets.NonCombatShips.Count; i++)
-                {
-                    if (assets.NonCombatShips[i].Owner.Name == "Borg")
-                        break;
-
-                    if (GetOrder(assets.NonCombatShips[i].Source) != CombatOrder.Retreat)
-                        continue;
-                    assets.EscapedShips.Add(assets.NonCombatShips[i]);
-                    assets.NonCombatShips.RemoveAt(i--);
-                }
-
-                if (assets.EscapedShips.Count == 0)
-                    continue;
-                
-                var destination = CalculateRetreatDestination(assets);
-
-                if (destination == null)
-                    continue;
-
-                foreach (var shipStats in assets.EscapedShips)
-                    ((Ship)shipStats.Source).Fleet.Location = destination.Location;
-            }
-        }
-
-        private static Sector CalculateRetreatDestination(CombatAssets assets)
+        /// <summary>
+        /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
+        /// </summary>
+        /// <param name="assets"></param>
+        /// <returns></returns>
+        private Sector CalculateRetreatDestination(CombatAssets assets)
         {
             var nearestFriendlySystem = GameContext.Current.Universe.FindNearestOwned<Colony>(
                 assets.Location,
@@ -444,7 +364,7 @@ namespace Supremacy.Combat
                     from s in assets.Sector.GetNeighbors()
                     let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
                     let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
-                    let hostileOrbitalPower = hostileOrbitals.Sum(o => CalculateOrbitalPower(o))
+                    let hostileOrbitalPower = hostileOrbitals.Sum(o => CombatHelper.CalculateOrbitalPower(o))
                     orderby hostileOrbitalPower ascending, distance descending
                     select s
                 );
@@ -452,22 +372,43 @@ namespace Supremacy.Combat
             return sectors.FirstOrDefault();
         }
 
-        private static int CalculateOrbitalPower(Orbital orbital)
+        /// <summary>
+        /// Moves ships that have escaped to their destinations
+        /// </summary>
+        private void PerformRetreat()
         {
-            return (orbital.OrbitalDesign.PrimaryWeapon.Damage * orbital.OrbitalDesign.PrimaryWeapon.Count) +
-                   (orbital.OrbitalDesign.SecondaryWeapon.Damage * orbital.OrbitalDesign.SecondaryWeapon.Count);
+            foreach (var assets in _assets)
+            {               
+                var destination = CalculateRetreatDestination(assets);
+
+                if (destination == null)
+                    continue;
+
+                foreach (var shipStats in assets.EscapedShips)
+                    ((Ship)shipStats.Source).Fleet.Location = destination.Location;
+            }
         }
 
+        /// <summary>
+        /// Returns the <see cref="CombatAssets"/> that belong to the given <see cref="Civilization"/>
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
         protected CombatAssets GetAssets(Civilization owner)
         {
-            return Assets.FirstOrDefault(assets => assets.Owner == owner);
+            return _assets.FirstOrDefault(a => a.Owner == owner);
         }
 
+        /// <summary>
+        /// Gets the order assigned to the given <see cref="Orbital"/>
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         protected CombatOrder GetOrder(Orbital source)
         {
             try
             {
-                return Orders[source.OwnerID].GetOrder(source);
+                return _orders[source.OwnerID].GetOrder(source);
             }
             catch (Exception e)
             {
@@ -475,7 +416,7 @@ namespace Supremacy.Combat
                 GameLog.LogException(e);
             }
 
-            if (_combatEngineTraceLocally == true)
+            if (_traceCombatEngine == true)
             {
                 GameLog.Print("Setting Retreat as fallback order for {0}", source.Name);
             }

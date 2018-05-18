@@ -67,7 +67,7 @@ namespace Supremacy.Game
     /// <summary>
     /// Delegate used for event handlers related to the initiation of combat.
     /// </summary>
-    public delegate void CombatEventHandler(IList<CombatAssets> assets);
+    public delegate void CombatEventHandler(List<CombatAssets> assets);
 
     /// <summary>
     /// Delegate used for event handlers related to the initiation of system invasions.
@@ -692,7 +692,7 @@ namespace Supremacy.Game
         {
             var combatLocations = new HashSet<MapLocation>();
             var invasionLocations = new HashSet<MapLocation>();
-            var combats = new List<IList<CombatAssets>>();
+            var combats = new List<List<CombatAssets>>();
             var invasions = new List<InvasionArena>();
 
             foreach (var fleet in GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
@@ -2035,7 +2035,7 @@ namespace Supremacy.Game
         /// Raises the <see cref="CombatOccurring"/> event.
         /// </summary>
         /// <param name="combat">The combat assets.</param>
-        private void OnCombatOccurring(IList<CombatAssets> combat)
+        private void OnCombatOccurring(List<CombatAssets> combat)
         {
             if (combat == null)
                 throw new ArgumentNullException("combat");

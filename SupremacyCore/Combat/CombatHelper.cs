@@ -24,13 +24,17 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
+        public static int CalculateOrbitalPower(Orbital orbital)
+        {
+            return (orbital.OrbitalDesign.PrimaryWeapon.Damage * orbital.OrbitalDesign.PrimaryWeapon.Count) +
+                   (orbital.OrbitalDesign.SecondaryWeapon.Damage * orbital.OrbitalDesign.SecondaryWeapon.Count);
+        }
+
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {
             var assets = new Dictionary<Civilization, CombatAssets>();
             var results = new List<CombatAssets>();
             var sector = GameContext.Current.Universe.Map[location];
-
-            bool _combatHelperTracing = false;
 
             var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).Where(f => !f.IsCamouflaged).ToList();
 
