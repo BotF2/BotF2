@@ -101,7 +101,7 @@ namespace Supremacy.Combat
                     case CombatOrder.Transports:
                     case CombatOrder.Formation:
                         var target = ChooseTarget(_combatShips[i].Item1);
-                        if (target == null)
+                        if (target == null && _automatedCombatTracing)
                         {
                             GameLog.Print("No target for {0}", _combatShips[i].Item1.Name);
                         }
@@ -115,6 +115,10 @@ namespace Supremacy.Combat
                             //If the attacker is Borg, try and assimilate before you try destroying it
                             if (_combatShips[i].Item1.Owner.Name == "Borg")
                             {
+                                if (_automatedCombatTracing)
+                                {
+                                    GameLog.Print("Borg attempting assimilation on {0}", _combatShips[i].Item1.Name);
+                                }
                                 int chanceToAssimilate = Statistics.Random(10000) % 100;
                                 assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
                             }
@@ -122,6 +126,10 @@ namespace Supremacy.Combat
                             //Perform the assimilation, but only on ships
                             if (assimilationSuccessful && target.Source is Ship)
                             {
+                                if (_automatedCombatTracing)
+                                {
+                                    GameLog.Print("Assimilation of {0} successfull", _combatShips[i].Item1.Name);
+                                }
                                 var oppositionAssets = GetAssets(target.Owner);
                                 if (!oppositionAssets.AssimilatedShips.Contains(target))
                                 {
@@ -135,6 +143,7 @@ namespace Supremacy.Combat
                                 {
                                     oppositionAssets.NonCombatShips.Remove(target);
                                 }
+                                _combatShips[i].Item1.Source.Owner = GameContext.Current.Civilizations.First(c => c.Name == "Borg");    
                             }
 
                             //Otherwise attack as normal
@@ -142,7 +151,10 @@ namespace Supremacy.Combat
                             {
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
                                 {
-                                    Attack(_combatShips[i].Item1, target, weapon);
+                                    if (!target.IsDestroyed)
+                                    {
+                                        Attack(_combatShips[i].Item1, target, weapon);
+                                    }
                                 }
                             }
                         }
@@ -165,6 +177,10 @@ namespace Supremacy.Combat
                         //Perform the retreat
                         if (retreatSuccessful)
                         {
+                            if (_automatedCombatTracing)
+                            {
+                                GameLog.Print("{0} successfully retreated", _combatShips[i].Item1.Name);
+                            }
                             if (!ownerAssets.EscapedShips.Contains(_combatShips[i].Item1))
                             {
                                 ownerAssets.EscapedShips.Add(_combatShips[i].Item1);
@@ -179,6 +195,7 @@ namespace Supremacy.Combat
                             }
 
                             _combatShips.Remove(_combatShips[i]);
+                            
                         }
                         break;
 
@@ -296,9 +313,14 @@ namespace Supremacy.Combat
             }
         }
 
-        private bool Attack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
+        private void Attack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
         {
             int accuracy = (int)(_experienceAccuracy[source.Source.ExperienceRank] * 100);
+
+            if (target.IsDestroyed)
+            {
+                return;
+            }
 
             if (Statistics.Random(100) >= (100 - accuracy))
             {
@@ -308,6 +330,10 @@ namespace Supremacy.Combat
 
             if (target.IsDestroyed)
             {
+                if (_automatedCombatTracing)
+                {
+                    GameLog.Print("{0} was destroyed", target.Name);
+                }
                 CombatAssets targetAssets = GetAssets(target.Owner);
                 if (target.Source is Ship)
                 {
@@ -330,7 +356,6 @@ namespace Supremacy.Combat
 
                 }
             }
-            return target.IsDestroyed;
         }        
     }
 }

@@ -52,11 +52,7 @@ namespace Supremacy.Combat
         public int CombatID
         {
             get { return _combatId; }
-            internal set
-            {
-                GameLog.Print("_combatId = {0}", value);
-                _combatId = value;
-            }
+            internal set { _combatId = value; }
         }
 
         public int OwnerID

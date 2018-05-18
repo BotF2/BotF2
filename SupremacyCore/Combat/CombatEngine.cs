@@ -31,7 +31,7 @@ namespace Supremacy.Combat
         private bool _running;
         private bool _allSidesStandDown;
         private bool _ready;
-        private readonly IList<CombatAssets> _assets;
+        private readonly List<CombatAssets> _assets;
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders;
@@ -48,7 +48,7 @@ namespace Supremacy.Combat
             get { return _roundNumber;  }
         }
 
-        protected IList<CombatAssets> Assets
+        protected List<CombatAssets> Assets
         {
             get { return _assets; }
         }
@@ -105,7 +105,7 @@ namespace Supremacy.Combat
         }
 
         protected CombatEngine(
-            IList<CombatAssets> assets,
+            List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
         {
@@ -194,9 +194,6 @@ namespace Supremacy.Combat
 
             foreach (var civAssets in Assets)
             {
-                //if (_combatEngineTraceLocally == true)
-                    //GameLog.Print("civAssets: {0}", civAssets.);
-
                 if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports ||  order == CombatOrder.Formation))
                 {
                     result = false;
@@ -341,8 +338,6 @@ namespace Supremacy.Combat
             foreach (CombatAssets assets in Assets)
             {
                 assets.UpdateAllSources();
-                //if (_combatEngineTraceLocally == true)
-                // doesn't work      GameLog.Client.GameData.DebugFormat("Combat: CombatUnits={0}", assets.CombatUnits);
             }
         }
 
@@ -392,19 +387,12 @@ namespace Supremacy.Combat
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;
                     _ship.Fleet.Name = "Borg";
-                    
-
-                    //GameContext.Current.Civilizations[OwnerID] ="Borg";
-                 //   GameLog.Print("Fleet={0}, FleetID ={1}, FleetOrder ={2}, FleetOwner ={3}, FleetOwnerID ={4}, ShipName={5}, ShipID={6}",
-                      //  _ship.Fleet.Name, _ship.Fleet.ObjectID, _ship.Fleet.Order.ToString(), _ship.Fleet.Owner.Name, _ship.Fleet.OwnerID.ToString(), _ship.Name, _ship.ObjectID);
                 }
             }
         }
 
         private void PerformRetreat()
         {
-            
-
             foreach (var assets in Assets)
             {
                 //if (assets.AssimilatedShips.First == true)
@@ -479,21 +467,18 @@ namespace Supremacy.Combat
         {
             try
             {
-                //GameLog.Print("source.ObjectID {0}, source.Name {1}", source.ObjectID, source.Name);
-
-                //if (_combatEngineTraceLocally == true)
-                //    GameLog.Print("source.ObjectID {0}, source.Name {1}, Order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
                 return Orders[source.OwnerID].GetOrder(source);
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                // no - always get this error message     if (_combatEngineTraceLocally == true)
-                    GameLog.Print("Problem for GetOrder for source.ObjectID {0}, source.Name {1}", source.ObjectID, source.Name);
+                GameLog.Print("Unable to get order for {0}", source.Name);
                 GameLog.LogException(e);
             }
 
             if (_combatEngineTraceLocally == true)
-                GameLog.Print("source.ObjectID {0}, source.Name {1}, returning RETREAT is backup order {2}", source.ObjectID, source.Name, Orders[source.OwnerID].GetOrder(source));
+            {
+                GameLog.Print("Setting Retreat as fallback order for {0}", source.Name);
+            }
             return CombatOrder.Retreat;
         }
 
