@@ -186,8 +186,6 @@ namespace Supremacy.Combat
 
             if (!source.HullStrength.IsMinimized)
                 source.RegenerateShields();
-
-            source.Owner = Owner;
         }
 
         public static bool operator ==(CombatUnit left, CombatUnit right)
