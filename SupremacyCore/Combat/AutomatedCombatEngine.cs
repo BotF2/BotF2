@@ -94,6 +94,7 @@ namespace Supremacy.Combat
                                 if (!ownerAssets.AssimilatedShips.Contains(target))
                                 {
                                     ownerAssets.AssimilatedShips.Add(target);
+                                    ownerAssets.EscapedShips.Add(target);
                                 }
                                 if (target.Source.IsCombatant)
                                 {
@@ -102,6 +103,7 @@ namespace Supremacy.Combat
                                 else
                                 {
                                     ownerAssets.NonCombatShips.Remove(target);
+
                                 }
                             }
 

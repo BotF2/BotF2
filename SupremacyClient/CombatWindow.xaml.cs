@@ -144,27 +144,27 @@ namespace Supremacy.Client
 
             TreeViewItem combatantItems = new TreeViewItem();
             TreeViewItem nonCombatantItems = new TreeViewItem();
-            TreeViewItem escapedItems = new TreeViewItem();
             TreeViewItem destroyedItems = new TreeViewItem();
             TreeViewItem assimilatedItems = new TreeViewItem();
+            TreeViewItem escapedItems = new TreeViewItem();
 
             combatantItems.Header = "Combatant Units";
             nonCombatantItems.Header = "Non-Combatant Units";
-            escapedItems.Header = "Escaped Units";
             destroyedItems.Header = "Destroyed Units";
             assimilatedItems.Header = "Assimilated Units";
+            escapedItems.Header = "Escaped Units";
 
             combatantItems.IsExpanded = true;
             nonCombatantItems.IsExpanded = true;
-            escapedItems.IsExpanded = true;
             destroyedItems.IsExpanded = true;
             assimilatedItems.IsExpanded = true;
+            escapedItems.IsExpanded = true;
 
             combatantItems.ItemTemplate = itemTemplate;
             nonCombatantItems.ItemTemplate = itemTemplate;
-            escapedItems.ItemTemplate = itemTemplate;
             destroyedItems.ItemTemplate = itemTemplate;
             assimilatedItems.ItemTemplate = itemTemplate;
+            escapedItems.ItemTemplate = itemTemplate;
 
             FriendlyAssetsTree.Items.Clear();
 
@@ -197,14 +197,6 @@ namespace Supremacy.Client
                         GameLog.Client.GameData.DebugFormat("FriendlyUnit-nonCombatantItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
                 }
 
-                foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
-                {
-                    escapedItems.Items.Add(shipStats);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("FriendlyUnit-escapedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
-                }
-
                 foreach (CombatUnit shipStats in friendlyAssets.DestroyedShips)
                 {
                     destroyedItems.Items.Add(shipStats);
@@ -220,42 +212,50 @@ namespace Supremacy.Client
                     if (_tracingCombatWindow)
                         GameLog.Client.GameData.DebugFormat("FriendlyUnit-assimilatedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
                 }
+
+                foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
+                {
+                    escapedItems.Items.Add(shipStats);
+
+                    if (_tracingCombatWindow)
+                        GameLog.Client.GameData.DebugFormat("FriendlyUnit-escapedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
+                }
             }
 
             if (combatantItems.Items.Count > 0)
                 FriendlyAssetsTree.Items.Add(combatantItems);
             if (nonCombatantItems.Items.Count > 0)
                 FriendlyAssetsTree.Items.Add(nonCombatantItems);
-            if (escapedItems.Items.Count > 0)
-                FriendlyAssetsTree.Items.Add(escapedItems);
             if (destroyedItems.Items.Count > 0)
                 FriendlyAssetsTree.Items.Add(destroyedItems);
             if (assimilatedItems.Items.Count > 0)
                 FriendlyAssetsTree.Items.Add(assimilatedItems);
+            if (escapedItems.Items.Count > 0)
+                FriendlyAssetsTree.Items.Add(escapedItems);
 
             combatantItems = new TreeViewItem();
             nonCombatantItems = new TreeViewItem();
-            escapedItems = new TreeViewItem();
             destroyedItems = new TreeViewItem();
             assimilatedItems = new TreeViewItem();
+            escapedItems = new TreeViewItem();
 
             combatantItems.Header = "Combatant Units";
             nonCombatantItems.Header = "Non-Combatant Units";
-            escapedItems.Header = "Escaped Units";
             destroyedItems.Header = "Destroyed Units";
             assimilatedItems.Header = "Assimilated Units";
+            escapedItems.Header = "Escaped Units";
 
             combatantItems.IsExpanded = true;
             nonCombatantItems.IsExpanded = true;
-            escapedItems.IsExpanded = true;
             destroyedItems.IsExpanded = true;
             assimilatedItems.IsExpanded = true;
+            escapedItems.IsExpanded = true;
 
             combatantItems.ItemTemplate = itemTemplate;
             nonCombatantItems.ItemTemplate = itemTemplate;
-            escapedItems.ItemTemplate = itemTemplate;
             destroyedItems.ItemTemplate = itemTemplate;
             assimilatedItems.ItemTemplate = itemTemplate;
+            escapedItems.ItemTemplate = itemTemplate;
 
             HostileAssetsTree.Items.Clear();
 
@@ -316,12 +316,12 @@ namespace Supremacy.Client
                 HostileAssetsTree.Items.Add(combatantItems);
             if (nonCombatantItems.Items.Count > 0)
                 HostileAssetsTree.Items.Add(nonCombatantItems);
-            if (escapedItems.Items.Count > 0)
-                HostileAssetsTree.Items.Add(escapedItems);
             if (destroyedItems.Items.Count > 0)
                 HostileAssetsTree.Items.Add(destroyedItems);
             if (assimilatedItems.Items.Count > 0)
                 HostileAssetsTree.Items.Add(assimilatedItems);
+            if (escapedItems.Items.Count > 0)
+                HostileAssetsTree.Items.Add(escapedItems);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
