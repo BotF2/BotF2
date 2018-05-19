@@ -122,8 +122,6 @@ namespace Supremacy.Universe
 
                 _lastOwnershipChange = GameContext.Current.TurnNumber;
 
-                //_lastOwnerintelChange = GameContext.Current.TurnNumber;
-
                 OnPropertyChanged("Owner");
             }
         }
@@ -145,11 +143,6 @@ namespace Supremacy.Universe
         {
             get { return _lastOwnershipChange; }
         }
-
-        //public TurnNumber LastOwnerintelChange
-        //{
-        //    get { return _lastOwnerintelChange; }
-        //}
 
         public int Age
         {
