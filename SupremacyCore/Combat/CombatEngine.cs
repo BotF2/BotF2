@@ -340,6 +340,7 @@ namespace Supremacy.Combat
                 foreach (var assimilatedShip in assets.AssimilatedShips)
                 {
                     var _ship = (Ship)assimilatedShip.Source;
+                    _ship.OwnerID = borgCivID;
                     _ship.Fleet.OwnerID = borgCivID;
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;

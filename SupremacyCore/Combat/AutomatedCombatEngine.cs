@@ -222,6 +222,11 @@ namespace Supremacy.Combat
                         bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
                         //Get a list of all of the opposition ships
                         List<Tuple<CombatUnit, CombatWeapon[]>> oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed).ToList();
+                        if (_traceCombatEngine)
+                        {
+                            GameLog.Print(String.Format("Possible targets for {0}:", attacker.Name));
+                            oppositionShips.ForEach(os => GameLog.Print(os.Item1.Name));
+                        }
 
                         //Only ships to target
                         if (!hasOppositionStation && (oppositionShips.Count() > 0))
