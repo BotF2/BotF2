@@ -10,6 +10,7 @@ using Supremacy.Client.Commands;
 using Supremacy.Client.DragDrop;
 using Supremacy.Orbitals;
 using Supremacy.Client.Context;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -36,9 +37,14 @@ namespace Supremacy.Client.Views
         {
             foreach (var item in TaskForceList.Items)
             {
+
                 var container = TaskForceList.ItemContainerGenerator.ContainerFromItem(item);
                 if (container == null)
                     continue;
+                // doesn't work fine        GameLog.Print("container = {0}, item = {1}", container.ToString(), item.ToString());
+
+                //works     GameLog.Print("TaskForceList.Items.Count = {0}", TaskForceList.Items.Count);
+
                 if (DragDropManager.GetDropTargetAdvisor(container) == null)
                     DragDropManager.SetDropTargetAdvisor(container, new TaskForceDropTargetAdvisor());
                 if (DragDropManager.GetDragSourceAdvisor(container) == null)

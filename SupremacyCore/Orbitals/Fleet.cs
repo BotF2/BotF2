@@ -18,6 +18,7 @@ using Supremacy.Resources;
 using Supremacy.Universe;
 
 using System.Linq;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -643,13 +644,17 @@ namespace Supremacy.Orbitals
             ship.Fleet = this;
             ship.Location = Location;
             if (!_ships.Contains(ship))
+            {
                 _ships.Add(ship);
+                //works   GameLog.Print("AddShipInternal - ship.Name = {0}", ship.Name);
+            }
             OnPropertyChanged("Name");
             OnPropertyChanged("Range");
             OnPropertyChanged("Speed");
             OnPropertyChanged("CanCloak");
             OnPropertyChanged("CanCamouflage");
             OnPropertyChanged("CanEnterWormhole");
+            EnsureValidOrder();
         }
 
         /// <summary>
@@ -666,6 +671,7 @@ namespace Supremacy.Orbitals
             if ((oldFleet != null) && (oldFleet != this))
                 oldFleet.RemoveShip(ship);
             AddShipInternal(ship);
+            GameLog.Print("AddShip - ship.Name = {0}, oldFleet.Name = {1}", ship.Name, oldFleet.Name);
             EnsureValidOrder();
         }
 

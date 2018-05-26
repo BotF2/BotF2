@@ -7,6 +7,7 @@ using Supremacy.Client.Commands;
 using Supremacy.Orbitals;
 
 using System.Linq;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -50,6 +51,7 @@ namespace Supremacy.Client.Views
                 return;
 
             presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();
+            GameLog.Print("presentationModel.SelectedTaskForce.Name = {0}", presentationModel.SelectedTaskForce.Name);
         }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)

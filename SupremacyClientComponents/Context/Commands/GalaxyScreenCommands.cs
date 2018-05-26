@@ -87,6 +87,7 @@ namespace Supremacy.Client.Commands
         {
             if (ship == null)
                 throw new ArgumentNullException("ship");
+            GameLog.Print("REDEPLOYShip for ship = {0}", ship.Name);
             _ship = ship;
             _targetFleet = targetFleet;
         }
