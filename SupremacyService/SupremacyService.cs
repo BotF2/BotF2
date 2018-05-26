@@ -1126,6 +1126,7 @@ namespace Supremacy.WCF
             GameContext.PushThreadContext(_game);
 
             var player = _playerInfo.FromEmpireId(update.OwnerID);
+            GameLog.Print("player = {0}", player);
             if (player != null)
             {
                 var callback = player.Callback;
@@ -1150,16 +1151,25 @@ namespace Supremacy.WCF
                 }
 
                 if (hail)
+                {
+                    GameLog.Print("hail = {0}", hail);
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Hail));
+                }
 
                 //else if (rush)
                 //    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Rush));
 
                 else if (ownerAssets.CombatShips.Count > 0)   // original
-                                                              //else if (ownerAssets.CombatShips.Count > 0 && update.HostileAssets.Count > 0)
+                {
+                    GameLog.Print("ownerAssets.CombatShips.Count = {0}", ownerAssets.CombatShips.Count);
+                    //else if (ownerAssets.CombatShips.Count > 0 && update.HostileAssets.Count > 0)
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Engage));
+                }
                 else
+                {
+                    GameLog.Print("ownerAssets.CombatShips.Count not greater than zero", ownerAssets.CombatShips.Count);
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Retreat));
+                }
 
                 if (engine.Ready && update.HostileAssets.Count > 0)
                 {
