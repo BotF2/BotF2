@@ -111,7 +111,7 @@ namespace Supremacy.Client.Views
 
             foreach (var ship in ships)
             {
-                GameLog.Print("ship.Name = {0}", ship.Name);
+                // works    GameLog.Print("ship.Name = {0}", ship.Name);
                 GalaxyScreenCommands.AddShipToTaskForce.Execute(
                     new RedeployShipCommandArgs(
                         ship,
