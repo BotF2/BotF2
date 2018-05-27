@@ -473,8 +473,8 @@ namespace Supremacy.Client.Views
             foreach (FleetView fleet in fleets)
             {
                 wrapperList.Add(new FleetViewWrapper(fleet));
-                GameLog.Print("wrapperList.Add - fleet.Name = {0}", fleet.Name);
-                GameLog.Print("wrapperList.Add - fleet.Count = {0}", fleet.Ships.Count);
+                //GameLog.Print("wrapperList.Add - fleet.Name = {0}", fleet.Name);
+                //GameLog.Print("wrapperList.Add - fleet.Count = {0}", fleet.Ships.Count);
             }
             return wrapperList;
         }
@@ -628,6 +628,8 @@ namespace Supremacy.Client.Views
 
         private void UpdateShipViews()
         {
+            bool _traceUpdateShipViews = false; // turn true if you want
+
             var selectedTaskForce = Model.SelectedTaskForce;
             IEnumerable<Ship> availableShips;
             ShipView selectedShipInTaskForce = null;
@@ -655,14 +657,20 @@ namespace Supremacy.Client.Views
                         Model.SelectedSector.Location,
                         ship => ship.OwnerID == AppContext.LocalPlayer.EmpireID);
 
-                            //foreach (var ownedShip in ownedShipsAtLocation)
-                            //    GameLog.Print("ownedship.Name = {0}", ownedShip.Name);
+                    if (_traceUpdateShipViews == true)
+                    {
+                        foreach (var ownedShip in ownedShipsAtLocation)
+                            GameLog.Print("ownedship.Name = {0}", ownedShip.Name);
+                    }
 
                     availableShips = ownedShipsAtLocation.Where(
                         ship => !selectedTaskForce.View.Ships.Any(o => Equals(o.Source, ship)));
 
-                            //foreach (var availableShip in availableShips)
-                            //    GameLog.Print("availableShip.Name = {0}", availableShip.Name);
+                    if (_traceUpdateShipViews == true)
+                    {
+                        foreach (var availableShip in availableShips)
+                            GameLog.Print("availableShip.Name = {0}", availableShip.Name);
+                    }
                 }
 
                 var selectedShip = Model.SelectedShip;
@@ -670,15 +678,27 @@ namespace Supremacy.Client.Views
                 if ((selectedShip != null) && selectedTaskForce.View.Ships.Select(o => o.Source).Contains(selectedShip))
                 {
                     selectedShipInTaskForce = selectedTaskForce.View.Ships.FirstOrDefault(o => o.Source == selectedShip);
-                    //GameLog.Print("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedShipInTaskForce);
+
+                    if (_traceUpdateShipViews == true)
+                    {
+                        GameLog.Print("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
+                    }
                 }
                 else
                 {
                     selectedShipInTaskForce = Model.SelectedShipInTaskForce;
-                    //GameLog.Print("selectedShipInTaskForce = {0}", selectedShipInTaskForce);
+
+                    if (_traceUpdateShipViews == true)
+                    {
+                        GameLog.Print("ELSE ... selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
+                    }
 
                     if (!selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce))
                     {
+                        if (_traceUpdateShipViews == true)
+                        {
+                            GameLog.Print("selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce) is FALSE - count = {0}", selectedTaskForce.View.Ships.Count);
+                        }
                         selectedShipInTaskForce = null;
                     }
                 }
@@ -691,8 +711,15 @@ namespace Supremacy.Client.Views
 
 
             //makes crashes (not everytime)  
-            try { GameLog.Print("selectedShipInTaskForceLISTVIEW = {0} (for own: only the first one is shown in detail view = System Panel because there is only one single ship in the fleet) ", selectedTaskForce.View.Ships.Count); }
+            if (_traceUpdateShipViews == true)
+            {
+                try
+                {
+                    GameLog.Print("selectedShipInTaskForceLISTVIEW = {0} (for own: only the first one is shown in detail view = System Panel because there is only one single ship in the fleet) ",
+                          selectedTaskForce.View.Ships.Count);
+                }
                 catch { }
+            }
         }
 
         private void OnSelectedTradeRouteChanged(object sender, EventArgs e)

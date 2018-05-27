@@ -345,8 +345,9 @@ namespace Supremacy.Combat
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;
                     _ship.Fleet.Name = "Assimilated Assets";
+                    _ship.Name = "01," + _ship.Name;
 
-                    GameLog.Print("Assismilated Assets: _ship.ObjectID = {0}, _ship.Name = {1}, _ship.Owner = {2}, _ship.OwnerID = {3}, _ship.Fleet.OwnerID = {4}", 
+                    GameLog.Print("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}", 
                         _ship.ObjectID, _ship.Name, _ship.Owner, _ship.OwnerID, _ship.Fleet.OwnerID);
                 }
             }

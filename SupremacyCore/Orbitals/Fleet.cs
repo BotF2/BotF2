@@ -671,7 +671,7 @@ namespace Supremacy.Orbitals
             if ((oldFleet != null) && (oldFleet != this))
                 oldFleet.RemoveShip(ship);
             AddShipInternal(ship);
-            GameLog.Print("AddShip - ship.Name = {0}, oldFleet.Name = {1}", ship.Name, oldFleet.Name);
+            //works  GameLog.Print("AddShip - ship.Name = {0}, oldFleet.Name = {1}", ship.Name, oldFleet.Name);
             EnsureValidOrder();
         }
 
