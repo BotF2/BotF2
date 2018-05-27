@@ -344,7 +344,10 @@ namespace Supremacy.Combat
                     _ship.Fleet.OwnerID = borgCivID;
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;
-                    _ship.Fleet.Name = "Borg";
+                    _ship.Fleet.Name = "Assimilated Assets";
+
+                    GameLog.Print("Assismilated Assets: _ship.ObjectID = {0}, _ship.Name = {1}, _ship.Owner = {2}, _ship.OwnerID = {3}, _ship.Fleet.OwnerID = {4}", 
+                        _ship.ObjectID, _ship.Name, _ship.Owner, _ship.OwnerID, _ship.Fleet.OwnerID);
                 }
             }
         }

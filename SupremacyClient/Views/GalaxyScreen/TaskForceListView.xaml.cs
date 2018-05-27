@@ -43,8 +43,9 @@ namespace Supremacy.Client.Views
                     continue;
                 // doesn't work fine        GameLog.Print("container = {0}, item = {1}", container.ToString(), item.ToString());
 
-                //works     GameLog.Print("TaskForceList.Items.Count = {0}", TaskForceList.Items.Count);
-
+                //works     GameLog.Print("TaskForceList.Items.Count = {0}", TaskForceList.Items.Count);   // gives amount of blue lines = sections, not more
+              
+                
                 if (DragDropManager.GetDropTargetAdvisor(container) == null)
                     DragDropManager.SetDropTargetAdvisor(container, new TaskForceDropTargetAdvisor());
                 if (DragDropManager.GetDragSourceAdvisor(container) == null)

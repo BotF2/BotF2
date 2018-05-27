@@ -207,7 +207,7 @@ namespace Supremacy.Orbitals
                 //A player always know their own ships
                 if (fleet.OwnerID == owner.CivID)
                 {
-                    GameLog.Print("add a ship to it's fleetview ship.Name = {0}", ship.Name);
+                    // works    GameLog.Print("add a ship to it's fleetview ID = {1} ship.Name = {0}", ship.Name, ship.ObjectID);
                     ships.Add(new ShipView(
                         ship,
                         true,
