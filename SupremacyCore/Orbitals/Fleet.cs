@@ -553,7 +553,30 @@ namespace Supremacy.Orbitals
                 OnPropertyChanged("IsCamouflaged");
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Fleet"/> is assimilated.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this <see cref="Fleet"/> is assimilated; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsAssimilated
+        {
+            get
+            {
+                foreach (Ship ship in Ships)
+                {
+                    if (ship.IsAssimilated)
+                        return true;
+                }
+                return false;
+            }
+            set
+            {
+                foreach (Ship ship in Ships)
+                    ship.IsAssimilated = value;
+                OnPropertyChanged("IsAssimilated");
+            }
+        }
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> can enter wormhole.
         /// </summary>

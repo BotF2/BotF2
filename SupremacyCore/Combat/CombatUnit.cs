@@ -37,11 +37,11 @@ namespace Supremacy.Combat
             
             var ship = source as Ship;
             if (ship != null)
+            {
                 _isCloaked = ship.IsCloaked;
-
-            if (ship != null)
                 _isCamouflaged = ship.IsCamouflaged;
-
+                _isAssimilated = ship.IsAssimilated;
+            }
             _sourceId = source.ObjectID;
             _ownerId = source.OwnerID;
             _hullStrength = source.HullStrength.CurrentValue;
@@ -118,6 +118,7 @@ namespace Supremacy.Combat
         {
             get { return _isCamouflaged; }
         }
+
         public bool IsDestroyed
         {
             get { return (HullStrength <= 0); }

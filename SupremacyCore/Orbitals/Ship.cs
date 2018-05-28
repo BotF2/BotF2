@@ -30,6 +30,7 @@ namespace Supremacy.Orbitals
         private bool _isCloaked;
         private byte _camouflagedStrength;
         private bool _isCamouflaged;
+        private bool _isAssimilated;
         private Meter _fuelReserve;
         #endregion
 
@@ -217,7 +218,21 @@ namespace Supremacy.Orbitals
                 OnPropertyChanged("IsCamouflaged");
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Ship"/> is assimilated.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this <see cref="Ship"/> is assimilated otherwise, <c>false</c>.
+        /// </value>
+        public bool IsAssimilated
+        {
+            get { return _isAssimilated; }
+            set
+            {
+                _isAssimilated = value;
+                OnPropertyChanged("IsAssimilated");
+            }
+        }
         /// <summary>
         /// Gets a value indicating whether this <see cref="Ship"/> can camouflage.
         /// </summary>
@@ -376,6 +391,7 @@ namespace Supremacy.Orbitals
 			writer.WriteObject(_fuelReserve);
 			writer.Write(_isCloaked);
             writer.Write(_isCamouflaged);
+            writer.Write(_isAssimilated);
             writer.Write(_range);
 			writer.Write(_speed);
 		}
@@ -389,6 +405,7 @@ namespace Supremacy.Orbitals
 			_fuelReserve = (Meter)reader.ReadObject();
 			_isCloaked = reader.ReadBoolean();
             _isCamouflaged = reader.ReadBoolean();
+            _isAssimilated = reader.ReadBoolean();
             _range = reader.ReadByte();
 			_speed = reader.ReadByte();
 		}
