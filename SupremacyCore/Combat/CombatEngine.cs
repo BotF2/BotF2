@@ -335,6 +335,9 @@ namespace Supremacy.Combat
         private void PerformAssimilation()
         {
             var borgCivID = GameContext.Current.Civilizations.First(c => c.Name == "Borg").CivID;
+            var borgCivilization = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
+            var borgShipPrefix = borgCivilization.ShipPrefix;
+
             foreach (var assets in _assets)
             {
                 foreach (var assimilatedShip in assets.AssimilatedShips)
@@ -345,8 +348,8 @@ namespace Supremacy.Combat
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     _ship.Scrap = false;
                     _ship.Fleet.Name = "Assimilated Assets";
-                    _ship.Name = "01," + _ship.Name;
-
+                    _ship.Fleet.Owner = borgCivilization;
+                   
                     GameLog.Print("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}", 
                         _ship.ObjectID, _ship.Name, _ship.Owner, _ship.OwnerID, _ship.Fleet.OwnerID);
                 }

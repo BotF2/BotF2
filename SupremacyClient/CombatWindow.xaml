@@ -133,13 +133,13 @@
                      Value="True">
           <Setter TargetName="ImageBorder"
                   Property="Opacity"
-                  Value="0.33"/>
+                  Value="0.55"/>
         </DataTrigger>
         <DataTrigger Binding="{Binding Path=IsCamouflaged}"
                 Value="True">
             <Setter TargetName="ImageBorder"
             Property="Opacity"
-            Value="0.33"/>
+            Value="0.55"/>
         </DataTrigger>
                 <DataTrigger Binding="{Binding Path=IsDestroyed}"
                      Value="True">
