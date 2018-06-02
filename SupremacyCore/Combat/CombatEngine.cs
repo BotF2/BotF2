@@ -249,7 +249,7 @@ namespace Supremacy.Combat
             {
                 var owner = playerAssets.Owner;
                 var friendlyAssets = new List<CombatAssets>();
-                var assimilatedAssets = new List<CombatAssets>();
+                //var assimilatedAssets = new List<CombatAssets>();
                 var hostileAssets = new List<CombatAssets>();
 
                 friendlyAssets.Add(playerAssets);
@@ -292,7 +292,7 @@ namespace Supremacy.Combat
 
                 if (_traceCombatEngine)
                 {
-                    GameLog.Print("CombatUpdate: Location={4} ## ID={0} Turn={1} ##  {2}_to_AllSideStandDown, Owner = ## {3}",
+                    GameLog.Print("CombatUpdate: Location={4} ## ID={0} Turn={1} ##  {2} to AllSideStandDown, Owner = ## {3}",
                         _combatId,
                         _roundNumber,
                         _allSidesStandDown,
@@ -346,12 +346,15 @@ namespace Supremacy.Combat
                     _ship.OwnerID = borgCivID;
                     _ship.Fleet.OwnerID = borgCivID;
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
+                    if (_ship.Fleet.Order == null)
+                        _ship.Fleet.SetOrder(FleetOrders.AvoidOrder.Create());
+
                     _ship.Scrap = false;
                     _ship.Fleet.Name = "Assimilated Assets";
                     _ship.Fleet.Owner = borgCivilization;
                    
-                    GameLog.Print("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}", 
-                        _ship.ObjectID, _ship.Name, _ship.Owner, _ship.OwnerID, _ship.Fleet.OwnerID);
+                    GameLog.Print("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}", 
+                        _ship.ObjectID, _ship.Name, _ship.Owner, _ship.OwnerID, _ship.Fleet.OwnerID, _ship.Fleet.Order);
                 }
             }
         }
