@@ -196,6 +196,7 @@
     <Compile Include="Entities\ICivIdentity.cs" />
     <Compile Include="Entities\RaceConverter.cs" />
     <Compile Include="Expressions\ForEachExpression.cs" />
+    <Compile Include="Game\CivilizationMapData.cs" />
     <Compile Include="Game\ObjectOwnerPair.cs" />
     <Compile Include="Game\SectorClaim.cs" />
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Text\TextFormatFlags.cs" />
     <Compile Include="Text\TextStyle.cs" />
     <Compile Include="Types\NamedGuid.cs" />
+    <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
     <Compile Include="Utility\Shuffle.cs" />
     <Compile Include="Utility\DelegatingWeakCollectionChangedListener.cs" />

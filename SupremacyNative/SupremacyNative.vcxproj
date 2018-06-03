@@ -119,25 +119,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="CivilizationMapData.cpp" />
     <ClCompile Include="DelegatingWeakEventListener.cpp" />
-    <ClCompile Include="DoubleKeyedSet.cpp" />
     <ClCompile Include="EnumHelper.cpp" />
     <ClCompile Include="EnumKeyedValueList.cpp" />
     <ClCompile Include="IsSetFlag.cpp" />
-    <ClCompile Include="MapLocation.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CivilizationMapData.h" />
     <ClInclude Include="DelegatingWeakEventListener.h" />
     <ClInclude Include="EnumHelper.h" />
     <ClInclude Include="EnumKeyedValueList.h" />
     <ClInclude Include="IsSetFlag.h" />
-    <ClInclude Include="MapLocation.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

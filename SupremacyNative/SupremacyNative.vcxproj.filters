@@ -18,13 +18,7 @@
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CivilizationMapData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DelegatingWeakEventListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DoubleKeyedSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnumHelper.cpp">
@@ -36,17 +30,11 @@
     <ClCompile Include="IsSetFlag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapLocation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CivilizationMapData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DelegatingWeakEventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -57,9 +45,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IsSetFlag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MapLocation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Stdafx.h">
