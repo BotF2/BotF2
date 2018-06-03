@@ -312,7 +312,6 @@
     <Compile Include="Collections\EmptyKeyedCollection.cs" />
     <Compile Include="Collections\GameObjectList.cs" />
     <Compile Include="Collections\ImmutableAvlTree.cs" />
-    <Compile Include="Collections\ImmutableDeque.cs" />
     <Compile Include="Collections\GameObjectLookupCollection.cs" />
     <Compile Include="Collections\IndexedEnumerable.cs" />
     <Compile Include="Collections\Interfaces.cs" />
@@ -370,7 +369,6 @@
     <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
     <Compile Include="Expressions\ExpressionSerializer.cs" />
     <Compile Include="Expressions\LinqExtensions.cs" />
-    <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\ValuePair.cs" />
     <Compile Include="Combat\AutomatedCombatEngine.cs" />
     <Compile Include="Combat\CombatAssets.cs" />
@@ -447,7 +445,6 @@
     <Compile Include="Game\LobbyData.cs" />
     <Compile Include="Game\Morale.cs" />
     <Compile Include="Game\MoraleEvent.cs" />
-    <Compile Include="Game\ObjectVisibilityManager.cs" />
     <Compile Include="Game\Order.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\PlayerContext.cs" />
