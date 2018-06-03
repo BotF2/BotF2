@@ -139,6 +139,10 @@ namespace Supremacy.Combat
 
                 return _isAssimilated; 
             }
+            set
+            {
+
+            }
         }
 
         public bool IsMobile

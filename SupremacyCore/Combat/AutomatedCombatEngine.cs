@@ -55,7 +55,7 @@ namespace Supremacy.Combat
                 var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
                 var order = GetOrder(_combatShips[i].Item1.Source);
 
-                bool _shipIsAssimilated = false;
+                bool IsAssimilated = false;
 
                 switch (order)
                 {
@@ -93,16 +93,20 @@ namespace Supremacy.Combat
 
                             bool assimilationSuccessful = false;
                             //If the attacker is Borg, try and assimilate before you try destroying it
-                            if (attackingShip.Owner.Name == "Borg" && !target.IsDestroyed)
+                            if (attackingShip.Owner.Name == "Borg") //&& !target.IsDestroyed && target.Owner.Name != "Borg")
                             {
                                 // works well 
                                 //if (_traceCombatEngine)
                                 //{
-                                //    GameLog.Print("Assimilation: Borg attempting assimilation from ID = {1} {0} ", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
+                                  GameLog.Print("Assimilation: is it a Borg attacker? {0} Is the target not Borg? {1} ", _combatShips[i].Item1.Name, target.Owner.Name);
                                 //}
-                                int chanceToAssimilate = Statistics.Random(10000) % 100;
-                                assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
+                                if (target.Owner.Name != "Borg")
+                                {
+                                    int chanceToAssimilate = Statistics.Random(10000) % 100;
+                                    assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
+                                }
                             }
+
 
                             //Perform the assimilation, but only on ships
                             if (assimilationSuccessful && target.Source is Ship)
@@ -110,60 +114,76 @@ namespace Supremacy.Combat
                                 if (_traceCombatEngine)
                                     GameLog.Print("Assimilation successfull from ID = {1} {0} against {2} {3} ", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, target.Source.ObjectID, target.Name);
 
+                                //if (!ownerAssets.AssimilatedShips.Contains(target))
+                                //{
+                                //    target.IsAssimilated = true;
+                                    
+                                //}
+                             
                                 if (!ownerAssets.AssimilatedShips.Contains(target))
                                 {
-                                    _shipIsAssimilated = true;
                                     ownerAssets.AssimilatedShips.Add(target);
-
-
-                                    //foreach (var _assimilatedShip in ownerAssets.AssimilatedShips)
-                                    //{
-                                    //    //ownerAssets.AssimilatedShips.Add(target);
-
-                                    //    GameLog.Print("AssimilatedShips: {0} {1}", _assimilatedShip.Source.ObjectID, _assimilatedShip.Source.Name);
-                                    //    //ownerAssets.EscapedShips.Add(target);
-                                    //}
-
-
-                                    //if (target.Source.IsCombatant)
-                                    //{
-                                    //    foreach (var _assimilated in ownerAssets.CombatShips)
-                                    //    {
-                                    //        ownerAssets.CombatShips.Remove(target);
-                                    //        GameLog.Print("Removed out of CombatShips: {0} {1}", _assimilated.Source.ObjectID, _assimilated.Source.Name);
-                                    //    }
-                                    //}
-                                    //else 
-                                    //if (target.IsAssimilated == true)
-                                    //{
-
-
-
-                                    //try
-                                    //{
-                                    //    ownerAssets.CombatShips.Remove(target);
-                                    //    GameLog.Print("Removed out of CombatShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
-                                    //}
-                                    //catch { }
-                                    //try
-                                    //{
-                                    //    ownerAssets.NonCombatShips.Remove(target);
-                                    //    GameLog.Print("Removed out of NonCombatShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
-                                    //}
-                                    //catch { }
-                                    //try
-                                    //{
-                                    //    ownerAssets.DestroyedShips.Remove(target);
-                                    //    GameLog.Print("Removed out of DestroyedShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
-                                    //}
-                                    //catch { }
-                                    //try
-                                    //{
-                                    //    ownerAssets.EscapedShips.Remove(target);
-                                    //    GameLog.Print("Removed out of EscapedShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
-                                    //}
-                                    //catch { }
+                                    target.IsAssimilated = true;
+                                    ownerAssets.EscapedShips.Add(target);
+                                    
                                 }
+                                if (target.Source.IsCombatant)
+                                {
+                                    ownerAssets.CombatShips.Remove(target);
+                                }
+                                else
+                                {
+                                    ownerAssets.NonCombatShips.Remove(target);
+                                }
+                                //_combatShips.RemoveAll(cs => cs.Item1 == target);
+                                //foreach (var _assimilatedShip in ownerAssets.AssimilatedShips)
+                                //{
+                                //    //ownerAssets.AssimilatedShips.Add(target);
+
+                                //    GameLog.Print("AssimilatedShips: {0} {1}", _assimilatedShip.Source.ObjectID, _assimilatedShip.Source.Name);
+                                //    //ownerAssets.EscapedShips.Add(target);
+                                //}
+
+
+                                //if (target.Source.IsCombatant)
+                                //{
+                                //    foreach (var _assimilated in ownerAssets.CombatShips)
+                                //    {
+                                //        ownerAssets.CombatShips.Remove(target);
+                                //        GameLog.Print("Removed out of CombatShips: {0} {1}", _assimilated.Source.ObjectID, _assimilated.Source.Name);
+                                //    }
+                                //}
+                                //else 
+                                //if (target.IsAssimilated == true)
+                                //{
+
+
+
+                                //try
+                                //{
+                                //    ownerAssets.CombatShips.Remove(target);
+                                //    GameLog.Print("Removed out of CombatShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
+                                //}
+                                //catch { }
+                                //try
+                                //{
+                                //    ownerAssets.NonCombatShips.Remove(target);
+                                //    GameLog.Print("Removed out of NonCombatShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
+                                //}
+                                //catch { }
+                                //try
+                                //{
+                                //    ownerAssets.DestroyedShips.Remove(target);
+                                //    GameLog.Print("Removed out of DestroyedShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
+                                //}
+                                //catch { }
+                                //try
+                                //{
+                                //    ownerAssets.EscapedShips.Remove(target);
+                                //    GameLog.Print("Removed out of EscapedShips: {0} {1}", target.Source.ObjectID, target.Source.Name);
+                                //}
+                                //catch { }
+                                //}
                             }
 
 
@@ -177,7 +197,7 @@ namespace Supremacy.Combat
                             foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
                             {
 
-                                if (!target.IsDestroyed && !_shipIsAssimilated)
+                                if (!target.IsDestroyed)
                                 {
                                     PerformAttack(attackingShip, target, weapon);
                                     //GameLog.Print("PerformAttack... {0} {1} against {2} {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, target.Source.ObjectID, target.Source.Name);
@@ -244,6 +264,7 @@ namespace Supremacy.Combat
                         break;
 
                 }
+       
             }
 
             //Make sure that the station has a go at the enemy too
@@ -289,6 +310,8 @@ namespace Supremacy.Combat
             }
 
             var attackerOrder = GetOrder(attacker.Source);
+            var attackerShipOwner = attacker.Owner;
+            
 
             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {
@@ -301,7 +324,7 @@ namespace Supremacy.Combat
                     case CombatOrder.Engage:
                         bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
                         //Get a list of all of the opposition ships
-                        List<Tuple<CombatUnit, CombatWeapon[]>> oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed).ToList();
+                        List<Tuple<CombatUnit, CombatWeapon[]>> oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed && attackerShipOwner != cs.Item1.Owner).ToList();
 
                         // works well but makes a lot of lines in Log.txt
                         //if (_traceCombatEngine)

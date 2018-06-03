@@ -245,29 +245,33 @@ namespace Supremacy.Combat
 
         private void SendUpdates()
         {
-            foreach (var playerAssets in _assets)
+            foreach (var playerAsset in _assets)
             {
-                var owner = playerAssets.Owner;
+                var owner = playerAsset.Owner;
                 var friendlyAssets = new List<CombatAssets>();
-                //var assimilatedAssets = new List<CombatAssets>();
                 var hostileAssets = new List<CombatAssets>();
 
-                friendlyAssets.Add(playerAssets);
+                friendlyAssets.Add(playerAsset);
 
-                foreach (var otherAssets in _assets)
+                foreach (var otherAsset in _assets)
+                    //var otherOwner = otherAsset.Owner;
                 {
-                    if (otherAssets == playerAssets)
+                    if (otherAsset == playerAsset)
                         continue;
-                    if (CombatHelper.WillEngage(owner, otherAssets.Owner))
+                    if (CombatHelper.WillEngage(owner, otherAsset.Owner))
                     {
-                        hostileAssets.Add(otherAssets);
+                        hostileAssets.Add(otherAsset);
                     }
+                    //if(owner.Name == "Borg" && otherAsset.Owner.Name == "Borg")
+                    //{
+                    //    hostileAssets.Remove(otherAsset);
+                    //}
                     else
                     {
-                        friendlyAssets.Add(otherAssets);
+                        friendlyAssets.Add(otherAsset);
                         if (_traceCombatEngine)
                         {
-                            GameLog.Print("Combat: add other asset to friendly assets, otherAssets.Owner= {0}", otherAssets.Owner);
+                            GameLog.Print("Combat: add other asset to friendly assets, otherAsset.Owner= {0}", otherAsset.Owner);
                         }
                     } 
 
@@ -286,7 +290,7 @@ namespace Supremacy.Combat
                     _roundNumber,
                     _allSidesStandDown,
                     owner,
-                    playerAssets.Location,
+                    playerAsset.Location,
                     friendlyAssets,
                     hostileAssets);
 
@@ -297,7 +301,7 @@ namespace Supremacy.Combat
                         _roundNumber,
                         _allSidesStandDown,
                         owner,
-                        playerAssets.Location
+                        playerAsset.Location
                     );
                 }
 
@@ -348,7 +352,7 @@ namespace Supremacy.Combat
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     if (_ship.Fleet.Order == null)
                         _ship.Fleet.SetOrder(FleetOrders.AvoidOrder.Create());
-
+                    //_ship.IsAssimilated = true;
                     _ship.Scrap = false;
                     _ship.Fleet.Name = "Assimilated Assets";
                     _ship.Fleet.Owner = borgCivilization;

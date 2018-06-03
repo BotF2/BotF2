@@ -89,7 +89,8 @@ namespace Supremacy.Combat
 
             if (firstCiv == secondCiv)
                 return false;
-
+            //if (firstCiv.Race.ToString() != "Borg" && secondCiv.)
+            //{ }
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
                 return false;
