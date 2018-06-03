@@ -40,16 +40,13 @@ namespace Supremacy.Client.Views
     {
         #region Fields
         private readonly DelegateCommand<RedeployShipCommandArgs> _addShipToTaskForceCommand;
-        //private readonly DelegateCommand<RedeployIntelCommandArgs> _addIntelToIntelForceCommand;
         private readonly DelegateCommand<TradeRoute> _cancelTradeRouteCommand;
         private readonly DelegateCommand<Pair<FleetView, FleetOrder>> _issueTaskForceOrderCommand;
-        //private readonly DelegateCommand<Pair<IntelFleetView, FleetOrder>> _issueIntelForceOrderCommand;
         private readonly DelegateCommand<RedeployShipCommandArgs> _removeShipFromTaskForceCommand;
         private readonly DelegateCommand<GalaxyScreenInputMode> _setInputModeCommand;
         private readonly DelegateCommand<GalaxyScreenOverviewMode> _setOverviewModeCommand;
         private readonly DelegateCommand<FleetView> _toggleTaskForceCloakCommand;
         private readonly DelegateCommand<FleetView> _toggleTaskForceCamouflageCommand;
-        //private readonly DelegateCommand<IntelFleetView> _toggleIntelForceCloakCommand;
         private readonly DelegateCommand<ICheckableCommandParameter> _scrapCommand;
         private readonly List<IDisposable> _channelSubscriptions;
         private INavigationService _navigationService = null;
@@ -124,7 +121,6 @@ namespace Supremacy.Client.Views
             _addShipToTaskForceCommand.RaiseCanExecuteChanged();
             _cancelTradeRouteCommand.RaiseCanExecuteChanged();
             _issueTaskForceOrderCommand.RaiseCanExecuteChanged();
-            ////_issueIntelForceOrderCommand.RaiseCanExecuteChanged();
             _removeShipFromTaskForceCommand.RaiseCanExecuteChanged();
             _setInputModeCommand.RaiseCanExecuteChanged();
             _setOverviewModeCommand.RaiseCanExecuteChanged();
@@ -139,11 +135,8 @@ namespace Supremacy.Client.Views
             Model.OverviewModeChanged += OnOverviewModeChanged;
             Model.SelectedSectorChanged += OnSelectedSectorChanged;
             Model.TaskForcesChanged += OnTaskForcesChanged;
-            //this.Model.IntelForcesChanged += OnIntelForcesChanged;
             Model.SelectedTaskForceChanged += OnSelectedTaskForceChanged;
-            //this.Model.SelectedIntelForceChanged += OnSelectedIntelForceChanged;
             Model.AvailableShipsChanged += OnAvailableShipsChanged;
-            //this.Model.AvailableIntelsChanged += OnAvailableIntelsChanged;
             Model.TradeRoutesChanged += OnTradeRoutesChanged;
             Model.SelectedShipChanged += OnSelectedShipChanged;
             Model.SelectedTradeRouteChanged += OnSelectedTradeRouteChanged;
@@ -187,7 +180,6 @@ namespace Supremacy.Client.Views
             Model.TaskForcesChanged -= OnTaskForcesChanged;
             Model.SelectedTaskForceChanged -= OnSelectedTaskForceChanged;
             Model.AvailableShipsChanged -= OnAvailableShipsChanged;
-            //this.Model.AvailableIntelsChanged -= OnAvailableIntelsChanged;
             Model.TradeRoutesChanged -= OnTradeRoutesChanged;
             Model.SelectedShipChanged -= OnSelectedShipChanged;
             Model.SelectedTradeRouteChanged -= OnSelectedTradeRouteChanged;
@@ -256,8 +248,6 @@ namespace Supremacy.Client.Views
             
             RefreshTaskForceList();
 
-            //RefreshIntelForceList();
-
             Model.SelectedTaskForce = null;
 
             if (Model.InputMode == GalaxyScreenInputMode.RedeployShips)
@@ -275,8 +265,6 @@ namespace Supremacy.Client.Views
             PlayerOperations.RedeployShip(args.Ship);
 
             RefreshTaskForceList();
-
-            //RefreshIntelForceList();
 
             Model.SelectedTaskForce = null;
 
@@ -427,8 +415,6 @@ namespace Supremacy.Client.Views
 
             if (updateTaskForces)
                 RefreshTaskForceList();
-
-            //RefreshIntelForceList();
         }
 
         private void ExecuteToggleTaskForceCloakCommand(FleetView fleetView)

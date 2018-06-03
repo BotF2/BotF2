@@ -126,7 +126,6 @@ namespace Supremacy.Client.Views
     {
         #region Fields
         private IEnumerable<Ship> _availableShips;
-        //private IEnumerable<Intel> _availableIntels;
         private GalaxyScreenInputMode _inputMode;
         private GalaxyScreenOverviewMode _overviewMode;
         private Sector _selectedSector;
@@ -134,22 +133,14 @@ namespace Supremacy.Client.Views
         private string _selectedSectorAllegiance;
         private string _selectedSectorInhabitants;
         private Ship _selectedShip;
-        //private Intel _selectedIntel;
         private ShipView _selectedShipInTaskForce;
-        //private IntelView _selectedIntelInIntelForce;
         private IEnumerable<ShipView> _selectedShipsInTaskForce;
-        //private IEnumerable<IntelView> _selectedIntelsInIntelForce;
         private Ship _selectedShipResolved;
-        //private Intel _selectedIntelResolved;
         private FleetViewWrapper _selectedTaskForce;
-        //private IntelFleetViewWrapper _selectedIntelForce;
         private TradeRoute _selectedTradeRoute;
         private IEnumerable<FleetViewWrapper> _taskForces;
-        //private IEnumerable<IntelFleetViewWrapper> _intelForces;
         private IEnumerable<FleetViewWrapper> _localPlayerTaskForces;
-        //private IEnumerable<IntelFleetViewWrapper> _localPlayerIntelForces;
         private IEnumerable<FleetViewWrapper> _otherVisibleTaskForces;
-        //private IEnumerable<IntelFleetViewWrapper> _otherVisibleIntelForces;
         private IEnumerable<TradeRoute> _tradeRoutes;
         private readonly EmpirePlayerStatusCollection _empirePlayers;
         private StationPresentationModel _selectedSectorStation;
@@ -157,7 +148,6 @@ namespace Supremacy.Client.Views
 
         #region Events
         public event EventHandler AvailableShipsChanged;
-    /*    public event EventHandler AvailableIntelsChanged*/
         public event EventHandler InputModeChanged;
         public event EventHandler OverviewModeChanged;
         public event EventHandler SelectedSectorAllegianceChanged;
@@ -165,19 +155,12 @@ namespace Supremacy.Client.Views
         public event EventHandler HoveredSectorChanged;
         public event EventHandler SelectedSectorInhabitantsChanged;
         public event EventHandler SelectedShipChanged;
-        //public event EventHandler SelectedIntelChanged;
         public event EventHandler SelectedShipInTaskForceChanged;
-        //public event EventHandler SelectedIntelInIntelForceChanged;
         public event EventHandler SelectedShipsInTaskForceChanged;
-        //public event EventHandler SelectedIntelsInIntelForceChanged;
         public event EventHandler SelectedTaskForceChanged;
-        //public event EventHandler SelectedIntelForceChanged;
         public event EventHandler TaskForcesChanged;
-        //public event EventHandler IntelForcesChanged;
         public event EventHandler LocalPlayerTaskForcesChanged;
-        //public event EventHandler LocalPlayerIntelForcesChanged;
         public event EventHandler VisibleTaskForcesChanged;
-        //public event EventHandler VisibleIntelForcesChanged;
         public event EventHandler SelectedTradeRouteChanged;
         public event EventHandler TradeRoutesChanged;
         public event EventHandler SelectedSectorStationChanged;
@@ -219,17 +202,7 @@ namespace Supremacy.Client.Views
                 OnAvailableShipsChanged();
             }
         }
-        //public IEnumerable<Intel> AvailableIntels
-        //{
-        //    get { return _availableIntels; }
-        //    set
-        //    {
-        //        if (Equals(_availableIntels, value))
-        //            return;
-        //        _availableIntels = value;
-        //        OnAvailableIntelsChanged();
-        //    }
-        //}
+
         public GalaxyScreenInputMode InputMode
         {
             get { return _inputMode; }
@@ -335,26 +308,11 @@ namespace Supremacy.Client.Views
                 OnSelectedShipChanged();
             }
         }
-        //public Intel SelectedIntel
-        //{
-        //    get { return _selectedIntelResolved ?? _selectedIntel; }
-        //    set
-        //    {
-        //        if (Equals(_selectedIntel, value) && Equals(_selectedIntelResolved, value))
-        //            return;
-        //        _selectedIntel = value;
-        //        _selectedIntelResolved = value;
-        //        OnSelectedIntelChanged();
-        //    }
-        //}
+
         public ShipView SelectedShipInTaskForce
         {
             get
             {
-                //_selectedShipInTaskForce += _selectedIntelInTaskForce;
-
-
-
                 return _selectedShipInTaskForce;
             }
             set
@@ -372,24 +330,7 @@ namespace Supremacy.Client.Views
                 OnSelectedShipChanged();
             }
         }
-        //public IntelView SelectedIntelInIntelForce
-        //{
-        //    get { return _selectedIntelInIntelForce; }
-        //    set
-        //    {
-        //        if (Equals(_selectedIntelInIntelForce, value))
-        //            return;
 
-        //        _selectedIntelInIntelForce = value;
-        //        OnSelectedIntelInIntelForceChanged();
-
-        //        if ((_selectedIntelInIntelForce == null) || !_selectedIntelInIntelForce.IsIntelOwned)
-        //            return;
-
-        //        //_selectedIntelResolved = _selectedIntelInIntelForce;
-        //        OnSelectedIntelChanged();
-        //    }
-        //}
         public IEnumerable<ShipView> SelectedShipsInTaskForce 
         {
             get
@@ -407,23 +348,6 @@ namespace Supremacy.Client.Views
             }
         }
 
-        ////public IEnumerable<IntelView> SelectedIntelsInIntelForce
-        ////{
-        ////    get
-        ////    {
-        ////        return _selectedIntelsInIntelForce ??
-        ////               Enumerable.Empty<IntelView>();
-        ////    }
-        ////    set
-        ////    {
-        ////        if (Equals(_selectedIntelInIntelForce, value))
-        ////            return;
-
-        ////        _selectedIntelsInIntelForce = value;
-        ////        OnSelectedIntelsInIntelForceChanged();
-        ////    }
-        ////}
-
         public FleetViewWrapper SelectedTaskForce
         {
             get { return _selectedTaskForce; }
@@ -435,18 +359,6 @@ namespace Supremacy.Client.Views
                 OnSelectedTaskForceChanged();
             }
         }
-        //public IntelFleetViewWrapper SelectedIntelForce
-        //{
-        //    get { return _selectedIntelForce; }
-        //    set
-        //    {
-        //        if (Equals(_selectedIntelForce, value))
-        //            return;
-        //        _selectedIntelForce = value;
-        //        OnSelectedIntelForceChanged();
-        //    }
-        //}
-
 
         public TradeRoute SelectedTradeRoute
         {
@@ -471,18 +383,6 @@ namespace Supremacy.Client.Views
                 OnTaskForcesChanged();
             }
         }
-
-        //public IEnumerable<IntelFleetViewWrapper> IntelForces
-        //{
-        //    get { return _intelForces; }
-        //    set
-        //    {
-        //        if (Equals(_intelForces, value))
-        //            return;
-        //        _intelForces = value;
-        //        OnIntelForcesChanged();
-        //    }
-        //}
 
         public IEnumerable<FleetViewWrapper> LocalPlayerTaskForces
         {
@@ -545,29 +445,6 @@ namespace Supremacy.Client.Views
                     }
                 }
             }
-            //if (IntelForces != null)
-            //{ 
-            //    foreach (FleetViewWrapper fleetView in IntelForces)
-            //    { 
-            //            if (fleetView.View.Source.Owner == playerCiv)
-            //            {
-            //                fleetView.InsigniaImage = GetIntelInsigniaImage(playerCiv.InsigniaPath);
-            //                playerList.Add(fleetView);
-            //            }
-            //            else if (mapData.GetScanStrength(fleetView.View.Source.Location) > 0)
-            //            {
-            //                if (DiplomacyHelper.IsContactMade(playerCiv, fleetView.View.Source.Owner))
-            //                    fleetView.InsigniaImage = GetIntelInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
-            //            else
-            //                {
-            //                    fleetView.IsUnknown = true;
-            //                    fleetView.InsigniaImage = GetIntelInsigniaImage("Resources/Images/IntelInsignias/__unknown.png");
-            //                }
-
-            //                //otherVisibleList.Add(fleetView);
-            //            }
-            //    }
-            //}
 
             LocalPlayerTaskForces = playerList;
             VisibleTaskForces = otherVisibleList;
@@ -582,19 +459,6 @@ namespace Supremacy.Client.Views
                 imageUri = ResourceManager.GetResourceUri(insigniaPath);
             else
                 imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
-
-            return ImageCache.Current.Get(imageUri);
-        }
-
-        public BitmapImage GetIntelInsigniaImage(string intelinsigniaPath)
-        {
-            Uri imageUri;
-            var imagePath = intelinsigniaPath.ToLowerInvariant();
-
-            if (File.Exists(ResourceManager.GetResourcePath(intelinsigniaPath)))
-                imageUri = ResourceManager.GetResourceUri(intelinsigniaPath);
-            else
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\IntelInsignias\__default.png");
 
             return ImageCache.Current.Get(imageUri);
         }
@@ -619,12 +483,7 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        //private void OnAvailableIntelsChanged()
-        //{
-        //    var handler = AvailableIntelsChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
+        
         private void OnInputModeChanged()
         {
             var handler = InputModeChanged;
@@ -680,24 +539,14 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        //private void OnSelectedIntelChanged()
-        //{
-        //    var handler = SelectedIntelChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
+        
         private void OnSelectedShipInTaskForceChanged()
         {
             var handler = SelectedShipInTaskForceChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        //private void OnSelectedIntelInIntelForceChanged()
-        //{
-        //    var handler = SelectedIntelInIntelForceChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
+
         private void OnSelectedShipsInTaskForceChanged()
         {
             var handler = SelectedShipsInTaskForceChanged;
@@ -705,25 +554,12 @@ namespace Supremacy.Client.Views
                 handler(this, EventArgs.Empty);
         }
 
-        //private void OnSelectedIntelsInIntelForceChanged()
-        //{
-        //    var handler = SelectedIntelsInIntelForceChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
-
         private void OnSelectedTaskForceChanged()
         {
             var handler = SelectedTaskForceChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        //private void OnSelectedIntelForceChanged()
-        //{
-        //    var handler = SelectedIntelForceChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
 
         private void OnSelectedTradeRouteChanged()
         {
@@ -738,12 +574,6 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        //private void OnIntelForcesChanged()
-        //{
-        //    var handler = IntelForcesChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
 
         private void OnLocalPlayerTaskForcesChanged()
         {
@@ -751,12 +581,6 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        //private void OnLocalPlayerIntelForcesChanged()
-        //{
-        //    var handler = LocalPlayerIntelForcesChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
 
         private void OnVisibleTaskForcesChanged()
         {
@@ -764,14 +588,7 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        //private void OnVisibleIntelForcesChanged()
-        //{
-        //    var handler = VisibleIntelForcesChanged;
-        //    if (handler != null)
-        //        handler(this, EventArgs.Empty);
-        //}
-
-
+        
         private void OnTradeRoutesChanged()
         {
             var handler = TradeRoutesChanged;

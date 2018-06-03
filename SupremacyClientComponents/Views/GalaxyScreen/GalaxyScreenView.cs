@@ -147,14 +147,6 @@ namespace Supremacy.Client.Views
                     return;
                 }
 
-                //if (this.Model.SelectedIntelForce != null)
-                //{
-                //    this.Model.SelectedIntelForce = null;
-                //    e.Handled = true;
-                //    CaptureMouse();
-                //    return;
-                //}
-
                 if (Model.SelectedTradeRoute != null)
                 {
                     Model.SelectedTradeRoute = null;
