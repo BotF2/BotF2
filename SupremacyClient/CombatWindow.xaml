@@ -103,6 +103,11 @@
                        Margin="12,0,0,0"
                        Visibility="Collapsed" 
                        Text="{s:StringResource COMBAT_DESTROYED}"/>
+            <TextBlock x:Name="AssimilatedText"
+                       Foreground="LimeGreen"
+                       Margin="12,0,0,0"
+                       Visibility="Collapsed" 
+                       Text="{s:StringResource COMBAT_ASSIMILATED}"/>
           </StackPanel>
           <TextBlock Text="{Binding Path=Description}"/>
           <Grid>
@@ -138,14 +143,20 @@
         <DataTrigger Binding="{Binding Path=IsCamouflaged}"
                 Value="True">
             <Setter TargetName="ImageBorder"
-            Property="Opacity"
-            Value="0.55"/>
+                    Property="Opacity"
+                    Value="0.55"/>
         </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsDestroyed}"
-                     Value="True">
-          <Setter TargetName="DestroyedText"
-                  Property="Visibility"
-                  Value="Visible"/>
+         <DataTrigger Binding="{Binding Path=IsDestroyed}"
+                    Value="True">
+            <Setter TargetName="DestroyedText"
+                    Property="Visibility"
+                    Value="Visible"/>
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Path=IsAssimilated}"
+                    Value="True">
+            <Setter TargetName="AssimilatedText"
+                    Property="Visibility"
+                    Value="Visible"/>
         </DataTrigger>
       </DataTemplate.Triggers>
     </DataTemplate>
