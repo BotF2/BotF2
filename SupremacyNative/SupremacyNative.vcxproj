@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClInclude Include="CivilizationMapData.h" />
     <ClInclude Include="DelegatingWeakEventListener.h" />
-    <ClInclude Include="DoubleKeyedSet.h" />
     <ClInclude Include="EnumHelper.h" />
     <ClInclude Include="EnumKeyedValueList.h" />
     <ClInclude Include="IsSetFlag.h" />

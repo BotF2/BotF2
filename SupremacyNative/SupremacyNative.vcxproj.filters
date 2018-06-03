@@ -50,9 +50,6 @@
     <ClInclude Include="DelegatingWeakEventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DoubleKeyedSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EnumHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
