@@ -268,7 +268,6 @@
     <Compile Include="Utility\EnumUtilities.cs" />
     <Compile Include="Utility\GameScheduler.cs" />
     <Compile Include="Utility\GCHelper.cs" />
-    <Compile Include="Utility\LogExtensions.cs" />
     <Compile Include="Utility\NameSuffixes.cs" />
     <Compile Include="Utility\ObjectDumper.cs" />
     <Compile Include="Utility\TryConvert.cs" />
