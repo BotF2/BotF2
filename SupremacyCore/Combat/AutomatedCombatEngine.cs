@@ -96,6 +96,7 @@ namespace Supremacy.Combat
                                     GameLog.Print("{0} {1} successfully assimilated {2} {3}", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, target.Name, target.Source.ObjectID);
                                 }
 
+                                CombatAssets oppositionAssets = GetAssets(target.Owner);
                                 if (!ownerAssets.AssimilatedShips.Contains(target))
                                 {
                                     ownerAssets.AssimilatedShips.Add(target);
@@ -103,12 +104,13 @@ namespace Supremacy.Combat
                                 }
                                 if (target.Source.IsCombatant)
                                 {
-                                    ownerAssets.CombatShips.Remove(target);
+                                    oppositionAssets.CombatShips.Remove(target);
                                 }
                                 else
                                 {
-                                    ownerAssets.NonCombatShips.Remove(target);
+                                    oppositionAssets.NonCombatShips.Remove(target);
                                 }
+
                             }
                             //If we're not assimilating, destroy it instead :)
                             else
