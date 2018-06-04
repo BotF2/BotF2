@@ -196,6 +196,7 @@
     <Compile Include="Entities\ICivIdentity.cs" />
     <Compile Include="Entities\RaceConverter.cs" />
     <Compile Include="Expressions\ForEachExpression.cs" />
+    <Compile Include="Game\CivilizationMapData.cs" />
     <Compile Include="Game\ObjectOwnerPair.cs" />
     <Compile Include="Game\SectorClaim.cs" />
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
@@ -260,13 +261,13 @@
     <Compile Include="Text\TextFormatFlags.cs" />
     <Compile Include="Text\TextStyle.cs" />
     <Compile Include="Types\NamedGuid.cs" />
+    <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
     <Compile Include="Utility\Shuffle.cs" />
     <Compile Include="Utility\DelegatingWeakCollectionChangedListener.cs" />
     <Compile Include="Utility\EnumUtilities.cs" />
     <Compile Include="Utility\GameScheduler.cs" />
     <Compile Include="Utility\GCHelper.cs" />
-    <Compile Include="Utility\LogExtensions.cs" />
     <Compile Include="Utility\NameSuffixes.cs" />
     <Compile Include="Utility\ObjectDumper.cs" />
     <Compile Include="Utility\TryConvert.cs" />
@@ -311,7 +312,6 @@
     <Compile Include="Collections\EmptyKeyedCollection.cs" />
     <Compile Include="Collections\GameObjectList.cs" />
     <Compile Include="Collections\ImmutableAvlTree.cs" />
-    <Compile Include="Collections\ImmutableDeque.cs" />
     <Compile Include="Collections\GameObjectLookupCollection.cs" />
     <Compile Include="Collections\IndexedEnumerable.cs" />
     <Compile Include="Collections\Interfaces.cs" />
@@ -369,7 +369,6 @@
     <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
     <Compile Include="Expressions\ExpressionSerializer.cs" />
     <Compile Include="Expressions\LinqExtensions.cs" />
-    <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\ValuePair.cs" />
     <Compile Include="Combat\AutomatedCombatEngine.cs" />
     <Compile Include="Combat\CombatAssets.cs" />
@@ -446,7 +445,6 @@
     <Compile Include="Game\LobbyData.cs" />
     <Compile Include="Game\Morale.cs" />
     <Compile Include="Game\MoraleEvent.cs" />
-    <Compile Include="Game\ObjectVisibilityManager.cs" />
     <Compile Include="Game\Order.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\PlayerContext.cs" />

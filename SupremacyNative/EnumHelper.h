@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "DoubleKeyedSet.h"
-
 using namespace System;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
@@ -20,8 +18,6 @@ using namespace System::Linq;
 using namespace System::Reflection;
 using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
-
-using namespace Supremacy::Types;
 
 namespace Supremacy
 {
@@ -78,7 +74,7 @@ namespace Supremacy
             static bool MatchAttribute(T source, Attribute^ attribute)
             {
                 bool result;
-                if (!EnumHelper::EnumAttributeMatchCache->TryGetValue(source, attribute, result))
+                if (!EnumHelper::EnumAttributeMatchCache->TryGetValue(gcnew Tuple<System::Enum^, System::Attribute^>(source, attribute), result))
                 {
                     result = false;
                     for each (Attribute^ customAttribute in Attribute::GetCustomAttributes(source->GetType()->GetField(source->ToString()), attribute->GetType()))
@@ -89,7 +85,7 @@ namespace Supremacy
                             break;
                         }
                     }
-                    EnumHelper::EnumAttributeMatchCache[source, attribute] = result;
+                    EnumHelper::EnumAttributeMatchCache[gcnew Tuple<System::Enum^, System::Attribute^>(source, attribute)] = result;
                 }
                 return result;
             }
@@ -393,14 +389,14 @@ namespace Supremacy
             
             static EnumHelper()
             {
-                EnumAttributeMatchCache = gcnew DoubleKeyedSet<Enum^, Attribute^, bool>();
+                EnumAttributeMatchCache = gcnew Dictionary<Tuple<Enum^, Attribute^>^, bool>();
                 EnumStringCache = gcnew Dictionary<Enum^, String^>();
                 EnumValueAttributeCache = gcnew TvdP::Collections::Cache<Enum^, AttributeCollection^>();
                 FieldInfoHash = Hashtable::Synchronized(gcnew Hashtable());
                 EnumSeperators = gcnew array<wchar_t>(',');
             }
 
-            static initonly DoubleKeyedSet<Enum^, Attribute^, bool>^ EnumAttributeMatchCache;
+            static initonly Dictionary<Tuple<Enum^, Attribute^>^, bool>^ EnumAttributeMatchCache;
             static initonly TvdP::Collections::Cache<Enum^, AttributeCollection^>^ EnumValueAttributeCache;
             static initonly Dictionary<Enum^, String^>^ EnumStringCache;
 

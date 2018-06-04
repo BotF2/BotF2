@@ -27,7 +27,7 @@ using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
 using Supremacy.Diplomacy;
-
+using System.Collections.ObjectModel;
 
 namespace Supremacy.Universe
 {
@@ -83,7 +83,7 @@ namespace Supremacy.Universe
 
         private KeyedCollectionBase<GameObjectID, Building> _buildings;
         private UniverseObjectList<OrbitalBattery> _orbitalBatteries;
-        private ObservableList<BuildQueueItem> _buildQueue;
+        private ObservableCollection<BuildQueueItem> _buildQueue;
         private BuildSlot _buildSlot;
         private Meter _creditsFromTrade;
         private int[] _facilityTypes;
@@ -766,7 +766,7 @@ namespace Supremacy.Universe
             _orbitalBatteries = new UniverseObjectList<OrbitalBattery>();
             _creditsFromTrade = new Meter();
             _buildSlot = new BuildSlot();
-            _buildQueue = new ObservableList<BuildQueueItem>();
+            _buildQueue = new ObservableCollection<BuildQueueItem>();
 
             _baseRawMaterials = 0;
             _baseDeuteriumGeneration = 0;

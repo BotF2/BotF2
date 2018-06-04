@@ -66,7 +66,6 @@ namespace Supremacy.Client.Views
                 return;
 
             List<Ship> ships;
-            //List<Ship> intels;
 
             ListView targetItemsControl = null;
 
@@ -77,9 +76,6 @@ namespace Supremacy.Client.Views
                 targetItemsControl = TargetElement as ListView;
                 if ((targetItemsControl != null) && (targetItemsControl == sourceListView))
                     return;
-
-
-                //intels = sourceListView.SelectedItems.OfType<Ship>().ToList();
 
                 ships = sourceListView.SelectedItems.OfType<Ship>().ToList();
                 if (ships.Count == 0)
@@ -95,22 +91,14 @@ namespace Supremacy.Client.Views
                 if (sourceFleetWrapper != null)
                 {
                     ships = sourceFleetWrapper.View.Ships.Select(o => o.Source).ToList();
-
-                    //intels = sourceFleetWrapper.View.Ships.Select(o => o.Source).ToList();
                 }
                 else
                 {
                     var shipView = sourceElement.DataContext as ShipView;
-                    //var intelView = sourceElement.DataContext as IntelView;
 
                     if (shipView == null)
                         return;
                     ships = new List<Ship> { shipView.Source };
-                    //intels = new List<Intel> { intelView.Source };
-
-                    //ships.Add(intelView.Source);
-                    //    { intelView.Source };
-                    //ships = List<Ships>.Add { shipView.Source };
                 }
             }
 
@@ -130,16 +118,6 @@ namespace Supremacy.Client.Views
                 if (targetItemsControl != null)
                     targetItemsControl.SelectedItems.Add(ship);
             }
-
-            //foreach (var intel in intels)
-            //{
-            //    GalaxyScreenCommands.AddShipToTaskForce.Execute(
-            //        new RedeployShipCommandArgs(
-            //            intel,
-            //            targetFleetWrapper.View.Source));
-            //    if (targetItemsControl != null)
-            //        targetItemsControl.SelectedItems.Add(intel);
-            //}
         }
 
         public UIElement TargetElement { get; set; }
