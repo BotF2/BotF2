@@ -126,23 +126,8 @@ namespace Supremacy.Combat
 
         public bool IsAssimilated
         {
-            get
-            {
-                // works   GameLog.Print("{0}, = Combat Unit.cs Owner.Name", Owner.Name.ToString());
-                //if (Owner.Name == "Borg")
-                //{
-                //    _isAssimilated = false;
-                //    return false;
-                //}
-                //if (Source.Scrap)
-                //    return true;
-
-                return _isAssimilated; 
-            }
-            set
-            {
-
-            }
+            get { return _isAssimilated; }
+            set {_isAssimilated = value; }
         }
 
         public bool IsMobile

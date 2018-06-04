@@ -262,7 +262,7 @@ namespace Supremacy.Combat
                     {
                         hostileAssets.Add(otherAsset);
                     }
-                    //if(owner.Name == "Borg" && otherAsset.Owner.Name == "Borg")
+                    //if (owner.Name == "Borg" && otherAsset.Owner.Name == "Borg")
                     //{
                     //    hostileAssets.Remove(otherAsset);
                     //}
@@ -352,7 +352,7 @@ namespace Supremacy.Combat
                     _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
                     if (_ship.Fleet.Order == null)
                         _ship.Fleet.SetOrder(FleetOrders.AvoidOrder.Create());
-                    //_ship.IsAssimilated = true;
+                    _ship.IsAssimilated = true;
                     _ship.Scrap = false;
                     _ship.Fleet.Name = "Assimilated Assets";
                     _ship.Fleet.Owner = borgCivilization;
