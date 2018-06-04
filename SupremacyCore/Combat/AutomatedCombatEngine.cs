@@ -55,8 +55,6 @@ namespace Supremacy.Combat
                 var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
                 var order = GetOrder(_combatShips[i].Item1.Source);
 
-                //bool IsAssimilated = false;
-
                 switch (order)
                 {
                     case CombatOrder.Engage:
@@ -74,53 +72,34 @@ namespace Supremacy.Combat
                         {
                             if (_traceCombatEngine)
                             {
-                                GameLog.Print("Target for {1} {0} against {2} {3}", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, target.Source.ObjectID, target.Name);
+                                GameLog.Print("Target for {1} {0} is {2} {3}", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, target.Source.ObjectID, target.Name);
                             }
-
-                            // First attack as normal
-                            //GameLog.Print("PerformAttack... {0} {1} against {2} {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, target.Source.ObjectID, target.Source.Name);
-                            //foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
-                            //{
-
-                            //    if (!target.IsDestroyed)
-                            //    {
-                            //        PerformAttack(attackingShip, target, weapon);
-                            //    }
-                            //}
-
-
 
 
                             bool assimilationSuccessful = false;
                             //If the attacker is Borg, try and assimilate before you try destroying it
-                            if (attackingShip.Owner.Name == "Borg") //&& !target.IsDestroyed && target.Owner.Name != "Borg")
+                            if (attackingShip.Owner.Name == "Borg" && target.Owner.Name != "Borg")
                             {
-                                // works well 
-                                //if (_traceCombatEngine)
-                                //{
-                                  GameLog.Print("Assimilation: is it a Borg attacker? {0} Is the target not Borg? {1} ", _combatShips[i].Item1.Name, target.Owner.Name);
-                                //}
-                                if (target.Owner.Name != "Borg")
+                                if (_traceCombatEngine)
                                 {
-                                    int chanceToAssimilate = Statistics.Random(10000) % 100;
-                                    assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
+                                    GameLog.Print("{0} attempting assimilation on {1} ", _combatShips[i].Item1.Name, target.Owner.Name);
                                 }
+                                int chanceToAssimilate = Statistics.Random(10000) % 100;
+                                assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
                             }
-
 
                             //Perform the assimilation, but only on ships
                             if (assimilationSuccessful && target.Source is Ship)
                             {
                                 if (_traceCombatEngine)
-                                    GameLog.Print("Assimilation successfull from ID = {1} {0} against {2} {3} ", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, target.Source.ObjectID, target.Name);
+                                {
+                                    GameLog.Print("{0} {1} successfully assimilated {2} {3}", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, target.Name, target.Source.ObjectID);
+                                }
 
-                             
                                 if (!ownerAssets.AssimilatedShips.Contains(target))
                                 {
                                     ownerAssets.AssimilatedShips.Add(target);
                                     target.IsAssimilated = true;
-                                    ownerAssets.EscapedShips.Add(target);
-                                    
                                 }
                                 if (target.Source.IsCombatant)
                                 {
@@ -130,22 +109,24 @@ namespace Supremacy.Combat
                                 {
                                     ownerAssets.NonCombatShips.Remove(target);
                                 }
-      
                             }
-
-                            //Otherwise attack as normal
-
-                            foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
+                            //If we're not assimilating, destroy it instead :)
+                            else
                             {
-
-                                if (!target.IsDestroyed)
+                                if (_traceCombatEngine)
                                 {
-                                    PerformAttack(attackingShip, target, weapon);
-                                    //GameLog.Print("PerformAttack... {0} {1} against {2} {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, target.Source.ObjectID, target.Source.Name);
+                                    GameLog.Print("{0} {1} attacking {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
+                                }
+                                foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
+                                {
+
+                                    if (!target.IsDestroyed)
+                                    {
+                                        PerformAttack(attackingShip, target, weapon);
+                                    }
                                 }
                             }
                         }
-
 
                         foreach (var combatShip in _combatShips)
                         {
@@ -153,9 +134,7 @@ namespace Supremacy.Combat
                                 ownerAssets.AssimilatedShips.Remove(target);
                         }
 
-                        break;  // end of previous case
-                                        
-                
+                        break;
 
                     case CombatOrder.Retreat:
                         //Calculate the the odds
@@ -192,20 +171,24 @@ namespace Supremacy.Combat
                             }
 
                             _combatShips.Remove(_combatShips[i]);
-                            
+
                         }
                         break;
 
                     case CombatOrder.Standby:
-                        GameLog.Print("StandBy...");
+                        if (_traceCombatEngine)
+                        {
+                            GameLog.Print("{0} {1} standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
+                        }
                         break;
-                    // do not break
+
                     case CombatOrder.Hail:
-                        GameLog.Print("HAIL...");
+                        if (_traceCombatEngine) {
+                            GameLog.Print("{0} {1} hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
+                        }
                         break;
 
                 }
-       
             }
 
             //Make sure that the station has a go at the enemy too
@@ -266,13 +249,6 @@ namespace Supremacy.Combat
                         bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
                         //Get a list of all of the opposition ships
                         List<Tuple<CombatUnit, CombatWeapon[]>> oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed && attackerShipOwner != cs.Item1.Owner).ToList();
-
-                        // works well but makes a lot of lines in Log.txt
-                        //if (_traceCombatEngine)
-                        //{
-                        //    GameLog.Print(String.Format("Possible targets for {0} {1}:", attacker.Source.ObjectID, attacker.Name));
-                        //    oppositionShips.ForEach(os => GameLog.Print(os.Item1.Name));
-                        //}
 
                         //Only ships to target
                         if (!hasOppositionStation && (oppositionShips.Count() > 0))
@@ -340,12 +316,6 @@ namespace Supremacy.Combat
             {
                 return;
             }
-
-            // works well but makes a lot of lines in Log.txt  (for each weapon one line)
-            //if (_traceCombatEngine)
-            //{
-            //    GameLog.Print("{0} {1} is attacking {2} {3}...", source.Source.ObjectID, source.Name, target.Source.ObjectID, target.Name);
-            //}
 
             if (Statistics.Random(100) >= (100 - accuracy))
             {
