@@ -45,8 +45,6 @@ namespace Supremacy.Combat
             _escapedShips = new List<CombatUnit>();
             _destroyedShips = new List<CombatUnit>();
             _assimilatedShips = new List<CombatUnit>();
-
-
         }
 
         public int CombatID
@@ -72,7 +70,7 @@ namespace Supremacy.Combat
 
         public Sector Sector
         {
-            get { return GameContext.Current.Universe.Map[Location]; }
+            get { return GameContext.Current.Universe.Map[_location]; }
         }
 
         public List<CombatUnit> CombatShips
@@ -126,7 +124,7 @@ namespace Supremacy.Combat
 
         public bool HasSurvivingAssets
         {
-            get { return CombatShips.Any() || NonCombatShips.Any() || ((Station != null) && Station.IsDestroyed); }
+            get { return CombatShips.Any() || NonCombatShips.Any() || ((Station != null) && !Station.IsDestroyed); }
         }
 
         public void UpdateAllSources()

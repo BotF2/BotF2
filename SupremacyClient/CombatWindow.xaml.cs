@@ -148,11 +148,11 @@ namespace Supremacy.Client
             TreeViewItem assimilatedItems = new TreeViewItem();
             TreeViewItem escapedItems = new TreeViewItem();
 
-            combatantItems.Header = "Combatant Units";
-            nonCombatantItems.Header = "Non-Combatant Units";
-            destroyedItems.Header = "Destroyed Units";
-            assimilatedItems.Header = "Assimilated Units";
-            escapedItems.Header = "Escaped Units";
+            combatantItems.Header = ResourceManager.GetString("COMBAT_COMBATANT_UNITS");
+            nonCombatantItems.Header = ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS");
+            destroyedItems.Header = ResourceManager.GetString("COMBAT_DESTROYED_UNITS");
+            assimilatedItems.Header = ResourceManager.GetString("COMBAT_ASSIMILATED UNITS");
+            escapedItems.Header = ResourceManager.GetString("COMBAT_ESCAPED_UNITS");
 
             combatantItems.IsExpanded = true;
             nonCombatantItems.IsExpanded = true;
@@ -239,11 +239,11 @@ namespace Supremacy.Client
             assimilatedItems = new TreeViewItem();
             escapedItems = new TreeViewItem();
 
-            combatantItems.Header = "Combatant Units";
-            nonCombatantItems.Header = "Non-Combatant Units";
-            destroyedItems.Header = "Destroyed Units";
-            assimilatedItems.Header = "Assimilated Units";
-            escapedItems.Header = "Escaped Units";
+            combatantItems.Header = ResourceManager.GetString("COMBAT_COMBATANT_UNITS");
+            nonCombatantItems.Header = ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS");
+            destroyedItems.Header = ResourceManager.GetString("COMBAT_DESTROYED_UNITS");
+            assimilatedItems.Header = ResourceManager.GetString("COMBAT_ASSIMILATED UNITS");
+            escapedItems.Header = ResourceManager.GetString("COMBAT_ESCAPED_UNITS");
 
             combatantItems.IsExpanded = true;
             nonCombatantItems.IsExpanded = true;
@@ -299,17 +299,6 @@ namespace Supremacy.Client
                         GameLog.Client.GameData.DebugFormat("HostileUnit -destroyedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2} ", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
                     destroyedItems.Items.Add(shipStats);
                 }
-
-                // Assimilated items only shown at Borg side
-                //foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
-                //{
-                //    //GameLog.Client.GameData.DebugFormat("HostileUnit : ShieldIntegry={0}, HullIntegry={1}, Name={2} ", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
-                //    //assimilatedItems.Items.Add(shipStats);
-
-                //    if (_tracingCombatWindow == true)
-                //        GameLog.Client.GameData.DebugFormat("HostileUnit assimilatedItems: ShieldIntegry={0}, HullIntegry={1}, Name= {2}, Owner Name={3} ", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name, shipStats.Owner.Name);
-                //    assimilatedItems.Items.Add(shipStats);
-                //}
             }
 
             if (combatantItems.Items.Count > 0)
