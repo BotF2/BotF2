@@ -26,7 +26,7 @@ namespace Supremacy.Combat
     {
         public readonly object SyncLock;
         protected const double BaseChanceToRetreat = 0.25;
-        protected const double BaseChanceToAssimilate = 0.9;
+        protected const double BaseChanceToAssimilate = 0.20;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
@@ -121,7 +121,13 @@ namespace Supremacy.Combat
             _experienceAccuracy = new Dictionary<ExperienceRank, double>();
             foreach (ExperienceRank rank in EnumUtilities.GetValues<ExperienceRank>())
             {
-                _experienceAccuracy[rank] = Double.Parse(accuracyTable[rank.ToString()][0]);
+                double modifier;
+                if (Double.TryParse(accuracyTable[rank.ToString()][0], out modifier))
+                {
+                    _experienceAccuracy[rank] = modifier;
+                }
+                else
+                    _experienceAccuracy[rank] = 0.75;
             }
             ///////////////////
 
@@ -185,8 +191,10 @@ namespace Supremacy.Combat
                 {
                     ResolveCombatRoundCore();
                 }
-
-                PerformAssimilation();
+                if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
+                {
+                    PerformAssimilation();
+                }           
                 PerformRetreat();
                 UpdateOrbitals();
 
