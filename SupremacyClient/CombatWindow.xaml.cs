@@ -151,7 +151,7 @@ namespace Supremacy.Client
             combatantItems.Header = ResourceManager.GetString("COMBAT_COMBATANT_UNITS");
             nonCombatantItems.Header = ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS");
             destroyedItems.Header = ResourceManager.GetString("COMBAT_DESTROYED_UNITS");
-            assimilatedItems.Header = ResourceManager.GetString("COMBAT_ASSIMILATED UNITS");
+            assimilatedItems.Header = ResourceManager.GetString("COMBAT_ASSIMILATED_UNITS");
             escapedItems.Header = ResourceManager.GetString("COMBAT_ESCAPED_UNITS");
 
             combatantItems.IsExpanded = true;

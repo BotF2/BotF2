@@ -402,8 +402,6 @@ namespace Supremacy.Orbitals
                          o.ShipType != ShipType.Science &&
                          o.ShipType != ShipType.Transport &&
                          o.ShipType != ShipType.Diplomatic &&
-                         o.ShipType != ShipType.Raider &&
-                         o.ShipType != ShipType.Sabotage &&
                          o.ShipType != ShipType.Spy);
             }
         }
@@ -435,16 +433,6 @@ namespace Supremacy.Orbitals
         public bool IsSpy
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Spy; }
-        }
-
-        public bool IsRaider
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Raider; }
-        }
-
-        public bool IsSabotage
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Sabotage; }
         }
 
         public bool IsMedical
