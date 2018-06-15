@@ -24,76 +24,41 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
-        public static IList<CombatAssets> GetCombatAssets(MapLocation location)
+        public static int CalculateOrbitalPower(Orbital orbital)
+        {
+            return (orbital.OrbitalDesign.PrimaryWeapon.Damage * orbital.OrbitalDesign.PrimaryWeapon.Count) +
+                   (orbital.OrbitalDesign.SecondaryWeapon.Damage * orbital.OrbitalDesign.SecondaryWeapon.Count);
+        }
+
+        public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {
             var assets = new Dictionary<Civilization, CombatAssets>();
-            var allFleets = new List<Fleet>();
             var results = new List<CombatAssets>();
             var sector = GameContext.Current.Universe.Map[location];
 
-            // double code ?? see below
-            //if (sector.Station != null)
-            //{
-            //    if (!assets.ContainsKey(sector.Station.Owner))
-            //        assets[sector.Station.Owner] = new CombatAssets(sector.Station.Owner, location);
-            //}
-
-            allFleets.AddRange(GameContext.Current.Universe.FindAt<Fleet>(location));
-
-            //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: allFleets.Count BEFORE Camouflaged: {0}", allFleets.Count);
-            for (var i = 0; i < allFleets.Count; i++)
-            {
-                if (allFleets[i].IsCamouflaged)
-                {
-                    allFleets.RemoveAt(i--);
-                    //
-                    // makes crashes   GameLog.Client.GameData.DebugFormat("CombatHelper.cs: allFleets.[i] NAME: {0} is camouflaged", allFleets[i].Name);
-                }
-            }
-            //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: allFleets.Count AFTER Camouflaged: {0}", allFleets.Count);
-
-            // Make sure that at least one fleet is engaging, if not, then no combat
-            var engagingFleets = allFleets.Where(fleet => fleet.Order.WillEngageHostiles).ToList();
+            var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).Where(f => !f.IsCamouflaged).ToList();
 
             if ((engagingFleets.Count == 0) && (sector.Station == null))
-                return results;
-
-            // Since at least one fleet is engaging, all fleets must be considered.
-            //engagingFleets.AddRange(
-            //    from fleet in allFleets.Where(fleet => !fleet.Order.WillEngageHostiles)
-            //    let fleetCopy = fleet
-            //    where engagingFleets.Any(
-            //        otherFleet =>
-            //            WillEngage(fleetCopy.Owner, otherFleet.Owner) &&
-            //            Equals(fleetCopy.Sector.GetOwner(), otherFleet.Owner))
-            //    select fleet);
-
-            foreach (var fleet in allFleets)
             {
-                var owner = fleet.Owner;
+                return results;
+            }
 
-                if (!assets.ContainsKey(owner))
+            foreach (var fleet in engagingFleets)
+            {
+                if (!assets.ContainsKey(fleet.Owner))
                 {
-                    assets[owner] = new CombatAssets(owner, location);
-                    //doesn't work    GameLog.Client.GameData.DebugFormat("CombatHelper.cs: new assets[owner]={0}, first one={1} !!!", assets[owner], assets[owner].CombatUnits.FirstOrDefault().Name);
-                    
-                    // this one works       
-                    //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: new assets[owner]={0} !!!", assets[owner].Owner.ToString());
+                    assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
                 }
 
                 foreach (var ship in fleet.Ships)
                 {
                     if (ship.IsCombatant)
                     {
-                        // works     
-                        //GameLog.Client.GameData.DebugFormat("CombatHelper.cs: Ship={0}, Owner={1}, ShipName={2} is IsCombatant...", ship.ObjectID, ship.Owner, ship.Name);
-                        assets[owner].CombatShips.Add(new CombatUnit(ship));
+                        assets[fleet.Owner].CombatShips.Add(new CombatUnit(ship));
                     }
                     else
                     {
-                        // works     
-                        // GameLog.Client.GameData.DebugFormat("CombatHelper.cs: Ship={0}, Owner={1}, ShipName={2} is NONCombat...", ship.ObjectID, ship.Owner, ship.Name);
-                        assets[owner].NonCombatShips.Add(new CombatUnit(ship));
+                        assets[fleet.Owner].NonCombatShips.Add(new CombatUnit(ship));
                     }
                 }
             }
@@ -115,6 +80,8 @@ namespace Supremacy.Combat
 
         public static bool WillEngage(Civilization firstCiv, Civilization secondCiv)
         {
+            bool _willEngageTracing = false; // turn true if you want
+
             if (firstCiv == null)
                 throw new ArgumentNullException("firstCiv");
             if (secondCiv == null)
@@ -122,13 +89,14 @@ namespace Supremacy.Combat
 
             if (firstCiv == secondCiv)
                 return false;
-
+            //if (firstCiv.Race.ToString() != "Borg" && secondCiv.)
+            //{ }
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
                 return false;
 
-            // works 
-            // GameLog.Print("diplomacyData.Status={2} for {0} vs {1}, ", firstCiv, secondCiv, diplomacyData.Status.ToString());
+            if (_willEngageTracing == true)
+                GameLog.Print("diplomacyData.Status={2} for {0} vs {1}, ", firstCiv, secondCiv, diplomacyData.Status.ToString());
 
             switch (diplomacyData.Status)
             {
@@ -174,20 +142,62 @@ namespace Supremacy.Combat
             var owner = assets.Owner;
             var orders = new CombatOrders(owner, assets.CombatID);
 
-            foreach (var ship in assets.CombatShips)
-                orders.SetOrder(ship.Source, order);
+            bool _generateBlanketOrdersTracing = true;
 
-            foreach (var ship in assets.NonCombatShips)
+            foreach (var ship in assets.CombatShips)  // CombatShips
             {
-                orders.SetOrder(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
+                orders.SetOrder(ship.Source, order);
+                if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
+                {
+                    GameLog.Print("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
+                }
             }
 
-            if (assets.Station != null && assets.Station.Owner == owner)
+            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            {
+                orders.SetOrder(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
+                orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
+                orders.SetOrder(ship.Source, (order == CombatOrder.Transports) ? CombatOrder.Standby : order);
+                orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
+                if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail)  // reduces lines especially on starting (all ships starting with Hail)
+                {
+                    GameLog.Print("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
+                }
+                //orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
+            }
+
+            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
                 orders.SetOrder(assets.Station.Source, (order == CombatOrder.Retreat) ? CombatOrder.Engage : order);
+                if (_generateBlanketOrdersTracing == true)
+                {
+                    GameLog.Print("{0} is ordered to {1}", assets.Station.Source, order);
+                }
             }
 
             return orders;
+        }
+
+        public static double ComputeCombatOrderMultiplier(AutomatedCombatEngine automatedCombatEngine) // considering a way to get combat orders into outcome 
+        {
+            //if (colony == null)
+                return 0;
+
+            //GameLog.Print("GroundCombat?: Colony={0}, ComputeGroundDefenseMultiplier={1}",
+            //    colony.Name,
+            //    Math.Max(
+            //    0.1,
+            //    1.0 + (0.01 * colony.Buildings
+            //                       .Where(o => o.IsActive)
+            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
+            //                       .Sum(b => b.Amount))));
+
+            //return Math.Max(
+            //    0.1,
+            //    1.0 + (0.01 * colony.Buildings
+            //                       .Where(o => o.IsActive)
+            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
+            //                       .Sum(b => b.Amount)));
         }
 
         public static double ComputeGroundDefenseMultiplier(Colony colony)

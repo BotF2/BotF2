@@ -103,6 +103,11 @@
                        Margin="12,0,0,0"
                        Visibility="Collapsed" 
                        Text="{s:StringResource COMBAT_DESTROYED}"/>
+            <TextBlock x:Name="AssimilatedText"
+                       Foreground="LimeGreen"
+                       Margin="12,0,0,0"
+                       Visibility="Collapsed" 
+                       Text="{s:StringResource COMBAT_ASSIMILATED}"/>
           </StackPanel>
           <TextBlock Text="{Binding Path=Description}"/>
           <Grid>
@@ -133,19 +138,25 @@
                      Value="True">
           <Setter TargetName="ImageBorder"
                   Property="Opacity"
-                  Value="0.33"/>
+                  Value="0.55"/>
         </DataTrigger>
         <DataTrigger Binding="{Binding Path=IsCamouflaged}"
                 Value="True">
             <Setter TargetName="ImageBorder"
-            Property="Opacity"
-            Value="0.33"/>
+                    Property="Opacity"
+                    Value="0.55"/>
         </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsDestroyed}"
-                     Value="True">
-          <Setter TargetName="DestroyedText"
-                  Property="Visibility"
-                  Value="Visible"/>
+         <DataTrigger Binding="{Binding Path=IsDestroyed}"
+                    Value="True">
+            <Setter TargetName="DestroyedText"
+                    Property="Visibility"
+                    Value="Visible"/>
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Path=IsAssimilated}"
+                    Value="True">
+            <Setter TargetName="AssimilatedText"
+                    Property="Visibility"
+                    Value="Visible"/>
         </DataTrigger>
       </DataTemplate.Triggers>
     </DataTemplate>
@@ -163,6 +174,7 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
@@ -216,27 +228,50 @@
       </ScrollViewer>
     </GroupBox>
 
-    <StackPanel x:Name="ButtonsPanel"
+        <StackPanel x:Name="ButtonsPanel0"
                 Margin="6"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Grid.Row="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
-      <Button x:Name="EngageButton"
-              Style="{DynamicResource StandardButtonStyle}"
-              Content="{s:StringResource COMBAT_ENGAGE}"
-              Click="OnOrderButtonClicked"/>
-      <Button x:Name="HailButton"
-              Style="{DynamicResource StandardButtonStyle}"
-              Margin="6,0,0,0"
-              Content="{s:StringResource COMBAT_HAIL}"
-              Click="OnOrderButtonClicked"/>
-      <Button x:Name="RetreatButton"
-              Style="{DynamicResource StandardButtonStyle}"
-              Margin="6,0,0,0"
-              Content="{s:StringResource COMBAT_RETREAT}"
-              Click="OnOrderButtonClicked"/>
+            <Button x:Name="EngageButton"
+                  Style="{DynamicResource StandardButtonStyle}"
+                  Content="{s:StringResource COMBAT_ENGAGE}"
+                  Click="OnOrderButtonClicked"/>
+            <Button x:Name="RushButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_RUSH}"
+                Click="OnOrderButtonClicked"/>
+            <Button x:Name="TransportsButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_TRANSPORTS}"
+                Click="OnOrderButtonClicked"/>
+        </StackPanel>
+        <StackPanel x:Name="ButtonsPanel1"
+                Margin="6"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="3"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+            <Button x:Name="FormationButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_FORMATION}"
+                Click="OnOrderButtonClicked"/>
+            <Button x:Name="HailButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="6,0,0,0"
+                Content="{s:StringResource COMBAT_HAIL}"
+                Click="OnOrderButtonClicked"/>
+            <Button x:Name="RetreatButton"
+                    Style="{DynamicResource StandardButtonStyle}"
+                    Margin="6,0,0,0"
+                    Content="{s:StringResource COMBAT_RETREAT}"
+                    Click="OnOrderButtonClicked"/>
     </StackPanel>
     <Button x:Name="CloseButton"
             Style="{DynamicResource StandardButtonStyle}"

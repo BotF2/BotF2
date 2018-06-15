@@ -37,7 +37,7 @@
                                 <Setter TargetName="SelectionOuterBorder" Property="Background" Value="{StaticResource FleetSelectionBorderBrush}" />
                             </Trigger>
                             <DataTrigger Binding="{Binding Path=View.Source.IsCloaked}" Value="True">
-                                <Setter TargetName="Insignia" Property="Opacity" Value="0.33" />
+                                <Setter TargetName="Insignia" Property="Opacity" Value="0.55" />
                             </DataTrigger>
                             <!--<DataTrigger Binding="{Binding Path=View.Source.IsCamouflaged}" Value="True">
                                 <Setter TargetName="Insignia" Property="Background" Value="{StaticResource CamouflagedFleetSelectionBorderBrush}" />

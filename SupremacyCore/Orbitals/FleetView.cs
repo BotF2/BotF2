@@ -16,6 +16,7 @@ using Supremacy.Entities;
 using Supremacy.Game;
 using System.Windows.Media.Imaging;
 using Supremacy.Diplomacy;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -132,9 +133,16 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsOwned || IsDesignOfShipsKnown)
-                    return Source.ClassName;
-                //    return "ClassName Known";
-                //return Source.Cl
+                {
+                    try
+                    {
+                        return Source.ClassName;
+                    }
+                    catch
+                    {
+                        GameLog.Print("Problem with null ClassName ObjectID = {0} Name = {1}", Source.ObjectID, Source.Name);
+                    }
+                }
                 return "ClassNameManually";
             }
         }
@@ -199,12 +207,14 @@ namespace Supremacy.Orbitals
                 //A player always know their own ships
                 if (fleet.OwnerID == owner.CivID)
                 {
+                    // works    GameLog.Print("add a ship to it's fleetview ID = {1} ship.Name = {0}", ship.Name, ship.ObjectID);
                     ships.Add(new ShipView(
                         ship,
                         true,
                         true,
                         fleetView._isOwned));
-                    break;
+                    continue;
+                    //break;    // break leads to only one ship (shown) inside the fleet
                 }
 
                 //If we've got this far, it's not the players ship

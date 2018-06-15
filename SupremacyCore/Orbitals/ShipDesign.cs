@@ -171,7 +171,7 @@ namespace Supremacy.Orbitals
         /// Gets or sets the type of the ship.
         /// </summary>
         /// <value>The type of the ship.</value>
-        public ShipType ShipType
+        public new ShipType ShipType
         {
             get { return _shipClass; }
             set { _shipClass = value; }

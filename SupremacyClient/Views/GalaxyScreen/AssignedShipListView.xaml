@@ -199,13 +199,13 @@
                                Value="True">
                     <Setter TargetName="ShipImageBorder"
                             Property="Opacity"
-                            Value="0.33" />
+                            Value="0.55" />
                   </DataTrigger>
                     <DataTrigger Binding="{Binding Path=(s:ShipView.Source).IsCamouflaged}"
                                  Value="True">
                         <Setter TargetName="ShipImageBorder"
                             Property="Opacity"
-                            Value="0.33" />
+                            Value="0.55" />
                     </DataTrigger>
                  </ControlTemplate.Triggers>
               </ControlTemplate>

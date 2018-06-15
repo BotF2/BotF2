@@ -873,7 +873,7 @@ namespace Supremacy.WCF
                 heartbeat.Dispose();
         }
 
-        private void OnCombatOccurring(IList<CombatAssets> assets)
+        private void OnCombatOccurring(List<CombatAssets> assets)
         {
             _combatEngine = new AutomatedCombatEngine(
                 assets,
@@ -1123,9 +1123,13 @@ namespace Supremacy.WCF
 
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
+
+            bool _traceCombatUpates = false; // turn true if you want
+
             GameContext.PushThreadContext(_game);
 
             var player = _playerInfo.FromEmpireId(update.OwnerID);
+            //GameLog.Print("player = {0}", player);
             if (player != null)
             {
                 var callback = player.Callback;
@@ -1135,7 +1139,8 @@ namespace Supremacy.WCF
             else if (!engine.IsCombatOver)
             {
                 var hail = (update.RoundNumber == 1);
-                
+                // var rush = (update.RoundNumber == 1);
+
                 var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
                 if (ownerAssets == null)
                     return;
@@ -1145,19 +1150,37 @@ namespace Supremacy.WCF
                     .Any(hostileAssets => !DiplomacyHelper.AreNeutral(ownerAssets.Owner, hostileAssets.Owner)))
                 {
                     hail = false;
+                    // rush = true;
                 }
 
                 if (hail)
+                {
+                    if (_traceCombatUpates == true)
+                        GameLog.Print("Hail = {0}", hail);
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Hail));
+                }
+
+                //else if (rush)
+                //    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Rush));
+
                 else if (ownerAssets.CombatShips.Count > 0)   // original
-                                                              //else if (ownerAssets.CombatShips.Count > 0 && update.HostileAssets.Count > 0)
+                {
+                    if (_traceCombatUpates == true)
+                        GameLog.Print("ownerAssets.CombatShips.Count = {0}", ownerAssets.CombatShips.Count);
+                    //else if (ownerAssets.CombatShips.Count > 0 && update.HostileAssets.Count > 0)
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Engage));
+                }
                 else
+                {
+                    if (_traceCombatUpates == true)
+                        GameLog.Print("ownerAssets.CombatShips.Count not greater than zero", ownerAssets.CombatShips.Count);
                     SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Retreat));
+                }
 
                 if (engine.Ready && update.HostileAssets.Count > 0)
                 {
-                    GameLog.Print("CombatEngine is ready");
+                    if (_traceCombatUpates == true)
+                        GameLog.Print("CombatEngine is ready");
                     ((Action<CombatEngine>)TryResumeCombat).ToAsync(_scheduler)(engine);
                 }
             }

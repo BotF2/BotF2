@@ -29,6 +29,7 @@ using Supremacy.Text;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using Supremacy.Economy;
+using System.Reflection;
 
 namespace Supremacy.Game
 {
@@ -82,6 +83,7 @@ namespace Supremacy.Game
     {
         private readonly int _ownerId;
         private readonly SitRepPriority _priority;
+        //private ShipType _shipClass;
 
         /// <summary>
         /// Gets the owner ID.
@@ -91,6 +93,16 @@ namespace Supremacy.Game
         {
             get { return _ownerId; }
         }
+
+        /// <summary>
+        /// Gets or sets the type of the ship.
+        /// </summary>
+        /// <value>The type of the ship.</value>
+        //private ShipType ShipType
+        //{
+        //    get { return _shipClass; }
+        //    set { _shipClass = value; }
+        //}
 
         /// <summary>
         /// Gets the owner.
@@ -262,6 +274,7 @@ namespace Supremacy.Game
                             continue;
                         sb.Append("[nl/]");
                         sb.Append(ResourceManager.GetString(design.Name));
+                    
                     }
                 }
                 return sb.ToString();
@@ -373,6 +386,7 @@ namespace Supremacy.Game
                 return String.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I"),
                     ResourceManager.GetString(ItemType.Name),
                     GameContext.Current.Universe.Map[Location].Name);
+                
             }
         }
 
@@ -1271,6 +1285,7 @@ namespace Supremacy.Game
     {
         private readonly string _name;
         private readonly MapLocation _location;
+        private readonly string _shipType;
 
         public string Name
         {
@@ -1287,6 +1302,15 @@ namespace Supremacy.Game
             get { return GameContext.Current.Universe.Map[Location]; }
         }
 
+        /// <summary>
+        /// Gets or sets the type of the ship.
+        /// </summary>
+        /// <value>The type of the ship.</value>
+        public string ShipType
+        {
+            get { return _shipType; }
+        }
+
         public override SitRepCategory Categories
         {
             get { return SitRepCategory.Military; }
@@ -1295,11 +1319,12 @@ namespace Supremacy.Game
         public override string SummaryText
         {
             get
-            {
+            {  //GameLog.Print("SitRepOrbitalDestryed Name {0}, ShipType {1} Location {2}", Name, ShipType.ToString(), Location);
                 return String.Format(
                     ResourceManager.GetString("SITREP_ORBITAL_DESTROYED"),
                     ResourceManager.GetString(Name),
-                    Sector);
+                    _shipType,
+                    Location);
             }
         }
 
@@ -1315,6 +1340,7 @@ namespace Supremacy.Game
             if (orbital == null)
                 throw new ArgumentNullException("orbital");
             _name = orbital.Name;
+            _shipType = orbital.OrbitalDesign.ShipType;
             _location = orbital.Location;
         }
         // ReSharper restore SuggestBaseTypeForParameter

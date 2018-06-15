@@ -12,7 +12,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Markup;
 using System.Xml;
-
+using Supremacy.Orbitals;
 using Supremacy.Annotations;
 using Supremacy.Tech;
 using Supremacy.Types;
@@ -29,6 +29,7 @@ namespace Supremacy.Orbitals
         private Percentage _scienceAbility;
         private byte _scanPower;
         private byte _sensorRange;
+        private string _shipType;
         private WeaponType _primaryWeapon;
         private WeaponType _secondaryWeapon;
         private string _modelFile;
@@ -103,16 +104,20 @@ namespace Supremacy.Orbitals
         /// </value>
         public virtual bool IsCombatant
         {
-            get
-            {
-                if (_primaryWeapon.Count > 0)
-                    return true;
-                if (_secondaryWeapon.Count > 0)
-                    return true;
-                return false;
-            }
+            get { return _primaryWeapon.Count + _secondaryWeapon.Count > 0; }
         }
 
+        /// <summary>
+        /// Gets string ShipType from TechObjectDatabase.xml <see cref="OrbitalDesign"/> ShipType.
+        /// </summary>
+        /// <value>
+        /// <c>int</c>  <see cref="OrbitalDesign"/> ; Transport =2 <c>int</c>.
+        /// </value>
+        public string ShipType
+        { 
+            get { return _shipType; }
+            set { _shipType = value; } 
+        }
         /// <summary>
         /// Gets or sets the scan strength.
         /// </summary>
@@ -266,6 +271,11 @@ namespace Supremacy.Orbitals
                                        Damage = Number.ParseInt32(element["TorpedoType"].GetAttribute("Damage").Trim())
                                    };
                 //_secondaryWeaponName = element["TorpedoType"].GetAttribute("Name").Trim();
+            }
+
+            if (element["ShipType"] != null)
+            {
+                _shipType = element["ShipType"].InnerText.Trim();
             }
 
             if (element["ModelFile"] != null)

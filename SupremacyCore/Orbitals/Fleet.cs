@@ -18,6 +18,7 @@ using Supremacy.Resources;
 using Supremacy.Universe;
 
 using System.Linq;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -401,8 +402,6 @@ namespace Supremacy.Orbitals
                          o.ShipType != ShipType.Science &&
                          o.ShipType != ShipType.Transport &&
                          o.ShipType != ShipType.Diplomatic &&
-                         o.ShipType != ShipType.Raider &&
-                         o.ShipType != ShipType.Sabotage &&
                          o.ShipType != ShipType.Spy);
             }
         }
@@ -434,16 +433,6 @@ namespace Supremacy.Orbitals
         public bool IsSpy
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Spy; }
-        }
-
-        public bool IsRaider
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Raider; }
-        }
-
-        public bool IsSabotage
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Sabotage; }
         }
 
         public bool IsMedical
@@ -552,7 +541,30 @@ namespace Supremacy.Orbitals
                 OnPropertyChanged("IsCamouflaged");
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Fleet"/> is assimilated.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this <see cref="Fleet"/> is assimilated; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsAssimilated
+        {
+            get
+            {
+                foreach (Ship ship in Ships)
+                {
+                    if (ship.IsAssimilated)
+                        return true;
+                }
+                return false;
+            }
+            set
+            {
+                foreach (Ship ship in Ships)
+                    ship.IsAssimilated = value;
+                OnPropertyChanged("IsAssimilated");
+            }
+        }
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> can enter wormhole.
         /// </summary>
@@ -643,13 +655,17 @@ namespace Supremacy.Orbitals
             ship.Fleet = this;
             ship.Location = Location;
             if (!_ships.Contains(ship))
+            {
                 _ships.Add(ship);
+                //works   GameLog.Print("AddShipInternal - ship.Name = {0}", ship.Name);
+            }
             OnPropertyChanged("Name");
             OnPropertyChanged("Range");
             OnPropertyChanged("Speed");
             OnPropertyChanged("CanCloak");
             OnPropertyChanged("CanCamouflage");
             OnPropertyChanged("CanEnterWormhole");
+            EnsureValidOrder();
         }
 
         /// <summary>
@@ -666,6 +682,7 @@ namespace Supremacy.Orbitals
             if ((oldFleet != null) && (oldFleet != this))
                 oldFleet.RemoveShip(ship);
             AddShipInternal(ship);
+            //works  GameLog.Print("AddShip - ship.Name = {0}, oldFleet.Name = {1}", ship.Name, oldFleet.Name);
             EnsureValidOrder();
         }
 

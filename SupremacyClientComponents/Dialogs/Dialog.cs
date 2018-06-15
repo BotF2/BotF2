@@ -532,86 +532,25 @@ namespace Supremacy.Client.Dialogs
         public bool? ShowDialog()
         {
             if (_showingAsDialog)
-                GameLog.Print("ShowDialog was already opened problem");
-                //throw new InvalidOperationException("Cannot call ShowDialog() on a dialog that was already opened with ShowDialog().");
+            {
+                GameLog.Print("Cannot call ShowDialog() on a dialog that was already opened with ShowDialog().");
+            }
+
             if (IsOpen)
+            {
+                GameLog.Print("Cannot call ShowDialog() on a dialog that is already open.");
+            }
 
-
-
-                new InvalidOperationException("Cannot call ShowDialog() on a dialog that is already open.");
-
-            //_ownerHandle = IntPtr.Zero;
             _showingAsDialog = true;
 
             try
             {
                 ShowInternal();
-
-                //var ownerWindow = Window.GetWindow(this);
-                //if ((ownerWindow != null) && ownerWindow.IsVisible)
-                //    _ownerHandle = new WindowInteropHelper(ownerWindow).Handle;
-
-                //if (_ownerHandle == IntPtr.Zero)
-                //{
-                //    CloseInternal(false);
-                //    throw new InvalidOperationException("Cannot call ShowDialog() on a dialog unless the parent window is visible.");
-                //}
-
-                //_sourceWindow = HwndSource.FromHwnd(_ownerHandle);
-
-                //_dialogOwnerHandle = _ownerHandle;
-
-                //if (!UnsafeNativeMethods.IsWindow(new HandleRef(null, _dialogOwnerHandle)))
-                //    _dialogOwnerHandle = IntPtr.Zero;
-
-                //_dialogPreviousActiveHandle = UnsafeNativeMethods.GetActiveWindow();
-
-                //if (_dialogOwnerHandle == IntPtr.Zero)
-                //    _dialogOwnerHandle = _dialogPreviousActiveHandle;
-
-                //if ((_dialogOwnerHandle != IntPtr.Zero) && (_dialogOwnerHandle == UnsafeNativeMethods.GetDesktopWindow()))
-                //    _dialogOwnerHandle = IntPtr.Zero;
-
-                //if (_dialogOwnerHandle != IntPtr.Zero)
-                //{
-                //    while (_dialogOwnerHandle != IntPtr.Zero)
-                //    {
-                //        if ((UnsafeNativeMethods.GetWindowLong(new HandleRef(this, _dialogOwnerHandle), -16) & 0x40000000) != 0x40000000)
-                //            break;
-                //        _dialogOwnerHandle = UnsafeNativeMethods.GetParent(new HandleRef(null, _dialogOwnerHandle));
-                //    }
-                //}
-
-                //_threadWindowHandles.Clear();
-
-                //if ((ownerWindow != null) && !ownerWindow.IsActive)
-                //    ownerWindow.Activate();
-
-                //var threadId = UnsafeNativeMethods.GetCurrentThreadId();
-
-                //UnsafeNativeMethods.EnumThreadWindows(
-                //    threadId,
-                //    ThreadWindowsCallback,
-                //    UnsafeNativeMethods.NullHandleRef);
-
-                //this.EnableThreadWindows(false);
-
                 ActivateInternal();
-
                 DoShowDialog();
             }
             catch
             {
-                //this.EnableThreadWindows(true);
-
-                //if ((_dialogPreviousActiveHandle != IntPtr.Zero) &&
-                //    UnsafeNativeMethods.IsWindow(new HandleRef(null, _dialogPreviousActiveHandle)))
-                //{
-                //    UnsafeNativeMethods.TrySetFocus(
-                //        new HandleRef(null, _dialogPreviousActiveHandle),
-                //        ref _dialogPreviousActiveHandle);
-                //}
-
                 _showingAsDialog = false;
 
                 throw;
@@ -634,7 +573,6 @@ namespace Supremacy.Client.Dialogs
 
             try
             {
-                //ComponentDispatcher.PushModal();
                 _dispatcherFrame = new DispatcherFrame();
                 Dispatcher.PushFrame(_dispatcherFrame);
             }
@@ -642,22 +580,7 @@ namespace Supremacy.Client.Dialogs
             {
                 GameLog.Print("#####problem here");
             }
-            //finally
-            //{
-            //    ComponentDispatcher.PopModal();
-            //}
         }
-
-        //private bool ThreadWindowsCallback(IntPtr hWnd, IntPtr lParam)
-        //{
-        //    if ((hWnd != _dialogOwnerHandle) &&
-        //        UnsafeNativeMethods.IsWindowVisible(new HandleRef(null, hWnd)) &&
-        //        UnsafeNativeMethods.IsWindowEnabled(new HandleRef(null, hWnd)))
-        //    {
-        //        _threadWindowHandles.Add(hWnd);
-        //    }
-        //    return true;
-        //}
 
         private void ShowInternal()
         {
@@ -764,7 +687,6 @@ namespace Supremacy.Client.Dialogs
 
         private void DoHideDialog()
         {
-            //var isActiveWindow = (_sourceWindow.Handle == UnsafeNativeMethods.GetActiveWindow());
 
             if (_dispatcherFrame != null)
             {
@@ -776,28 +698,7 @@ namespace Supremacy.Client.Dialogs
                 _dialogResult = false;
 
             _showingAsDialog = false;
-
-            //this.EnableThreadWindows(true);
-
-            //if ((isActiveWindow && (_dialogPreviousActiveHandle != IntPtr.Zero)) &&
-            //    UnsafeNativeMethods.IsWindow(new HandleRef(this, _dialogPreviousActiveHandle)))
-            //{
-            //    UnsafeNativeMethods.SetActiveWindow(new HandleRef(this, _dialogPreviousActiveHandle));
-            //}
         }
-
-        //[SecurityCritical]
-        //private void EnableThreadWindows(bool clearList)
-        //{
-        //    foreach (var handle in _threadWindowHandles.Where(o => UnsafeNativeMethods.IsWindow(new HandleRef(null, o))))
-        //    {
-        //        UnsafeNativeMethods.EnableWindowNoThrow(new HandleRef(null, handle), clearList);
-        //    }
-        //    if (clearList)
-        //    {
-        //        _threadWindowHandles.Clear();
-        //    }
-        //}
         #endregion
 
         #region IsModal (Dependency Property)

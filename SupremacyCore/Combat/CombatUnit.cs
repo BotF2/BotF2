@@ -37,11 +37,11 @@ namespace Supremacy.Combat
             
             var ship = source as Ship;
             if (ship != null)
+            {
                 _isCloaked = ship.IsCloaked;
-
-            if (ship != null)
                 _isCamouflaged = ship.IsCamouflaged;
-
+                _isAssimilated = ship.IsAssimilated;
+            }
             _sourceId = source.ObjectID;
             _ownerId = source.OwnerID;
             _hullStrength = source.HullStrength.CurrentValue;
@@ -118,6 +118,7 @@ namespace Supremacy.Combat
         {
             get { return _isCamouflaged; }
         }
+
         public bool IsDestroyed
         {
             get { return (HullStrength <= 0); }
@@ -125,19 +126,8 @@ namespace Supremacy.Combat
 
         public bool IsAssimilated
         {
-            get
-            {
-                // works   GameLog.Print("{0}, = Combat Unit.cs Owner.Name", Owner.Name.ToString());
-                if (Owner.Name == "Borg")
-                {
-                    _isAssimilated = false;
-                    return false;
-                }
-                if (Source.Scrap)
-                    return true;
-
-                return _isAssimilated; 
-            }
+            get { return _isAssimilated; }
+            set {_isAssimilated = value; }
         }
 
         public bool IsMobile

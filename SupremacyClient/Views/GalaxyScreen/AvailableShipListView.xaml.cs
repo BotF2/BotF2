@@ -14,6 +14,7 @@ using Supremacy.Orbitals;
 
 using System.Linq;
 using Supremacy.Client.Context;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -95,7 +96,6 @@ namespace Supremacy.Client.Views
                 else
                 {
                     var shipView = sourceElement.DataContext as ShipView;
-
                     if (shipView == null)
                         return;
                     ships = new List<Ship> { shipView.Source };
@@ -111,6 +111,7 @@ namespace Supremacy.Client.Views
 
             foreach (var ship in ships)
             {
+                // works    GameLog.Print("ship.Name = {0}", ship.Name);
                 GalaxyScreenCommands.AddShipToTaskForce.Execute(
                     new RedeployShipCommandArgs(
                         ship,
@@ -119,6 +120,7 @@ namespace Supremacy.Client.Views
                     targetItemsControl.SelectedItems.Add(ship);
             }
         }
+    
 
         public UIElement TargetElement { get; set; }
 
@@ -240,6 +242,7 @@ namespace Supremacy.Client.Views
             if (listView != null)
             {
                 ships = listView.SelectedItems.OfType<Ship>().ToList();
+                //GameLog.Print("ships.Count = {0}", ships.Count);
             }
             else
             {
@@ -247,6 +250,7 @@ namespace Supremacy.Client.Views
                 if (fleetViewWrapper != null)
                 {
                     ships = fleetViewWrapper.View.Ships.Select(o => o.Source).ToList();
+                    //GameLog.Print("fleetViewWrapper - ships.Count = {0}", ships.Count);
                 }
                 else
                 {
@@ -254,6 +258,7 @@ namespace Supremacy.Client.Views
                     if (shipView == null)
                         return;
                     ships = new List<Ship> { shipView.Source };
+                    //GameLog.Print("New List - ships.Count = {0}", ships.Count);
                 }
             }
 
@@ -265,6 +270,7 @@ namespace Supremacy.Client.Views
 
             for (var i = 1; i < ships.Count; i++)
             {
+                //GameLog.Print("ships[i] = {0}, ships[0].Fleet = {1}", ships[i].Name, ships[0].Fleet.Name);
                 GalaxyScreenCommands.AddShipToTaskForce.Execute(
                     new RedeployShipCommandArgs(
                         ships[i],

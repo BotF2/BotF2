@@ -14,6 +14,7 @@ using System.Linq;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
@@ -69,52 +70,32 @@ namespace Supremacy.Combat
 
         public Sector Sector
         {
-            get { return GameContext.Current.Universe.Map[Location]; }
+            get { return GameContext.Current.Universe.Map[_location]; }
         }
 
-        public IList<CombatUnit> CombatShips
+        public List<CombatUnit> CombatShips
         {
             get { return _combatShips; }
         }
 
-        public IList<CombatUnit> NonCombatShips
+        public List<CombatUnit> NonCombatShips
         {
             get { return _nonCombatShips; }
         }
 
-        public IList<CombatUnit> EscapedShips
+        public List<CombatUnit> EscapedShips
         {
             get { return _escapedShips; }
         }
 
-        public IList<CombatUnit> DestroyedShips
+        public List<CombatUnit> DestroyedShips
         {
             get { return _destroyedShips; }
         }
 
-        public IList<CombatUnit> AssimilatedShips
+        public List<CombatUnit> AssimilatedShips
         {
             get { return _assimilatedShips; }
-        }
-
-        public IEnumerable<CombatUnit> CombatUnits
-        {
-            get
-            {
-                if ((Station != null) && !Station.IsDestroyed)
-                {
-                    yield return Station;
-                }
-                foreach (CombatUnit combatShip in CombatShips)
-                {
-                    yield return combatShip;
-                }
-                // Must also consider non combattants else we can't attack them
-                foreach (CombatUnit nonCombattantShip in NonCombatShips)
-                {
-                    yield return nonCombattantShip;
-                }
-            }
         }
 
         public CombatUnit Station
@@ -123,9 +104,27 @@ namespace Supremacy.Combat
             set { _station = value; }
         }
 
+        public bool IsTransport
+        {
+            get
+            {
+                if (_combatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Transport"))
+                {
+                    return true;
+                }
+
+                if (_nonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public bool HasSurvivingAssets
         {
-            get { return CombatUnits.Any(); }
+            get { return CombatShips.Any() || NonCombatShips.Any() || ((Station != null) && !Station.IsDestroyed); }
         }
 
         public void UpdateAllSources()

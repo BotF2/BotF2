@@ -700,8 +700,16 @@ namespace Supremacy.Combat
             _experienceAccuracy = new Dictionary<ExperienceRank, double>();
 
             foreach (var rank in EnumHelper.GetValues<ExperienceRank>())
-                _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
-
+            { 
+                // _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
+                double modifier;
+                if (Double.TryParse(accuracyTable[rank.ToString()][0], out modifier))
+                {
+                    _experienceAccuracy[rank] = modifier;
+                }
+                else
+                    _experienceAccuracy[rank] = 0.75;
+            }
             SendUpdate();
         }
 

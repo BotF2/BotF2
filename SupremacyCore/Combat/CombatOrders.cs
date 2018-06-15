@@ -22,8 +22,11 @@ namespace Supremacy.Combat
         Engage,
         Retreat,
         Hail,
-        Standby,
-        LandTroops
+        Standby,  // used in System Assault, not used in Ship Combat
+        LandTroops,
+        Rush,
+        Transports,
+        Formation
         //Assimilate
     }
 
