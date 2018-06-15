@@ -13,7 +13,7 @@ using System.Linq;
 
 using Supremacy.Collections;
 using Supremacy.Universe;
-using Wintellect.PowerCollections;
+
 
 namespace Supremacy.Economy
 {
@@ -102,8 +102,7 @@ namespace Supremacy.Economy
             }
 
             // Sort BuildQueueItems in *descending* order of priority.
-            Algorithms.SortInPlace(
-                source.BuildQueue,
+            source.BuildQueue.Sort(
                 (a, b) => priorityFunc(b.Project).CompareTo(priorityFunc(a.Project)));
 
             for (var i = 0; (i < source.BuildSlots.Count) && (source.BuildQueue.Count > 0); i++)

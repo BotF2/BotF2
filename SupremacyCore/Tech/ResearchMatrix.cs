@@ -18,7 +18,7 @@ using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Utility;
 
-using Wintellect.PowerCollections;
+
 
 using System.Linq;
 
@@ -371,8 +371,7 @@ namespace Supremacy.Tech
                 {
                     _applications.Add(new ResearchApplication(appElement));
                 }
-                Algorithms.SortInPlace(
-                    _applications,
+                _applications.Sort(
                     delegate(ResearchApplication left, ResearchApplication right)
                     {
                         if (left == null)

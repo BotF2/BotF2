@@ -580,7 +580,7 @@ namespace Supremacy.WCF
 
                 if (gameHost != null)
                 {
-                    autoSaveTask = TaskEx.Run(
+                    autoSaveTask = Task.Run(
                         () =>
                         {
                             var autoSaveStopwatch = Stopwatch.StartNew();
@@ -605,7 +605,7 @@ namespace Supremacy.WCF
                     batchOperation = _playerInfo.Select(SendEndOfTurnUpdateAsync).ToArray();
                 }
 
-                await TaskEx.WhenAll(batchOperation).ConfigureAwait(false);
+                await Task.WhenAll(batchOperation).ConfigureAwait(false);
 
                 if (autoSaveTask != null)
                     await autoSaveTask.ConfigureAwait(false);
@@ -702,7 +702,7 @@ namespace Supremacy.WCF
                 }
             }
 
-            await TaskEx.WhenAll(subTasks).ConfigureAwait(false);
+            await Task.WhenAll(subTasks).ConfigureAwait(false);
         }
 
         private async Task SendAllTurnEndedNotificationsAsync()
@@ -734,7 +734,7 @@ namespace Supremacy.WCF
                 }
             }
 
-            await TaskEx.WhenAll(subTasks).ConfigureAwait(false);
+            await Task.WhenAll(subTasks).ConfigureAwait(false);
         }
 
         internal void SendLobbyUpdate()

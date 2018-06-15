@@ -198,9 +198,9 @@
                 return Clone();
             }
 
-            public TurnNumber Clone()
+            public int Clone()
             {
-                return new TurnNumber(_value);
+                return _value;
             }
             #endregion
         }

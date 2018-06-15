@@ -23,12 +23,12 @@ namespace Supremacy.Economy
     [ImmutableObject(true)]
     public struct TreasurySnapshot
     {
-        private readonly TurnNumber _turnNumber;
+        private readonly int _turnNumber;
         private readonly int _initialCreditReserves;
         private readonly int _totalIncome;
         private readonly int _totalExpenses;
 
-        public TreasurySnapshot(TurnNumber turnNumber, int initialCreditReserves, int totalIncome, int totalExpenses)
+        public TreasurySnapshot(int turnNumber, int initialCreditReserves, int totalIncome, int totalExpenses)
         {
             _turnNumber = turnNumber;
             _initialCreditReserves = initialCreditReserves;
@@ -36,7 +36,7 @@ namespace Supremacy.Economy
             _totalExpenses = totalExpenses;
         }
 
-        public TurnNumber TurnNumber
+        public int TurnNumber
         {
             get { return _turnNumber; }
         }

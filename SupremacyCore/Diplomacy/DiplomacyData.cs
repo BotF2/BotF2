@@ -28,18 +28,18 @@ namespace Supremacy.Diplomacy
         Meter Regard { get; }
         Meter Trust { get; }
         RegardLevel EffectiveRegard { get; }
-        TurnNumber ContactTurn { get; }
+        int ContactTurn { get; }
         int ContactDuration { get; }
         ForeignPowerStatus Status { get; }
-        TurnNumber LastStatusChange { get; }
+        int LastStatusChange { get; }
         int TurnsSinceLastStatusChange { get; }
     }
 
     public interface IDiplomacyDataExtended
     {
-        TurnNumber LastTotalWarAttack { get; }
-        TurnNumber LastColdWarAttack { get; }
-        TurnNumber LastIncursion { get; }
+        int LastTotalWarAttack { get; }
+        int LastColdWarAttack { get; }
+        int LastIncursion { get; }
         IDiplomacyData BaseData { get; }
         IIndexedCollection<Motivation> Motivations { get; }
         Motivation CurrentMotivation { get; }
@@ -50,7 +50,7 @@ namespace Supremacy.Diplomacy
         void SortMotivations();
         void OnAttack();
         void OnIncursion();
-        void SetContactTurn(TurnNumber contactTurn = default(TurnNumber));
+        void SetContactTurn(int contactTurn = 0);
     }
 
     [Serializable]      
@@ -60,8 +60,8 @@ namespace Supremacy.Diplomacy
         private GameObjectID _counterpartyId;
         private Meter _regard;
         private Meter _trust;
-        private TurnNumber _contactTurn;
-        private TurnNumber _lastStatusChange;
+        private int _contactTurn;
+        private int _lastStatusChange;
         private ForeignPowerStatus _diplomacyStatus;
 
         protected static TableMap DiplomacyTables
@@ -73,7 +73,7 @@ namespace Supremacy.Diplomacy
         {
             _ownerId = ownerId;
             _counterpartyId = counterpartyId;
-            _contactTurn = TurnNumber.Undefined;
+            _contactTurn = 0;
             _regard = new Meter(500, 0, 1000);
             _trust = new Meter(500, 0, 1000);
             _regard.CurrentValueChanged += OnRegardCurrentValueChanged;
@@ -115,7 +115,7 @@ namespace Supremacy.Diplomacy
             get { return CalculateRegardLevel(_regard.CurrentValue); }
         }
 
-        public TurnNumber ContactTurn
+        public int ContactTurn
         {
             get { return _contactTurn; }
             internal set { _contactTurn = value; }
@@ -125,7 +125,7 @@ namespace Supremacy.Diplomacy
         {
             get
             {
-                if (_contactTurn.IsUndefined)
+                if (_contactTurn == 0)
                     return -1;
                 return GameContext.Current.TurnNumber - _contactTurn;
             }
@@ -137,7 +137,7 @@ namespace Supremacy.Diplomacy
             internal set { _diplomacyStatus = value; }
         }
 
-        public TurnNumber LastStatusChange
+        public int LastStatusChange
         {
             get { return _lastStatusChange; }
             internal set { _lastStatusChange = value; }

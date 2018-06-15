@@ -38,9 +38,8 @@ namespace Supremacy.Universe
         private MapLocation _location;
         private short _ownerId = (short)Civilization.InvalidID;
         private string _name;
-        private TurnNumber _turnCreated;
-        private TurnNumber _lastOwnershipChange;
-        //private TurnNumber _lastOwnerintelChange;
+        private int _turnCreated;
+        private int _lastOwnershipChange;
         [field: NonSerialized]
         public event EventHandler LocationChanged;
         [field: NonSerialized]
@@ -130,7 +129,7 @@ namespace Supremacy.Universe
         /// Gets the turn number on which this <see cref="UniverseObject"/> was created.
         /// </summary>
         /// <value>The turn created.</value>
-        public TurnNumber TurnCreated
+        public int TurnCreated
         {
             get { return _turnCreated; }
         }
@@ -139,7 +138,7 @@ namespace Supremacy.Universe
         /// Gets the turn number on which ownership of this <see cref="Colony"/> last changed.
         /// </summary>
         /// <value>The turn created.</value>
-        public TurnNumber LastOwnershipChange
+        public int LastOwnershipChange
         {
             get { return _lastOwnershipChange; }
         }

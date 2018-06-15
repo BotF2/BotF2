@@ -10,16 +10,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
-
-using Wintellect.PowerCollections;
 
 namespace Supremacy.Data
 {
     [Serializable]
     public sealed class TableMap : ICollection<Table>, IEnumerable<Table>
     {
-        private readonly OrderedDictionary<string, Table> _tables;
+        private readonly OrderedDictionary _tables;
         private readonly object _syncRoot;
 
         public Table this[string tableName]
@@ -28,8 +27,8 @@ namespace Supremacy.Data
             {
                 lock (_syncRoot)
                 {
-                    if (_tables.ContainsKey(tableName))
-                        return _tables[tableName];
+                    if (_tables.Contains(tableName))
+                        return (Table)_tables[tableName];
                     return null;
                 }
             }
@@ -39,7 +38,7 @@ namespace Supremacy.Data
         public TableMap()
         {
             _syncRoot = new object();
-            _tables = new OrderedDictionary<string, Table>();
+            _tables = new OrderedDictionary();
         }
 
         public bool TryGetValue(string tableName, string rowKey, string columnKey, out string value)
@@ -47,8 +46,11 @@ namespace Supremacy.Data
             value = null;
 
             Table table;
-            if (!_tables.TryGetValue(tableName, out table))
+            if (!_tables.Contains(tableName))
+            {
                 return false;
+            }
+            table = (Table)_tables[tableName];
 
             TableRow<string> row;
             if (!table.TryGetRow(rowKey, out row))
@@ -62,8 +64,11 @@ namespace Supremacy.Data
             value = null;
 
             Table table;
-            if (!_tables.TryGetValue(tableName, out table))
+            if (!_tables.Contains(tableName))
+            {
                 return false;
+            }
+            table = (Table)_tables[tableName];
 
             var typedTable = table as Table<TRowKey>;
             if (typedTable == null)
@@ -81,8 +86,11 @@ namespace Supremacy.Data
             value = null;
 
             Table table;
-            if (!_tables.TryGetValue(tableName, out table))
+            if (!_tables.Contains(tableName))
+            {
                 return false;
+            }
+            table = (Table)_tables[tableName];
 
             TableRow<string> row;
             if (!table.TryGetRow(rowKey, out row))
@@ -96,8 +104,11 @@ namespace Supremacy.Data
             value = null;
 
             Table table;
-            if (!_tables.TryGetValue(tableName, out table))
+            if (!_tables.Contains(tableName))
+            {
                 return false;
+            }
+            table = (Table)_tables[tableName];
 
             var typedTable = table as Table<TRowKey>;
             if (typedTable == null)
@@ -115,8 +126,11 @@ namespace Supremacy.Data
             value = null;
 
             Table table;
-            if (!_tables.TryGetValue(tableName, out table))
+            if (!_tables.Contains(tableName))
+            {
                 return false;
+            }
+            table = (Table)_tables[tableName];
 
             if (rowIndex < 0 || rowIndex >= table.RowsInternal.Count)
                 return false;
@@ -133,8 +147,11 @@ namespace Supremacy.Data
             value = null;
 
             Table table;
-            if (!_tables.TryGetValue(tableName, out table))
+            if (!_tables.Contains(tableName))
+            {
                 return false;
+            }
+            table = (Table)_tables[tableName];
 
             var row = table.RowsInternal[rowIndex];
             if (row == null)
@@ -197,7 +214,7 @@ namespace Supremacy.Data
         #region IEnumerable<Table> Members
         public IEnumerator<Table> GetEnumerator()
         {
-            return _tables.Values.GetEnumerator();
+            return (System.Collections.Generic.IEnumerator<Table>)_tables.Values.GetEnumerator();
         }
         #endregion
 

@@ -135,13 +135,13 @@ namespace Supremacy.Scripting
         protected sealed class CivTargetHistoryEntry : IOwnedDataSerializableAndRecreatable
         {
             private GameObjectID _civId;
-            private TurnNumber _turnNumber;
+            private int _turnNumber;
 
-            public CivTargetHistoryEntry([NotNull] Civilization civ, TurnNumber turnNumber)
+            public CivTargetHistoryEntry([NotNull] Civilization civ, int turnNumber)
             {
                 if (civ == null)
                     throw new ArgumentNullException("civ");
-                if (turnNumber.IsUndefined)
+                if (turnNumber == 0)
                     throw new ArgumentOutOfRangeException("turnNumber", "Turn number was undefined.");
 
                 _civId = civ.CivID;
@@ -158,7 +158,7 @@ namespace Supremacy.Scripting
                 get { return GameContext.Current.Civilizations[_civId]; }
             }
 
-            public TurnNumber TurnNumber
+            public int TurnNumber
             {
                 get { return _turnNumber; }
             }

@@ -34,13 +34,13 @@ namespace Supremacy.Universe
         private static TableMap UniverseTables;
 
         private static readonly Dictionary<StarType, int> StarTypeDist;
-        private static readonly DoubleKeyedSet<StarType, PlanetSize, int> StarTypeModToPlanetSizeDist;
-        private static readonly DoubleKeyedSet<int, PlanetSize, int> SlotModToPlanetSizeDist;
-        private static readonly DoubleKeyedSet<StarType, PlanetType, int> StarTypeModToPlanetTypeDist;
-        private static readonly DoubleKeyedSet<PlanetSize, PlanetType, int> PlanetSizeModToPlanetTypeDist;
-        private static readonly DoubleKeyedSet<int, PlanetType, int> SlotModToPlanetTypeDist;
-        private static readonly DoubleKeyedSet<PlanetSize, MoonSize, int> PlanetSizeModToMoonSizeDist;
-        private static readonly DoubleKeyedSet<PlanetType, MoonSize, int> PlanetTypeModToMoonSizeDist;
+        private static readonly Dictionary<Tuple<StarType, PlanetSize>, int> StarTypeModToPlanetSizeDist;
+        private static readonly Dictionary<Tuple<int, PlanetSize>, int> SlotModToPlanetSizeDist;
+        private static readonly Dictionary<Tuple<StarType, PlanetType>, int> StarTypeModToPlanetTypeDist;
+        private static readonly Dictionary<Tuple<PlanetSize, PlanetType>, int> PlanetSizeModToPlanetTypeDist;
+        private static readonly Dictionary<Tuple<int, PlanetType>, int> SlotModToPlanetTypeDist;
+        private static readonly Dictionary<Tuple<PlanetSize, MoonSize>, int> PlanetSizeModToMoonSizeDist;
+        private static readonly Dictionary<Tuple<PlanetType, MoonSize>, int> PlanetTypeModToMoonSizeDist;
 
         private static bool m_TraceWormholes = false;
 
@@ -50,13 +50,13 @@ namespace Supremacy.Universe
             Log = GameLog.Debug.General;
 
             StarTypeDist = new Dictionary<StarType, int>();
-            StarTypeModToPlanetSizeDist = new DoubleKeyedSet<StarType, PlanetSize, int>();
-            StarTypeModToPlanetTypeDist = new DoubleKeyedSet<StarType, PlanetType, int>();
-            SlotModToPlanetSizeDist = new DoubleKeyedSet<int, PlanetSize, int>();
-            SlotModToPlanetTypeDist = new DoubleKeyedSet<int, PlanetType, int>();
-            PlanetSizeModToPlanetTypeDist = new DoubleKeyedSet<PlanetSize, PlanetType, int>();
-            PlanetSizeModToMoonSizeDist = new DoubleKeyedSet<PlanetSize, MoonSize, int>();
-            PlanetTypeModToMoonSizeDist = new DoubleKeyedSet<PlanetType, MoonSize, int>();
+            StarTypeModToPlanetSizeDist = new Dictionary<Tuple<StarType, PlanetSize>, int>();
+            StarTypeModToPlanetTypeDist = new Dictionary<Tuple<StarType, PlanetType>, int>();
+            SlotModToPlanetSizeDist = new Dictionary<Tuple<int, PlanetSize>, int>();
+            SlotModToPlanetTypeDist = new Dictionary<Tuple<int, PlanetType>, int>();
+            PlanetSizeModToPlanetTypeDist = new Dictionary<Tuple<PlanetSize, PlanetType>, int>();
+            PlanetSizeModToMoonSizeDist = new Dictionary<Tuple<PlanetSize, MoonSize>, int>();
+            PlanetTypeModToMoonSizeDist = new Dictionary<Tuple<PlanetType, MoonSize>, int>();
 
 
             foreach (var starType in EnumHelper.GetValues<StarType>())
@@ -64,13 +64,13 @@ namespace Supremacy.Universe
                 StarTypeDist[starType] = Number.ParseInt32(UniverseTables["StarTypeDist"][starType.ToString()][0]);
                 foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
-                    StarTypeModToPlanetSizeDist[starType, planetSize] =
+                    StarTypeModToPlanetSizeDist[new Tuple<StarType, PlanetSize>(starType, planetSize)] =
                         Number.ParseInt32(
                             UniverseTables["StarTypeModToPlanetSizeDist"][starType.ToString()][planetSize.ToString()]);
                 }
                 foreach (var planetType in EnumHelper.GetValues<PlanetType>())
                 {
-                    StarTypeModToPlanetTypeDist[starType, planetType] =
+                    StarTypeModToPlanetTypeDist[new Tuple<StarType, PlanetType>(starType, planetType)] =
                         Number.ParseInt32(
                             UniverseTables["StarTypeModToPlanetTypeDist"][starType.ToString()][planetType.ToString()]);
                 }
@@ -80,12 +80,12 @@ namespace Supremacy.Universe
             {
                 foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
-                    SlotModToPlanetSizeDist[i, planetSize] =
+                    SlotModToPlanetSizeDist[new Tuple<int, PlanetSize>(i, planetSize)] =
                         Number.ParseInt32(UniverseTables["SlotModToPlanetSizeDist"][i][planetSize.ToString()]);
                 }
                 foreach (var planetType in EnumHelper.GetValues<PlanetType>())
                 {
-                    SlotModToPlanetTypeDist[i, planetType] =
+                    SlotModToPlanetTypeDist[new Tuple<int, PlanetType>(i, planetType)] =
                         Number.ParseInt32(UniverseTables["SlotModToPlanetTypeDist"][i][planetType.ToString()]);
                 }
             }
@@ -94,7 +94,7 @@ namespace Supremacy.Universe
             {
                 foreach (var planetType in EnumHelper.GetValues<PlanetType>())
                 {
-                    PlanetSizeModToPlanetTypeDist[planetSize, planetType] =
+                    PlanetSizeModToPlanetTypeDist[new Tuple<PlanetSize, PlanetType>(planetSize, planetType)] =
                         Number.ParseInt32(
                             UniverseTables["PlanetSizeModToPlanetTypeDist"][planetSize.ToString()][planetType.ToString()
                                 ]);
@@ -105,13 +105,13 @@ namespace Supremacy.Universe
             {
                 foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
-                    PlanetSizeModToMoonSizeDist[planetSize, moonSize] =
+                    PlanetSizeModToMoonSizeDist[new Tuple<PlanetSize, MoonSize>(planetSize, moonSize)] =
                         Number.ParseInt32(
                             UniverseTables["PlanetSizeModToMoonSizeDist"][planetSize.ToString()][moonSize.ToString()]);
                 }
                 foreach (var planetType in EnumHelper.GetValues<PlanetType>())
                 {
-                    PlanetTypeModToMoonSizeDist[planetType, moonSize] =
+                    PlanetTypeModToMoonSizeDist[new Tuple<PlanetType, MoonSize>(planetType, moonSize)] =
                         Number.ParseInt32(
                             UniverseTables["PlanetTypeModToMoonSizeDist"][planetType.ToString()][moonSize.ToString()]);
                 }
@@ -209,7 +209,7 @@ namespace Supremacy.Universe
                     var starPositions = GetStarPositions();
                     var starNames = GetStarNames();
 
-                    Algorithms.RandomShuffleInPlace(starNames);
+                    starNames.ShuffleInPlace();
 
                     Collections.CollectionBase<MapLocation> homeLocations;
 
@@ -690,7 +690,7 @@ namespace Supremacy.Universe
             wantedMinorRaceCount = Math.Min(wantedMinorRaceCount, minorRaceLimit);
 
             foreach (var quadrant in EnumUtilities.GetValues<Quadrant>())
-                Algorithms.RandomShuffleInPlace(minorRaces[quadrant]);
+                minorRaces[quadrant].ShuffleInPlace();
 
             /* -- Dead code, commented out to suppress compiler warnings 
             if (false)
@@ -760,7 +760,7 @@ namespace Supremacy.Universe
 
                     int iPosition = Algorithms.FindFirstIndexWhere(
                         positions,
-                        location => (GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant));
+                        location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
 
                     if (iPosition >= 0)
                     {
@@ -819,7 +819,7 @@ namespace Supremacy.Universe
             var empires = new List<Civilization>();
             var minorRaces = new List<Civilization>();
 
-            Algorithms.RandomShuffleInPlace(positions);
+            positions.ShuffleInPlace();
 
             foreach (var civ in GameContext.Current.Civilizations)
             {
@@ -1089,7 +1089,7 @@ namespace Supremacy.Universe
                     break;
             }
 
-            Algorithms.RandomShuffleInPlace(nebulaNames);
+            nebulaNames.ShuffleInPlace();
 
             var gameContext = GameContext.Current;
 
@@ -1264,8 +1264,8 @@ namespace Supremacy.Universe
         private static int GetPlanetSizeScore(StarType starType, PlanetSize planetSize, int slot)
         {
             return DieRoll.Roll(100)
-                   + StarTypeModToPlanetSizeDist[starType, planetSize]
-                   + SlotModToPlanetSizeDist[slot, planetSize];
+                   + StarTypeModToPlanetSizeDist[new Tuple<StarType, PlanetSize>(starType, planetSize)]
+                   + SlotModToPlanetSizeDist[new Tuple<int, PlanetSize>(slot, planetSize)];
         }
 
         private static PlanetSize GetPlanetSize(StarType starType, int slot)
@@ -1308,9 +1308,9 @@ namespace Supremacy.Universe
         private static int GetPlanetTypeScore(StarType starType, PlanetSize planetSize, PlanetType planetType, int slot)
         {
             return DieRoll.Roll(100)
-                   + StarTypeModToPlanetTypeDist[starType, planetType]
-                   + PlanetSizeModToPlanetTypeDist[planetSize, planetType]
-                   + SlotModToPlanetTypeDist[slot, planetType];
+                   + StarTypeModToPlanetTypeDist[new Tuple<StarType, PlanetType>(starType, planetType)]
+                   + PlanetSizeModToPlanetTypeDist[new Tuple<PlanetSize, PlanetType>(planetSize, planetType)]
+                   + SlotModToPlanetTypeDist[new Tuple<int, PlanetType>(slot, planetType)];
         }
 
         private static void PlaceMoons()
@@ -1335,8 +1335,8 @@ namespace Supremacy.Universe
                         foreach (var moon in EnumUtilities.GetValues<MoonSize>())
                         {
                             var currentRoll = DieRoll.Roll(100)
-                                              + PlanetSizeModToMoonSizeDist[planet.PlanetSize, moon]
-                                              + PlanetTypeModToMoonSizeDist[planet.PlanetType, moon]
+                                              + PlanetSizeModToMoonSizeDist[new Tuple<PlanetSize, MoonSize>(planet.PlanetSize, moon)]
+                                              + PlanetTypeModToMoonSizeDist[new Tuple<PlanetType, MoonSize>(planet.PlanetType, moon)]
                                               - handicap;
 
                             if (currentRoll > maxRoll)

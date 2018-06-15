@@ -7,20 +7,17 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 using Supremacy.Annotations;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
-
-using Wintellect.PowerCollections;
-
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using Wintellect.PowerCollections;
 
 namespace Supremacy.Economy
 {
@@ -204,7 +201,7 @@ namespace Supremacy.Economy
             }
             if (levels.Count == 0)
                 return 0;
-            return Algorithms.Minimum(levels);
+            return levels.Min();
         }
 
         /// <summary>

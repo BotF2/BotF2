@@ -41,7 +41,7 @@ namespace Supremacy.Personnel
         public const int NaturalSkillsPerAgent = 3;
 
         private short _ownerId = (short)Civilization.InvalidID;
-        private TurnNumber _appearanceTurn;
+        private int _appearanceTurn;
         private string _profileName;
         private AgentSkillMeters _skillMeters;
         private AgentAssignment _assignment;

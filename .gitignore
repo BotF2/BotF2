@@ -16,4 +16,4 @@ Thumbs.db
 *.tlog
 _Resources/
 *.VC.db
-*.DotSettings.user
+*.user

@@ -14,7 +14,6 @@ using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Types;
 using Supremacy.Utility;
-using Wintellect.PowerCollections;
 
 namespace Supremacy.Combat
 {
@@ -26,7 +25,7 @@ namespace Supremacy.Combat
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)
         {
-            
+
         }
 
         protected override void ResolveCombatRoundCore()
@@ -47,7 +46,7 @@ namespace Supremacy.Combat
                 }
             }
 
-            Algorithms.RandomShuffleInPlace(_combatShips);
+            _combatShips.ShuffleInPlace();
 
             for (int i = 0; i < _combatShips.Count; i++)
             {
@@ -185,7 +184,8 @@ namespace Supremacy.Combat
                         break;
 
                     case CombatOrder.Hail:
-                        if (_traceCombatEngine) {
+                        if (_traceCombatEngine)
+                        {
                             GameLog.Print("{0} {1} hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
                         }
                         break;
@@ -225,7 +225,7 @@ namespace Supremacy.Combat
                 {
                     combatShip.Item1.Decloak();
                 }
-            } 
+            }
         }
 
         private CombatUnit ChooseTarget(CombatUnit attacker)
@@ -237,14 +237,15 @@ namespace Supremacy.Combat
 
             var attackerOrder = GetOrder(attacker.Source);
             var attackerShipOwner = attacker.Owner;
-            
+
 
             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {
                 throw new ArgumentException("Cannot chose a target for a ship that does not have orders that require a target");
             }
 
-            while (true) {
+            while (true)
+            {
                 switch (attackerOrder)
                 {
                     case CombatOrder.Engage:

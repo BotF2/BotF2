@@ -27,8 +27,8 @@ namespace Supremacy.Diplomacy
     {
         GameObjectID SenderID { get; }
         GameObjectID RecipientID { get; }
-        TurnNumber StartTurn { get; }
-        TurnNumber EndTurn { get; }
+        int StartTurn { get; }
+        int EndTurn { get; }
         IProposal Proposal { get; }
         IDictionary<object, object> Data { get; } 
     }
@@ -37,18 +37,18 @@ namespace Supremacy.Diplomacy
     public class NewAgreement : IAgreement
     {
         private readonly IProposal _proposal;
-        private readonly TurnNumber _startTurn;
+        private readonly int _startTurn;
         private readonly IDictionary<object, object> _data;
-        private TurnNumber _endTurn;
+        private int _endTurn;
 
-        public NewAgreement([NotNull] IProposal proposal, TurnNumber startTurn, IDictionary<object, object> data)
+        public NewAgreement([NotNull] IProposal proposal, int startTurn, IDictionary<object, object> data)
         {
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
 
             _proposal = proposal;
             _startTurn = startTurn;
-            _endTurn = TurnNumber.Undefined;
+            _endTurn = 0;
             _data = data;
         }
 
@@ -74,12 +74,12 @@ namespace Supremacy.Diplomacy
             get { return GameContext.Current.Civilizations[RecipientID]; }
         }
 
-        public TurnNumber StartTurn
+        public int StartTurn
         {
             get { return _startTurn; }
         }
 
-        public TurnNumber EndTurn
+        public int EndTurn
         {
             get { return _endTurn; }
         }
@@ -103,7 +103,7 @@ namespace Supremacy.Diplomacy
 
         public void End()
         {
-            if (_endTurn.IsUndefined)
+            if (_endTurn == 0)
                 _endTurn = GameContext.Current.TurnNumber;
         }
     }

@@ -18,6 +18,7 @@ using Supremacy.Tech;
 using Supremacy.Universe;
 
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace Supremacy.Orbitals
 {
@@ -28,7 +29,7 @@ namespace Supremacy.Orbitals
     public class Shipyard : TechObject, IProductionCenter
     {
         private ArrayWrapper<ShipyardBuildSlot> _buildSlots;
-        private ObservableList<BuildQueueItem> _buildQueue;
+        private ObservableCollection<BuildQueueItem> _buildQueue;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -67,7 +68,7 @@ namespace Supremacy.Orbitals
             for (var i = 0; i < _buildSlots.Count; i++)
                 _buildSlots[i] = new ShipyardBuildSlot { Shipyard = this, SlotID = i};
 
-            _buildQueue = new ObservableList<BuildQueueItem>();
+            _buildQueue = new ObservableCollection<BuildQueueItem>();
         }
 
         public IIndexedEnumerable<ShipyardBuildSlot> BuildSlots
@@ -184,7 +185,7 @@ namespace Supremacy.Orbitals
         {
             base.DeserializeOwnedData(reader, context);
 
-            _buildQueue = new ObservableList<BuildQueueItem>((BuildQueueItem[])reader.ReadObjectArray(typeof(BuildQueueItem)));
+            _buildQueue = new ObservableCollection<BuildQueueItem>((BuildQueueItem[])reader.ReadObjectArray(typeof(BuildQueueItem)));
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>((ShipyardBuildSlot[])reader.ReadOptimizedObjectArray(typeof(ShipyardBuildSlot)));
 
             UpdateBuildSlots();

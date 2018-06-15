@@ -33,7 +33,7 @@ namespace Supremacy.Scripting
         /// </summary>
         public const int NoRecurrences = -1;
 
-        private TurnNumber _lastExecution = TurnNumber.Undefined;
+        private int _lastExecution = 0;
         private int _minTurnsBetweenExecutions = NoRecurrenceLimit;
         private bool _isDisposed;
 
@@ -49,7 +49,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        public TurnNumber LastExecution
+        public int LastExecution
         {
             get { return _lastExecution; }
         }
@@ -59,10 +59,10 @@ namespace Supremacy.Scripting
             get
             {
                 if (MinTurnsBetweenExecutions < 0)
-                    return !LastExecution.IsUndefined;
+                    return LastExecution != 0;
 
                 return MinTurnsBetweenExecutions == 0 ||
-                       LastExecution.IsUndefined ||
+                       LastExecution == 0 ||
                        GameContext.Current.TurnNumber - LastExecution > MinTurnsBetweenExecutions;
             }
         }
