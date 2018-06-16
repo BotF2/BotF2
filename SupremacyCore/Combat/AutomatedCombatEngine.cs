@@ -47,11 +47,14 @@ namespace Supremacy.Combat
             }
 
             _combatShips.ShuffleInPlace();
+            var weaponcountFriendly = 0;
+            var weaponcountHostile = 0;
 
             for (int i = 0; i < _combatShips.Count; i++)
             {
                 var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
                 var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
+
                 var order = GetOrder(_combatShips[i].Item1.Source);
 
                 switch (order)
@@ -142,13 +145,40 @@ namespace Supremacy.Combat
                         bool oppositionIsRushing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Rush));
                         int chanceToRetreat = Statistics.Random(10000) % 100;
                         bool retreatSuccessful;
-                        if (oppositionIsRushing)
+
+                        var hostiles = oppositionShips.Count();
+                        var friendlies = ownerAssets.CombatShips.Count;
+                  
+                        foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
                         {
-                            retreatSuccessful = chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 10);
+                            GameLog.Print("{0} {1}: weaponCount: {2} {3}{4}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponcountFriendly, _combatShips[i].Item1.Owner, ownerAssets.Owner);
+                            if (_combatShips[i].Item1.Owner == ownerAssets.Owner)
+                            {
+                               weaponcountFriendly = weaponcountFriendly + 1;
+                                GameLog.Print("{0} {1}: weaponCount: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponcountFriendly);
+                            }
+                            if (_combatShips[i].Item1.Owner != ownerAssets.Owner)
+                            {
+                                weaponcountHostile = weaponcountHostile +1;
+                                GameLog.Print("{0} {1}: weaponCount: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponcountHostile);
+                            }
+                        }
+
+                        if (oppositionIsRushing && (weaponcountHostile >= weaponcountFriendly))
+                        {
+                            int weaponMargin = weaponcountHostile - weaponcountFriendly;
+                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - weaponMargin));
+                            GameLog.Print("if Rushing retreting ship ={0} {1}: weaponHostile Count: {2} margin {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponcountHostile, weaponMargin);
+                        }
+                        else if (weaponcountHostile >= weaponcountFriendly)
+                        {
+                            retreatSuccessful = (chanceToRetreat >= (int)(BaseChanceToRetreat * 100));
                         }
                         else
                         {
-                            retreatSuccessful = chanceToRetreat <= (int)(BaseChanceToRetreat * 100);
+                            int weaponMargin = weaponcountHostile - weaponcountFriendly;
+                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - weaponMargin)); // (chanceToRetreat >= (int)(BaseChanceToRetreat * 100));
+                            GameLog.Print("if Rushing retreting ship ={0} {1}: weaponHostile Count: {2} margin {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponcountHostile, weaponMargin);
                         }
 
                         //Perform the retreat
