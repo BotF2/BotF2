@@ -129,7 +129,11 @@ namespace Supremacy.Scripting.Events
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(-5);
 
                     // Population
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-20);
+                    //Don't reduce the population beneath 20
+                    if (population >= 40)
+                    {
+                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-20);
+                    }
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
 
                     // Facilities
