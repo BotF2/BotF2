@@ -410,7 +410,16 @@ namespace Supremacy.Client
                     + ";" + appDir + "\\lib");
 
                 if (!CheckNetFxVersion())
+                {
+                    MessageBox.Show(
+                            "Star Trek: Supremacy requires Microsoft .NET Framework 4.6.2."
+                            + Environment.NewLine
+                            + "It must be installed before running the game.",
+                            "Star Trek: Supremacy",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Hand);
                     return;
+                }
 
                 try
                 {
@@ -443,35 +452,45 @@ namespace Supremacy.Client
 
         private static bool CheckNetFxVersion()
         {
-            try
+            //Adapted from https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#net_d
+            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+            int version;
+
+            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
             {
-                var netFxVersionKey = Registry.GetValue(
-                    @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5",
-                    "Version",
-                    null);
-                if (netFxVersionKey != null)
+                if ((ndpKey == null) || (ndpKey.GetValue("Release") == null))
                 {
-                    var netFxVersion = new Version(netFxVersionKey.ToString());
-                    GameLog.Print(netFxVersion.ToString());
-                    if (netFxVersion < new Version("3.5.30729.01"))
-                    {
-                        MessageBox.Show(
-                            "Star Trek: Supremacy requires the Microsoft .NET Framework v3.5 SP1."
-                            + Environment.NewLine
-                            + "It must be installed before running the game.",
-                            "Star Trek: Supremacy",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Hand);
-                        return false;
-                    }
+                    return false;
                 }
-            }
-            catch(Exception e)
-            {
-                GameLog.LogException(e);
+
+                version = (int)ndpKey.GetValue("Release");
             }
 
-            return true;
+            if (version >= 461808) {
+                GameLog.Print(".NET Framework 4.7.2 or later found");
+            } else if (version >= 461308) {
+                GameLog.Print(".NET Framework 4.7.1 found");
+            } else if (version >= 460798) {
+                GameLog.Print(".NET Framework 4.7 found");
+            } else if (version >= 394802) {
+                GameLog.Print(".NET Framework 4.6.2 found");
+            } else if (version >= 394254) {
+                GameLog.Print(".NET Framework 4.6.1 found");
+            } else if (version >= 393295) {
+                GameLog.Print(".NET Framework 4.6 found");
+            } else if (version >= 379893) {
+                GameLog.Print(".NET Framework 4.5.2 found");
+            } else if (version >= 378675) {
+                GameLog.Print(".NET Framework 4.5.1 found");
+            } else if (version >= 378389) {
+                GameLog.Print(".NET Framework 4.5 found");
+            }
+            else
+            {
+                GameLog.Print(".NET Framework is less than 4.5");
+            }
+
+            return version >= 394802;
         }
 
         private static void StartClient(string[] args)
@@ -551,7 +570,7 @@ namespace Supremacy.Client
             _splashScreen.Close(TimeSpan.Zero);
         }
 
-        #region Bootstrapper Class
+#region Bootstrapper Class
         private class Bootstrapper : UnityBootstrapper
         {
             // What is Unity Bootstrapper? --> https://msdn.microsoft.com/en-us/library/ff921139.aspx
@@ -620,7 +639,7 @@ namespace Supremacy.Client
                 return _shell;
             }
         }
-        #endregion
+#endregion
     }
 }
  
