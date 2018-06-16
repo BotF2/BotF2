@@ -1,27 +1,22 @@
-﻿
-// Copyright (c) 2009 Mike Strobel
+﻿// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-
+using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
-
-using System.Linq;
-
 using Supremacy.Universe;
 using Supremacy.Utility;
-using Supremacy.Buildings;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Scripting.Events
 {
     [Serializable]
-    //First class here deals with turning off production for one turn and reduction of population, see around line 157 158 about structures, buildings... 
     public class CometStrikeEvent : UnitScopedEvent<Colony>
     {
         private bool _productionFinished;
@@ -30,7 +25,6 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
-        //private List<BuildProject> _asteroidImpactUnits;
         protected List<BuildProject> AffectedProjects
         {
             get
@@ -40,8 +34,8 @@ namespace Supremacy.Scripting.Events
                 return _affectedProjects;
             }
         }
+
         private List<Building> _affectedBuildings;
-        //private List<BuildProject> _asteroidImpactUnits;
         protected List<Building> AffectedBuildings
         {
             get
@@ -52,12 +46,10 @@ namespace Supremacy.Scripting.Events
             }
         }
 
-
         public CometStrikeEvent()
         {
             _affectedProjects = new List<BuildProject>();
             _affectedBuildings = new List<Building>();
-            //_asteroidImpactUnits = new List<AsteroidImpactUnit>();
         }
 
         public override bool CanExecute
@@ -135,19 +127,6 @@ namespace Supremacy.Scripting.Events
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
 
-
-                    //Buildings
-                    // BUNKER_NETWORK (deep in ground)
-                    // DILITHIUM_REFINERY (basic structure)
-                    // SUBSPACE_SCANNER (?)
-
-                    //List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
-                    //tmpBuildings.AddRange(target.Buildings.ToList());
-                    //tmpBuildings.ForEach(o => target.RemoveBuilding(o));
-                    //tmpBuildings.ForEach(o => o.ObjectID = GameObjectID.InvalidID);
-
-                    //GameLog.Client.GameData.DebugFormat("CometStrikeEvents.cs: affectedBuildings: {0}", target);
-
                     OnUnitTargeted(target);
 
                     // Population
@@ -180,14 +159,6 @@ namespace Supremacy.Scripting.Events
                         removeIntelligence = 0;
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
-                    //// OrbitalBatteries
-                    //int removeOrbitalBatteries = target.OrbitalBatteries.Count;  // OrbitalBatteries: remaining everything up to 1
-                    //if (removeOrbitalBatteries < 2)
-                    //    removeOrbitalBatteries = 0;
-                    //target.RemoveOrbitalBatteries(removeOrbitalBatteries);
-
-                    //OnUnitTargeted(target);
-
                     game.CivilizationManagers[targetCiv].SitRepEntries.Add(
                         new ScriptedEventSitRepEntry(
                             new ScriptedEventSitRepEntryData(
@@ -199,10 +170,7 @@ namespace Supremacy.Scripting.Events
                                 "vfs:///Resources/SoundFX/ScriptedEvents/AsteroidImpact.wav",
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
-
-
                     GameContext.Current.Universe.UpdateSectors();
-
 
                     return;
                 }
@@ -221,6 +189,5 @@ namespace Supremacy.Scripting.Events
                 AffectedProjects.Clear();
             }
         }
-
     }
 }
