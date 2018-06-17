@@ -1,5 +1,3 @@
-// ReligiousHolidayEvent.cs
-//
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,16 +5,13 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-
 using Supremacy.Economy;
 using Supremacy.Game;
-
-using System.Linq;
-
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Scripting.Events
 {
@@ -99,7 +94,7 @@ namespace Supremacy.Scripting.Events
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
-                    if (target.Owner.Name == "Borg") // Borg do not have strikes
+                    if (target.Owner.Name == "Borg") // Borg do not have religious holidays
                         return;
 
                     if (target.Name == "Omarion")
@@ -118,23 +113,21 @@ namespace Supremacy.Scripting.Events
 
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    //target.Destroy();
+
                     OnUnitTargeted(target);
 
-                    {
-                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
-                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
-                        game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                            new ScriptedEventSitRepEntry(
-                                new ScriptedEventSitRepEntryData(
-                                    targetCiv,
-                                    "RELIGIOUS_HOLIDAY_HEADER_TEXT",
-                                    "RELIGIOUS_HOLIDAY_SUMMARY_TEXT",
-                                    "RELIGIOUS_HOLIDAY_DETAIL_TEXT",
-                                    "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png",
-                                    "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
-                                    () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-                    }
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
+                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                        new ScriptedEventSitRepEntry(
+                            new ScriptedEventSitRepEntryData(
+                                targetCiv,
+                                "RELIGIOUS_HOLIDAY_HEADER_TEXT",
+                                "RELIGIOUS_HOLIDAY_SUMMARY_TEXT",
+                                "RELIGIOUS_HOLIDAY_DETAIL_TEXT",
+                                "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png",
+                                "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
+                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
                 }
 
                 return;

@@ -1,47 +1,23 @@
-﻿// TerroristsCaptured.cs
-//
-// Copyright (c) 2009 Mike Strobel
+﻿// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
 using Supremacy.Game;
-
-using System.Linq;
-
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Scripting.Events
 {
     [Serializable]
     public class TerroristsCaptured : UnitScopedEvent<Colony>
     {
-        //private bool _productionFinished;
-        //private bool _shipProductionFinished;
         private int _occurrenceChance = 100;
-
-        //[NonSerialized]
-        //private List<BuildProject> _affectedProjects;
-
-        //protected List<BuildProject> AffectedProjects
-        //{
-        //    get
-        //    {
-        //        if (_affectedProjects == null)
-        //            _affectedProjects = new List<BuildProject>();
-        //        return _affectedProjects;
-        //    }
-        //}
-
-        //public TerroristsCaptured()
-        //{
-        //    _affectedProjects = new List<BuildProject>();
-        //}
 
         public override bool CanExecute
         {
@@ -68,12 +44,6 @@ namespace Supremacy.Scripting.Events
             }
         }
 
-        //protected override void OnTurnStartedOverride(GameContext game)
-        //{
-        //    _productionFinished = false;
-        //    _shipProductionFinished = false;
-        //}
-
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
             if (phase == TurnPhase.PreTurnOperations)
@@ -98,56 +68,30 @@ namespace Supremacy.Scripting.Events
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
-                    if (target.Owner.Name == "Borg") // Borg do not have strikes
+                    if (target.Owner.Name == "Borg") // Borg do not have terrorists
                         return;
-                    //var affectedProjects = target.BuildSlots
-                    //    .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
-                    //    .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
-                    //    .Select(o => o.Project);
-
-                    //foreach (var affectedProject in affectedProjects)
-                    //{
-                    //    affectedProject.IsPaused = true;
-                    //    this.AffectedProjects.Add(affectedProject);
-                    //}
 
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    //target.Destroy();
                     OnUnitTargeted(target);
 
-                    {
-                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
-                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
 
-                        game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                            new ScriptedEventSitRepEntry(
-                                new ScriptedEventSitRepEntryData(
-                                    targetCiv,
-                                    "TERRORISTS_CAPTURED_HEADER_TEXT",
-                                    "TERRORISTS_CAPTURED_SUMMARY_TEXT",
-                                    "TERRORISTS_CAPTURED_DETAIL_TEXT",
-                                    "vfs:///Resources/Images/ScriptedEvents/TerroristsCaptured.png",
-                                    "vfs:///Resources/SoundFX/ScriptedEvents/EventGenerell.wma",
-                                    () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-                    }
+                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                        new ScriptedEventSitRepEntry(
+                            new ScriptedEventSitRepEntryData(
+                                targetCiv,
+                                "TERRORISTS_CAPTURED_HEADER_TEXT",
+                                "TERRORISTS_CAPTURED_SUMMARY_TEXT",
+                                "TERRORISTS_CAPTURED_DETAIL_TEXT",
+                                "vfs:///Resources/Images/ScriptedEvents/TerroristsCaptured.png",
+                                "vfs:///Resources/SoundFX/ScriptedEvents/EventGenerell.wma",
+                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
                 }
 
                 return;
             }
-
-            //if (phase == TurnPhase.Production)
-            //    _productionFinished = true;
-            //else if (phase == TurnPhase.ShipProduction)
-            //    _shipProductionFinished = true;
-
-            //if (!_productionFinished || !_shipProductionFinished)
-            //    return;
-
-            //foreach (var affectedProject in this.AffectedProjects)
-            //    affectedProject.IsPaused = false;
-
-            //this.AffectedProjects.Clear();
         }
     }
 }
