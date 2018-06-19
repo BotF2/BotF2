@@ -188,7 +188,10 @@ namespace Supremacy.Combat
                         if (oppositionIsRushing && (weaponMargin > 0))
                         {
                             retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) + (weaponMargin / 1000)));
-                            //GameLog.Print("if Rushing retreting ship ={0} {1}: weaponHostile Count: {2} margin {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile, weaponMargin);
+                            if (!retreatSuccessful)
+                            {
+                                ownerAssets.DestroyedShips.Add(_combatShips[i].Item1);
+                            }
                         }
                         else if (weaponMargin> 0)
                         {
