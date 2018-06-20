@@ -91,7 +91,7 @@ namespace Supremacy.Combat
                         var attackingShip = _combatShips[i].Item1;
                         var target = ChooseTarget(_combatShips[i].Item1);
                         int chanceRushingFormation = Statistics.Random(10000) % 100;
-                        bool surviveRushingFormation;
+                        bool takeDamageRushingFormation;
 
                         if (target == null && _traceCombatEngine)
                         {
@@ -141,14 +141,14 @@ namespace Supremacy.Combat
                                 }
 
                             }
-                            // if we rushed a formation we could die
+                             // if we rushed a formation we could die
                             if ((oppositionIsInFormation) && (order == CombatOrder.Rush))
                             {
-                                surviveRushingFormation = (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100)));
-                                if (!surviveRushingFormation)
+                                var hullIntegrity = attackingShip.HullIntegrity;
+                                takeDamageRushingFormation = (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100)));
+                                if (takeDamageRushingFormation)
                                 {
-                                    ownerAssets.DestroyedShips.Add(_combatShips[i].Item1);
-                                    
+                                    hullIntegrity = hullIntegrity/ 2;
                                 }
 
                             }
@@ -183,30 +183,47 @@ namespace Supremacy.Combat
                         //Calculate the the odds
                         int chanceToRetreat = Statistics.Random(10000) % 100;
                         bool retreatSuccessful;
-                        int weaponMargin = weaponPowerHostile - weaponPowerFriendly;
+                        if (weaponPowerFriendly == 0)
+                        {
+                            weaponPowerFriendly = 1;
+                        }
 
-                        if (oppositionIsRushing && (weaponMargin > 0))
-                        {
-                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) + (weaponMargin / 1000)));
-                            if (!retreatSuccessful)
-                            {
-                                ownerAssets.DestroyedShips.Add(_combatShips[i].Item1);
-                            }
-                        }
-                        else if (weaponMargin> 0)
-                        {
-                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) + (weaponMargin / 1000)));
-                        }
-                        else if (oppositionIsInFormation)
+                        var weaponRatio = weaponPowerHostile / weaponPowerFriendly;
+
+                        if (oppositionIsInFormation)
                         {
                             retreatSuccessful = true;
                         }
-                        else
+                        else if (oppositionIsRushing && (weaponRatio > 3))
                         {
-                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) + (weaponMargin/1000)));
-                            GameLog.Print("retreting ship ={0} {1}: weaponMargin {2} margin {3} chance to retreat {4}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponMargin, chanceToRetreat);
+                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 35));
+
+                        }
+                        else if ((oppositionIsRushing && (weaponRatio <= 2 && weaponRatio >= 1)) || (weaponRatio > 4))
+                        {
+                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 15));
                         }
 
+                        else if ((weaponRatio <= 4 && weaponRatio > 1))
+                        {
+                            retreatSuccessful = (chanceToRetreat >= (int)(BaseChanceToRetreat * 100));
+                        }
+                        else if (weaponRatio <= 1 && weaponRatio > 0.5)
+                        {
+                            retreatSuccessful = (chanceToRetreat >= (int)(BaseChanceToRetreat * 100) + 15);
+                        }
+                        else
+                        {
+                            retreatSuccessful = true;
+                        }
+                        {
+                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) + (weaponRatio/1000)));
+                            GameLog.Print("retreting ship ={0} {1}: weaponRatio {2} margin {3} chance to retreat {4}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponRatio, chanceToRetreat);
+                        }
+                        if (!retreatSuccessful && oppositionIsRushing)
+                        {
+                            // do something like cut hull to 0.5 of current value attackingShip.HullIntegrity = attackingShip.HullIntegrity/2;
+                        }
                         //Perform the retreat
                         if (retreatSuccessful)
                         {
@@ -293,7 +310,7 @@ namespace Supremacy.Combat
 
             var attackerOrder = GetOrder(attacker.Source);
             var attackerShipOwner = attacker.Owner;
-
+            //bool oppositionRushing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Rush));
 
             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat)|| (attackerOrder == CombatOrder.Standby))
             {
