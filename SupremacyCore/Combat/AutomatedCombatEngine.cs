@@ -104,7 +104,18 @@ namespace Supremacy.Combat
                                 GameLog.Print("Target for {1} {0} is {2} {3}", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, target.Source.ObjectID, target.Name);
                             }
 
+                            // if we rushed a formation we could take damaga
+                            if ((oppositionIsInFormation) && (order == CombatOrder.Rush))
+                            {
+                                var hullIntegrity = attackingShip.HullIntegrity;
+                                takeDamageRushingFormation = (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100)));
+                                if (takeDamageRushingFormation)
+                                {
+                                    GameLog.Print("Rushing ship {0} ? take damage{1}", _combatShips[i].Item1.Name, takeDamageRushingFormation);
+                                    hullIntegrity = hullIntegrity / 2;
+                                }
 
+                            }
                             bool assimilationSuccessful = false;
                             //If the attacker is Borg, try and assimilate before you try destroying it
                             if (attackingShip.Owner.Name == "Borg" && target.Owner.Name != "Borg")
@@ -141,17 +152,7 @@ namespace Supremacy.Combat
                                 }
 
                             }
-                             // if we rushed a formation we could die
-                            if ((oppositionIsInFormation) && (order == CombatOrder.Rush))
-                            {
-                                var hullIntegrity = attackingShip.HullIntegrity;
-                                takeDamageRushingFormation = (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100)));
-                                if (takeDamageRushingFormation)
-                                {
-                                    hullIntegrity = hullIntegrity/ 2;
-                                }
 
-                            }
                             //If we're not assimilating, destroy it instead :)
                             else
                             {
