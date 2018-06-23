@@ -200,12 +200,15 @@ namespace Supremacy.Combat
                             retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 35));
 
                         }
-                        else if ((oppositionIsRushing && (weaponRatio <= 2 && weaponRatio >= 1)) || (weaponRatio > 4))
+                        else if ((oppositionIsRushing && (weaponRatio <= 3 && weaponRatio > 2)) || (weaponRatio > 4))
                         {
-                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 15));
+                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 20));
                         }
-
-                        else if ((weaponRatio <= 4 && weaponRatio > 1))
+                        else if ((oppositionIsRushing && (weaponRatio <= 2 && weaponRatio > 1)) || (weaponRatio >3))
+                        {
+                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 10));
+                        }
+                        else if ((weaponRatio <= 3 && weaponRatio > 1))
                         {
                             retreatSuccessful = (chanceToRetreat >= (int)(BaseChanceToRetreat * 100));
                         }
