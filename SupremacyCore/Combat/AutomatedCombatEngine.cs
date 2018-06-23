@@ -64,7 +64,7 @@ namespace Supremacy.Combat
                         weaponPowerFriendly = weaponPowerFriendly + CombatHelper.CalculateOrbitalPower(_combatShips[i].Item1.Source);
                         if (_traceCombatEngine)
                         {
-                            GameLog.Print("{0} {1}: weaponPowerFriendly: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerFriendly);
+                           // GameLog.Print("{0} {1}: weaponPowerFriendly: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerFriendly);
                         }
 
                     }
@@ -73,7 +73,7 @@ namespace Supremacy.Combat
                         weaponPowerHostile = weaponPowerHostile + CombatHelper.CalculateOrbitalPower(_combatShips[i].Item1.Source);
                         if (_traceCombatEngine)
                         {
-                            GameLog.Print("{0} {1}: weaponPowerHostile: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile);
+                            //GameLog.Print("{0} {1}: weaponPowerHostile: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile);
                         }
                     }
                 }
@@ -191,30 +191,30 @@ namespace Supremacy.Combat
 
                         var weaponRatio = weaponPowerHostile / weaponPowerFriendly;
 
-                        if (oppositionIsInFormation)
+                        if (oppositionIsInFormation) //    If you go into formation you are not in position / time to stop the opposition from retreating                   
                         {
                             retreatSuccessful = true;
                         }
-                        else if (oppositionIsRushing && (weaponRatio > 3))
+                        else if (oppositionIsRushing && (weaponRatio > 3)) // if you rush and or outgun the retreater they are less likely to get away
                         {
-                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 35));
+                            retreatSuccessful = (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 35));
 
                         }
                         else if ((oppositionIsRushing && (weaponRatio <= 3 && weaponRatio > 2)) || (weaponRatio > 4))
                         {
-                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 20));
+                            retreatSuccessful = (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 20));
                         }
                         else if ((oppositionIsRushing && (weaponRatio <= 2 && weaponRatio > 1)) || (weaponRatio >3))
                         {
-                            retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) - 10));
+                            retreatSuccessful = (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 10));
                         }
                         else if ((weaponRatio <= 3 && weaponRatio > 1))
                         {
-                            retreatSuccessful = (chanceToRetreat >= (int)(BaseChanceToRetreat * 100));
+                            retreatSuccessful = (chanceToRetreat <= (int)(BaseChanceToRetreat * 100));
                         }
                         else if (weaponRatio <= 1 && weaponRatio > 0.5)
                         {
-                            retreatSuccessful = (chanceToRetreat >= (int)(BaseChanceToRetreat * 100) + 15);
+                            retreatSuccessful = (chanceToRetreat <= (int)(BaseChanceToRetreat * 100) + 15);
                         }
                         else
                         {
@@ -222,7 +222,7 @@ namespace Supremacy.Combat
                         }
                         {
                             retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) + (weaponRatio/1000)));
-                            GameLog.Print("retreting ship ={0} {1}: weaponRatio {2} margin {3} chance to retreat {4}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponRatio, chanceToRetreat);
+                            GameLog.Print("retreting ship ={0} {1}: weaponRatio {2} chance to retreat {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponRatio, chanceToRetreat);
                         }
                         if (!retreatSuccessful && oppositionIsRushing)
                         {
@@ -373,7 +373,7 @@ namespace Supremacy.Combat
                         var oppositionTransports = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (cs.Item1.Source.OrbitalDesign.ShipType == "Transport") && !cs.Item1.IsDestroyed);
                         bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
                         //If there are any, return one as the target
-                        if ((oppositionTransports.Count() > 0) && (!oppositionIsInFormation))
+                        if ((oppositionTransports.Count() > 0) && (!oppositionIsInFormation)) // you try to target transports but do not get a clear shot if opposition is in formation
                         {
                             return oppositionTransports.First().Item1;
                         }

@@ -25,7 +25,7 @@ namespace Supremacy.Combat
     public abstract class CombatEngine
     {
         public readonly object SyncLock;
-        protected const double BaseChanceToRetreat = 0.50;
+        protected const double BaseChanceToRetreat = 0.75;
         protected const double BaseChanceToAssimilate = 0.20;
         protected const double BaseChanceToRushFormation = 0.50;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
