@@ -73,7 +73,7 @@ namespace Supremacy.Combat
                         weaponPowerHostile = weaponPowerHostile + CombatHelper.CalculateOrbitalPower(_combatShips[i].Item1.Source);
                         if (_traceCombatEngine)
                         {
-                            //GameLog.Print("{0} {1}: weaponPowerHostile: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile);
+                            GameLog.Print("{0} {1}: weaponPowerHostile: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile);
                         }
                     }
                 }
@@ -188,8 +188,9 @@ namespace Supremacy.Combat
                         {
                             weaponPowerFriendly = 1;
                         }
-
-                        var weaponRatio = weaponPowerHostile / weaponPowerFriendly;
+                        // weaponPowerHostile = 99;
+                        var weaponRatio = 9;
+                        weaponRatio = weaponPowerHostile / weaponPowerFriendly;
 
                         if (oppositionIsInFormation) //    If you go into formation you are not in position / time to stop the opposition from retreating                   
                         {
