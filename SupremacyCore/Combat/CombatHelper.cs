@@ -80,7 +80,7 @@ namespace Supremacy.Combat
 
         public static bool WillEngage(Civilization firstCiv, Civilization secondCiv)
         {
-            bool _willEngageTracing = true; // turn true if you want
+            bool _willEngageTracing = false; // turn true if you want
 
             if (firstCiv == null)
                 throw new ArgumentNullException("firstCiv");
