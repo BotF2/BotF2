@@ -68,24 +68,32 @@ namespace Supremacy.Combat
 
                         {
                             weaponPowerHostile = weaponPowerHostile + CombatHelper.CalculateOrbitalPower(oppositionShip.Item1.Source);
-                            if (_traceCombatEngine)
-                            {
-                                GameLog.Print("{0} {1}: weaponPowerHostile: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile);
-                            }
+                            //if (_traceCombatEngine)
+                            //{
+                            //    GameLog.Print("{0} {1}: weaponPowerHostile: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile);
+                            //}
                         }
-
+                        if (_traceCombatEngine)
+                        {
+                            GameLog.Print("{0} {1}: weaponPowerHostile: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerHostile);
+                        }
                     }
                 }
                 foreach (var friendlyShip in friendlyShips)
 
                 {
+
                     foreach (var weapon in friendlyShip.Item2.Where(w => w.CanFire))
                     {
                         weaponPowerFriendly = weaponPowerFriendly + CombatHelper.CalculateOrbitalPower(friendlyShip.Item1.Source);
-                        if (_traceCombatEngine)
-                        {
-                            GameLog.Print("{0} {1}: weaponPowerFriendly: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerFriendly);
-                        }
+                        //if (_traceCombatEngine)
+                        //{
+                        //    GameLog.Print("{0} {1}: weaponPowerFriendly: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerFriendly);
+                        //}
+                    }
+                    if (_traceCombatEngine)
+                    {
+                        GameLog.Print("{0} {1}: weaponPowerFriendly: {2}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponPowerFriendly);
                     }
                 }
 
@@ -208,16 +216,16 @@ namespace Supremacy.Combat
                         {
                             retreatSuccessful = true;
                         }
-                        else if (oppositionIsRushing && (weaponRatio > 3)) // if you rush and or outgun the retreater they are less likely to get away
+                        else if (oppositionIsRushing && (weaponRatio > 6)) // if you rush and or outgun the retreater they are less likely to get away
                         {
                             retreatSuccessful = (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 35));
 
                         }
-                        else if ((oppositionIsRushing && (weaponRatio <= 3 && weaponRatio > 2)) || (weaponRatio > 4))
+                        else if ((oppositionIsRushing && (weaponRatio <= 6 && weaponRatio > 3)) || (weaponRatio > 6))
                         {
                             retreatSuccessful = (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 20));
                         }
-                        else if ((oppositionIsRushing && (weaponRatio <= 2 && weaponRatio > 1)) || (weaponRatio >3))
+                        else if ((oppositionIsRushing && (weaponRatio <= 3 && weaponRatio > 1)) || (weaponRatio >3))
                         {
                             retreatSuccessful = (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 10));
                         }
@@ -227,7 +235,7 @@ namespace Supremacy.Combat
                         }
                         else if (weaponRatio <= 1 && weaponRatio > 0.5m)
                         {
-                            retreatSuccessful = (chanceToRetreat <= (int)(BaseChanceToRetreat * 100) + 15);
+                            retreatSuccessful = (chanceToRetreat <= (int)(BaseChanceToRetreat * 100) + 20);
                         }
                         else
                         {
@@ -244,6 +252,8 @@ namespace Supremacy.Combat
                         //Perform the retreat
                         if (retreatSuccessful)
                         {
+
+
                             if (_traceCombatEngine)
                             {
                                 GameLog.Print("{0} {1} successfully retreated...", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Name);
@@ -340,6 +350,7 @@ namespace Supremacy.Combat
                 switch (attackerOrder)
                 {
                     case CombatOrder.Engage:
+                    case CombatOrder.Formation:
                         bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
                         //Get a list of all of the opposition ships
                         
@@ -365,9 +376,6 @@ namespace Supremacy.Combat
                         }
                         //Nothing to target
                         return null;
-
-                    case CombatOrder.Formation:
-                        break;
 
                     case CombatOrder.Rush:
                         //Get a list of any opposition that are retreating
