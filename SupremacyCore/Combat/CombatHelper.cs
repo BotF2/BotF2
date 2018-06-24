@@ -147,6 +147,8 @@ namespace Supremacy.Combat
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
                 orders.SetOrder(ship.Source, order);
+                // for testing
+                orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
                     GameLog.Print("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
@@ -163,7 +165,8 @@ namespace Supremacy.Combat
                 {
                     GameLog.Print("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
                 }
-                //orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
+                // for testing
+                orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)

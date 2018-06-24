@@ -209,9 +209,9 @@ namespace Supremacy.Combat
                             weaponPowerFriendly = 1;
                         }
                         // weaponPowerHostile = 99;
-                        decimal weaponRatio = 9;
-                        weaponRatio = weaponPowerHostile / weaponPowerFriendly;
-
+                        decimal weaponRatio = 9; // starting value
+                        weaponRatio = (weaponPowerHostile * 10) / weaponPowerFriendly;
+                        GameLog.Print("Weapon Ration {0} Power Hostile {1} and power friendly {2}", weaponRatio, weaponPowerHostile, weaponPowerFriendly);
                         if (oppositionIsInFormation) //    If you go into formation you are not in position / time to stop the opposition from retreating                   
                         {
                             retreatSuccessful = true;
