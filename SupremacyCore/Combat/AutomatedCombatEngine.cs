@@ -30,13 +30,7 @@ namespace Supremacy.Combat
 
         protected override void ResolveCombatRoundCore()
         {
-            string OwnerGroup1 = "";
-            string OwnerGroup2 = "";
-            string OwnerGroup3 = "";
-
-            int weaponPowerGroup1 = 1;
-            int weaponPowerGroup2 = 1;
-            int weaponPowerGroup3 = 1;
+            Dictionary<string, int> empirePowers = new Dictionary<string, int>();
 
             //Recharge all of the weapons
             if (_combatStation != null)
@@ -53,55 +47,17 @@ namespace Supremacy.Combat
                     weapon.Recharge();
                 }
 
-                // finding groups taking part and their power
-                if (OwnerGroup1 == "")
-                {
-                    OwnerGroup1 = combatShip.Item1.Owner.ToString();
-                }
-                if (combatShip.Item1.Owner.ToString() != OwnerGroup1)
-                {
-                    OwnerGroup2 = combatShip.Item1.Owner.ToString();
-                }
-                if (combatShip.Item1.Owner.ToString() != OwnerGroup1 && combatShip.Item1.Owner.ToString() != OwnerGroup2)
-                {
-                    OwnerGroup3 = combatShip.Item1.Owner.ToString();
-                }
-
-
-                if (combatShip.Item1.Owner.ToString() == OwnerGroup1)
-                {
-                    weaponPowerGroup1 = weaponPowerGroup1 + CombatHelper.CalculateOrbitalPower(combatShip.Item1.Source);
-                }
-
-                if (combatShip.Item1.Owner.ToString() == OwnerGroup2)
-                {
-                    weaponPowerGroup2 = weaponPowerGroup2 + CombatHelper.CalculateOrbitalPower(combatShip.Item1.Source);
-                    //if (_traceCombatEngine)
-                    //{
-                    //    GameLog.Print("{0} {1}: weaponPowerGroup2: {2}", combatShip.Item1.Source.ObjectID, combatShip.Item1.Source.Name, weaponPowerGroup2);
-                    //}
-                }
-
-                if (combatShip.Item1.Owner.ToString() == OwnerGroup3)
-                {
-                    weaponPowerGroup3 = weaponPowerGroup3 + CombatHelper.CalculateOrbitalPower(combatShip.Item1.Source);
-                }
+                empirePowers[combatShip.Item1.Owner.Key] += CombatHelper.CalculateOrbitalPower(combatShip.Item1.Source);
             }
 
             if (_traceCombatEngine)
             {
-                GameLog.Print("--------------");
-                GameLog.Print("Owner Group 1: {0} - POWER = {1}", OwnerGroup1, weaponPowerGroup1);
-                GameLog.Print("Owner Group 2: {0} - POWER = {1}", OwnerGroup2, weaponPowerGroup2);
-                GameLog.Print("Owner Group 3: (mostly empty) {0} - POWER = {1}", OwnerGroup3, weaponPowerGroup3);
+                foreach (var empires in empirePowers) {
+                    GameLog.Print("Strength for {0} = {1}", empires.Key, empires.Value);
+                }
             }
 
-            //GameLog.Print("Owner Group 1 = {0}, 2 = {1}, 3 = {2}", OwnerGroup1, OwnerGroup2, OwnerGroup3);
-
             _combatShips.ShuffleInPlace();
-
-            //int weaponPowerFriendly = 0;
-            //int weaponPowerHostile = 0;
 
 
             for (int i = 0; i < _combatShips.Count; i++)
@@ -223,12 +179,29 @@ namespace Supremacy.Combat
 
                         decimal weaponRatio = 9; // starting value with no deeper sense
 
-                        weaponRatio = (weaponPowerGroup1 * 10) / (weaponPowerGroup2 + weaponPowerGroup3);
+                        List<string> friendlyEmpires = _combatShips.Where(s =>
+                            (s.Item1.Owner.Key != _combatShips[i].Item1.Owner.Key) &&
+                            CombatHelper.WillFightAlongside(s.Item1.Owner, _combatShips[i].Item1.Owner))
+                            .Select(s => s.Item1.Owner.Key)
+                            .Distinct()
+                            .ToList();
 
-                        GameLog.Print("weaponPowerGroup1 *10 = {1} VS weaponPowerGroup2 = {2} + weaponPowerGroup3 = {3} -> Weapon Ratio {0}", 
-                            weaponRatio, weaponPowerGroup1 *10, weaponPowerGroup2, weaponPowerGroup3);
+                        List<string> hostileEmpires = _combatShips.Where(s =>
+                            (s.Item1.Owner.Key != _combatShips[i].Item1.Owner.Key) &&
+                            CombatHelper.WillEngage(s.Item1.Owner, _combatShips[i].Item1.Owner))
+                            .Select(s => s.Item1.Owner.Key)
+                            .Distinct()
+                            .ToList();
 
-                        if (oppositionIsInFormation) //    If you go into formation you are not in position / time to stop the opposition from retreating                   
+                        int friendlyWeaponPower = friendlyEmpires.Sum(e => empirePowers[e]);
+                        int hostileWeaponPower = hostileEmpires.Sum(e => empirePowers[e]);
+
+                        weaponRatio = friendlyWeaponPower * 10 / hostileWeaponPower;
+
+                        GameLog.Print("Friendly Weapon Power = {0}, Hostile Weapon Power = {1}, Ratio={2}", 
+                            friendlyWeaponPower, hostileWeaponPower, weaponRatio);
+
+                        if (oppositionIsInFormation) // If you go into formation you are not in position / time to stop the opposition from retreating                   
                         {
                             retreatSuccessful = true;
                         }
