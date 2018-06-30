@@ -205,7 +205,7 @@ namespace Supremacy.Combat
                         {
                             retreatSuccessful = true;
                         }
-                        else if (oppositionIsRushing && (weaponRatio > 6)) // if you rush and or outgun the retreater they are less likely to get away
+                        else if (oppositionIsRushing && (weaponRatio > 6)) // if you rush and outgun the retreater they are less likely to get away
                         {
                             retreatSuccessful = (chanceToRetreat <= (int)((BaseChanceToRetreat * 100) - 35));   // successful if chance is less than 15 %
 
@@ -230,13 +230,18 @@ namespace Supremacy.Combat
                         {
                             retreatSuccessful = true;   // / successful in all other cases
                         }
-                        
-                        //retreatSuccessful = (chanceToRetreat >= (int)((BaseChanceToRetreat * 100) + (int)(weaponRatio/1000)));
-                        GameLog.Print("retreating ship ={0} {1}: weaponRatio {2} chance to retreat {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponRatio, chanceToRetreat);
-                        
+
+
+                        //GameLog.Print("retreating ship ={0} {1}: weaponRatio {2} chance to retreat {3}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, weaponRatio, chanceToRetreat);
+
+                        var hullIntegrityRetreat = _combatShips[i].Item1.HullIntegrity;
                         if (!retreatSuccessful && oppositionIsRushing)
-                        {
-                            // do something like cut hull to 0.5 of current value attackingShip.HullIntegrity = attackingShip.HullIntegrity/2;
+                        {    // risk damage to hull if you fail to retreat and are being rushed
+                            if (chanceToRetreat >= (int)(BaseChanceToRushFormation * 100))
+                            {
+                                hullIntegrityRetreat = hullIntegrityRetreat / 2;
+                            }
+                           
                         }
 
                         //Perform the retreat
