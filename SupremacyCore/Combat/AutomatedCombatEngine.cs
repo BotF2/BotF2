@@ -152,10 +152,10 @@ namespace Supremacy.Combat
                                 }
 
                             }
-
-                            //If we're not assimilating, destroy it instead :)
                             else
-                            {
+                            { 
+                            //If we're not assimilating, destroy it instead :)
+            
                                 if (_traceCombatEngine)
                                 {
                                     GameLog.Print("{0} {1} attacking {2} {3}",  attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
