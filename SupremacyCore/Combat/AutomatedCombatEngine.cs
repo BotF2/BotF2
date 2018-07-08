@@ -15,6 +15,7 @@ using Supremacy.Orbitals;
 using Supremacy.Types;
 using Supremacy.Utility;
 
+
 namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
@@ -72,8 +73,13 @@ namespace Supremacy.Combat
                 var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
                 var friendlyShips = _combatShips.Where(cs => !CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
                 //GameLog.Print("ownerAssets.Owner {0}", ownerAssets.Owner);
-
-
+                try
+                {
+                    Diplomacy.DiplomacyHelper.EnsureContact(ownerAssets.Owner, oppositionShips.FirstOrDefault().Item1.Owner, oppositionShips.FirstOrDefault().Item1.Source.Location);
+                }
+                catch
+                { // if ship is lost will get null above when trying to find it
+                }
                 bool oppositionIsRushing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Rush));
                 bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
                 var order = GetOrder(_combatShips[i].Item1.Source);
@@ -109,7 +115,7 @@ namespace Supremacy.Combat
                                 {
                                     attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
 
-                                    if (_traceCombatEngine)
+                                   // if (_traceCombatEngine)
                                         GameLog.Print("...rushed a formation and taking damage: ship {0} {1}: Damage taken {2} HullStrength BEFORE {3}, takeDamageRushingFormation = {4}",
                                         attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength, takeDamageRushingFormation);
 
@@ -210,7 +216,7 @@ namespace Supremacy.Combat
                         int friendlyWeaponPower = ownEmpires.Sum(e => empirePowers[e]) + friendlyEmpires.Sum(e => empirePowers[e]);
                         int hostileWeaponPower = hostileEmpires.Sum(e => empirePowers[e]);
  
-                        weaponRatio = friendlyWeaponPower * 10 / hostileWeaponPower;
+                        weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
                         // just for testing
                         //oppositionIsRushing = true;    ##### // just for testing
@@ -430,20 +436,54 @@ namespace Supremacy.Combat
                             return oppositionRetreating.First().Item1;
                         }
                         //Othewise target everything else (if anything left)
-                        attackerOrder = CombatOrder.Engage;
+                        else if (oppositionShips.Count() > 0)
+                        { //Otherwise set order to engage and it will go through again
+                            //if (_traceCombatEngine)
+                            //{
+                                GameLog.Print("clicked rush but they are not retreating Item1 ObjectID = {0}, Item1 Name {1}, ShipType {2}", oppositionShips.First().Item1.Source.ObjectID, oppositionShips.First().Item1.Name, oppositionShips.First().Item1.Source.OrbitalDesign.ShipType);
+                            //}
+                            return oppositionShips.First().Item1;
+                        }
+                        else if ((_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner))
+                        {
+                            if (_traceCombatEngine)
+                            {
+                                GameLog.Print("station is target");
+                            }
+                            return _combatStation.Item1;
+                        }
                         break;
 
                     case CombatOrder.Transports:
                         //Get a list of all the transports
                         var oppositionTransports = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (cs.Item1.Source.OrbitalDesign.ShipType == "Transport") && !cs.Item1.IsDestroyed);
                         bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
+                        
                         //If there are any, return one as the target
                         if ((oppositionTransports.Count() > 0) && (!oppositionIsInFormation)) // you try to target transports but do not get a clear shot if opposition is in formation
                         {
-                            return oppositionTransports.First().Item1;
+                            if (_traceCombatEngine)
+                            {
+                                GameLog.Print("Item1 ObjectID = {0}, Item1 Name {1}, ShipType {2} Attacking Transport was clicked but not in formation ", oppositionTransports.First().Item1.Source.ObjectID, oppositionTransports.First().Item1.Name, oppositionTransports.First().Item1.Source.OrbitalDesign.ShipType);
+                            }
+                                return oppositionTransports.First().Item1;
                         }
-                        //Otherwise set order to engage and it will go through again
-                        attackerOrder = CombatOrder.Engage;
+                        else if(oppositionShips.Count() > 0)
+                        { //Otherwise set order to engage and it will go through again
+                            if (_traceCombatEngine)
+                            {
+                                GameLog.Print("clicked transport but attacking a formation Item1 ObjectID = {0}, Item1 Name {1}, ShipType {2}", oppositionShips.First().Item1.Source.ObjectID, oppositionShips.First().Item1.Name, oppositionShips.First().Item1.Source.OrbitalDesign.ShipType);
+                            }
+                                return oppositionShips.First().Item1;
+                        }
+                        else if ((_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner))
+                        {
+                            if (_traceCombatEngine)
+                            {
+                                GameLog.Print("station is target");
+                            }
+                            return _combatStation.Item1;
+                        }
                         break;
                 }
             }
