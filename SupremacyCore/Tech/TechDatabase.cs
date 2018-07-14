@@ -574,6 +574,52 @@ namespace Supremacy.Tech
                 }
             }
 
+
+            bool _traceTechObjectDatabase = true;
+            if (_traceTechObjectDatabase == true)
+            {
+
+                var file = "FromTechObjectDatabase--Ships_(autoCreated).csv";
+                Console.WriteLine("writing {0}", file);
+
+                //if (file == null)
+                //    goto WriterClose;
+
+                StreamWriter streamWriter = new StreamWriter(file);
+                var separator = ";";
+                    var line = "";
+
+                // Ships
+                String strHeader = 
+                            "Key" + separator +
+                            "DesignID" + separator +
+                            "ShipType" + separator +
+                            "ClassName" + separator +
+                            "MaintenanceCost" + separator +
+                            "MaintenanceCost" + separator +
+                            "BuildCost";
+                streamWriter.WriteLine(strHeader);
+                
+                foreach (var item in db.ShipDesigns)
+                {
+                    line = item.Key + separator +
+                        item.DesignID + separator +
+                        item.ShipType + separator +
+                        item.ClassName + separator +
+                        item.MaintenanceCost + separator +
+                        item.MaintenanceCost + separator +
+                        item.BuildCost;
+
+                    streamWriter.WriteLine(line);
+                }
+                // End of Ships
+
+                // End of Autocreated files 
+                streamWriter.Close();
+                //WriterClose:;
+            }
+            
+
             db._designIdMap = designIdMap;
 
             //using (var gameDatabase = new SupremacyDatabase())
@@ -731,6 +777,7 @@ namespace Supremacy.Tech
                 }
 
                 xmlDoc.WriteTo(xmlWriter);
+                
             }
         }
 
