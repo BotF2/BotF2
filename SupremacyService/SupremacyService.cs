@@ -7,17 +7,7 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Concurrency;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.ServiceModel;
-using System.Threading;
-using System.Threading.Tasks;
-
 using Microsoft.Practices.ServiceLocation;
-
 using Supremacy.Annotations;
 using Supremacy.Client;
 using Supremacy.Client.Commands;
@@ -25,7 +15,6 @@ using Supremacy.Client.Input;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
-using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Messaging;
@@ -34,11 +23,15 @@ using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Text;
 using Supremacy.Types;
-
-using System.Linq;
-
 using Supremacy.Utility;
-
+using System;
+using System.Collections.Generic;
+using System.Concurrency;
+using System.Diagnostics;
+using System.Linq;
+using System.ServiceModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.WCF
@@ -53,7 +46,7 @@ namespace Supremacy.WCF
         InstanceContextMode = InstanceContextMode.Single,
         IgnoreExtensionDataObject = true,
         UseSynchronizationContext = false)]
-    [DebuggerStepThrough]
+    
     public class SupremacyService : ISupremacyService
     {
         #region Fields
@@ -77,6 +70,7 @@ namespace Supremacy.WCF
         private bool _isGameEnding;
         private int _isProcessingTurn;
         private GameEngine _gameEngine;
+        private IDisposable _heartbeat;
         #endregion
 
         #region Constructors
@@ -199,9 +193,6 @@ namespace Supremacy.WCF
         #endregion
 
         #region Methods
-        [DllImport("user32.dll", EntryPoint = "MessageBoxW", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern int MsgBox(int hwnd, string txt, string cap, int type);
-
         internal void DoStartGame()
         {
             if (_isGameStarted)
@@ -503,17 +494,6 @@ namespace Supremacy.WCF
 
         internal void OnTurnPhaseChanged(TurnPhase phase)
         {
-            //if (_players.Count == 1)
-            //{
-            //    SendTurnPhaseChangedNotifications(phase);
-            //}
-            //else
-            //{
-            //    AsyncHelper.Invoke(
-            //        (SetterFunction<TurnPhase>)SendTurnPhaseChangedNotifications,
-            //        phase);
-            //}
-
             SendTurnPhaseChangedNotifications(phase);
             new AutoResetEvent(false).WaitOne(100, true);
         }
@@ -796,17 +776,6 @@ namespace Supremacy.WCF
                 }
             }
 
-/*
-            Observable.ToAsync(
-                delegate
-                {
-                    var task = new Task(ProcessTurn);
-                    task.Start();
-                    task.Wait();
-                },
-                _scheduler)();
-*/
-
             _threadPoolScheduler.Schedule(ProcessTurn);
 
             return true;
@@ -833,88 +802,9 @@ namespace Supremacy.WCF
             }
         }
 
-        internal void StartHeartbeat()
-        {
-            //if (Interlocked.CompareExchange(ref _pingTask, null, null) != null)
-            //    return;
-
-            //var pingTask = Task.Create(
-            //    o => PingClients(),
-            //    _taskManager,
-            //    TaskCreationOptions.Detached | TaskCreationOptions.RespectCreatorCancellation);
-
-            //pingTask = Interlocked.Exchange(ref _pingTask, pingTask);
-
-            //if (pingTask == null)
-            //    return;
-
-            //try { pingTask.Cancel(); }
-            //catch {}
-
-            _heartbeat = Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(15))
-                .Select(_ => ((Action)PingClients).ToAsync(_threadPoolScheduler)())
-                .Subscribe();
-        }
-
-        private IDisposable _heartbeat;
-
-        internal void StopHeartbeat()
-        {
-            //var pingTask = Interlocked.Exchange(ref _pingTask, null);
-            //if (pingTask == null)
-            //    return;
-            //try { pingTask.Cancel(); }
-            //catch {}
-            //try { pingTask.Dispose(); }
-            //catch {}
-
-            var heartbeat = Interlocked.Exchange(ref _heartbeat, null);
-            if (heartbeat != null)
-                heartbeat.Dispose();
-        }
-
-        private void OnCombatOccurring(List<CombatAssets> assets)
-        {
-            _combatEngine = new AutomatedCombatEngine(
-                assets,
-                SendCombatUpdateCallback,
-                NotifyCombatEndedCallback);
-            _combatEngine.SendInitialUpdate();
-        }
-
-        private void OnInvasionOccurring(InvasionArena invasionArena)
-        {
-            if (_invasionEngine == null)
-                _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
-
-            _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
-        }
-
         private void OnGameEngineTurnPhaseChanged(TurnPhase phase)
         {
             OnTurnPhaseChanged(phase);
-        }
-
-        private void NotifyCombatEndedCallback(CombatEngine engine)
-        {
-            if (_combatEngine != null)
-            {
-                _combatEngine = null;
-                _gameEngine.NotifyCombatFinished();
-            }
-        }
-
-        private void NotifyInvasionEndedCallback(InvasionEngine engine)
-        {
-            var player = GetPlayerByEmpire(engine.InvasionArena.Invader);
-            if (player.IsHumanPlayer)
-                return;
-
-            if (_invasionEngine == engine)
-            {
-                _invasionEngine = null;
-                _gameEngine.NotifyCombatFinished();
-            }
         }
 
         private void OnAITaskCompleted()
@@ -1024,66 +914,6 @@ namespace Supremacy.WCF
             }
         }
 
-        private void PingPlayer([NotNull] ServerPlayerInfo player)
-        {
-            if (player == null)
-                throw new ArgumentNullException("player");
-
-            try { player.Callback.Ping(); }
-            catch { DropPlayer(player); }
-        }
-
-        private void PingClients()
-        {
-            var players = _playerInfo.ToArray();
-
-            foreach (var player in players)
-            {
-                var playerCopy = player;
-
-                ((Action<ServerPlayerInfo>)PingPlayer)
-                    .ToAsync(player.Scheduler)(player)
-                    .Subscribe(
-                    _ => {},
-                    e => DropPlayer(playerCopy));
-            }
-
-/*
-            Interlocked.Exchange(ref _pingThread, Thread.CurrentThread);
-
-            try
-            {
-                while (Host.State == CommunicationState.Opened)
-                {
-                    if ((Thread.CurrentThread.ThreadState != ThreadState.AbortRequested)
-                        && (Thread.CurrentThread.ThreadState != ThreadState.Aborted))
-                    {
-                        Player[] players = _players.ToArray();
-                        foreach (Player player in players)
-                        {
-                            try
-                            {
-                                _playerCallbackMap[player].Ping();
-                            }
-                            catch
-                            {
-                                DropPlayer(player);
-                            }
-                        }
-                    }
-                    if ((Thread.CurrentThread.ThreadState != ThreadState.AbortRequested)
-                        && (Thread.CurrentThread.ThreadState != ThreadState.Aborted))
-                    {
-                        Thread.Sleep(new TimeSpan(0, 0, 15));
-                    }
-                }
-            }
-            catch (ThreadAbortException) { }
-            catch (ThreadInterruptedException) { }
-            catch (AppDomainUnloadedException) { }
-*/
-        }
-
         private void SendChatMessageCallback(int senderId, string message, int recipientId)
         {
             var sender = _playerInfo.FromPlayerId(senderId);
@@ -1121,100 +951,6 @@ namespace Supremacy.WCF
             }
         }
 
-        private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
-        {
-
-            bool _traceCombatUpates = false; // turn true if you want
-
-            GameContext.PushThreadContext(_game);
-
-            var player = _playerInfo.FromEmpireId(update.OwnerID);
-            //GameLog.Print("player = {0}", player);
-            if (player != null)
-            {
-                var callback = player.Callback;
-                if (callback != null)
-                    callback.NotifyCombatUpdate(update);
-            }
-            else if (!engine.IsCombatOver)
-            {
-                var hail = (update.RoundNumber == 1);
-                // var rush = (update.RoundNumber == 1);
-
-                var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
-                if (ownerAssets == null)
-                    return;
-
-                if (update.HostileAssets
-                    .Where(hostileAssets => hostileAssets != ownerAssets)
-                    .Any(hostileAssets => !DiplomacyHelper.AreNeutral(ownerAssets.Owner, hostileAssets.Owner)))
-                {
-                    hail = false;
-                    // rush = true;
-                }
-
-                if (hail)
-                {
-                    if (_traceCombatUpates == true)
-                        GameLog.Print("Hail = {0}", hail);
-                    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Hail));
-                }
-
-                //else if (rush)
-                //    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Rush));
-
-                else if (ownerAssets.CombatShips.Count > 0)   // original
-                {
-                    if (_traceCombatUpates == true)
-                        GameLog.Print("ownerAssets.CombatShips.Count = {0}", ownerAssets.CombatShips.Count);
-                    //else if (ownerAssets.CombatShips.Count > 0 && update.HostileAssets.Count > 0)
-                    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Engage));
-                }
-                else
-                {
-                    if (_traceCombatUpates == true)
-                        GameLog.Print("ownerAssets.CombatShips.Count not greater than zero", ownerAssets.CombatShips.Count);
-                    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Retreat));
-                }
-
-                if (engine.Ready && update.HostileAssets.Count > 0)
-                {
-                    if (_traceCombatUpates == true)
-                        GameLog.Print("CombatEngine is ready");
-                    ((Action<CombatEngine>)TryResumeCombat).ToAsync(_scheduler)(engine);
-                }
-            }
-            GameContext.PopThreadContext();
-        }
-
-        private void SendInvasionUpdateCallback(InvasionEngine engine, InvasionArena update)
-        {
-            var player = _playerInfo.FromEmpireId(update.InvaderID);
-            if (player != null)
-            {
-                var callback = player.Callback;
-                if (callback != null)
-                    callback.NotifyInvasionUpdate(update);
-            }
-            else if (update.Status == InvasionStatus.InProgress)
-            {
-                var transports =
-                    (
-                        from o in update.InvadingUnits.OfType<InvasionOrbital>()
-                        //.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Where(o => o.ShipType == ShipType.Transport
-                        where !o.IsDestroyed
-                        let ship = o.Source as Ship
-                        where ship != null && ship.ShipType == ShipType.Transport
-                        select o
-                    ).ToList();
-
-                if (transports.Count == 0)
-                    SendInvasionOrders(new InvasionOrders(update.InvasionID, InvasionAction.StandDown, InvasionTargetingStrategy.Balanced));
-                else
-                    SendInvasionOrders(new InvasionOrders(update.InvasionID, InvasionAction.LandTroops, InvasionTargetingStrategy.Balanced));
-            }
-        }
-
         private void SendTurnPhaseChangedNotifications(TurnPhase phase)
         {
             lock (_playerInfo.SyncRoot)
@@ -1232,30 +968,6 @@ namespace Supremacy.WCF
                         .Subscribe(
                             _ => { },
                             e => DropPlayerAsync(playerInfoCopy.Player));
-                }
-            }
-        }
-
-        private void TryResumeCombat(CombatEngine engine)
-        {
-            if (engine != null)
-            {
-                GameContext.PushThreadContext(_game);
-                try
-                {
-                    lock (engine.SyncLock)
-                    {
-                        if (engine.Ready)
-                            engine.ResolveCombatRound();
-                    }
-                }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
-                {
-                    GameLog.LogException(e);
-                }
-                finally
-                {
-                    GameContext.PopThreadContext();
                 }
             }
         }
@@ -1328,55 +1040,6 @@ namespace Supremacy.WCF
         public int GetNewObjectID()
         {
             return _game.GenerateID();
-        }
-
-        public void SendCombatOrders(CombatOrders orders)
-        {
-            if (_combatEngine == null || orders == null)
-                return;
-
-            lock (_combatEngine.SyncLock)
-            {
-                _combatEngine.SubmitOrders(orders);
-
-                if (_combatEngine.Ready)
-                    TryResumeCombat(_combatEngine);
-            }
-        }
-
-        public void SendInvasionOrders(InvasionOrders orders)
-        {
-            if (_invasionEngine == null || orders == null)
-                return;
-
-            _threadPoolScheduler.Schedule(() => _invasionEngine.SubmitOrders(orders));
-        }
-
-        public void NotifyInvasionScreenReady()
-        {
-            var invasionEngine = _invasionEngine;
-            if (invasionEngine == null)
-                return;
-
-            var game = _game;
-            if (game != null)
-                GameContext.PushThreadContext(game);
-
-            try
-            {
-                var player = GetPlayerByEmpire(invasionEngine.InvasionArena.Invader);
-
-                if (Equals(player, CurrentPlayer))
-                {
-                    _invasionEngine = null;
-                    _gameEngine.NotifyCombatFinished();
-                }
-            }
-            finally
-            {
-                if (game != null)
-                    GameContext.Pop();
-            }
         }
 
         public void SaveGame(string fileName)
@@ -1482,10 +1145,6 @@ namespace Supremacy.WCF
             _lobbyData.IsMultiplayerGame = initData.IsMultiplayerGame;
             _lobbyData.GameOptions = initData.Options;
             _lobbyData.Empires = initData.EmpireNames;
-            //foreach (var empNames in _lobbyData.Empires)
-            //{
-            //    GameLog.Print("empNames={0}", empNames);
-            //}
 
             _lobbyData.GameMod = mod;
 
@@ -1544,29 +1203,7 @@ namespace Supremacy.WCF
             //GameLog.Print("HostGameResult = SUCCESS");
             return HostGameResult.Success;
         
-    }
-
-        /*
-                public HostGameResult LoadSinglePlayerGame(string fileName, out Player localPlayer)
-                {
-                    DateTime timestamp;
-                    SavedGameHeader header;
-                    if (!SavedGameManager.LoadGame(fileName, out header, out _game, out timestamp))
-                    {
-                        localPlayer = null;
-                        return HostGameResult.LoadGameFailure;
-                    }
-                    localPlayer = EstablishPlayer(null);
-                    if (header != null)
-                    {
-                        _players[localPlayer.PlayerID].EmpireID = header.LocalPlayerEmpireID;
-                        _lobbyData.Players[localPlayer.PlayerID].EmpireID = header.LocalPlayerEmpireID;
-                        localPlayer.EmpireID = header.LocalPlayerEmpireID;
-                    }
-                    AsyncHelper.Invoke((Function)StartGame);
-                    return HostGameResult.Success;
-                }
-        */
+        }
 
         public JoinGameResult JoinGame(string playerName, out Player localPlayer, out LobbyData lobbyData)
         {
@@ -1591,8 +1228,6 @@ namespace Supremacy.WCF
                 return JoinGameResult.Success;
             }
         }
-
-        public void Pong(int pingId) { }
 
         public void Disconnect()
         {
@@ -1740,6 +1375,229 @@ namespace Supremacy.WCF
 
             Observable.ToAsync(SendLobbyUpdate, _scheduler)();
         }
+
+        #region Combat
+        private void NotifyCombatEndedCallback(CombatEngine engine)
+        {
+            if (_combatEngine != null)
+            {
+                _combatEngine = null;
+                _gameEngine.NotifyCombatFinished();
+            }
+        }
+
+        private void OnCombatOccurring(List<CombatAssets> assets)
+        {
+            _combatEngine = new AutomatedCombatEngine(
+                assets,
+                SendCombatUpdateCallback,
+                NotifyCombatEndedCallback);
+            _combatEngine.SendInitialUpdate();
+        }
+
+        public void SendCombatOrders(CombatOrders orders)
+        {
+            if (_combatEngine == null || orders == null)
+                return;
+
+            lock (_combatEngine.SyncLock)
+            {
+                _combatEngine.SubmitOrders(orders);
+
+                if (_combatEngine.Ready)
+                    TryResumeCombat(_combatEngine);
+            }
+        }
+
+        private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
+        {
+            GameContext.PushThreadContext(_game);
+
+            var player = _playerInfo.FromEmpireId(update.OwnerID);
+            if (player != null)
+            {
+                var callback = player.Callback;
+                if (callback != null)
+                {
+                    callback.NotifyCombatUpdate(update);
+                }
+            }
+
+            //No proper CombatAI, so just for now fake some orders
+            else if (!engine.IsCombatOver && !update.Owner.IsHuman)
+            {
+                GameLog.Print("Generating fake order for {0}", update.Owner.Name);
+                var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
+                if (ownerAssets == null)
+                {
+                    return;
+                }
+                if (update.RoundNumber == 1)
+                {
+                    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Hail));
+                }
+                else
+                {
+                    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Engage));
+                }
+            }
+
+            GameContext.PopThreadContext();
+        }
+
+        private void TryResumeCombat(CombatEngine engine)
+        {
+            if (engine != null)
+            {
+                GameContext.PushThreadContext(_game);
+                try
+                {
+                    lock (engine.SyncLock)
+                    {
+                        if (engine.Ready)
+                            engine.ResolveCombatRound();
+                    }
+                }
+                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                {
+                    GameLog.LogException(e);
+                }
+                finally
+                {
+                    GameContext.PopThreadContext();
+                }
+            }
+        }
+        #endregion
+
+        #region Invasion
+        private void NotifyInvasionEndedCallback(InvasionEngine engine)
+        {
+            var player = GetPlayerByEmpire(engine.InvasionArena.Invader);
+            if (player.IsHumanPlayer)
+                return;
+
+            if (_invasionEngine == engine)
+            {
+                _invasionEngine = null;
+                _gameEngine.NotifyCombatFinished();
+            }
+        }
+
+        public void NotifyInvasionScreenReady()
+        {
+            var invasionEngine = _invasionEngine;
+            if (invasionEngine == null)
+                return;
+
+            var game = _game;
+            if (game != null)
+                GameContext.PushThreadContext(game);
+
+            try
+            {
+                var player = GetPlayerByEmpire(invasionEngine.InvasionArena.Invader);
+
+                if (Equals(player, CurrentPlayer))
+                {
+                    _invasionEngine = null;
+                    _gameEngine.NotifyCombatFinished();
+                }
+            }
+            finally
+            {
+                if (game != null)
+                    GameContext.Pop();
+            }
+        }
+
+        private void OnInvasionOccurring(InvasionArena invasionArena)
+        {
+            if (_invasionEngine == null)
+                _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+
+            _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+        }
+
+        public void SendInvasionOrders(InvasionOrders orders)
+        {
+            if (_invasionEngine == null || orders == null)
+                return;
+
+            _threadPoolScheduler.Schedule(() => _invasionEngine.SubmitOrders(orders));
+        }
+
+        private void SendInvasionUpdateCallback(InvasionEngine engine, InvasionArena update)
+        {
+            var player = _playerInfo.FromEmpireId(update.InvaderID);
+            if (player != null)
+            {
+                var callback = player.Callback;
+                if (callback != null)
+                    callback.NotifyInvasionUpdate(update);
+            }
+            else if (update.Status == InvasionStatus.InProgress)
+            {
+                var transports =
+                    (
+                        from o in update.InvadingUnits.OfType<InvasionOrbital>()
+                            //.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Where(o => o.ShipType == ShipType.Transport
+                        where !o.IsDestroyed
+                        let ship = o.Source as Ship
+                        where ship != null && ship.ShipType == ShipType.Transport
+                        select o
+                    ).ToList();
+
+                if (transports.Count == 0)
+                    SendInvasionOrders(new InvasionOrders(update.InvasionID, InvasionAction.StandDown, InvasionTargetingStrategy.Balanced));
+                else
+                    SendInvasionOrders(new InvasionOrders(update.InvasionID, InvasionAction.LandTroops, InvasionTargetingStrategy.Balanced));
+            }
+        }
+        #endregion
+
+        #region Ping
+        private void PingClients()
+        {
+            var players = _playerInfo.ToArray();
+
+            foreach (var player in players)
+            {
+                var playerCopy = player;
+
+                ((Action<ServerPlayerInfo>)PingPlayer)
+                    .ToAsync(player.Scheduler)(player)
+                    .Subscribe(
+                    _ => { },
+                    e => DropPlayer(playerCopy));
+            }
+        }
+
+        private void PingPlayer([NotNull] ServerPlayerInfo player)
+        {
+            if (player == null)
+                throw new ArgumentNullException("player");
+
+            try { player.Callback.Ping(); }
+            catch { DropPlayer(player); }
+        }
+
+        public void Pong(int pingId) { }
+
+        internal void StartHeartbeat()
+        {
+            _heartbeat = Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(15))
+                .Select(_ => ((Action)PingClients).ToAsync(_threadPoolScheduler)())
+                .Subscribe();
+        }
+
+        internal void StopHeartbeat()
+        {
+            var heartbeat = Interlocked.Exchange(ref _heartbeat, null);
+            if (heartbeat != null)
+                heartbeat.Dispose();
+        }
+        #endregion
         #endregion
     }
 }

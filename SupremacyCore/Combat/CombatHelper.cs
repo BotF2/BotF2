@@ -30,6 +30,30 @@ namespace Supremacy.Combat
                    (orbital.OrbitalDesign.SecondaryWeapon.Damage * orbital.OrbitalDesign.SecondaryWeapon.Count);
         }
 
+        /// <summary>
+        /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
+        /// </summary>
+        /// <param name="assets"></param>
+        /// <returns></returns>
+        public static Sector CalculateRetreatDestination(CombatAssets assets)
+        {
+            var nearestFriendlySystem = GameContext.Current.Universe.FindNearestOwned<Colony>(
+                assets.Location,
+                assets.Owner);
+
+            var sectors =
+                (
+                    from s in assets.Sector.GetNeighbors()
+                    let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
+                    let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
+                    let hostileOrbitalPower = hostileOrbitals.Sum(o => CombatHelper.CalculateOrbitalPower(o))
+                    orderby hostileOrbitalPower ascending, distance descending
+                    select s
+                );
+
+            return sectors.FirstOrDefault();
+        }
+
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {
             var assets = new Dictionary<Civilization, CombatAssets>();

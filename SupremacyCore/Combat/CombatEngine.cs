@@ -263,7 +263,6 @@ namespace Supremacy.Combat
                 friendlyAssets.Add(playerAsset);
 
                 foreach (var otherAsset in _assets)
-                    //var otherOwner = otherAsset.Owner;
                 {
                     if (otherAsset == playerAsset)
                         continue;
@@ -271,10 +270,6 @@ namespace Supremacy.Combat
                     {
                         hostileAssets.Add(otherAsset);
                     }
-                    //if (owner.Name == "Borg" && otherAsset.Owner.Name == "Borg")
-                    //{
-                    //    hostileAssets.Remove(otherAsset);
-                    //}
                     else
                     {
                         friendlyAssets.Add(otherAsset);
@@ -288,7 +283,7 @@ namespace Supremacy.Combat
 
                 if (hostileAssets.Count == 0)
                 {
-                        GameLog.Print("Combat: hostileAssets.Count == 0, no combat will be shown due to missing enemy");
+                    GameLog.Print("Combat: hostileAssets.Count == 0, no combat will be shown due to missing enemy");
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);   // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
                     break;
@@ -373,37 +368,13 @@ namespace Supremacy.Combat
         }
 
         /// <summary>
-        /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
-        /// </summary>
-        /// <param name="assets"></param>
-        /// <returns></returns>
-        private Sector CalculateRetreatDestination(CombatAssets assets)
-        {
-            var nearestFriendlySystem = GameContext.Current.Universe.FindNearestOwned<Colony>(
-                assets.Location,
-                assets.Owner);
-
-            var sectors =
-                (
-                    from s in assets.Sector.GetNeighbors()
-                    let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
-                    let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
-                    let hostileOrbitalPower = hostileOrbitals.Sum(o => CombatHelper.CalculateOrbitalPower(o))
-                    orderby hostileOrbitalPower ascending, distance descending
-                    select s
-                );
-
-            return sectors.FirstOrDefault();
-        }
-
-        /// <summary>
         /// Moves ships that have escaped to their destinations
         /// </summary>
         private void PerformRetreat()
         {
             foreach (var assets in _assets)
             {               
-                var destination = CalculateRetreatDestination(assets);
+                var destination = CombatHelper.CalculateRetreatDestination(assets);
 
                 if (destination == null)
                     continue;

@@ -114,14 +114,14 @@ namespace Supremacy.Combat
                 }
 
                 //if (_combatUpdateTraceLocally == true)
-                    //GameLog.Print("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
+                //GameLog.Print("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
 
-                    if (friendlyAssets == 0)
-                    {
-                        if (_combatUpdateTraceLocally)
-                            GameLog.Print("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
-                        return true;
-                    }
+                if (friendlyAssets == 0)
+                {
+                    if (_combatUpdateTraceLocally)
+                        GameLog.Print("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+                    return true;
+                }
 
                 foreach (CombatAssets assets in HostileAssets)
                 {
