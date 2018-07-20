@@ -224,8 +224,11 @@ namespace Supremacy.Combat
 
                         GameLog.Print("Friendly Weapon Power = {0}, Hostile Weapon Power = {1}, Ratio={2}", 
                             friendlyWeaponPower, hostileWeaponPower, weaponRatio);
-
-                        if (oppositionIsInFormation) // If you go into formation you are not in position / time to stop the opposition from retreating                   
+                        if (_combatShips[1].Item1.Source.OrbitalDesign.ShipType == "Scout")
+                        {
+                            retreatSuccessful = true;
+                        }
+                        else if (oppositionIsInFormation) // If you go into formation you are not in position / time to stop the opposition from retreating                   
                         {
                             retreatSuccessful = true;
                             if (_traceCombatEngine)

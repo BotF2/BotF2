@@ -574,6 +574,156 @@ namespace Supremacy.Tech
                 }
             }
 
+
+            bool _traceTechObjectDatabase = true;
+            if (_traceTechObjectDatabase == true)
+            {
+
+
+
+                //if (file == null)
+                //    goto WriterClose;
+
+               
+                var separator = ";";
+                    var line = "";
+
+                // Production Facilities
+
+                var productionFile = "FromTechObjectDatabase--ProductionFacilities_(autoCreated).csv";
+                Console.WriteLine("writing {0}", productionFile);
+                StreamWriter streamWriter = new StreamWriter(productionFile);
+
+                String strHeader =
+                            "Key" + separator +
+                            "IsUniversallyAvailable" + separator +
+                            "DesignID" + separator +
+                            "BuildCost" + separator +
+                             "LaborCost" + separator +
+                              "Category" + separator +
+                               "UnitOutput" + separator;
+
+                streamWriter.WriteLine(strHeader);
+
+                foreach (var item in db.ProductionFacilityDesigns)
+                {
+                    line = item.Key + separator +
+                        item.IsUniversallyAvailable + separator +
+                        item.DesignID + separator +
+                        item.BuildCost + separator +
+                        item.LaborCost + separator +
+                        item.Category + separator +
+                        item.UnitOutput + separator;
+                   
+                    streamWriter.WriteLine(line);
+                }
+                streamWriter.Close();
+                // End of Production
+
+                // Shipyards
+
+                var shipyardFile = "FromTechObjectDatabase--Shipyards_(autoCreated).csv";
+                Console.WriteLine("writing {0}", shipyardFile);
+                StreamWriter streamWriterYard = new StreamWriter(shipyardFile);
+
+                String strHeaderYard =
+                            "Key" + separator +
+                            
+                            "DesignID" + separator +
+                            "BuildCost" + separator +
+                            
+
+                            "Restriction" + separator +
+                            "BuildSlots" + separator +
+                            "BuildSlotMaxOutput" + separator +
+                            
+                            "BuildSlotOutput" + separator +
+                            "BuildSlotEnergyCost" + separator;
+
+                streamWriterYard.WriteLine(strHeaderYard);
+
+                foreach (var item in db.ShipyardDesigns)
+                {
+                    line = item.Key + separator +
+                       // item.IsUniversallyAvailable + separator +
+                        item.DesignID + separator +
+                        item.BuildCost + separator +
+                        
+                        //item.BuildResourceCosts + separator +
+                        item.Restriction + separator +
+                        item.BuildSlots + separator +
+                        item.BuildSlotMaxOutput + separator + 
+                        
+                        item.BuildSlotOutput + separator +
+                        item.BuildSlotEnergyCost;
+                        
+                    streamWriterYard.WriteLine(line);
+                }
+                streamWriterYard.Close();
+                // End of Shipyards
+                // Ships
+                var file = "FromTechObjectDatabase--Ships_(autoCreated).csv";
+                Console.WriteLine("writing {0}", file);
+                StreamWriter streamWriterShip = new StreamWriter(file);
+
+                String strHeaderShip =
+                            "Key" + separator +
+                            "DesignID" + separator +
+                            "ShipType" + separator +
+                            //"ClassName" + separator +
+                            "BuildCost" + separator +
+                            "RawMaterials" + separator +
+                            "MaintenanceCost" + separator +
+                            "CrewSize" + separator +
+
+                            "HullStrength" + separator +
+                            "SheildStrength" + separator +
+                            "SheildRechargeRate" + separator +
+
+                            "BeamWeaponCount" + separator +
+                            "BeamWeaponDamage" + separator +
+                            "RefirePerCent" + separator +
+                            "TorpedoCount" + separator +
+                            "TorpedoDamage" + separator +
+                            "Range" + separator +
+                            "Speed";
+                            
+                streamWriterShip.WriteLine(strHeaderShip);
+                
+                foreach (var item in db.ShipDesigns)
+                {
+                    line = item.Key + separator +
+                        item.DesignID + separator +
+                        item.ShipType + separator +
+                        //item.ClassName + separator +
+                        item.BuildCost + separator +
+                        item.RawMaterials + separator +
+                        item.MaintenanceCost + separator +
+                        item.CrewSize + separator +
+                        item.HullStrength + separator +
+                        item.ShieldStrength + separator +
+                        item.ShieldRechargeRate + separator +
+                                               
+                        item.PrimaryWeapon.Count + separator +
+                        item.PrimaryWeapon.Damage + separator +
+                        item.PrimaryWeapon.Refire + separator +
+
+                        item.SecondaryWeapon.Count + separator +
+                        item.SecondaryWeapon.Damage + separator +
+                        item.Range + separator +
+                        item.Speed;
+
+                    streamWriterShip.WriteLine(line);
+                }
+                // End of Ships
+
+
+                // End of Autocreated files 
+                streamWriterShip.Close();
+                //WriterClose:;
+            }
+            
+
             db._designIdMap = designIdMap;
 
             //using (var gameDatabase = new SupremacyDatabase())
@@ -731,6 +881,7 @@ namespace Supremacy.Tech
                 }
 
                 xmlDoc.WriteTo(xmlWriter);
+                
             }
         }
 
