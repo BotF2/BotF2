@@ -575,152 +575,188 @@ namespace Supremacy.Tech
             }
 
 
-            bool _traceTechObjectDatabase = true;
+            bool _traceTechObjectDatabase = true;  // file is writen while starting a game -> Federation -> Start
+
+
             if (_traceTechObjectDatabase == true)
             {
-
-
-
-                //if (file == null)
-                //    goto WriterClose;
-
-               
                 var separator = ";";
-                    var line = "";
+                var line = "";
 
-                // Production Facilities
-
-                var productionFile = "FromTechObjectDatabase--ProductionFacilities_(autoCreated).csv";
-                Console.WriteLine("writing {0}", productionFile);
-                StreamWriter streamWriter = new StreamWriter(productionFile);
-
-                String strHeader =
-                            "Key" + separator +
-                            "IsUniversallyAvailable" + separator +
-                            "DesignID" + separator +
-                            "BuildCost" + separator +
-                             "LaborCost" + separator +
-                              "Category" + separator +
-                               "UnitOutput" + separator;
-
-                streamWriter.WriteLine(strHeader);
-
-                foreach (var item in db.ProductionFacilityDesigns)
-                {
-                    line = item.Key + separator +
-                        item.IsUniversallyAvailable + separator +
-                        item.DesignID + separator +
-                        item.BuildCost + separator +
-                        item.LaborCost + separator +
-                        item.Category + separator +
-                        item.UnitOutput + separator;
-                   
-                    streamWriter.WriteLine(line);
-                }
-                streamWriter.Close();
-                // End of Production
-
-                // Shipyards
-
-                var shipyardFile = "FromTechObjectDatabase--Shipyards_(autoCreated).csv";
-                Console.WriteLine("writing {0}", shipyardFile);
-                StreamWriter streamWriterYard = new StreamWriter(shipyardFile);
-
-                String strHeaderYard =
-                            "Key" + separator +
-                            
-                            "DesignID" + separator +
-                            "BuildCost" + separator +
-                            
-
-                            "Restriction" + separator +
-                            "BuildSlots" + separator +
-                            "BuildSlotMaxOutput" + separator +
-                            
-                            "BuildSlotOutput" + separator +
-                            "BuildSlotEnergyCost" + separator;
-
-                streamWriterYard.WriteLine(strHeaderYard);
-
-                foreach (var item in db.ShipyardDesigns)
-                {
-                    line = item.Key + separator +
-                       // item.IsUniversallyAvailable + separator +
-                        item.DesignID + separator +
-                        item.BuildCost + separator +
-                        
-                        //item.BuildResourceCosts + separator +
-                        item.Restriction + separator +
-                        item.BuildSlots + separator +
-                        item.BuildSlotMaxOutput + separator + 
-                        
-                        item.BuildSlotOutput + separator +
-                        item.BuildSlotEnergyCost;
-                        
-                    streamWriterYard.WriteLine(line);
-                }
-                streamWriterYard.Close();
-                // End of Shipyards
-                // Ships
+                // Ships    
                 var file = "FromTechObjectDatabase--Ships_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
-                StreamWriter streamWriterShip = new StreamWriter(file);
 
-                String strHeaderShip =
-                            "Key" + separator +
-                            "DesignID" + separator +
-                            "ShipType" + separator +
-                            //"ClassName" + separator +
-                            "BuildCost" + separator +
-                            "RawMaterials" + separator +
-                            "MaintenanceCost" + separator +
-                            "CrewSize" + separator +
+                if (file == null)
+                    goto WriterClose;
 
-                            "HullStrength" + separator +
-                            "SheildStrength" + separator +
-                            "SheildRechargeRate" + separator +
+                StreamWriter streamWriter = new StreamWriter(file);
 
-                            "BeamWeaponCount" + separator +
-                            "BeamWeaponDamage" + separator +
-                            "RefirePerCent" + separator +
-                            "TorpedoCount" + separator +
-                            "TorpedoDamage" + separator +
-                            "Range" + separator +
-                            "Speed";
-                            
-                streamWriterShip.WriteLine(strHeaderShip);
+                String strHeader =    // Head line
+                    "CE_Ship" + separator +
+                    "ATT_Key" + separator +
+                    //"CE_DesignID" + separator +   // not useful for current working
+                    "CE_ShipType" + separator +
+                    "CE_ClassName" + separator +
+                    "CE_TechRequirements" + separator +
+                    "CE_BioTech" + separator +
+                    "CE_Computers" + separator +
+                    "CE_Construction" + separator +
+                    "CE_Energy" + separator +
+                    "CE_Propulsion" + separator +
+                    "CE_Weapons" + separator +
+
+                    "CE_BuildCost" + separator +
+                    "CE_RawMaterials" + separator +
+                    "CE_MaintenanceCost" + separator +
+
+                    "CE_HullStrength" + separator +
+                    "CE_PopulationHealth" + separator +
+                    "CE_IsUniversallyAvailable" + separator +
+                    "CE_UpgradableDesigns" + separator +
+                    "CE_CrewSize" + separator +
+                    "CE_ScienceAbility" + separator +
+                    "CE_ScanStrength" + separator +
+                    "CE_SensorRange" + separator +
+                    "CE_HullStrength" + separator +
+                    "CE_ShieldStrength" + separator +
+                    "CE_ShieldRechargeRate" + separator +
+                    "CE_Dilithium" + separator +
+                    "CE_CloakStrength" + separator +
+                    "CE_CamouflagedStrength" + separator +
+                    "CE_Range" + separator +
+                    "CE_Speed" + separator +
+                    "CE_FuelCapacity" + separator +
+                    "CE_Maneuverability" + separator +
+                    "CE_EvacuationLimit" + separator +
+                    "CE_WorkCapacity" + separator +
+                    "CE_ObsoletedDesigns" + separator +
+                    "CE_InterceptAbility" + separator +
+                    "CE_PossibleNames" + separator +
+
+                    //"CE_PrimaryWeaponName" + separator + // not useful for current working
+                    "CE_Beam Count" + separator +
+                    //"CE_PrimaryWeapon.Count" + separator +
+
+                    "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
+                    //"CE_PrimaryWeapon.Refire" + separator +
+
+                    "CE_Damage" + separator +
+                    //"CE_PrimaryWeapon.Damage" + separator +
+
+
+                    //"CE_SecondaryWeaponName" + separator + // not useful for current working
+                    "CE_Torpedo Count" + separator +
+                    //"CE_SecondaryWeapon.Count" + separator +
+                    "CE_Damage";
+                    //"CE_SecondaryWeapon.Damage" + separator +
+
+
+                streamWriter.WriteLine(strHeader);
+                // End of head line
                 
-                foreach (var item in db.ShipDesigns)
+                foreach (var item in db.ShipDesigns)   // each item
                 {
-                    line = item.Key + separator +
-                        item.DesignID + separator +
+                    line = 
+                        "Ship" + separator +
+                        item.Key + separator +
+                        //item.DesignID + separator +   // not useful for current working
                         item.ShipType + separator +
-                        //item.ClassName + separator +
+                        item.ClassName + separator +
+                        //item.Key;   // just for testing
+
+                        //<TechRequirements>
+                        "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                                           // after GoogleSheet-Export: replace...
+                                           // </Weapons> by </Weapons></TechRequirements>
+                                           // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                        //"<Biotech>" + separator +                // not helpful
+                        item.TechRequirements[TechCategory.BioTech] + separator +
+                        //"</Biotech>" + separator +                 // not helpful
+                        //"<Computers>" + separator +                 // not helpful
+                        item.TechRequirements[TechCategory.Computers] + separator +
+                        //"</Computers>" + separator +                // not helpful
+                        //"<Construction>" + separator +                 // not helpful
+                        item.TechRequirements[TechCategory.Construction] + separator +
+                        //"</Construction>" + separator +                // not helpful
+                        //"<Energy>" + separator +                 // not helpful
+                        item.TechRequirements[TechCategory.Energy] + separator +
+                        //"</Energy>" + separator +                // not helpful
+                        //"<Propulsion>" + separator +                 // not helpful
+                        item.TechRequirements[TechCategory.Propulsion] + separator +
+                        //"</Propulsion>" + separator +                // not helpful
+                        //"<Weapons>" + separator +                 // not helpful
+                        item.TechRequirements[TechCategory.Weapons] + separator +
+                        //"</Weapons>" + separator +                // not helpful
+
                         item.BuildCost + separator +
                         item.RawMaterials + separator +
                         item.MaintenanceCost + separator +
+                        item.HullStrength + separator +
+                        item.PopulationHealth + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export
+                        item.IsUniversallyAvailable + separator +
+
+                        //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
+                        item.Key + "I" + separator +
+                        //item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
+                        //"<UpgradeOptions> + newline + " +                // not helpful
+                        //"<UpgradeOption></UpgradeOption> + " +// not helpful
+                        //separator +
+
+                        // if UpgrodeOption is "SHIPI" (I at the end) -> remove manually
+
                         item.CrewSize + separator +
+                        item.ScienceAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+                        item.ScanStrength + separator +
+                        item.SensorRange + separator +
                         item.HullStrength + separator +
                         item.ShieldStrength + separator +
-                        item.ShieldRechargeRate + separator +
-                                               
-                        item.PrimaryWeapon.Count + separator +
-                        item.PrimaryWeapon.Damage + separator +
-                        item.PrimaryWeapon.Refire + separator +
-
-                        item.SecondaryWeapon.Count + separator +
-                        item.SecondaryWeapon.Damage + separator +
+                        item.ShieldRechargeRate + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+                        item.Dilithium + separator +
+                        item.CloakStrength + separator +
+                        item.CamouflagedStrength + separator +
                         item.Range + separator +
-                        item.Speed;
+                        item.Speed + separator +
+                        item.FuelCapacity + separator +
+                        item.Maneuverability + separator +
+                        item.EvacuationLimit + separator +
+                        item.WorkCapacity + separator +
 
-                    streamWriterShip.WriteLine(line);
+                        // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
+                        item.Key + separator +
+
+                        //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
+                        //"<ObsoletedItems> + newline + " +                 // not helpful
+                        //"<ObsoletedItem></ObsoletedItem>" +// not helpful
+
+                        //" + newline + </ObsoletedItems>" +                 // not helpful
+                        //separator +
+
+                        item.InterceptAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+
+                        // Possibles ShipNames
+                        //"<ShipNames> + newline + " +                // not helpful
+                        //"<ShipName></ShipName>" +// not helpful
+                        //" + newline + </ShipNames>" +                 // not helpful
+                        "PossibleShipNames" + separator +   // doubled ??
+
+                        //"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
+                        item.PrimaryWeapon.Count + separator +
+                        item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
+                        item.PrimaryWeapon.Damage + separator +
+
+                        //"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
+                        item.SecondaryWeapon.Count + separator +
+                        item.SecondaryWeapon.Damage;
+                        
+                    streamWriter.WriteLine(line);
                 }
                 // End of Ships
 
-
                 // End of Autocreated files 
-                streamWriterShip.Close();
-                //WriterClose:;
+                streamWriter.Close();
+                WriterClose:;
             }
             
 
