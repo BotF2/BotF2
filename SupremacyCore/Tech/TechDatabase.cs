@@ -596,8 +596,8 @@ namespace Supremacy.Tech
                     "CE_Ship" + separator +
                     "ATT_Key" + separator +
                     //"CE_DesignID" + separator +   // not useful for current working
-                    "CE_ShipType" + separator +
-                    "CE_ClassName" + separator +
+                    //"CE_ShipType" + separator +  // moved down for current working
+                    //"CE_ClassName" + separator +  // moved down for current working
                     "CE_TechRequirements" + separator +
                     "CE_BioTech" + separator +
                     "CE_Computers" + separator +
@@ -613,6 +613,7 @@ namespace Supremacy.Tech
                     "CE_HullStrength" + separator +
                     "CE_PopulationHealth" + separator +
                     "CE_IsUniversallyAvailable" + separator +
+                    "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
                     "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
                     "CE_Crew" + separator +    // it's Crew
                     "CE_ScienceAbility" + separator +
@@ -621,16 +622,19 @@ namespace Supremacy.Tech
                     "CE_HullStrength" + separator +
                     "CE_ShieldStrength" + separator +
                     "CE_ShieldRecharge" + separator +
+
+                    "CE_ShipType" + separator +
+                    "CE_ClassName" + separator +
                     "CE_Dilithium" + separator +
                     "CE_CloakStrength" + separator +
                     "CE_CamouflagedStrength" + separator +
                     "CE_Range" + separator +
                     "CE_Speed" + separator +
-                    "CE_FuelCapacity" + separator +
+                    "CE_FuelReserve" + separator +
                     "CE_Maneuverability" + separator +
                     "CE_EvacuationLimit" + separator +
                     "CE_WorkCapacity" + separator +
-                    "CE_ObsoletedDesigns" + separator +
+
                     "CE_InterceptAbility" + separator +
                     "CE_PossibleNames" + separator +
 
@@ -661,8 +665,8 @@ namespace Supremacy.Tech
                         "Ship" + separator +
                         item.Key + separator +
                         //item.DesignID + separator +   // not useful for current working
-                        item.ShipType + separator +
-                        item.ClassName + separator +
+                        //item.ShipType + separator +  // moved down for current working
+                        //item.ClassName + separator +  // moved down for current working
                         //item.Key;   // just for testing
 
                         //<TechRequirements>
@@ -713,6 +717,10 @@ namespace Supremacy.Tech
                         item.HullStrength + separator +
                         item.ShieldStrength + separator +
                         item.ShieldRechargeRate + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
+                        
+                        item.ShipType + separator +
+                        item.ClassName + separator +
+
                         item.Dilithium + separator +
                         item.CloakStrength + separator +
                         item.CamouflagedStrength + separator +
@@ -739,7 +747,8 @@ namespace Supremacy.Tech
                         //"<ShipNames> + newline + " +                // not helpful
                         //"<ShipName></ShipName>" +// not helpful
                         //" + newline + </ShipNames>" +                 // not helpful
-                        "PossibleShipNames" + separator +   // doubled ??
+                        "PossibleShipNames" + item.Key + separator +   // doubled ??
+                        
 
                         //"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
                         item.PrimaryWeapon.Count + separator +
