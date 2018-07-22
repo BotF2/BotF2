@@ -613,14 +613,14 @@ namespace Supremacy.Tech
                     "CE_HullStrength" + separator +
                     "CE_PopulationHealth" + separator +
                     "CE_IsUniversallyAvailable" + separator +
-                    "CE_UpgradableDesigns" + separator +
-                    "CE_CrewSize" + separator +
+                    "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
+                    "CE_Crew" + separator +    // it's Crew
                     "CE_ScienceAbility" + separator +
-                    "CE_ScanStrength" + separator +
+                    "CE_ScanPower" + separator +
                     "CE_SensorRange" + separator +
                     "CE_HullStrength" + separator +
                     "CE_ShieldStrength" + separator +
-                    "CE_ShieldRechargeRate" + separator +
+                    "CE_ShieldRecharge" + separator +
                     "CE_Dilithium" + separator +
                     "CE_CloakStrength" + separator +
                     "CE_CamouflagedStrength" + separator +
