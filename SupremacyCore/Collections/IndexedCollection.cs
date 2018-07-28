@@ -1181,7 +1181,7 @@ namespace Supremacy.Collections
             Expression<Func<TSource, TKey>> keySelector,
             IEqualityComparer<TKey> comparer)
         {
-            return GroupBy(source, keySelector, delegate(TSource t) { return t; } /* e => e */, comparer);
+            return GroupBy(source, keySelector, delegate(TSource t) { return t; }, comparer);
         }
 
         public static IEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(

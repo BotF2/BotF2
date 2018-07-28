@@ -548,22 +548,9 @@ namespace Supremacy.Client
                 GameScreensRegionBorder.ClearValue(OpacityProperty);
                 GameScreensRegionBorder.ClearValue(EffectProperty);
                 CheckScreenFocus();
-
-/*
-                var currentScreen = this.GameScreensRegion.CurrentScreen as IAnimationsHost;
-                if (currentScreen != null)
-                    currentScreen.ResumeAnimations();
-*/
             }
             else if (enableShaders)
             {
-/*
-                var currentScreen = this.GameScreensRegion.CurrentScreen as IAnimationsHost;
-                if (currentScreen != null)
-                    currentScreen.PauseAnimations();
-*/
-
-                //this.GameScreensRegionBorder.Opacity = 0.4;
                 GameScreensRegionBorder.Effect = new ColorToneEffect
                                                       {
                                                           DarkColor = Color.FromScRgb(1.0f, 0.1f, 0.075f, 0.125f),

@@ -94,16 +94,6 @@ namespace Supremacy.Scripting.Ast
                 OnInitialized();
         }
 
-/*
-        public override void EndInit(ParseContext parseContext)
-        {
-            if (parseContext.CurrentScope == this.Scope)
-                parseContext.CurrentScope = parseContext.CurrentScope.Parent;
-
-            base.EndInit(parseContext);
-        }
-*/
-
         public override Expression DoResolve(ParseContext parseContext)
         {
             Expression = Expression.Resolve(parseContext);

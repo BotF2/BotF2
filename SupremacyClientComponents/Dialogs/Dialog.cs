@@ -72,11 +72,6 @@ namespace Supremacy.Client.Dialogs
         private bool _settingFocus;
         private bool _setFocusOnContent;
         private bool _isFocusActivating;
-
-        //private IntPtr _ownerHandle;
-        //private IntPtr _dialogOwnerHandle;
-        //private IntPtr _dialogPreviousActiveHandle;
-        //private HwndSource _sourceWindow;
         private DispatcherFrame _dispatcherFrame;
 
         #region Constructors and Finalizers
@@ -278,18 +273,6 @@ namespace Supremacy.Client.Dialogs
             e.Handled = true;
         }
         #endregion
-
-/*
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                OnDialogCancelCommand();
-                e.Handled = true;
-            }
-            base.OnKeyDown(e);
-        }
-*/
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {

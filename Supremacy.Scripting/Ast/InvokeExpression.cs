@@ -99,26 +99,6 @@ namespace Supremacy.Scripting.Ast
             }
         }
 
-/*
-        public override System.Linq.Expressions.Expression TransformCore(SxeGenerator generator)
-        {
-            var memberAccess = this.Target as MemberAccessExpression;
-            if (memberAccess != null)
-            {
-                return generator.InvokeMember(
-                    memberAccess.Left.Transform(generator),
-                    memberAccess.Name,
-                    memberAccess.TypeArguments.ResolvedTypes,
-                    Arguments.Transform(_arguments, generator));
-            }
-
-            return generator.Invoke(
-                this.Target.Transform(generator),
-                this.TypeArguments.ResolvedTypes,
-                this.Arguments.Select(o => o.Value.Transform(generator)).ToArray());
-        }
-*/
-
         public override MSAst TransformCore(ScriptGenerator generator)
         {
             var instanceExpression = MethodGroup.InstanceExpression;
@@ -174,27 +154,6 @@ namespace Supremacy.Scripting.Ast
             sw.Write(")");
         }
 
-/*
-        public override Expression DoResolve(ParseContext parseContext)
-        {
-            var targetResolved = this.Target.Resolve(
-                parseContext, 
-                ResolveFlags.VariableOrValue | ResolveFlags.MethodGroup);
-
-            if (targetResolved == null)
-                return null;
-
-            var typeArguments = this.TypeArguments;
-            if (typeArguments != null)
-                typeArguments.Resolve(parseContext);
-
-            var arguments = this.Arguments;
-            if (arguments != null)
-                _arguments.Resolve(parseContext);
-
-            return this;
-        }
-*/
         public override Expression DoResolve(ParseContext ec)
         {
             // Don't resolve already resolved expression
@@ -274,7 +233,6 @@ namespace Supremacy.Scripting.Ast
                 if (method.IsStatic)
                 {
                     if (instanceExpression == null ||
-                        /*instanceExpression is This || */
                         instanceExpression is EmptyExpression ||
                         MethodGroup.IdenticalTypeName)
                     {
@@ -298,23 +256,7 @@ namespace Supremacy.Scripting.Ast
             if (method == null)
                 return null;
 
-/*
-            //
-            // Only base will allow this invocation to happen.
-            //
-            if (_methodGroup.IsBase && method.IsAbstract)
-            {
-                Error_CannotCallAbstractBase(ec, TypeManager.CSharpSignature(method));
-                return null;
-            }
-*/
-
             IsSpecialMethodInvocation(ec, method, Span);
-
-/*
-            if (_methodGroup.InstanceExpression != null)
-                _methodGroup.InstanceExpression.CheckMarshalByRefAccess(ec);
-*/
 
             ExpressionClass = ExpressionClass.Value;
             return this;

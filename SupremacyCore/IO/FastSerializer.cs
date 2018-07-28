@@ -5021,33 +5021,9 @@ namespace Supremacy.IO.Serialization
             }
         }
 
-/*
-        private static readonly Dictionary<Type, bool> _defaultConstructorLookup = new Dictionary<Type, bool>();
-*/
-
         private static object PrepareNewObject(Type type)
         {
-/*
-            if (type.IsValueType)
-                return Activator.CreateInstance(type);
 
-            bool hasDefaultConstructor;
-
-            if (!_defaultConstructorLookup.TryGetValue(type, out hasDefaultConstructor))
-            {
-                var defaultConstructor = type.GetConstructor(
-                    BindingFlags.Public | BindingFlags.Instance,
-                    Type.DefaultBinder,
-                    Type.EmptyTypes,
-                    null);
-
-                _defaultConstructorLookup[type] = hasDefaultConstructor = (defaultConstructor != null);
-            }
-
-
-            if (hasDefaultConstructor)
-                return Activator.CreateInstance(type);
-*/
 
             return FormatterServices.GetSafeUninitializedObject(type);
         }

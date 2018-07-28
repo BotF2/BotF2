@@ -152,27 +152,9 @@ namespace Supremacy.Scripting.Ast
             if (ExpressionClass != ExpressionClass.Invalid)
                 return this;
 
-/*
-            if (!ec.IsObsolete)
-            {
-                FieldBase f = TypeManager.GetField(_fieldInfo);
-                if (f != null)
-                {
-                    f.CheckObsoleteness(loc);
-                }
-                else
-                {
-                    ObsoleteAttribute oa = AttributeTester.GetMemberObsoleteAttribute(_fieldInfo);
-                    if (oa != null)
-                        AttributeTester.Report_ObsoleteMessage(oa, TypeManager.GetFullNameSignature(_fieldInfo), loc, ec.Report);
-                }
-            }
-*/
-
             ExpressionClass = ExpressionClass.Variable;
 
             // If the instance expression is a local variable or parameter.
-            //if (var == null || var.VariableInfo == null)
                 return this;
         }
 

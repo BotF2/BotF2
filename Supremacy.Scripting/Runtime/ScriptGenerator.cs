@@ -273,17 +273,6 @@ namespace Supremacy.Scripting.Runtime
         {
             return Operator(ExpressionType.NotEqual, left, right);
         }
-
-/*
-        internal MSAst New(MSAst target, MSAst[] arguments)
-        {
-            return MSAst.Dynamic(
-                Binder.New(),
-                typeof(object),
-                ArrayUtils.Insert(target, arguments));
-        }
-*/
-
         internal MSAst And(MSAst left, MSAst right)
         {
             return Operator(ExpressionType.And, left, right);

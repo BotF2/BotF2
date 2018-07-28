@@ -796,17 +796,6 @@ namespace Supremacy.WCF
                 }
             }
 
-/*
-            Observable.ToAsync(
-                delegate
-                {
-                    var task = new Task(ProcessTurn);
-                    task.Start();
-                    task.Wait();
-                },
-                _scheduler)();
-*/
-
             _threadPoolScheduler.Schedule(ProcessTurn);
 
             return true;
@@ -1047,41 +1036,6 @@ namespace Supremacy.WCF
                     _ => {},
                     e => DropPlayer(playerCopy));
             }
-
-/*
-            Interlocked.Exchange(ref _pingThread, Thread.CurrentThread);
-
-            try
-            {
-                while (Host.State == CommunicationState.Opened)
-                {
-                    if ((Thread.CurrentThread.ThreadState != ThreadState.AbortRequested)
-                        && (Thread.CurrentThread.ThreadState != ThreadState.Aborted))
-                    {
-                        Player[] players = _players.ToArray();
-                        foreach (Player player in players)
-                        {
-                            try
-                            {
-                                _playerCallbackMap[player].Ping();
-                            }
-                            catch
-                            {
-                                DropPlayer(player);
-                            }
-                        }
-                    }
-                    if ((Thread.CurrentThread.ThreadState != ThreadState.AbortRequested)
-                        && (Thread.CurrentThread.ThreadState != ThreadState.Aborted))
-                    {
-                        Thread.Sleep(new TimeSpan(0, 0, 15));
-                    }
-                }
-            }
-            catch (ThreadAbortException) { }
-            catch (ThreadInterruptedException) { }
-            catch (AppDomainUnloadedException) { }
-*/
         }
 
         private void SendChatMessageCallback(int senderId, string message, int recipientId)
@@ -1541,32 +1495,9 @@ namespace Supremacy.WCF
                     e => Log.General.Error("Error occurred while starting game.", e));
             }
 
-            //GameLog.Print("HostGameResult = SUCCESS");
             return HostGameResult.Success;
         
     }
-
-        /*
-                public HostGameResult LoadSinglePlayerGame(string fileName, out Player localPlayer)
-                {
-                    DateTime timestamp;
-                    SavedGameHeader header;
-                    if (!SavedGameManager.LoadGame(fileName, out header, out _game, out timestamp))
-                    {
-                        localPlayer = null;
-                        return HostGameResult.LoadGameFailure;
-                    }
-                    localPlayer = EstablishPlayer(null);
-                    if (header != null)
-                    {
-                        _players[localPlayer.PlayerID].EmpireID = header.LocalPlayerEmpireID;
-                        _lobbyData.Players[localPlayer.PlayerID].EmpireID = header.LocalPlayerEmpireID;
-                        localPlayer.EmpireID = header.LocalPlayerEmpireID;
-                    }
-                    AsyncHelper.Invoke((Function)StartGame);
-                    return HostGameResult.Success;
-                }
-        */
 
         public JoinGameResult JoinGame(string playerName, out Player localPlayer, out LobbyData lobbyData)
         {

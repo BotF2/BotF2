@@ -30,9 +30,6 @@ namespace Supremacy.Scripting.Runtime
         {
             _parent = parent;
             _block = Utils.Lambda(typeof(object), name ?? MakeLambdaName());
-            /*if (parent == null)
-                _block.Global = true;
-            else */
             if (parent != null && document == null)
                 document = _parent.Document;
             _document = document;

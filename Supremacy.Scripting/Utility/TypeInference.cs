@@ -59,32 +59,6 @@ namespace Supremacy.Scripting.Utility
             }
         }
 
-        /*
-                public override Type[] InferDelegateArguments (ParseContext ec, MethodBase method)
-                {
-                    AParametersCollection pd = TypeManager.GetParameterData (method);
-                    if (arg_count != pd.Count)
-                        return null;
-
-                    Type[] d_gargs = method.GetGenericArguments ();
-                    TypeInferenceContext context = new TypeInferenceContext (d_gargs);
-
-                    // A lower-bound inference is made from each argument type Uj of D
-                    // to the corresponding parameter type Tj of M
-                    for (int i = 0; i < arg_count; ++i) {
-                        Type t = pd.Types [i];
-                        if (!t.IsGenericParameter)
-                            continue;
-
-                        context.LowerBoundInference (arguments [i].Expr.Type, t);
-                    }
-
-                    if (!context.FixAllTypes (ec))
-                        return null;
-
-                    return context.InferredTypeArguments;
-                }
-        */
         public override Type[] InferMethodArguments(ParseContext ec, MethodBase method)
         {
             Type[] method_generic_args = method.GetGenericArguments();

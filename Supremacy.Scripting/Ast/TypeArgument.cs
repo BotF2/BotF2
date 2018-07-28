@@ -100,7 +100,7 @@ namespace Supremacy.Scripting.Ast
                     success = false;
                 }
 
-                if (typeExpression.Type.IsPointer/* || TypeManager.IsSpecialType(typeExpression.Type)*/)
+                if (typeExpression.Type.IsPointer)
                 {
                     parseContext.ReportError(
                         CompilerErrors.TypeMayNotBeUsedAsGenericArgument,

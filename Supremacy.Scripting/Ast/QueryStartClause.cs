@@ -65,53 +65,13 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression BuildQueryClause(ParseContext ec, Expression leftSide)
         {
-            //var oldScope = ec.CurrentScope;
-            //ec.CurrentScope = this.Scope;
-
-            //var next = this.Next;
-
-/*
-            var nextScope = (QueryScope)next.Scope;
-            if (nextScope == null)
-            {
-                var nextRangeClause = this.Next as RangeVariableQueryClause;
-                if (nextRangeClause != null)
-                {
-                    nextScope = new QueryScope(
-                        ec.Compiler,
-                        this.Scope,
-                        nextRangeClause.RangeVariable,
-                        nextRangeClause.Span.Start);
-                }
-                else
-                {
-                    nextScope = new QueryScope(
-                        ec.Compiler,
-                        ec.CurrentScope,
-                        next.Span.Start);
-                }
-                next.Scope = nextScope;
-            }
-*/
-
-            //((QueryScope)this.Scope).AddTransparentParameter(this.RangeVariable);
-
             var result = Next.BuildQueryClause(ec, Initializer);
-
-            //ec.CurrentScope = oldScope;
-
             return result;
         }
 
         public override Expression DoResolve(ParseContext ec)
         {
-            //var oldScope = ec.CurrentScope;
-            //ec.CurrentScope = this.Scope;
-
             var result = BuildQueryClause(ec, null).Resolve(ec);
-
-            //ec.CurrentScope = oldScope;
-
             return result;
         }
     }

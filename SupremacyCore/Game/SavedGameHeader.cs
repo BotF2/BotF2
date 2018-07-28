@@ -84,21 +84,7 @@ namespace Supremacy.Game
             {
                 try
                 {
-                    // this Gamelog crashes as well while EmpireNames[LocalPlayerEmpireID] not woking fine
-                    //GameLog.Print("EmpireNames[LocalPlayerEmpireID]={0}, LocalPlayerEmpireID={1}, CivID={2}, everything should be fine ",
-                    //EmpireNames[LocalPlayerEmpireID], LocalPlayerEmpireID, CivID);
-
-                    // works   GameLog.Print("searching LocalPlayerEmpireName - LocalPlayerEmpireID={0} ",
-                    //        //EmpireNames[LocalPlayerEmpireID], 
-                    //        LocalPlayerEmpireID
-                    //        //, CivID
-                    //);
-
-                    //return EmpireNames[CivID];   // just for testing
-                    /*                return EmpireNames[LocalPlayerEmpireID]; */  // original
-                    //GameLog.Print("searching LocalPlayerEmpireName FAILED - returning 'Game' instead of a empire name - just inside header of the SavedGame-File");
-                    return "Game";    // just for testing
-                    //return EmpireNames[LocalPlayerEmpireID];  // original
+                    return "Game"; 
 
                 }
                 catch
@@ -153,17 +139,15 @@ namespace Supremacy.Game
             Options = game.Options;
             Timestamp = DateTimeOffset.Now;
 
-            //var empires = game.Civilizations.Where(o => o.CivilizationType.ToString() == "Empire").ToArray();  // for testing
-            var empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();  // original
+            var empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
 
             EmpireIDs = new int[empires.Length];
             EmpireNames = new string[empires.Length];
             SlotStatus = new SlotStatus[empires.Length];
             SlotClaims = new SlotClaim[empires.Length];
 
-            for (int i = 0; i < empires.Length; i++)   // old
+            for (int i = 0; i < empires.Length; i++)
             {
-                //GameLog.Print("Empire: {0}, CivID={1}, empires in total={2}", empires[i].Name, empires[i].CivID, empires.Length);
                 EmpireIDs[i] = empires[i].CivID;
                 EmpireNames[i] = empires[i].ShortName;
             }

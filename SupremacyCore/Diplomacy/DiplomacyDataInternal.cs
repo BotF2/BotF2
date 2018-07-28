@@ -91,8 +91,6 @@ namespace Supremacy.Diplomacy
             /*
              * Do nothing, as motivations are sorted on insertion.
              */
-
-            //_motivations.Sort((a, b) => a.Priority.CompareTo(b.Priority));
         }
 
         public void OnAttack()

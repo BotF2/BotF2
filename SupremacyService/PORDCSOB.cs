@@ -21,16 +21,14 @@ namespace Supremacy.WCF
 
         public override XmlObjectSerializer CreateSerializer(Type type, string name, string ns, IList<Type> knownTypes)
         {
-            //return new NetDataContractSerializer(name, ns);
             return new DataContractSerializer(type, name, ns, knownTypes, MaxItemsInObjectGraph, IgnoreExtensionDataObject,
-                true /*preserveObjectReferences*/, DataContractSurrogate);
+                true , DataContractSurrogate);
         }
 
         public override XmlObjectSerializer CreateSerializer(Type type, XmlDictionaryString name, XmlDictionaryString ns, IList<Type> knownTypes)
         {
-            //return new NetDataContractSerializer(name, ns, new StreamingContext(StreamingContextStates.All), MaxItemsInObjectGraph, IgnoreExtensionDataObject, System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple, null);
             return new DataContractSerializer(type, name, ns, knownTypes, MaxItemsInObjectGraph, IgnoreExtensionDataObject,
-                true /*preserveObjectReferences*/, DataContractSurrogate);
+                true , DataContractSurrogate);
         }
     }
 

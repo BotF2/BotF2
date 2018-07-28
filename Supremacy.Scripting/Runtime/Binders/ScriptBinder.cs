@@ -20,7 +20,7 @@ namespace Supremacy.Scripting.Runtime.Binders
     public class ScriptBinder : DefaultBinder
     {
         private readonly ScriptLanguageContext _context;
-        private readonly Dictionary<Type/*!*/, IList<Type/*!*/>/*!*/>/*!*/ _extensionTypes;
+        private readonly Dictionary<Type, IList<Type>> _extensionTypes;
         private bool _registeredInterfaceExtensions;    // true if someone has registered extensions for interfaces
 
         public ScriptLanguageContext Context
@@ -132,36 +132,6 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             return Candidate.Ambiguous;
         }
-
-/*
-        public override Expression ConvertExpression(Expression expression, Type toType, ConversionResultKind kind, OverloadResolverFactory resolverFactory)
-        {
-            //Contract.RequiresAlways(expression != null);
-            //Contract.RequiresAlways(toType != null);
-
-            var expressionType = expression.Type;
-
-            if (toType == typeof(object))
-            {
-                if (expressionType.IsValueType)
-                    return Expression.Convert(expression, toType);
-                return expression;
-            }
-
-            if (toType.IsAssignableFrom(expressionType))
-                return expression;
-
-            var visibleType = CompilerHelpers.GetVisibleType(toType);
-
-            return SxeBinders.Convert(
-                _context.DefaultBinderState,
-                visibleType,
-                kind,
-                expression,
-                resolverFactory
-                );
-        }
-*/
         #endregion
 
         #region Conversions

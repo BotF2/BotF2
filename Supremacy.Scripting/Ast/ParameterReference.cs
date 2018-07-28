@@ -72,14 +72,6 @@ namespace Supremacy.Scripting.Ast
                             Span);
                     }
 
-                    /*
-                                        if (ec.IsVariableCapturingRequired && !b.TopLevel.IsExpressionTree)
-                                        {
-                                            AnonymousMethodStorey storey = pi.Block.CreateAnonymousMethodStorey(ec);
-                                            storey.CaptureParameter(ec, this);
-                                        }
-                    */
-
                     return true;
                 }
 

@@ -542,7 +542,7 @@ namespace Supremacy.Scripting.Ast
             }
         }
 
-        public /*override*/ void Error_ValueCannotBeConverted(ParseContext ec, SourceSpan loc, Type target, bool expl)
+        public void Error_ValueCannotBeConverted(ParseContext ec, SourceSpan loc, Type target, bool expl)
         {
             ec.ReportError(
                 428,
@@ -1587,10 +1587,8 @@ namespace Supremacy.Scripting.Ast
                 return false;
             }
 
-            if (hasUnsafeArg/* && !ec.IsUnsafe*/)
+            if (hasUnsafeArg)
             {
-                //if (!may_fail)
-                //    UnsafeError(ec, loc);
                 return false;
             }
 

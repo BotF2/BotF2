@@ -287,7 +287,7 @@ namespace Supremacy.Universe
             var minDistance = GalaxyGenerator.MinHomeworldDistanceFromInterference;
             if (minDistance > 0)
             {
-                // REVISIT
+                // TODO
 /*
                 minDistance += Math.Max(
                     interferenceFrames.GetLength(1) / 2,

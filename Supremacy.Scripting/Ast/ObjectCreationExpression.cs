@@ -72,17 +72,6 @@ namespace Supremacy.Scripting.Ast
 
                 if (!genericInterfaces.Contains(TypeManager.CoreTypes.GenericEnumerableInterface))
                 {
-/*
-                    parseContext.ReportError(
-                        1925,
-                        string.Format(
-                            "A field or property '{0}' cannot be initialized with a collection " +
-                            "object initializer because type '{1}' does not implement '{2}' interface.",
-                            typeExpression.GetSignatureForError(),
-                            TypeManager.GetCSharpName(objectType),
-                            TypeManager.GetCSharpName(TypeManager.CoreTypes.GenericEnumerableInterface)),
-                        this.Span);
-*/
                     parseContext.ReportError(
                         1925,
                         string.Format(

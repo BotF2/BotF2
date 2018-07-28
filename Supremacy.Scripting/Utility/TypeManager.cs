@@ -398,9 +398,6 @@ namespace Supremacy.Scripting.Utility
         {
             ParametersCollection pd;
 
-            //if (_methodParameters.TryGetValue(mb, out pd))
-            //    return pd;
-
             if (mb.IsGenericMethod && !mb.IsGenericMethodDefinition)
             {
                 var mi = ((MethodInfo)mb).GetGenericMethodDefinition();
@@ -409,56 +406,11 @@ namespace Supremacy.Scripting.Utility
                     pd = pd.InflateTypes(mi.GetGenericArguments(), mb.GetGenericArguments());
                 else
                     pd = pd.InflateTypes(mi.DeclaringType.GetGenericArguments(), mb.GetGenericArguments());
-                //_methodParameters[mb] = pd;
-                return pd;
-            }
-
-            /*
-                        if (mb.DeclaringType.Assembly == ThisAssembly)
-                        {
-                            throw new InternalErrorException(
-                                "Parameters are not registered for method '{0}'.",
-                                GetCSharpName(mb.DeclaringType) + "." + mb.Name);
-                        }
-            */
-
-            pd = ParametersImported.Create(mb);
-            //_methodParameters[mb] = pd;
-            return pd;
-/*
-            ParametersCollection pd;
-
-            if (_methodParameters.TryGetValue(mb, out pd))
-            {
-                if (mb.IsGenericMethod && !mb.IsGenericMethodDefinition)
-                {
-                    var mi = ((MethodInfo)mb).GetGenericMethodDefinition();
-                    pd = GetParameterData(mi);
-                    if (mi.IsGenericMethod)
-                        pd = pd.InflateTypes(mi.GetGenericArguments(), mb.GetGenericArguments());
-                    else
-                        pd = pd.InflateTypes(mi.DeclaringType.GetGenericArguments(), mb.GetGenericArguments());
-                    _methodParameters[mb] = pd;
-                }
-                return pd;
-            }
-            
-            if (mb.IsGenericMethod && !mb.IsGenericMethodDefinition)
-            {
-                var mi = ((MethodInfo)mb).GetGenericMethodDefinition();
-                pd = GetParameterData(mi);
-                if (mi.IsGenericMethod)
-                    pd = pd.InflateTypes(mi.GetGenericArguments(), mb.GetGenericArguments());
-                else
-                    pd = pd.InflateTypes(mi.DeclaringType.GetGenericArguments(), mb.GetGenericArguments());
-                _methodParameters[mb] = pd;
                 return pd;
             }
 
             pd = ParametersImported.Create(mb);
-
             return pd;
-*/
         }
 
         private static readonly Dictionary<BuiltinType, Type> BuiltinTypeToClrTypeMap;
@@ -1896,15 +1848,6 @@ namespace Supremacy.Scripting.Utility
             if (_typeHash.TryGetValue(key, out constructedType))
                 return constructedType;
 
-/*
-            if (IsDynamicType(t))
-            {
-                // FIXME: this is more like not supported with SRE
-                // An example: var v = new [] { d, 1 }; int i = v [0];
-                throw new NotImplementedException("dynamic arrays");
-            }
-*/
-
             constructedType = t.Module.GetType(t + dim);
 
             if (constructedType != null)
@@ -2006,19 +1949,6 @@ namespace Supremacy.Scripting.Utility
             if (TypeUtils.IsImplicitlyConvertible(source.Type, targetType))
                 return true;
 
-            /*
-                        if (expr.eclass == ExprClass.MethodGroup)
-                        {
-                            if (TypeManager.IsDelegateType(target_type) && RootContext.Version != LanguageVersion.ISO_1)
-                            {
-                                MethodGroupExpr mg = expr as MethodGroupExpr;
-                                if (mg != null)
-                                    return DelegateCreation.ImplicitStandardConversionExists(ec, mg, target_type);
-                            }
-
-                            return false;
-                        }
-            */
             return false;
         }
 

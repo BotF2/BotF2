@@ -9,7 +9,7 @@ using Supremacy.Types;
 namespace Supremacy.Collections
 {
     [Serializable]
-    public abstract class InitOnlyKeyedCollection<TKey, TValue> : SupportInitializeBase, IIndexedKeyedCollection<TKey, TValue>, IList/*, IDictionary*/
+    public abstract class InitOnlyKeyedCollection<TKey, TValue> : SupportInitializeBase, IIndexedKeyedCollection<TKey, TValue>, IList
     {
         private readonly KeyedCollectionBase<TKey, TValue> _innerCollection;
 
@@ -41,23 +41,6 @@ namespace Supremacy.Collections
                 return false;
             return Contains((TValue)value);
         }
-
-/*
-        bool IDictionary.Contains(object key)
-        {
-            if (key is TKey)
-                return _innerCollection.Contains((TKey)key);
-            return false;
-        }
-
-        void IDictionary.Add(object key, object value)
-        {
-            VerifyInitializing();
-            VerifyKeyForValue(key, value);
-
-            _innerCollection.Add((TValue)value);
-        }
-*/
         public void Clear()
         {
             VerifyInitializing();
@@ -87,81 +70,6 @@ namespace Supremacy.Collections
                 Remove((TValue)value);
         }
 
-/*
-        IDictionaryEnumerator IDictionary.GetEnumerator()
-        {
-            return ((IDictionary)_innerCollection.KeyValueMap).GetEnumerator();
-        }
-
-        void IDictionary.Remove(object key)
-        {
-            VerifyInitializing();
-            VerifyCompatibleKey(key);
-
-            _innerCollection.Remove((TKey)key);
-        }
-
-        object IDictionary.this[object key]
-        {
-            get
-            {
-                // ReSharper disable HeuristicUnreachableCode
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if (key == null)
-                    return null;
-                // ReSharper restore HeuristicUnreachableCode
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                VerifyCompatibleKey(key);
-                return this[(TKey)key];
-            }
-            set
-            {
-                VerifyInitializing();
-                VerifyKeyForValue(key, value);
-                _innerCollection.Add((TValue)value);
-            }
-        }
-
-        private void VerifyKeyForValue(object key, object value)
-        {
-            VerifyCompatibleKey(key);
-            VerifyCompatibleValue(value);
-
-            if (!Equals(key, _innerCollection.GetKeyForItem((TValue)value)))
-                throw new ArgumentException("The specified key is not valid for the specified item.");
-        }
-
-        private static void VerifyCompatibleKey(object key)
-        {
-            if (key == null)
-                throw new ArgumentNullException("key");
-
-            if (!(key is TKey))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                        "The specified key of type '{0}' is not compatible with the collection key type of '{1}'.",
-                        key.GetType().Name,
-                        typeof(TKey).Name));
-            }
-        }
-
-        ICollection IDictionary.Keys
-        {
-            get { return (ICollection)_innerCollection.Keys; }
-        }
-
-        ICollection IDictionary.Values
-        {
-            get { return this; }
-        }
-
-        bool IDictionary.IsReadOnly
-        {
-            get { return !this.IsInitializing; }
-        }
-*/
-
         bool IList.IsFixedSize
         {
             get { return false; }
@@ -171,13 +79,6 @@ namespace Supremacy.Collections
         {
             get { return !IsInitializing; }
         }
-
-/*
-        bool IDictionary.IsFixedSize
-        {
-            get { return false; }
-        }
-*/
 
         public void Insert(int index, TValue item)
         {
