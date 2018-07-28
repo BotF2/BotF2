@@ -582,17 +582,52 @@ namespace Supremacy.Tech
             {
                 var separator = ";";
                 var line = "";
+                StreamWriter streamWriter;
+                var file = "";
+                String strHeader = "";  // first line of output files
 
-                // Ships    
-                var file = "FromTechObjectDatabase--Ships_(autoCreated).csv";
+                #region PossibleShipNames
+                // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
+                file = "FromTechObjectDatabase--ShipNames_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
                     goto WriterClose;
 
-                StreamWriter streamWriter = new StreamWriter(file);
+                streamWriter = new StreamWriter(file);
 
-                String strHeader =    // Head line
+                strHeader =    // Head line
+                    "CE_Ship" + separator +
+                                        "CE_PossibleNames";
+                streamWriter.WriteLine(strHeader);
+                // End of head line
+
+                foreach (var item in db.ShipDesigns)   // each item
+                {
+                    //item.Name._po
+                    //private Dictionary<string, int> _possibleNames;
+                    //if (item._possibleNames.count > 0)
+                    //            foreach (_ShipName in item.)
+                    //                line =
+                    //                    item.Key + separator +
+                    //                    item._possibleShips.count ;
+                    line = "Placeholder";
+                    streamWriter.WriteLine(line);
+                }
+                // End of ShipNames
+                #endregion;
+
+                #region SHIPS_to_CSV
+                // Ships    
+                file = "FromTechObjectDatabase--Ships_(autoCreated).csv";
+                Console.WriteLine("writing {0}", file);
+
+                if (file == null)
+                    goto WriterClose;
+
+                streamWriter = new StreamWriter(file);
+
+                strHeader =    // Head line
                     "CE_Ship" + separator +
                     "ATT_Key" + separator +
                     //"CE_DesignID" + separator +   // not useful for current working
@@ -762,6 +797,7 @@ namespace Supremacy.Tech
                     streamWriter.WriteLine(line);
                 }
                 // End of Ships
+                #endregion
 
                 // End of Autocreated files 
                 streamWriter.Close();
