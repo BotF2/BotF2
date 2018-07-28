@@ -263,6 +263,13 @@ namespace Supremacy.Combat
 
         private void SendUpdates()
         {
+            if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
+            {
+                GameLog.Print("Combat is turned off");
+                AsyncHelper.Invoke(_combatEndedCallback, this);
+                return;
+
+            }
             foreach (var playerAsset in _assets)
             {
                 var owner = playerAsset.Owner;
@@ -300,13 +307,6 @@ namespace Supremacy.Combat
                     playerAsset.Location,
                     friendlyAssets,
                     hostileAssets);
-
-                if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
-                {
-                    GameLog.Print("Combat is turned off");
-                    AsyncHelper.Invoke(_combatEndedCallback, this);
-                    break;
-                }
 
                 AsyncHelper.Invoke(_updateCallback, this, update);
             }
