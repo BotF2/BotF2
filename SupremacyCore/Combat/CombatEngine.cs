@@ -7,15 +7,13 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
-using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Combat
 {
@@ -40,6 +38,7 @@ namespace Supremacy.Combat
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders;
+        protected Dictionary<string, int> _empireStrengths;
 
         protected bool _traceCombatEngine = true;
 
@@ -99,11 +98,17 @@ namespace Supremacy.Combat
             NotifyCombatEndedCallback combatEndedCallback)
         {
             if (assets == null)
+            {
                 throw new ArgumentNullException("assets");
+            }
             if (updateCallback == null)
+            {
                 throw new ArgumentNullException("updateCallback");
+            }
             if (combatEndedCallback == null)
+            {
                 throw new ArgumentNullException("combatEndedCallback");
+            }
 
             _running = false;
             _allSidesStandDown = false;
@@ -128,9 +133,10 @@ namespace Supremacy.Combat
                     _experienceAccuracy[rank] = modifier;
                 }
                 else
+                {
                     _experienceAccuracy[rank] = 0.75;
+                }
             }
-            ///////////////////
 
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
@@ -162,34 +168,39 @@ namespace Supremacy.Combat
             lock (SyncLock)
             {
                 if (!_orders.ContainsKey(orders.OwnerID))
+                {
                     _orders[orders.OwnerID] = orders;
+                }
 
                 var outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList();
 
                 lock (_orders)
                 {
                     foreach (var civId in _orders.Keys)
+                    {
                         outstandingOrders.Remove(civId);
+                    }
 
                     if (outstandingOrders.Count == 0)
+                    {
                         _ready = true;
+                    }
                 }
             }
         }
 
         public void ResolveCombatRound()
         {
-            bool isCombatOver;
-
             lock (_orders)
             {
                 Running = true;
 
                 _assets.ForEach(a => a.CombatID = _combatId);
+                CalculateEmpireStrengths();
 
-                _allSidesStandDown = CheckAllSidesStandDown();
-                if ((_roundNumber > 1) || _allSidesStandDown)
+                if ((_roundNumber > 1) || !AllSidesStandDown())
                 {
+                    RechargeWeapons();
                     ResolveCombatRoundCore();
                 }
                 if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
@@ -199,9 +210,7 @@ namespace Supremacy.Combat
                 PerformRetreat();
                 UpdateOrbitals();
 
-                isCombatOver = IsCombatOver;
-
-                if (!isCombatOver)
+                if (!IsCombatOver)
                 {
                     _roundNumber++;
                 }
@@ -215,13 +224,13 @@ namespace Supremacy.Combat
 
             Running = false;
 
-            if (isCombatOver)
+            if (IsCombatOver)
             {
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
         }
 
-        private bool CheckAllSidesStandDown()
+        private bool AllSidesStandDown()
         {
             foreach (var civAssets in _assets)
             {
@@ -273,17 +282,11 @@ namespace Supremacy.Combat
                     else
                     {
                         friendlyAssets.Add(otherAsset);
-                        if (_traceCombatEngine)
-                        {
-                            GameLog.Print("Combat: add other asset to friendly assets, otherAsset.Owner= {0}", otherAsset.Owner);
-                        }
-                    } 
-
+                    }
                 }
 
                 if (hostileAssets.Count == 0)
                 {
-                    GameLog.Print("Combat: hostileAssets.Count == 0, no combat will be shown due to missing enemy");
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);   // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
                     break;
@@ -298,22 +301,10 @@ namespace Supremacy.Combat
                     friendlyAssets,
                     hostileAssets);
 
-                if (_traceCombatEngine)
-                {
-                    GameLog.Print("CombatUpdate: Location={4} ## ID={0} Turn={1} ##  {2} to AllSideStandDown, Owner = ## {3}",
-                        _combatId,
-                        _roundNumber,
-                        _allSidesStandDown,
-                        owner,
-                        playerAsset.Location
-                    );
-                }
-
                 if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
                 {
-                    GameLog.Print("GameContext.Current.Options.GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
                     GameLog.Print("Combat is turned off");
-                    AsyncHelper.Invoke(_combatEndedCallback, this);   // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
+                    AsyncHelper.Invoke(_combatEndedCallback, this);
                     break;
                 }
 
@@ -321,6 +312,9 @@ namespace Supremacy.Combat
             }
         }
 
+        /// <summary>
+        /// Remove the assets of defeated players from the combat
+        /// </summary>
         private void RemoveDefeatedPlayers()
         {
             for (int i = 0; i < _assets.Count; i++)
@@ -338,31 +332,147 @@ namespace Supremacy.Combat
         }
 
         /// <summary>
+        /// Recharges the weapons of all combat ships
+        /// </summary>
+        protected void RechargeWeapons()
+        {
+            if (_combatStation != null)
+            {
+                foreach (var weapon in _combatStation.Item2)
+                {
+                    weapon.Recharge();
+                }
+            }
+            foreach (var combatShip in _combatShips)
+            {
+                foreach (var weapon in combatShip.Item2)
+                {
+                    weapon.Recharge();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates the total strength of each side involved in the combat
+        /// </summary>
+        /// <returns></returns>
+        private void CalculateEmpireStrengths()
+        {
+            _empireStrengths = new Dictionary<string, int>();
+            foreach (var combatShip in _combatShips)
+            {
+                if (!_empireStrengths.ContainsKey(combatShip.Item1.Owner.Key))
+                {
+                    _empireStrengths[combatShip.Item1.Owner.Key] = 0;
+                }
+                _empireStrengths[combatShip.Item1.Owner.Key] += CombatHelper.CalculateOrbitalPower(combatShip.Item1.Source);
+            }
+            if (_combatStation != null)
+            {
+                _empireStrengths[_combatStation.Item1.Owner.Key] += CombatHelper.CalculateOrbitalPower(_combatStation.Item1.Source);
+            }
+
+            if (_traceCombatEngine)
+            {
+                foreach (var empires in _empireStrengths)
+                {
+                    GameLog.Print("Strength for {0} = {1}", empires.Key, empires.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the given ship is able to successfully retreat
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, int weaponRatio)
+        {
+            int chanceToRetreat = Statistics.Random(10000) % 100;
+            int retreatChanceModifier = 0;
+
+            GameLog.Print("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
+
+            if (oppositionIsInFormation) // If you go into formation you are not in position / time to stop the opposition from retreating                   
+            {
+                if (_traceCombatEngine)
+                {
+                    GameLog.Print("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
+                }
+                return true;
+            }
+
+
+            if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away
+            {
+                retreatChanceModifier = -30;
+                GameLog.Print("Weapon ratio was {0). -30 modifier", weaponRatio);
+            }
+            else if (weaponRatio > 3)
+            {
+                retreatChanceModifier = -20;
+                GameLog.Print("Weapon ratio was {0). -20 modifier", weaponRatio);
+            }
+            else if (weaponRatio > 1)
+            {
+                retreatChanceModifier = -10;
+                GameLog.Print("Weapon ratio was {0). -10 modifier", weaponRatio);
+            }
+            else
+            {
+                retreatChanceModifier = 0;
+                GameLog.Print("Weapon ratio was {0). 0 modifier", weaponRatio);
+            }
+
+            if (oppositionIsRushing)
+            {
+                retreatChanceModifier += -10;
+                if (_traceCombatEngine)
+                {
+                    GameLog.Print("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
+                }
+            }
+
+            if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
+            {
+                GameLog.Print("{0} {1} succesfully retreated", unit.Source.ObjectID, unit.Source.Name);
+                return true;
+            }
+            else
+            {
+                GameLog.Print("{0} {1} failed to retreat", unit.Source.ObjectID, unit.Source.Name);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Performs the assimilation of ships that have been assimilated
         /// </summary>
         private void PerformAssimilation()
         {
-            var borgCivID = GameContext.Current.Civilizations.First(c => c.Name == "Borg").CivID;
-            var borgCivilization = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
-            var borgShipPrefix = borgCivilization.ShipPrefix;
+            Civilization borg = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
 
             foreach (var assets in _assets)
             {
                 foreach (var assimilatedShip in assets.AssimilatedShips)
                 {
-                    var _ship = (Ship)assimilatedShip.Source;
-                    _ship.OwnerID = borgCivID;
-                    _ship.Fleet.OwnerID = borgCivID;
-                    _ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
-                    if (_ship.Fleet.Order == null)
-                        _ship.Fleet.SetOrder(FleetOrders.AvoidOrder.Create());
-                    _ship.IsAssimilated = true;
-                    _ship.Scrap = false;
-                    _ship.Fleet.Name = "Assimilated Assets";
-                    _ship.Fleet.Owner = borgCivilization;
-                   
-                    GameLog.Print("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}", 
-                        _ship.ObjectID, _ship.Name, _ship.Owner, _ship.OwnerID, _ship.Fleet.OwnerID, _ship.Fleet.Order);
+                    var ship = (Ship)assimilatedShip.Source;
+                    ship.Owner = borg;
+                    ship.Fleet.Owner = borg;
+                    ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
+                    if (ship.Fleet.Order == null)
+                    {
+                        ship.Fleet.SetOrder(FleetOrders.AvoidOrder.Create());
+                    }
+                    ship.IsAssimilated = true;
+                    ship.Scrap = false;
+                    ship.Fleet.Name = "Assimilated Assets";
+
+                    if (_traceCombatEngine)
+                    {
+                        GameLog.Print("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}",
+                            ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, ship.Fleet.OwnerID, ship.Fleet.Order);
+                    }
                 }
             }
         }
@@ -377,10 +487,14 @@ namespace Supremacy.Combat
                 var destination = CombatHelper.CalculateRetreatDestination(assets);
 
                 if (destination == null)
+                {
                     continue;
+                }
 
                 foreach (var shipStats in assets.EscapedShips)
+                {
                     ((Ship)shipStats.Source).Fleet.Location = destination.Location;
+                }
             }
         }
 

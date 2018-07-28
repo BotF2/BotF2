@@ -7,10 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -19,11 +15,19 @@ using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
+        /// <summary>
+        /// Calculates the total weapon power of the given <see cref="Orbital"/>
+        /// </summary>
+        /// <param name="orbital"></param>
+        /// <returns></returns>
         public static int CalculateOrbitalPower(Orbital orbital)
         {
             return (orbital.OrbitalDesign.PrimaryWeapon.Damage * orbital.OrbitalDesign.PrimaryWeapon.Count) +
@@ -46,7 +50,7 @@ namespace Supremacy.Combat
                     from s in assets.Sector.GetNeighbors()
                     let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
                     let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
-                    let hostileOrbitalPower = hostileOrbitals.Sum(o => CombatHelper.CalculateOrbitalPower(o))
+                    let hostileOrbitalPower = hostileOrbitals.Sum(o => CalculateOrbitalPower(o))
                     orderby hostileOrbitalPower ascending, distance descending
                     select s
                 );
@@ -92,7 +96,9 @@ namespace Supremacy.Combat
                 var owner = sector.Station.Owner;
 
                 if (!assets.ContainsKey(owner))
+                {
                     assets[owner] = new CombatAssets(owner, location);
+                }
 
                 assets[owner].Station = new CombatUnit(sector.Station);
             }
@@ -102,25 +108,33 @@ namespace Supremacy.Combat
             return results;
         }
 
+        /// <summary>
+        /// Determines whether the given <see cref="Civilization"/>s will enage
+        /// each other in combat
+        /// </summary>
+        /// <param name="firstCiv"></param>
+        /// <param name="secondCiv"></param>
+        /// <returns></returns>
         public static bool WillEngage(Civilization firstCiv, Civilization secondCiv)
         {
-            bool _willEngageTracing = false; // turn true if you want
-
             if (firstCiv == null)
+            {
                 throw new ArgumentNullException("firstCiv");
+            }
             if (secondCiv == null)
+            {
                 throw new ArgumentNullException("secondCiv");
-
+            }
             if (firstCiv == secondCiv)
+            {
                 return false;
-            //if (firstCiv.Race.ToString() != "Borg" && secondCiv.)
-            //{ }
+            }
+
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
+            {
                 return false;
-
-            if (_willEngageTracing == true)
-                GameLog.Print("diplomacyData.Status={2} for {0} vs {1}, ", firstCiv, secondCiv, diplomacyData.Status.ToString());
+            }
 
             switch (diplomacyData.Status)
             {
@@ -136,16 +150,29 @@ namespace Supremacy.Combat
             return true;
         }
 
+        /// <summary>
+        /// Determines whether the given <see cref="Civilization"/>s will
+        /// fight alongside each other
+        /// </summary>
+        /// <param name="firstCiv"></param>
+        /// <param name="secondCiv"></param>
+        /// <returns></returns>
         public static bool WillFightAlongside(Civilization firstCiv, Civilization secondCiv)
         {
             if (firstCiv == null)
+            {
                 throw new ArgumentNullException("firstCiv");
+            }
             if (secondCiv == null)
+            {
                 throw new ArgumentNullException("secondCiv");
+            }
 
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
+            {
                 return false;
+            }
 
             switch (diplomacyData.Status)
             {
@@ -163,15 +190,14 @@ namespace Supremacy.Combat
 
         public static CombatOrders GenerateBlanketOrders(CombatAssets assets, CombatOrder order)
         {
+            bool _generateBlanketOrdersTracing = true;
+
             var owner = assets.Owner;
             var orders = new CombatOrders(owner, assets.CombatID);
-
-            bool _generateBlanketOrdersTracing = true;
 
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
                 orders.SetOrder(ship.Source, order);
-                // for testing
                 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
@@ -189,8 +215,6 @@ namespace Supremacy.Combat
                 {
                     GameLog.Print("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
                 }
-                // for testing
-                //orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
@@ -203,28 +227,6 @@ namespace Supremacy.Combat
             }
 
             return orders;
-        }
-
-        public static double ComputeCombatOrderMultiplier(AutomatedCombatEngine automatedCombatEngine) // considering a way to get combat orders into outcome 
-        {
-            //if (colony == null)
-                return 0;
-
-            //GameLog.Print("GroundCombat?: Colony={0}, ComputeGroundDefenseMultiplier={1}",
-            //    colony.Name,
-            //    Math.Max(
-            //    0.1,
-            //    1.0 + (0.01 * colony.Buildings
-            //                       .Where(o => o.IsActive)
-            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
-            //                       .Sum(b => b.Amount))));
-
-            //return Math.Max(
-            //    0.1,
-            //    1.0 + (0.01 * colony.Buildings
-            //                       .Where(o => o.IsActive)
-            //                       .SelectMany(b => b.BuildingDesign.GetBonuses(BonusType.PercentGroundDefense))
-            //                       .Sum(b => b.Amount)));
         }
 
         public static double ComputeGroundDefenseMultiplier(Colony colony)
