@@ -2723,7 +2723,7 @@ namespace Supremacy.Collections
         }
 
         [NotNull]
-        public static IEnumerable<IPair<TFirst, TSecond>> CartesianProduct<TFirst, TSecond>(
+        public static IEnumerable<Tuple<TFirst, TSecond>> CartesianProduct<TFirst, TSecond>(
             [NotNull] this IEnumerable<TFirst> first,
             [NotNull] IEnumerable<TSecond> second)
         {
@@ -2734,7 +2734,7 @@ namespace Supremacy.Collections
 
             return (from firstItem in first
                     from secondItem in second
-                    select new Pair<TFirst, TSecond>(firstItem, secondItem)).Cast<IPair<TFirst, TSecond>>();
+                    select new Tuple<TFirst, TSecond>(firstItem, secondItem)).Cast<Tuple<TFirst, TSecond>>();
         }
         #endregion Set operations
 

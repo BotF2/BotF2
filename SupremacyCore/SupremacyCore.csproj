@@ -156,6 +156,9 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -316,10 +319,8 @@
     <Compile Include="Collections\GameObjectLookupCollection.cs" />
     <Compile Include="Collections\IndexedEnumerable.cs" />
     <Compile Include="Collections\Interfaces.cs" />
-    <Compile Include="Collections\IPair.cs" />
     <Compile Include="Collections\ObservableCollectionExtended.cs" />
     <Compile Include="Collections\ObservableKeyedCollection.cs" />
-    <Compile Include="Collections\Pair.cs" />
     <Compile Include="Collections\ReadOnlyCollectionBase.cs" />
     <Compile Include="Collections\WeakDictionary.cs" />
     <Compile Include="Collections\WeakList.cs" />
@@ -370,7 +371,6 @@
     <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
     <Compile Include="Expressions\ExpressionSerializer.cs" />
     <Compile Include="Expressions\LinqExtensions.cs" />
-    <Compile Include="Collections\ValuePair.cs" />
     <Compile Include="Combat\AutomatedCombatEngine.cs" />
     <Compile Include="Combat\CombatAssets.cs" />
     <Compile Include="Combat\CombatEngine.cs" />
