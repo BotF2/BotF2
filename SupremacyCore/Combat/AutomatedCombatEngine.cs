@@ -313,6 +313,7 @@ namespace Supremacy.Combat
                         {
                             return oppositionRetreating.First().Item1;
                         }
+                        attackerOrder = CombatOrder.Engage;
                         break;
 
                     case CombatOrder.Transports:
@@ -323,6 +324,7 @@ namespace Supremacy.Combat
                         {
                             return oppositionTransports.First().Item1;
                         }
+                        attackerOrder = CombatOrder.Engage;
                         break;
                 }
             }
