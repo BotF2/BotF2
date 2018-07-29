@@ -262,9 +262,15 @@ namespace Supremacy.Orbitals
             {
                 _workCapacity = Number.ParseUInt16(element["WorkCapacity"].InnerText.Trim());
             }
+            if (element["ShipNames"] == null)
+            {
+                bool _tracePossibleShipNamesSmallOutput = false;
+                if (_tracePossibleShipNamesSmallOutput == true)
+                    GameLog.Print("ShipNames missing in TechObjectDatabase.xml for {0}", this.Name);
+            }
             if (element["ShipNames"] != null)
             {
-                bool _tracePossibleShipNamesSmallOutput = true;
+                bool _tracePossibleShipNamesSmallOutput = false;
                 if (_tracePossibleShipNamesSmallOutput == true)
                     GameLog.Print("ShipNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", this.Name);
 
