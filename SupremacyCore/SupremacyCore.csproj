@@ -260,6 +260,7 @@
     <Compile Include="Text\TextEffectStyle.cs" />
     <Compile Include="Text\TextFormatFlags.cs" />
     <Compile Include="Text\TextStyle.cs" />
+    <Compile Include="Types\IsSetFlag.cs" />
     <Compile Include="Types\NamedGuid.cs" />
     <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
