@@ -1,22 +1,17 @@
-﻿// TradeGuildStikes.cs
-//
-// Copyright (c) 2009 Mike Strobel
+﻿// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-
 using Supremacy.Economy;
 using Supremacy.Game;
-
-using System.Linq;
-
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Scripting.Events
 {
@@ -113,12 +108,9 @@ namespace Supremacy.Scripting.Events
 
                     foreach (var affectedProject in affectedProjects)
                     {
-
-                        {
-                            affectedProject.IsPaused = true;
-                            AffectedProjects.Add(affectedProject);
-                            GameLog.Client.GameData.DebugFormat("TradeGuildStrkes.cs: affectedProject: {0}", affectedProject);
-                        }
+                        affectedProject.IsPaused = true;
+                        AffectedProjects.Add(affectedProject);
+                        GameLog.Client.GameData.DebugFormat("TradeGuildStrkes.cs: affectedProject: {0}", affectedProject);
                     }
 
                     var targetCiv = target.Owner;
@@ -127,18 +119,16 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    {
-                        game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                        new ScriptedEventSitRepEntry(
-                            new ScriptedEventSitRepEntryData(
-                                targetCiv,
-                                "TRADE_GUILD_STRIKES_HEADER_TEXT",
-                                "TRADE_GUILD_STRIKES_SUMMARY_TEXT",
-                                "TRADE_GUILD_STRIKES_DETAIL_TEXT",
-                                "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png",
-                                "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-                    }
+                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                    new ScriptedEventSitRepEntry(
+                        new ScriptedEventSitRepEntryData(
+                            targetCiv,
+                            "TRADE_GUILD_STRIKES_HEADER_TEXT",
+                            "TRADE_GUILD_STRIKES_SUMMARY_TEXT",
+                            "TRADE_GUILD_STRIKES_DETAIL_TEXT",
+                            "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png",
+                            "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
+                            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
                 }
 
                 return;
