@@ -586,9 +586,9 @@ namespace Supremacy.Tech
                 var file = "";
                 String strHeader = "";  // first line of output files
 
-                #region PossibleShipNames
+                #region PossibleShipNames_To_CSV
                 // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                file = "FromTechObjectDatabase--ShipNames_(autoCreated).csv";
+                file = "FromTechObj-ShipNames_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
@@ -619,7 +619,7 @@ namespace Supremacy.Tech
 
                 #region SHIPS_to_CSV
                 // Ships    
-                file = "FromTechObjectDatabase--Ships_(autoCreated).csv";
+                file = "FromTechObj-Ships_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
@@ -736,6 +736,15 @@ namespace Supremacy.Tech
                         item.PopulationHealth + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export
                         item.IsUniversallyAvailable + separator +
 
+                        // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
+                        item.Key + separator +
+
+                        //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
+                        //"<ObsoletedItems> + newline + " +                 // not helpful
+                        //"<ObsoletedItem></ObsoletedItem>" +// not helpful
+                        //" + newline + </ObsoletedItems>" +                 // not helpful
+                        //separator +
+
                         //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
                         item.Key + "I" + separator +
                         //item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
@@ -766,16 +775,6 @@ namespace Supremacy.Tech
                         item.EvacuationLimit + separator +
                         item.WorkCapacity + separator +
 
-                        // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
-                        item.Key + separator +
-
-                        //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
-                        //"<ObsoletedItems> + newline + " +                 // not helpful
-                        //"<ObsoletedItem></ObsoletedItem>" +// not helpful
-
-                        //" + newline + </ObsoletedItems>" +                 // not helpful
-                        //separator +
-
                         item.InterceptAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
 
                         // Possibles ShipNames
@@ -798,6 +797,99 @@ namespace Supremacy.Tech
                 }
                 // End of Ships
                 #endregion
+
+                #region Shipyards_To_CSV
+                // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
+                file = "FromTechObj-Shipyards_(autoCreated).csv";
+                Console.WriteLine("writing {0}", file);
+
+                if (file == null)
+                    goto WriterClose;
+
+                streamWriter = new StreamWriter(file);
+
+                strHeader =    // Head line
+                    "CE_Shipyard" + separator +
+                    "ATT_Key" + separator +
+
+                    "CE_TechRequirements" + separator +
+                    "CE_BioTech" + separator +
+                    "CE_Computers" + separator +
+                    "CE_Construction" + separator +
+                    "CE_Energy" + separator +
+                    "CE_Propulsion" + separator +
+                    "CE_Weapons" + separator +
+                    "CE_BuildCost" + separator +
+                    "CE_IsUniversallyAvailable" + separator +
+                    "CE_Prerequisites" + separator +
+                    "CE_ObsoletedItems" + separator +
+                    "CE_UpgradeOptions" + separator +
+                    "CE_Restrictions" + separator +
+                    //"CE_EnergyCosts_not_used_anymore?" + separator +
+                    "CE_BuildSlots" + separator +
+                    "CE_BuildSlotMaxOutput" + separator +
+                    "CE_BuildSlotOutputType" + separator +
+                    "CE_BuildSlotOutput" + separator +
+                    "CE_BuildSlotEnergyCost" + separator +
+                    "CE_MaxBuildTechLevel";
+
+                streamWriter.WriteLine(strHeader);
+                // End of head line
+
+                foreach (var shipyard in db.ShipyardDesigns)   // each shipyard
+                {
+                    line = 
+                    "Shipyard" + separator +
+                    shipyard.Key + separator +
+                    //shipyard.DesignID + separator +   // not useful for current working
+                    //shipyard.ShipType + separator +  // moved down for current working
+                    //shipyard.ClassName + separator +  // moved down for current working
+                    //shipyard.Key;   // just for testing
+
+                    //<TechRequirements>
+                    "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                                       // after GoogleSheet-Export: replace...
+                                       // </Weapons> by </Weapons></TechRequirements>
+                                       // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                    //"<Biotech>" + separator +                // not helpful
+                    shipyard.TechRequirements[TechCategory.BioTech] + separator +
+                    //"</Biotech>" + separator +                 // not helpful
+                    //"<Computers>" + separator +                 // not helpful
+                    shipyard.TechRequirements[TechCategory.Computers] + separator +
+                    //"</Computers>" + separator +                // not helpful
+                    //"<Construction>" + separator +                 // not helpful
+                    shipyard.TechRequirements[TechCategory.Construction] + separator +
+                    //"</Construction>" + separator +                // not helpful
+                    //"<Energy>" + separator +                 // not helpful
+                    shipyard.TechRequirements[TechCategory.Energy] + separator +
+                    //"</Energy>" + separator +                // not helpful
+                    //"<Propulsion>" + separator +                 // not helpful
+                    shipyard.TechRequirements[TechCategory.Propulsion] + separator +
+                    //"</Propulsion>" + separator +                // not helpful
+                    //"<Weapons>" + separator +                 // not helpful
+                    shipyard.TechRequirements[TechCategory.Weapons] + separator +
+                    //"</Weapons>" + separator +                // not helpful
+
+
+                    shipyard.BuildCost + separator +
+                    shipyard.IsUniversallyAvailable + separator +
+                    "Prerequisites for " + shipyard.Key + separator +
+                    "ObsoletedItems for " + shipyard.Key + separator +
+                    "UpgradeOptions for " + shipyard.Key + separator +
+                    //"EnergyCost_not_used_anymore?" + separator +
+                    shipyard.Restriction + separator +
+                    shipyard.BuildSlots + separator +
+                    shipyard.BuildSlotMaxOutput + separator +
+                    shipyard.BuildSlotOutputType + separator +
+                    shipyard.BuildSlotOutput + separator +
+                    shipyard.BuildSlotEnergyCost + separator +
+                    shipyard.MaxBuildTechLevel;
+
+                streamWriter.WriteLine(line);
+                }
+                // End of Shipyards
+                #endregion;
 
                 // End of Autocreated files 
                 streamWriter.Close();
