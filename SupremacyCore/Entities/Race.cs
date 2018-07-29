@@ -28,7 +28,7 @@ namespace Supremacy.Entities
     /// Represents a race in the game.
     /// </summary>
     [Serializable]
-    public class Race : IEncyclopediaEntry, INamedItem, IOwnedDataSerializable
+    public class Race : IEncyclopediaEntry, IOwnedDataSerializable
     {
         public const string InvalidRaceKey = null;
         protected const string MissingImageUri = "vfs:///Resources/Images/__image_missing.png";

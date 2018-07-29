@@ -532,12 +532,10 @@
     <Compile Include="Types\Distribution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Economy\Resources.cs" />
-    <Compile Include="Types\DoubleExtensions.cs" />
     <Compile Include="Types\FlagType.cs" />
     <Compile Include="Types\INotifyChanged.cs" />
     <Compile Include="Types\Number.cs" />
     <Compile Include="Types\Meter.cs" />
-    <Compile Include="Types\INamedItem.cs" />
     <Compile Include="Types\OutputModifier.cs" />
     <Compile Include="Types\Percentage.cs" />
     <Compile Include="Types\StateManager.cs" />
