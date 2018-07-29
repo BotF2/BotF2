@@ -194,7 +194,6 @@
     <Compile Include="Diplomacy\Visitors\CreditObligationFulfillmentVisitor.cs" />
     <Compile Include="Diplomacy\Visitors\RejectProposalVisitor.cs" />
     <Compile Include="Economy\IntelligenceBonusCollection.cs" />
-    <Compile Include="Economy\intelligenceCategory.cs" />
     <Compile Include="Economy\ShipyardBuildSlot.cs" />
     <Compile Include="Entities\ICivIdentity.cs" />
     <Compile Include="Entities\RaceConverter.cs" />
