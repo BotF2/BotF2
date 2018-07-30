@@ -39,14 +39,27 @@ namespace Supremacy.Client
         private CombatAssets _playerAssets;
         private IAppContext _appContext;
 
-        bool _tracingCombatWindow = false;   // turn true if you want
-        //bool _tracingCombatWindow = true;   // turn true if you want
+        bool _tracingCombatWindow = false;
 
         public CombatWindow()
         {
             InitializeComponent();
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
+            DataTemplate itemTemplate = TryFindResource("AssetTreeItemTemplate") as DataTemplate;
+
+            FriendlyStationItem.HeaderTemplate = itemTemplate;
+            FriendlyCombatantItems.ItemTemplate = itemTemplate;
+            FriendlyNonCombatantItems.ItemTemplate = itemTemplate;
+            FriendlyDestroyedItems.ItemTemplate = itemTemplate;
+            FriendlyAssimilatedItems.ItemTemplate = itemTemplate;
+            FriendlyEscapedItems.ItemTemplate = itemTemplate;
+            HostileStationItem.HeaderTemplate = itemTemplate;
+            HostileCombatantItems.ItemTemplate = itemTemplate;
+            HostileNonCombatantItems.ItemTemplate = itemTemplate;
+            HostileDestroyedItems.ItemTemplate = itemTemplate;
+            HostileAssimilatedItems.ItemTemplate = itemTemplate;
+            HostileEscapedItems.ItemTemplate = itemTemplate;
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -139,179 +152,116 @@ namespace Supremacy.Client
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
         }
 
+        private void ClearUnitTrees()
+        {
+            FriendlyStationItem.Header = null;
+            FriendlyCombatantItems.Items.Clear();
+            FriendlyNonCombatantItems.Items.Clear();
+            FriendlyDestroyedItems.Items.Clear();
+            FriendlyAssimilatedItems.Items.Clear();
+            FriendlyEscapedItems.Items.Clear();
+            HostileStationItem.Header = null;
+            HostileCombatantItems.Items.Clear();
+            HostileNonCombatantItems.Items.Clear();
+            HostileDestroyedItems.Items.Clear();
+            HostileAssimilatedItems.Items.Clear();
+            HostileEscapedItems.Items.Clear();
+        }
+
         private void PopulateUnitTrees()
         {
-            DataTemplate itemTemplate = TryFindResource("AssetTreeItemTemplate") as DataTemplate;
+            ClearUnitTrees();
 
-            TreeViewItem combatantItems = new TreeViewItem();
-            TreeViewItem nonCombatantItems = new TreeViewItem();
-            TreeViewItem destroyedItems = new TreeViewItem();
-            TreeViewItem assimilatedItems = new TreeViewItem();
-            TreeViewItem escapedItems = new TreeViewItem();
-
-            combatantItems.Header = ResourceManager.GetString("COMBAT_COMBATANT_UNITS");
-            nonCombatantItems.Header = ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS");
-            destroyedItems.Header = ResourceManager.GetString("COMBAT_DESTROYED_UNITS");
-            assimilatedItems.Header = ResourceManager.GetString("COMBAT_ASSIMILATED_UNITS");
-            escapedItems.Header = ResourceManager.GetString("COMBAT_ESCAPED_UNITS");
-
-            combatantItems.IsExpanded = true;
-            nonCombatantItems.IsExpanded = true;
-            destroyedItems.IsExpanded = true;
-            assimilatedItems.IsExpanded = true;
-            escapedItems.IsExpanded = true;
-
-            combatantItems.ItemTemplate = itemTemplate;
-            nonCombatantItems.ItemTemplate = itemTemplate;
-            destroyedItems.ItemTemplate = itemTemplate;
-            assimilatedItems.ItemTemplate = itemTemplate;
-            escapedItems.ItemTemplate = itemTemplate;
-
-            FriendlyAssetsTree.Items.Clear();
-
+            /* Friendly Assets */
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
                 if (friendlyAssets.Station != null)
                 {
-                    TreeViewItem stationItem = new TreeViewItem();
-                    stationItem.Header = friendlyAssets.Station;
-                    stationItem.HeaderTemplate = itemTemplate;
-                    FriendlyAssetsTree.Items.Add(stationItem);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("FriendlyUnit: ShieldIntegry={0}, HullIntegry={1}, Name={2}", friendlyAssets.Station.ShieldIntegrity, friendlyAssets.Station.HullIntegrity, friendlyAssets.Station.Name);
+                    FriendlyStationItem.Header = friendlyAssets.Station;
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.CombatShips)
                 {
-                    combatantItems.Items.Add(shipStats);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("FriendlyUnit-combatantItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
+                    FriendlyCombatantItems.Items.Add(shipStats);
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.NonCombatShips)
                 {
-                    nonCombatantItems.Items.Add(shipStats);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("FriendlyUnit-nonCombatantItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
+                    FriendlyNonCombatantItems.Items.Add(shipStats);
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.DestroyedShips)
                 {
-                    destroyedItems.Items.Add(shipStats);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("FriendlyUnit-destroyedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
+                    FriendlyDestroyedItems.Items.Add(shipStats);
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
                 {
-                    assimilatedItems.Items.Add(shipStats);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("FriendlyUnit-assimilatedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
+                    FriendlyAssimilatedItems.Items.Add(shipStats);
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
                 {
-                    escapedItems.Items.Add(shipStats);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("FriendlyUnit-escapedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
+                    FriendlyEscapedItems.Items.Add(shipStats);
                 }
             }
 
-            if (combatantItems.Items.Count > 0)
-                FriendlyAssetsTree.Items.Add(combatantItems);
-            if (nonCombatantItems.Items.Count > 0)
-                FriendlyAssetsTree.Items.Add(nonCombatantItems);
-            if (destroyedItems.Items.Count > 0)
-                FriendlyAssetsTree.Items.Add(destroyedItems);
-            if (assimilatedItems.Items.Count > 0)
-                FriendlyAssetsTree.Items.Add(assimilatedItems);
-            if (escapedItems.Items.Count > 0)
-                FriendlyAssetsTree.Items.Add(escapedItems);
-
-            combatantItems = new TreeViewItem();
-            nonCombatantItems = new TreeViewItem();
-            destroyedItems = new TreeViewItem();
-            assimilatedItems = new TreeViewItem();
-            escapedItems = new TreeViewItem();
-
-            combatantItems.Header = ResourceManager.GetString("COMBAT_COMBATANT_UNITS");
-            nonCombatantItems.Header = ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS");
-            destroyedItems.Header = ResourceManager.GetString("COMBAT_DESTROYED_UNITS");
-            assimilatedItems.Header = ResourceManager.GetString("COMBAT_ASSIMILATED UNITS");
-            escapedItems.Header = ResourceManager.GetString("COMBAT_ESCAPED_UNITS");
-
-            combatantItems.IsExpanded = true;
-            nonCombatantItems.IsExpanded = true;
-            destroyedItems.IsExpanded = true;
-            assimilatedItems.IsExpanded = true;
-            escapedItems.IsExpanded = true;
-
-            combatantItems.ItemTemplate = itemTemplate;
-            nonCombatantItems.ItemTemplate = itemTemplate;
-            destroyedItems.ItemTemplate = itemTemplate;
-            assimilatedItems.ItemTemplate = itemTemplate;
-            escapedItems.ItemTemplate = itemTemplate;
-
-            HostileAssetsTree.Items.Clear();
-
+            /* Hostile Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
                 if (hostileAssets.Station != null)
                 {
-                    TreeViewItem stationItem = new TreeViewItem();
-                    stationItem.Header = hostileAssets.Station;
-                    stationItem.HeaderTemplate = itemTemplate;
-                    HostileAssetsTree.Items.Add(stationItem);
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("HostileUnit: ShieldIntegry={0}, HullIntegry={1}, Name={2}", hostileAssets.Station.ShieldIntegrity, hostileAssets.Station.HullIntegrity, hostileAssets.Station.Name);
+                    HostileStationItem.Header = hostileAssets.Station;
                 }
                 foreach (CombatUnit shipStats in hostileAssets.CombatShips)
                 {
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("HostileUnit -combatantItems: ShieldIntegry={0}, HullIntegry={1}, Name= {2}, Owner Name={3} ", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name, shipStats.Owner.Name);
-                    combatantItems.Items.Add(shipStats);
+                    HostileCombatantItems.Items.Add(shipStats);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.NonCombatShips)
                 {
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("HostileUnit -nonCombatantItems: NonCombat: ShieldIntegry={0}, HullIntegry={1}, NonCombatShip-Name={2}", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
-                    nonCombatantItems.Items.Add(shipStats);
+                    HostileNonCombatantItems.Items.Add(shipStats);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.EscapedShips)
                 {
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("HostileUnit -escapedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2} ", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
-                    escapedItems.Items.Add(shipStats);
+                    HostileEscapedItems.Items.Add(shipStats);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.DestroyedShips)
                 {
-
-                    if (_tracingCombatWindow)
-                        GameLog.Client.GameData.DebugFormat("HostileUnit -destroyedItems: ShieldIntegry={0}, HullIntegry={1}, Name={2} ", shipStats.ShieldIntegrity, shipStats.HullIntegrity, shipStats.Name);
-                    destroyedItems.Items.Add(shipStats);
+                    HostileDestroyedItems.Items.Add(shipStats);
+                }
+                foreach(CombatUnit shipStats in hostileAssets.AssimilatedShips)
+                {
+                    HostileAssimilatedItems.Items.Add(shipStats);
                 }
             }
 
-            if (combatantItems.Items.Count > 0)
-                HostileAssetsTree.Items.Add(combatantItems);
-            if (nonCombatantItems.Items.Count > 0)
-                HostileAssetsTree.Items.Add(nonCombatantItems);
-            if (destroyedItems.Items.Count > 0)
-                HostileAssetsTree.Items.Add(destroyedItems);
-            if (assimilatedItems.Items.Count > 0)
-                HostileAssetsTree.Items.Add(assimilatedItems);
-            if (escapedItems.Items.Count > 0)
-                HostileAssetsTree.Items.Add(escapedItems);
+            ShowHideUnitTrees();
+        }
+
+        private void ShowHideUnitTrees()
+        {
+            FriendlyStationItem.Visibility = FriendlyStationItem.HasHeader ? Visibility.Visible : Visibility.Collapsed;
+            FriendlyCombatantItems.Header = FriendlyCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_COMBATANT_UNITS") : null;
+            FriendlyCombatantItems.Visibility = FriendlyCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            FriendlyNonCombatantItems.Header = FriendlyNonCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS") : null;
+            FriendlyNonCombatantItems.Visibility = FriendlyNonCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            FriendlyDestroyedItems.Header = FriendlyDestroyedItems.HasItems ? ResourceManager.GetString("COMBAT_DESTROYED_UNITS") : null;
+            FriendlyDestroyedItems.Visibility = FriendlyDestroyedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            FriendlyAssimilatedItems.Header = FriendlyAssimilatedItems.HasItems ? ResourceManager.GetString("COMBAT_ASSIMILATED_UNITS") : null;
+            FriendlyAssimilatedItems.Visibility = FriendlyAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            FriendlyEscapedItems.Header = FriendlyEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
+            FriendlyEscapedItems.Visibility = FriendlyEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileStationItem.Visibility = HostileStationItem.HasHeader ? Visibility.Visible : Visibility.Collapsed;
+            HostileCombatantItems.Header = HostileCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_COMBATANT_UNITS") : null;
+            HostileCombatantItems.Visibility = HostileCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileNonCombatantItems.Header = HostileNonCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS") : null;
+            HostileNonCombatantItems.Visibility = HostileNonCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileDestroyedItems.Header = HostileDestroyedItems.HasItems ? ResourceManager.GetString("COMBAT_DESTROYED_UNITS") : null;
+            HostileDestroyedItems.Visibility = HostileDestroyedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileAssimilatedItems.Header = HostileAssimilatedItems.HasItems ? ResourceManager.GetString("COMBAT_ASSIMILATED_UNITS") : null;
+            HostileAssimilatedItems.Visibility = HostileAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
+            HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -328,7 +278,10 @@ namespace Supremacy.Client
             if (sender == HailButton)
                 order = CombatOrder.Hail;
 
-            GameLog.Print("OnOrderButtonClicked:  Combat Window: Order Button clicked by Player = {1}", sender, order);
+            if (_tracingCombatWindow)
+            {
+                GameLog.Print("{0} button clicked by player", order);
+            }
 
             ButtonsPanel0.IsEnabled = false;
             ButtonsPanel1.IsEnabled = false;
