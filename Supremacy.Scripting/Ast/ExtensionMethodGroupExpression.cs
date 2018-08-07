@@ -76,19 +76,6 @@ namespace Supremacy.Scripting.Ast
                 return mg;
 
             return null;
-/*
-            if (ns == null)
-                return null;
-
-            // Search continues
-            ExtensionMethodGroupExpr e = ec.LookupExtensionMethod(this.ExpressionType, Name, location);
-            if (e == null)
-                return base.OverloadResolve(ec, ref arguments, false, location);
-
-            e.ExtensionExpression = ExtensionExpression;
-            e.SetTypeArguments(ec, type_arguments);
-            return e.ResolveOverloadExtensions(ec, ref arguments, e.namespace_entry, location);
-*/
         }		
     }
 }

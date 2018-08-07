@@ -166,25 +166,6 @@ namespace Supremacy.Economy
                 SetFlag(BuildProjectFlags.DilithiumShortage, value);
             }
         }
-/*
-        /// <summary>
-        /// Gets the personnel needed.
-        /// </summary>
-        /// <value>The personnel needed.</value>
-        public int PersonnelNeeded
-        {
-            get { return ResourcesRequired[ResourceType.Personnel]; }
-        }
-
-        /// <summary>
-        /// Gets the personnel used.
-        /// </summary>
-        /// <value>The personnel used.</value>
-        public int PersonnelUsed
-        {
-            get { return ResourcesInvested[ResourceType.Personnel]; }
-        }
-*/
 
         /// <summary>
         /// Gets the shipyard at which this <see cref="ShipBuildProject"/> is under construction.
@@ -397,13 +378,7 @@ namespace Supremacy.Economy
                 _resourcesRequired[ResourceType.Deuterium] = 
                     (repairTarget.FuelReserve.Maximum - repairTarget.FuelReserve.CurrentValue);
             }
-/*
-            if (!repairTarget.Crew.IsMaximized)
-            {
-                _resourcesRequired[ResourceType.Personnel] = 
-                    (repairTarget.ShipDesign.CrewSize - repairTarget.Crew.CurrentValue);
-            }
-*/
+
             if (repairTarget.HullStrength.CurrentValue < repairTarget.ShipDesign.HullStrength)
             {
                 float hullCurrent = repairTarget.HullStrength.CurrentValue;

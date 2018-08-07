@@ -608,17 +608,6 @@ namespace Supremacy.Universe
             get { return GetResourceProduction(ResourceType.Deuterium); }
         }
 
-/*
-        /// <summary>
-        /// Gets the net personnel production at this <see cref="Colony"/>.
-        /// </summary>
-        /// <value>The net personnel production.</value>
-        public int NetPersonnel
-        {
-            get { return GetResourceProduction(ResourceType.Personnel); }
-        }
-*/
-
         /// <summary>
         /// Gets the net raw materials production at this <see cref="Colony"/>.
         /// </summary>
@@ -968,20 +957,6 @@ namespace Supremacy.Universe
                     return _baseDeuteriumGeneration;
                 case ResourceType.RawMaterials:
                     return _baseRawMaterials;
-/*
-                case ResourceType.Personnel:
-                    int baseValue = 0;
-                    var personnelTable = GameContext.Current.Tables.ResourceTables["BasePersonnel"];
-                    if (personnelTable != null)
-                    {
-                        if (personnelTable[Owner.Key] != null)
-                            baseValue = Number.ParseInt32(personnelTable[Owner.Key][0]);
-                        else
-                            baseValue = Number.ParseInt32(personnelTable[0][0]);
-                        baseValue = (int)(0.01f * baseValue * currentPopulation);
-                    }
-                    return baseValue;
-*/
                 default:
                     return 0;
             }
@@ -1057,11 +1032,7 @@ namespace Supremacy.Universe
         {
             int baseValue = 0;
             var modifier = GetResourceModifier(resource);
-            /*if (resource == ResourceType.Personnel)
-            {
-                baseValue = GetBaseResourceProduction(resource);
-            }
-            else*/ if (resource == ResourceType.RawMaterials)
+            if (resource == ResourceType.RawMaterials)
             {
                 baseValue = GetBaseResourceProduction(resource);
             }
@@ -1099,14 +1070,6 @@ namespace Supremacy.Universe
                             if (bonus.BonusType == BonusType.Dilithium)
                                 modifier.Bonus += bonus.Amount;
                             break;
-/*
-                        case ResourceType.Personnel:
-                            if (bonus.BonusType == BonusType.Personnel)
-                                modifier.Bonus += bonus.Amount;
-                            else if (bonus.BonusType == BonusType.PercentPersonnelTraining)
-                                modifier.Efficiency += (bonus.Amount / 100f);
-                            break;
-*/
                         case ResourceType.RawMaterials:
                             if (bonus.BonusType == BonusType.RawMaterials)
                                 modifier.Bonus += bonus.Amount;

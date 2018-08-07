@@ -25,7 +25,7 @@ namespace Supremacy.Economy
         : EnumKeyedValueList<ResourceType, int>,
           IOwnedDataSerializableAndRecreatable,
           ICloneable,
-        IEnumerable<IPair<ResourceType, int>>
+        IEnumerable<Tuple<ResourceType, int>>
     {
         public const int MaxValue = int.MaxValue;
         public const int MinValue = 0;
@@ -80,15 +80,15 @@ namespace Supremacy.Economy
         }
 
         #region Implementation of IEnumerable
-        IEnumerator<IPair<ResourceType, int>> IEnumerable<IPair<ResourceType, int>>.GetEnumerator()
+        IEnumerator<Tuple<ResourceType, int>> IEnumerable<Tuple<ResourceType, int>>.GetEnumerator()
         {
             foreach (var resourceType in EnumHelper.GetValues<ResourceType>())
-                yield return new Pair<ResourceType, int>(resourceType, this[resourceType]);
+                yield return new Tuple<ResourceType, int>(resourceType, this[resourceType]);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<IPair<ResourceType, int>>)this).GetEnumerator();
+            return ((IEnumerable<Tuple<ResourceType, int>>)this).GetEnumerator();
         }
         #endregion
     }

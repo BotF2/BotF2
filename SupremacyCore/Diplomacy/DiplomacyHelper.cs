@@ -222,7 +222,7 @@ namespace Supremacy.Diplomacy
             if (sectorOwner == null)
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
-            if (sectorOwner == null || sectorOwner == traveller/* || !sectorOwner.IsEmpire*/)
+            if (sectorOwner == null || sectorOwner == traveller)
                 return true;
 
             var diplomacydata = GameContext.Current.DiplomacyData[traveller, sectorOwner];
@@ -255,7 +255,7 @@ namespace Supremacy.Diplomacy
             if (sectorOwner == null)
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
-            if (sectorOwner == null || sectorOwner == traveller/* || !sectorOwner.IsEmpire*/)
+            if (sectorOwner == null || sectorOwner == traveller)
                 return true;
 
             return !GameContext.Current.AgreementMatrix.IsAgreementActive(
@@ -534,8 +534,6 @@ namespace Supremacy.Diplomacy
                 return 0;
 
             var total = 0;
-
-            // ReSharper disable AccessToModifiedClosure
 
             /*
              * Include the value of all buildings.

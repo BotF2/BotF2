@@ -96,15 +96,6 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext ec)
         {
-/*
-            if (_resolvedType != null)
-            {
-                if (_requestedType is NewDelegateExpression)
-                    return _requestedType;
-                return this;
-            }
-*/
-
             var typeExpression = _requestedType.ResolveAsTypeTerminal(ec, false);
             if (typeExpression == null)
                 return null;
@@ -117,11 +108,6 @@ namespace Supremacy.Scripting.Ast
                 if (c != null)
                     return ReducedExpression.Create(c, this);
             }
-
-/*
-            if (TypeManager.IsDelegateType(_resolvedType))
-                return new NewDelegateExpression(_resolvedType, this.Arguments, this.Span).Resolve(ec);
-*/
 
             if (TypeManager.IsGenericParameter(_resolvedType))
             {
@@ -212,15 +198,6 @@ namespace Supremacy.Scripting.Ast
                 memberLookup.OnErrorUnexpectedKind(ec, ResolveFlags.MethodGroup, Span);
                 return null;
             }
-
-/*
-            if (_resolvedType.IsGenericType)
-            {
-                _constructor.SetTypeArguments(
-                    ec, 
-                    new TypeArguments(_resolvedType.GetGenericArguments().Select(o => new TypeExpression(o)).ToArray()));
-            }
-*/
 
             _constructor = _constructor.OverloadResolve(ec, ref _arguments, false, Span);
 

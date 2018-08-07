@@ -144,37 +144,6 @@ namespace Supremacy.Scripting.Ast
             return (Parameter)MemberwiseClone();
         }
 
-/*
-        public Expression CreateExpressionTreeVariable(ResolveContext ec)
-        {
-            if (this.IsByRef)
-            {
-                ec.Compiler.Errors.Add(
-                    ec.Compiler.SourceUnit,
-                    "An expression tree parameter cannot use `ref' or `out' modifier",
-                    this.Span,
-                    1951,
-                    Severity.Error);
-            }
-
-            ec.CurrentScope.GetVariable(this.Name);
-
-            var variable = ec.CurrentScope.AddVariable(
-                ResolveParameterExpressionType(ec, Location), Location);
-            variable.Resolve(ec);
-
-            expr_tree_variable = new LocalVariableReference(
-                ec.CurrentBlock, variable.Name, Location, variable, false);
-
-            Arguments arguments = new Arguments(2);
-            arguments.Add(new Argument(new TypeOf(
-                new TypeExpression(parameter_type, Location), Location)));
-            arguments.Add(new Argument(new StringConstant(Name, Location)));
-            return new SimpleAssign(ExpressionTreeVariableReference(),
-                Expression.CreateExpressionFactoryCall(ec, "Parameter", null, arguments, Location));
-        }
-*/
-
         public virtual Type Resolve(ParseContext rc)
         {
             if (ParameterType != null)
@@ -339,29 +308,6 @@ namespace Supremacy.Scripting.Ast
         {
             get { return Parameters; }
         }
-
-/*
-        public Type[] GetEmitTypes()
-        {
-            Type[] types = null;
-
-            for (var i = 0; i < Count; ++i)
-            {
-                if ((FixedParameters[i].ModFlags & Parameter.Modifier.ISBYREF) == 0)
-                    continue;
-
-                if (types == null)
-                    types = (Type[])Types.Clone();
-
-                types[i] = TypeManager.GetReferenceType(types[i]);
-            }
-
-            if (types == null)
-                types = Types;
-
-            return types;
-        }
-*/
 
         public bool HasExtensionMethodType
         {
@@ -605,63 +551,11 @@ namespace Supremacy.Scripting.Ast
             return new ParametersCompiled(allParams, allTypes) { HasParams = userParams.HasParams };
         }
 
-        /*
-                    public bool Resolve(ResolveContext resolveContext)
-                    {
-                        var types = this.Types;
-                        if (types != null)
-                            return true;
-
-                        types = new Type[Count];
-
-                        var ok = true;
-                        Parameter p;
-                
-                        for (var i = 0; i < FixedParameters.Length; ++i)
-                        {
-                            p = this[i];
-                            Type t = p.Resolve(resolveContext);
-                            if (t == null)
-                            {
-                                ok = false;
-                                continue;
-                            }
-
-                            types[i] = t;
-                        }
-
-                        return ok;
-                    }
-        */
-
         public void ResolveVariable()
         {
             for (var i = 0; i < FixedParameters.Length; ++i)
                 this[i].ResolveVariable(i);
         }
-
-        /*
-            public Expression CreateExpressionTree(ResolveContext ec, SourceLocation loc)
-            {
-                var initializers = new List<Expression>(Count);
-                foreach (Parameter p in this.FixedParameters)
-                {
-                    //
-                    // Each parameter expression is stored to local variable
-                    // to save some memory when referenced later.
-                    //
-                    StatementExpression se = new StatementExpression(p.CreateExpressionTreeVariable(ec));
-                    if (se.Resolve(ec))
-                        ec.CurrentBlock.AddScopeStatement(se);
-
-                    initializers.Add(p.ExpressionTreeVariableReference());
-                }
-
-                return new ArrayCreation(
-                    Parameter.ResolveParameterExpressionType(ec, loc),
-                    "[]", initializers, loc);
-            }
-        */
 
         public ParametersCompiled Clone()
         {

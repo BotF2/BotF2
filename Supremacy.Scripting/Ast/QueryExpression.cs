@@ -12,17 +12,6 @@ namespace Supremacy.Scripting.Ast
             set { Next = value; }
         }
 
-/*
-        public override void Walk(AstVisitor prefix, AstVisitor postfix)
-        {
-            base.Walk(prefix, postfix);
-
-            var query = this.Query;
-            Walk(ref query, prefix, postfix);
-            this.Query = query;
-        }
-*/
-
         public override Expression BuildQueryClause(ParseContext ec, Expression lSide)
         {
             return Next.BuildQueryClause(ec, lSide);
@@ -37,11 +26,7 @@ namespace Supremacy.Scripting.Ast
             var oldCounter = QueryScope.TransparentParameter.Counter;
 
             var e = BuildQueryClause(ec, null);
-
-            //var oldScope = ec.CurrentScope;
-            //ec.CurrentScope = this.Scope;
             e = e.Resolve(ec);
-            //ec.CurrentScope = oldScope;
 
             //
             // Reset counter in probing mode to ensure that all transparent

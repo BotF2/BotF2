@@ -84,28 +84,11 @@ namespace Supremacy.Scripting.Ast
 
             Expression e = DoResolveLValue(ec, rightSide);
 
-/*
-            if (e != null && outAccess && !(e is IMemoryLocation))
-            {
-                // FIXME: There's no problem with correctness, the 'Expr = null' handles that.
-                //        Enabling this 'throw' will "only" result in deleting useless code elsewhere,
-
-                //throw new InternalErrorException ("ResolveLValue didn't return an IMemoryLocation: " +
-                //				  e.GetType () + " " + e.GetSignatureForError ());
-                e = null;
-            }
-*/
-
             if (e == null)
             {
                 if (errors == ec.CompilerErrorCount)
                 {
-/*
-                    if (outAccess)
-                        ec.Report.Error(1510, loc, "A ref or out argument must be an assignable variable");
-                    else
-                        Error_ValueAssignment(ec, loc);
-*/
+
                 }
                 return null;
             }
@@ -151,29 +134,6 @@ namespace Supremacy.Scripting.Ast
 
                 return this;
             }
-
-/*
-            if (e == null)
-                return null;
-*/
-
-/*
-            if ((flags & e.ExprClassToResolveFlags) == 0)
-            {
-                e.OnUnexpectedKindError(ec, flags, loc);
-                return null;
-            }
-*/
-
-/*
-            if (e.type == null && !(e is Namespace))
-            {
-                throw new Exception(
-                    "Expression " + e.GetType() +
-                    " did not set its type after Resolve\n" +
-                    "called from: " + this.GetType());
-            }
-*/
 
             return e;
         }

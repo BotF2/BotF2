@@ -692,120 +692,81 @@ namespace Supremacy.Universe
             foreach (var quadrant in EnumUtilities.GetValues<Quadrant>())
                 minorRaces[quadrant].ShuffleInPlace();
 
-            /* -- Dead code, commented out to suppress compiler warnings 
-            if (false)
-            {
-                //  Random distribution
-                // Since we are populating minors in regards to a system's ratio, we cannot approach this by going through minors and quadrants first.
-                // So we go the other way around, we start with the first location (which are already shuffled) and find a minor that fits the same quadrant.
-                // If we are out of minors then either we choose one from another quadrant, or simply jump that position and continue on.
-
-                for (int i = 0; i < wantedMinorRaceCount; i++)
-                {
-                    var location = positions[0];
-                    Quadrant posQuadrant = GameContext.Current.Universe.Map.GetQuadrant(location);
-
-                    // If there isn't any minors left in the quadrant just jump over it
-                    if (minorRaces[posQuadrant].Count > 0)
-                    {
-                        var minor = minorRaces[posQuadrant][0];
-
-                        minorRaces[posQuadrant].RemoveAt(0);
-
-                        minorHomeLocations.Add(location);
-                        chosenCivs.Add(minor);
-
-                        FinalizaHomeworldPlacement(starNames, homeSystemDatabase, minor, location);
-
-                        //GameLog.Print("Civilization {0} placed at location {1}", minor.ShortName, location);
-
-
-                        // hide for data protection      GameLog.Print("Civilization {0} placed as {1}", minor.ShortName, minor.CivilizationType);
-                    }
-
-                    positions.RemoveAt(0);
-                }
-        }
-            else */
-            {
-                /* Equally divided amongst quadrants distribution */
-
-                var chosenMinorRaces = new Dictionary<Quadrant, List<Civilization>>();
-                foreach (var quadrant in EnumHelper.GetValues<Quadrant>())
-                    chosenMinorRaces[quadrant] = new List<Civilization>();
+            var chosenMinorRaces = new Dictionary<Quadrant, List<Civilization>>();
+            foreach (var quadrant in EnumHelper.GetValues<Quadrant>())
+                chosenMinorRaces[quadrant] = new List<Civilization>();
                 
-                for (int i = 0; i < wantedMinorRaceCount; i++)
+            for (int i = 0; i < wantedMinorRaceCount; i++)
+            {
+                int smallestMinorRaceCount = int.MaxValue;
+                Quadrant quadrantWithLessMinors = EnumHelper.GetValues<Quadrant>().First();
+
+                foreach (var quadrant in EnumHelper.GetValues<Quadrant>())
                 {
-                    int smallestMinorRaceCount = int.MaxValue;
-                    Quadrant quadrantWithLessMinors = EnumHelper.GetValues<Quadrant>().First();
-
-                    foreach (var quadrant in EnumHelper.GetValues<Quadrant>())
+                    if ((minorRaces[quadrant].Count > 0) && (chosenMinorRaces[quadrant].Count < smallestMinorRaceCount))
                     {
-                        if ((minorRaces[quadrant].Count > 0) && (chosenMinorRaces[quadrant].Count < smallestMinorRaceCount))
-                        {
-                            smallestMinorRaceCount = chosenMinorRaces[quadrant].Count;
-                            quadrantWithLessMinors = quadrant;
-                        }
+                        smallestMinorRaceCount = chosenMinorRaces[quadrant].Count;
+                        quadrantWithLessMinors = quadrant;
                     }
+                }
 
-                    if (minorRaces[quadrantWithLessMinors].Count == 0)
+                if (minorRaces[quadrantWithLessMinors].Count == 0)
+                {
+                    Log.WarnFormat("No more minor race definitions available (create more).  Galaxy generation will stop.");
+                    return;
+                }
+
+                var minor = minorRaces[quadrantWithLessMinors][0];
+
+                minorRaces[quadrantWithLessMinors].RemoveAt(0);
+
+                int iPosition = Algorithms.FindFirstIndexWhere(
+                    positions,
+                    location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
+
+                if (iPosition >= 0)
+                {
+                    var chosenLocation = positions[iPosition];
+
+                    if (minor.ShortName == "Bajorans")
                     {
-                        Log.WarnFormat("No more minor race definitions available (create more).  Galaxy generation will stop.");
-                        return;
-                    }
+                        //Place Bajor in lower half of Alpha quadrant                        
+                        MapLocation desiredLocation = new MapLocation(GameContext.Current.Universe.Map.Width / 4, (GameContext.Current.Universe.Map.Height - 3));
 
-                    var minor = minorRaces[quadrantWithLessMinors][0];
-
-                    minorRaces[quadrantWithLessMinors].RemoveAt(0);
-
-                    int iPosition = Algorithms.FindFirstIndexWhere(
-                        positions,
-                        location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
-
-                    if (iPosition >= 0)
-                    {
-                        var chosenLocation = positions[iPosition];
-
-                        if (minor.ShortName == "Bajorans")
+                        foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
                         {
-                            //Place Bajor in lower half of Alpha quadrant                        
-                            MapLocation desiredLocation = new MapLocation(GameContext.Current.Universe.Map.Width / 4, (GameContext.Current.Universe.Map.Height - 3));
-
-                            foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
+                            if (sector.System == null)
                             {
-                                if (sector.System == null)
+                                chosenLocation = sector.Location;
+                                minorHomeLocations.Add(chosenLocation);
+                                if (m_TraceWormholes)
                                 {
-                                    chosenLocation = sector.Location;
-                                    minorHomeLocations.Add(chosenLocation);
-                                    if (m_TraceWormholes)
-                                    {
-                                        GameLog.Print("lower 1/4 of map is place for Bajor at {0}", sector.Location);
-                                    }
-
+                                    GameLog.Print("lower 1/4 of map is place for Bajor at {0}", sector.Location);
                                 }
 
                             }
 
                         }
-                        minorHomeLocations.Add(chosenLocation);
-                        chosenCivs.Add(minor);
-                        chosenMinorRaces[quadrantWithLessMinors].Add(minor);
 
-                        FinalizaHomeworldPlacement(starNames, homeSystemDatabase, minor, chosenLocation);
-
-                        positions.RemoveAt(iPosition);
-
-                        //GameLog.Print("Civilization {0} placed at location {1}", minor.ShortName, chosenLocation);
-
-                        // hide for data protection      GameLog.Print("Civilization {0} placed as {1}", minor.ShortName, minor.CivilizationType);
                     }
-                    else
-                    {
-                        Log.WarnFormat(
-                            "Failed to find a suitable home sector for civilization {0}.  Galaxy generation will stop.",
-                            minor.ShortName);
-                        return;
-                    }
+                    minorHomeLocations.Add(chosenLocation);
+                    chosenCivs.Add(minor);
+                    chosenMinorRaces[quadrantWithLessMinors].Add(minor);
+
+                    FinalizaHomeworldPlacement(starNames, homeSystemDatabase, minor, chosenLocation);
+
+                    positions.RemoveAt(iPosition);
+
+                    //GameLog.Print("Civilization {0} placed at location {1}", minor.ShortName, chosenLocation);
+
+                    // hide for data protection      GameLog.Print("Civilization {0} placed as {1}", minor.ShortName, minor.CivilizationType);
+                }
+                else
+                {
+                    Log.WarnFormat(
+                        "Failed to find a suitable home sector for civilization {0}.  Galaxy generation will stop.",
+                        minor.ShortName);
+                    return;
                 }
             }
         }

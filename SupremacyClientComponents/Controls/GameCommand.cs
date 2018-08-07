@@ -85,7 +85,7 @@ namespace Supremacy.Client.Controls
             
             return routedCommand.CanExecute(
                 parameter, 
-                commandSource.CommandTarget ?? alternateTarget/* ?? commandSource as IInputElement*/);
+                commandSource.CommandTarget ?? alternateTarget);
         }
 
         internal static bool CanExecuteCommandSource(ICommandSource commandSource, ICommand alternateCommand)

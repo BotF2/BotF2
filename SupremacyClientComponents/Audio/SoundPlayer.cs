@@ -56,20 +56,6 @@ namespace Supremacy.Client.Audio
             _channelGroup = _engine.CreateGrouping("sound");
         }
 
-        // Dead code
-        /*
-        public SoundPlayer()
-        {
-            // TODO: Complete member initialization
-        }
-
-        public SoundPlayer(string p)
-        {
-            // TODO: Complete member initialization
-            this.p = p;
-        }
-        */
-
         public void Dispose()
         {
             if (_audioTraceLocally)

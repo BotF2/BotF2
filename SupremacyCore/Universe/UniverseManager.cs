@@ -637,17 +637,6 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
-/*
-            for (var x = 0; x < _map.Width; x++)
-            {
-                for (var y = 0; y < _map.Height; y++)
-                {
-                    _map[x, y].Station = null;
-                    _map[x, y].System = null;
-                }
-            }
-*/
-
             foreach (var station in Find<Station>())
                 _map[station.Location].Station = station;
 

@@ -515,7 +515,7 @@ namespace Supremacy.Xna
         {
             try
             {
-                if (_doneFirstUpdate /*&& this.IsVisible*/ && BeginDraw())
+                if (_doneFirstUpdate && BeginDraw())
                 {
                     _time.TotalRealTime = _clock.CurrentTime;
                     _time.ElapsedRealTime = _lastFrameElapsedRealTime;

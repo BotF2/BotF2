@@ -209,30 +209,6 @@ namespace Supremacy.Xna
             _effect.End();
         }
 
-/*
-        private void RenderReference(StarType starType, GraphicsDevice device)
-        {
-            var sun = _starMaps[starType];
-
-            var spriteBatch = new SpriteBatch(device);
-            var currentFactor = (float)(_currentTime / FrameTransitionTime);
-
-            var texture1 = sun[_currentFrame];
-            var texture2 = (_currentFrame < 4) ? sun[_currentFrame + 1] : sun[0];
-
-            var scale = (float)device.Viewport.Width / texture1.Width;
-            var sourceRectangle = new Rectangle(0, 0, texture1.Width, texture1.Height);
-            var destinationRectangle = new Rectangle(0, 0, device.Viewport.Width, device.Viewport.Height);
-            var rotationOrigin = new Vector2(sourceRectangle.Width / 2f, sourceRectangle.Height / 2f);
-            var position = new Vector2(destinationRectangle.Width / 2f, destinationRectangle.Height / 2f);
-
-            spriteBatch.Begin(SpriteBlendMode.Additive);
-            spriteBatch.Draw(sun[_currentFrame], position, null, Color.White, _rotation.Z, rotationOrigin, scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(texture2, position, null, new Color(Color.White, currentFactor), _rotation.Z, rotationOrigin, scale, SpriteEffects.None, 0);
-            spriteBatch.End();
-        }
-*/
-
         #region Implementation of IDisposable
         public void Dispose()
         {

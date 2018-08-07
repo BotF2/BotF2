@@ -159,22 +159,6 @@ namespace Supremacy.Scripting.Ast
             return transformedArguments;
         }
 
-/*
-        public void MarkReorderedArgument(NamedArgument a)
-        {
-            //
-            // Constant expression can have no effect on left-to-right execution
-            //
-            if (a.Expr is Constant)
-                return;
-
-            if (reordered == null)
-                reordered = new ArrayList();
-
-            reordered.Add(a);
-        }
-*/
-
         //
         // Returns dynamic when at least one argument is of dynamic type
         //
@@ -183,14 +167,6 @@ namespace Supremacy.Scripting.Ast
             foreach (var argument in _arguments)
                 argument.Resolve(ec);
         }
-
-/*
-        public void MutateHoistedGenericType(AnonymousMethodStorey storey)
-        {
-            foreach (Argument a in args)
-                a.Expr.MutateHoistedGenericType(storey);
-        }
-*/
 
         public void RemoveAt(int index)
         {

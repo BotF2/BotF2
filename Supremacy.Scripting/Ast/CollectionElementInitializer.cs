@@ -42,15 +42,6 @@ namespace Supremacy.Scripting.Ast
                 Arguments.Select(o => o.Value.Transform(generator)));
         }
 
-/*
-        public override MSAst TransformCore(SxeGenerator generator)
-        {
-            return MSAst.ElementInit(
-                (MethodInfo)base.MethodGroup,
-                this.Arguments.Select(o => o.Value.Transform(generator)));
-        }
-*/
-
         sealed class AddMemberAccessExpression : MemberAccessExpression
         {
             public AddMemberAccessExpression(Expression left, SourceSpan span)

@@ -39,29 +39,6 @@ namespace Supremacy.Xna
                     return SurfaceFormat.Color;
                 }
 
-/*
-                if (adapter.CheckDeviceFormat(
-                    DeviceType.Hardware,
-                    currentSurfaceFormat,
-                    TextureUsage.None,
-                    QueryUsages.None,
-                    ResourceType.RenderTarget,
-                    SurfaceFormat.Rgba32))
-                {
-                    return SurfaceFormat.Rgba32;
-                }
-
-                if (adapter.CheckDeviceFormat(
-                    DeviceType.Hardware,
-                    currentSurfaceFormat,
-                    TextureUsage.None,
-                    QueryUsages.None,
-                    ResourceType.RenderTarget,
-                    SurfaceFormat.Rgb32))
-                {
-                    return SurfaceFormat.Rgb32;
-                }
-*/
                 return currentSurfaceFormat;
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?

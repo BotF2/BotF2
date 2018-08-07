@@ -210,26 +210,6 @@ namespace Supremacy.Client.Data
                             "Click",
                             HyperlinkClickedWeakEventListener);
                     }
-/*
-                    else
-                    {
-                        link.SetBinding(
-                            Hyperlink.CommandProperty,
-                            new Binding
-                            {
-                                Path = new PropertyPath(typeof(ILinkCommandSite).GetProperty("LinkCommand")),
-                                Mode = BindingMode.OneWay
-                            });
-
-                        link.SetBinding(
-                            Hyperlink.CommandParameterProperty,
-                            new Binding
-                            {
-                                RelativeSource = RelativeSource.Self,
-                                Mode = BindingMode.OneWay
-                            });
-                    }
-*/
 
                     span = link;
                     break;

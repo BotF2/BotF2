@@ -48,22 +48,6 @@ namespace Supremacy.Scripting.Ast
             clone._value = Clone(cloneContext, _value);
             clone._target = Clone(cloneContext, _target);
         }
-/*
-        public override Expression CreateExpressionTree(ResolveContext ec)
-        {
-            Arguments args = new Arguments(2);
-            FieldExpr fe = target as FieldExpr;
-            if (fe != null)
-                args.Add(new Argument(fe.CreateTypeOfExpression()));
-            else
-                args.Add(new Argument(((PropertyExpr)target).CreateSetterTypeOfExpression()));
-
-            args.Add(new Argument(source.CreateExpressionTree(ec)));
-            return CreateExpressionFactoryCall(ec,
-                source is CollectionOrObjectInitializers ? "ListBind" : "Bind",
-                args);
-        }
-*/
 
         public MSAst::MemberBinding TransformMemberBinding(ScriptGenerator generator)
         {
@@ -125,19 +109,6 @@ namespace Supremacy.Scripting.Ast
 
                 return this;
             }
-
-            //var resolved = base.DoResolve(ec);
-            //if (resolved == null)
-            //    return null;
-
-/*
-            //
-            // Ignore field initializers with default value
-            //
-            var c = _value as ConstantExpression;
-            if (c != null && c.IsDefaultInitializer(type) && target.eclass == ExprClass.Variable)
-                return EmptyExpressionStatement.Instance.DoResolve(ec);
-*/
 
             return this;
         }

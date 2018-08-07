@@ -117,8 +117,6 @@ namespace Supremacy.UI
             /* Start on a random frame to provide some variation */
             CurrentFrame = Statistics.Random(Frames.Length);
 
-            //var result3 = MessageDialog.Show("header", "hello", MessageDialogButtons.Ok);
-
             _imageBrush = new ImageBrush { ImageSource = Frames[CurrentFrame % 255] };
             _rectangle = new Rectangle
             {

@@ -182,8 +182,8 @@ namespace Supremacy.Types
         {
             CloneCoreCommon(
                 sourceFreezable,
-                /* useCurrentValue = */ false,
-                /* cloneFrozenValues = */ true);
+                false,
+                true);
         } 
 
         public FreezableBase CloneCurrentValue()
@@ -197,8 +197,8 @@ namespace Supremacy.Types
         {
             CloneCoreCommon(
                 sourceFreezable,
-                /* useCurrentValue = */ true,
-                /* cloneFrozenValues = */ true);
+                true,
+                true);
         }
 
         public FreezableBase GetAsFrozen()
@@ -237,16 +237,16 @@ namespace Supremacy.Types
         {
             CloneCoreCommon(
                 sourceFreezable,
-                /* useCurrentValue = */ true,
-                /* cloneFrozenValues = */ false);
+                true,
+                false);
         } 
 
         protected virtual void GetAsFrozenCore(FreezableBase sourceFreezable)
         {
             CloneCoreCommon(
                 sourceFreezable,
-                /* useCurrentValue = */ false,
-                /* cloneFrozenValues = */ false);
+                false,
+                false);
         }
 
         protected abstract FreezableBase CreateInstanceCore(object syncRoot);

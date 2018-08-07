@@ -51,37 +51,6 @@ namespace Supremacy.Scripting.Ast
             Walk(ref _right, prefix, postfix);
         }
 
-        /*
-                public override Expression DoResolve(ParseContext parseContext)
-                {
-                    if ((this.Left == null) || (this.Right == null))
-                        return null;
-
-                    this.Left = this.Left.Resolve(parseContext);
-                    this.Right = this.Right.Resolve(parseContext);
-
-                    if ((this.Left == null) || (this.Right == null))
-                        return null;
-
-                    var leftType = this.Left.ExpressionType;
-                    var rightType = this.Right.ExpressionType;
-
-                    if ((leftType == TypeManager.CoreTypes.Decimal)
-
-                    if (TypeUtils.IsNumeric(leftType) && TypeUtils.IsNumeric(rightType))
-                    {
-                        int leftX, leftY, rightX, rightY;
-
-                        var conversionOrder = TypeUtils.GetNumericConversionOrder(
-                            Type.GetTypeCode(leftType),
-                            out leftX,
-                            out leftY);
-                    }
-
-                    return base.DoResolve(parseContext);
-                }
-        */
-
         public override Expression DoResolve(ParseContext ec)
         {
             if (_left == null)
@@ -161,16 +130,6 @@ namespace Supremacy.Scripting.Ast
                 CheckUselessComparison(ec, lc, _right.Type);
                 CheckUselessComparison(ec, rc, _left.Type);
             }
-
-            /*
-                        if (TypeManager.IsDynamicType(_left.ExpressionType) || TypeManager.IsDynamicType(_right.ExpressionType))
-                        {
-                            var args = new Arguments(2);
-                            args.Add(new Argument(_left));
-                            args.Add(new Argument(_right));
-                            return new DynamicExpressionStatement(this, args, this.Span).Resolve(ec);
-                        }
-            */
 
             if ((TypeManager.IsNullableType(_left.Type) && (_right is NullLiteral || TypeManager.IsNullableType(_right.Type) || TypeManager.IsValueType(_right.Type))) ||
                  (TypeManager.IsValueType(_left.Type) && _right is NullLiteral) ||

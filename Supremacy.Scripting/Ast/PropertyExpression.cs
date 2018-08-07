@@ -164,14 +164,10 @@ namespace Supremacy.Scripting.Ast
             if (InstanceExpression == null)
                 return false;
 
-            //InstanceExpression.CheckMarshalByRefAccess(ec);
-
             if (mustDoCs1540Check && (InstanceExpression != EmptyExpression.Null) &&
-                !TypeManager.IsInstantiationOfSameGenericType(InstanceExpression.Type, null /*ec.CurrentType*/) &&
-                !TypeManager.IsNestedChildOf(null /*ec.CurrentType*/, InstanceExpression.Type)/* &&
-                !TypeManager.IsSubclassOf(InstanceExpression.ExpressionType, ec.CurrentType)*/)
+                !TypeManager.IsInstantiationOfSameGenericType(InstanceExpression.Type, null) &&
+                !TypeManager.IsNestedChildOf(null, InstanceExpression.Type))
             {
-                //Error_CannotAccessProtected(ec, loc, _propertyInfo, InstanceExpression.ExpressionType, ec.CurrentType);
                 return false;
             }
 
@@ -183,7 +179,6 @@ namespace Supremacy.Scripting.Ast
             // TODO: correctly we should compare arguments but it will lead to bigger changes
             if (mi is MethodBuilder)
             {
-                //Error_TypeDoesNotContainDefinition(ec, loc, _propertyInfo.DeclaringType, Name);
                 return;
             }
 
@@ -236,15 +231,6 @@ namespace Supremacy.Scripting.Ast
                 if (InstanceExpression != null)
                 {
                     var exprType = InstanceExpression.Type;
-/*
-                    var exMethodLookup = ec.LookupExtensionMethod(exprType, Name, loc);
-                    if (exMethodLookup != null)
-                    {
-                        exMethodLookup.ExtensionExpression = InstanceExpression;
-                        exMethodLookup.SetTypeArguments(ec, targs);
-                        return exMethodLookup.DoResolve(ec);
-                    }
-*/
                 }
 
                 ResolveGetter(ec, ref mustDoCs1540Check);
@@ -253,16 +239,6 @@ namespace Supremacy.Scripting.Ast
 
             if (!InstanceResolve(ec, false, mustDoCs1540Check))
                 return null;
-
-/*
-            //
-            // Only base will allow this invocation to happen.
-            //
-            if (IsBase && _getter.IsAbstract)
-            {
-                Error_CannotCallAbstractBase(ec, TypeManager.GetFullNameSignature(_propertyInfo));
-            }
-*/
 
             if (_propertyInfo.PropertyType.IsPointer)
             {
@@ -352,18 +328,8 @@ namespace Supremacy.Scripting.Ast
             }
 
             bool mustDoCs1540Check;
-            if (!IsAccessorAccessible(null /*parseContext.CurrentType*/, _setter, out mustDoCs1540Check))
+            if (!IsAccessorAccessible(null, _setter, out mustDoCs1540Check))
             {
-/*
-                PropertyBase.PropertyMethod pm = TypeManager.GetMethod(_setter) as PropertyBase.PropertyMethod;
-                if (pm != null && pm.HasCustomAccessModifier)
-                {
-                    parseContext.Report.SymbolRelatedToPreviousError(pm);
-                    parseContext.Report.Error(272, this.Span, "The property or indexer `{0}' cannot be used in this context because the set accessor is inaccessible",
-                        TypeManager.CSharpSignature(_setter));
-                }
-                else
-*/
                 {
                     parseContext.ReportError(
                         CompilerErrors.MemberIsInaccessible,
@@ -377,37 +343,11 @@ namespace Supremacy.Scripting.Ast
             if (!InstanceResolve(parseContext, TypeManager.IsStruct(_propertyInfo.DeclaringType), mustDoCs1540Check))
                 return null;
 
-/*
-            //
-            // Only base will allow this invocation to happen.
-            //
-            if (IsBase && _setter.IsAbstract)
-            {
-                Error_CannotCallAbstractBase(parseContext, TypeManager.GetFullNameSignature(_propertyInfo));
-            }
-*/
 
-            if (_propertyInfo.PropertyType.IsPointer/* && !parseContext.IsUnsafe*/)
+            if (_propertyInfo.PropertyType.IsPointer)
             {
                 // TODO: UnsafeError(parseContext, this.Span);
             }
-
-/*
-            if (!parseContext.IsObsolete)
-            {
-                PropertyBase pb = TypeManager.GetProperty(_propertyInfo);
-                if (pb != null)
-                {
-                    pb.CheckObsoleteness(this.Span);
-                }
-                else
-                {
-                    ObsoleteAttribute oa = AttributeTester.GetMemberObsoleteAttribute(_propertyInfo);
-                    if (oa != null)
-                        AttributeTester.Report_ObsoleteMessage(oa, GetSignatureForError(), this.Span, parseContext.Report);
-                }
-            }
-*/
 
             return this;
         }
@@ -454,18 +394,8 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (_getter != null &&
-                !IsAccessorAccessible(null /*ec.CurrentType*/, _getter, out mustDoCs1540Check))
+                !IsAccessorAccessible(null, _getter, out mustDoCs1540Check))
             {
-/*
-                PropertyBase.PropertyMethod pm = TypeManager.GetMethod(_getter) as PropertyBase.PropertyMethod;
-                if (pm != null && pm.HasCustomAccessModifier)
-                {
-                    ec.Report.SymbolRelatedToPreviousError(pm);
-                    ec.Report.Error(271, this.Span, "The property or indexer `{0}' cannot be used in this context because the get accessor is inaccessible",
-                        TypeManager.CSharpSignature(_getter));
-                }
-                else
-*/
                 {
                     ec.ReportError(
                         CompilerErrors.MemberIsInaccessible,

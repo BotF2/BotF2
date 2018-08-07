@@ -37,7 +37,7 @@ namespace Supremacy.Economy
     /// The base class for all construction projects in the game.
     /// </summary>
     [Serializable]
-    public abstract class BuildProject : /*IOwnedDataSerializableAndRecreatable,*/ INotifyPropertyChanged
+    public abstract class BuildProject : INotifyPropertyChanged
     {
         public const int MaxPriority = Byte.MaxValue;
         public const int MinPriority = Byte.MinValue;
@@ -51,7 +51,6 @@ namespace Supremacy.Economy
         private byte _priority;
         private BuildProjectFlags _flags;
         private ResourceValueCollection _resourcesInvested;
-        //public bool _buildTracing = true;
         public bool _buildTracing = false;
 
         /// <summary>

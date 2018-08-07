@@ -475,14 +475,6 @@ namespace Supremacy.Client
                     var techCategory = field.TechCategory;
                     var column = new TableColumn();
                     var techIcon = new Border();
-/*
-                    var shadowEffect = new DropShadowEffect
-                                       {
-                                           ShadowDepth = 0,
-                                           BlurRadius = 4,
-                                           Color = Colors.Black
-                                       };
-*/
                     var techTextShadow = new TextBlock { Effect = new BlurEffect { Radius = 6 } };
                     var techText = new TextBlock();
 

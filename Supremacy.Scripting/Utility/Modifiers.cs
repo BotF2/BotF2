@@ -242,13 +242,6 @@ namespace Supremacy.Scripting.Utility
             {
                 var a = mod;
 
-/*
-                if ((mod & Modifiers.UNSAFE) != 0)
-                {
-                    RootContext.CheckUnsafeOption(l, parseContext);
-                }
-*/
-
                 //
                 // If no accessibility bits provided
                 // then provide the defaults.

@@ -158,46 +158,20 @@ namespace Supremacy.Scripting.Ast
 
                     if (exprType == TypeManager.CoreTypes.UInt32)
                     {
-/*
-                        var uil = e as UIntLiteral;
-                        if (uil != null)
-                        {
-                            if (uil.Value == 2147483648)
-                                return new IntLiteral(int.MinValue, e.Span);
-                            return new LongLiteral(-uil.Value, e.Span);
-                        }
-*/
                         return new ConstantExpression<long>(-((uint)e.Value), e.Span);
                     }
 
                     if (exprType == TypeManager.CoreTypes.UInt64)
                     {
-/*
-                        var ull = e as ULongLiteral;
-                        if (ull != null && ull.Value == 9223372036854775808)
-                            return new LongLiteral(long.MinValue, e.Span);
-*/
                         return null;
                     }
 
                     if (exprType == TypeManager.CoreTypes.Single)
                     {
-/*
-                        var fl = e as FloatLiteral;
-                        // For better error reporting
-                        if (fl != null)
-                            return new FloatLiteral(-fl.Value, e.Span);
-*/
                         return new ConstantExpression<float>(-((float)e.Value), e.Span);
                     }
                     if (exprType == TypeManager.CoreTypes.Double)
                     {
-/*
-                        var dl = e as DoubleLiteral;
-                        // For better error reporting
-                        if (dl != null)
-                            return new DoubleLiteral(-dl.Value, e.Span);
-*/
                         return new ConstantExpression<double>(-((double)e.Value), e.Span);
                     }
                     if (exprType == TypeManager.CoreTypes.Decimal)
