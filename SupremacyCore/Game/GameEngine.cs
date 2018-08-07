@@ -1170,7 +1170,7 @@ namespace Supremacy.Game
                     foreach (Colony colony in colonies)
                     {
                         if (m_TraceProduction)
-                            GameLog.Print("DoProduction for Colony {0} ({1})", colony.Name, civ.Name);
+                            GameLog.Print("DoProduction for Colony {0} ({1} with credits = {2})", colony.Name, civ.Name, civManager.Credits);
 
                         //See if there is actually anything to build for this colony
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
@@ -1731,7 +1731,7 @@ namespace Supremacy.Game
                             if (targetColony.GetTotalFacilities(ProductionCategory.Intelligence) > 1)
                             {
                                 int destroyedIntelFacilities = rnd.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Intelligence) + 1);
-                                targetColony.RemoveFacilities(ProductionCategory.Research, destroyedIntelFacilities);
+                                targetColony.RemoveFacilities(ProductionCategory.Intelligence, destroyedIntelFacilities);
 
                                 if (m_TraceIntelligience)
                                     GameLog.Print("{0} destroyed {1} intelligence facilities at {2}", attackingEmpire.Civilization.Name, destroyedIntelFacilities, targetColony.Name);
