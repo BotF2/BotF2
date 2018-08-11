@@ -218,21 +218,8 @@ namespace Supremacy.Scripting.Ast
             }
 
             var expressionType = leftResolved.Type;
-/*
-            if (TypeManager.IsDynamicType(expressionType))
-            {
-                Arguments args = new Arguments(1);
-                args.Add(new Argument(leftResolved.Resolve(ec)));
-                this.Left = new DynamicMemberBinder(Name, args, loc);
-                if (rightSide != null)
-                    return this.Left.DoResolveLValue(ec, rightSide);
 
-                return this.Left.Resolve(ec);
-            }
-*/
-
-            if (expressionType.IsPointer || expressionType == TypeManager.CoreTypes.Void/* ||
-                expressionType == TypeManager.null_type || expressionType == InternalType.AnonymousMethod*/)
+            if (expressionType.IsPointer || expressionType == TypeManager.CoreTypes.Void)
             {
                 // TODO: Unary.Error_OperatorCannotBeApplied(ec, loc, ".", expressionType);
                 return null;
@@ -389,11 +376,7 @@ namespace Supremacy.Scripting.Ast
             {
                 if (me.IsInstance)
                 {
-/*
-                    LocalVariableReference var = leftResolved as LocalVariableReference;
-                    if (var != null && !var.VerifyAssigned(ec))
-                        return null;
-*/
+
                 }
             }
 

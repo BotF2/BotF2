@@ -568,7 +568,6 @@ namespace Supremacy.Client.Views
                 if (selectedColony.Shipyard != null)
                 {
                     IList<BuildProject> shipList = TechTreeHelper.GetShipyardBuildProjects(selectedColony.Shipyard);
-                    //GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, Shipyard: {1}, shiplist_FIRST:{2}", selectedColony.Name, selectedColony.Shipyard.Name, shipList.First());
 
                     BuildProject[] shipListArray = Algorithms.Sort(shipList.AsEnumerable<BuildProject>(),
                         new Comparison<BuildProject>(
@@ -579,8 +578,6 @@ namespace Supremacy.Client.Views
                 }
                 else
                     Model.ShipyardBuildProjects = Enumerable.Empty<BuildProject>();
-                //GameLog disabled due to giving a crash when double clicking the (new) colony, maybe because having no Shipyard yet (Gamelog last value)
-                //GameLog.Client.GameData.DebugFormat("ColonyScreenPresenter.cs: colony: {0}, shipyard: {1} Build-list is empty", selectedColony.Name, selectedColony.Shipyard.Name);
             }
             else
             {

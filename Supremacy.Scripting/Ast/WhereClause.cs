@@ -5,8 +5,6 @@ namespace Supremacy.Scripting.Ast
 {
     public class WhereClause : QueryClause
     {
-        //private Expression _body;
-        //private Expression _predicate;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Expression Predicate
@@ -20,16 +18,6 @@ namespace Supremacy.Scripting.Ast
             get { return null; }
             set { return; }
         }
-
-/*
-        public override void Walk(AstVisitor prefix, AstVisitor postfix)
-        {
-            base.Walk(prefix, postfix);
-
-            Walk(ref _predicate, prefix, postfix);
-            Walk(ref _body, prefix, postfix);
-        }
-*/
 
         public override void Dump(SourceWriter sw, int indentChange)
         {

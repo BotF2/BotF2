@@ -67,8 +67,8 @@ namespace Supremacy.AI
                             }
                             else if (clause.ClauseType == ClauseType.OfferGiveResources)
                             {
-                                var data = (IEnumerable<IPair<ResourceType, int>>)clause.Data;
-                                int value = data.Sum(pair => DiplomacyHelper.ComputeResourceValue(pair.First, pair.Second)) / 100;
+                                var data = (IEnumerable<Tuple<ResourceType, int>>)clause.Data;
+                                int value = data.Sum(pair => DiplomacyHelper.ComputeResourceValue(pair.Item1, pair.Item2)) / 100;
                                 foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
                             }
                         }

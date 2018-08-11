@@ -20,26 +20,6 @@ using Expression = System.Linq.Expressions.Expression;
 
 namespace Supremacy.Utility
 {
-    //public class DelegatingWeakEventListener : IWeakEventListener
-    //{
-    //    private readonly EventHandler _handler;
-
-    //    public DelegatingWeakEventListener(EventHandler handler)
-    //    {
-    //        if (handler == null)
-    //            throw new ArgumentNullException("handler");
-    //        _handler = handler;
-    //    }
-
-    //    #region Implementation of IWeakEventListener
-    //    bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
-    //    {
-    //        _handler(sender, e);
-    //        return true;
-    //    }
-    //    #endregion
-    //}
-
     public sealed class WeakEventHelper : WeakEventManager
     {
         public static void AddListener(object source, string eventName, IWeakEventListener listener)

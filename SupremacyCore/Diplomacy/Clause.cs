@@ -182,8 +182,6 @@ namespace Supremacy.Diplomacy
                     visitor.VisitTreatyMembershipClause(clause);
                     break;
             }
-
-            //throw new ArgumentOutOfRangeException("clause", "Invalid clause type: " + clause.ClauseType);
         }
     }
 
@@ -214,8 +212,6 @@ namespace Supremacy.Diplomacy
 
         public Clause(ClauseType clauseType, object data) : this(clauseType)
         {
-            //if (data == null)
-            //    throw new ArgumentNullException("data");
             Data = data;
         }
 
@@ -246,7 +242,7 @@ namespace Supremacy.Diplomacy
 
         public bool IsDataInitialized
         {
-            get { return _isDataInitialized; }
+            get { return _isDataInitialized.IsSet; }
         }
 
         void IClauseInternal.SetDataInitialized()

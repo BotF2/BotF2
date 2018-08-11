@@ -156,6 +156,9 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -191,7 +194,6 @@
     <Compile Include="Diplomacy\Visitors\CreditObligationFulfillmentVisitor.cs" />
     <Compile Include="Diplomacy\Visitors\RejectProposalVisitor.cs" />
     <Compile Include="Economy\IntelligenceBonusCollection.cs" />
-    <Compile Include="Economy\intelligenceCategory.cs" />
     <Compile Include="Economy\ShipyardBuildSlot.cs" />
     <Compile Include="Entities\ICivIdentity.cs" />
     <Compile Include="Entities\RaceConverter.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="Text\TextEffectStyle.cs" />
     <Compile Include="Text\TextFormatFlags.cs" />
     <Compile Include="Text\TextStyle.cs" />
+    <Compile Include="Types\IsSetFlag.cs" />
     <Compile Include="Types\NamedGuid.cs" />
     <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
@@ -315,10 +318,8 @@
     <Compile Include="Collections\GameObjectLookupCollection.cs" />
     <Compile Include="Collections\IndexedEnumerable.cs" />
     <Compile Include="Collections\Interfaces.cs" />
-    <Compile Include="Collections\IPair.cs" />
     <Compile Include="Collections\ObservableCollectionExtended.cs" />
     <Compile Include="Collections\ObservableKeyedCollection.cs" />
-    <Compile Include="Collections\Pair.cs" />
     <Compile Include="Collections\ReadOnlyCollectionBase.cs" />
     <Compile Include="Collections\WeakDictionary.cs" />
     <Compile Include="Collections\WeakList.cs" />
@@ -369,7 +370,6 @@
     <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
     <Compile Include="Expressions\ExpressionSerializer.cs" />
     <Compile Include="Expressions\LinqExtensions.cs" />
-    <Compile Include="Collections\ValuePair.cs" />
     <Compile Include="Combat\AutomatedCombatEngine.cs" />
     <Compile Include="Combat\CombatAssets.cs" />
     <Compile Include="Combat\CombatEngine.cs" />
@@ -532,12 +532,10 @@
     <Compile Include="Types\Distribution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Economy\Resources.cs" />
-    <Compile Include="Types\DoubleExtensions.cs" />
     <Compile Include="Types\FlagType.cs" />
     <Compile Include="Types\INotifyChanged.cs" />
     <Compile Include="Types\Number.cs" />
     <Compile Include="Types\Meter.cs" />
-    <Compile Include="Types\INamedItem.cs" />
     <Compile Include="Types\OutputModifier.cs" />
     <Compile Include="Types\Percentage.cs" />
     <Compile Include="Types\StateManager.cs" />

@@ -73,7 +73,7 @@ namespace Supremacy.Game
 
         public bool IsFrozen
         {
-            get { return false /*((this.Status == SlotStatus.Computer) && (this.Claim == SlotClaim.Assigned))*/; }
+            get { return false; }
         }
 
         public bool IsVacant

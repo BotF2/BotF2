@@ -446,16 +446,12 @@ namespace Supremacy.Tech
             /*********
              * Ships *
              *********/
-            //GameLog.Print("TechDatabase.cs: beginning with ships");
-
             XmlElement xmlShips = xmlDoc.DocumentElement["Ships"];
             foreach (XmlElement xmlShip in xmlShips.GetElementsByTagName("Ship"))
             {
                 ShipDesign ship = new ShipDesign(xmlShip);
                 ship.DesignID = db.GetNewDesignID();
                 designIdMap[ship.Key] = ship.DesignID;
-                //GameLog works
-                //GameLog.Print("TechDatabase.cs: ship.DesignID={0}, {1}, {2}", ship.DesignID, ship.ShipType, ship.LocalizedName);
                 db.ShipDesigns.Add(ship);
             }
             foreach (XmlElement xmlShip in xmlShips.GetElementsByTagName("Ship"))
@@ -517,8 +513,6 @@ namespace Supremacy.Tech
             {
                 StationDesign station = new StationDesign(xmlStation);
                 station.DesignID = db.GetNewDesignID();
-                //GameLog works
-                //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: station.DesignID={0}, {1}", station.DesignID, station.LocalizedName);
                 designIdMap[station.Key] = station.DesignID;
                 db.StationDesigns.Add(station);
             }

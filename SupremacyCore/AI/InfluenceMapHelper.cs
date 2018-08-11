@@ -36,7 +36,7 @@ namespace Supremacy.AI
                 .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
                 .Where(f => f.IsCombatant)
                 .SelectMany(f => GetFleetInfluence(game, f))
-                .ForEach(o => map.AddAllied(o.First, o.Second));
+                .ForEach(o => map.AddAllied(o.Item1, o.Item2));
 
             game.Civilizations
                 .AsParallel()
@@ -44,12 +44,12 @@ namespace Supremacy.AI
                 .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
                 .Where(f => f.IsCombatant)
                 .SelectMany(f => GetFleetInfluence(game, f))
-                .ForEach(o => map.AddEnemy(o.First, o.Second));
+                .ForEach(o => map.AddEnemy(o.Item1, o.Item2));
 
             return map;
         }
 
-        private static IEnumerable<ValuePair<MapLocation, int>> GetFleetInfluence(GameContext game, Fleet fleet)
+        private static IEnumerable<ValueTuple<MapLocation, int>> GetFleetInfluence(GameContext game, Fleet fleet)
         {
             int startX = Math.Max(
                 Math.Min(fleet.Location.X - fleet.Speed,
@@ -73,7 +73,7 @@ namespace Supremacy.AI
                 // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
                 for (int y = startY; x <= endY; y++)
                 {
-                    yield return new ValuePair<MapLocation, int>(
+                    yield return new ValueTuple<MapLocation, int>(
                         new MapLocation(x, y),
                         UnitAI.GetEffectiveCombatStrength(fleet));
                 }

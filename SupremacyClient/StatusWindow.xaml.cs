@@ -117,13 +117,6 @@ namespace Supremacy.Client
             Activate();
         }
 
-/*
-        private void OnTurnPhaseChanged(DataEventArgs<TurnPhase> t)
-        {
-            ProcessTurnPhaseChange(t.Value);
-        }
-*/
-
         private void ProcessTurnPhaseChange(TurnPhase phase)
         {
             // ToDo: Get out of en.txt: PROCESSING_TURN (didn't find a way yet)

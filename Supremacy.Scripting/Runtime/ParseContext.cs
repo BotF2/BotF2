@@ -338,31 +338,6 @@ namespace Supremacy.Scripting.Runtime
                 members,
                 extensionType,
                 location);
-
-/*
-            var memberGroup = _languageContext.DefaultBinderState.Binder.GetExtensionMembers(
-                openExtendedType,
-                name);
-
-            var methodInfos = (from memberTracker in memberGroup
-                               let methodGroup = memberTracker as MethodGroup
-                               let methodTracker = memberTracker as MethodTracker
-                               where (methodGroup != null || methodTracker != null)
-                               from methodInfo in
-                                   ((methodGroup != null)
-                                        ? methodGroup.GetMethodBases()
-                                        : new[] { methodTracker.Method })
-                               select methodInfo
-                              ).ToArray();
-
-            if (!methodInfos.Any())
-                return null;
-
-            return new ExtensionMethodGroupExpression(
-                methodInfos,
-                extensionType,
-                location);
-*/
         }
 
         private void OnErrorAmbiguousTypeReference(SourceSpan location, string name, FullNamedExpression t1, FullNamedExpression t2)

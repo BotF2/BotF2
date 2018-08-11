@@ -639,13 +639,6 @@ namespace Supremacy.Xna
             return true;
         }
 
-/*
-        void IGraphicsDeviceManager.CreateDevice()
-        {
-            this.ChangeDevice(true);
-        }
-*/
-
         public void EndDraw()
         {
             if (!_beginDrawOk || _device == null)

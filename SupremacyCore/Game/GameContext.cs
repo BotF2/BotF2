@@ -29,7 +29,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-//using Supremacy.Intel;
 
 namespace Supremacy.Game
 {
@@ -95,12 +94,6 @@ namespace Supremacy.Game
         TechDatabase TechDatabase { get; }
 
         /// <summary>
-        /// Gets the intel database for the current game.
-        /// </summary>
-        /// <value>The intel database.</value>
-        //IntelDatabase IntelDatabase { get; }
-
-        /// <summary>
         /// Gets or sets the turn number for the current game.
         /// </summary>
         /// <value>The turn number.</value>
@@ -111,12 +104,6 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The research matrix.</value>
         ResearchMatrix ResearchMatrix { get; }
-
-        /// <summary>
-        /// Gets the intelligence matrix for the current game.
-        /// </summary>
-        /// <value>The intelligence matrix.</value>
-        //IntelligenceMatrix IntelligenceMatrix { get; }
 
         /// <summary>
         /// Gets the map of sector claims for the current game.
@@ -292,45 +279,7 @@ namespace Supremacy.Game
                     continue;
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
             }
-
-            //var intelObjectTable = textDatabase.GetTable<IIntelObjectTextDatabaseEntry>();
-
-            //foreach (var design in _intelDatabase)
-            //{
-            //    LocalizedTextGroup localizedText;
-            //    if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new IntelObjectTextGroupKey(design.Key), out localizedText))
-            //    {
-            //        design.LocalizedText = localizedText;
-            //        continue;
-            //    }
-            //    ITextDatabaseEntry<IIntelObjectTextDatabaseEntry> entry;
-            //    if (!intelObjectTable.TryGetEntry(design.Key, out entry))
-            //        continue;
-            //    design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
-            //}
         }
-
-        //public void LoadStrings([NotNull] ITextDatabase textDatabase)
-        //{
-        //    if (textDatabase == null)
-        //        throw new ArgumentNullException("textDatabase");
-
-        //    var techObjectTable = textDatabase.GetTable<IIntelObjectTextDatabaseEntry>();
-
-        //    foreach (var design in _intelDatabase)
-        //    {
-        //        LocalizedTextGroup localizedText;
-        //        if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new IntelObjectTextGroupKey(design.Key), out localizedText))
-        //        {
-        //            design.LocalizedText = localizedText;
-        //            continue;
-        //        }
-        //        ITextDatabaseEntry<IIntelObjectTextDatabaseEntry> entry;
-        //        if (!techObjectTable.TryGetEntry(design.Key, out entry))
-        //            continue;
-        //        design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
-        //    }
-        //}
 
         #region Properties
         /// <summary>
@@ -418,16 +367,6 @@ namespace Supremacy.Game
             internal set { _techDatabase = value; }
         }
 
-        /// <summary>
-        /// Gets the intel database for the current game.
-        /// </summary>
-        /// <value>The intel database.</value>
-        //public IntelDatabase IntelDatabase
-        //{
-        //    get { return _intelDatabase; }
-        //    internal set { _intelDatabase = value; }
-        //}
-
         public ICollection<ScriptedEvent> ScriptedEvents
         {
             get { return _scriptedEvents; }
@@ -489,15 +428,6 @@ namespace Supremacy.Game
             internal set { _researchMatrix = value; }
         }
 
-        /// <summary>
-        /// Gets the intelligence matrix for the current game.
-        /// </summary>
-        /// <value>The intelligence matrix.</value>
-        //public IntelligenceMatrix IntelligenceMatrix
-        //{
-        //    get { return _intelligenceMatrix; }
-        //    internal set { _intelligenceMatrix = value; }
-        //}
         /// <summary>
         /// Gets the map of sector claims for the current game.
         /// </summary>
@@ -807,8 +737,6 @@ namespace Supremacy.Game
                 return null;
             }
         }
-
-        //public object IntelligenceMatrix { get; internal set; }
 
         /// <summary>
         /// Creates a new instance using the specified options.

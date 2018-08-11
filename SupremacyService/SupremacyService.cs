@@ -914,6 +914,34 @@ namespace Supremacy.WCF
             }
         }
 
+<<<<<<< HEAD
+=======
+        private void PingPlayer([NotNull] ServerPlayerInfo player)
+        {
+            if (player == null)
+                throw new ArgumentNullException("player");
+
+            try { player.Callback.Ping(); }
+            catch { DropPlayer(player); }
+        }
+
+        private void PingClients()
+        {
+            var players = _playerInfo.ToArray();
+
+            foreach (var player in players)
+            {
+                var playerCopy = player;
+
+                ((Action<ServerPlayerInfo>)PingPlayer)
+                    .ToAsync(player.Scheduler)(player)
+                    .Subscribe(
+                    _ => {},
+                    e => DropPlayer(playerCopy));
+            }
+        }
+
+>>>>>>> master
         private void SendChatMessageCallback(int senderId, string message, int recipientId)
         {
             var sender = _playerInfo.FromPlayerId(senderId);
@@ -1200,10 +1228,13 @@ namespace Supremacy.WCF
                     e => Log.General.Error("Error occurred while starting game.", e));
             }
 
-            //GameLog.Print("HostGameResult = SUCCESS");
             return HostGameResult.Success;
         
+<<<<<<< HEAD
         }
+=======
+    }
+>>>>>>> master
 
         public JoinGameResult JoinGame(string playerName, out Player localPlayer, out LobbyData lobbyData)
         {

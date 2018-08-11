@@ -349,12 +349,6 @@ namespace Supremacy.UI
                         BitmapCreateOptions.None,
                         BitmapCacheOption.OnLoad);
 
-/*
-                    RenderOptions.SetBitmapScalingMode(
-                        cachedBitmap,
-                        BitmapScalingMode.LowQuality);
-*/
-
                     cachedBitmap.Freeze();
 
                     _materials[type].Insert(i, cachedBitmap);
@@ -368,12 +362,6 @@ namespace Supremacy.UI
                                     i + 1))),
                         BitmapCreateOptions.None,
                         BitmapCacheOption.OnLoad);
-
-/*
-                    RenderOptions.SetBitmapScalingMode(
-                        cachedBitmap,
-                        BitmapScalingMode.HighQuality);
-*/
 
                     cachedBitmap.Freeze();
                     
@@ -389,12 +377,6 @@ namespace Supremacy.UI
                             String.Format("Resources/Images/Planets/Moons/{0}.png", shape))),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
-
-/*
-                RenderOptions.SetBitmapScalingMode(
-                    _moonImages[shape],
-                    BitmapScalingMode.HighQuality);
-*/
 
                 _moonImages[shape].Freeze();
             }

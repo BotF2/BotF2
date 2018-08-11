@@ -1143,86 +1143,11 @@ namespace Supremacy.Combat
             AddDiplomacyMemories();
 
             _invasionEndedCallback(this);
-
-            //_invasionArena = null;
-            //_experienceAccuracy = null;
         }
 
         private void AddDiplomacyMemories()
         {
-            // TODO: Hook in with new diplomacy system.
-            /*
-                        if (!_invasionArena.AttackOccurred &&
-                            !_invasionArena.BombardmentOccurred &&
-                            !_invasionArena.UnloadAllOrdinanceOccurred)
-                        {
-                            return;
-                        }
 
-                        var invader = _invasionArena.Invader;
-                        var defender = _invasionArena.Defender;
-
-                        var inContact = DiplomacyHelper.GetCivilizationsHavingContact(invader).Intersect(DiplomacyHelper.GetCivilizationsHavingContact(defender));
-
-                        var defenderRelationship = GameContext.Current.Relationships[defender, invader];
-
-                        if (_invasionArena.AttackOccurred)
-                            defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.AttackedUs));
-
-                        if (_invasionArena.BombardmentOccurred)
-                        {
-                            if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                                defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.HeavilyBombardedUs));
-                            else
-                                defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.BombardedUs));
-                        }
-
-                        if (_invasionArena.InvasionOccurred)
-                            defenderRelationship.AddMemory(defenderRelationship.CreateMemory(MemoryType.InvadedUs));
-
-                        foreach (var civ in inContact)
-                        {
-                            var relationship = GameContext.Current.Relationships[civ, invader];
-
-                            if (_invasionArena.AttackOccurred)
-                            {
-                                if (DiplomacyHelper.AreFriendly(civ, defender))
-                                    relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedFriend));
-                                else if (DiplomacyHelper.AreEnemies(civ, defender))
-                                    relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedEnemy));
-                                else
-                                    relationship.AddMemory(relationship.CreateMemory(MemoryType.AttackedNeutral));
-                            }
-
-                            if (_invasionArena.BombardmentOccurred)
-                            {
-                                if (DiplomacyHelper.AreFriendly(civ, defender))
-                                {
-                                    if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedFriend));
-                                    else
-                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.BombardedFriend));
-                                }
-                                else if (DiplomacyHelper.AreEnemies(civ, defender))
-                                {
-                                    if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedEnemy));
-                                    else
-                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedEnemy));
-                                }
-                                else
-                                {
-                                    if (_invasionArena.WorstTargetingStrategyUsed == InvasionTargetingStrategy.MaximumDamage)
-                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedNeutral));
-                                    else
-                                        relationship.AddMemory(relationship.CreateMemory(MemoryType.HeavilyBombardedNeutral));
-                                }
-                            }
-
-                            if (_invasionArena.InvasionOccurred && DiplomacyHelper.AreFriendly(civ, defender))
-                                relationship.AddMemory(relationship.CreateMemory(MemoryType.InvadedFriend));
-                        }
-            */
         }
 
         protected void VerifyInvasionInProgress()

@@ -184,30 +184,11 @@ namespace Supremacy.Client.Controls
                 if (_popupSiteWindow != null)
                 {
                     _popupSiteWindow.PreviewMouseDown += OnPopupSitePreviewMouseDown;
-                    //_popupSiteWindow.Deactivated += OnPopupSiteWindowDeactivated;
                 }
             }
 
             Visibility = Visibility.Visible;
         }
-
-/*
-        private void OnPopupSiteWindowDeactivated(object sender, EventArgs e)
-        {
-            if (!this.IsVisible)
-                return;
-
-            var popupSite = this.InfoCardSite;
-            if (popupSite == null)
-                return;
-
-            var popup = popupSite.GetPopupFromHost(this.InfoCardHost);
-            if ((popup == null) || popup.IsPinned)
-                return;
-
-            popup.Close();
-        }
-*/
 
         private void OnPopupSitePreviewMouseDown(object sender, MouseButtonEventArgs e)
         {

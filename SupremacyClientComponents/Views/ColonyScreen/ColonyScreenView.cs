@@ -75,12 +75,5 @@ namespace Supremacy.Client.Views
             Style = null;
             Template = null;
         }
-
-/*
-        ~ColonyScreenView()
-        {
-            Console.Beep();
-        }
-*/
     }
 }

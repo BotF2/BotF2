@@ -1719,16 +1719,7 @@ namespace Supremacy.UI
                 SpreadMethod = GradientSpreadMethod.Reflect,
                 MappingMode = BrushMappingMode.Absolute,
                 GradientStops =
-                    {
-                        /*new GradientStop(SetAlpha(color, 0x99), 0.0),
-                        new GradientStop(SetAlpha(color, 0x66), 0.2),
-                        new GradientStop(SetAlpha(color, 0x99), 0.3),
-                        new GradientStop(SetAlpha(color, 0xff), 0.4),
-                        new GradientStop(SetAlpha(color, 0x99), 0.6),
-                        new GradientStop(SetAlpha(color, 0x66), 0.7),
-                        new GradientStop(SetAlpha(color, 0x99), 0.8),
-                        new GradientStop(SetAlpha(color, 0xcc), 1.0)*/
-                                        
+                    {                                        
                         new GradientStop(SetAlpha(color, 0x66), 0.0),
                         new GradientStop(SetAlpha(color, 0x33), 0.2),
                         new GradientStop(SetAlpha(color, 0x66), 0.3),
@@ -1883,27 +1874,6 @@ namespace Supremacy.UI
                         }
 
                         var scanStrength = mapData.GetScanStrength(location);
-                        /*var scanTextBrush = Brushes.White;
-
-                        if (scanStrength > 0)
-                            scanTextBrush = Brushes.Lime;
-                        else if (scanStrength < 0)
-                            scanTextBrush = Brushes.Crimson;
-
-                        var scanText = new FormattedText(
-                            scanStrength.ToString(),
-                            CultureInfo.InvariantCulture,
-                            FlowDirection.LeftToRight,
-                            s_textTypeface,
-                            8.0,
-                            scanTextBrush);
-
-                        dc.DrawText(
-                            scanText,
-                            new Point(
-                                (SectorSize * (location.X + 1)) - scanText.Width - FleetIconSpacing,
-                                (SectorSize * location.Y) + FleetIconSpacing));
-                        */
 
                         /*************************
                          * DRAW SCAN RANGE LINES *
@@ -1918,12 +1888,6 @@ namespace Supremacy.UI
                             slc.LineTo(new Point(SectorSize * (location.X + 1),
                                                 SectorSize * (location.Y + 1)), true,
                                       false);
-                            /*dc.DrawLine(
-                                scanPen,
-                                new Point(SectorSize * (location.X + 1),
-                                          SectorSize * location.Y),
-                                new Point(SectorSize * (location.X + 1),
-                                          SectorSize * (location.Y + 1)));*/
                         }
                         if (scanStrength > 0)
                         {
@@ -1939,19 +1903,6 @@ namespace Supremacy.UI
                             slc.LineTo(new Point(SectorSize * (location.X + 1),
                                           SectorSize * location.Y), true,
                                       false);
-                            /*dc.DrawLine(
-                                scanPen,
-                                new Point(SectorSize * location.X,
-                                            SectorSize * location.Y),
-                                new Point(SectorSize * location.X,
-                                            SectorSize * (location.Y + 1)));
-                            dc.DrawLine(
-                                scanPen,
-                                new Point(SectorSize * location.X,
-                                            SectorSize * location.Y),
-                                new Point(SectorSize * (location.X + 1),
-                                            SectorSize * location.Y));
-                            */
                         }
                         if ((scanStrength > 0)
                             && ((location.Y == (map.Height - 1))
@@ -1963,12 +1914,6 @@ namespace Supremacy.UI
                             slc.LineTo(new Point(SectorSize * (location.X + 1),
                                           SectorSize * (location.Y + 1)), true,
                                       false);
-                            /*dc.DrawLine(
-                                scanPen,
-                                new Point(SectorSize * location.X,
-                                          SectorSize * (location.Y + 1)),
-                                new Point(SectorSize * (location.X + 1),
-                                          SectorSize * (location.Y + 1)));*/
                         }
                         /***************************
                          * DRAW STARS & STAR NAMES *
@@ -2005,7 +1950,6 @@ namespace Supremacy.UI
                                                 AutoReverse = true,
                                                 RepeatBehavior = RepeatBehavior.Forever
                                             };
-                                            //Timeline.SetDesiredFrameRate(opacityAnim, 24);
                                             clock = opacityAnim.CreateClock();
                                             _animationClocks.Add(clock);
                                             if (!UseAnimatedStars && clock.Controller != null)
@@ -2020,18 +1964,10 @@ namespace Supremacy.UI
                                                 var growAnimation = new DoubleAnimation(
                                                     0.85, 1.25, new Duration(new TimeSpan(0, 0, 2)))
                                                 {
-                                                    //BeginTime =
-                                                    //    new TimeSpan(
-                                                    //    0,
-                                                    //    0,
-                                                    //    0,
-                                                    //    0,
-                                                    //    500 * (int)sector.System.StarType),
                                                     RepeatBehavior = RepeatBehavior.Forever,
                                                     AutoReverse = true,
                                                     AccelerationRatio = 1.0
                                                 };
-                                                //Timeline.SetDesiredFrameRate(growAnimation, 24);
                                                 clock = growAnimation.CreateClock();
                                                 if (clock.Controller != null)
                                                 {
@@ -2049,20 +1985,6 @@ namespace Supremacy.UI
                                                 grow.ApplyAnimationClock(ScaleTransform.ScaleYProperty, clock);
                                                 brush.RelativeTransform = grow;
                                             }
-                                            //    else
-                                            //    {
-                                            //        RotateTransform rotation = new RotateTransform(0.0, 0.5, 0.5);
-                                            //        DoubleAnimation rotateAnim = new DoubleAnimation(
-                                            //            0, 360, new Duration(new TimeSpan(0, 0, 30)))
-                                            //                                     {
-                                            //                                         RepeatBehavior = RepeatBehavior.Forever
-                                            //                                     };
-                                            //        Timeline.SetDesiredFrameRate(rotateAnim, 24);
-                                            //        clock = rotateAnim.CreateClock();
-                                            //        _animationClocks.Add(clock);
-                                            //        rotation.ApplyAnimationClock(RotateTransform.AngleProperty, clock);
-                                            //        brush.RelativeTransform = rotation;
-                                            //    }
                                         }
                                         _starBrushes.Add(sector.System.StarType, brush);
                                     }
@@ -2394,7 +2316,6 @@ namespace Supremacy.UI
                  * movement mode or setting a trade route, we abort the operation and go back to normal
                  * input mode.
                  */
-                //Mouse.Capture(null);
                 SetInputMode(GalaxyGridInputMode.Default);
                 return;
             }
@@ -2402,15 +2323,7 @@ namespace Supremacy.UI
             {
                 InputModeOnFirstClick = InputMode;
             }
-            /*if (e.RightButton == MouseButtonState.Pressed)
-            {
-                if (_inputMode != GalaxyGridInputMode.Default)
-                {
-                    SetInputMode(GalaxyGridInputMode.Default);
-                    e.Handled = true;
-                }
-            }
-            else*/ if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var clickSector = PointToSector(e.GetPosition(this));
                 if (_inputMode == GalaxyGridInputMode.FleetMovement)

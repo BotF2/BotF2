@@ -27,9 +27,6 @@
     <ClCompile Include="EnumKeyedValueList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IsSetFlag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnumKeyedValueList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IsSetFlag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Stdafx.h">

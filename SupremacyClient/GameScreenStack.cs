@@ -338,39 +338,16 @@ namespace Supremacy.Client
                         _currentScreen.Visibility = Visibility.Visible;
                         _currentScreen.Focus();
 
-                        //if (enableScreenTransitions && (lastScreen != null))
-                        //    ApplyTransition(_currentScreen);
-
                         var activeAwareScreen = _currentScreen as IActiveAware;
                         if (activeAwareScreen != null)
                             activeAwareScreen.IsActive = true;
                     }
-                    //InvalidateVisual();
                     if (CurrentScreenChanged != null)
                         CurrentScreenChanged(this, new EventArgs());
                 }
             }
         }
 
-/*
-        private void ApplyTransition(UIElement currentScreen)
-        {
-            var brush = new ImageBrush(_lastScreenBitmap)
-                        {
-                            Viewbox = new Rect(0, 0, this.ActualWidth, this.ActualHeight),
-                            ViewboxUnits = BrushMappingMode.Absolute
-                        };
-
-            var da = new DoubleAnimation(0.0, 1.0, new Duration(TimeSpan.FromSeconds(0.5)), FillBehavior.HoldEnd);
-
-            da.Completed += (sender, e) => currentScreen.Effect = null;
-
-            var effect = new RadialBlurTransitionEffect { OldImage = brush };
-            effect.BeginAnimation(TransitionEffect.ProgressProperty, da);
-
-            currentScreen.Effect = effect;
-        }
-*/
 
         public Control FallbackScreen
         {

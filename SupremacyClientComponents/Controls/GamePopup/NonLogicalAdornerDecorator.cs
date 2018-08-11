@@ -43,15 +43,5 @@ namespace Supremacy.Client.Controls
         {
             get { return _child == null ? 0 : 1; }
         }
-
-/*
-        protected override void OnRender(DrawingContext drawingContext)
-        {
-            drawingContext.DrawRectangle(
-                new SolidColorBrush(Color.FromArgb(0x3F, 0x1E, 0x90, 0xFF)),
-                null,
-                new Rect(this.RenderSize));
-        }
-*/
     }
 }

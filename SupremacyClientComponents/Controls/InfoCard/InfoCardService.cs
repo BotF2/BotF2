@@ -944,8 +944,7 @@ namespace Supremacy.Client.Controls
             if ((LastChecked == obj) ||
                 (LastMouseOverWithInfoCard == obj) ||
                 (_currentInfoCard == obj) ||
-                WithinCurrentInfoCard(obj)/* ||
-                IsInfoCardOpen(obj)*/)
+                WithinCurrentInfoCard(obj))
             {
                 return true;
             }

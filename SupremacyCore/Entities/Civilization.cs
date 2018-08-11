@@ -64,7 +64,7 @@ namespace Supremacy.Entities
     /// Represents a civilization in the game (an empire or minor race).
     /// </summary>
     [Serializable]
-    public class Civilization : INamedItem, ICivIdentity
+    public class Civilization : ICivIdentity
     {
         #region Constants
         /// <summary>
@@ -458,9 +458,7 @@ namespace Supremacy.Entities
         {
             get { return _moraleDriftRate; }
         }
-        #endregion
 
-        #region INamedItem Members
         /// <summary>
         /// Gets the display name of this <see cref="Civilization"/>.
         /// </summary>
@@ -469,11 +467,6 @@ namespace Supremacy.Entities
         {
             get { return ShortName; }
         }
-
-
-        //public static object ClientSettings { get; private set; }
-
-        //public object ClientSettings { get Client.ClientSettings.; private set; }
         #endregion
 
         #region Methods

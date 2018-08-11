@@ -23,7 +23,7 @@ namespace Supremacy.Client.Views
 
             BuildProject[] shipListArray = Algorithms.Sort(shipList.AsEnumerable<BuildProject>(),
                 new Comparison<BuildProject>(
-                    delegate(BuildProject a, BuildProject b) { return a.BuildDesign.BuildCost.CompareTo(b.BuildDesign.BuildCost) * -1 /* to reverse the order */; }));
+                    delegate(BuildProject a, BuildProject b) { return a.BuildDesign.BuildCost.CompareTo(b.BuildDesign.BuildCost) * -1; }));
 
             BuildProjectList.ItemsSource = shipListArray;
 

@@ -113,7 +113,7 @@ namespace Supremacy.Scripting.Ast
                 return ConstantExpression.Create(
                     Type,
                     _value,
-                    Span /* <-- Incorrect message here */);
+                    Span);
             }
 
             rc.ReportError(
