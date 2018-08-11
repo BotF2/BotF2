@@ -1319,7 +1319,7 @@ namespace Supremacy.Orbitals
             if (Fleet != null)
             {
                 //Wormhole leads nowhere so destroy the fleet
-                if (Fleet.Sector.System.WormholeDestination == null)
+                if (Fleet.Sector.WormholeDestination == null)
                 {
                     var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
                     GameLog.Print("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
@@ -1327,7 +1327,7 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    Fleet.Location = (MapLocation)Fleet.Sector.System.WormholeDestination;
+                    Fleet.Location = (MapLocation)Fleet.Sector.WormholeDestination;
                     GameLog.Print("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
 
                     if (IsComplete)
