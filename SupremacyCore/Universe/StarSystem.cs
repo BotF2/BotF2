@@ -361,6 +361,5 @@ namespace Supremacy.Universe
             _starType = (StarType)reader.ReadByte();
         }
 
-        public MapLocation? WormholeDestination { get; set; }
     }
 }

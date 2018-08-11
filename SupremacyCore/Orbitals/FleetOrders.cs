@@ -1323,6 +1323,7 @@ namespace Supremacy.Orbitals
                 {
                     var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
                     GameLog.Print("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
+                    // ToDo: Sitrep:   our connection was lost to ship entering wormhole . The fear is that it was destroyed.
                     Fleet.Destroy();
                 }
                 else
