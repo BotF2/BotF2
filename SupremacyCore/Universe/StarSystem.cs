@@ -361,5 +361,7 @@ namespace Supremacy.Universe
             _starType = (StarType)reader.ReadByte();
         }
 
+        // needed here until it is be solved (problem with generating Gamma wormhole and so...
+        public MapLocation? WormholeDestination { get; set; }
     }
 }
