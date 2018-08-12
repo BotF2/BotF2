@@ -368,6 +368,10 @@ namespace Supremacy.Combat
             }
             if (_combatStation != null)
             {
+                if (!_empireStrengths.ContainsKey(_combatStation.Item1.Owner.Key))
+                {
+                    _empireStrengths[_combatStation.Item1.Owner.Key] = 0;
+                }
                 _empireStrengths[_combatStation.Item1.Owner.Key] += CombatHelper.CalculateOrbitalPower(_combatStation.Item1.Source);
             }
 
