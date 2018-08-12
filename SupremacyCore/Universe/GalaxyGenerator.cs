@@ -267,7 +267,7 @@ namespace Supremacy.Universe
                         StarSystem bajorWormhole = new StarSystem
                         {
                             StarType = StarType.Wormhole,
-                            Name = "Bajoran Wormhole",
+                            Name = "Bajoran",
                             WormholeDestination = gammaWormholeLocation,
                             Location = (MapLocation)bajoranWormholeLocation
                         };
@@ -279,7 +279,7 @@ namespace Supremacy.Universe
                         StarSystem gammaWormhole = new StarSystem
                         {
                             StarType = StarType.Wormhole,
-                            Name = "Gamma Wormhole",
+                            Name = "Gamma",
                             WormholeDestination = bajoranWormholeLocation,
                             Location = (MapLocation)gammaWormholeLocation
                         };
@@ -1190,16 +1190,15 @@ namespace Supremacy.Universe
                 //Everything less than Nebula is a proper star
                 wormhole.Name = GameContext.Current.Universe.FindNearest<StarSystem>(wormhole.Location,
                     s => s.StarType < StarType.Nebula, false).Name;
-                //m_TraceWormholes = true;
+                
                 if (m_TraceWormholes)
                     GameLog.Print("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
             }
 
             while (wormholes.Count > 1)
             {
-                //GameLog.Print("wormholes.Count = {0}", wormholes.Count);
-                GameContext.Current.Universe.Map[wormholes[0].Sector.Location].WormholeDestination = wormholes[1].Sector.Location;
-                GameContext.Current.Universe.Map[wormholes[1].Sector.Location].WormholeDestination = wormholes[0].Sector.Location;
+                GameContext.Current.Universe.Map[wormholes[0].Sector.Location].System.WormholeDestination = wormholes[1].Sector.Location;
+                GameContext.Current.Universe.Map[wormholes[1].Sector.Location].System.WormholeDestination = wormholes[0].Sector.Location;
                 //Call this twice to remove the first 2 wormholes which are now linked
                 m_TraceWormholes = true;
                 if (m_TraceWormholes)

@@ -466,45 +466,52 @@ namespace Supremacy.Universe
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public bool Destroy(UniverseObject item)
         {
-            bool _tracingDestroy = false;   // turn to true if you want
-
-            if (_tracingDestroy)
-            GameLog.Print("Destroy(UniverseObject) = {0}", item);
-
             if (item == null)
                 return false;
 
-            var ship = item as Ship;
-            if (ship != null)
+            if (item is Ship)
             {
-                if (_tracingDestroy)
-                    GameLog.Print("Destroy(UniverseObject)= Ship = {0}", item);
+                var ship = item as Ship;
                 var fleet = ship.Fleet;
 
                 fleet.RemoveShip(ship);
 
                 if (fleet.Ships.Count == 0)
+                {
                     Destroy(fleet);
-
-                goto RemoveObject;
+                }
             }
 
-            var system = item as StarSystem;
-            if (system != null)
+            else if (item is Fleet)
             {
-                if (_tracingDestroy)
-                    GameLog.Print("Destroy(UniverseObject)= StarSystem = {0}", item);
+                var fleet = item as Fleet;
+                if (fleet.Ships.Count > 0)
+                {
+                    // I'll admit, this is a stupid way of doing this, but I've done it this way
+                    // to avoid a possible bug due to the ship destroyer calling destroy fleet when
+                    // a fleet has no ships left in it, which would result in two calls to the fleet
+                    // destroyer
+                    //
+                    // Instead, spin each ship out to it's own fleet, and let the ship destroyer take care of it
+                    for (int i = 0; i < fleet.Ships.Count; i++) {
+                        var newFleet = fleet.Ships[i].CreateFleet();
+                        Destroy(newFleet.Ships[0]);
+                    }
+                }
+            }
+
+            else if (item is StarSystem)
+            { 
+                var system = item as StarSystem;
                 if (system.IsInhabited)
+                {
                     Destroy(system.Colony);
-
-                goto RemoveObject;
+                }
             }
 
-            var colony = item as Colony;
-            if (colony != null)
+            else if (item is Colony)
             {
-                if (_tracingDestroy)
-                    GameLog.Print("Destroy(UniverseObject)= Colony = {0}", item);
+                var colony = item as Colony;
                 var colonyOwner = colony.Owner;
                 if (colonyOwner != null)
                 {
@@ -512,13 +519,17 @@ namespace Supremacy.Universe
                     if (civManager != null)
                     {
                         if (civManager.HomeColony == colony)
+                        {
                             civManager.HomeColony = null;
+                        }
                         civManager.Colonies.Remove(colony);
                     }
 
                     var ownerHomeColony = _homeColonyLookup[colonyOwner];
                     if (ownerHomeColony == colony)
+                    {
                         _homeColonyLookup.Remove(ownerHomeColony);
+                    }
 
                     colony.System.Owner = null;
                 }
@@ -540,55 +551,40 @@ namespace Supremacy.Universe
                 colony.TradeRoutes.ForEach(o => o.TargetColony = null);
 
                 if (colony.Shipyard != null)
+                {
                     Destroy(colony.Shipyard);
+                }
             }
 
-            var building = item as Building;
-            if (building != null)
+            else if (item is Building)
             {
-                if (_tracingDestroy)
-                    GameLog.Print("Destroy(UniverseObject)= Building = {0}", item);
+                var building = item as Building;
                 building.Sector.System.Colony.RemoveBuilding(building);
-                goto RemoveObject;
             }
 
-            var shipyard = item as Shipyard;
-            if (shipyard != null)
+            else if (item is Shipyard)
             {
-                if (_tracingDestroy)
-                    GameLog.Print("Destroy(UniverseObject)= Shipyard = {0}", item);
+                var shipyard = item as Shipyard;
                 if (Equals(shipyard.Sector.System.Colony.Shipyard, shipyard))
+                {
                     shipyard.Sector.System.Colony.Shipyard = null;
-                goto RemoveObject;
+                }
             }
 
-            var station = item as Station;
-            if (station != null)
+            else if (item is Station)
             {
-                if (_tracingDestroy)
-                    GameLog.Print("Destroy(UniverseObject)= Station = {0}", item);
+                var station = item as Station;
                 station.Sector.Station = null;
-                goto RemoveObject;
             }
 
-            var orbitalBattery = item as OrbitalBattery;
-            if (orbitalBattery != null)
+            else if (item is OrbitalBattery)
             {
-                if (_tracingDestroy)
-                    GameLog.Print("Destroy(UniverseObject)= OrbitalBattery = {0}", item);
+                var orbitalBattery = item as OrbitalBattery;
                 orbitalBattery.Sector.System.Colony.OnOrbitalBatteryDestroyed(orbitalBattery);
-                goto RemoveObject;
             }
 
-        RemoveObject:
-
-            if (_tracingDestroy)
-                GameLog.Print("Destroy(UniverseObject) = RemoveObject: = {0}", item);
             _objects.Remove(item);
             item.ObjectID = GameObjectID.InvalidID;
-            if (_tracingDestroy)
-                GameLog.Print("Destroy(UniverseObject) = RemoveObject = ObjectID = {0},  Destroy should be TRUE", item.ObjectID);
-
             return true;
         }
 

@@ -63,8 +63,6 @@ namespace Supremacy.Universe
             get { return _location; }
         }
 
-        public MapLocation? WormholeDestination { get; set; }
-
         /// <summary>
         /// Gets the system located in this <see cref="Sector"/>.
         /// </summary>
