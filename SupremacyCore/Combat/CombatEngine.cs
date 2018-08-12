@@ -406,7 +406,7 @@ namespace Supremacy.Combat
             }
 
             // 90% chance for these ships to escape unharmed
-            if (unit.IsCloaked || unit.IsCamouflaged || unit.Source.OrbitalDesign.ShipType == "Scout")
+            if (unit.IsCloaked || unit.Source.OrbitalDesign.ShipType == "Scout")
             {
                 return DieRoll.Roll(10) != 10;
             }

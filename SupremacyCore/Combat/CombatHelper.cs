@@ -64,7 +64,7 @@ namespace Supremacy.Combat
             var results = new List<CombatAssets>();
             var sector = GameContext.Current.Universe.Map[location];
 
-            var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).Where(f => !f.IsCamouflaged).ToList();
+            var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
 
             if ((engagingFleets.Count == 0) && (sector.Station == null))
             {
@@ -80,6 +80,11 @@ namespace Supremacy.Combat
 
                 foreach (var ship in fleet.Ships)
                 {
+                    if (ship.IsCamouflaged)
+                    {
+                        continue;
+                    }
+
                     if (ship.IsCombatant)
                     {
                         assets[fleet.Owner].CombatShips.Add(new CombatUnit(ship));
