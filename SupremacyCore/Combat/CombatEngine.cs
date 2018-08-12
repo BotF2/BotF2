@@ -401,6 +401,11 @@ namespace Supremacy.Combat
                 return true;
             }
 
+            // 90% chance for these ships to escape unharmed
+            if (unit.IsCloaked || unit.IsCamouflaged || unit.Source.OrbitalDesign.ShipType == "Scout")
+            {
+                return DieRoll.Roll(10) != 10;
+            }
 
             if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away
             {
