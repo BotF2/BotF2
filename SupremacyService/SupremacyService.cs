@@ -46,7 +46,7 @@ namespace Supremacy.WCF
         InstanceContextMode = InstanceContextMode.Single,
         IgnoreExtensionDataObject = true,
         UseSynchronizationContext = false)]
-    
+
     public class SupremacyService : ISupremacyService
     {
         #region Fields
@@ -81,9 +81,9 @@ namespace Supremacy.WCF
             _playerInfo = new ServerPlayerInfoCollection();
             _playerOrders = new Dictionary<Player, PlayerOrdersMessage>();
             _lobbyData = new LobbyData
-                         {
-                             Players = _playerInfo.Select(o => o.Player).ToArray()
-                         };
+            {
+                Players = _playerInfo.Select(o => o.Player).ToArray()
+            };
             _scheduler = new EventLoopScheduler("ServerEventLoop").AsGameScheduler(() => _game);
 
             PlayerContext.Current = new PlayerContext(
@@ -102,10 +102,10 @@ namespace Supremacy.WCF
             try
             {
                 var script = new ScriptExpression(false)
-                             {
-                                 Parameters = new ScriptParameters(new ScriptParameter("$game", typeof(GameContext)), new ScriptParameter("$gc", typeof(Action))),
-                                 ScriptCode = s
-                             };
+                {
+                    Parameters = new ScriptParameters(new ScriptParameter("$game", typeof(GameContext)), new ScriptParameter("$gc", typeof(Action))),
+                    ScriptCode = s
+                };
 
                 if (!script.CompileScript())
                     return;
@@ -216,7 +216,7 @@ namespace Supremacy.WCF
                         ((Action)playerInfo.Callback.NotifyGameStarting)
                             .ToAsync(playerInfo.Scheduler)()
                             .Subscribe(
-                                _ => {},
+                                _ => { },
                                 e => DropPlayer(player));
                     }
                 }
@@ -337,16 +337,16 @@ namespace Supremacy.WCF
                 ((Action)playerInfo.Callback.NotifyDisconnected)
                     .ToAsync(_scheduler)()
                     .Subscribe(
-                        _ => {},
-                        e => {});
+                        _ => { },
+                        e => { });
             }
 
 
             ((Action)playerInfo.Session.Channel.Close)
                 .ToAsync(_scheduler)()
                 .Subscribe(
-                    _ => {},
-                    e => {});
+                    _ => { },
+                    e => { });
 
             OnPlayerExited(player);
 
@@ -381,7 +381,7 @@ namespace Supremacy.WCF
 
             _isGameStarted = false;
             _isGameEnding = true;
-            
+
             try
             {
                 ClientCommands.ConsoleCommand.UnregisterCommand(_consoleCommand);
@@ -485,7 +485,7 @@ namespace Supremacy.WCF
         internal ISupremacyCallback GetPlayerCallback(Player player)
         {
             ServerPlayerInfo playerInfo;
-            
+
             if (_playerInfo.TryGetValue(player, out playerInfo))
                 return playerInfo.Callback;
 
@@ -530,7 +530,7 @@ namespace Supremacy.WCF
                     var doAiPlayers = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
                     _aiAsyncResult = doAiPlayers.BeginInvoke(
                         _game, autoTurnCivs,
-                        delegate(IAsyncResult result)
+                        delegate (IAsyncResult result)
                         {
                             lock (_aiAsyncLock)
                             {
@@ -564,9 +564,9 @@ namespace Supremacy.WCF
                         () =>
                         {
                             var autoSaveStopwatch = Stopwatch.StartNew();
-                            
+
                             GameContext.PushThreadContext(_game);
-                            
+
                             try { SavedGameManager.AutoSave(gameHost, _lobbyData); }
                             finally { GameContext.PopThreadContext(); }
 
@@ -606,7 +606,7 @@ namespace Supremacy.WCF
         private async Task DoTurnCore()
         {
             var tcs = new TaskCompletionSource<Unit>();
-            
+
             _gameEngine.TurnPhaseChanged += OnGameEngineTurnPhaseChanged;
 
             var gameContext = _game;
@@ -621,7 +621,7 @@ namespace Supremacy.WCF
         }
 
         private async Task SendEndOfTurnUpdateAsync(ServerPlayerInfo playerInfo)
-        { 
+        {
             var callback = playerInfo.Callback;
             if (callback == null)
                 return;
@@ -638,7 +638,7 @@ namespace Supremacy.WCF
             {
                 await tcs.Task.ConfigureAwait(false);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 GameLog.Server.General.Error(
                     string.Format(
@@ -655,7 +655,7 @@ namespace Supremacy.WCF
         private async Task SendTurnFinishedNotificationsAsync()
         {
             var subTasks = new List<Task>();
-            
+
             lock (_playerInfo.SyncRoot)
             {
                 for (var i = 0; i < _playerInfo.Count; i++)
@@ -789,7 +789,7 @@ namespace Supremacy.WCF
                 EndGame();
                 return;
             }
-            
+
             while (true)
             {
                 lock (_playerInfo.SyncRoot)
@@ -859,13 +859,13 @@ namespace Supremacy.WCF
 
                     ((Action)
                      (() =>
-                      {
-                          callback.NotifyPlayerExited(player);
-                          callback.NotifyLobbyUpdated(LobbyData);
-                      }))
+                     {
+                         callback.NotifyPlayerExited(player);
+                         callback.NotifyLobbyUpdated(LobbyData);
+                     }))
                         .ToAsync(_scheduler)()
                         .Subscribe(
-                            _ => {},
+                            _ => { },
                             e => DropPlayerAsync(otherPlayer));
                 }
             }
@@ -914,34 +914,6 @@ namespace Supremacy.WCF
             }
         }
 
-<<<<<<< HEAD
-=======
-        private void PingPlayer([NotNull] ServerPlayerInfo player)
-        {
-            if (player == null)
-                throw new ArgumentNullException("player");
-
-            try { player.Callback.Ping(); }
-            catch { DropPlayer(player); }
-        }
-
-        private void PingClients()
-        {
-            var players = _playerInfo.ToArray();
-
-            foreach (var player in players)
-            {
-                var playerCopy = player;
-
-                ((Action<ServerPlayerInfo>)PingPlayer)
-                    .ToAsync(player.Scheduler)(player)
-                    .Subscribe(
-                    _ => {},
-                    e => DropPlayer(playerCopy));
-            }
-        }
-
->>>>>>> master
         private void SendChatMessageCallback(int senderId, string message, int recipientId)
         {
             var sender = _playerInfo.FromPlayerId(senderId);
@@ -1200,7 +1172,7 @@ namespace Supremacy.WCF
                 };
 
                 //GameLog.Print("empireCount={0}, SlotID={1}, EmpireID={2}, EmpireName={3}, Status={4}, Claim={5}",
-                                //empireCount, i, initData.EmpireIDs[i], initData.EmpireNames[i], initData.SlotStatus[i], initData.SlotClaims[i]);
+                //empireCount, i, initData.EmpireIDs[i], initData.EmpireNames[i], initData.SlotStatus[i], initData.SlotClaims[i]);
 
                 _lobbyData.Slots[i] = slot;
 
@@ -1229,12 +1201,8 @@ namespace Supremacy.WCF
             }
 
             return HostGameResult.Success;
-        
-<<<<<<< HEAD
+
         }
-=======
-    }
->>>>>>> master
 
         public JoinGameResult JoinGame(string playerName, out Player localPlayer, out LobbyData lobbyData)
         {
@@ -1305,7 +1273,7 @@ namespace Supremacy.WCF
                     ((Action<GameObjectID>)callback.NotifyPlayerFinishedTurn)
                         .ToAsync(_scheduler)(currentPlayer.EmpireID)
                         .Subscribe(
-                            _ => {},
+                            _ => { },
                             e => DropPlayer(playerInfoCopy.Player));
                 }
             }
@@ -1344,7 +1312,7 @@ namespace Supremacy.WCF
                     return;
 
                 currentPlayerInfo.Player.EmpireID = empireId;
-                
+
                 foreach (var playerInfo in _playerInfo)
                 {
                     if (playerInfo != currentPlayerInfo &&
