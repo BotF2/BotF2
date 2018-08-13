@@ -1153,7 +1153,7 @@ namespace Supremacy.Game
                      * will help prevent the same colonies from getting priority when
                      * the global stockpiles are low.
                      */
-                    colonies.ShuffleInPlace();
+                    colonies.RandomizeInPlace();
 
                     /*
                      * Update the civilization's treasury to include any credits that
@@ -1309,7 +1309,7 @@ namespace Supremacy.Game
                      * will help prevent the same colonies from getting priority when
                      * the global stockpiles are low.
                      */
-                    colonies.ShuffleInPlace();
+                    colonies.RandomizeInPlace();
 
                     foreach (var colony in colonies)
                     {
@@ -1512,8 +1512,6 @@ namespace Supremacy.Game
         #region DoIntelligence() Method
         void DoIntelligence(GameContext game)
         {
-            Random rnd = new Random();
-
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
                 GameContext.PushThreadContext(game);
@@ -1539,10 +1537,10 @@ namespace Supremacy.Game
 
                     //Select one at random
                     CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[
-                        targets.ElementAt(rnd.Next(0, targets.Count() - 1))
+                        targets.ElementAt(RandomProvider.Shared.Next(0, targets.Count() - 1))
                     ];
                     //Randomly pick one of their colonies to attack
-                    Colony targetColony = targetEmpire.Colonies[rnd.Next(0, targetEmpire.Colonies.Count - 1)];
+                    Colony targetColony = targetEmpire.Colonies[RandomProvider.Shared.Next(0, targetEmpire.Colonies.Count - 1)];
                     //200 intelligience is not taken in to account for attacks
                     int attackIntelligence = attackingEmpire.TotalIntelligence - 200;
                     //Get the ratio of the attacking power to defending power
@@ -1570,7 +1568,7 @@ namespace Supremacy.Game
 
                     for (int i = 0; i < attempts; i++)
                     {
-                        int action = rnd.Next(1, 30);
+                        int action = RandomProvider.Shared.Next(1, 30);
 
                         if (action <= 9)
                         {
@@ -1610,7 +1608,7 @@ namespace Supremacy.Game
                             {
                                 if (targetEmpire.Credits.CurrentValue > 0)
                                 {
-                                    int stolenCredits = rnd.Next(1, targetEmpire.Credits.CurrentValue + 1);
+                                    int stolenCredits = RandomProvider.Shared.Next(1, targetEmpire.Credits.CurrentValue + 1);
 
                                     targetEmpire.Credits.AdjustCurrent(-1 * stolenCredits);
                                     targetEmpire.Credits.UpdateAndReset();
@@ -1628,7 +1626,7 @@ namespace Supremacy.Game
                             {
                                 if ((targetColony.CreditsFromTrade.CurrentValue > 0))
                                 {
-                                    int stolenCredits = rnd.Next(1, targetColony.CreditsFromTrade.CurrentValue + 1);
+                                    int stolenCredits = RandomProvider.Shared.Next(1, targetColony.CreditsFromTrade.CurrentValue + 1);
                                     targetColony.CreditsFromTrade.AdjustCurrent(stolenCredits * -1);
                                     targetColony.CreditsFromTrade.UpdateAndReset();
                                     attackingEmpire.Credits.AdjustCurrent(stolenCredits);
@@ -1648,7 +1646,7 @@ namespace Supremacy.Game
                         {
                             if (targetColony.FoodReserves.CurrentValue > 0)
                             {
-                                int destroyedFoodReserves = rnd.Next(1, targetColony.FoodReserves.CurrentValue + 1);
+                                int destroyedFoodReserves = RandomProvider.Shared.Next(1, targetColony.FoodReserves.CurrentValue + 1);
 
                                 targetColony.FoodReserves.AdjustCurrent(destroyedFoodReserves * -1);
                                 targetColony.FoodReserves.UpdateAndReset();
@@ -1666,7 +1664,7 @@ namespace Supremacy.Game
                         {
                             if (targetColony.GetTotalFacilities(ProductionCategory.Food) > 1)
                             {
-                                int destroyedFoodFacilities = rnd.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Food) + 1);
+                                int destroyedFoodFacilities = RandomProvider.Shared.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Food) + 1);
                                 targetColony.RemoveFacilities(ProductionCategory.Food, destroyedFoodFacilities);
 
                                 if (m_TraceIntelligience)
@@ -1682,7 +1680,7 @@ namespace Supremacy.Game
                         {
                             if (targetColony.GetTotalFacilities(ProductionCategory.Industry) > 1)
                             {
-                                int destroyedIndustrialFacilities = rnd.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Industry) + 1);
+                                int destroyedIndustrialFacilities = RandomProvider.Shared.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Industry) + 1);
                                 targetColony.RemoveFacilities(ProductionCategory.Industry, destroyedIndustrialFacilities);
 
                                 if (m_TraceIntelligience)
@@ -1698,7 +1696,7 @@ namespace Supremacy.Game
                         {
                             if (targetColony.GetTotalFacilities(ProductionCategory.Energy) > 1)
                             {
-                                int destroyedEnergyFacilities = rnd.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Energy) + 1);
+                                int destroyedEnergyFacilities = RandomProvider.Shared.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Energy) + 1);
                                 targetColony.RemoveFacilities(ProductionCategory.Energy, destroyedEnergyFacilities);
 
                                 if (m_TraceIntelligience)
@@ -1714,7 +1712,7 @@ namespace Supremacy.Game
                         {
                             if (targetColony.GetTotalFacilities(ProductionCategory.Research) > 1)
                             {
-                                int destroyedResearchFacilities = rnd.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Research) + 1);
+                                int destroyedResearchFacilities = RandomProvider.Shared.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Research) + 1);
                                 targetColony.RemoveFacilities(ProductionCategory.Research, destroyedResearchFacilities);
 
                                 if (m_TraceIntelligience)
@@ -1730,7 +1728,7 @@ namespace Supremacy.Game
                         {
                             if (targetColony.GetTotalFacilities(ProductionCategory.Intelligence) > 1)
                             {
-                                int destroyedIntelFacilities = rnd.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Intelligence) + 1);
+                                int destroyedIntelFacilities = RandomProvider.Shared.Next(1, targetColony.GetTotalFacilities(ProductionCategory.Intelligence) + 1);
                                 targetColony.RemoveFacilities(ProductionCategory.Intelligence, destroyedIntelFacilities);
 
                                 if (m_TraceIntelligience)
@@ -1746,10 +1744,10 @@ namespace Supremacy.Game
                         {
                             if (targetColony.OrbitalBatteries.Count > 1)
                             {
-                                int destroyedOrbitalBatteries = rnd.Next(1, targetColony.OrbitalBatteries.Count + 1);
+                                int destroyedOrbitalBatteries = RandomProvider.Shared.Next(1, targetColony.OrbitalBatteries.Count + 1);
                                 targetColony.RemoveOrbitalBatteries(destroyedOrbitalBatteries);
 
-                                int shieldStrengthLost = rnd.Next(1, targetColony.ShieldStrength.CurrentValue + 1);
+                                int shieldStrengthLost = RandomProvider.Shared.Next(1, targetColony.ShieldStrength.CurrentValue + 1);
                                 targetColony.ShieldStrength.AdjustCurrent(-1 * shieldStrengthLost);
                                 targetColony.ShieldStrength.UpdateAndReset();
 

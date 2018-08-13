@@ -39,7 +39,6 @@ namespace Supremacy.Resources
         #endregion
 
         #region Fields
-        private static readonly Random s_random;
         private static IClientContext s_clientContext;
         private readonly int _randomIndex;
         private readonly string _category;
@@ -55,7 +54,7 @@ namespace Supremacy.Resources
         #region Constructors
         static CivString()
         {
-            s_random = new Random();
+            
         }
 
         public CivString(string category, string key) : this(null, category, key) { }
@@ -72,7 +71,7 @@ namespace Supremacy.Resources
                 _civKey = civilization.Key;
             _category = category;
             _stringKey = key;
-            _randomIndex = s_random.Next(255);
+            _randomIndex = RandomProvider.Shared.Next(255);
             _demeanor = demeanor;
         }
         #endregion

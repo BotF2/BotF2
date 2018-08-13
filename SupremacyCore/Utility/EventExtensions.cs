@@ -25,7 +25,6 @@ namespace Supremacy.Utility
                 handler(sender, EventArgs.Empty);
         }
 
-
         public static void Raise<TEventArgs>(this EventHandler<TEventArgs> handler, object sender, TEventArgs e)
             where TEventArgs : EventArgs
         {

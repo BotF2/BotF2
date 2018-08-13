@@ -209,7 +209,7 @@ namespace Supremacy.Universe
                     var starPositions = GetStarPositions();
                     var starNames = GetStarNames();
 
-                    starNames.ShuffleInPlace();
+                    starNames.RandomizeInPlace();
 
                     Collections.CollectionBase<MapLocation> homeLocations;
 
@@ -507,7 +507,7 @@ namespace Supremacy.Universe
                 if (planetDescriptor.HasBonuses)
                     planet.AddBonus(planetDescriptor.Bonuses);
 
-                planet.Variation = Statistics.Random(Planet.MaxVariations);
+                planet.Variation = RandomHelper.Random(Planet.MaxVariations);
                 planets.Add(planet);
             }
 
@@ -690,7 +690,7 @@ namespace Supremacy.Universe
             wantedMinorRaceCount = Math.Min(wantedMinorRaceCount, minorRaceLimit);
 
             foreach (var quadrant in EnumUtilities.GetValues<Quadrant>())
-                minorRaces[quadrant].ShuffleInPlace();
+                minorRaces[quadrant].RandomizeInPlace();
 
             var chosenMinorRaces = new Dictionary<Quadrant, List<Civilization>>();
             foreach (var quadrant in EnumHelper.GetValues<Quadrant>())
@@ -780,7 +780,7 @@ namespace Supremacy.Universe
             var empires = new List<Civilization>();
             var minorRaces = new List<Civilization>();
 
-            positions.ShuffleInPlace();
+            positions.RandomizeInPlace();
 
             foreach (var civ in GameContext.Current.Civilizations)
             {
@@ -825,10 +825,10 @@ namespace Supremacy.Universe
             {
                 if (system.Planets.Any(p => p.PlanetType.IsHabitable()))
                 {
-                    if (!system.HasDilithiumBonus && DieRoll.Chance(4))
+                    if (!system.HasDilithiumBonus && RandomHelper.Chance(4))
                         system.AddBonus(SystemBonus.Dilithium);
 
-                    if (!system.HasRawMaterialsBonus && DieRoll.Chance(3))
+                    if (!system.HasRawMaterialsBonus && RandomHelper.Chance(3))
                         system.AddBonus(SystemBonus.RawMaterials);
                 }
             }
@@ -856,8 +856,8 @@ namespace Supremacy.Universe
                 {
                     if (!planet.HasEnergyBonus && energyPlacementCount < 2)
                     {
-                        if (planet.PlanetType == PlanetType.Volcanic && DieRoll.Chance(2) ||
-                            planet.PlanetType == PlanetType.Desert && DieRoll.Chance(3))
+                        if (planet.PlanetType == PlanetType.Volcanic && RandomHelper.Chance(2) ||
+                            planet.PlanetType == PlanetType.Desert && RandomHelper.Chance(3))
                         {
                             planet.AddBonus(PlanetBonus.Energy);
                             ++energyPlacementCount;
@@ -868,7 +868,7 @@ namespace Supremacy.Universe
                     {
                         if ((planet.PlanetType == PlanetType.Terran ||
                              planet.PlanetType == PlanetType.Oceanic ||
-                             planet.PlanetType == PlanetType.Jungle) && DieRoll.Chance(3))
+                             planet.PlanetType == PlanetType.Jungle) && RandomHelper.Chance(3))
                         {
                             planet.AddBonus(PlanetBonus.Food);
                             ++foodPlacementCount;
@@ -885,7 +885,7 @@ namespace Supremacy.Universe
             var homePlanet = new PlanetDescriptor();
             PlanetSize planetSize;
             homePlanet.Type = civ.Race.HomePlanetType;
-            while (!(planetSize = RandomProvider.NextEnum<PlanetSize>()).IsHabitable())
+            while (!(planetSize = EnumUtilities.NextEnum<PlanetSize>()).IsHabitable())
                 continue;
 
             if (!system.IsStarTypeDefined)
@@ -1050,7 +1050,7 @@ namespace Supremacy.Universe
                     break;
             }
 
-            nebulaNames.ShuffleInPlace();
+            nebulaNames.RandomizeInPlace();
 
             var gameContext = GameContext.Current;
 
@@ -1132,7 +1132,7 @@ namespace Supremacy.Universe
                                                  {
                                                      PlanetSize = planetSize,
                                                      PlanetType = GetPlanetType(system.StarType, planetSize, i),
-                                                     Variation = Statistics.Random(Planet.MaxVariations),
+                                                     Variation = RandomHelper.Random(Planet.MaxVariations),
                                                      Bonuses = PlanetBonus.Random
                                                  };
                                     //planet.Slot = i;
@@ -1146,7 +1146,7 @@ namespace Supremacy.Universe
 
                             if (planets.Count > 0)
                             {
-                                var rndSystemBonusType = Statistics.Random(8);
+                                var rndSystemBonusType = RandomHelper.Random(8);
                                 switch (rndSystemBonusType)
                                 {
                                     case 1:
@@ -1214,7 +1214,7 @@ namespace Supremacy.Universe
             var maxRoll = 0;
             foreach (var type in EnumUtilities.GetValues<StarType>())
             {
-                var currentRoll = DieRoll.Roll(100 + StarTypeDist[type]);
+                var currentRoll = RandomHelper.Roll(100 + StarTypeDist[type]);
                 if (currentRoll > maxRoll)
                 {
                     result = type;
@@ -1226,7 +1226,7 @@ namespace Supremacy.Universe
 
         private static int GetPlanetSizeScore(StarType starType, PlanetSize planetSize, int slot)
         {
-            return DieRoll.Roll(100)
+            return RandomHelper.Roll(100)
                    + StarTypeModToPlanetSizeDist[new Tuple<StarType, PlanetSize>(starType, planetSize)]
                    + SlotModToPlanetSizeDist[new Tuple<int, PlanetSize>(slot, planetSize)];
         }
@@ -1270,7 +1270,7 @@ namespace Supremacy.Universe
 
         private static int GetPlanetTypeScore(StarType starType, PlanetSize planetSize, PlanetType planetType, int slot)
         {
-            return DieRoll.Roll(100)
+            return RandomHelper.Roll(100)
                    + StarTypeModToPlanetTypeDist[new Tuple<StarType, PlanetType>(starType, planetType)]
                    + PlanetSizeModToPlanetTypeDist[new Tuple<PlanetSize, PlanetType>(planetSize, planetType)]
                    + SlotModToPlanetTypeDist[new Tuple<int, PlanetType>(slot, planetType)];
@@ -1297,7 +1297,7 @@ namespace Supremacy.Universe
 
                         foreach (var moon in EnumUtilities.GetValues<MoonSize>())
                         {
-                            var currentRoll = DieRoll.Roll(100)
+                            var currentRoll = RandomHelper.Roll(100)
                                               + PlanetSizeModToMoonSizeDist[new Tuple<PlanetSize, MoonSize>(planet.PlanetSize, moon)]
                                               + PlanetTypeModToMoonSizeDist[new Tuple<PlanetType, MoonSize>(planet.PlanetType, moon)]
                                               - handicap;
@@ -1310,7 +1310,7 @@ namespace Supremacy.Universe
                         }
 
                         if (moonSize != MoonSize.NoMoon)
-                            moons.Add(moonSize.GetType(RandomProvider.NextEnum<MoonShape>()));
+                            moons.Add(moonSize.GetType(EnumUtilities.NextEnum<MoonShape>()));
 
                         handicap += (maxRoll / Planet.MaxMoonsPerPlanet);
                     }

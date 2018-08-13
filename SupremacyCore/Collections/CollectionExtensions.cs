@@ -7,6 +7,7 @@ using System.Text;
 
 using Supremacy.Annotations;
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Collections
 {
@@ -2842,22 +2843,6 @@ namespace Supremacy.Collections
         #endregion String representations
 
         #region Shuffles and Permutations
-        private static volatile Random _randomGenerator;
-
-        private static Random GetRandomGenerator()
-        {
-            if (_randomGenerator == null)
-            {
-                lock (typeof(CollectionExtensions))
-                {
-                    if (_randomGenerator == null)
-                        _randomGenerator = new Random();
-                }
-            }
-
-            return _randomGenerator;
-        }
-
         public static T RandomElement<T>([NotNull] this IEnumerable<T> collection)
         {
             T result;
@@ -2895,7 +2880,7 @@ namespace Supremacy.Collections
             else
                 count = collection.Count();
 
-            var skipCount = _randomGenerator.Next(count);
+            var skipCount = RandomProvider.Shared.Next(count);
 
             if (trueList != null)
                 result = (T)trueList[skipCount];
@@ -2909,17 +2894,10 @@ namespace Supremacy.Collections
 
         public static T[] Randomize<T>([NotNull] this IEnumerable<T> collection)
         {
-            return Randomize(collection, GetRandomGenerator());
-        }
-
-        public static T[] Randomize<T>([NotNull] this IEnumerable<T> collection, [NotNull] Random randomGenerator)
-        {
             // We have to copy all items anyway, and there isn't a way to produce the items
             // on the fly that is linear. So copying to an array and shuffling it is an efficient as we can get.
             if (collection == null)
                 throw new ArgumentNullException("collection");
-            if (randomGenerator == null)
-                throw new ArgumentNullException("randomGenerator");
 
             var array = collection.ToArray();
 
@@ -2927,7 +2905,7 @@ namespace Supremacy.Collections
             for (var i = count - 1; i >= 1; --i)
             {
                 // Pick an random number 0 through i inclusive.
-                var j = randomGenerator.Next(i + 1);
+                var j = RandomProvider.Shared.Next(i + 1);
 
                 // Swap array[i] and array[j]
                 var temp = array[i];
@@ -2938,51 +2916,26 @@ namespace Supremacy.Collections
             return array;
         }
 
-        public static IList<T> RandomizeInPlace<T>([NotNull] this IList<T> list)
+        public static void RandomizeInPlace<T>([NotNull] this IList<T> list)
         {
-            return RandomizeInPlace(list, GetRandomGenerator());
-        }
+            if (list == null) throw new ArgumentNullException("list");
+            if (list.IsReadOnly) throw new ArgumentException("List is read-only.", "list");
 
-        public static IList<T> RandomizeInPlace<T>([NotNull] this IList<T> list, [NotNull] Random randomGenerator)
-        {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (randomGenerator == null)
-                throw new ArgumentNullException("randomGenerator");
-            if (list.IsReadOnly)
-                throw new ArgumentException("List is read-only.", "list");
-
-            if (list is T[])
-                list = new ArrayWrapper<T>((T[])list);
-
-            var count = list.Count;
-            for (var i = count - 1; i >= 1; --i)
+            for (int i = 0; i < list.Count - 1; i++)
             {
-                // Pick an random number 0 through i inclusive.
-                var j = randomGenerator.Next(i + 1);
+                int j = RandomProvider.Shared.Next(i, list.Count);
 
-                // Swap list[i] and list[j]
-                var temp = list[i];
-                list[i] = list[j];
-                list[j] = temp;
+                T temp = list[j];
+                list[j] = list[i];
+                list[i] = temp;
             }
-
-            return list;
         }
 
         [NotNull]
         public static T[] RandomSubset<T>([NotNull] this IEnumerable<T> collection, int count)
         {
-            return RandomSubset(collection, count, GetRandomGenerator());
-        }
-
-        [NotNull]
-        public static T[] RandomSubset<T>([NotNull] this IEnumerable<T> collection, int count, [NotNull] Random randomGenerator)
-        {
             if (collection == null)
                 throw new ArgumentNullException("collection");
-            if (randomGenerator == null)
-                throw new ArgumentNullException("randomGenerator");
 
             // We need random access to the items in the collection. If it's not already an 
             // IList<T>, copy to a temporary list.
@@ -2999,7 +2952,7 @@ namespace Supremacy.Collections
             {
                 // Set j to the index of the item to swap with, and value to the value to swap with.
                 T value;
-                var j = randomGenerator.Next(listCount - i) + i;
+                var j = RandomProvider.Shared.Next(listCount - i) + i;
 
                 // Swap values of i and j in the list. The list isn't actually changed; instead,
                 // swapped values are stored in the dictionary swappedValues.

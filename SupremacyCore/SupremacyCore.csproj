@@ -266,7 +266,7 @@
     <Compile Include="Types\NamedGuid.cs" />
     <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
-    <Compile Include="Utility\Shuffle.cs" />
+    <Compile Include="Utility\Random\RandomHelper.cs" />
     <Compile Include="Utility\DelegatingWeakCollectionChangedListener.cs" />
     <Compile Include="Utility\EnumUtilities.cs" />
     <Compile Include="Utility\GameScheduler.cs" />
@@ -576,12 +576,10 @@
     <Compile Include="Universe\UniverseObjectSet.cs" />
     <Compile Include="Universe\UniverseObjectView.cs" />
     <Compile Include="Utility\AsyncHelper.cs" />
-    <Compile Include="Utility\ChanceTree.cs.cs" />
-    <Compile Include="Utility\DieRoll.cs" />
-    <Compile Include="Utility\FilteredRandom.cs" />
+    <Compile Include="Utility\Random\ChanceTree.cs.cs" />
     <Compile Include="Utility\GameLogManager.cs" />
-    <Compile Include="Utility\MersenneTwister.cs" />
-    <Compile Include="Utility\RandomProvider.cs" />
+    <Compile Include="Utility\Random\MersenneTwister.cs" />
+    <Compile Include="Utility\Random\RandomProvider.cs" />
     <Compile Include="Utility\RomanNumber.cs" />
     <Compile Include="Utility\Statistics.cs" />
     <Compile Include="Utility\StringHelper.cs" />

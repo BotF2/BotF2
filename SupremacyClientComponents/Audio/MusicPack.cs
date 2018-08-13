@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Supremacy.Resources;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Audio
 {
@@ -149,15 +150,14 @@ namespace Supremacy.Client.Audio
             int pos = 0;
             if (_musicList.Count > 1)
             {
-                Random rnd = new Random();
                 if (prev != -1)
                 {
                     // do not repeat current entry
-                    pos = rnd.Next(_musicList.Count - 1);
+                    pos = RandomProvider.Shared.Next(_musicList.Count - 1);
                     if (pos >= prev)
                         ++pos;
                 }
-                else pos = rnd.Next(_musicList.Count);
+                else pos = RandomProvider.Shared.Next(_musicList.Count);
             }
 
             return new KeyValuePair<int, MusicEntry>(pos, _musicList[pos]);

@@ -91,7 +91,7 @@ namespace Supremacy.Scripting.Events
                     .Where(
                         o => o.IsEmpire &&
                              o.IsHuman &&
-                             DieRoll.Chance(_occurrenceChance))
+                             RandomHelper.Chance(_occurrenceChance))
                     .ToList();
 
                 var targetGroups = affectedCivs

@@ -30,17 +30,12 @@ namespace Supremacy.Utility
 
     public class ChanceTree<TItem>
     {
-        private readonly Random _random;
         private readonly List<Chance<TItem>> _chances;
         private Chance<TItem> _root;
         private int _count;
 
         public ChanceTree()
-            : this(new MersenneTwister()) {}
-
-        public ChanceTree(Random random)
         {
-            _random = random;
             _chances = new List<Chance<TItem>>();
         }
 
@@ -97,7 +92,7 @@ namespace Supremacy.Utility
         {
             if (_count == 0)
                 return default(TItem);
-            return _chances[FindNode(_random.Next(_chances[0].GrowthWeight))].Item;
+            return _chances[FindNode(RandomProvider.Shared.Next(_chances[0].GrowthWeight))].Item;
         }
 
         public TItem Take()
@@ -105,7 +100,7 @@ namespace Supremacy.Utility
             if (_count == 0)
                 return default(TItem);
 
-            var probability = _random.Next(_chances[0].GrowthWeight);
+            var probability = RandomProvider.Shared.Next(_chances[0].GrowthWeight);
             var index = FindNode(probability);
             var chance = _chances[index];
 

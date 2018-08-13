@@ -660,7 +660,6 @@ namespace Supremacy.Combat
     {
         private const double PopulationDamageMultiplier = 0.1;
 
-        private readonly Random _random;
         private readonly SendInvasionUpdateCallback _sendUpdateCallback;
         private readonly NotifyInvasionEndedCallback _invasionEndedCallback;
 
@@ -677,7 +676,6 @@ namespace Supremacy.Combat
 
             _sendUpdateCallback = sendUpdateCallback;
             _invasionEndedCallback = invasionEndedCallback;
-            _random = new MersenneTwister();
         }
 
         public InvasionArena InvasionArena
@@ -856,8 +854,7 @@ namespace Supremacy.Combat
                     GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
                             transportCombatStrength);
 
-                Random rnd = new Random();
-                int randomResult = rnd.Next(1, 21);   //  limits random to 20 %
+                int randomResult = RandomProvider.Shared.Next(1, 21);   //  limits random to 20 %
                 transportCombatStrength = transportCombatStrength - (transportCombatStrength * randomResult / 100);
                 //                                 100 -             (     100                * 15        / 100)    
                 GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
@@ -931,7 +928,7 @@ namespace Supremacy.Combat
                     if (maxDamage <= 0)
                         continue;
 
-                    var confirmedHit = (_random.NextDouble() >= accuracyThreshold);
+                    var confirmedHit = (RandomProvider.Shared.NextDouble() >= accuracyThreshold);
                     if (confirmedHit)
                     {
                         var targetUnit = target as InvasionUnit;
@@ -1022,7 +1019,7 @@ namespace Supremacy.Combat
 
         private ChanceTree<object> GetBaseGroundTargetHitChanceTree()
         {
-            var chanceTree = new ChanceTree<object>(_random);
+            var chanceTree = new ChanceTree<object>();
 
             //var colony = _invasionArena.Colony;
             //var hitPopulationChance = colony.Population.CurrentValue / 10;
@@ -1055,9 +1052,10 @@ namespace Supremacy.Combat
             _invasionArena.AttackOccurred = true;
 
             var nonRetreatingUnits = (_orders.Action == InvasionAction.StandDown) ? defendingUnits : defendingUnits.Concat(invadingUnits);
-            var unitsAbleToAttack = nonRetreatingUnits.Where(o => o.Weapons.Any(w => w.CanFire)).ToList().RandomizeInPlace(_random);
-            var defenderTargets = new LinkedList<InvasionOrbital>(invadingUnits.Randomize(_random));
-            var invaderTargets = new LinkedList<InvasionOrbital>(defendingUnits.Randomize(_random));
+            var unitsAbleToAttack = nonRetreatingUnits.Where(o => o.Weapons.Any(w => w.CanFire)).ToList();
+            unitsAbleToAttack.RandomizeInPlace();
+            var defenderTargets = new LinkedList<InvasionOrbital>(invadingUnits.Randomize());
+            var invaderTargets = new LinkedList<InvasionOrbital>(defendingUnits.Randomize());
 
             while (unitsAbleToAttack.Count != 0 &&
                    defenderTargets.Count != 0 &&
@@ -1097,7 +1095,7 @@ namespace Supremacy.Combat
 
                     weapon.Discharge();
 
-                    var confirmedHit = (_random.NextDouble() >= accuracyThreshold);
+                    var confirmedHit = (RandomProvider.Shared.NextDouble() >= accuracyThreshold);
                     if (confirmedHit)
                     {
                         target.TakeDamage(maxDamage);

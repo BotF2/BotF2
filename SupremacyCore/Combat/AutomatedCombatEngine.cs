@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
 using Supremacy.Orbitals;
 using Supremacy.Utility;
 using System;
@@ -29,7 +30,7 @@ namespace Supremacy.Combat
 
         protected override void ResolveCombatRoundCore()
         {
-            _combatShips.ShuffleInPlace();
+            _combatShips.RandomizeInPlace();
 
             for (int i = 0; i < _combatShips.Count; i++)
             {
@@ -96,7 +97,7 @@ namespace Supremacy.Combat
                             }
 
                             // If we rushed a formation we could take damage
-                            int chanceRushingFormation = Statistics.Random(10000) % 100;
+                            int chanceRushingFormation = RandomHelper.Random(100);
                             if (oppositionIsInFormation && (order == CombatOrder.Rush) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
                             {
                                 attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
@@ -116,7 +117,7 @@ namespace Supremacy.Combat
                                 {
                                     GameLog.Print("{0} {1} attempting assimilation on {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
                                 }
-                                int chanceToAssimilate = Statistics.Random(10000) % 100;
+                                int chanceToAssimilate = RandomHelper.Random(100);
                                 assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
                             }
 
@@ -292,7 +293,7 @@ namespace Supremacy.Combat
                         //Has both ships and station to target
                         if (hasOppositionStation && (oppositionShips.Count() > 0))
                         {
-                            if (Statistics.Random(4) == 0)
+                            if (RandomHelper.Random(4) == 0)
                             {
                                 return _combatStation.Item1;
                             }
@@ -345,7 +346,7 @@ namespace Supremacy.Combat
                 return;
             }
 
-            if (Statistics.Random(100) >= (100 - accuracy))
+            if (RandomHelper.Random(100) >= (100 - accuracy))
             {
                 target.TakeDamage(weapon.MaxDamage.CurrentValue);
             }

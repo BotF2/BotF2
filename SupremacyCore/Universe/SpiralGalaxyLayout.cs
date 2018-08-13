@@ -47,7 +47,7 @@ namespace Supremacy.Universe
                 else
                 {
                     double arm = rand.Next(0, numArms) * armAngle;
-                    double angle = Statistics.Gaussian() * armSpread;
+                    double angle = RandomHelper.Gaussian() * armSpread;
                     position = new MapLocation(
                         (int)(((radius * Math.Cos(armOffset + arm + angle + radius * armLength)) + 1) * width / 2),
                         (int)(((radius * Math.Sin(armOffset + arm + angle + radius * armLength)) + 1) * height / 2));
