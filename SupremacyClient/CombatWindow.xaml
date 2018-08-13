@@ -208,7 +208,14 @@
                   FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                   FontSize="10pt"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <TreeViewItem Name="FriendlyStationItem"/>
+            <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
+            <TreeViewItem Name="FriendlyNonCombatantItems" IsExpanded="True"/>
+            <TreeViewItem Name="FriendlyDestroyedItems" IsExpanded="True"/>
+            <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
+            <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
+        </TreeView>
       </ScrollViewer>
     </GroupBox>
 
@@ -224,7 +231,14 @@
                   FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                   FontSize="10pt"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <TreeViewItem Name="HostileStationItem"/>
+            <TreeViewItem Name="HostileCombatantItems" IsExpanded="True"/>
+            <TreeViewItem Name="HostileNonCombatantItems" IsExpanded="True"/>
+            <TreeViewItem Name="HostileDestroyedItems" IsExpanded="True"/>
+            <TreeViewItem Name="HostileAssimilatedItems" IsExpanded="True"/>
+            <TreeViewItem Name="HostileEscapedItems" IsExpanded="True"/>
+        </TreeView>
       </ScrollViewer>
     </GroupBox>
 

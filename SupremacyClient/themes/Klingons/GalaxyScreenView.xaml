@@ -115,7 +115,7 @@
                       Grid.Column="0"
                       Grid.Row="1"
                       Style="{StaticResource LCARS_StandardButtonStyle}"
-                      Content="{s:StringResource Key=SUMMARY_BUTTON_TEXT, Case=Upper}"
+                      Content="{s:StringResource Key=KLING_INTEL_BUTTON_TEXT, Case=Upper}"
                       Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"
                       Margin="0,4,0,0" />
               <Rectangle Grid.Column="1"

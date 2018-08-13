@@ -19,6 +19,7 @@ using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
 using System.Collections.Generic;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -261,11 +262,25 @@ namespace Supremacy.Orbitals
             {
                 _workCapacity = Number.ParseUInt16(element["WorkCapacity"].InnerText.Trim());
             }
+            if (element["ShipNames"] == null)
+            {
+                bool _tracePossibleShipNamesSmallOutput = false;
+                if (_tracePossibleShipNamesSmallOutput == true)
+                    GameLog.Print("ShipNames missing in TechObjectDatabase.xml for {0}", this.Name);
+            }
             if (element["ShipNames"] != null)
             {
+                bool _tracePossibleShipNamesSmallOutput = false;
+                if (_tracePossibleShipNamesSmallOutput == true)
+                    GameLog.Print("ShipNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", this.Name);
+
                 foreach (XmlElement name in element["ShipNames"])
                 {
                     _possibleNames.Add(name.InnerText.Trim(), 0);
+
+                    bool _tracePossibleShipNamesFullOutput = false;
+                    if (_tracePossibleShipNamesFullOutput == true)
+                        GameLog.Print("ShipNames - Possible Name for {0} = {1}", this.Name, name.InnerText.Trim());
                 }
             }
         }

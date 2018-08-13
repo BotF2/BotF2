@@ -173,8 +173,11 @@ namespace Supremacy.Orbitals
             get { return _isCloaked; }
             set
             {
-                _isCloaked = value;
-                OnPropertyChanged("IsCloaked");
+                if (CanCloak)
+                {
+                    _isCloaked = value;
+                    OnPropertyChanged("IsCloaked");
+                }
             }
         }
 
@@ -214,8 +217,11 @@ namespace Supremacy.Orbitals
             get { return _isCamouflaged; }
             set
             {
-                _isCamouflaged = value;
-                OnPropertyChanged("IsCamouflaged");
+                if (CanCamouflage)
+                {
+                    _isCamouflaged = value;
+                    OnPropertyChanged("IsCamouflaged");
+                }
             }
         }
         /// <summary>

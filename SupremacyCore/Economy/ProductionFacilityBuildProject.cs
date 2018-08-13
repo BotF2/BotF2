@@ -245,7 +245,7 @@ namespace Supremacy.Economy
 
             foreach (var resourceType in EnumHelper.GetValues<ResourceType>())
                 resourcesRequired[resourceType] = (int)Math.Ceiling(base.ResourcesRequired[resourceType] / 2d);
-
+            GameLog.Print("infinit loop? Production Facility Building Project");
             _resourcesRequired = resourcesRequired;
         }
 
