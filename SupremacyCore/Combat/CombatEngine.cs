@@ -408,7 +408,7 @@ namespace Supremacy.Combat
             // 90% chance for these ships to escape unharmed
             if (unit.IsCloaked || unit.Source.OrbitalDesign.ShipType == "Scout")
             {
-                return DieRoll.Roll(10) != 10;
+                retreatChanceModifier = 110;
             }
 
             if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away
@@ -431,6 +431,8 @@ namespace Supremacy.Combat
                 retreatChanceModifier = 0;
                 GameLog.Print("Weapon ratio was {0). 0 modifier", weaponRatio);
             }
+
+
 
             if (oppositionIsRushing)
             {
