@@ -77,7 +77,7 @@ namespace Supremacy.UI
         public AsteroidsView()
         {
             /* Start on a random frame to provide some variation */
-            CurrentFrame = Statistics.Random(Frames.Length);
+            CurrentFrame = RandomHelper.Random(Frames.Length);
 
             _imageBrush = new ImageBrush { ImageSource = Frames[CurrentFrame % 255] };
             _rectangle = new Rectangle

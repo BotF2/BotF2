@@ -23,6 +23,18 @@ namespace Supremacy.Utility
 {
     public static class EnumUtilities
     {
+        public static object NextEnum(Type enumType)
+        {
+            var values = Enum.GetValues(enumType);
+            return values.GetValue(RandomProvider.Shared.Next(values.Length));
+        }
+
+        public static T NextEnum<T>() where T : struct
+        {
+            var values = GetValues<T>();
+            return values[RandomProvider.Shared.Next(values.Count)];
+        }
+
         #region Cache Management
 
         private static Dictionary<Type, object> _cache = new Dictionary<Type, object>();

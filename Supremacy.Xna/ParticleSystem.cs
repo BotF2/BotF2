@@ -3,6 +3,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Supremacy.Utility;
 
 namespace Supremacy.Xna
 {
@@ -122,9 +123,6 @@ namespace Supremacy.Xna
         // Count how many times Draw has been called. This is used to know
         // when it is safe to retire old particles back into the free list.
         private int _drawCounter;
-
-        // Shared random number generator.
-        private static readonly Random _random = new Random();
 
         #endregion
 
@@ -511,9 +509,9 @@ namespace Supremacy.Xna
             var horizontalVelocity = MathHelper.Lerp(
                 _settings.MinHorizontalVelocity,
                 _settings.MaxHorizontalVelocity,
-                (float)_random.NextDouble());
+                (float)RandomProvider.Shared.NextDouble());
 
-            var horizontalAngle = _random.NextDouble() * MathHelper.TwoPi;
+            var horizontalAngle = RandomProvider.Shared.NextDouble() * MathHelper.TwoPi;
 
             velocity.X += horizontalVelocity * (float)Math.Cos(horizontalAngle);
             velocity.Z += horizontalVelocity * (float)Math.Sin(horizontalAngle);
@@ -522,15 +520,15 @@ namespace Supremacy.Xna
             velocity.Y += MathHelper.Lerp(
                 _settings.MinVerticalVelocity,
                 _settings.MaxVerticalVelocity,
-                (float)_random.NextDouble());
+                (float)RandomProvider.Shared.NextDouble());
 
             // Choose four random control values. These will be used by the vertex
             // shader to give each particle a different size, rotation, and color.
             var randomValues = new Color(
-                (byte)_random.Next(255),
-                (byte)_random.Next(255),
-                (byte)_random.Next(255),
-                (byte)_random.Next(255));
+                (byte)RandomProvider.Shared.Next(255),
+                (byte)RandomProvider.Shared.Next(255),
+                (byte)RandomProvider.Shared.Next(255),
+                (byte)RandomProvider.Shared.Next(255));
 
             // Fill in the particle vertex structure.
             _particles[_firstFreeParticle].Position = position;

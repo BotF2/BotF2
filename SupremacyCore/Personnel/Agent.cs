@@ -332,7 +332,7 @@ namespace Supremacy.Personnel
 
             var remainingSkills = new List<AgentSkill>(EnumHelper.GetValues<AgentSkill>().Except(result));
 
-            remainingSkills.RandomizeInPlace(RandomProvider.Shared);
+            remainingSkills.RandomizeInPlace();
 
             for (var i = 0; i < remainingSkills.Count && result.Count < 3; i++)
                 result.Add(remainingSkills[i]);

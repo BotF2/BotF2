@@ -128,7 +128,7 @@ namespace Supremacy.Universe
 
             if (system.HasRawMaterialsBonus)
             {
-                _baseRawMaterials = (byte)(Statistics.Random(25) + 25);     // base value just in case its not customized
+                _baseRawMaterials = (byte)(RandomHelper.Random(25) + 25);     // base value just in case its not customized
 
                 var baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
                 if (baseResProdTable != null)
@@ -146,7 +146,7 @@ namespace Supremacy.Universe
                         byte tmpBaseRaw = (byte)baseValue;
 
                         int rndRange = (int)rndMax - (int)rndMin;
-                        int rndValue = Statistics.Random(rndRange) + (int)rndMin;
+                        int rndValue = RandomHelper.Random(rndRange) + (int)rndMin;
                         if (random.Equals("YES"))
                         {
                             tmpBaseRaw = (byte)rndValue;
@@ -189,7 +189,7 @@ namespace Supremacy.Universe
                         byte tmpBaseValue = (byte)baseValue;
 
                         int rndRange = (int)rndMax - (int)rndMin;
-                        int rndValue = Statistics.Random(rndRange) + (int)rndMin;
+                        int rndValue = RandomHelper.Random(rndRange) + (int)rndMin;
                         if (random.Equals("YES"))
                         {
                             tmpBaseValue = (byte)rndValue;

@@ -30,7 +30,7 @@ namespace Supremacy.Universe
                  i++, attempts++)
             {
                 double theta = random.NextDouble() * 2.0 * Math.PI;
-                double radius = Statistics.Gaussian(ringRadius, ringWidth / 3.0);
+                double radius = RandomHelper.Gaussian(ringRadius, ringWidth / 3.0);
 
                 MapLocation location = new MapLocation(
                     (int)((width / 2.0) + (radius * Math.Cos(theta))),

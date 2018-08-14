@@ -391,7 +391,7 @@ namespace Supremacy.Combat
         /// <returns></returns>
         protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, int weaponRatio)
         {
-            int chanceToRetreat = Statistics.Random(10000) % 100;
+            int chanceToRetreat = RandomHelper.Random(100);
             int retreatChanceModifier = 0;
 
             GameLog.Print("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
@@ -408,7 +408,7 @@ namespace Supremacy.Combat
             // 90% chance for these ships to escape unharmed
             if (unit.IsCloaked || unit.Source.OrbitalDesign.ShipType == "Scout")
             {
-                return DieRoll.Roll(10) != 10;
+                return RandomHelper.Chance(10);
             }
 
             if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away

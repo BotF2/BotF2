@@ -18,6 +18,9 @@ namespace Supremacy.Utility
         [ThreadStatic]
         private static Random _random;
 
+        /// <summary>
+        /// A shared <see cref="Random"/> for RNG utilities to use
+        /// </summary>
         public static Random Shared
         {
             get
@@ -27,27 +30,6 @@ namespace Supremacy.Utility
                 
                 return _random;
             }
-        }
-
-        public static object NextEnum(Type enumType)
-        {
-            var values = Enum.GetValues(enumType);
-            return values.GetValue(Shared.Next(values.Length));
-        }
-
-        public static T NextEnum<T>() where T : struct 
-        {
-            var values = EnumUtilities.GetValues<T>();
-            return values[Shared.Next(values.Count)];
-        }
-
-        public static T NextEnum<T>([NotNull] this Random random) where T : struct 
-        {
-            if (random == null)
-                throw new ArgumentNullException("random");
-
-            var values = EnumUtilities.GetValues<T>();
-            return values[random.Next(values.Count)];
         }
     }
 }

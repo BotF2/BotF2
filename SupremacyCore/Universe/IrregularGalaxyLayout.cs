@@ -25,8 +25,8 @@ namespace Supremacy.Universe
                  i++, attempts++)
             {
                 var location = new MapLocation(
-                    Statistics.Random(width),
-                    Statistics.Random(height));
+                    RandomHelper.Random(width),
+                    RandomHelper.Random(height));
                 var newNode = new MapLocationQuadtreeNode(location);
                 var lowestDist = FindNearestNeighborDistance(newNode, positions);
                 if ((lowestDist < GalaxyGenerator.MinDistanceBetweenStars)
