@@ -274,6 +274,17 @@ namespace Supremacy.Combat
             var attackerOrder = GetOrder(attacker.Source);
             var attackerShipOwner = attacker.Owner;
 
+            foreach (var combatship in _combatShips)
+            {
+
+                if (combatship.Item1.Name == "Scout" && _roundNumber == 1 && attackerOrder == CombatOrder.Retreat)
+
+                {
+                    PerformRetreat();
+                    _combatShips.Remove(combatship);
+                }
+            }
+
             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {
                 throw new ArgumentException("Cannot chose a target for a ship that does not have orders that require a target");

@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         private readonly int _combatId;
-        private int _roundNumber;
+        protected int _roundNumber;
         private bool _running;
         private bool _allSidesStandDown;
         private bool _ready;
@@ -406,10 +406,10 @@ namespace Supremacy.Combat
                 return true;
             }
 
-            // 90% chance for these ships to escape unharmed
+            // 90% chance for these ships to 'escape' but still might be destroyed in AutomatedCombatEngine ChoseTarget()
             if (unit.IsCloaked || unit.Source.OrbitalDesign.ShipType == "Scout")
             {
-                return RandomHelper.Chance(10);
+                return !(RandomHelper.Chance(10));
             }
 
             if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away
@@ -489,7 +489,7 @@ namespace Supremacy.Combat
         /// <summary>
         /// Moves ships that have escaped to their destinations
         /// </summary>
-        private void PerformRetreat()
+        public void PerformRetreat()
         {
             foreach (var assets in _assets)
             {
@@ -503,6 +503,15 @@ namespace Supremacy.Combat
                 foreach (var shipStats in assets.EscapedShips)
                 {
                     ((Ship)shipStats.Source).Fleet.Location = destination.Location;
+                }
+                foreach (var combatship in _combatShips)
+                {
+
+                    if (combatship.Item1.Name == "Scout"  && _roundNumber == 1) // && WasRetreateSuccessful && combatship.Item1.IsDestroyed
+
+                    {
+
+                    }
                 }
             }
         }
