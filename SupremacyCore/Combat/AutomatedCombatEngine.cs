@@ -280,7 +280,7 @@ namespace Supremacy.Combat
                 if (combatship.Item1.Name == "Scout" && _roundNumber == 1 && attackerOrder == CombatOrder.Retreat)
 
                 {
-                    PerformRetreat();
+
                     _combatShips.Remove(combatship);
                 }
             }
