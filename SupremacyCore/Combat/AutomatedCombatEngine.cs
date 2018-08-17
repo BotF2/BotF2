@@ -58,6 +58,11 @@ namespace Supremacy.Combat
                     .Distinct()
                     .ToList();
 
+                //if (_combatShips[i].Item1.Name == "Scout")
+                //{
+                //    _combatShips.Remove(_combatShips[i]);
+                //}
+
                 int friendlyWeaponPower = ownEmpires.Sum(e => _empireStrengths[e]) + friendlyEmpires.Sum(e => _empireStrengths[e]);
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
@@ -277,10 +282,9 @@ namespace Supremacy.Combat
             foreach (var combatship in _combatShips)
             {
 
-                if (combatship.Item1.Name == "Scout" && _roundNumber == 1 && attackerOrder == CombatOrder.Retreat)
+                if (combatship.Item1.Name == "Scout" && _roundNumber == 1 && attackerOrder == CombatOrder.Retreat) 
 
                 {
-
                     _combatShips.Remove(combatship);
                 }
             }
