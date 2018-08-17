@@ -396,7 +396,6 @@ namespace Supremacy.Combat
 
             GameLog.Print("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
 
-
             if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
             {
                 if (_traceCombatEngine)

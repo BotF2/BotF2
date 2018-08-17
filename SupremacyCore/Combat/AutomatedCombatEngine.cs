@@ -32,6 +32,26 @@ namespace Supremacy.Combat
         {
             _combatShips.RandomizeInPlace();
 
+            //Special case for cloaked and scout ships trying to escape on the first round
+            if (_roundNumber == 1)
+            {
+                var easyRetreatShips = _combatShips
+                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
+                    .ToList();
+
+                foreach (var ship in easyRetreatShips)
+                {
+                    if (!RandomHelper.Chance(10))
+                    {
+                        var ownerAssets = GetAssets(ship.Item1.Owner);
+                        ownerAssets.EscapedShips.Add(ship.Item1);
+                        ownerAssets.CombatShips.Remove(ship.Item1);
+                        _combatShips.Remove(ship);
+                    }
+                }
+            }
+
             for (int i = 0; i < _combatShips.Count; i++)
             {
                 var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
@@ -57,11 +77,6 @@ namespace Supremacy.Combat
                     .Select(s => s.Item1.Owner.Key)
                     .Distinct()
                     .ToList();
-
-                //if (_combatShips[i].Item1.Name == "Scout")
-                //{
-                //    _combatShips.Remove(_combatShips[i]);
-                //}
 
                 int friendlyWeaponPower = ownEmpires.Sum(e => _empireStrengths[e]) + friendlyEmpires.Sum(e => _empireStrengths[e]);
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
