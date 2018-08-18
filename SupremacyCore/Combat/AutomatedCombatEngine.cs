@@ -42,13 +42,14 @@ namespace Supremacy.Combat
 
                 foreach (var ship in easyRetreatShips)
                 {
-                    if (!RandomHelper.Chance(10))
-                    {
+                    //if (RandomHelper.Chance(1))
+                    //{
                         var ownerAssets = GetAssets(ship.Item1.Owner);
                         ownerAssets.EscapedShips.Add(ship.Item1);
                         ownerAssets.CombatShips.Remove(ship.Item1);
                         _combatShips.Remove(ship);
-                    }
+                        PerformRetreat();
+                    //}
                 }
             }
 
@@ -294,15 +295,15 @@ namespace Supremacy.Combat
             var attackerOrder = GetOrder(attacker.Source);
             var attackerShipOwner = attacker.Owner;
 
-            foreach (var combatship in _combatShips)
-            {
+            //foreach (var combatship in _combatShips)
+            //{
 
-                if (combatship.Item1.Name == "Scout" && _roundNumber == 1 && attackerOrder == CombatOrder.Retreat) 
+            //    if (combatship.Item1.Name == "Scout" && _roundNumber == 1 && attackerOrder == CombatOrder.Retreat) 
 
-                {
-                    _combatShips.Remove(combatship);
-                }
-            }
+            //    {
+            //        _combatShips.Remove(combatship);
+            //    }
+            //}
 
             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {
