@@ -32,26 +32,22 @@ namespace Supremacy.Combat
         {
             _combatShips.RandomizeInPlace();
 
-            //Special case for cloaked and scout ships trying to escape on the first round
-            //if (_roundNumber == 1)
-            //{
-                var easyRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
-                    .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
-                    .ToList();
+            var easyRetreatShips = _combatShips
+                .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
+                .ToList();
 
-                foreach (var ship in easyRetreatShips)
-                {
+            foreach (var ship in easyRetreatShips)
+            {
                 if (!RandomHelper.Chance(10))
-                    {
-                        var ownerAssets = GetAssets(ship.Item1.Owner);
-                            ownerAssets.EscapedShips.Add(ship.Item1);
-                            ownerAssets.CombatShips.Remove(ship.Item1);
-                            _combatShips.Remove(ship);
-                            PerformRetreat();
-                    }
+                {
+                    var ownerAssets = GetAssets(ship.Item1.Owner);
+                    ownerAssets.EscapedShips.Add(ship.Item1);
+                    ownerAssets.CombatShips.Remove(ship.Item1);
+                    _combatShips.Remove(ship);
+                    PerformRetreat();
                 }
-            //}
+            }
 
             for (int i = 0; i < _combatShips.Count; i++)
             {
@@ -294,16 +290,6 @@ namespace Supremacy.Combat
 
             var attackerOrder = GetOrder(attacker.Source);
             var attackerShipOwner = attacker.Owner;
-
-            //foreach (var combatship in _combatShips)
-            //{
-
-            //    if (combatship.Item1.Name == "Scout" && _roundNumber == 1 && attackerOrder == CombatOrder.Retreat) 
-
-            //    {
-            //        _combatShips.Remove(combatship);
-            //    }
-            //}
 
             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {
