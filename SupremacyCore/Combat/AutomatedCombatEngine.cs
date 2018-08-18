@@ -33,8 +33,8 @@ namespace Supremacy.Combat
             _combatShips.RandomizeInPlace();
 
             //Special case for cloaked and scout ships trying to escape on the first round
-            if (_roundNumber == 1)
-            {
+            //if (_roundNumber == 1)
+            //{
                 var easyRetreatShips = _combatShips
                     .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
@@ -42,16 +42,16 @@ namespace Supremacy.Combat
 
                 foreach (var ship in easyRetreatShips)
                 {
-                    //if (RandomHelper.Chance(1))
-                    //{
+                if (!RandomHelper.Chance(10))
+                    {
                         var ownerAssets = GetAssets(ship.Item1.Owner);
-                        ownerAssets.EscapedShips.Add(ship.Item1);
-                        ownerAssets.CombatShips.Remove(ship.Item1);
-                        _combatShips.Remove(ship);
-                        PerformRetreat();
-                    //}
+                            ownerAssets.EscapedShips.Add(ship.Item1);
+                            ownerAssets.CombatShips.Remove(ship.Item1);
+                            _combatShips.Remove(ship);
+                            PerformRetreat();
+                    }
                 }
-            }
+            //}
 
             for (int i = 0; i < _combatShips.Count; i++)
             {
