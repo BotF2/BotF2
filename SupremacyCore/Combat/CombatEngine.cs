@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         private readonly int _combatId;
-        private int _roundNumber;
+        protected int _roundNumber;
         private bool _running;
         private bool _allSidesStandDown;
         private bool _ready;

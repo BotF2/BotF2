@@ -32,23 +32,27 @@ namespace Supremacy.Combat
         {
             _combatShips.RandomizeInPlace();
 
-            var easyRetreatShips = _combatShips
-                .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
-                .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
-                .ToList();
-
-            foreach (var ship in easyRetreatShips)
+            if (_roundNumber == 2)
             {
-                if (!RandomHelper.Chance(10))
+                // chance at special retreat for scouts and cloaked ships - avoid combat
+
+                var easyRetreatShips = _combatShips
+                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
+                    .ToList();
+
+                foreach (var ship in easyRetreatShips)
                 {
-                    var ownerAssets = GetAssets(ship.Item1.Owner);
-                    ownerAssets.EscapedShips.Add(ship.Item1);
-                    ownerAssets.CombatShips.Remove(ship.Item1);
-                    _combatShips.Remove(ship);
-                    PerformRetreat();
+                    if (!RandomHelper.Chance(10))
+                    {
+                        var ownerAssets = GetAssets(ship.Item1.Owner);
+                        ownerAssets.EscapedShips.Add(ship.Item1);
+                        ownerAssets.CombatShips.Remove(ship.Item1);
+                        _combatShips.Remove(ship);
+                        PerformRetreat();
+                    }
                 }
             }
-
             for (int i = 0; i < _combatShips.Count; i++)
             {
                 var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
