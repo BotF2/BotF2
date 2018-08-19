@@ -304,9 +304,10 @@ namespace Supremacy.Combat
             }
 
             var attackerOrder = GetOrder(attacker.Source);
+            bool oppositionNotAttacking = ((GetOrder(attacker.Source) == CombatOrder.Hail) || (GetOrder(attacker.Source) == CombatOrder.Retreat) || (GetOrder(attacker.Source) == CombatOrder.Standby));
             var attackerShipOwner = attacker.Owner;
 
-            if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
+            if ((attackerOrder == CombatOrder.Hail && oppositionNotAttacking) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {
                 throw new ArgumentException("Cannot chose a target for a ship that does not have orders that require a target");
             }
