@@ -32,6 +32,27 @@ namespace Supremacy.Combat
         {
             _combatShips.RandomizeInPlace();
 
+            // Scouts and Cloaked ships have a special chance of retreating on the first turn
+            // Yes, _roundNumber == 2 *is* correct
+            if (_roundNumber == 2)
+            {
+                var easyRetreatShips = _combatShips
+                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
+                    .ToList();
+
+                foreach (var ship in easyRetreatShips)
+                {
+                    if (!RandomHelper.Chance(10))
+                    {
+                        var ownerAssets = GetAssets(ship.Item1.Owner);
+                        ownerAssets.EscapedShips.Add(ship.Item1);
+                        ownerAssets.CombatShips.Remove(ship.Item1);
+                        _combatShips.Remove(ship);
+                    }
+                }
+            }
+
             for (int i = 0; i < _combatShips.Count; i++)
             {
                 var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
@@ -71,7 +92,8 @@ namespace Supremacy.Combat
                 }
                 bool oppositionIsRushing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Rush));
                 bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
-
+                bool oppositionIsHailing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Hail));
+                bool oppositionIsRetreating = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Retreat));
 
                 var order = GetOrder(_combatShips[i].Item1.Source);
                 switch (order)
@@ -83,7 +105,7 @@ namespace Supremacy.Combat
 
                         var attackingShip = _combatShips[i].Item1;
                         var target = ChooseTarget(attackingShip);
-                        
+
 
                         if (target == null && _traceCombatEngine)
                         {
@@ -148,10 +170,10 @@ namespace Supremacy.Combat
 
                             //If we're not assimilating, destroy it instead :)
                             else
-                            { 
+                            {
                                 if (_traceCombatEngine)
                                 {
-                                    GameLog.Print("{0} {1} attacking {2} {3}",  attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
+                                    GameLog.Print("{0} {1} attacking {2} {3}", attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
                                 }
 
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
@@ -175,8 +197,9 @@ namespace Supremacy.Combat
                         break;
 
                     case CombatOrder.Retreat:
-                        if (WasRetreateSuccessful(_combatShips[i].Item1, oppositionIsRushing, oppositionIsInFormation, weaponRatio))
+                        if (WasRetreateSuccessful(_combatShips[i].Item1, oppositionIsRushing, oppositionIsInFormation, oppositionIsHailing, oppositionIsRetreating, weaponRatio))
                         {
+
                             if (!ownerAssets.EscapedShips.Contains(_combatShips[i].Item1))
                             {
                                 ownerAssets.EscapedShips.Add(_combatShips[i].Item1);
@@ -195,7 +218,7 @@ namespace Supremacy.Combat
 
                         // Chance of hull damage if you fail to retreat and are being rushed
                         else if (oppositionIsRushing && (weaponRatio > 1))
-                        {    
+                        {
                             _combatShips[i].Item1.TakeDamage(_combatShips[i].Item1.Source.OrbitalDesign.HullStrength / 2);  // 50 % down out of Hullstrength of TechObjectDatabase.xml
 
                             if (_traceCombatEngine)
@@ -284,7 +307,7 @@ namespace Supremacy.Combat
                 switch (attackerOrder)
                 {
                     case CombatOrder.Engage:
-                    case CombatOrder.Formation:                       
+                    case CombatOrder.Formation:
                         //Only ships to target
                         if (!hasOppositionStation && (oppositionShips.Count() > 0))
                         {

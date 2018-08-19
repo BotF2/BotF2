@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         private readonly int _combatId;
-        private int _roundNumber;
+        protected int _roundNumber;
         private bool _running;
         private bool _allSidesStandDown;
         private bool _ready;
@@ -206,7 +206,7 @@ namespace Supremacy.Combat
                 if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
                 {
                     PerformAssimilation();
-                }           
+                }
                 PerformRetreat();
                 UpdateOrbitals();
 
@@ -235,7 +235,7 @@ namespace Supremacy.Combat
             foreach (var civAssets in _assets)
             {
                 // Combat ships
-                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports ||  order == CombatOrder.Formation))
+                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
                     return false;
                 }
@@ -389,26 +389,20 @@ namespace Supremacy.Combat
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
-        protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, int weaponRatio)
+        protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, bool oppositonIsHailing, bool oppsoitionIsRetreating, int weaponRatio)
         {
             int chanceToRetreat = RandomHelper.Random(100);
             int retreatChanceModifier = 0;
 
             GameLog.Print("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
 
-            if (oppositionIsInFormation) // If you go into formation you are not in position / time to stop the opposition from retreating                   
+            if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
             {
                 if (_traceCombatEngine)
                 {
                     GameLog.Print("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
                 }
                 return true;
-            }
-
-            // 90% chance for these ships to escape unharmed
-            if (unit.IsCloaked || unit.Source.OrbitalDesign.ShipType == "Scout")
-            {
-                return RandomHelper.Chance(10);
             }
 
             if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away
@@ -488,10 +482,10 @@ namespace Supremacy.Combat
         /// <summary>
         /// Moves ships that have escaped to their destinations
         /// </summary>
-        private void PerformRetreat()
+        protected void PerformRetreat()
         {
             foreach (var assets in _assets)
-            {               
+            {
                 var destination = CombatHelper.CalculateRetreatDestination(assets);
 
                 if (destination == null)
