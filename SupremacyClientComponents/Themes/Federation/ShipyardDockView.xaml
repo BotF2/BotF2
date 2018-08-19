@@ -37,7 +37,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
           <Border>
-            <Image x:Name="ImageContent" Source="vfs:///Resources/UI/Federation/ColonyScreen/build_ship.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Image x:Name="ImageContent" Source="vfs:///Resources/UI/Federation/ColonyScreen/build_ship.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
           </Border>
           <ControlTemplate.Triggers>
                         <!--  Not always working fine
@@ -66,15 +66,16 @@
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Cursor" Value="Hand" />
-    <Setter Property="ToolTip" Value="Build a Ship" />
-    <Setter Property="Width" Value="48" />
-    <Setter Property="Height" Value="48" />
+    <Setter Property="ToolTip" Value="Build a Ship soon" />
+    <Setter Property="Width" Value="148" />
+    <Setter Property="Height" Value="148" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
  <!--image of ship under construction-->
-          <Border x:Name="ShipBorder" BorderBrush="White" BorderThickness="2" CornerRadius="3" Background="#AF000000">
-            <Image x:Name="ShipImage" Width="84" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
+          <!--<Border x:Name="ShipBorder" BorderBrush="White" BorderThickness="2" CornerRadius="3" Background="#AF000000">-->
+                    <Border x:Name="ShipBorder" BorderBrush="Transparent" BorderThickness="1" CornerRadius="3">
+                        <Image x:Name="ShipImage" Width="148" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                        Cursor="Hand">
               <Image.ToolTip>
                 <MultiBinding Converter="{x:Static local:StringFormatConverter.Instance}" ConverterParameter="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_PROJECT_TOOLTIP}">
@@ -89,7 +90,7 @@
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.HasProject), Mode=OneWay}"
                          Value="True">
               <Setter TargetName="ShipBorder" Property="Visibility" Value="Visible" />
-              <Setter TargetName="ShipImage" Property="Source" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.Image), Mode=OneWay}" />
+                            <Setter TargetName="ShipImage" Property="Source" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.ShipUnderConstructionImage), Mode=OneWay}" />
             </DataTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>

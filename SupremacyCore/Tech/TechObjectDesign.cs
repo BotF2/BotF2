@@ -481,7 +481,85 @@ namespace Supremacy.Tech
             }
         }
 
+        /// <summary>
+        /// Gets or sets the filename of the image for this design.
+        /// </summary>
+        /// <value>The image filename.</value>
+        public virtual string ShipUnderConstructionImage
+        {
+            get
+            {
+                if (IsImageDefined)
+                {
+                    if (IsImageLinked)
+                    {
+                        var linkSource = ImageLinkSource;
+                        if (linkSource != null)
+                            return linkSource.Image;
+                    }
+                    else
+                    {
+                        return ResourceManager.GetResourceUri(_image).ToString();
+                    }
+                }
+
+                var localPath = ResourceManager.GetResourcePath(
+                    string.Format(
+                        "vfs:///Resources/Images/TechObjects/{0}{1}_under_construction.png",
+                        DefaultShipsUnderConstructionSubFolder,
+                        _key.ToLowerInvariant()));
+
+                if (File.Exists(localPath))
+                    return ResourceManager.GetResourceUri(localPath).ToString();
+
+                localPath = ResourceManager.GetResourcePath(
+                    string.Format(
+                        "vfs:///Resources/Images/TechObjects/{0}{1}_under_construction.jpg",
+                        DefaultShipsUnderConstructionSubFolder,
+                        _key.ToLowerInvariant()));
+
+                if (File.Exists(localPath))
+                    return ResourceManager.GetResourceUri(localPath).ToString();
+
+                // if not ShipsUnderConstruction-Image avaiable then try to get regular ship image - each .png or .jpg
+                localPath = ResourceManager.GetResourcePath(
+                    string.Format(
+                        "vfs:///Resources/Images/TechObjects/{0}{1}.png",
+                        DefaultImageSubFolder,
+                        _key.ToLowerInvariant()));
+
+                if (File.Exists(localPath))
+                    return ResourceManager.GetResourceUri(localPath).ToString();
+
+                localPath = ResourceManager.GetResourcePath(
+                    string.Format(
+                        "vfs:///Resources/Images/TechObjects/{0}{1}.jpg",
+                        DefaultImageSubFolder,
+                        _key.ToLowerInvariant()));
+
+                if (File.Exists(localPath))
+                    return ResourceManager.GetResourceUri(localPath).ToString();
+
+                // else return MissingImageUri
+                return MissingImageUri;
+            }
+            set
+            {
+                _image = value;
+                OnPropertyChanged("Image");
+                OnPropertyChanged("ImageLinkSource");
+                OnPropertyChanged("IsImageDefined");
+                OnPropertyChanged("IsImageAutomatic");
+                OnPropertyChanged("IsImageLinked");
+            }
+        }
+
         protected virtual string DefaultImageSubFolder
+        {
+            get { return string.Empty; }
+        }
+
+        protected virtual string DefaultShipsUnderConstructionSubFolder
         {
             get { return string.Empty; }
         }
