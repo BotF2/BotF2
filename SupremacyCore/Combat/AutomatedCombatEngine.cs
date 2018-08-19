@@ -32,10 +32,10 @@ namespace Supremacy.Combat
         {
             _combatShips.RandomizeInPlace();
 
+            // Scouts and Cloaked ships have a special chance of retreating on the first turn
+            // Yes, _roundNumber == 2 *is* correct
             if (_roundNumber == 2)
             {
-                // chance at special retreat for scouts and cloaked ships - avoid combat
-
                 var easyRetreatShips = _combatShips
                     .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
@@ -49,10 +49,10 @@ namespace Supremacy.Combat
                         ownerAssets.EscapedShips.Add(ship.Item1);
                         ownerAssets.CombatShips.Remove(ship.Item1);
                         _combatShips.Remove(ship);
-                        PerformRetreat();
                     }
                 }
             }
+
             for (int i = 0; i < _combatShips.Count; i++)
             {
                 var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
