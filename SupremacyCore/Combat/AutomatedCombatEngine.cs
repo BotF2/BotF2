@@ -94,28 +94,15 @@ namespace Supremacy.Combat
                 bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
                 bool oppositionIsHailing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Hail));
                 bool oppositionIsRetreating = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Retreat));
-                bool oppositionIsAttacking = oppositionShips.Any(os => os.Item1.Source.IsCombatant && ((GetOrder(os.Item1.Source) == CombatOrder.Engage) || (GetOrder(os.Item1.Source) == CombatOrder.Formation)) || (GetOrder(os.Item1.Source) == CombatOrder.Rush) || (GetOrder(os.Item1.Source) == CombatOrder.Transports));
-
+               
                 var order = GetOrder(_combatShips[i].Item1.Source);
                 switch (order)
                 {
-                    case CombatOrder.Hail:
-                        if (_traceCombatEngine)
-                        {
-                            GameLog.Print("{0} {1} hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
-                        }
-                        if (oppositionIsAttacking)
-                        {
-                            order = CombatOrder.Engage;
-                            GameLog.Print("{0} {1} {2} refiring...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, order);
-                            goto case CombatOrder.Engage;
-                        }
-                        break;
+
                     case CombatOrder.Engage:
                     case CombatOrder.Rush:
                     case CombatOrder.Transports:
                     case CombatOrder.Formation:
-                        //refire:
 
                         var attackingShip = _combatShips[i].Item1;
                         var target = ChooseTarget(attackingShip);
@@ -243,16 +230,21 @@ namespace Supremacy.Combat
                         }
                         break;
 
+                    case CombatOrder.Hail:
+                        if (_traceCombatEngine)
+                        {
+                            GameLog.Print("{0} {1} hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
+                        }
+
+                        break;
+
                     case CombatOrder.Standby:
                         if (_traceCombatEngine)
                         {
                             GameLog.Print("{0} {1} standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
                         }
                         break;
-
-
-                        
-                        
+      
                 }
             }
 
@@ -304,10 +296,10 @@ namespace Supremacy.Combat
             }
 
             var attackerOrder = GetOrder(attacker.Source);
-            bool oppositionNotAttacking = ((GetOrder(attacker.Source) == CombatOrder.Hail) || (GetOrder(attacker.Source) == CombatOrder.Retreat) || (GetOrder(attacker.Source) == CombatOrder.Standby));
+            //bool oppositionNotAttacking = ((GetOrder(attacker.Source) == CombatOrder.Hail) || (GetOrder(attacker.Source) == CombatOrder.Retreat) || (GetOrder(attacker.Source) == CombatOrder.Standby));
             var attackerShipOwner = attacker.Owner;
 
-            if ((attackerOrder == CombatOrder.Hail && oppositionNotAttacking) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
+            if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {
                 throw new ArgumentException("Cannot chose a target for a ship that does not have orders that require a target");
             }
