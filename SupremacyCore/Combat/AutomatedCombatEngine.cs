@@ -94,10 +94,11 @@ namespace Supremacy.Combat
                 bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
                 bool oppositionIsHailing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Hail));
                 bool oppositionIsRetreating = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Retreat));
-
+               
                 var order = GetOrder(_combatShips[i].Item1.Source);
                 switch (order)
                 {
+
                     case CombatOrder.Engage:
                     case CombatOrder.Rush:
                     case CombatOrder.Transports:
@@ -229,19 +230,21 @@ namespace Supremacy.Combat
                         }
                         break;
 
+                    case CombatOrder.Hail:
+                        if (_traceCombatEngine)
+                        {
+                            GameLog.Print("{0} {1} hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
+                        }
+
+                        break;
+
                     case CombatOrder.Standby:
                         if (_traceCombatEngine)
                         {
                             GameLog.Print("{0} {1} standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
                         }
                         break;
-
-                    case CombatOrder.Hail:
-                        if (_traceCombatEngine)
-                        {
-                            GameLog.Print("{0} {1} hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
-                        }
-                        break;
+      
                 }
             }
 

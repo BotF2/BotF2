@@ -405,15 +405,15 @@ namespace Supremacy.Combat
                 return true;
             }
 
-            if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away
-            {
-                retreatChanceModifier = -30;
-                GameLog.Print("Weapon ratio was {0). -30 modifier", weaponRatio);
-            }
-            else if (weaponRatio > 3)
+            if (weaponRatio > 6) // if you outgun the retreater they are less likely to get away
             {
                 retreatChanceModifier = -20;
                 GameLog.Print("Weapon ratio was {0). -20 modifier", weaponRatio);
+            }
+            else if (weaponRatio > 3)
+            {
+                retreatChanceModifier = -15;
+                GameLog.Print("Weapon ratio was {0). -15 modifier", weaponRatio);
             }
             else if (weaponRatio > 1)
             {
@@ -426,9 +426,9 @@ namespace Supremacy.Combat
                 GameLog.Print("Weapon ratio was {0). 0 modifier", weaponRatio);
             }
 
-            if (oppositionIsRushing)
+            if (oppositionIsRushing) // if you rush the retreater they are less likely to get away
             {
-                retreatChanceModifier += -10;
+                retreatChanceModifier += -20;
                 if (_traceCombatEngine)
                 {
                     GameLog.Print("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
