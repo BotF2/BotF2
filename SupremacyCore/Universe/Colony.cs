@@ -507,6 +507,7 @@ namespace Supremacy.Universe
                 var modifier = new OutputModifier(0, 1.0f);
                 var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                 var adjustedPop = Population.CurrentValue * moraleMod;
+                var productionTotal = NetEnergy + NetFood + NetIndustry + NetIntelligence + NetResearch;
 
                 foreach (var building in Buildings)
                 {
@@ -522,7 +523,7 @@ namespace Supremacy.Universe
                     }
                 }
 
-                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus);
+                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + (productionTotal / 3));
             }
         }
 
