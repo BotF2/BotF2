@@ -507,9 +507,10 @@ namespace Supremacy.Universe
                 var modifier = new OutputModifier(0, 1.0f);
                 var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                 var adjustedPop = Population.CurrentValue * moraleMod;
-                var productionTotal = NetEnergy + NetFood + NetIndustry + NetIntelligence + NetResearch;
+                var productionTotal = GetProductionOutput(ProductionCategory.Food) + GetProductionOutput(ProductionCategory.Energy) + 
+                    GetProductionOutput(ProductionCategory.Industry) + GetProductionOutput(ProductionCategory.Intelligence) + GetProductionOutput(ProductionCategory.Research);
 
-                foreach (var building in Buildings)
+                foreach (var building in Buildings) // bonus from special structures
                 {
                     if (!building.IsActive)
                         continue;
@@ -522,8 +523,10 @@ namespace Supremacy.Universe
                             modifier.Efficiency += (bonus.Amount / 100f);
                     }
                 }
+                GameLog.Print("original colony owner = {0}, productionTotal = {1}, adjustedPop = {2}, Bonus = {3}", OriginalOwner, productionTotal, adjustedPop, modifier.Bonus);
 
-                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + (productionTotal / 3));
+
+                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + (productionTotal));
             }
         }
 

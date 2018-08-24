@@ -117,7 +117,7 @@ namespace Supremacy.Game
 
         private bool m_TraceShipProduction = false;
         private bool m_TraceIntelligience = false;
-        private bool m_TraceProduction = true;
+        private bool m_TraceProduction = false;
         #endregion
 
         #region OnTurnPhaseChanged() Method
@@ -1169,7 +1169,7 @@ namespace Supremacy.Game
                     /* Iterate through each colony */
                     foreach (Colony colony in colonies)
                     {
-                        if (m_TraceProduction)
+                        //if (m_TraceProduction)
                             GameLog.Print("DoProduction for Colony {0} ({1} with credits = {2})", colony.Name, civ.Name, civManager.Credits);
 
                         //See if there is actually anything to build for this colony
