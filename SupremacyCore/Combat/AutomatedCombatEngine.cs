@@ -173,7 +173,7 @@ namespace Supremacy.Combat
                             {
                                 if (_traceCombatEngine)
                                 {
-                                    GameLog.Print("{0} {1} attacking {2} {3}", attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
+                                    GameLog.Print("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
                                 }
 
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
@@ -232,14 +232,14 @@ namespace Supremacy.Combat
                     case CombatOrder.Standby:
                         if (_traceCombatEngine)
                         {
-                            GameLog.Print("{0} {1} standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
+                            GameLog.Print("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         }
                         break;
 
                     case CombatOrder.Hail:
                         if (_traceCombatEngine)
                         {
-                            GameLog.Print("{0} {1} hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID);
+                            GameLog.Print("{1} {0} ({2}) hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         }
                         break;
                 }

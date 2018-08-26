@@ -408,30 +408,30 @@ namespace Supremacy.Combat
             if (weaponRatio > 6) // if you rush and outgun the retreater they are less likely to get away
             {
                 retreatChanceModifier = -30;
-                GameLog.Print("Weapon ratio was {0). -30 modifier", weaponRatio);
+                GameLog.Print("Weapon ratio was {0}. -30 modifier", weaponRatio);
             }
             else if (weaponRatio > 3)
             {
                 retreatChanceModifier = -20;
-                GameLog.Print("Weapon ratio was {0). -20 modifier", weaponRatio);
+                GameLog.Print("Weapon ratio was {0}. -20 modifier", weaponRatio);
             }
             else if (weaponRatio > 1)
             {
                 retreatChanceModifier = -10;
-                GameLog.Print("Weapon ratio was {0). -10 modifier", weaponRatio);
+                GameLog.Print("Weapon ratio was {0}. -10 modifier", weaponRatio);
             }
             else
             {
                 retreatChanceModifier = 0;
-                GameLog.Print("Weapon ratio was {0). 0 modifier", weaponRatio);
+                GameLog.Print("Weapon ratio was {0}. 0 modifier", weaponRatio);
             }
 
             if (oppositionIsRushing)
             {
-                retreatChanceModifier += -10;
+                retreatChanceModifier += -20;
                 if (_traceCombatEngine)
                 {
-                    GameLog.Print("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
+                    GameLog.Print("Opposition is rushing. -20 modifier (now {0})", retreatChanceModifier);
                 }
             }
 
@@ -521,15 +521,15 @@ namespace Supremacy.Combat
             {
                 return _orders[source.OwnerID].GetOrder(source);
             }
-            catch (Exception e)
+            catch //(Exception e)
             {
-                GameLog.Print("Unable to get order for {0}", source.Name);
-                GameLog.LogException(e);
+                GameLog.Print("Unable to get order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                //GameLog.LogException(e);
             }
 
             if (_traceCombatEngine == true)
             {
-                GameLog.Print("Setting Retreat as fallback order for {0}", source.Name);
+                GameLog.Print("Setting Retreat as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
             }
             return CombatOrder.Retreat;
         }
