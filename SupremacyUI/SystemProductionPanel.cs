@@ -636,14 +636,16 @@ namespace Supremacy.UI
                         var activateCommand = Model.ActivateFacilityCommand;
                         if ((activateCommand != null) && activateCommand.CanExecute(category))
                             activateCommand.Execute(category);
-                        GameLog.Print("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
+                        if (_traceSliders)
+                            GameLog.Print("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
                     }
                     else
                     {
                         var deactivateCommand = Model.DeactivateFacilityCommand;
                         if ((deactivateCommand != null) && deactivateCommand.CanExecute(category))
                             deactivateCommand.Execute(category);
-                        GameLog.Print("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
+                        if (_traceSliders)
+                            GameLog.Print("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
                     }
                 }
                 
@@ -750,7 +752,6 @@ namespace Supremacy.UI
 
                 _sliderGroup.ResetPool(colony.Population.CurrentValue);
 
-                //bool _traceSliders = true;
                 if (_traceSliders == true)
                 GameLog.Print("Pop = {0}, Food = {1}, Ind = {2}, Energy = {3}, Research = {4}, Intel = {5}, FreePoolSize = {6}", colony.Population.CurrentValue, 
                                                                       colony.GetActiveFacilities(ProductionCategory.Food),

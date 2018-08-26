@@ -419,22 +419,24 @@ namespace Supremacy.Game
 
             DoMapUpdates(game);
 
-            //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
-            GameLog.Print("Options: GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            //GameLog.Print("Map: {0} to {1}", GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            GameLog.Print("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
-            GameLog.Print("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
-            GameLog.Print("Options: PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
-            GameLog.Print("Options: StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
-            GameLog.Print("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
-            GameLog.Print("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
-            GameLog.Print("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
-            GameLog.Print("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
-            GameLog.Print("Options: CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
-            GameLog.Print("Options: DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
-            GameLog.Print("Options: BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
-            GameLog.Print("Options: TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
-
+            if (m_TraceIntelligience)
+            {
+                //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
+                GameLog.Print("Options: GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
+                //GameLog.Print("Map: {0} to {1}", GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
+                GameLog.Print("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
+                GameLog.Print("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
+                GameLog.Print("Options: PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
+                GameLog.Print("Options: StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
+                GameLog.Print("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
+                GameLog.Print("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
+                GameLog.Print("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
+                GameLog.Print("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
+                GameLog.Print("Options: CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
+                GameLog.Print("Options: DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
+                GameLog.Print("Options: BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
+                GameLog.Print("Options: TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
+            }
             game.TurnNumber = 1;
         }
         #endregion
