@@ -75,7 +75,7 @@
  <!--image of ship under construction-->
           <!--<Border x:Name="ShipBorder" BorderBrush="White" BorderThickness="2" CornerRadius="3" Background="#AF000000">-->
                     <Border x:Name="ShipBorder">
-                        <Image x:Name="ShipImage" Width="144" Stretch="Uniform" Margin="0,0,30,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        <Image x:Name="ShipImage" Width="144" Stretch="Uniform" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
                        Cursor="Hand">
               <Image.ToolTip>
                 <MultiBinding Converter="{x:Static local:StringFormatConverter.Instance}" ConverterParameter="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_PROJECT_TOOLTIP}">
