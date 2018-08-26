@@ -116,7 +116,7 @@ namespace Supremacy.Game
         private readonly ManualResetEvent CombatReset = new ManualResetEvent(false);
 
         private bool m_TraceShipProduction = false;
-        private bool m_TraceIntelligience = false;
+        private bool m_TraceIntelligience = true;
         private bool m_TraceProduction = true;
         #endregion
 
@@ -1522,6 +1522,8 @@ namespace Supremacy.Game
 
                     var attackingEmpire = GameContext.Current.CivilizationManagers[civ.CivID];
 
+                    int attackIntelligence = 201;   // avoid bug by deviding by zero  - later it's shrink by 200
+
                     //Get a list of all viable target empire
                     var targets = GameContext.Current.Civilizations
                         //All empires
@@ -1531,27 +1533,44 @@ namespace Supremacy.Game
                         //That they have actually met
                         .Where(t => DiplomacyHelper.IsContactMade(civ, t));
 
+                    if (m_TraceIntelligience)
+                        GameLog.Print("empires without the own one & contact made: Available targets = {0}", targets.Count());
+
                     //Double check that we have viable targets
                     if (targets.Count() == 0)
                         return;
 
                     //Select one at random
                     CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[
-                        targets.ElementAt(RandomProvider.Shared.Next(0, targets.Count() - 1))
+                        targets.ElementAt(RandomProvider.Shared.Next(0, targets.Count() - 1 + 1))  // added +1 due to looking for bug
                     ];
+                    if (m_TraceIntelligience)
+                        GameLog.Print("targetEmpire = {0}", targetEmpire.Civilization.Name);
+
                     //Randomly pick one of their colonies to attack
-                    Colony targetColony = targetEmpire.Colonies[RandomProvider.Shared.Next(0, targetEmpire.Colonies.Count - 1)];
+                    Colony targetColony = targetEmpire.Colonies[RandomProvider.Shared.Next(0, targetEmpire.Colonies.Count - 1 + 1)];  // added +1 due to looking for bug
+                    if (m_TraceIntelligience)
+                        GameLog.Print("targetColony = {0}", targetColony.Name);
+
                     //200 intelligience is not taken in to account for attacks
-                    int attackIntelligence = attackingEmpire.TotalIntelligence - 200;
+                    if (attackingEmpire.TotalIntelligence > 200)
+                    {
+                        attackIntelligence = attackingEmpire.TotalIntelligence - 200;
+                    }
+
+                    int defenseIntelligence = targetEmpire.TotalIntelligence;
+                    if (defenseIntelligence < 1)   // avoid bug by devided by zero
+                        defenseIntelligence = 1;
+
                     //Get the ratio of the attacking power to defending power
-                    int ratio = attackIntelligence / targetEmpire.TotalIntelligence;
+                    int ratio = attackIntelligence / defenseIntelligence;
 
                     //We need at least a ratio of greater than 1 to attack
                     if (ratio < 1)
                     {
                         if (m_TraceIntelligience)
                             GameLog.Print("{0} doesn't have enough attacking intelligence to make an attack against {1} - {2} vs {3}",
-                                attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligence, targetEmpire.TotalIntelligence);
+                                attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligence, defenseIntelligence);
                         return;
                     }
 
