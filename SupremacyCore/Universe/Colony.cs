@@ -101,6 +101,8 @@ namespace Supremacy.Universe
         private int _systemId = GameObjectID.InvalidID;
         private CollectionBase<TradeRoute> _tradeRoutes;
 
+        private bool m_traceProduction = false;
+
         private Colony()
         {
             Initialize();
@@ -507,8 +509,9 @@ namespace Supremacy.Universe
                 var modifier = new OutputModifier(0, 1.0f);
                 var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                 var adjustedPop = Population.CurrentValue * moraleMod;
+                var _netIndustry = NetIndustry;
 
-                foreach (var building in Buildings)
+                foreach (var building in Buildings) // bonus from special structures
                 {
                     if (!building.IsActive)
                         continue;
@@ -521,8 +524,13 @@ namespace Supremacy.Universe
                             modifier.Efficiency += (bonus.Amount / 100f);
                     }
                 }
+                if (m_traceProduction)
+                { 
+                GameLog.Print("owner = {0}, _netIndustry = {1}, adjustedPop = {2}, Bonus = {3}", OriginalOwner, _netIndustry, adjustedPop, modifier.Bonus);
+                GameLog.Print("owner = {0}, output food {1}, Energy {2}, industry {3}, intell {4}, research {5}", OriginalOwner, GetProductionOutput(ProductionCategory.Food), GetProductionOutput(ProductionCategory.Energy), GetProductionOutput(ProductionCategory.Industry), GetProductionOutput(ProductionCategory.Intelligence), GetProductionOutput(ProductionCategory.Research));
+                }
 
-                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus);
+                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus +  _netIndustry * 3 );
             }
         }
 
