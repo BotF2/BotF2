@@ -19,6 +19,7 @@ using Supremacy.Client.Views;
 using Supremacy.Economy;
 using Supremacy.Resources;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.UI
 {
@@ -80,6 +81,8 @@ namespace Supremacy.UI
         private readonly TextBlock _intelligenceOutputText;
         private readonly TextBlock _intelligenceScrapText;
         private readonly UnitActivationBar _intelligenceSlider;
+
+        bool _traceSliders = true;
 
         #endregion
 
@@ -566,6 +569,9 @@ namespace Supremacy.UI
 
         private void slider_ActiveUnitsChanged(object sender, DependencyPropertyChangedEventArgs<int> e)
         {
+
+            if (_traceSliders == true)
+                GameLog.Print("slider_ActiveUnitsChanged...");
             var colony = Colony;
             if (colony == null)
                 return;
@@ -577,6 +583,7 @@ namespace Supremacy.UI
 
             var delta = Math.Abs(e.NewValue - e.OldValue);
 
+            
             if (delta != 0)
             {
                 int i;
@@ -629,14 +636,19 @@ namespace Supremacy.UI
                         var activateCommand = Model.ActivateFacilityCommand;
                         if ((activateCommand != null) && activateCommand.CanExecute(category))
                             activateCommand.Execute(category);
+                        if (_traceSliders)
+                            GameLog.Print("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
                     }
                     else
                     {
                         var deactivateCommand = Model.DeactivateFacilityCommand;
                         if ((deactivateCommand != null) && deactivateCommand.CanExecute(category))
                             deactivateCommand.Execute(category);
+                        if (_traceSliders)
+                            GameLog.Print("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
                     }
                 }
+                
 
                 if ((activeText != null) && (facilityText != null))
                 {
@@ -739,6 +751,15 @@ namespace Supremacy.UI
                 _intelligenceSlider.Units = colony.GetTotalFacilities(ProductionCategory.Intelligence);
 
                 _sliderGroup.ResetPool(colony.Population.CurrentValue);
+
+                if (_traceSliders == true)
+                GameLog.Print("Pop = {0}, Food = {1}, Ind = {2}, Energy = {3}, Research = {4}, Intel = {5}, FreePoolSize = {6}", colony.Population.CurrentValue, 
+                                                                      colony.GetActiveFacilities(ProductionCategory.Food),
+                                                                      colony.GetActiveFacilities(ProductionCategory.Industry),
+                                                                      colony.GetActiveFacilities(ProductionCategory.Energy),
+                                                                      colony.GetActiveFacilities(ProductionCategory.Research),
+                                                                      colony.GetActiveFacilities(ProductionCategory.Intelligence),
+                                                                      _laborBar.ActiveUnits);
 
                 _foodSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Food);
                 _industrySlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Industry);

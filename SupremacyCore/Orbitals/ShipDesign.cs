@@ -290,6 +290,11 @@ namespace Supremacy.Orbitals
             get { return "Ships/"; }
         }
 
+        protected override string DefaultShipsUnderConstructionSubFolder
+        {
+            get { return "Ships_Under_Construction/"; }
+        }
+
         /// <summary>
         /// Appends the XML data for this instance.
         /// </summary>
