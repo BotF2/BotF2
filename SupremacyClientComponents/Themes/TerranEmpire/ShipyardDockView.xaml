@@ -73,7 +73,6 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
  <!--image of ship under construction-->
-          <!--<Border x:Name="ShipBorder" BorderBrush="White" BorderThickness="2" CornerRadius="3" Background="#AF000000">-->
                     <Border x:Name="ShipBorder" >
                         <Image x:Name="ShipImage" Width="144" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"
                        Cursor="Hand">

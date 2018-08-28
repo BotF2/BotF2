@@ -72,11 +72,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
- <!--image of ship under construction-->
-            
-            <!--Size of Cancel Buttom see around line 250--> 
-            
-          <!--<Border x:Name="ShipBorder" BorderBrush="White" BorderThickness="2" CornerRadius="3" Background="#AF000000">-->
+            <!--image of ship under construction-->
               <Border x:Name="ShipBorder" BorderBrush="Transparent" BorderThickness="1" CornerRadius="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image x:Name="ShipImage" Width="144" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"
                        Cursor="Hand">
