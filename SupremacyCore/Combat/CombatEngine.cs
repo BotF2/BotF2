@@ -140,7 +140,7 @@ namespace Supremacy.Combat
 
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
-            foreach (CombatAssets civAssets in _assets)
+            foreach (CombatAssets civAssets in _assets.ToList())
             {
                 if (civAssets.Station != null)
                 {
