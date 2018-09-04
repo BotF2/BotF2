@@ -416,7 +416,6 @@ namespace Supremacy.Client.Controls
                 popup._popupRoot.Child = popup.Child;
                 popupSite.AddCanvasChild(popup._popupRoot);
 
-                // TODO: Uncomment this before committing to SCM
                 if (!popup.StaysOpen)
                     popup.EstablishPopupCapture();
 
