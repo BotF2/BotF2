@@ -624,8 +624,6 @@ namespace Supremacy.Game
                     DominionPlayable = EmpirePlayable.Yes,
                     BorgPlayable = EmpirePlayable.No,
                     TerranEmpirePlayable = EmpirePlayable.No,
-
-                    //StartingIntelLevel = StartingIntelLevel.Developed
                 },
                 false);
 

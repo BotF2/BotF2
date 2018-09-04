@@ -246,7 +246,6 @@ namespace Supremacy.Client.Views
                 return;
 
             var view = new NewShipSelectionView(buildSlot);
-            //var viewIntel = new NewIntelSelectionView(buildSlot);
             var statsViewModel = new TechObjectDesignViewModel();
 
             BindingOperations.SetBinding(
