@@ -39,6 +39,7 @@ namespace Supremacy.Orbitals
         public static readonly RaidOrder RaidOrder;
         public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
+        public static readonly MedicalOrder MedicalOrder;
         public static readonly TowOrder TowOrder;
         public static readonly WormholeOrder WormholeOrder;
         public static readonly CollectDeuteriumOrder CollectDeuteriumOrder;
@@ -58,6 +59,7 @@ namespace Supremacy.Orbitals
             RaidOrder = new RaidOrder();
             SabotageOrder = new SabotageOrder();
             InfluenceOrder = new InfluenceOrder();
+            MedicalOrder = new MedicalOrder();
             TowOrder = new TowOrder();
             WormholeOrder = new WormholeOrder();
             CollectDeuteriumOrder = new CollectDeuteriumOrder();
@@ -75,6 +77,7 @@ namespace Supremacy.Orbitals
                           RaidOrder,
                           SabotageOrder,
                           InfluenceOrder,
+                          MedicalOrder,
                           //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
@@ -490,6 +493,82 @@ namespace Supremacy.Orbitals
         }
     }
 
+    #endregion
+
+    #region MedicalOrder
+    [Serializable]
+    public sealed class MedicalOrder : FleetOrder
+    {
+        public override string OrderName
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_MEDICAL"); }
+        }
+
+        public override string Status
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_MEDICAL"); }
+        }
+
+        public override FleetOrder Create()
+        {
+            return new MedicalOrder();
+        }
+
+        public override bool IsCancelledOnMove
+        {
+            get { return true; }
+        }
+
+        public override bool IsCancelledOnRouteChange
+        {
+            get { return true; }
+        }
+
+        public override bool IsRouteCancelledOnAssign
+        {
+            get { return true; }
+        }
+
+        public override bool WillEngageHostiles
+        {
+            get { return false; }
+        }
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            if (!base.IsValidOrder(fleet))
+            {
+                return false;
+            }
+            if (fleet.Sector.System == null)
+            {
+                return false;
+            }
+            if (fleet.Sector.System.Colony == null)
+            {
+                return false;
+            }
+            if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
+            {
+                return false;
+            }
+            return fleet.Ships.Any(s => s.ShipType == ShipType.Medical);
+        }
+
+        protected internal override void OnTurnEnding()
+        {
+            //Medicate the colony
+            Fleet.Sector.System.Colony.Health.AdjustCurrent(1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10));
+
+            //If the colony is not ours, increase regard etc
+            if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
+            {
+                DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
+                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
+                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+            }
+        }
+    }
     #endregion
 
     #region RaidOrder

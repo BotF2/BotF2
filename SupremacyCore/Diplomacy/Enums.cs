@@ -130,7 +130,8 @@ namespace Supremacy.Diplomacy
         ViolatedStopSpying,
         EnemySharesQuadrant,
         DeclaredWar,
-        CapturedColony
+        CapturedColony,
+        HealedPopulation
     }
 
     [Flags]

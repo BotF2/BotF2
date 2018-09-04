@@ -89,7 +89,7 @@ namespace Supremacy.Universe
         private int[] _facilityTypes;
         private int _orbitalBatteryDesign;
         private Meter _foodReserves;
-        private Percentage _health;
+        private Meter _health;
         private string _inhabitantId;
         private bool _isProductionAutomated;
         private Meter _morale;
@@ -120,7 +120,7 @@ namespace Supremacy.Universe
                 throw new ArgumentNullException("system");
             if (inhabitants == null)
                 throw new ArgumentNullException("inhabitants");
-            _health = 0;
+            
             _population.Maximum = system.GetMaxPopulation(inhabitants);
 
             _inhabitantId = inhabitants.Key;
@@ -296,25 +296,27 @@ namespace Supremacy.Universe
         {
             get
             {
-                var baseValue = (decimal)(System.GetGrowthRate(Inhabitants) * 100);
+                var baseGrowthRate = ((decimal)System.GetGrowthRate(Inhabitants) * (decimal)_health.PercentFilled) * 100;
                 var modifier = new ValueModifier<decimal>
                                {
                                    IsOffsetAppliedFirst = false,
                                    HasCompoundMultiplier = false
                                };
-                foreach (var building in Buildings)
+                foreach (var building in Buildings.Where(b => b.IsActive))
                 {
-                    if (!building.IsActive)
-                        continue;
                     foreach (var bonus in building.BuildingDesign.Bonuses)
                     {
                         if (bonus.BonusType == BonusType.GrowthRate)
+                        {
                             modifier.Offset += bonus.Amount;
+                        }
                         else if (bonus.BonusType == BonusType.PercentGrowthRate)
+                        {
                             modifier.Multiplier += (0.01f * bonus.Amount);
+                        }
                     }
                 }
-                return Convert.ToSingle(0.01m * modifier.Apply(baseValue));
+                return Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
             }
         }
 
@@ -492,7 +494,7 @@ namespace Supremacy.Universe
         /// Gets the population health level at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The population health level.</value>
-        public Percentage Health
+        public Meter Health
         {
             get { return _health; }
         }
@@ -751,6 +753,7 @@ namespace Supremacy.Universe
 
             _population = new Meter(0, 0, Meter.MaxValue);
             _population.PropertyChanged += PopulationPropertyChanged;
+            _health = new Meter(80, 0, 100);
 
             _shieldStrength = new Meter(0, 0, 0) { AutoClamp = false };
 
@@ -1844,7 +1847,7 @@ namespace Supremacy.Universe
             writer.WriteOptimized(_originalOwnerId);
             writer.WriteOptimized(_inhabitantId);
             writer.Write(_shipyardId);
-            writer.Write(_health);
+            _health.SerializeOwnedData(writer, context);
             _population.SerializeOwnedData(writer, context);
             _shieldStrength.SerializeOwnedData(writer, context);
             _morale.SerializeOwnedData(writer, context);
@@ -1943,7 +1946,7 @@ namespace Supremacy.Universe
             _originalOwnerId = reader.ReadOptimizedInt16();
             _inhabitantId = reader.ReadOptimizedString();
             _shipyardId = reader.ReadInt32();
-            _health = reader.ReadSingle();
+            _health.DeserializeOwnedData(reader, context);
             _population.DeserializeOwnedData(reader, context);
             _shieldStrength.DeserializeOwnedData(reader, context);
             _morale.DeserializeOwnedData(reader, context);
