@@ -89,7 +89,7 @@ namespace Supremacy.Universe
         private int[] _facilityTypes;
         private int _orbitalBatteryDesign;
         private Meter _foodReserves;
-        private Percentage _health;
+        private Meter _health;
         private string _inhabitantId;
         private bool _isProductionAutomated;
         private Meter _morale;
@@ -120,7 +120,7 @@ namespace Supremacy.Universe
                 throw new ArgumentNullException("system");
             if (inhabitants == null)
                 throw new ArgumentNullException("inhabitants");
-            _health = 0;
+            _health = new Meter(80, 0, 100);
             _population.Maximum = system.GetMaxPopulation(inhabitants);
 
             _inhabitantId = inhabitants.Key;
@@ -492,7 +492,7 @@ namespace Supremacy.Universe
         /// Gets the population health level at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The population health level.</value>
-        public Percentage Health
+        public Meter Health
         {
             get { return _health; }
         }
@@ -1844,7 +1844,7 @@ namespace Supremacy.Universe
             writer.WriteOptimized(_originalOwnerId);
             writer.WriteOptimized(_inhabitantId);
             writer.Write(_shipyardId);
-            writer.Write(_health);
+            _health.SerializeOwnedData(writer, context);
             _population.SerializeOwnedData(writer, context);
             _shieldStrength.SerializeOwnedData(writer, context);
             _morale.SerializeOwnedData(writer, context);
@@ -1943,7 +1943,7 @@ namespace Supremacy.Universe
             _originalOwnerId = reader.ReadOptimizedInt16();
             _inhabitantId = reader.ReadOptimizedString();
             _shipyardId = reader.ReadInt32();
-            _health = reader.ReadSingle();
+            _health.DeserializeOwnedData(reader, context);
             _population.DeserializeOwnedData(reader, context);
             _shieldStrength.DeserializeOwnedData(reader, context);
             _morale.DeserializeOwnedData(reader, context);

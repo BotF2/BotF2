@@ -39,6 +39,7 @@ namespace Supremacy.Orbitals
         public static readonly RaidOrder RaidOrder;
         public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
+        public static readonly MedicalOrder MedicalOrder;
         public static readonly TowOrder TowOrder;
         public static readonly WormholeOrder WormholeOrder;
         public static readonly CollectDeuteriumOrder CollectDeuteriumOrder;
@@ -58,6 +59,7 @@ namespace Supremacy.Orbitals
             RaidOrder = new RaidOrder();
             SabotageOrder = new SabotageOrder();
             InfluenceOrder = new InfluenceOrder();
+            MedicalOrder = new MedicalOrder();
             TowOrder = new TowOrder();
             WormholeOrder = new WormholeOrder();
             CollectDeuteriumOrder = new CollectDeuteriumOrder();
@@ -75,6 +77,7 @@ namespace Supremacy.Orbitals
                           RaidOrder,
                           SabotageOrder,
                           InfluenceOrder,
+                          MedicalOrder,
                           //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
@@ -490,6 +493,101 @@ namespace Supremacy.Orbitals
         }
     }
 
+    #endregion
+
+    #region MedicalOrder
+    [Serializable]
+    public sealed class MedicalOrder : FleetOrder
+    {
+        private Ship _bestShip;
+
+        public override string OrderName
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_MEDICAL"); }
+        }
+
+        public override string Status
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_MEDICAL"); }
+        }
+
+        public override FleetOrder Create()
+        {
+            return new MedicalOrder();
+        }
+
+        public override bool IsCancelledOnMove
+        {
+            get { return true; }
+        }
+
+        public override bool IsCancelledOnRouteChange
+        {
+            get { return true; }
+        }
+
+        public override bool IsRouteCancelledOnAssign
+        {
+            get { return true; }
+        }
+
+        public override bool WillEngageHostiles
+        {
+            get { return false; }
+        }
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            if (!base.IsValidOrder(fleet))
+            {
+                return false;
+            }
+            if (fleet.Sector.System == null)
+            {
+                return false;
+            }
+            if (fleet.Sector.System.Colony == null)
+            {
+                return false;
+            }
+            return fleet.Ships.Any(s => s.ShipType == ShipType.Medical);
+        }
+
+        private Ship GetBestMedicalShip()
+        {
+            Ship bestShip = null;
+            foreach (var ship in Fleet.Ships.Where(s => s.ShipType == ShipType.Medical))
+            {
+                if ((bestShip == null) || (ship.ShipDesign.PopulationHealth > bestShip.ShipDesign.PopulationHealth)) {
+                    bestShip = ship;
+                }
+            }
+            return bestShip;
+        }
+
+        protected internal override void OnOrderAssigned()
+        {
+            base.OnOrderAssigned();
+            _bestShip = GetBestMedicalShip();
+        }
+
+        protected internal override void OnTurnEnding()
+        {
+            base.OnTurnEnding();
+
+            //Medicate the colony
+            Fleet.Sector.System.Colony.Health.AdjustCurrent(1 + _bestShip.ShipDesign.PopulationHealth);
+            Fleet.Sector.System.Colony.Health.Clamp();
+
+            //If the colony is not ours, increase regard etc
+            if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
+            {
+                DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 200);
+                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
+                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+            }
+        }
+    }
     #endregion
 
     #region RaidOrder
