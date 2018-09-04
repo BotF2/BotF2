@@ -63,7 +63,7 @@ namespace Supremacy.Client
                         result = "A";
                         break;
                     default:
-                        result = String.Empty;
+                        result = string.Empty;
                         break;
                 }
                 return result;

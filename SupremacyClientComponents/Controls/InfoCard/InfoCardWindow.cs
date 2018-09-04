@@ -20,10 +20,6 @@ namespace Supremacy.Client.Controls
 		[SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
 		static InfoCardWindow()
         {
-            //DefaultStyleKeyProperty.OverrideMetadata(
-            //    typeof(InfoCardWindow),
-            //    new FrameworkPropertyMetadata(typeof(InfoCardWindow)));
-
             ShowInTaskbarProperty.OverrideMetadata(
                 typeof(InfoCardWindow),
                 new FrameworkPropertyMetadata(false));

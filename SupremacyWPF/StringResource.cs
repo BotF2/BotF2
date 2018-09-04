@@ -43,7 +43,7 @@ namespace Supremacy.Client
 
         public StringResource()
         {
-            _key = String.Empty;
+            _key = string.Empty;
             Case = StringCaseEnum.Original;
         }
 

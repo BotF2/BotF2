@@ -22,15 +22,12 @@ namespace Supremacy.Client.Themes
                 return false;
 
             var theme = appContext?.LocalPlayer?.Empire?.Key;
-            //GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: theme=EmpireKey={0}", theme);
             if (theme == null)
                 return false;
 
             var themeUri = new Uri(
                 $"/SupremacyClient;Component/themes/{theme}/Theme.xaml",
                 UriKind.RelativeOrAbsolute);
-
-            // maybe causes a crash -GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: themeUri={0}", themeUri.Scheme.ToString());
 
             try
             {
@@ -42,9 +39,6 @@ namespace Supremacy.Client.Themes
                 finally { sharedResources.EndInit(); }
 
                 resources = sharedResources;
-                // maybe causes a crash - GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: sharedResources={0}", sharedResources.Source.ToString());
-
-                // working, but not fine   GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: sharedResources is working for theme=EmpireKey={0}", theme);
 
                 return true;
             }

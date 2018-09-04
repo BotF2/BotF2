@@ -137,7 +137,7 @@ namespace Supremacy.Client
         #endregion
     }
 
-    [ValueConversion(typeof(BuildQueueItem), typeof(String))]
+    [ValueConversion(typeof(BuildQueueItem), typeof(string))]
     public class BuildQueueItemDescriptionConverter : IValueConverter
     {
         #region IValueConverter Members
@@ -147,7 +147,7 @@ namespace Supremacy.Client
             if (item != null)
             {
                 string description = ResourceManager.GetString(item.Project.Description);
-                if ("UpperCase" == (parameter as String))
+                if ("UpperCase" == (parameter as string))
                     description = description.ToUpperInvariant();
                 if (item.Count > 1)
                     return String.Format("{0}x {1}", item.Count, description);
@@ -175,7 +175,7 @@ namespace Supremacy.Client
             {
                 if (value is string)
                     objectKey = (string)value;
-                else if (value is Int32 || value is GameObjectID)
+                else if (value is int || value is GameObjectID)
                     objectKey = GameContext.Current.Civilizations[(int)value].Key;
                 else if (value is ICivIdentity)
                     objectKey = GameContext.Current.Civilizations[((ICivIdentity)value).CivID].Key;
@@ -221,7 +221,7 @@ namespace Supremacy.Client
             {
                 civ = GameContext.Current.Civilizations[(string)value];
             }
-            else if (value is Int32)
+            else if (value is int)
             {
                 civ = GameContext.Current.Civilizations[(int)value];
             }
@@ -285,7 +285,7 @@ namespace Supremacy.Client
                 else
                 {
                     imagePath = value.ToString();
-                    if (String.IsNullOrEmpty(Path.GetExtension(imagePath)))
+                    if (string.IsNullOrEmpty(Path.GetExtension(imagePath)))
                         imagePath += ".png";
                 }
                 return Convert(imagePath);
@@ -304,7 +304,7 @@ namespace Supremacy.Client
         }
     }
 
-    [ValueConversion(typeof(String), typeof(String))]
+    [ValueConversion(typeof(string), typeof(string))]
     public class StringResourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

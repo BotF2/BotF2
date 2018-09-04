@@ -37,7 +37,7 @@ namespace Supremacy.Client
         }
     }
 
-    [ValueConversion(typeof(int), typeof(String))]
+    [ValueConversion(typeof(int), typeof(string))]
     public class NetValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -29,16 +29,7 @@ namespace Supremacy.WCF
             //and getting it here with AppSettings
             //Uri baseAddress = new Uri("http://localhost:8080/SupremacyService");
 
-            //NetNamedPipeBinding localBinding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
-            //string localAddress = "net.pipe://localhost/SupremacyService/Local";
-
-            //Instantiate new ServiceHost 
             _serviceHost = new ServiceHost(new SupremacyService());
-            //_serviceHost.Opened += OnServiceOpened;
-            //_serviceHost.Faulted += OnServiceFaulted;
-            //_serviceHost.Closed += OnServiceClosed;
-
-            //_serviceHost.AddServiceEndpoint(typeof(ISupremacyService), localBinding, localAddress);
 
             for (int i = 0; i < _serviceHost.Description.Endpoints.Count; i++)
             {

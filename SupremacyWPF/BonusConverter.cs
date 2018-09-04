@@ -64,8 +64,8 @@ namespace Supremacy.Client
         }
     }
 
-    [ValueConversion(typeof(IEnumerable<Bonus>), typeof(String)),
-     ValueConversion(typeof(TechObjectDesign), typeof(String))]
+    [ValueConversion(typeof(IEnumerable<Bonus>), typeof(string)),
+     ValueConversion(typeof(TechObjectDesign), typeof(string))]
     public class BonusConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -138,7 +138,7 @@ namespace Supremacy.Client
         }
     }
 
-    [ValueConversion(typeof(BuildRestriction), typeof(String))]
+    [ValueConversion(typeof(BuildRestriction), typeof(string))]
     public class BuildRestrictionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

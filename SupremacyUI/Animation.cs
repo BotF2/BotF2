@@ -37,13 +37,13 @@ namespace Supremacy.UI
         private static Collections.CollectionBase<string> GetStarNames()
         {
             var result = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
-        var file = new FileStream(
-             ResourceManager.GetResourcePath("Resources/Images/Animation1.txt"),
-             FileMode.Open,
-             FileAccess.Read);
-        var result3 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
+            var file = new FileStream(
+                ResourceManager.GetResourcePath("Resources/Images/Animation1.txt"),
+                    FileMode.Open,
+                    FileAccess.Read);
+            var result3 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
 
-                    var reader = new StreamReader(file);
+            var reader = new StreamReader(file);
             var names = new Collections.CollectionBase<string>();
 
             while (!reader.EndOfStream)
@@ -58,10 +58,6 @@ namespace Supremacy.UI
 
                 names.Add(line.Trim());
                 var result2 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
-
-                //Log.DebugFormat(line);
-                //empireCivs[index].ShortName,
-                //location);
             }
 
             return names;
@@ -93,20 +89,16 @@ namespace Supremacy.UI
                     FrameworkPropertyMetadataOptions.None));
             Frames = new CachedBitmap[255];
 
-            //imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\" + names(i) + ".png");
             for (int i = 0; i < Frames.Length; i++)
             {
-                var filename = ImagePath + String.Format("Images/Animation/animation1_{0:000}.png", i);
-                //var result4 = MessageDialog.Show("header", filename, MessageDialogButtons.Ok);
+                var filename = ImagePath + string.Format("Images/Animation/animation1_{0:000}.png", i);
                 if (File.Exists(filename))
                 {
                     Frames[i] = new CachedBitmap(
                         new BitmapImage(
-                            ResourceManager.GetResourceUri(ImagePath + String.Format("Images/Animation/animation1_{0:000}.png", i))),
+                            ResourceManager.GetResourceUri(ImagePath + string.Format("Images/Animation/animation1_{0:000}.png", i))),
                         BitmapCreateOptions.None,
                         BitmapCacheOption.OnLoad);
-                    //var result3 = MessageDialog.Show("header", filename, MessageDialogButtons.Ok);
-                    //RenderOptions.SetBitmapScalingMode(Frames[i], BitmapScalingMode.LowQuality);
                     Frames[i].Freeze();
                 }
             }
@@ -133,7 +125,6 @@ namespace Supremacy.UI
                     {
                         RepeatBehavior = RepeatBehavior.Forever
                     };
-            //Timeline.SetDesiredFrameRate(_animation, 24);
 
             _animationClock = _animation.CreateClock();
 
@@ -181,8 +172,6 @@ namespace Supremacy.UI
 
             _animationClock.Controller.Pause();
             _animationClock.Controller.Remove();
-
-            //BeginAnimation(CurrentFrameProperty, null);
         }
         #endregion
 

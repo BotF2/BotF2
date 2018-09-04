@@ -363,7 +363,6 @@ namespace Supremacy.Client
             else if (!service.AutoTurn)
             {
                 // works but doubled
-                //GameLog.Print("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                 if (ClientSettings.Current.EnableCombatScreen == false)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
                 {
                     GameLog.Print("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
@@ -409,7 +408,7 @@ namespace Supremacy.Client
         {
             var initializedPresenters = new List<IPresenter>();
 
-            var _CreatePresenterTracing = false;  // turn true if you want
+            var _CreatePresenterTracing = false;
 
             if (_CreatePresenterTracing)
                 GameLog.Print("BEGINNING: CreatePresenters");
@@ -424,7 +423,6 @@ namespace Supremacy.Client
                 if (_CreatePresenterTracing)
                     GameLog.Print("DONE: IColonyScreenPresenter");
 
-                //_screenPresenters.Add(_container.Resolve<IDiplomacyScreenPresenter>());
                 _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, INewDiplomacyScreenView>>());
                 if (_CreatePresenterTracing)
                     GameLog.Print("DONE: INewDiplomacyScreenView");
@@ -436,7 +434,6 @@ namespace Supremacy.Client
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
                 if (_CreatePresenterTracing)
                     GameLog.Print("DONE: IAssetsScreenPresenter");
-                //_screenPresenters.Add(_container.Resolve<ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView>>());
 
                 foreach (var presenter in _screenPresenters)
                 {

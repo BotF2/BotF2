@@ -8,16 +8,12 @@
 // All other rights reserved.
 
 using System;
-//using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-//using System.Runtime.InteropServices;
-//using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-//using System.Windows.Interop;
 using System.Windows.Threading;
 
 using Microsoft.Practices.Composite.Regions;
@@ -62,8 +58,6 @@ namespace Supremacy.Client.Dialogs
         public static readonly RoutedEvent ClosedEvent;
 
         private static IRegionManager _rootRegionManager;
-
-        //private readonly List<IntPtr> _threadWindowHandles;
 
         private bool _isClosing;
         private bool _showingAsDialog;
@@ -199,12 +193,6 @@ namespace Supremacy.Client.Dialogs
                 if (_rootRegionManager == null)
                     _rootRegionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
             }
-
-            //_threadWindowHandles = new List<IntPtr>();
-
-            //_ownerHandle = IntPtr.Zero;
-            //_dialogOwnerHandle = IntPtr.Zero;
-            //_dialogPreviousActiveHandle = IntPtr.Zero;
 
             CommandBindings.Add(
                 new CommandBinding(

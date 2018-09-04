@@ -50,7 +50,7 @@ namespace Supremacy.Client.Audio
         private static FMODAudioEngine _instance = null;
         private bool _isDisposed = false;
 
-        private bool _audioTraceLocally = false;    // turn to true if you want
+        private bool _audioTraceLocally = false;
 
         private FMOD.System _system = null;
         private FMODGrouping _masterChannelGroup = null;
@@ -211,8 +211,6 @@ namespace Supremacy.Client.Audio
 
         public IAudioTrack CreateTrack(string fileName)
         {
-            //GameLog.Print("called!");
-
             FMODAudioTrack track = null;
             if (File.Exists(fileName))
             {
@@ -233,8 +231,6 @@ namespace Supremacy.Client.Audio
 
         public void Start()
         {
-            //GameLog.Print("called!");
-
             try
             {
                 lock (_updateLock)
@@ -254,8 +250,6 @@ namespace Supremacy.Client.Audio
 
         public void Stop()
         {
-            //GameLog.Print("called!");
-
             lock (_updateLock)
             {
                 if (_updateTimerSubscription != null)
@@ -283,10 +277,7 @@ namespace Supremacy.Client.Audio
 
         public void Update()
         {
-            //if (_audioTraceLocally)
-                // GameLog.Print("called!"); // Disabled because it is called every 100ms
-
-                lock (_updateLock)
+            lock (_updateLock)
             {
                 try
                 {

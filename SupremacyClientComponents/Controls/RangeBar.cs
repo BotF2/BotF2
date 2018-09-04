@@ -257,8 +257,6 @@ namespace Supremacy.Client.Controls
 
             var blockNumber = (int)Math.Min(((value - Minimum) / (Maximum - Minimum)) * blockCount, blockCount);
 
-            //Debug.Assert(blockNumber <= blockCount && blockNumber >= 0);
-
             return blockNumber;
         }
 

@@ -546,7 +546,7 @@ namespace Supremacy.VFS
 
 		public bool TryGetFile(string definedPathAlias, string path, bool recurse, out Stream stream)
 		{
-			String dir;
+			string dir;
 
 			// If the path is not defined in this source, return
 			if (!_definedPaths.TryGetValue(definedPathAlias, out dir))
@@ -565,7 +565,7 @@ namespace Supremacy.VFS
 
 		public ReadOnlyCollection<string> GetFiles(string definedPathAlias, string path, bool recurse, string searchPattern)
 		{
-			String dir;
+			string dir;
 
 			// If the path is not defined in this source, return
 			if (!_definedPaths.TryGetValue(definedPathAlias, out dir))

@@ -218,13 +218,8 @@ namespace Supremacy.UI
 
             Vector diff = target - current;
 
-            //_count++;
-
             if (diff.Length > Diff || velocity.Length > Diff)
             {
-                //_goodCount++;
-
-
                 velocity.X *= dampening;
                 velocity.Y *= dampening;
 

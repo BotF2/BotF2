@@ -342,7 +342,7 @@ namespace Supremacy.UI
                     var cachedBitmap = new CachedBitmap(
                         new BitmapImage(
                             ResourceManager.GetResourceUri(
-                                String.Format(
+                                string.Format(
                                     "Resources/Images/Planets/{0}{1:00}.png",
                                     type,
                                     i + 1))),
@@ -356,7 +356,7 @@ namespace Supremacy.UI
                     cachedBitmap = new CachedBitmap(
                         new BitmapImage(
                             ResourceManager.GetResourceUri(
-                                String.Format(
+                                string.Format(
                                     "Resources/Images/Atmospheres/{0}{1:00}.png",
                                     type,
                                     i + 1))),
@@ -374,7 +374,7 @@ namespace Supremacy.UI
                 _moonImages[shape] = new CachedBitmap(
                     new BitmapImage(
                         ResourceManager.GetResourceUri(
-                            String.Format("Resources/Images/Planets/Moons/{0}.png", shape))),
+                            string.Format("Resources/Images/Planets/Moons/{0}.png", shape))),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
 
@@ -467,8 +467,6 @@ namespace Supremacy.UI
                     Path = new PropertyPath(RotationDurationProperty),
                     Mode = BindingMode.OneWay
                 });
-
-            //Timeline.SetDesiredFrameRate(_axisAnimation, 24);
 
             _animationClock = _axisAnimation.CreateClock();
 
@@ -615,7 +613,6 @@ namespace Supremacy.UI
                 _animationClock.CurrentState != ClockState.Active)
             {
                 _animationClock.Controller.Begin();
-                //_animationClock.Controller.Remove();
             }
         }
 
@@ -691,7 +688,7 @@ namespace Supremacy.UI
             else
             {
                 _toolTipText += "\n";
-                _toolTipText += String.Format(
+                _toolTipText += string.Format(
                     _planetSizeTypeFormat,
                     ResourceManager.GetString("PLANET_SIZE_" + planet.PlanetSize.ToString().ToUpper()),
                     ResourceManager.GetString("PLANET_TYPE_" + planet.PlanetType.ToString().ToUpper()));

@@ -442,7 +442,7 @@ namespace Supremacy.UI
             _laborPoolText.HorizontalAlignment = HorizontalAlignment.Right;
             _laborPoolText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
             _laborPoolText.FontSize = 20;
-            _laborPoolText.Text = String.Format(ResourceManager.GetString("Labor_Pool"));
+            _laborPoolText.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
             _laborPoolText.Foreground = headerBrush;
 
             _grid.Children.Add(_laborBar);
@@ -773,48 +773,36 @@ namespace Supremacy.UI
                 _researchSlider.ActiveUnitsChanged += slider_ActiveUnitsChanged;
                 _intelligenceSlider.ActiveUnitsChanged += slider_ActiveUnitsChanged;
 
-                _foodOutputText.Text = String.Format(
+                _foodOutputText.Text = string.Format(
                     "{0} {1}",
                     colony.GetProductionOutput(ProductionCategory.Food),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Food.ToString().ToUpperInvariant()));
-                _industryOutputText.Text = String.Format(
+                _industryOutputText.Text = string.Format(
                     "{0} {1}",
                     colony.GetProductionOutput(ProductionCategory.Industry),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Industry.ToString().ToUpperInvariant()));
-                _energyOutputText.Text = String.Format(
+                _energyOutputText.Text = string.Format(
                     "{0} {1}",
                     colony.GetProductionOutput(ProductionCategory.Energy),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Energy.ToString().ToUpperInvariant()));
-                _researchOutputText.Text = String.Format(
+                _researchOutputText.Text = string.Format(
                     "{0} {1}",
                     colony.GetProductionOutput(ProductionCategory.Research),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Research.ToString().ToUpperInvariant()));
-                _intelligenceOutputText.Text = String.Format(
+                _intelligenceOutputText.Text = string.Format(
                     "{0} {1}",
                     colony.GetProductionOutput(ProductionCategory.Intelligence),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Intelligence.ToString().ToUpperInvariant()));
-
-                //_laborBar.UnitCost = Algorithms.Minimum(
-                //    new int[]
-                //        {
-                //            _foodSlider.UnitCost,
-                //            _industrySlider.UnitCost,
-                //            _energySlider.UnitCost,
-                //            _researchSlider.UnitCost
-                //        });
-                //_laborBar.Units = _sliderGroup.PoolSize / _laborBar.UnitCost;
-                //_laborBar.MaxActiveUnits = _laborBar.Units;
-                //_laborBar.ActiveUnits = _sliderGroup.FreePoolSize / _laborBar.UnitCost;
             }
 
             _foodSlider.InvalidateVisual();
@@ -863,23 +851,23 @@ namespace Supremacy.UI
                 _researchFacilityText.Inlines.Clear();
                 _intelligenceFacilityText.Inlines.Clear();
 
-                _foodActiveText.Text = String.Format(
+                _foodActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Food),
                     colony.GetTotalFacilities(ProductionCategory.Food));
-                _industryActiveText.Text = String.Format(
+                _industryActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Industry),
                     colony.GetTotalFacilities(ProductionCategory.Industry));
-                _energyActiveText.Text = String.Format(
+                _energyActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Energy),
                     colony.GetTotalFacilities(ProductionCategory.Energy));
-                _researchActiveText.Text = String.Format(
+                _researchActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Research),
                     colony.GetTotalFacilities(ProductionCategory.Research));
-                _intelligenceActiveText.Text = String.Format(
+                _intelligenceActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
                     colony.GetTotalFacilities(ProductionCategory.Intelligence));
@@ -920,7 +908,7 @@ namespace Supremacy.UI
 
                 if (colony.GetScrappedFacilities(ProductionCategory.Food) > 0)
                 {
-                    _foodScrapText.Text = " " + String.Format(
+                    _foodScrapText.Text = " " + string.Format(
                         ResourceManager.GetString("FACILITY_SCRAP_FORMAT_STRING"),
                         colony.GetScrappedFacilities(ProductionCategory.Food));
                     _foodScrapText.Inlines.FirstInline.Foreground = Brushes.Red;
@@ -928,7 +916,7 @@ namespace Supremacy.UI
                 }
                 if (colony.GetScrappedFacilities(ProductionCategory.Industry) > 0)
                 {
-                    _industryScrapText.Text = " " + String.Format(
+                    _industryScrapText.Text = " " + string.Format(
                         ResourceManager.GetString("FACILITY_SCRAP_FORMAT_STRING"),
                         colony.GetScrappedFacilities(ProductionCategory.Industry));
                     _industryScrapText.Inlines.FirstInline.Foreground = Brushes.Red;
@@ -936,7 +924,7 @@ namespace Supremacy.UI
                 }
                 if (colony.GetScrappedFacilities(ProductionCategory.Energy) > 0)
                 {
-                    _energyScrapText.Text = " " + String.Format(
+                    _energyScrapText.Text = " " + string.Format(
                         ResourceManager.GetString("FACILITY_SCRAP_FORMAT_STRING"),
                         colony.GetScrappedFacilities(ProductionCategory.Energy));
                     _energyScrapText.Inlines.FirstInline.Foreground = Brushes.Red;
@@ -944,7 +932,7 @@ namespace Supremacy.UI
                 }
                 if (colony.GetScrappedFacilities(ProductionCategory.Research) > 0)
                 {
-                    _researchScrapText.Text = " " + String.Format(
+                    _researchScrapText.Text = " " + string.Format(
                         ResourceManager.GetString("FACILITY_SCRAP_FORMAT_STRING"),
                         colony.GetScrappedFacilities(ProductionCategory.Research));
                     _researchScrapText.Inlines.FirstInline.Foreground = Brushes.Red;
@@ -952,7 +940,7 @@ namespace Supremacy.UI
                 }
                 if (colony.GetScrappedFacilities(ProductionCategory.Intelligence) > 0)
                 {
-                    _intelligenceScrapText.Text = " " + String.Format(
+                    _intelligenceScrapText.Text = " " + string.Format(
                         ResourceManager.GetString("FACILITY_SCRAP_FORMAT_STRING"),
                         colony.GetScrappedFacilities(ProductionCategory.Intelligence));
                     _intelligenceScrapText.Inlines.FirstInline.Foreground = Brushes.Red;

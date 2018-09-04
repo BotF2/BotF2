@@ -20,7 +20,7 @@ using Supremacy.Utility;
 
 namespace Supremacy.Client
 {
-    [ValueConversion(typeof(String), typeof(String))]
+    [ValueConversion(typeof(string), typeof(string))]
     public class EnumStringConverter : ValueConverter<EnumStringConverter>
     {
         #region Fields
@@ -119,7 +119,7 @@ namespace Supremacy.Client
         #endregion
     }
 
-    [ValueConversion(typeof(String), typeof(Array))]
+    [ValueConversion(typeof(string), typeof(Array))]
     public class EnumValueCollectionConverter : IValueConverter
     {
         #region IValueConverter Members
@@ -146,7 +146,7 @@ namespace Supremacy.Client
         #endregion
     }
 
-    [ValueConversion(typeof(String), typeof(String))]
+    [ValueConversion(typeof(string), typeof(string))]
     public class AltEnumStringConverter : IValueConverter
     {
         #region Fields

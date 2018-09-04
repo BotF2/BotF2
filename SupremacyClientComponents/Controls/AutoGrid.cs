@@ -250,9 +250,6 @@ namespace Supremacy.Client.Controls
             {
                 var isVertical = Orientation == Orientation.Vertical;
 
-                //if (DesignerProperties.GetIsInDesignMode(this))
-                //    _shouldReindex = true;
-
                 if (_shouldReindex || (IsAutoIndexing &&
                                        ((isVertical && _rowOrColumnCount != ColumnDefinitions.Count) ||
                                         (!isVertical && _rowOrColumnCount != RowDefinitions.Count))))
@@ -394,9 +391,6 @@ namespace Supremacy.Client.Controls
 
                                     cellCount += childRowSpan * childColumnSpan;
 
-                                    //cellCount += (childColumnSpan - 1);
-                                    //currentColumn += childColumnSpan;
-
                                     for (var i = 0; i < (childColumnSpan - 1); i++)
                                         reservedPositions.Add(new ReservedPosition(currentRow, currentColumn + i));
                                 }
@@ -404,14 +398,9 @@ namespace Supremacy.Client.Controls
                                 {
                                     cellCount += childRowSpan * childColumnSpan;
 
-                                    //cellCount += ((_rowOrColumnCount - currentColumn - 1) +
-                                    //              (_rowOrColumnCount * (childRowSpan - 1)));
-
                                     for (var i = 0; i < (childRowSpan - 1); i++)
                                         reservedPositions.Add(new ReservedPosition(currentRow + i, currentColumn));
 
-                                    //currentColumn = 0;
-                                    //currentRow += childRowSpan;
                                 }
                                 else if (++currentColumn >= _rowOrColumnCount)
                                 {
@@ -428,9 +417,6 @@ namespace Supremacy.Client.Controls
 
                                     cellCount += childRowSpan * childColumnSpan;
 
-                                    //cellCount += (childRowSpan - 1);
-                                    //currentRow += childRowSpan;
-
                                     for (var i = 0; i < (childRowSpan - 1); i++)
                                         reservedPositions.Add(new ReservedPosition(currentRow + i, currentColumn));
                                 }
@@ -438,14 +424,8 @@ namespace Supremacy.Client.Controls
                                 {
                                     cellCount += childRowSpan * childColumnSpan;
 
-                                    //cellCount += ((_rowOrColumnCount - currentRow - 1) +
-                                    //              (_rowOrColumnCount * (childColumnSpan - 1)));
-
                                     for (var i = 0; i < (childColumnSpan - 1); i++)
                                         reservedPositions.Add(new ReservedPosition(currentRow, currentColumn + i));
-
-                                    //currentRow = 0;
-                                    //currentColumn += childColumnSpan;
                                 }
                                 else if (++currentRow >= _rowOrColumnCount)
                                 {
@@ -454,8 +434,6 @@ namespace Supremacy.Client.Controls
                                 }
                             }
                         }
-
-                        //--cellCount;
 
                         //  Update the number of rows/columns
                         if (isVertical)

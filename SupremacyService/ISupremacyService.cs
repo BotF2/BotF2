@@ -24,7 +24,6 @@ namespace Supremacy.WCF
             IsOneWay = false,
             IsInitiating = true,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/HostGame",
             ReplyAction = "http://Supremacy.WPF/ISupremacyService/HostGameResponse")]
         HostGameResult HostGame(GameInitData initData, out Player localPlayer, out LobbyData lobbyData);
@@ -33,7 +32,6 @@ namespace Supremacy.WCF
             IsOneWay = false,
             IsInitiating = true,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/JoinGame",
             ReplyAction = "http://Supremacy.WPF/ISupremacyService/JoinGameResponse")]
         JoinGameResult JoinGame(string playerName, out Player localPlayer, out LobbyData lobbyData);
@@ -42,7 +40,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = true,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/Disconnect")]
         void Disconnect();
 
@@ -50,7 +47,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/StartGame")]
         void StartGame();
 
@@ -58,7 +54,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/Pong")]
         void Pong(int pingId);
 
@@ -66,7 +61,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/SendChatMessage")]
         void SendChatMessage(string message, int recipientId);
 
@@ -74,7 +68,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/EndTurn")]
         void EndTurn(PlayerOrdersMessage orders);
 
@@ -82,7 +75,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/SaveGame")]
         void SaveGame(string fileName);
 
@@ -90,7 +82,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/UpdateGameOptions")]
         void UpdateGameOptions(GameOptions options);
 
@@ -98,7 +89,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/ClearPlayerSlot")]
         void ClearPlayerSlot(int slotId);
 
@@ -106,7 +96,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/ClosePlayerSlot")]
         void ClosePlayerSlot(int slotId);
 
@@ -114,7 +103,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/AssignPlayerSlot")]
         void AssignPlayerSlot(int slotId, int playerId);
 
@@ -122,7 +110,6 @@ namespace Supremacy.WCF
             IsOneWay = false,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = false,
             Action = "http://Supremacy.WPF/ISupremacyService/GetNewObjectID")]
         int GetNewObjectID();
 
@@ -130,7 +117,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/SendCombatOrders")]
         void SendCombatOrders(CombatOrders orders);
 
@@ -138,7 +124,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/SendInvasionOrders")]
         void SendInvasionOrders(InvasionOrders orders);
 
@@ -146,7 +131,6 @@ namespace Supremacy.WCF
             IsOneWay = true,
             IsInitiating = false,
             IsTerminating = false,
-            //AsyncPattern = true,
             Action = "http://Supremacy.WPF/ISupremacyService/NotifyInvasionScreenReady")]
         void NotifyInvasionScreenReady();
     }

@@ -55,8 +55,8 @@ namespace Supremacy.Client
             StringBuilder filename = new StringBuilder();
             for (int i = 0; i < key.Length; i++)
             {
-                if (Char.IsLetterOrDigit(key[i]))
-                    filename.Append(Char.ToLowerInvariant(key[i]));
+                if (char.IsLetterOrDigit(key[i]))
+                    filename.Append(char.ToLowerInvariant(key[i]));
             }
             return filename.ToString();
         }
@@ -70,7 +70,7 @@ namespace Supremacy.Client
             {
                 foreach (string extension in Extensions)
                 {
-                    string filename = String.Format(
+                    string filename = string.Format(
                         BasePath,
                         baseDir,
                         folder,

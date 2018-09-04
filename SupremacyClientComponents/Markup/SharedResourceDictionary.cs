@@ -26,10 +26,10 @@ namespace Supremacy.Client.Markup
             get { return _sourceUri; }
             set
             {
-                bool _tracingSharedResourceDictionary = false;    // turn true if you need
+                bool _tracingSharedResourceDictionary = false;
 
                 _sourceUri = value;
-                // working   
+
                 if (_tracingSharedResourceDictionary)
                     GameLog.Client.GameData.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
 
@@ -39,10 +39,6 @@ namespace Supremacy.Client.Markup
                 {
                     // If the dictionary is already loaded, get it from the cache
                     MergedDictionaries.Add(sharedDictionary);
-
-                    //doesn't work well'
-                    //GameLog.Client.GameData.DebugFormat("SharedResourceDictionary.cs: value={0}, sharedDictionary.Count={1}, sharedDictionary={2}", 
-                    //    value, SharedDictionaries.Count, SharedDictionaries.Keys.ToString());
                 }
                 else
                 {

@@ -312,10 +312,6 @@ namespace Supremacy.Client.Controls
             FocusableProperty.OverrideMetadata(
                 typeof(InlineWindowTitleBarButton),
                 new FrameworkPropertyMetadata(false));
-            
-            //DefaultStyleKeyProperty.OverrideMetadata(
-            //    typeof(InlineWindowTitleBarButton), 
-            //    new FrameworkPropertyMetadata(typeof(InlineWindowTitleBarButton)));
         }
 
         /// <summary>

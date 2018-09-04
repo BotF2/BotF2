@@ -49,7 +49,7 @@ namespace Supremacy.Client.Audio
         private IAudioEngine _engine = null;
         private IAudioGrouping _channelGroup = null;
 
-        private bool _audioTraceLocally = false;    // turn to true if you want
+        private bool _audioTraceLocally = false;
 
         private MusicPack _musicPack = null;
         private KeyValuePair<int, MusicEntry> _musicEntry;
@@ -171,8 +171,6 @@ namespace Supremacy.Client.Audio
         #region Methods
         public void LoadMusic(MusicPack musicPack, string trackName = null)
         {
-            //GameLog.Print("called! Trackname: {0}", trackName);    trackName still empty at this moment
-
             try
             {
                 lock (_updateLock)
@@ -195,7 +193,7 @@ namespace Supremacy.Client.Audio
 
                     if (play && _musicEntry.Value != null)
                     {
-                        //if (_audioTraceLocally)
+                        if (_audioTraceLocally)
                             GameLog.Print("called! Trackname: {0}, {1}, playMode={2}", _musicPack.Name, _musicEntry.Value.FileName, _playMode.ToString());
                         Play();
                     }
@@ -229,7 +227,6 @@ namespace Supremacy.Client.Audio
 
         public void Play()
         {
-            //GameLog.Print("called!");
             try
             {
                 lock (_updateLock)
@@ -306,7 +303,6 @@ namespace Supremacy.Client.Audio
 
         public void Stop()
         {
-            //GameLog.Print("called!");
             try
             {
                 lock (_updateLock)
@@ -348,7 +344,6 @@ namespace Supremacy.Client.Audio
 
         public void Next()
         {
-            //GameLog.Print("called!");
             try
             {
                 lock (_updateLock)
@@ -445,9 +440,7 @@ namespace Supremacy.Client.Audio
 
         public void Update()
         {
-            //if (_audioTraceLocally)
-                //GameLog.Print("called!"); --> Logging dislabled because this function is called every 40ms!!
-                try
+            try
             {
                 lock (_updateLock)
                 {

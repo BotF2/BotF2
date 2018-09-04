@@ -15,7 +15,7 @@ using Supremacy.Universe;
 
 namespace Supremacy.Client
 {
-    [ValueConversion(typeof(MapLocation), typeof(String))]
+    [ValueConversion(typeof(MapLocation), typeof(string))]
     public class MapLocationConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -288,7 +288,7 @@ namespace Supremacy.UI
             statsPanel.Orientation = Orientation.Vertical;
             statsPanel.Margin = new Thickness(0, 0, 14, 0);
             statsPanel.CanHorizontallyScroll = false;
-            if (!Double.IsNaN(ActualWidth))
+            if (!double.IsNaN(ActualWidth))
                 statsPanel.MaxWidth = ActualWidth;
             statsPanel.Children.Add(name);
 

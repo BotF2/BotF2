@@ -64,49 +64,5 @@ namespace Supremacy.Client
         {
             return null;
         }
-
-        //private sealed class BindableEnumerable : IEnumerable<TFlag>, INotifyCollectionChanged, IWeakEventListener
-        //{
-        //    private readonly IEnumerable _baseCollection;
-
-        //    public BindableEnumerable([NotNull] IEnumerable baseCollection)
-        //    {
-        //        if (baseCollection == null)
-        //            throw new ArgumentNullException("baseCollection");
-                
-        //        _baseCollection = baseCollection;
-
-        //        var observableCollection = _baseCollection as INotifyCollectionChanged;
-        //        if (observableCollection != null)
-        //            CollectionChangedEventManager.AddListener(observableCollection, this);
-        //    }
-
-        //    public IEnumerator<TFlag> GetEnumerator()
-        //    {
-        //        return _baseCollection.Cast<TFlag>().GetEnumerator();
-        //    }
-
-        //    IEnumerator IEnumerable.GetEnumerator()
-        //    {
-        //        return GetEnumerator();
-        //    }
-
-        //    public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        //    private void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
-        //    {
-        //        var handler = this.CollectionChanged;
-        //        if (handler != null)
-        //            handler(this, args);
-        //    }
-
-        //    public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
-        //    {
-        //        var args = e as NotifyCollectionChangedEventArgs;
-        //        if (args != null)
-        //            OnCollectionChanged(args);
-        //        return true;
-        //    }
-        //}
     }
 }

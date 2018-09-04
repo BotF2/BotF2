@@ -669,11 +669,6 @@ namespace Supremacy.Client.Controls
             if (newValue != null)
             {
                 newValue.DataChanged += infoCard.OnSubjectDataChanged;
-                //infoCard.DataContext = newValue.Data;
-            }
-            else
-            {
-                //infoCard.DataContext = null;
             }
 
             infoCard.UpdateInfoCardBindings();
@@ -788,12 +783,7 @@ namespace Supremacy.Client.Controls
         private void OnSubjectDataChanged(object sender, EventArgs e)
         {
             var subject = sender as IInfoCardSubject;
-            if ((subject != null) && (subject.Data != null))
-            {
-                //this.DataContext = subject.Data;
-                //ApplyTemplate();
-            }
-            else
+            if ((subject == null) || (subject.Data == null))
             {
                 if (IsOpen)
                     Close();

@@ -571,17 +571,17 @@ namespace Supremacy.Client.Data
         private sealed class SystemConvertConverter : IValueConverter
         {
             private static readonly Type[] SupportedTypes = {
-                                                                typeof(String), // put common types up front
-                                                                typeof(Int32), typeof(Int64), typeof(Single), typeof(Double),
-                                                                typeof(Decimal), typeof(Boolean),
-                                                                typeof(Byte), typeof(Int16),
-                                                                typeof(UInt32), typeof(UInt64), typeof(UInt16), typeof(SByte) // non-CLS compliant types 
+                                                                typeof(string), // put common types up front
+                                                                typeof(int), typeof(long), typeof(float), typeof(double),
+                                                                typeof(decimal), typeof(bool),
+                                                                typeof(byte), typeof(short),
+                                                                typeof(uint), typeof(ulong), typeof(ushort), typeof(sbyte) // non-CLS compliant types 
                                                             };
 
             private static readonly Type[] CharSupportedTypes = {
-                                                                    typeof(String), // put common types up front
-                                                                    typeof(Int32), typeof(Int64), typeof(Byte), typeof(Int16),
-                                                                    typeof(UInt32), typeof(UInt64), typeof(UInt16), typeof(SByte) // non-CLS compliant types
+                                                                    typeof(string), // put common types up front
+                                                                    typeof(int), typeof(long), typeof(byte), typeof(short),
+                                                                    typeof(uint), typeof(ulong), typeof(ushort), typeof(sbyte) // non-CLS compliant types
                                                                 };
 
             private readonly Type _sourceType;

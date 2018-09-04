@@ -26,7 +26,7 @@ namespace Supremacy.Client
 
         public EnumStringResourceExtension()
         {
-            _key = String.Empty;
+            _key = string.Empty;
             Case = StringCase.Original;
         }
 

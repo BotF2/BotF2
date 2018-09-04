@@ -23,7 +23,6 @@ namespace Supremacy.Client
         bool DisableUpdates { get; }
         string SavedGame { get; set; }
         bool AiExplore { get; set; }
-        //bool BorgNotEmpire { get; set; }
         bool TraceAudio { get; set; }
     }
 }

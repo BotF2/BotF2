@@ -52,14 +52,6 @@ namespace Supremacy.UI
             decimal oldValue = (decimal)args.OldValue;
             decimal newValue = (decimal)args.NewValue;
 
-            //#region Fire Automation events
-            //NumericUpDownAutomationPeer peer = UIElementAutomationPeer.FromElement(control) as NumericUpDownAutomationPeer;
-            //if (peer != null)
-            //{
-            //    peer.RaiseValueChangedEvent(oldValue, newValue);
-            //}
-            //#endregion
-
             RoutedPropertyChangedEventArgs<decimal> e = new RoutedPropertyChangedEventArgs<decimal>(
                 oldValue, newValue, ValueChangedEvent);
 
@@ -105,8 +97,6 @@ namespace Supremacy.UI
 
         private static void OnMinimumChanged(DependencyObject element, DependencyPropertyChangedEventArgs args)
         {
-            //element.CoerceValue(MaximumProperty);
-            //element.CoerceValue(ValueProperty);
             element.SetValue(MaximumProperty, CoerceMaximum(element, element.GetValue(MaximumProperty)));
             element.SetValue(ValueProperty, CoerceValue(element, element.GetValue(ValueProperty)));
         }
@@ -135,7 +125,6 @@ namespace Supremacy.UI
 
         private static void OnMaximumChanged(DependencyObject element, DependencyPropertyChangedEventArgs args)
         {
-            //element.CoerceValue(ValueProperty);
             element.SetValue(ValueProperty, CoerceValue(element, element.GetValue(ValueProperty)));
         }
 
@@ -143,7 +132,7 @@ namespace Supremacy.UI
         {
             NumericUpDown control = (NumericUpDown)element;
             decimal newMaximum = (decimal)value;
-            return Decimal.Round(Math.Max(newMaximum, control.Minimum), control.DecimalPlaces);
+            return decimal.Round(Math.Max(newMaximum, control.Minimum), control.DecimalPlaces);
         }
         #endregion
         #region Change
@@ -176,7 +165,7 @@ namespace Supremacy.UI
             decimal newChange = (decimal)value;
             NumericUpDown control = (NumericUpDown)element;
 
-            decimal coercedNewChange = Decimal.Round(newChange, control.DecimalPlaces);
+            decimal coercedNewChange = decimal.Round(newChange, control.DecimalPlaces);
 
             //If Change is .1 and DecimalPlaces is changed from 1 to 0, we want Change to go to 1, not 0.
             //Put another way, Change should always be rounded to DecimalPlaces, but never smaller than the 
@@ -342,13 +331,6 @@ namespace Supremacy.UI
         private static RoutedCommand _decreaseCommand;
         #endregion
 
-        //#region Automation
-        //protected override AutomationPeer OnCreateAutomationPeer()
-        //{
-        //    return new NumericUpDownAutomationPeer(this);
-        //}
-        //#endregion
-
         /// <summary>
         /// This is a class handler for MouseLeftButtonDown event.
         /// The purpose of this handle is to move input focus to NumericUpDown when user pressed
@@ -374,98 +356,4 @@ namespace Supremacy.UI
             DefaultChange = 1;
         private const int DefaultDecimalPlaces = 0;
     }
-
-    //public class NumericUpDownAutomationPeer : FrameworkElementAutomationPeer, IRangeValueProvider
-    //{
-    //    public NumericUpDownAutomationPeer(NumericUpDown control)
-    //        : base(control)
-    //    {
-    //    }
-
-    //    protected override string GetClassNameCore()
-    //    {
-    //        return "NumericUpDown";
-    //    }
-
-    //    protected override AutomationControlType GetAutomationControlTypeCore()
-    //    {
-    //        return AutomationControlType.Spinner;
-    //    }
-
-    //    public override object GetPattern(PatternInterface patternInterface)
-    //    {
-    //        if (patternInterface == PatternInterface.RangeValue)
-    //        {
-    //            return this;
-    //        }
-    //        return base.GetPattern(patternInterface);
-    //    }
-
-    //    internal void RaiseValueChangedEvent(decimal oldValue, decimal newValue)
-    //    {
-    //        base.RaisePropertyChangedEvent(RangeValuePatternIdentifiers.ValueProperty,
-    //            (double)oldValue, (double)newValue);
-    //    }
-
-    //    #region IRangeValueProvider Members
-
-    //    bool IRangeValueProvider.IsReadOnly
-    //    {
-    //        get
-    //        {
-    //            return !IsEnabled();
-    //        }
-    //    }
-
-    //    double IRangeValueProvider.LargeChange
-    //    {
-    //        get { return (double)MyOwner.Change; }
-    //    }
-
-    //    double IRangeValueProvider.Maximum
-    //    {
-    //        get { return (double)MyOwner.Maximum; }
-    //    }
-
-    //    double IRangeValueProvider.Minimum
-    //    {
-    //        get { return (double)MyOwner.Minimum; }
-    //    }
-
-    //    void IRangeValueProvider.SetValue(double value)
-    //    {
-    //        if (!IsEnabled())
-    //        {
-    //            throw new ElementNotEnabledException();
-    //        }
-
-    //        decimal val = (decimal)value;
-    //        if (val < MyOwner.Minimum || val > MyOwner.Maximum)
-    //        {
-    //            throw new ArgumentOutOfRangeException("value");
-    //        }
-
-    //        MyOwner.Value = val;
-    //    }
-
-    //    double IRangeValueProvider.SmallChange
-    //    {
-    //        get { return (double)MyOwner.Change; }
-    //    }
-
-    //    double IRangeValueProvider.Value
-    //    {
-    //        get { return (double)MyOwner.Value; }
-    //    }
-
-    //    #endregion
-
-    //    private NumericUpDown MyOwner
-    //    {
-    //        get
-    //        {
-    //            return (NumericUpDown)base.Owner;
-    //        }
-    //    }
-    //}
 }

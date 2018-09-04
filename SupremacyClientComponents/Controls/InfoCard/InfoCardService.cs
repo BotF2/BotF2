@@ -517,7 +517,6 @@ namespace Supremacy.Client.Controls
             }
             else if (!IsOnInfoCard(obj))
             {
-                //this.RaiseInfoCardClosingEvent(true);
                 LastMouseOverWithInfoCard = null;
             }
         }
@@ -701,11 +700,7 @@ namespace Supremacy.Client.Controls
 
         internal void ProcessPreviewKeyDownForInfoCard(KeyEventArgs e)
         {
-            //if (e.Key != Key.F1)
-            //{
-            //    // Close any active screen tip
-            //    this.RaiseInfoCardClosingEvent(true);
-            //}
+            
         }
 
         internal void ProcessPreviewMouseMoveForInfoCard(MouseEventArgs e)
@@ -858,27 +853,6 @@ namespace Supremacy.Client.Controls
                                     infoCardPosition = transformToVisual.Transform(infoCardPosition);
                             }
                         }
-
-                        //var targetVisual = (UIElement)lastMouseOver;
-
-                        //var targetWindow = Window.GetWindow(targetVisual);
-                        //if (targetWindow != null)
-                        //{
-                        //    var transform = targetVisual.TransformToAncestor(targetWindow);
-                        //    if (transform != null)
-                        //        infoCardPosition = transform.Transform(infoCardPosition);
-                        //}
-
-                        //if (_currentInfoCard.IsOpen)
-                        //{
-                        //    var infoCardWindow = InfoCardHost.GetInfoCardWindow(_currentInfoCard);
-                        //    if (infoCardWindow != null)
-                        //    {
-                        //        infoCardWindow.Setup(_currentInfoCard.Location);
-                        //        _currentInfoCard.Open();
-                        //    }
-                        //    return;
-                        //}
 
                         if (targetElement != null)
                         {

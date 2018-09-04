@@ -15,7 +15,7 @@ using Supremacy.Resources;
 
 namespace Supremacy.Client
 {
-    [ValueConversion(typeof(String), typeof(String))]
+    [ValueConversion(typeof(string), typeof(string))]
     public class ResourceStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
