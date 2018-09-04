@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using Supremacy.Collections;
+using Supremacy.Diplomacy;
 using Supremacy.Orbitals;
 using Supremacy.Utility;
 using System;
@@ -83,13 +84,21 @@ namespace Supremacy.Combat
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
-                try
+                List<string> allEmpires = new List<string>();
+                allEmpires.AddRange(ownEmpires);
+                allEmpires.AddRange(friendlyEmpires);
+                allEmpires.AddRange(hostileEmpires);
+
+                foreach (var firstEmpire in allEmpires.Distinct().ToList())
                 {
-                    Diplomacy.DiplomacyHelper.EnsureContact(_combatShips[i].Item1.Owner, oppositionShips.FirstOrDefault().Item1.Owner, oppositionShips.FirstOrDefault().Item1.Source.Location);
+                    foreach (var secondEmpire in allEmpires.Distinct().ToList())
+                    {
+                        if (!DiplomacyHelper.IsContactMade(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire])) {
+                            DiplomacyHelper.EnsureContact(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire], _combatShips[0].Item1.Source.Location);
+                        }
+                    }
                 }
-                catch
-                { // if ship is lost will get null above when trying to find it
-                }
+
                 bool oppositionIsRushing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Rush));
                 bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
                 bool oppositionIsHailing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Hail));
