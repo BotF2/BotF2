@@ -308,24 +308,6 @@ namespace Supremacy.UI
             }
             else if (system != null)
             {
-                int maxPopulation;
-                Percentage growthRate;
-                Percentage populationHealth;
-
-                if (system.HasColony)
-                {
-                    maxPopulation = system.Colony.Population.Maximum;
-                    growthRate = system.Colony.GrowthRate;
-                    populationHealth = system.Colony.Health.PercentFilled;
-                }
-                else
-                {
-                    var targetRace = AppContext.LocalPlayerEmpire.Civilization.Race;
-                    growthRate = system.GetGrowthRate(targetRace);
-                    maxPopulation = system.GetMaxPopulation(targetRace);
-                    populationHealth = new Percentage(0);
-                }
-
                 switch (system.StarType)
                 {
                     case StarType.BlackHole:
@@ -403,39 +385,21 @@ namespace Supremacy.UI
                             name.Text = system.Name;
                         }
 
-                        morale.Text = string.Format("{0}: {1}",
-                            ResourceManager.GetString("MORALE"),
-                            system.HasColony ? system.Colony.Morale.CurrentValue : 0);
-
-
                         if (system.HasColony)
                         {
+                            morale.Text = string.Format("{0}: {1}",
+                                ResourceManager.GetString("MORALE"), system.Colony.Morale.CurrentValue);
                             population.Text = string.Format("{0}: {1:#,##0} of {2:#,##0}",
                                 ResourceManager.GetString("SYSTEM_POPULATION"),
-                                system.HasColony ? system.Colony.Population.CurrentValue : 0, maxPopulation);
-
-                        }
-                        else
-                        {
-                            population.Text = string.Format("{0}: {1:#,##0}",
-                                ResourceManager.GetString("SYSTEM_MAX_POPULATION"), maxPopulation);
-                        }
-
-                        growth.Text = string.Format("{0}: {1:0.#}%",
-                            ResourceManager.GetString("SYSTEM_GROWTH_RATE"), growthRate * 100);
-
-                        race.Text = system.HasColony
-                            ? string.Format("{0}: {1}",
-                                ResourceManager.GetString("SYSTEM_INHABITANTS"), system.Colony.Inhabitants.PluralName)
-                            : ResourceManager.GetString("SYSTEM_UNINHABITED");
-
-                        if (system.HasColony) {
+                                system.Colony.Population.CurrentValue, system.Colony.MaxPopulation);
+                            growth.Text = string.Format("{0}: {1:0.#}%",
+                                ResourceManager.GetString("SYSTEM_GROWTH_RATE"), system.Colony.GrowthRate * 100);
+                            race.Text = string.Format("{0}: {1}",
+                                ResourceManager.GetString("SYSTEM_INHABITANTS"), system.Colony.Inhabitants.PluralName);
+                            Percentage populationHealth = system.Colony.Health.PercentFilled;
                             health.Text = string.Format("{0}: {1:0.#}%",
                                 ResourceManager.GetString("SYSTEM_HEALTH"), populationHealth * 100);
-                        }
 
-                        if (system.HasColony)
-                        {
                             orbitals.SetBinding(
                                 TextBlock.TextProperty,
                                 new MultiBinding
@@ -459,17 +423,23 @@ namespace Supremacy.UI
                         }
                         else
                         {
+                            race.Text = ResourceManager.GetString("SYSTEM_UNINHABITED");
+                            population.Text = string.Format("{0}: {1:#,##0}",
+                                ResourceManager.GetString("SYSTEM_MAX_POPULATION"), system.GetMaxPopulation(AppContext.LocalPlayerEmpire.Civilization.Race));
+                            growth.Text = string.Format("{0}: {1:0.#}%",
+                                ResourceManager.GetString("SYSTEM_GROWTH_RATE"), system.GetGrowthRate(AppContext.LocalPlayerEmpire.Civilization.Race) * 100);
                             BindingOperations.ClearBinding(orbitals, TextBlock.TextProperty);
                         }
 
                         statsPanel.Children.Add(race);
-                        if (system.IsInhabited)
-                            statsPanel.Children.Add(morale);
                         statsPanel.Children.Add(population);
                         statsPanel.Children.Add(growth);
-                        if (system.HasColony)
+                        if (system.HasColony) {
                             statsPanel.Children.Add(health);
-                        statsPanel.Children.Add(orbitals);
+                            statsPanel.Children.Add(morale);
+                            statsPanel.Children.Add(orbitals);
+                        }
+
                         break;
                 }
             }
