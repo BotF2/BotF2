@@ -796,32 +796,8 @@ namespace Supremacy.Game
                             civManager.SitRepEntries.Add(new StarvationSitRepEntry(civ, colony));
                         }
                         else if (colony.Population.LastChange >= 0)
-                        {
-                            var growthRate = colony.System.GetGrowthRate(colony.Inhabitants);
-                            float growthRateMod = 1.0f;
-                            foreach (var building in colony.Buildings)
-                            {
-                                if (!building.IsActive)
-                                    continue;
-
-                                foreach (var buildingBonus in building.BuildingDesign.Bonuses)
-                                {
-                                    if (buildingBonus.BonusType == BonusType.PercentGrowthRate)
-                                    {
-                                        growthRateMod += (0.01f * buildingBonus.Amount);
-                                    }
-                                    if (buildingBonus.BonusType == BonusType.GrowthRate)
-                                    {
-                                        growthRate += (0.01f * buildingBonus.Amount);
-                                    }
-                                }
-                            }
-
-                            if (growthRateMod < 0.01f)
-                                growthRateMod = 0.01f;
-                            growthRate *= growthRateMod;
-
-                            popChange = (int)Math.Ceiling(growthRate * colony.Population.CurrentValue);
+                        {                         
+                            popChange = (int)Math.Ceiling(colony.System.GetGrowthRate(colony.Inhabitants) * colony.Population.CurrentValue);
                         }
 
                         int newPopulation = colony.Population.AdjustCurrent(popChange);

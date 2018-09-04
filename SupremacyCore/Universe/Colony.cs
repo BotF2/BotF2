@@ -120,7 +120,7 @@ namespace Supremacy.Universe
                 throw new ArgumentNullException("system");
             if (inhabitants == null)
                 throw new ArgumentNullException("inhabitants");
-            _health = new Meter(80, 0, 100);
+            
             _population.Maximum = system.GetMaxPopulation(inhabitants);
 
             _inhabitantId = inhabitants.Key;
@@ -296,25 +296,28 @@ namespace Supremacy.Universe
         {
             get
             {
-                var baseValue = (decimal)(System.GetGrowthRate(Inhabitants) * 100);
+                decimal health = (decimal)_health.PercentFilled;
+                var baseGrowthRate = ((decimal)System.GetGrowthRate(Inhabitants) * (decimal)_health.PercentFilled) * 100;
                 var modifier = new ValueModifier<decimal>
                                {
                                    IsOffsetAppliedFirst = false,
                                    HasCompoundMultiplier = false
                                };
-                foreach (var building in Buildings)
+                foreach (var building in Buildings.Where(b => b.IsActive))
                 {
-                    if (!building.IsActive)
-                        continue;
                     foreach (var bonus in building.BuildingDesign.Bonuses)
                     {
                         if (bonus.BonusType == BonusType.GrowthRate)
+                        {
                             modifier.Offset += bonus.Amount;
+                        }
                         else if (bonus.BonusType == BonusType.PercentGrowthRate)
+                        {
                             modifier.Multiplier += (0.01f * bonus.Amount);
+                        }
                     }
                 }
-                return Convert.ToSingle(0.01m * modifier.Apply(baseValue));
+                return Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
             }
         }
 
@@ -751,6 +754,7 @@ namespace Supremacy.Universe
 
             _population = new Meter(0, 0, Meter.MaxValue);
             _population.PropertyChanged += PopulationPropertyChanged;
+            _health = new Meter(80, 0, 100);
 
             _shieldStrength = new Meter(0, 0, 0) { AutoClamp = false };
 
