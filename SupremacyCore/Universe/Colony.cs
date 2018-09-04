@@ -296,7 +296,6 @@ namespace Supremacy.Universe
         {
             get
             {
-                decimal health = (decimal)_health.PercentFilled;
                 var baseGrowthRate = ((decimal)System.GetGrowthRate(Inhabitants) * (decimal)_health.PercentFilled) * 100;
                 var modifier = new ValueModifier<decimal>
                                {

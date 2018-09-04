@@ -499,8 +499,6 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class MedicalOrder : FleetOrder
     {
-        private Ship _bestShip;
-
         public override string OrderName
         {
             get { return ResourceManager.GetString("FLEET_ORDER_MEDICAL"); }
@@ -550,39 +548,22 @@ namespace Supremacy.Orbitals
             {
                 return false;
             }
-            return fleet.Ships.Any(s => s.ShipType == ShipType.Medical);
-        }
-
-        private Ship GetBestMedicalShip()
-        {
-            Ship bestShip = null;
-            foreach (var ship in Fleet.Ships.Where(s => s.ShipType == ShipType.Medical))
+            if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
             {
-                if ((bestShip == null) || (ship.ShipDesign.PopulationHealth > bestShip.ShipDesign.PopulationHealth)) {
-                    bestShip = ship;
-                }
+                return false;
             }
-            return bestShip;
-        }
-
-        protected internal override void OnOrderAssigned()
-        {
-            base.OnOrderAssigned();
-            _bestShip = GetBestMedicalShip();
+            return fleet.Ships.Any(s => s.ShipType == ShipType.Medical);
         }
 
         protected internal override void OnTurnEnding()
         {
-            base.OnTurnEnding();
-
             //Medicate the colony
-            Fleet.Sector.System.Colony.Health.AdjustCurrent(1 + _bestShip.ShipDesign.PopulationHealth);
-            Fleet.Sector.System.Colony.Health.Clamp();
+            Fleet.Sector.System.Colony.Health.AdjustCurrent(1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10));
 
             //If the colony is not ours, increase regard etc
             if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
             {
-                DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 200);
+                DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
                 Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
                 Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
             }
