@@ -276,7 +276,7 @@ namespace Supremacy.UI
             name.FontFamily = FontFamily;
             name.FontSize = (double)fontSize.ConvertFrom("14pt");
             name.Foreground = Brushes.LightBlue;
-            name.Margin = new Thickness(0, 0, 0, 14);
+            name.Margin = new Thickness(0, 0, 0, 2);
 
             details.FontFamily = FontFamily;
             details.FontSize = (double)fontSize.ConvertFrom("12pt");
@@ -288,7 +288,7 @@ namespace Supremacy.UI
             statsPanel.Orientation = Orientation.Vertical;
             statsPanel.Margin = new Thickness(0, 0, 14, 0);
             statsPanel.CanHorizontallyScroll = false;
-            if (!Double.IsNaN(ActualWidth))
+            if (!double.IsNaN(ActualWidth))
                 statsPanel.MaxWidth = ActualWidth;
             statsPanel.Children.Add(name);
 
@@ -310,17 +310,20 @@ namespace Supremacy.UI
             {
                 int maxPopulation;
                 Percentage growthRate;
+                Percentage populationHealth;
 
                 if (system.HasColony)
                 {
-                    growthRate = system.Colony.GrowthRate;
                     maxPopulation = system.Colony.Population.Maximum;
+                    growthRate = system.Colony.GrowthRate;
+                    populationHealth = system.Colony.Health.PercentFilled;
                 }
                 else
                 {
                     var targetRace = AppContext.LocalPlayerEmpire.Civilization.Race;
                     growthRate = system.GetGrowthRate(targetRace);
                     maxPopulation = system.GetMaxPopulation(targetRace);
+                    populationHealth = new Percentage(0);
                 }
 
                 switch (system.StarType)
@@ -331,7 +334,7 @@ namespace Supremacy.UI
                         statsPanel.Children.Add(details);
                         break;
                     case StarType.Wormhole:
-                        name.Text = String.Format(ResourceManager.GetString("WORMHOLE_NAME_FORMAT"),
+                        name.Text = string.Format(ResourceManager.GetString("WORMHOLE_NAME_FORMAT"),
                             system.Name);
                         details.Text = ResourceManager.GetString("STAR_TYPE_WORMHOLE_DESCRIPTION");
                         statsPanel.Children.Add(details);
@@ -364,24 +367,30 @@ namespace Supremacy.UI
                         var morale = new TextBlock();
                         var population = new TextBlock();
                         var growth = new TextBlock();
+                        var health = new TextBlock();
                         var race = new TextBlock();
                         var orbitals = new TextBlock();
 
                         morale.FontFamily = FontFamily;
                         population.FontFamily = FontFamily;
                         growth.FontFamily = FontFamily;
+                        health.FontFamily = FontFamily;
                         race.FontFamily = FontFamily;
                         orbitals.FontFamily = FontFamily;
 
                         morale.FontSize = population.FontSize
-                                        = growth.FontSize 
-                                        = race.FontSize 
-                                        = orbitals.FontSize 
+                                        = growth.FontSize
+                                        = health.FontSize
+                                        = race.FontSize
+                                        = orbitals.FontSize
                                         = (double)fontSize.ConvertFrom("11pt");
 
-                        morale.Foreground = population.Foreground 
-                                            = growth.Foreground 
-                                            = race.Foreground = orbitals.Foreground = Brushes.Beige;
+                        morale.Foreground = population.Foreground
+                                            = growth.Foreground
+                                            = health.Foreground
+                                            = race.Foreground
+                                            = orbitals.Foreground
+                                            = Brushes.Beige;
 
                         if (system.StarType == StarType.Nebula)
                         {
@@ -394,35 +403,36 @@ namespace Supremacy.UI
                             name.Text = system.Name;
                         }
 
-                        morale.Text = string.Format("{0}: {1}", ResourceManager.GetString("MORALE"),
+                        morale.Text = string.Format("{0}: {1}",
+                            ResourceManager.GetString("MORALE"),
                             system.HasColony ? system.Colony.Morale.CurrentValue : 0);
 
 
-                        if (system.HasColony) {
-                            population.Text = string.Format(
-                            "{0}: {1:#,##0} of {2:#,##0}",
-                            ResourceManager.GetString("SYSTEM_POPULATION"),
-                            system.HasColony ? system.Colony.Population.CurrentValue : 0,
-                            maxPopulation);
+                        if (system.HasColony)
+                        {
+                            population.Text = string.Format("{0}: {1:#,##0} of {2:#,##0}",
+                                ResourceManager.GetString("SYSTEM_POPULATION"),
+                                system.HasColony ? system.Colony.Population.CurrentValue : 0, maxPopulation);
 
                         }
                         else
                         {
                             population.Text = string.Format("{0}: {1:#,##0}",
-                                ResourceManager.GetString("SYSTEM_MAX_POPULATION"),
-                                maxPopulation);
+                                ResourceManager.GetString("SYSTEM_MAX_POPULATION"), maxPopulation);
                         }
 
-                        growth.Text = string.Format(
-                            "{0}: {1:0.#}%",
-                            ResourceManager.GetString("SYSTEM_GROWTH_RATE"),
-                            growthRate * 100);
+                        growth.Text = string.Format("{0}: {1:0.#}%",
+                            ResourceManager.GetString("SYSTEM_GROWTH_RATE"), growthRate * 100);
+
                         race.Text = system.HasColony
-                                        ? string.Format(
-                                              "{0}: {1}",
-                                              ResourceManager.GetString("SYSTEM_INHABITANTS"),
-                                              system.Colony.Inhabitants.PluralName)
-                                        : ResourceManager.GetString("SYSTEM_UNINHABITED");
+                            ? string.Format("{0}: {1}",
+                                ResourceManager.GetString("SYSTEM_INHABITANTS"), system.Colony.Inhabitants.PluralName)
+                            : ResourceManager.GetString("SYSTEM_UNINHABITED");
+
+                        if (system.HasColony) {
+                            health.Text = string.Format("{0}: {1:0.#}%",
+                                ResourceManager.GetString("SYSTEM_HEALTH"), populationHealth * 100);
+                        }
 
                         if (system.HasColony)
                         {
@@ -457,6 +467,8 @@ namespace Supremacy.UI
                             statsPanel.Children.Add(morale);
                         statsPanel.Children.Add(population);
                         statsPanel.Children.Add(growth);
+                        if (system.HasColony)
+                            statsPanel.Children.Add(health);
                         statsPanel.Children.Add(orbitals);
                         break;
                 }
