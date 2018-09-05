@@ -60,7 +60,6 @@ namespace Supremacy.Client.Views
         public String CounterpartyDiplomacyReport
         {
             get { return _foreignPower.Counterparty.DiplomacyReport; }
-
         }
 
         public Civilization Owner
