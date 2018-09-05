@@ -52,11 +52,11 @@ namespace Supremacy.Client.Audio
             List<MusicEntry> tracks = new List<MusicEntry>();
             foreach (XmlElement xmlPack in xmlRoot.GetElementsByTagName(PackDefName))
             {
-                String musicPackName = xmlPack.GetAttribute("Name");
-                if ((String.IsNullOrEmpty(packName) && !String.IsNullOrEmpty(musicPackName))
-                    || (!String.IsNullOrEmpty(packName) && String.IsNullOrEmpty(musicPackName)))
+                string musicPackName = xmlPack.GetAttribute("Name");
+                if ((string.IsNullOrEmpty(packName) && !string.IsNullOrEmpty(musicPackName))
+                    || (!string.IsNullOrEmpty(packName) && string.IsNullOrEmpty(musicPackName)))
                     continue;
-                else if (!String.IsNullOrEmpty(packName) && !String.IsNullOrEmpty(musicPackName)
+                else if (!string.IsNullOrEmpty(packName) && !string.IsNullOrEmpty(musicPackName)
                     && !musicPackName.Trim().ToUpperInvariant().Equals(packName.Trim().ToUpperInvariant()))
                     continue;
 
@@ -86,7 +86,6 @@ namespace Supremacy.Client.Audio
                     string trackName = track.GetAttribute("Name");
                     var entry = new MusicEntry(trackName, System.IO.Path.Combine(Path, filename));
                     _musicList.Add(entry);
-                    //works   GameLog.Print("xml-Entry: {0} - {1}", trackName, filename);
                     if (!String.IsNullOrEmpty(trackName)) _musicDict.Add(trackName, entry);
                 }
             }

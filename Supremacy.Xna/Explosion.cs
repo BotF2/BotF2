@@ -48,13 +48,6 @@ namespace Supremacy.Xna
             _position.X = (float)(r * Math.Cos(theta));
             _position.Y = (float)(r * Math.Sin(theta));
             _position.Z = (float)(r);
-
-            //_velocity.X = MathHelper.Lerp(-sidewaysVelocityRange / 2, sidewaysVelocityRange / 2, (float)_random.NextDouble());
-            //_velocity.Y = MathHelper.Lerp(-verticalVelocityRange / 2, verticalVelocityRange / 2, (float)_random.NextDouble());
-
-            //_velocity.X = (float)(_random.NextDouble() - 0.5) * sidewaysVelocityRange;
-            //_velocity.Y = (float)(_random.NextDouble() + 0.5) * verticalVelocityRange;
-            //_velocity.Z = (float)(_random.NextDouble() - 0.5) * sidewaysVelocityRange;
         }
 
 
@@ -67,7 +60,6 @@ namespace Supremacy.Xna
 
             // Simple projectile physics.
             _position += _velocity * elapsedTime;
-            //velocity.Y -= elapsedTime * gravity;
             _age += elapsedTime;
 
             // If enough time has passed, explode! Note how we pass our velocity

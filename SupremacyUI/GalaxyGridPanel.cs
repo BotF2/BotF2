@@ -241,7 +241,6 @@ namespace Supremacy.UI
                 };
                 scanBrush.Freeze();
                 s_scanPens[civ.CivID] = new Pen(scanBrush, 1.0);
-                //s_scanPens[civ.CivID].DashStyle = DashStyles.Dot;
                 s_scanPens[civ.CivID].Freeze();
 
                 //Empire fills
@@ -303,8 +302,7 @@ namespace Supremacy.UI
             foreach (StarType type in EnumUtilities.GetValues<StarType>())
             {
                 s_starImages[type] = new BitmapImage(
-                    ResourceManager.GetResourceUri(String.Format("Resources/Images/Stars/Map/{0}.png", type)));
-                //RenderOptions.SetBitmapScalingMode(s_starImages[type], BitmapScalingMode.LowQuality);
+                    ResourceManager.GetResourceUri(string.Format("Resources/Images/Stars/Map/{0}.png", type)));
             }
 
             s_textTypeface = new Typeface(
@@ -520,11 +518,9 @@ namespace Supremacy.UI
             if (_screenModel == null)
                 return;
 
-            // works GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: Next: ScreenModel TaskForce...");
             _screenModel.SelectedTaskForceChanged += OnScreenModelSelectedTaskForceChanged;
             _screenModel.SelectedSectorChanged += OnScreenModelSelectedSectorChanged;
 
-            // works GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: Next: HoveredSectorAsObservable...");
             if (_hoveredSector == null)
                 _hoveredSector = HoveredSectorAsObservable();
 
@@ -535,7 +531,6 @@ namespace Supremacy.UI
                     if (_screenModel != null)
                         _screenModel.HoveredSector = sector;
                 });
-            // works GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: Next: HoveredSectorAsObservable DONE...");
         }
 
         private IObservable<Sector> HoveredSectorAsObservable()
@@ -764,7 +759,6 @@ namespace Supremacy.UI
             var image = new BitmapImage();
             image.BeginInit();
             image.DecodePixelHeight = (int)(FleetIconSize * MaxScaleFactor);
-            //image.CacheOption = BitmapCacheOption.OnLoad;
             image.UriSource = uri;
             image.EndInit();
             image.Freeze();
@@ -893,12 +887,12 @@ namespace Supremacy.UI
             switch (system.StarType)
             {
                 case StarType.Nebula:
-                    nameText = String.Format(
+                    nameText = string.Format(
                         ResourceManager.GetString("NEBULA_NAME_FORMAT"),
                         system.Name);
                     break;
                 case StarType.Wormhole:
-                    nameText = String.Format(
+                    nameText = string.Format(
                         ResourceManager.GetString("WORMHOLE_NAME_FORMAT"),
                         system.Name);
                     break;
@@ -1207,9 +1201,6 @@ namespace Supremacy.UI
 
         public void Update(bool updateSectors)
         {
-            //Stopwatch stopwatch = new Stopwatch();
-            //stopwatch.Start();
-
             if (!UseAnimatedStars)
                 PauseAnimations();
 
@@ -1238,13 +1229,6 @@ namespace Supremacy.UI
             _children.Add(_tradeLines);
             _children.Add(_starNames);
             _children.Add(_fleetIconCanvas);
-
-            //_fleetIconAdorners.ForEach(o => _children.Add(o));
-
-            //ResumeAnimations();
-
-            //stopwatch.Stop();
-            //Trace.WriteLine("GalaxyGridPanel.Update() completed in " + stopwatch.Elapsed);
         }
 
         public void ZoomIn()
@@ -1493,14 +1477,10 @@ namespace Supremacy.UI
             {
                 case GalaxyGridInputMode.FleetMovement:
                     GalaxyScreenCommands.SelectTaskForce.Execute(null);
-                            //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: SelectTaskForce...");
                     ClearRouteData();
-                            //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: ClearRouteData...");
                     ReleaseMouseCapture();
-                            //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: ReleaseMouseCapture...");
                     if (SelectedFleet != null)
                         PlayerActionEvents.FleetRouteUpdated.Publish(SelectedFleet);
-                            //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: PlayerActionEvents.FleetRouteUpdated...");
                     break;
                 case GalaxyGridInputMode.TradeRoute:
                     SelectedTradeRoute = null;
@@ -1508,7 +1488,6 @@ namespace Supremacy.UI
                     ReleaseMouseCapture();
                     break;
                 default:
-                    //CaptureMouse();
                     break;
             }
 
@@ -1750,9 +1729,6 @@ namespace Supremacy.UI
                     {
                         RepeatBehavior = RepeatBehavior.Forever
                     };
-
-            //Timeline.SetDesiredFrameRate(animationX, 30);
-            //Timeline.SetDesiredFrameRate(animationY, 30);
 
             var clockX = animationX.CreateClock();
             var clockY = animationY.CreateClock();
@@ -2099,7 +2075,6 @@ namespace Supremacy.UI
                 slc.Close();
                 dc.DrawGeometry(null, scanPen, scanLines);
             }
-            //_starNames.Drawing.Freeze();
         }
 
         [NotNull]
@@ -2351,7 +2326,6 @@ namespace Supremacy.UI
                         if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
                         {
                             var setRoute = true;
-                            //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: fleet.SetRoute...");
                             if (!_newRoute.IsEmpty && fleet.Order.IsCancelledOnRouteChange)
                             {
                                 var confirmResult = MessageDialog.Show(
@@ -2365,16 +2339,9 @@ namespace Supremacy.UI
                             }
                             if (setRoute)
                             {
-                                //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: starting.setRoute...");
                                 fleet.SetRoute(_newRoute);
-                                //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: fleet.SetRoute...");
-                                //_soundPlayer.PlayAny("TaskForceOrders");
-                                // sound player freezes game when you try to play too many sounds at once
-                                //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: _soundPlayer.PlayAny...");
                                 PlayerOrderService.AddOrder(new SetFleetRouteOrder(fleet));
-                                //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: new SetFleetRouteOrder...");
                                 PlayerActionEvents.FleetRouteUpdated.Publish(fleet);
-                                //GameLog.Client.GameData.DebugFormat("GalaxyGridPanel.cs: FleetRouteUpdated.Publish...");
                             }
                             SetInputMode(GalaxyGridInputMode.Default);
                         }

@@ -284,11 +284,8 @@ namespace Supremacy.Xna
                     .Subscribe(
                         model =>
                         {
-                            //var boundingBox = XnaHelper.ComputeBoundingBox(model, Matrix.Identity);
-                            //var offset = Math.Max(Math.Abs(boundingBox.Max.Z), Math.Abs(boundingBox.Min.Z)) / 2;
-
                             var radius = model.Meshes.Max(o => (o.BoundingSphere.Center - Vector3.Zero).Length() + o.BoundingSphere.Radius);
-                            var cameraDistance = (radius * CameraDistanceMultiplier);//(float)((radius+offset) / Math.Tan(Math.PI / 8d)) + Math.Max(Math.Abs(boundingBox.Max.X), Math.Abs(boundingBox.Min.X)) + 1f;
+                            var cameraDistance = (radius * CameraDistanceMultiplier);
 
                             var eye = new Vector3(0.0f, 0.0f, cameraDistance);
                             var at = new Vector3(0.0f, 0.0f, 0.0f);

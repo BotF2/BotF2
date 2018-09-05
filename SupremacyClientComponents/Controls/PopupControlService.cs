@@ -743,14 +743,6 @@ namespace Supremacy.Client.Controls
                 popupAnchor.IsPopupOpen = true;
             }
 
-            // Attempt to capture the mouse for the subtree
-            //if ((_popupAnchors.Count == 1) &&
-            //    !(Mouse.Captured is ContextMenu) &&
-            //    !Mouse.Capture(popupHost, CaptureMode.SubTree))
-            //{
-            //    return false;
-            //}
-
             // Attach to events
             popupHost.KeyDown += OnKeyDown;
             popupHost.LostMouseCapture += OnLostMouseCapture;

@@ -42,30 +42,5 @@ namespace Supremacy.Utility
             LogManager.GetLogger(typeof(GameLogManager)).Info("Log Initialized.");
 
         }
-
-        /*  
-         *  DEAD CODE - not used anywhere
-         * 
-         
-        public static ILog GetLogger(string name)
-        {
-            return LogManager.GetLogger(name);
-        }
-
-        public static ILog GetLogger(Type type)
-        {
-            return LogManager.GetLogger(type);
-        }
-
-        public static GameLog GetLog(string name)
-        {
-            return GameLog.GetLog(name);
-        }
-
-        public static GameLog GetLog(Type type)
-        {
-            return GameLog.GetLog(type);
-        }
-        */
     }
 }

@@ -172,10 +172,6 @@ namespace Supremacy.UI
         {
             get
             {
-                //if (!base.IsEnabled)
-                //{
-                //    return DisabledBackground;
-                //}
                 if (!Animates)
                 {
                     if (RenderPressed)
@@ -274,7 +270,6 @@ namespace Supremacy.UI
                             frames1.KeyFrames.Add(new DiscreteDoubleKeyFrame(1, TimeSpan.FromSeconds(0.75)));
                             frames1.KeyFrames.Add(new LinearDoubleKeyFrame(0, TimeSpan.FromSeconds(2)));
                             frames1.RepeatBehavior = RepeatBehavior.Forever;
-                            //Timeline.SetDesiredFrameRate(frames1, new Nullable<int>(10));
                             chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, frames1);
                         }
                         else if (chrome._localResources == null)
@@ -342,7 +337,6 @@ namespace Supremacy.UI
                             frames1.KeyFrames.Add(new LinearDoubleKeyFrame(0, TimeSpan.FromSeconds(num2 + 1.5)));
                             frames1.KeyFrames.Add(new LinearDoubleKeyFrame(num1, TimeSpan.FromSeconds(2)));
                             frames1.RepeatBehavior = RepeatBehavior.Forever;
-                            //Timeline.SetDesiredFrameRate(frames1, new Nullable<int>(10));
                             chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, frames1);
                         }
                         else
@@ -370,58 +364,6 @@ namespace Supremacy.UI
 
         private static void OnRenderPressedChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            //ButtonChrome chrome = (ButtonChrome)o;
-            //if (chrome.Animates)
-            //{
-            //    if ((bool)e.NewValue)
-            //    {
-            //        if (chrome._localResources == null)
-            //        {
-            //            chrome._localResources = new Supremacy.UI.ButtonChrome.LocalResources();
-            //            chrome.TryInvalidateVisual();
-            //        }
-            //        Duration duration1 = new Duration(TimeSpan.FromSeconds(0.1));
-            //        DoubleAnimation animation1 = new DoubleAnimation(1, duration1);
-            //        chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, animation1);
-            //        ColorAnimation animation2 = new ColorAnimation(Color.FromRgb(0xc2, 0xe4, 0xf6), duration1);
-            //        GradientStopCollection collection1 = ((LinearGradientBrush)chrome.BackgroundOverlay).GradientStops;
-            //        collection1[0].BeginAnimation(GradientStop.ColorProperty, animation2);
-            //        collection1[1].BeginAnimation(GradientStop.ColorProperty, animation2);
-            //        animation2 = new ColorAnimation(Color.FromRgb(0xab, 0xda, 0xf3), duration1);
-            //        collection1[2].BeginAnimation(GradientStop.ColorProperty, animation2);
-            //        animation2 = new ColorAnimation(Color.FromRgb(0x90, 0xcb, 0xeb), duration1);
-            //        collection1[3].BeginAnimation(GradientStop.ColorProperty, animation2);
-            //        animation2 = new ColorAnimation(Color.FromRgb(0x2c, 0x62, 0x8b), duration1);
-            //    }
-            //    else if (chrome._localResources == null)
-            //    {
-            //        chrome.TryInvalidateVisual();
-            //    }
-            //    else
-            //    {
-            //        bool flag1 = chrome.RenderMouseOver;
-            //        Duration duration2 = new Duration(TimeSpan.FromSeconds(0.1));
-            //        DoubleAnimation animation3 = new DoubleAnimation();
-            //        animation3.Duration = duration2;
-            //        if (!flag1)
-            //        {
-            //            chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, animation3);
-            //        }
-            //        ColorAnimation animation4 = new ColorAnimation();
-            //        animation4.Duration = duration2;
-            //        GradientStopCollection collection2 = ((LinearGradientBrush)chrome.BackgroundOverlay).GradientStops;
-            //        collection2[0].BeginAnimation(GradientStop.ColorProperty, animation4);
-            //        collection2[1].BeginAnimation(GradientStop.ColorProperty, animation4);
-            //        collection2[2].BeginAnimation(GradientStop.ColorProperty, animation4);
-            //        collection2[3].BeginAnimation(GradientStop.ColorProperty, animation4);
-            //    }
-            //}
-            //else
-            //{
-            //    chrome._localResources = null;
-            //    chrome.TryInvalidateVisual();
-            //}
-
             try
             {
                 ButtonChrome chrome = (ButtonChrome)o;
@@ -442,17 +384,6 @@ namespace Supremacy.UI
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            //Rect rect1 = new Rect();
-            //rect1.Width = Math.Max((double)0, (double)(finalSize.Width - 4));
-            //rect1.Height = Math.Max((double)0, (double)(finalSize.Height - 4));
-            //rect1.X = (finalSize.Width - rect1.Width) * 0.5;
-            //rect1.Y = (finalSize.Height - rect1.Height) * 0.5;
-            //UIElement element1 = this.Child;
-            //if (element1 != null)
-            //{
-            //    element1.Arrange(rect1);
-            //}
-            //return finalSize;
             Size size = base.ArrangeOverride(finalSize);
             UpdateRenderBrush();
             return size;

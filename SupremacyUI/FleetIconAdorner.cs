@@ -101,10 +101,6 @@ namespace Supremacy.UI
                     if (taskForce != null)
                         galaxyScreenModel.SelectedTaskForce = taskForce;
 
-                    //var intelForce = galaxyScreenModel.IntelForces.FirstOrDefault(o => o.View.IsIntelOwned);
-                    //if (intelForce != null)
-                    //    galaxyScreenModel.SelectedIntelForce = intelForce;
-
                     e.Handled = true;
 
                     return;

@@ -83,7 +83,6 @@ namespace Supremacy.Game
     {
         private readonly int _ownerId;
         private readonly SitRepPriority _priority;
-        //private ShipType _shipClass;
 
         /// <summary>
         /// Gets the owner ID.
@@ -93,16 +92,6 @@ namespace Supremacy.Game
         {
             get { return _ownerId; }
         }
-
-        /// <summary>
-        /// Gets or sets the type of the ship.
-        /// </summary>
-        /// <value>The type of the ship.</value>
-        //private ShipType ShipType
-        //{
-        //    get { return _shipClass; }
-        //    set { _shipClass = value; }
-        //}
 
         /// <summary>
         /// Gets the owner.
@@ -234,11 +223,6 @@ namespace Supremacy.Game
             get { return GameContext.Current.ResearchMatrix.GetApplication(_applicationId); }
         }
 
-        //public IntelligenceApplication Application
-        //{
-        //    get { return GameContext.Current.ResearchMatrix.GetApplication(_applicationId); }
-        //}
-
         public override SitRepCategory Categories
         {
             get { return SitRepCategory.Research; }
@@ -248,7 +232,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED"),
+                return string.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED"),
                     ResourceManager.GetString(Application.Name), Application.Level);
             }
         }
@@ -337,7 +321,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"),
+                return string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"),
                     Colony.Sector.Name);
             }
         }
@@ -383,7 +367,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I"),
+                return string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I"),
                     ResourceManager.GetString(ItemType.Name),
                     GameContext.Current.Universe.Map[Location].Name);
                 
@@ -403,20 +387,20 @@ namespace Supremacy.Game
     [Serializable]
     public class BuildingBuiltSitRepEntry : ItemBuiltSitRepEntry
     {
-        private readonly Boolean _isActive;
+        private readonly bool _isActive;
 
         public override string SummaryText
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_UNPOWERED"),
+                return string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_UNPOWERED"),
                     ResourceManager.GetString(ItemType.Name),
                     GameContext.Current.Universe.Map[Location].Name,
                     _isActive ? "" : " (unpowered)");
             }
         }
 
-        public BuildingBuiltSitRepEntry(Civilization owner, TechObjectDesign itemType, MapLocation location, Boolean isActive)
+        public BuildingBuiltSitRepEntry(Civilization owner, TechObjectDesign itemType, MapLocation location, bool isActive)
             : base(owner, itemType, location)
         {
             _isActive = isActive;
@@ -444,8 +428,8 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED"),
-                    _destroyedFoodReserves, _destroyedFoodReserves);
+                return string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED"),
+                    _destroyedFoodReserves, System.Name);
             }
         }
 
@@ -483,7 +467,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED_SUCCESSFULLY"),
+                return string.Format(ResourceManager.GetString("SITREP_FOOD_RESERVES_DESTROYED_SUCCESSFULLY"),
                     _destroyedFoodReserves, System.Name);
             }
         }
@@ -524,7 +508,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES"),
+                return string.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES"),
                     System.Name, _orbitalBatteriesDestroyed, _shieldHealthRemoved);
                 //Saboteurs have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
             }
@@ -567,7 +551,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES_SUCCESSFULLY"),
+                return string.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES_SUCCESSFULLY"),
                     System.Name, _orbitalBatteriesDestroyed, _shieldHealthRemoved);
                     //Our agents have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
             }
@@ -608,7 +592,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_AGENTS_FAILED"),
+                return string.Format(ResourceManager.GetString("SITREP_AGENTS_FAILED"),
                     //"Our agents have failed in their mission on {0}",
                     System.Name);
             }
@@ -647,7 +631,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_AGENTS_FOILED_PLOT"),
+                return string.Format(ResourceManager.GetString("SITREP_AGENTS_FOILED_PLOT"),
                     //"Our agents have foiled a plot by spies on {0}",
                     System.Name);
             }
@@ -687,7 +671,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_CREDITS_WERE_STOLEN"),
+                return string.Format(ResourceManager.GetString("SITREP_CREDITS_WERE_STOLEN"),
                     _creditsStolen, Target.Name);
                 
                 // {0} credits were stolen from our treasury on { 1}.
@@ -728,7 +712,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_CREDITS_STOLEN_SUCCESSFULLY"),
+                return string.Format(ResourceManager.GetString("SITREP_CREDITS_STOLEN_SUCCESSFULLY"),
                     //"Our agents stole {0} credits from the treasury on {1}.",
                     _creditsStolen, Target.Name);
             }
@@ -768,7 +752,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_TRADE_ROUTES_STOLEN_WORTH_SUCCESSFULLY"),
+                return string.Format(ResourceManager.GetString("SITREP_TRADE_ROUTES_STOLEN_WORTH_SUCCESSFULLY"),
                     //"We have stolen {0} worth of goods from the trade routes on {1}",
                     _lostCredits, System.Name);
             }
@@ -809,7 +793,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_TRADE_ROUTES_STOLEN_WORTH"),
+                return string.Format(ResourceManager.GetString("SITREP_TRADE_ROUTES_STOLEN_WORTH"),
                     //"{0} credits worth of goods have been stolen from our trade routes on {1}",
                     _lostCredits, System.Name);
             }
@@ -854,23 +838,23 @@ namespace Supremacy.Game
                 switch (_facilityType)
                 {
                     case ProductionCategory.Energy:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
                             //"{0} energy facilities have been sabotaged on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Food:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
                             //"{0} food facilities have been sabotaged on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Industry:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
                             //"{0} industrial facilities have been sabotaged on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Intelligence:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
                             //"{0} intelligence facilities have been sabotaged on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Research:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
                             //"{0} research facilities have been sabotaged on {1}",
                             _destroyedFacilities, System.Name);
                     default:
@@ -921,23 +905,23 @@ namespace Supremacy.Game
                 switch (_facilityType)
                 {
                     case ProductionCategory.Energy:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"),
                             //"We have sabotaged {0} energy facilities on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Food:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"),
                             //"We have sabotaged {0} food facilities  on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Industry:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY"),
                             //"We have sabotaged {0} industrial facilities on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Intelligence:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INTELLIGENCE"),
                             //"We have sabotaged {0} intelligence facilities on {1}",
                             _destroyedFacilities, System.Name);
                     case ProductionCategory.Research:
-                        return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_RESEARCH"),
                             //"We have sabotaged {0} research facilities on {1}",
                             _destroyedFacilities, System.Name);
                     default:
@@ -971,11 +955,6 @@ namespace Supremacy.Game
         private readonly int _gainedResearchPointsSum;
         private readonly int _gainedOfTotalResearchPoints;
 
-        //public _gainedResearchPointsSum
-        //{
-        //    get { return  0; }
-        //}
-
         public StarSystem System
         {
             get { return GameContext.Current.Universe.Objects[_systemId] as StarSystem; }
@@ -990,22 +969,17 @@ namespace Supremacy.Game
         {
             get
             {
-                //_gainedResearchPointsSum = 10;  
                 if (_gainedResearchPointsSum > 0)
                 {
-                        //GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: Our spies have infiltrated the {0} at {1} and gained {2} of {3} research points by copying their research.",
-                        //    System.Owner, System.Name, _gainedResearchPointsSum, _gainedOfTotalResearchPoints);
-                    return String.Format(ResourceManager.GetString("SITREP_INFILTRATE_SUCCESSFULLY"),
+                    return string.Format(ResourceManager.GetString("SITREP_INFILTRATE_SUCCESSFULLY"),
                         //"Our spies have infiltrated the {0} at {1} and gained {2} of {3} research points.",
                         System.Owner, System.Name, _gainedResearchPointsSum, _gainedOfTotalResearchPoints);
                 }
                 else
                 { 
-                        // GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: Our spies have tried to infiltrate the {0} at {1} but they had no success.", System.Owner, System.Name);
-                    return String.Format(ResourceManager.GetString("SITREP_INFILTRATE_NO_SUCCESS"),
+                    return string.Format(ResourceManager.GetString("SITREP_INFILTRATE_NO_SUCCESS"),
                         //"Our spies have tried to infiltrate the {0} at {1} but they had no success.",
                         System.Owner, System.Name);
-
                 }
             }
         }
@@ -1024,7 +998,6 @@ namespace Supremacy.Game
 
             _gainedResearchPointsSum = gainedResearchPointsSum;
             _gainedOfTotalResearchPoints = gainedOfTotalResearchPoints;
-            //GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: gainedResearchPoints={0}, Sum={0}", _gainedResearchPointsSum);
         }
     }
 
@@ -1034,11 +1007,6 @@ namespace Supremacy.Game
         private readonly int _systemId;
         private readonly int _gainedCreditsSum;
         private readonly int _gainedOfTotalCredits;
-
-        //public _gainedResearchPointsSum
-        //{
-        //    get { return  0; }
-        //}
 
         public StarSystem System
         {
@@ -1056,16 +1024,13 @@ namespace Supremacy.Game
             {
                 if (_gainedCreditsSum > 0)
                 {
-                        GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: The {0} at {1} have been raided: we got {2} of {3} credits.",
+                    return string.Format(ResourceManager.GetString("SITREP_RAID_SUCCESSFULLY"),
+                        //"The {0} at {1} have been raided: we got {2} of {3} credits.",
                         System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
-                    return String.Format(ResourceManager.GetString("SITREP_RAID_SUCCESSFULLY"),
-                            //"The {0} at {1} have been raided: we got {2} of {3} credits.",
-                            System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
                 }
                 else
                 {
-                    GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: Our spies have tried to raid the {0} at {1} but they had no success.", System.Owner, System.Name);
-                    return String.Format(ResourceManager.GetString("SITREP_RAID_NO_SUCCESS"),
+                    return string.Format(ResourceManager.GetString("SITREP_RAID_NO_SUCCESS"),
                         //"Our spies have tried to raid the {0} at {1} but they had no success.",
                         System.Owner, System.Name);
                 }
@@ -1086,7 +1051,6 @@ namespace Supremacy.Game
 
             _gainedCreditsSum = gainedCreditsSum;
             _gainedOfTotalCredits = gainedOfTotalCredits;
-            //GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: gainedResearchPoints={0}, Sum={0}", _gainedResearchPointsSum);
         }
     }
 
@@ -1096,11 +1060,6 @@ namespace Supremacy.Game
         private readonly int _systemId;
         private readonly int _gainedCreditsSum;
         private readonly int _gainedOfTotalCredits;
-
-        //public _gainedResearchPointsSum
-        //{
-        //    get { return  0; }
-        //}
 
         public StarSystem System
         {
@@ -1118,16 +1077,13 @@ namespace Supremacy.Game
             {
                 if (_gainedCreditsSum > 0)
                 {
-                    GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: The {0} at {1} have been influenced: we got {2} of {3} credits.",
-                    System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
-                    return String.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
-                            //"The {0} at {1} have been influenced: we got {2} of {3} credits.",
-                            System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
+                    return string.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
+                        //"The {0} at {1} have been influenced: we got {2} of {3} credits.",
+                        System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
                 }
                 else
                 {
-                    GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: Our spies have tried to influence the {0} at {1} but they had no success.", System.Owner, System.Name);
-                    return String.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
+                    return string.Format(ResourceManager.GetString("SITREP_INFLUENCE_NO_SUCCESS"),
                         //"Our spies have tried to influence the {0} at {1} but they had no success.",
                         System.Owner, System.Name);
                 }
@@ -1148,7 +1104,6 @@ namespace Supremacy.Game
 
             _gainedCreditsSum = gainedCreditsSum;
             _gainedOfTotalCredits = gainedOfTotalCredits;
-            //GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: gainedResearchPoints={0}, Sum={0}", _gainedResearchPointsSum);
         }
     }
 
@@ -1158,11 +1113,6 @@ namespace Supremacy.Game
         private readonly int _systemId;
         private readonly int _removeEnergyFacilities;
         private readonly int _totalEnergyFacilities;
-
-        //public _gainedResearchPointsSum
-        //{
-        //    get { return  0; }
-        //}
 
         public StarSystem System
         {
@@ -1180,16 +1130,13 @@ namespace Supremacy.Game
             {
                 if (_removeEnergyFacilities > 0)
                 {
-                        GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: The sabotage mission to {0} at {1} was successful but the ship is lost in action : {2} of {3} energy facilities have been destroyed.",
-                                System.Owner, System.Location, _removeEnergyFacilities, _totalEnergyFacilities + _removeEnergyFacilities);
-                    return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_SUCCESS"),
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_SUCCESS"),
                     //"Successful sabotage mission to {0} {1}, (ship lost in action): {2} of {3} energy facilities destroyed.",
-                    System.Owner, System.Location, _removeEnergyFacilities, _totalEnergyFacilities + _removeEnergyFacilities);
+                       System.Owner, System.Location, _removeEnergyFacilities, _totalEnergyFacilities + _removeEnergyFacilities);
                 }
                 else
                 {
-                    GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: The sabotage mission to {0} at {1} failed and the sabotage ship was lost.", System.Owner, System.Name);
-                    return String.Format(ResourceManager.GetString("SITREP_SABOTAGE_FAILED"),
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FAILED"),
                         //"The sabotage mission to {0} at {1} failed and the sabotage ship was lost.",
                         System.Owner, System.Name);
                 }
@@ -1210,7 +1157,6 @@ namespace Supremacy.Game
 
             _removeEnergyFacilities = removeEnergyFacilities;
             _totalEnergyFacilities = totalEnergyFacilities;
-            //GameLog.Client.GameData.DebugFormat("SitRepEntry.cs: gainedResearchPoints={0}, Sum={0}", _gainedResearchPointsSum);
         }
     }
     #endregion
@@ -1234,7 +1180,8 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_STARVATION"),System.Name);
+                return string.Format(ResourceManager.GetString("SITREP_STARVATION"),
+                    System.Name);
             }
         }
 
@@ -1264,7 +1211,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_NEGATIVE_TREASURY"));
+                return string.Format(ResourceManager.GetString("SITREP_NEGATIVE_TREASURY"));
                 //return "Your empire is out of funds and cannot pay its ship's maintenance.\nShips cannot repair hull damage and are degrading.";
             }
         }
@@ -1319,8 +1266,8 @@ namespace Supremacy.Game
         public override string SummaryText
         {
             get
-            {  //GameLog.Print("SitRepOrbitalDestryed Name {0}, ShipType {1} Location {2}", Name, ShipType.ToString(), Location);
-                return String.Format(
+            {
+                return string.Format(
                     ResourceManager.GetString("SITREP_ORBITAL_DESTROYED"),
                     ResourceManager.GetString(Name),
                     _shipType,
@@ -1392,10 +1339,8 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(
-                    ResourceManager.GetString("SITREP_FIRST_CONTACT"),
-                    ResourceManager.GetString(Civilization.ShortName),
-                    Sector);
+                return string.Format(ResourceManager.GetString("SITREP_FIRST_CONTACT"),
+                    ResourceManager.GetString(Civilization.ShortName), Sector);
             }
         }
 
@@ -1430,9 +1375,8 @@ namespace Supremacy.Game
         {
             get
             {
-                return String.Format(ResourceManager.GetString("SITREP_WAR_DECLARED"),
-                    Aggressor.LongName,
-                    Victim.LongName);
+                return string.Format(ResourceManager.GetString("SITREP_WAR_DECLARED"),
+                    Aggressor.LongName, Victim.LongName);
             }
         }
 
@@ -1453,7 +1397,7 @@ namespace Supremacy.Game
 
         public override string DetailText
         {
-            get { return String.Format(_detailText.Value, Victim.LongName); }
+            get { return string.Format(_detailText.Value, Victim.LongName); }
         }
 
         public override bool IsPriority
@@ -1788,11 +1732,11 @@ namespace Supremacy.Game
             {
                 if (_shipyardQueue)
                 {
-                    return String.Format(
+                    return string.Format(
                         ResourceManager.GetString("SITREP_SHIPYARD_BUILD_QUEUE_EMPTY"),
                         Colony.Name);
                 }
-                return String.Format(
+                return string.Format(
                     ResourceManager.GetString("SITREP_PLANETARY_BUILD_QUEUE_EMPTY"),
                     Colony.Name);
             }

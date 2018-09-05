@@ -212,7 +212,6 @@ namespace Supremacy.Client.Controls
             if (_popupSiteWindow != null)
             {
                 _popupSiteWindow.PreviewMouseDown -= OnPopupSitePreviewMouseDown;
-                //_popupSiteWindow.Deactivated -= OnPopupSiteWindowDeactivated;
                 _popupSiteWindow = null;
             }
 

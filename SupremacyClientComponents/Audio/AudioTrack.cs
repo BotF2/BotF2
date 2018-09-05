@@ -39,7 +39,7 @@ namespace Supremacy.Client.Audio
         private FMODAudioEngine _engine = null;
         private readonly Sound _sound = null;
 
-        private bool _audioTraceLocally = false;    // turn to true if you want
+        private bool _audioTraceLocally = false;
 
         private Channel _channel = null;
         private float _volume = 1.0f;
@@ -148,7 +148,7 @@ namespace Supremacy.Client.Audio
             if (_audioTraceLocally)  // -one GameLog to see the played sound
                 GameLog.Print("called! File: {0}", filePath);
 
-            _engine = engine; // ?? throw new ArgumentNullException("engine");     // turned off exception for testing or getting rid off crashes
+            _engine = engine;
 
             MODE creationMode = MODE.HARDWARE | MODE.CREATESTREAM | MODE.LOOP_OFF;
             FMODErr.Check(_engine.System.createSound(filePath, creationMode, ref _sound));
@@ -184,17 +184,6 @@ namespace Supremacy.Client.Audio
                     }
                 }
 
-                try
-                {
-                    //next line always makes crashes
-                    //FMODErr.Check(_sound.release());
-                }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
-                {
-                    GameLog.Print("######### problem at AudioTrack.Dispose-Checking _sound.release");
-                    GameLog.LogException(e);
-                }
-
                 _engine.RemoveTrack(this);
             }
         }
@@ -207,8 +196,6 @@ namespace Supremacy.Client.Audio
         /// <param name="system">The system.</param>
         public void Play(PlaybackEnd_Callback callback = null)
         {
-            //GameLog.Print("called!");
-
             try
             {
                 lock (_engine.Lock)
@@ -223,8 +210,6 @@ namespace Supremacy.Client.Audio
                             ref _channel));
                     if (_group != null)
                         FMODErr.Check(_channel.setChannelGroup(_group.ChannelGroup));
-
-                    //doesn't work    GameLog.Print("AudioTrack.Play _group={0}!", _group.ToString());
 
                     Volume = _volume;
                     _channel.setCallback(CHANNEL_CALLBACKTYPE.END, _channelCallbackDelegate, 0);
@@ -245,14 +230,12 @@ namespace Supremacy.Client.Audio
         /// </summary>
         public void Stop()
         {
-            //GameLog.Print("called!");
             try
             {
                 lock (_engine.Lock)
                 {
                     if (_channel != null)
                     {
-                        //_channel.setCallback(CHANNEL_CALLBACKTYPE.END, null, 0);
                         FMODErr.Check(_channel.stop());
                         _channel = null;
                         if (_audioTraceLocally)
@@ -298,13 +281,11 @@ namespace Supremacy.Client.Audio
         /// <returns>the volume was null</returns>
         public void FadeOut(float fadeStep)
         {
-            //GameLog.Print("called!");  // FadeOut "called" disabled because it makes a lot of steps (and lines in Log.txt)
             try
             {
                 lock (_engine.Lock)
                 {
                     Volume = Math.Max(Volume - fadeStep, 0f);
-                    //GameLog.Print("############# AudioTrack.FadeOut !");
                 }
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
@@ -318,7 +299,6 @@ namespace Supremacy.Client.Audio
         {
             _channel = null;
 
-            //GameLog.Print("called!");
             try
             {
                 if (_endCallback != null)

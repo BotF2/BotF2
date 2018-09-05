@@ -131,12 +131,12 @@ namespace Supremacy.Client.Context
             ClientEvents.ClientConnectionFailed.Subscribe(OnClientConnectionClosed, ThreadOption.UIThread);
             ClientEvents.LocalPlayerJoined.Subscribe(OnLocalPlayerJoined, ThreadOption.PublisherThread);
             ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated);
-            ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.PublisherThread); // was PublisherThread
+            ClientEvents.GameStarted.Subscribe(OnGameStarted, ThreadOption.PublisherThread);
             ClientEvents.GameUpdateDataReceived.Subscribe(OnGameUpdateDataReceived, ThreadOption.UIThread);
             ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
             ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded);
             ClientEvents.GameEnding.Subscribe(OnGameEnding);
-            ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread); // was PublisherThread
+            ClientEvents.GameEnded.Subscribe(OnGameEnded, ThreadOption.UIThread);
         }
 
         private void OnGameUpdateDataReceived(ClientDataEventArgs<GameUpdateData> args)

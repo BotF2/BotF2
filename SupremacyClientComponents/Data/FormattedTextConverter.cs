@@ -200,16 +200,12 @@ namespace Supremacy.Client.Data
                         uri = null;
 
                     var link = new Hyperlink();
+                    link.NavigateUri = uri;
 
-                    //if (uri != null)
-                    {
-                        link.NavigateUri = uri;
-
-                        GenericWeakEventManager.AddListener(
-                            link,
-                            "Click",
-                            HyperlinkClickedWeakEventListener);
-                    }
+                    GenericWeakEventManager.AddListener(
+                        link,
+                        "Click",
+                        HyperlinkClickedWeakEventListener);
 
                     span = link;
                     break;

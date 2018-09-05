@@ -42,7 +42,7 @@ namespace Supremacy.Client
 
         public StringResourceExtension()
         {
-            _key = String.Empty;
+            _key = string.Empty;
             Case = StringCase.Original;
         }
 

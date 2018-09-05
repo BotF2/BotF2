@@ -316,7 +316,6 @@ namespace Supremacy.UI
                         if (source != null)
                         {
                             source.InvalidateVisual();
-                            //source.ResetUnitVisuals();
                         }
                     }));
 
@@ -477,8 +476,6 @@ namespace Supremacy.UI
             _incrementButton = null;
             _decrementButton = null;
             _contentArea = null;
-            //_unitVisuals = new List<FrameworkElement>();
-            //_children = new VisualCollection(this);
             CommandBindings.Add(
                 new CommandBinding(IncrementValueCommand,
                                    IncrementValueExecuted,
@@ -578,7 +575,6 @@ namespace Supremacy.UI
                 _decrementButton.Command = DecrementValueCommand;
                 _decrementButton.Focusable = false;
             }
-            //InvalidateArrange();
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -661,39 +657,6 @@ namespace Supremacy.UI
             }
             base.OnMouseLeftButtonUp(e);
         }
-
-        //private void unitVisual_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (IsReadOnly)
-        //        return;
-        //    if (e.LeftButton == MouseButtonState.Pressed)
-        //    {
-        //        FrameworkElement source = e.Source as FrameworkElement;
-        //        if (source != null)
-        //        {
-        //            int index = _unitVisuals.IndexOf(source);
-        //            SetActiveUnits(index);
-        //        }
-        //    }
-        //}
-
-        //private void unitVisual_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (IsReadOnly)
-        //        return;
-        //    if (e.LeftButton == MouseButtonState.Pressed)
-        //    {
-        //        FrameworkElement source = e.Source as FrameworkElement;
-        //        if (source != null)
-        //        {
-        //            int index = _unitVisuals.IndexOf(source);
-        //            SetActiveUnits(index);
-        //        }
-        //    }
-        //}
-
-        //private int unitMargin = 4;
-        //private int unitWidth = 8;
 
         protected override void OnRender(DrawingContext drawingContext)
         {

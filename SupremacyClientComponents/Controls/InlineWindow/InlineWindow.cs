@@ -461,10 +461,6 @@ namespace Supremacy.Client.Controls
                 typeof(InlineWindow), 
                 new FrameworkPropertyMetadata(false));
 
-            //DefaultStyleKeyProperty.OverrideMetadata(
-            //    typeof(InlineWindow), 
-            //    new FrameworkPropertyMetadata(typeof(InlineWindow)));
-
             KeyboardNavigation.TabNavigationProperty.OverrideMetadata(
                 typeof(InlineWindow), new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
             KeyboardNavigation.ControlTabNavigationProperty.OverrideMetadata(
@@ -1312,7 +1308,6 @@ namespace Supremacy.Client.Controls
             // Ensure the left mouse button is pressed
             if (Mouse.LeftButton != MouseButtonState.Pressed)
                 MessageBox.Show("Drag'n'Drop: The left mouse button must be down.", "Warning", MessageBoxButton.OK);
-                //original:    throw new InvalidOperationException("The left mouse button must be down.");
 
             // Raise an event
             var e = new CancelRoutedEventArgs(DragMovingEvent, this);

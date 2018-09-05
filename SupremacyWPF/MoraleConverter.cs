@@ -16,7 +16,7 @@ using Supremacy.Types;
 
 namespace Supremacy.Client
 {
-    [ValueConversion(typeof(int), typeof(String))]
+    [ValueConversion(typeof(int), typeof(string))]
     public class MoraleConverter : IValueConverter
     {
         public static readonly MoraleConverter Instance = new MoraleConverter();

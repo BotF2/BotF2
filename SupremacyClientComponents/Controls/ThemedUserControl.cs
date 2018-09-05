@@ -10,7 +10,6 @@ namespace Supremacy.Client.Controls
         public ThemedUserControl()
         {
             InjectThemeResources();
-            //working   GameLog.Client.GameData.DebugFormat("ThemedUserControl.cs: InjectThemeResources");
         }
 
         protected void InjectThemeResources()
@@ -20,7 +19,6 @@ namespace Supremacy.Client.Controls
             if (ThemeHelper.TryLoadThemeResources(out themeResources))
             {
                 Resources.MergedDictionaries.Add(themeResources);
-                // not working fine  GameLog.Client.GameData.DebugFormat("ThemedUserControl.cs: themeResources={0}", themeResources);
             }
         }
     }

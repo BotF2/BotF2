@@ -77,7 +77,6 @@ namespace Supremacy.Client.Dialogs
                 return;
 
             _rootRegionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
-            //FocusManager.SetIsFocusScope(this, true);
         }
 
         private static DependencyPropertyDescriptor GetTabOnceActiveElementPropertyDescriptor()

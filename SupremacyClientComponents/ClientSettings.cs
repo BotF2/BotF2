@@ -28,7 +28,7 @@ namespace Supremacy.Client
     {
         private const string ClientSettingsFileName = "ClientSettings.xaml";
 
-        bool _tracingClientSettings = false;  // turn true if you need
+        bool _tracingClientSettings = false;
 
         private static ClientSettings _current;
 
@@ -37,9 +37,6 @@ namespace Supremacy.Client
         static ClientSettings()
         {
             EnableDialogAnimationsProperty.AddOwner(typeof(UIElement));
-            //DominionPlayableProperty.AddOwner(typeof(ClientSettings));
-            //BorgPlayableProperty.AddOwner(typeof(ClientSettings));
-            //TerranEmpirePlayableProperty.AddOwner(typeof(UIElement));
         }
 
         public ClientSettings()
@@ -87,8 +84,6 @@ namespace Supremacy.Client
         {
             try
             {
-                //GameLog.Client.GameData.DebugFormat("ClientSettings.cs: RELOAD");
-
                 var savedOrDefaultSettings = LoadCore();
                 var localValueEnumerator = savedOrDefaultSettings.GetLocalValueEnumerator();
 
@@ -144,20 +139,14 @@ namespace Supremacy.Client
                 using (var fileWriter = File.Create(filePath))
                 {
                     XamlWriter.Save(this, fileWriter);
-                    //GameLog.Client.GameData.DebugFormat("ClientSettings.cs: SAVE {0}, NEW={1}",
-                    //    filePath, this.DependencyObjectType.Name);
-                    //GameLog.Client.GameData.DebugFormat("ClientSettings.cs: SAVE {0}: Content: {1}", filePath, File.ReadAllText(filePath));
                 }
 
                 OnSaved();
-                //GameLog.Client.GameData.DebugFormat("ClientSettings.cs: SAVE {0}: Content: {1}", filePath, File.ReadAllText(filePath));
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
                 GameLog.LogException(e);
             }
-
-            //GameLog.Client.GameData.DebugFormat("ClientSettings.cs: SAVE {0}: Content: {1}", filePath, File.ReadAllText(filePath));
         }
 
         private static ClientSettings LoadCore()
@@ -176,7 +165,6 @@ namespace Supremacy.Client
                 {
                     using (var fileReader = File.OpenRead(filePath))
                     {
-                        //GameLog.Client.GameData.DebugFormat("ClientSettings.cs: LOADCORE {0}", filePath);
                         settings = XamlReader.Load(fileReader) as ClientSettings ??
                                    new ClientSettings();
 
@@ -216,7 +204,6 @@ namespace Supremacy.Client
             d.SetValue(EnableDialogAnimationsProperty, value);
         }
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableDialogAnimations
         {
             get { return GetEnableDialogAnimations(this); }
@@ -233,7 +220,6 @@ namespace Supremacy.Client
                 false,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableFullScreenMode
         {
             get { return (bool)GetValue(EnableFullScreenModeProperty); }
@@ -251,7 +237,6 @@ namespace Supremacy.Client
                 FrameworkPropertyMetadataOptions.None,
                 (o, args) => ((ClientSettings)o).OnMasterVolumeChanged((double)args.OldValue, (double)args.NewValue)));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public double MasterVolume
         {
             get { return (double)GetValue(MasterVolumeProperty); }
@@ -278,7 +263,6 @@ namespace Supremacy.Client
                 FrameworkPropertyMetadataOptions.None,
                 (o, args) => ((ClientSettings)o).OnMusicVolumeChanged((double)args.OldValue, (double)args.NewValue)));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public double MusicVolume
         {
             get { return (double)GetValue(MusicVolumeProperty); }
@@ -305,7 +289,6 @@ namespace Supremacy.Client
                 FrameworkPropertyMetadataOptions.None,
                 (o, args) => ((ClientSettings)o).OnFXVolumeChanged((double)args.OldValue, (double)args.NewValue)));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public double FXVolume
         {
             get { return (double)GetValue(FXVolumeProperty); }
@@ -332,7 +315,6 @@ namespace Supremacy.Client
                 FrameworkPropertyMetadataOptions.None,
                 (o, args) => ((ClientSettings)o).OnEnableAntiAliasingChanged((bool)args.OldValue, (bool)args.NewValue)));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableAntiAliasing
         {
             get { return (bool)GetValue(EnableAntiAliasingProperty); }
@@ -358,7 +340,6 @@ namespace Supremacy.Client
                 true,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableHighQualityScaling
         {
             get { return (bool)GetValue(EnableHighQualityScalingProperty); }
@@ -375,7 +356,6 @@ namespace Supremacy.Client
                 true,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableStarMapAnimations
         {
             get { return (bool)GetValue(EnableStarMapAnimationsProperty); }
@@ -392,7 +372,6 @@ namespace Supremacy.Client
                 true,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableAnimation
         {
             get { return (bool)GetValue(EnableAnimationProperty); }
@@ -409,7 +388,6 @@ namespace Supremacy.Client
                 true,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableCombatScreen
         {
             get { return (bool)GetValue(EnableCombatScreenProperty); }
@@ -417,9 +395,8 @@ namespace Supremacy.Client
         }
         #endregion
 
-        // ****** 3rd Page General Options ******
-
-        #region DominionPlayable Property
+        #region Race Playable Properties
+        //TODO: Are these needed or used anymore?
         public static readonly DependencyProperty DominionPlayableProperty = DependencyProperty.Register(
             "DominionPlayable",
             typeof(bool),
@@ -438,7 +415,6 @@ namespace Supremacy.Client
             d.SetValue(DominionPlayableProperty, value);
         }
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool DominionPlayable
         {
              get
@@ -448,9 +424,7 @@ namespace Supremacy.Client
             }
             set { SetValue(DominionPlayableProperty, value); }
         }
-        #endregion
 
-        #region BorgPlayable Property
         public static readonly DependencyProperty BorgPlayableProperty = DependencyProperty.Register(
             "BorgPlayable",
             typeof(bool),
@@ -469,20 +443,12 @@ namespace Supremacy.Client
             d.SetValue(BorgPlayableProperty, value);
         }
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool BorgPlayable
         {
             get { return (bool)GetValue(BorgPlayableProperty); }
             set { SetValue(BorgPlayableProperty, value); }
         }
-        //public bool BorgPlayable
-        //{
-        //    get { return GetBorgPlayable(this); }
-        //    set { SetBorgPlayable(this, value); }
-        //}
-        #endregion
 
-        #region TerranEmpirePlayable Property
         public static readonly DependencyProperty TerranEmpirePlayableProperty = DependencyProperty.Register(
             "TerranEmpirePlayable",
             typeof(bool),
@@ -501,7 +467,6 @@ namespace Supremacy.Client
             d.SetValue(TerranEmpirePlayableProperty, value);
         }
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool TerranEmpirePlayable
         {
             get { return (bool)GetValue(TerranEmpirePlayableProperty); }
@@ -519,7 +484,6 @@ namespace Supremacy.Client
                 1280.0,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public double ClientWindowWidth
         {
             get { return (double)GetValue(ClientWindowWidthProperty); }
@@ -536,7 +500,6 @@ namespace Supremacy.Client
                 768.0,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public double ClientWindowHeight
         {
             get { return (double)GetValue(ClientWindowHeightProperty); }
@@ -553,7 +516,6 @@ namespace Supremacy.Client
                 false,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public bool EnableScreenTransitions
         {
             get { return (bool)GetValue(EnableScreenTransitionsProperty); }
@@ -570,7 +532,6 @@ namespace Supremacy.Client
                 30,
                 FrameworkPropertyMetadataOptions.None));
 
-        //[DesignerSerializationOptions(DesignerSerializationOptions.SerializeAsAttribute)]
         public int DesiredAnimationFrameRate
         {
             get { return (int)GetValue(DesiredAnimationFrameRateProperty); }

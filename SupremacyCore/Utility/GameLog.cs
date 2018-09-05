@@ -116,7 +116,7 @@ namespace Supremacy.Utility
 
         protected GameLog(string name)
         {
-            if (String.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("name must be a non-null, non-empty string");
             _name = name;
         }

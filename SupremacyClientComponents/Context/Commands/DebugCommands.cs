@@ -18,7 +18,5 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand GameInfoScreen = new CompositeCommand();
         public static readonly CompositeCommand ColonyInfoScreen = new CompositeCommand();
         public static readonly CompositeCommand ColorInfoScreen = new CompositeCommand();
-        //public static readonly CompositeCommand ShowEconomyView = new CompositeCommand();
-        //public static readonly CompositeCommand ShowMilitaryView = new CompositeCommand();
     }
 }

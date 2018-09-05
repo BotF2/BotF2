@@ -258,8 +258,6 @@ namespace Supremacy.Xna
 
         private void ChangeDevice(bool forceCreate)
         {
-            //this.CheckForAvailableSupportedHardware();
-
             using (_owner.BeginDeviceChange())
             {
                 _inDeviceTransition = true;

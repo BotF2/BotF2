@@ -85,7 +85,6 @@ namespace Supremacy.Xna
             _center = new Vector3(0.5f, 0.5f, 0f);
             _scale = new Vector3(1f, 1f, 1f);
 
-            //World = Matrix.CreateWorld(new Vector3(-.5f, -.5f, 0), Vector3.Forward, Vector3.Up);
             Position = Vector3.Zero;
             
             CreateStarMaps();
@@ -124,7 +123,6 @@ namespace Supremacy.Xna
                 columns * rows * 6,
                 BufferUsage.WriteOnly);
 
-            //VertexPositionColor data = Buffer.Lock<PositionOnly>(0, 0, LockFlags.None);
             var data = new VertexPositionColor[columns * rows * 6];
             
             //Buffer coordinates are 0.0-1.0 so we can use them as the base texture coordinates too

@@ -67,12 +67,6 @@ namespace Supremacy.UI
                                 Color.FromArgb(0xFF, 0xE2, 0xE8, 0xF4),
                                 Color.FromArgb(0xFF, 0x0D, 0x26, 0x37))
                          },
-                         //{
-                         //    StarType.Green,
-                         //    new Pair<Color, Color>(
-                         //       Color.FromArgb(0xFF, 0xD5, 0xF1, 0xD4),
-                         //       Color.FromArgb(0xFF, 0x2B, 0x3D, 0x1F))
-                         //},
                          {
                              StarType.Red,
                              new Tuple<Color, Color>(
@@ -94,7 +88,6 @@ namespace Supremacy.UI
                     new BitmapImage(ResourceManager.GetResourceUri("Resources/Images/Stars/Star" + (i + 1) + ".png")),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
-                //RenderOptions.SetBitmapScalingMode(frame, BitmapScalingMode.LowQuality);
                 frame.Freeze();
                 Frames[i] = new ImageBrush(frame);
                 Frames[i].Freeze();
@@ -225,8 +218,6 @@ namespace Supremacy.UI
                     }
                 }
 
-                //Timeline.SetDesiredFrameRate(animations[i], 24);
-
                 _parallelTimeline.Children.Add(animations[i]);
             }
 
@@ -271,9 +262,6 @@ namespace Supremacy.UI
                                   Gamma = 0.854545,
                                   Defog = 0.5,
                                   FogColor = Color.FromArgb(0xFF, 0xEF, 0xEF, 0xEF)
-                                  //VignetteRadius = 0.0,
-                                  //VignetteCenter = new Point(0.5, 0.5),
-                                  //BlueShift = 0.0
                               },
                               new ZoomBlurEffect
                               {

@@ -33,10 +33,6 @@ namespace Supremacy.Client.Data
 
             switch (ComparisonType)
             {
-                //case ComparisonType.Equal:
-                //    return DoubleUtil.AreClose(left, right) ? this.TrueValue : this.FalseValue;
-                //case ComparisonType.NotEqual:
-                //    return !DoubleUtil.AreClose(left, right) ? this.TrueValue : this.FalseValue;
                 case ComparisonType.GreaterThan:
                     return left > right ? TrueValue : FalseValue;
                 case ComparisonType.LessThan:

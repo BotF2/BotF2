@@ -569,8 +569,6 @@ namespace Supremacy.WCF
 
                             try { SavedGameManager.AutoSave(gameHost, _lobbyData); }
                             finally { GameContext.PopThreadContext(); }
-
-                            //GameLog.Server.General.DebugFormat("Auto-save time: {0}", autoSaveStopwatch.Elapsed);
                         });
                 }
 
@@ -589,8 +587,6 @@ namespace Supremacy.WCF
 
                 if (autoSaveTask != null)
                     await autoSaveTask.ConfigureAwait(false);
-
-                //GameLog.Server.General.DebugFormat("Update publish time: {0}", stopwatch.Elapsed);
 
                 await SendTurnFinishedNotificationsAsync().ConfigureAwait(false);
             }
@@ -1093,8 +1089,6 @@ namespace Supremacy.WCF
                     }
                 }
 
-                //_lobbyData.IsMultiplayerGame = (_lobbyData.IsMultiplayerGame && (_lobbyData.Players.Length > 1));
-
                 foreach (var slot in _lobbyData.Slots.Where(
                     slot => slot.Status == SlotStatus.Open &&
                             slot.Claim == SlotClaim.Unassigned))
@@ -1117,8 +1111,6 @@ namespace Supremacy.WCF
             if (initData == null)
                 throw new ArgumentNullException("initData");
 
-            //GameLog.Print("HostGameResult starting...");
-
             _gameInitData = initData;
 
             localPlayer = null;
@@ -1129,7 +1121,6 @@ namespace Supremacy.WCF
             if ((initData.GameType == GameType.SinglePlayerLoad) || (initData.GameType == GameType.MultiplayerLoad))
             {
                 var header = SavedGameManager.LoadSavedGameHeader(initData.SaveGameFileName);
-                //GameLog.Print("header={0}, GameType={1}", header, initData.GameType);
                 if (header == null)
                     return HostGameResult.LoadGameFailure;
                 initData.Options.Freeze();
@@ -1137,7 +1128,6 @@ namespace Supremacy.WCF
             else
             {
                 var modId = initData.Options.ModID;
-                //works without senseful content      GameLog.Print("modId={0}", modId);
                 if (!Equals(modId, Guid.Empty))
                     mod = GameModLoader.FindMods().Where(o => o.UniqueIdentifier == modId).FirstOrDefault();
             }
@@ -1149,7 +1139,6 @@ namespace Supremacy.WCF
             _lobbyData.GameMod = mod;
 
             localPlayer = EstablishPlayer(initData.LocalPlayerName);
-            //crashes the game     GameLog.Print("EstablishPlayer={0}", EstablishPlayer(initData.LocalPlayerName));
 
             var empireCount = initData.EmpireIDs.Length;
 
@@ -1171,9 +1160,6 @@ namespace Supremacy.WCF
 
                 };
 
-                //GameLog.Print("empireCount={0}, SlotID={1}, EmpireID={2}, EmpireName={3}, Status={4}, Claim={5}",
-                //empireCount, i, initData.EmpireIDs[i], initData.EmpireNames[i], initData.SlotStatus[i], initData.SlotClaims[i]);
-
                 _lobbyData.Slots[i] = slot;
 
                 if (slot.IsFrozen)
@@ -1187,7 +1173,6 @@ namespace Supremacy.WCF
             {
                 var playerSlot = _lobbyData.Slots.FirstOrDefault(o => o.EmpireID == initData.LocalPlayerEmpireID) ??
                                  _lobbyData.Slots[0];
-                //GameLog.Print("Not MP new: SlotID={0}, PlayerID={1}", playerSlot.SlotID, localPlayer.PlayerID);
                 AssignPlayerSlot(playerSlot.SlotID, localPlayer.PlayerID);
             }
 
@@ -1540,7 +1525,6 @@ namespace Supremacy.WCF
                 var transports =
                     (
                         from o in update.InvadingUnits.OfType<InvasionOrbital>()
-                            //.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Where(o => o.ShipType == ShipType.Transport
                         where !o.IsDestroyed
                         let ship = o.Source as Ship
                         where ship != null && ship.ShipType == ShipType.Transport

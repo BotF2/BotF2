@@ -190,17 +190,6 @@ namespace Supremacy.UI
                     }
                 }
             }
-            //if (LinePen != null)
-            //{
-            //    Pen p = LinePen;
-            //    if (_nodePresenters != null && _centerObjectPresenter != null)
-            //    {
-            //        for (int i = 0; i < _nodePresenters.Count; i++)
-            //        {
-            //            drawingContext.DrawLine(p, _centerObjectPresenter.ActualLocation, _nodePresenters[i].ActualLocation);
-            //        }
-            //    }
-            //}
         }
         #endregion
 
@@ -533,7 +522,6 @@ namespace Supremacy.UI
                         Vector distance = EnsureNonzeroVector(gcp.Location - _nodePresenters[j].Location);
 
                         Vector repulsiveForce = GetRepulsiveForce(distance);
-                            //GetSpringForce(distance, gcp.Velocity - _nodePresenters[j].Velocity);
                         _springForces[i, j] = repulsiveForce;
                     }
                 }
@@ -704,7 +692,6 @@ namespace Supremacy.UI
         {
             DoubleAnimation da = new DoubleAnimation(0, HideDuration);
             da.FillBehavior = FillBehavior.Stop;
-            //da.SetValue(Timeline.DesiredFrameRateProperty, HideDesiredFrameRate);
             HideAnimationManager ham = new HideAnimationManager(owner, key);
             da.Completed += ham.CompletedHandler;
             da.Freeze();

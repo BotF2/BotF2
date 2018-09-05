@@ -26,9 +26,8 @@ namespace Supremacy.Client.Audio
         private IAppContext _appContext = null;
         private IAudioGrouping _channelGroup = null;
         private List<IAudioTrack> _audioTracks = new List<IAudioTrack>();
-        //private string p;
 
-        private bool _audioTraceLocally = false;    // turn to true if you want
+        private bool _audioTraceLocally = false;
 
         #endregion
 
@@ -95,8 +94,6 @@ namespace Supremacy.Client.Audio
         #region Methods
         public void Play(string pack, string sound)
         {
-            //GameLog.Print("called!");
-
             MusicEntry track = _appContext.ThemeMusicLibrary.LookupTrack(pack, sound);
             if(track == null) track = _appContext.DefaultMusicLibrary.LookupTrack(pack, sound);
 
@@ -152,7 +149,6 @@ namespace Supremacy.Client.Audio
                 if (audioTrack != null)
                 {
                     audioTrack.Group = _channelGroup;
-                    // works - unneccessary atm    GameLog.Client.GameData.DebugFormat("Soundplayer.cs: Try play AudioTrack {0}", resourcePath);
                     audioTrack.Play(OnTrackEnd);
 
                     _audioTracks.Add(audioTrack);
@@ -169,11 +165,8 @@ namespace Supremacy.Client.Audio
             {
                 try
                 {
-                    // doesn't work fine:  GameLog.Client.GameData.DebugFormat("Soundplayer.cs: ending AudioTrack \"{0}\".", track.ToString());
-
                     track.Dispose();
                     _audioTracks.Remove(track);
-                    // doesn't work: GameLog.Client.GameData.DebugFormat("Soundplayer.cs: Track \"{0}\" removed.", track.Group);
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {

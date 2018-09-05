@@ -66,10 +66,9 @@ namespace Supremacy.UI
             {
                 Frames[i] = new CachedBitmap(
                     new BitmapImage(
-                        ResourceManager.GetResourceUri(ImagePath + String.Format("asteroids1_{0:000}.png", i))),
+                        ResourceManager.GetResourceUri(ImagePath + string.Format("asteroids1_{0:000}.png", i))),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
-                //RenderOptions.SetBitmapScalingMode(Frames[i], BitmapScalingMode.LowQuality);
                 Frames[i].Freeze();
             }
         }
@@ -95,7 +94,6 @@ namespace Supremacy.UI
                     {
                         RepeatBehavior = RepeatBehavior.Forever
                     };
-            //Timeline.SetDesiredFrameRate(_animation, 24);
 
             _animationClock = _animation.CreateClock();
 
@@ -142,8 +140,6 @@ namespace Supremacy.UI
 
             _animationClock.Controller.Pause();
             _animationClock.Controller.Remove();
-
-            //BeginAnimation(CurrentFrameProperty, null);
         }
         #endregion
 

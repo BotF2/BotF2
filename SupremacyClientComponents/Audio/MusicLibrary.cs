@@ -26,7 +26,7 @@ namespace Supremacy.Client.Audio
         private const string PackDefName = "MusicPack";
         private Dictionary<string, MusicPack> _musicPacks = new Dictionary<string, MusicPack>(StringComparer.OrdinalIgnoreCase);
 
-        bool _tracingMusicLibrary = false;     // turn true if you need
+        bool _tracingMusicLibrary = false;
         #endregion
 
         #region Properties
@@ -37,9 +37,9 @@ namespace Supremacy.Client.Audio
         #endregion
 
         #region Methods
-        public void Load(String libraryPath)
+        public void Load(string libraryPath)
         {
-            Debug.Assert(!String.IsNullOrEmpty(libraryPath));
+            Debug.Assert(!string.IsNullOrEmpty(libraryPath));
 
             XmlDocument xmlDoc = new XmlDocument();
 

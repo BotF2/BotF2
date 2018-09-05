@@ -31,18 +31,10 @@ namespace Supremacy.Utility
             ThreadPool.UnsafeQueueUserWorkItem(
                 AsyncInvokeCallback,
                 new AsyncCallbackData(target, args));
-            //Task.Create(
-            //    AsyncInvokeCallback,
-            //    new AsyncCallbackData(target, args),
-            //    TaskManager,
-            //    TaskCreationOptions.None);
         }
 
         public static void Invoke(TaskScheduler taskManager, Delegate target, params object[] args)
         {
-            //ThreadPool.UnsafeQueueUserWorkItem(
-            //    AsyncInvokeCallback,
-            //    new AsyncCallbackData(target, args));
             TaskFactory.StartNew(() => target.DynamicInvoke(args));
         }
 

@@ -154,8 +154,6 @@
     <Compile Include="SystemProductionPanel.cs" />
     <Compile Include="UnitActivationBar.cs" />
     <Compile Include="StarSystemPanel.cs" />
-    <Compile Include="UnmanagedMethods.cs" />
-    <Compile Include="Win32.cs" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

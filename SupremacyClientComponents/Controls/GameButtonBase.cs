@@ -186,7 +186,7 @@ namespace Supremacy.Client.Controls
                 }
             }
 
-            return value ?? String.Empty;
+            return value ?? string.Empty;
         }
 
         private bool HandleIsMouseOverChanged()
