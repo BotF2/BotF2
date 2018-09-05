@@ -377,7 +377,6 @@
     <Compile Include="Views\DiplomacyScreen\DiplomacyScreenDisplayMode.cs" />
     <Compile Include="Views\DiplomacyScreen\DiplomacyScreenViewModel.cs" />
     <Compile Include="Views\DiplomacyScreen\DiplomaticMessageCategory.cs" />
-    <Compile Include="Views\DiplomacyScreen\EnvoyAssignmentViewModel.cs" />
     <Compile Include="Views\DiplomacyScreen\ForeignPowerViewModel.cs" />
     <Compile Include="Views\DiplomacyScreen\IClauseParameterInfo.cs" />
     <Compile Include="Views\DiplomacyScreen\NewDiplomacyScreenView.cs" />

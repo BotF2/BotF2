@@ -204,18 +204,7 @@
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
     <Compile Include="Markup\TechObjectTextGroupExtension.cs" />
     <Compile Include="Orbitals\OrbitalHelper.cs" />
-    <Compile Include="Personnel\AgentAssignmentState.cs" />
-    <Compile Include="Personnel\AgentCareer.cs" />
     <Compile Include="Personnel\AgentCollection.cs" />
-    <Compile Include="Personnel\AgentEventArgs.cs" />
-    <Compile Include="Personnel\AgentHelper.cs" />
-    <Compile Include="Personnel\AgentSkillMeter.cs" />
-    <Compile Include="Personnel\DiplomaticEnvoyMission.cs" />
-    <Compile Include="Personnel\Mission.cs" />
-    <Compile Include="Personnel\MissionEventArgs.cs" />
-    <Compile Include="Personnel\MissionPhase.cs" />
-    <Compile Include="Personnel\MissionPhaseChangedEventArgs.cs" />
-    <Compile Include="Personnel\TrainingAssignment.cs" />
     <Compile Include="Resources\MasterResources.cs" />
     <Compile Include="Scripting\CivilizationScopedEvent.cs" />
     <Compile Include="Scripting\EventDefinition.cs" />
@@ -277,13 +266,6 @@
     <Compile Include="Utility\XmlWriterEx.cs" />
     <Compile Include="Xaml\XamlHelper.cs" />
     <Compile Include="Entities\CivilizationConverter.cs" />
-    <Compile Include="Personnel\AgentAssignment.cs" />
-    <Compile Include="Personnel\AgentDatabase.cs" />
-    <Compile Include="Personnel\AgentPool.cs" />
-    <Compile Include="Personnel\AgentProfileCollection.cs" />
-    <Compile Include="Personnel\AgentSkillsConverter.cs" />
-    <Compile Include="Personnel\AgentSkillValuesSnapshot.cs" />
-    <Compile Include="Personnel\PersonnelConstants.cs" />
     <Compile Include="Text\LanguageConverter.cs" />
     <Compile Include="Text\LocalizedString.cs" />
     <Compile Include="Text\LocalizedStringValue.cs" />
@@ -337,8 +319,6 @@
     <Compile Include="Messaging\ChannelThreadOption.cs" />
     <Compile Include="Messaging\WeakChannelSubscription.cs" />
     <Compile Include="Orbitals\OrbitalBattery.cs" />
-    <Compile Include="Personnel\AgentSkillMeters.cs" />
-    <Compile Include="Personnel\AgentProfile.cs" />
     <Compile Include="Scripting\IScriptService.cs" />
     <Compile Include="Scripting\RuntimeScriptParameter.cs" />
     <Compile Include="Scripting\RuntimeScriptParameters.cs" />
@@ -434,7 +414,6 @@
     <Compile Include="Game\IGameTurnListener.cs" />
     <Compile Include="Game\PlayerSlot.cs" />
     <Compile Include="Personnel\Agent.cs" />
-    <Compile Include="Personnel\AgentSkill.cs" />
     <Compile Include="Resources\IResourceManager.cs" />
     <Compile Include="Scripting\Events\ReligiousHolidayEvent.cs" />
     <Compile Include="Scripting\ScriptedEvent.cs" />
@@ -612,21 +591,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram.cd" />
-    <None Include="Diplomacy\Supremacy.Diplomacy.cd" />
-    <None Include="Economy\Supremacy.Economy.cd" />
-    <None Include="Effects\Effects.cd" />
-    <None Include="Entities\Supremacy.Entities.cd" />
-    <None Include="Orbitals\Supremacy.Orbitals.cd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
-    <None Include="Personnel\Personnel.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="VFS\VFS.cd" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

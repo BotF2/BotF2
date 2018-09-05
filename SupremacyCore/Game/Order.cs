@@ -18,7 +18,6 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Orbitals;
-using Supremacy.Personnel;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -1219,126 +1218,6 @@ namespace Supremacy.Game
                 return false;
 
             foreignPower.StatementSent = _statement;
-
-            return true;
-        }
-    }
-
-    [Serializable]
-    public sealed class AssignDiplomaticEnvoyOrder : Order
-    {
-        private readonly GameObjectID _agentId;
-        private readonly GameObjectID _counterpartyId;
-
-        public Agent Agent
-        {
-            get
-            {
-                Agent agent;
-
-                var civilizationManager = GameContext.Current.CivilizationManagers[OwnerID];
-                if (civilizationManager != null &&
-                    civilizationManager.AgentPool.CurrentAgents.TryGetValue(_agentId, out agent))
-                {
-                    return agent;
-                }
-
-                return null;
-            }
-        }
-
-        public ForeignPower ForeignPower
-        {
-            get
-            {
-                var diplomat = Diplomat.Get(OwnerID);
-                if (diplomat == null)
-                    return null;
-
-                return diplomat.GetForeignPower(GameContext.Current.Civilizations[_counterpartyId]);
-            }
-        }
-
-        public AssignDiplomaticEnvoyOrder([NotNull] Agent agent, [NotNull] ForeignPower foreignPower)
-            : base(Guard.ArgumentNotNull(agent, "agent").Owner)
-        {
-            if (foreignPower == null)
-                throw new ArgumentNullException("foreignPower");
-
-            _agentId = agent.ObjectID;
-            _counterpartyId = foreignPower.CounterpartyID;
-        }
-
-        public override bool DoExecute()
-        {
-            var agent = Agent;
-            if (agent == null)
-                return false;
-
-            var foreignPower = ForeignPower;
-            if (foreignPower == null)
-                return false;
-
-            var mission = new DiplomaticEnvoyMission(
-                Owner,
-                ForeignPower.Counterparty,
-                Agent.CurrentLocation ?? CivilizationManager.For(OwnerID).SeatOfGovernment.Location);
-
-            return mission.Assign(agent);
-        }
-    }
-
-    [Serializable]
-    public sealed class CancelAgentMissionOrder : Order
-    {
-        private readonly GameObjectID _agentId;
-
-        [NonSerialized] private MissionPhase _originalPhase;
-
-        public Agent Agent
-        {
-            get
-            {
-                Agent agent;
-
-                var civilizationManager = GameContext.Current.CivilizationManagers[OwnerID];
-                if (civilizationManager != null &&
-                    civilizationManager.AgentPool.CurrentAgents.TryGetValue(_agentId, out agent))
-                {
-                    return agent;
-                }
-
-                return null;
-            }
-        }
-
-        public CancelAgentMissionOrder([NotNull] Agent agent)
-            : base(Guard.ArgumentNotNull(agent, "agent").Owner)
-        {
-            _agentId = agent.ObjectID;
-        }
-
-        public override bool DoExecute()
-        {
-            var agent = Agent;
-            if (agent == null)
-                return false;
-
-            var mission = agent.Mission;
-            if (mission == null || mission is NullMission)
-                return false;
-
-            _originalPhase = mission.CurrentPhase;
-
-            return mission.Cancel();
-        }
-
-        public override bool DoUndo()
-        {
-            if (_originalPhase == null || Agent == null || Agent.Mission == null || !Agent.Mission.TransitionToPhase(_originalPhase))
-                return false;
-
-            _originalPhase = null;
 
             return true;
         }

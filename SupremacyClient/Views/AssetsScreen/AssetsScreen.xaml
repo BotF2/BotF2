@@ -16,47 +16,32 @@
                        UseLayoutRounding="True"
                        Margin="6,6,6,6">
   <TabControl>
-    <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=COLONIES_TAB_HEADER}">
-      <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock 
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=COLONIES_TAB_HEADER}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
                 Grid.Column="0" Text="Total Empire Population"
                 Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                 FontSize="12pt"/>
-            <TextBlock 
+                    <TextBlock 
                 Grid.Column="2" Text="{Binding Path=TotalPopulation}" 
                 Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                 FontSize="12pt"/>
-        </Grid>
-        <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
-      </Grid>     
-    </TabItem>
-    <!--<TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=AGENTS_TAB_HEADER}">
-      <ItemsControl ItemsSource="{Binding Path=AgentPresenters}"
-                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate DataType="{x:Type s:Agent}">
-            <v:AgentView Margin="0,0,11,11" />
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <WrapPanel IsItemsHost="True" />
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-      </ItemsControl>
-    </TabItem>-->
-  </TabControl>
+                </Grid>
+                <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
+            </Grid>
+        </TabItem>
+    </TabControl>
 </scc:ThemedUserControl>

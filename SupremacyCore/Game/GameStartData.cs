@@ -17,7 +17,6 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.IO.Serialization;
-using Supremacy.Personnel;
 using Supremacy.Tech;
 using Supremacy.Text;
 using Supremacy.Universe;
@@ -51,7 +50,6 @@ namespace Supremacy.Game
         private Diplomat[] _diplomats;
         private CivilizationPairedMap<IDiplomacyData> _diplomacyData;
         private StrategyDatabase _strategyDatabase;
-        private AgentDatabase _agentDatabase;
         private AgreementMatrix _agreementMatrix;
 
         #endregion
@@ -84,7 +82,6 @@ namespace Supremacy.Game
                 _localGame.ResearchMatrix = _researchMatrix;
                 _localGame.SectorClaims = _sectorClaims;
                 _localGame.TechTrees = _techTrees;
-                _localGame.AgentDatabase = _agentDatabase;
                 _localGame.StrategyDatabase = _strategyDatabase;
                 _localGame.DiplomacyData = _diplomacyData;
                 _localGame.AgreementMatrix = _agreementMatrix;
@@ -154,7 +151,6 @@ namespace Supremacy.Game
                 data._researchMatrix = game.ResearchMatrix;
                 data._sectorClaims = game.SectorClaims;
                 data._techTrees = game.TechTrees;
-                data._agentDatabase = game.AgentDatabase;
                 data._strategyDatabase = game.StrategyDatabase;
                 data._diplomacyData = game.DiplomacyData;
                 data._diplomats = new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
@@ -194,7 +190,6 @@ namespace Supremacy.Game
                 _localGame.ResearchMatrix = _researchMatrix = reader.Read<ResearchMatrix>();
                 _localGame.SectorClaims = _sectorClaims = reader.Read<SectorClaimGrid>();
                 _localGame.TechTrees = _techTrees = reader.Read<TechTreeMap>();
-                _localGame.AgentDatabase = _agentDatabase = reader.Read<AgentDatabase>();
                 _localGame.StrategyDatabase = _strategyDatabase = reader.Read<StrategyDatabase>();
                 _localGame.DiplomacyData = _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
                 _localGame.AgreementMatrix = _agreementMatrix = reader.Read<AgreementMatrix>();
@@ -245,7 +240,6 @@ namespace Supremacy.Game
             writer.WriteObject(_researchMatrix);
             writer.WriteObject(_sectorClaims);
             writer.WriteObject(_techTrees);
-            writer.WriteObject(_agentDatabase);
             writer.WriteObject(_strategyDatabase);
             writer.WriteObject(_diplomacyData);
             writer.WriteObject(_agreementMatrix);

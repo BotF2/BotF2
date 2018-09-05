@@ -15,7 +15,6 @@ using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
-using Supremacy.Personnel;
 
 using System.Linq;
 
@@ -37,9 +36,6 @@ namespace Supremacy.Diplomacy
         private CollectionBase<RegardEvent> _regardEvents;
         private DiplomacyDataInternal _diplomacyData;
 
-        private GameObjectID _assignedEnvoyId = GameObjectID.InvalidID;
-        private GameObjectID _counterpartyEnvoyId = GameObjectID.InvalidID;
-
         public GameObjectID OwnerID { get; private set; }
         public GameObjectID CounterpartyID { get; private set; }
         public bool IsEmbargoInPlace { get; private set; }
@@ -56,28 +52,6 @@ namespace Supremacy.Diplomacy
         public IResponse LastResponseSent { get; set; }
         public IResponse LastResponseReceived { get; set; }
         public PendingDiplomacyAction PendingAction { get; set; }
-        
-        public Agent AssignedEnvoy
-        {
-            get { return _assignedEnvoyId.IsValid ? CivilizationManager.For(OwnerID).AgentPool.CurrentAgents[_assignedEnvoyId] : null; }
-            set { _assignedEnvoyId = value != null ? value.ObjectID : GameObjectID.InvalidID; }
-        }
-
-        public Agent CounterpartyEnvoy
-        {
-            get
-            {
-                if (!_counterpartyEnvoyId.IsValid)
-                    return null;
-                
-                var civilizationManager = CivilizationManager.For(CounterpartyID);
-                if (civilizationManager == null)
-                    return null;
-
-                return civilizationManager.AgentPool.CurrentAgents[_counterpartyEnvoyId];
-            }
-            set { _counterpartyEnvoyId = value != null ? value.ObjectID : GameObjectID.InvalidID; }
-        }
 
         public ForeignPower(ICivIdentity owner, ICivIdentity counterparty)
         {
@@ -207,24 +181,6 @@ namespace Supremacy.Diplomacy
 
             if (!IsContactMade)
                 MakeContact();
-
-            var ownerEnvoy = AssignedEnvoy;
-            if (ownerEnvoy != null)
-            {
-                if (ownerEnvoy.Mission != null)
-                    ownerEnvoy.Mission.Cancel(force: true);
-                else
-                    GameLog.Client.Diplomacy.ErrorFormat("{0} envoy to {1} has no mission assigned.", Owner, Counterparty);
-            }
-
-            var counterpartyEnvoy = CounterpartyEnvoy;
-            if (counterpartyEnvoy != null)
-            {
-                if (counterpartyEnvoy.Mission != null)
-                    counterpartyEnvoy.Mission.Cancel(force: true);
-                else
-                    GameLog.Client.Diplomacy.ErrorFormat("{0} envoy to {1} has no mission assigned.", Counterparty, Owner);
-            }
 
             var activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
             while (activeAgreements.Count > 0)
@@ -452,8 +408,6 @@ namespace Supremacy.Diplomacy
         {
             _regardEvents = reader.Read<CollectionBase<RegardEvent>>();
             _diplomacyData = reader.Read<DiplomacyDataInternal>();
-            _assignedEnvoyId = reader.ReadOptimizedInt32();
-            _counterpartyEnvoyId = reader.ReadOptimizedInt32();
 
             OwnerID = reader.ReadOptimizedInt32();
             CounterpartyID = reader.ReadOptimizedInt32();
@@ -477,8 +431,6 @@ namespace Supremacy.Diplomacy
         {
             writer.WriteObject(_regardEvents);
             writer.WriteObject(_diplomacyData);
-            writer.WriteOptimized(_assignedEnvoyId);
-            writer.WriteOptimized(_counterpartyEnvoyId);
             
             writer.WriteOptimized(OwnerID);
             writer.WriteOptimized(CounterpartyID);

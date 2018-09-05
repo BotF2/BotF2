@@ -18,7 +18,6 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Orbitals;
 using Supremacy.Client;
-using Supremacy.Personnel;
 using Supremacy.Tech;
 using Supremacy.Universe;
 
@@ -174,65 +173,6 @@ namespace Supremacy.Game
                 PlayerOrderService.AddOrder(new ScrapOrder(scrap, item));
                 item.Scrap = scrap;
             }
-        }
-
-        public static bool AssignDiplomaticEnvoy([NotNull] Agent agent, [NotNull] ForeignPower counterparty)
-        {
-            if (agent == null)
-                throw new ArgumentNullException("agent");
-            if (counterparty == null)
-                throw new ArgumentNullException("counterparty");
-
-            if (counterparty.AssignedEnvoy != null || !agent.IsAvailableForMission)
-                return false;
-
-            var mission = new DiplomaticEnvoyMission(
-                counterparty.Owner,
-                counterparty.Counterparty,
-                agent.CurrentLocation ?? CivilizationManager.For(agent.OwnerID).SeatOfGovernment.Location);
-
-            if (!mission.Assign(agent))
-                return false;
-
-            PlayerOrderService.AddOrder(new AssignDiplomaticEnvoyOrder(agent, counterparty));
-
-            return true;
-        }
-
-        public static bool CancelAgentMission([NotNull] Agent agent)
-        {
-            if (agent == null)
-                throw new ArgumentNullException("agent");
-
-            var mission = agent.Mission;
-            if (mission == null || !mission.CanCancel)
-                return false;
-
-            var cancelOrder = new CancelAgentMissionOrder(agent);
-
-            PlayerOrderService.AddOrder(cancelOrder);
-
-            cancelOrder.Execute();
-
-            return true;
-        }
-
-        public static bool UndoCancelAgentMission([NotNull] Agent agent)
-        {
-            if (agent == null)
-                throw new ArgumentNullException("agent");
-
-            var mission = agent.Mission;
-            if (mission == null || !mission.IsCancelled || !mission.CanUndoCancel)
-                return false;
-
-            mission.UndoCancel();
-
-            var cancelOrder = PlayerOrderService.Orders.Reverse().OfType<CancelAgentMissionOrder>().FirstOrDefault(o => o.Agent == agent);
-            if (cancelOrder != null)
-                PlayerOrderService.RemoveOrder(cancelOrder);
-
-            return true;
         }
     }
 }

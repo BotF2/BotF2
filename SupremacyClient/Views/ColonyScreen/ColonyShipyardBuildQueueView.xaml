@@ -120,22 +120,6 @@
               <TextBlock Text="/" />
               <TextBlock Text="{Binding Path=Project.RawMaterialsNeeded}" />
             </TextBlock>
-            <!--<Image Grid.Column="2"
-                   Grid.Row="1"
-                   Width="24"
-                   Height="24"
-                   Margin="14,0,7,0"
-                   ToolTip="{s:StringResource OFFICERS}">
-              <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/personnel.png" />
-              </Image.Source>
-            </Image>
-            <TextBlock Grid.Column="3"
-                       Grid.Row="1">
-              <TextBlock Text="{Binding Path=Project.PersonnelUsed}" />
-              <TextBlock Text="/" />
-              <TextBlock Text="{Binding Path=Project.PersonnelNeeded}" />
-            </TextBlock>-->
           </Grid>
         </Grid>
       </Border>

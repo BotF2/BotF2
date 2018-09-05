@@ -25,26 +25,14 @@
     <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                HorizontalAlignment="Left"
                Text="{Binding Source={s:StringResource DEUTERIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
-    <TextBlock Foreground="{StaticResource DefaultTextBrush}"
+        <TextBlock Foreground="{StaticResource DefaultTextBrush}"
                  HorizontalAlignment="Right">
       <TextBlock Text="{Binding Path=Resources.Deuterium.CurrentValue, Mode=OneWay}" />
       <TextBlock Text="/" />
       <TextBlock Foreground="{Binding Path=Resources.Deuterium.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
                    Text="{Binding Path=Resources.Deuterium.LastChange, Mode=OneWay}" />
     </TextBlock>
-<!--
-    <TextBlock Foreground="{StaticResource HeaderTextBrush}"
-               HorizontalAlignment="Left"
-               Text="OFFICERS:" />
-    <TextBlock Foreground="{StaticResource DefaultTextBrush}"
-               HorizontalAlignment="Right">
-      <TextBlock Text="{Binding Path=Personnel.Officers.CurrentValue, Mode=OneWay}" />
-      <TextBlock Text="/" />
-      <TextBlock Foreground="{Binding Path=Personnel.Officers.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
-                 Text="{Binding Path=Personnel.Officers.LastChange, Mode=OneWay}" />
-    </TextBlock>
--->
-    <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+        <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                HorizontalAlignment="Left"
                Text="{Binding Source={s:StringResource RAW_MATERIALS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
     <TextBlock Foreground="{StaticResource DefaultTextBrush}"

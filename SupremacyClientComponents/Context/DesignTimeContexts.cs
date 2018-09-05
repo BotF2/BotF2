@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Supremacy.Collections;
-using Supremacy.Personnel;
 using Supremacy.Universe;
 using Supremacy.Game;
 using Supremacy.Client.Audio;
@@ -197,11 +196,6 @@ namespace Supremacy.Client.Context
 
     public static class DesignTimeObjects
     {
-        public static Agent Agent
-        {
-            get { return DesignTimeAppContext.Instance.LocalPlayerEmpire.AgentPool.CurrentAgents.FirstOrDefault(); }
-        }
-
         public static CivilizationManager CivilizationManager
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }

@@ -1733,10 +1733,6 @@ namespace Supremacy.Universe
                             case BonusType.Intelligence:
                                 propertyChanges.Add("NetIntelligence");
                                 break;
-                            //case BonusType.Personnel:
-                            //case BonusType.PercentPersonnelTraining:
-                            //    propertyChanges.Add("NetPersonnel");
-                            //    break;
                             case BonusType.Dilithium:
                                 propertyChanges.Add("NetDilithium");
                                 break;
@@ -1837,7 +1833,6 @@ namespace Supremacy.Universe
         {
             base.Compact();
             _tradeRoutes.TrimExcess();
-            //_buildings.TrimExcess();
         }
 
         public override void SerializeOwnedData(SerializationWriter writer, object context)

@@ -368,9 +368,6 @@ namespace Supremacy.Universe
                     resources[resource] = Math.Min(
                         design.BuildResourceCosts[resource],
                         (int)Math.Floor(modifier * resources[resource]));
-                    //if (resource == ResourceType.Personnel)
-                    //    civManager.Personnel[PersonnelCategory.Officers].AdjustCurrent(resources[resource]);
-                    //else
                         civManager.Resources[resource].AdjustCurrent(resources[resource]);
                 }
                 civManager.Credits.AdjustCurrent(credits);
