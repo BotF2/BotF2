@@ -23,16 +23,7 @@
         <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Hidden, Else=Visible}}" />
     </i:Interaction.Behaviors>
     <Control.Resources>
-        <!--
-    <ResourceDictionary>
--->
-
-        <!--
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="DiplomacyScreen/EnvoyPopupButton.xaml" />
-      </ResourceDictionary.MergedDictionaries>
--->
-
+        
         <scc:LocalizedEnumStringConverter x:Key="LocalizedEnumStringConverter" />
 
         <Style x:Key="RemoveMessageElementButtonStyle"
@@ -768,74 +759,6 @@
                   CornerRadius="8"
                   Padding="6">
                         <DockPanel LastChildFill="True">
-
-                            <!--
-              ================================================================================
-                Counterparty Envoy
-              ================================================================================
-              -->
-                            <Grid DockPanel.Dock="Left"
-                    VerticalAlignment="Center"
-                    Width="64"
-                    Height="64">
-
-                                <Border Width="64"
-                        Height="64"
-                        Margin="0,0,0,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        IsHitTestVisible="False">
-                                    <Border.CacheMode>
-                                        <BitmapCache RenderAtScale="2"
-                                 SnapsToDevicePixels="True" />
-                                    </Border.CacheMode>
-                                    <Image Stretch="Uniform"
-                         StretchDirection="Both"
-                         Source="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivInsigniaConverter}}"
-                         RenderOptions.BitmapScalingMode="HighQuality">
-                                        <Image.Effect>
-                                            <DropShadowEffect RenderingBias="Quality"
-                                        ShadowDepth="2"
-                                        BlurRadius="2" />
-                                        </Image.Effect>
-                                    </Image>
-                                </Border>
-
-                            </Grid>
-
-                            <!--
-              ================================================================================
-                Owner Envoy
-              ================================================================================
-              -->
-                            <Grid DockPanel.Dock="Right"
-                    VerticalAlignment="Center"
-                    Width="64"
-                    Height="64">
-
-                                <Border Width="64"
-                        Height="64"
-                        Margin="0,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        IsHitTestVisible="False">
-                                    <Border.CacheMode>
-                                        <BitmapCache RenderAtScale="2"
-                                 SnapsToDevicePixels="True" />
-                                    </Border.CacheMode>
-                                    <Image Stretch="Uniform"
-                         StretchDirection="Both"
-                         Source="{Binding Path=PlayerCivilization, Converter={StaticResource CivInsigniaConverter}}"
-                         RenderOptions.BitmapScalingMode="HighQuality">
-                                        <Image.Effect>
-                                            <DropShadowEffect RenderingBias="Quality"
-                                        ShadowDepth="2"
-                                        BlurRadius="2" />
-                                        </Image.Effect>
-                                    </Image>
-                                </Border>
-
-                            </Grid>
 
                             <!--
               ================================================================================

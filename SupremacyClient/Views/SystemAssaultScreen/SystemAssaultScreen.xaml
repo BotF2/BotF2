@@ -1112,14 +1112,6 @@
                   </scc:GameButton.CommandParameter>
                 </scc:GameButton>
                   <!--we have attacks to: 1 = Orbitals = OB + Shields, 2 = Bombard = Planet, 3 = Land Troops = Ground Combat - UNLOAD Ordinance just not neccessary-->
-                <!--<scc:GameButton Label="{s:StringResource UNLOAD_ALL_ORDINANCE_ON_PLANET}"
-                                Margin="0,2,0,0"
-                                Command="{Binding Path=SetActionCommand}"
-                                IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
-                  <scc:GameButton.CommandParameter>
-                    <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.UnloadAllOrdinance}" />
-                  </scc:GameButton.CommandParameter>
-                </scc:GameButton>-->
                 <scc:GameButton Label="{s:StringResource LAND_TROOPS}"
                                 Margin="0,2,0,0"
                                 Command="{Binding Path=SetActionCommand}"
@@ -1127,13 +1119,6 @@
                   <scc:GameButton.CommandParameter>
                     <scc:CheckableCommandParameter InnerParameter="{x:Static s:InvasionAction.LandTroops}" />
                   </scc:GameButton.CommandParameter>
-                                    <!--<scc:GameButton.ToolTip Label="{s:StringResource LAND_TROOPS_REQUIREMENTS}"
-                         DisplayMode="Tiny"
-                          Margin="4,0,8,8"
-                          StaysOpenOnClick="True"
-                          HorizontalAlignment="Stretch"
-                                  />-->
-                          <!--Label="{xs:LocalizedStringExtension Group={x:Static s:LocalizedTextGroups.PersonnelText}, Entry=CancelAgentRecallCommandText, CharacterCasing=Upper}"--> 
                                 </scc:GameButton>
                 <scc:GameButton Label="{s:StringResource STAND_DOWN}"
                                 Margin="0,2,0,0"

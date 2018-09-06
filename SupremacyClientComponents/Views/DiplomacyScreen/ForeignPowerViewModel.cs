@@ -7,7 +7,6 @@ using Supremacy.Annotations;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Personnel;
 using Supremacy.Types;
 using Supremacy.Utility;
 
@@ -57,7 +56,7 @@ namespace Supremacy.Client.Views
             get { return _foreignPower.Counterparty; }
         }
 
-        public String CounterpartyDiplomacyReport
+        public string CounterpartyDiplomacyReport
         {
             get { return _foreignPower.Counterparty.DiplomacyReport; }
         }
@@ -65,16 +64,6 @@ namespace Supremacy.Client.Views
         public Civilization Owner
         {
             get { return _foreignPower.Owner; }
-        }
-
-        public Agent AssignedEnvoy
-        {
-            get { return _foreignPower.AssignedEnvoy; }
-        }
-
-        public Agent CounterpartyEnvoy
-        {
-            get { return _foreignPower.CounterpartyEnvoy; }
         }
 
         public Meter CounterpartyRegard
@@ -322,12 +311,6 @@ namespace Supremacy.Client.Views
 
             if (_incomingMessage != null)
                 _incomingMessage.InvalidateCommands();
-        }
-
-        public void RefreshEnvoys()
-        {
-            OnPropertyChanged("AssignedEnvoy");
-            OnPropertyChanged("CounterpartyEnvoy");
         }
     }
 }

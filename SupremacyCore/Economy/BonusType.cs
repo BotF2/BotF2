@@ -73,7 +73,6 @@ namespace Supremacy.Economy
                 case BonusType.PercentGeneralIntelligence:
 				case BonusType.PercentInternalAffairs:
                 case BonusType.PercentMilitarySabotage:
-                case BonusType.PercentPersonnelLoyalty:
                 case BonusType.PercentPoliticalSabotage:
                 case BonusType.PercentPropulsionResearch:
                 case BonusType.PercentResearchEmpireWide:
@@ -116,9 +115,6 @@ namespace Supremacy.Economy
         PercentInternalAffairs,
         ExternalAffairs,
         PercentExternalAffairs,
-        Personnel,
-        PercentPersonnelLoyalty,
-        PercentPersonnelTraining,
         PercentShipExperience,
         AntiShipDefense,
         PercentAntiShipDefense,

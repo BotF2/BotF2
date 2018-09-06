@@ -433,10 +433,10 @@ namespace Supremacy.Client
                         player.Play();
                     }
                       
-                    if (File.Exists("Resources\\Geometry\\Glyphs.xaml"))
+                    if (File.Exists("Resources\\Data\\Civilizations.xml"))
                         StartClient(args);
                     else
-                        MessageBox.Show("Resources\\Geometry\\Glyphs.xaml is missing" + Environment.NewLine + Environment.NewLine + 
+                        MessageBox.Show("Resources\\Data\\Civilizations.xml is missing" + Environment.NewLine + Environment.NewLine + 
                             "Make sure you have the folder \\Resources !!" + Environment.NewLine + "(only delivered within an original game release)","WARNING",
                             MessageBoxButton.OK);    
                 }

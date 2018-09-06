@@ -21,7 +21,6 @@ using Supremacy.Expressions.Serialization;
 
 using Supremacy.Entities;
 using Supremacy.Orbitals;
-using Supremacy.Personnel;
 using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Tech;
@@ -72,7 +71,6 @@ namespace Supremacy.Game
         NewInfiltrate = 0x00000200,
         SpecialEvent = 0x00000400,
         FirstContact = 0x00000800,
-        Personnel = 0x00001000,
     }
 
     /// <summary>
@@ -1851,77 +1849,5 @@ namespace Supremacy.Game
             info.AddValue("_detailImage", _detailImage);
             info.AddValue("_soundEffect", _soundEffect);
         }
-    }
-
-    [Serializable]
-    public sealed class NewAgentSitRepEntry : SitRepEntry
-    {
-        private readonly GameObjectID _agentId;
-        private readonly CivString _headerText;
-        private readonly CivString _detailText;
-
-        public NewAgentSitRepEntry(Agent agent)
-            : base(agent.OwnerID, SitRepPriority.Special)
-        {
-            _agentId = agent.ObjectID;
-
-            _headerText = new CivString(
-                agent.Owner,
-                CivString.PersonnelCategory,
-                "MESSAGE_SITREP_HEADER_AGENT_RECRUITED");
-
-            _detailText = new CivString(
-                agent.Owner,
-                CivString.PersonnelCategory,
-                "MESSAGE_SITREP_DETAILS_AGENT_RECRUITED");
-        }
-
-        public Agent Agent
-        {
-            get { return GameContext.Current.CivilizationManagers[OwnerID].AgentPool.CurrentAgents[_agentId]; }
-        }
-
-        #region Overrides of SitRepEntry
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.Personnel;}
-        }
-
-        public override string SummaryText
-        {
-            get { return string.Format(_headerText.Value, Agent.Profile.DisplayName); }
-        }
-
-        public override string DetailText
-        {
-            get
-            {
-                var profile = Agent.Profile;
-
-                return string.Format(
-                    _detailText.Value,
-                    profile.DisplayName,
-                    Owner.ShortName,
-                    string.Join(", ", profile.NaturalSkills));
-            }
-        }
-
-        public override string DetailImage
-        {
-            get
-            {
-                var agent = Agent;
-                if (agent == null)
-                    return null;
-
-                return agent.Profile.Image;
-            }
-        }
-
-        public override bool IsPriority
-        {
-            get { return true; }
-        }
-        #endregion
     }
 }

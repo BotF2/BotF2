@@ -128,8 +128,7 @@ namespace Supremacy.Client.Dialogs
                 SitRepCategory.Military |
                 SitRepCategory.Research |
                 SitRepCategory.Resources |
-                SitRepCategory.SpecialEvent |
-                SitRepCategory.Personnel,
+                SitRepCategory.SpecialEvent,
                 FrameworkPropertyMetadataOptions.None));
 
         public static SitRepCategory GetVisibleCategories(DependencyObject source)

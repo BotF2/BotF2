@@ -11,7 +11,6 @@ using Supremacy.Client.Input;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Personnel;
 using Supremacy.Utility;
 
 using System.Linq;
@@ -64,10 +63,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _sendMessageCommand;
         private readonly DelegateCommand _cancelMessageCommand;
         private readonly DelegateCommand _resetGraphCommand;
-        private readonly DelegateCommand _cancelEnvoyRecallCommand;
         private readonly DelegateCommand<DiplomacyGraphNode> _setSelectedGraphNodeCommand;
-
-        private readonly EnvoyAssignmentViewModel _envoyAssignmentViewModel;
  
         public DiplomacyScreenViewModel([NotNull] IAppContext appContext, [NotNull] IRegionManager regionManager)
             : base(appContext, regionManager)
@@ -87,33 +83,8 @@ namespace Supremacy.Client.Views
             _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
-            _cancelEnvoyRecallCommand = new DelegateCommand(ExecuteCancelEnvoyRecallCommand, CanExecuteCancelEnvoyRecallCommand);
-
-            _envoyAssignmentViewModel = new EnvoyAssignmentViewModel();
 
             Refresh();
-        }
-
-        private void ExecuteCancelEnvoyRecallCommand()
-        {
-            if (!CanExecuteCancelEnvoyRecallCommand())
-                return;
-
-            PlayerOperations.UndoCancelAgentMission(SelectedForeignPower.AssignedEnvoy);
-
-            _envoyAssignmentViewModel.Refresh();
-
-            SelectedForeignPower.RefreshEnvoys();
-        }
-
-        private bool CanExecuteCancelEnvoyRecallCommand()
-        {
-            if (SelectedForeignPower == null || SelectedForeignPower.AssignedEnvoy == null)
-                return false;
-
-            var mission = SelectedForeignPower.AssignedEnvoy.Mission as DiplomaticEnvoyMission;
-
-            return mission != null && mission.CanUndoCancel;
         }
 
         private bool CanExecuteSetSelectedGraphNodeCommand(DiplomacyGraphNode node)
@@ -355,7 +326,6 @@ namespace Supremacy.Client.Views
             _editMessageCommand.RaiseCanExecuteChanged();
             _sendMessageCommand.RaiseCanExecuteChanged();
             _cancelMessageCommand.RaiseCanExecuteChanged();
-            _cancelEnvoyRecallCommand.RaiseCanExecuteChanged();
 
             if (_selectedForeignPower != null)
                 _selectedForeignPower.InvalidateCommands();
@@ -372,8 +342,6 @@ namespace Supremacy.Client.Views
 
             RefreshForeignPowers();
             RefreshRelationshipGraph();
-
-            EnvoyAssignmentViewModel.Refresh();
         }
 
         #region Overrides of ViewModelBase<INewDiplomacyScreenView,DiplomacyScreenViewModel>
@@ -398,11 +366,6 @@ namespace Supremacy.Client.Views
         public ReadOnlyObservableCollection<ForeignPowerViewModel> ForeignPowers
         {
             get { return _foreignPowersView; }
-        }
-
-        public EnvoyAssignmentViewModel EnvoyAssignmentViewModel
-        {
-            get { return _envoyAssignmentViewModel; }
         }
 
         public ICommand SetDisplayModeCommand
@@ -458,11 +421,6 @@ namespace Supremacy.Client.Views
         public ICommand SetSelectedGraphNodeCommand
         {
             get { return _setSelectedGraphNodeCommand; }
-        }
-
-        public ICommand CancelEnvoyRecallCommand
-        {
-            get { return _cancelEnvoyRecallCommand; }
         }
 
         #region PlayerCivilization Property
@@ -568,23 +526,8 @@ namespace Supremacy.Client.Views
                     return;
 
                 _selectedForeignPower = value;
-                _envoyAssignmentViewModel.ForeignPower = value;
 
                 OnSelectedForeignPowerChanged();
-            }
-        }
-
-        private AgentPresenter _selectedForeignPowerEnvoy;
-
-        public AgentPresenter SelectedForeignPowerEnvoy
-        {
-            get { return _selectedForeignPowerEnvoy; }
-            set
-            {
-                if (Equals(value, _selectedForeignPowerEnvoy))
-                    return;
-
-                _selectedForeignPowerEnvoy = value;
             }
         }
 
@@ -595,13 +538,6 @@ namespace Supremacy.Client.Views
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
             OnAreNewMessageCommandsVisibleChanged();
-
-            SelectedForeignPowerEnvoy = null;
-            if (SelectedForeignPower != null && SelectedForeignPower.AssignedEnvoy != null)
-            {
-                SelectedForeignPowerEnvoy = new AgentPresenter(SelectedForeignPower.AssignedEnvoy);
-            }
-            OnPropertyChanged("SelectedForeignPowerEnvoy");
         }
 
         #endregion

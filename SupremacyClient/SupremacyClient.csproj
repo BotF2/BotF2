@@ -274,9 +274,6 @@
       <DependentUpon>PopupTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShellIntegration.cs" />
-    <Compile Include="Views\AgentViews\AgentView.xaml.cs">
-      <DependentUpon>AgentView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
       <DependentUpon>AssetsScreen.xaml</DependentUpon>
     </Compile>
@@ -288,9 +285,6 @@
     </Compile>
     <Compile Include="Views\ColonyScreen\ColonyInfoScreen.xaml.cs">
       <DependentUpon>ColonyInfoScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DiplomacyScreen\EnvoyAssignmentPopup.xaml.cs">
-      <DependentUpon>EnvoyAssignmentPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="themes\ColorInfoScreen_Fed.xaml.cs">
       <DependentUpon>ColorInfoScreen_Fed.xaml</DependentUpon>
@@ -844,10 +838,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AgentViews\AgentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AssetsScreen\AssetsScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -905,14 +895,6 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DiplomacyScreen\EnvoyAssignmentPopup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DiplomacyScreen\EnvoyPopupButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GalaxyScreen\AssignedShipListView.xaml">
       <SubType>Designer</SubType>

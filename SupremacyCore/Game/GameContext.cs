@@ -16,7 +16,6 @@ using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
-using Supremacy.Personnel;
 using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Tech;
@@ -133,12 +132,6 @@ namespace Supremacy.Game
         /// <returns>The object ID.</returns>
         GameObjectID GenerateID();
 
-        /// <summary>
-        /// Gets the agent database for the current game.
-        /// </summary>
-        /// <value>The agent database.</value>
-        AgentDatabase AgentDatabase { get; }
-
         AgreementMatrix AgreementMatrix { get; }
     }
 
@@ -171,7 +164,6 @@ namespace Supremacy.Game
         private CivilizationKeyedMap<Diplomat> _diplomats;
         private StrategyDatabase _strategyDatabase;
         private ICollection<ScriptedEvent> _scriptedEvents;
-        private AgentDatabase _agentDatabase;
         private DiplomacyDatabase _diplomacyDatabase;
         #endregion
 
@@ -195,7 +187,6 @@ namespace Supremacy.Game
             writer.WriteObject(_diplomats);
             writer.WriteObject(_strategyDatabase);
             writer.WriteObject(_scriptedEvents);
-            writer.WriteObject(_agentDatabase);
             writer.WriteObject(_diplomacyDatabase);
         }
 
@@ -223,7 +214,6 @@ namespace Supremacy.Game
                 _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
                 _strategyDatabase = reader.Read<StrategyDatabase>();
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
-                _agentDatabase = reader.Read<AgentDatabase>();
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
 
                 FixupDiplomacyData();
@@ -371,12 +361,6 @@ namespace Supremacy.Game
         {
             get { return _scriptedEvents; }
             internal set { _scriptedEvents = value; }
-        }
-
-        public AgentDatabase AgentDatabase
-        {
-            get { return _agentDatabase; }
-            internal set { _agentDatabase = value; }
         }
 
         public DiplomacyDatabase DiplomacyDatabase
@@ -687,16 +671,6 @@ namespace Supremacy.Game
 
             homeColony.ProcessQueue();
             
-            civManager.AgentPool.Update();
-
-            var futureAgents = civManager.AgentPool.FutureAgents;
-
-            while (futureAgents.Count != 0)
-            {
-                civManager.AgentPool.CurrentAgents.Add(new Agent(futureAgents[0].Profile, civ));
-                futureAgents.RemoveAt(0);
-            }
-
             gameContext._diplomacyData.GetValuesForOwner(civ).ForEach(
                 o =>
                 {
@@ -706,18 +680,6 @@ namespace Supremacy.Game
                         civ,
                         counterparty,
                         gameContext.CivilizationManagers[o.CounterpartyID].HomeColony.Location);
-
-                    if (!counterparty.IsEmpire)
-                        return;
-
-                    var agent = civManager.AgentPool.CurrentAgents.FirstOrDefault(a => !a.HasMission);
-                    if (agent == null)
-                        return;
-
-                    var envoyMission = new DiplomaticEnvoyMission(civ, counterparty, civManager.HomeColony.Location);
-
-                    envoyMission.Assign(agent);
-                    envoyMission.Begin();
                 });
 
             return gameContext;
@@ -796,8 +758,6 @@ namespace Supremacy.Game
                         GameLog.Client.GameData.DebugFormat("TechTree loaded");
                 _strategyDatabase = StrategyDatabase.Load();
                 _scriptedEvents = new List<ScriptedEvent>();
-                _agentDatabase = AgentDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("Agents loaded");
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 

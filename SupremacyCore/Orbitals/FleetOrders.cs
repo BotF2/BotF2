@@ -1712,15 +1712,12 @@ namespace Supremacy.Orbitals
             var buildOutput = project.ProductionCenter.GetBuildOutput(0);
             var resources = new ResourceValueCollection();
 
-            //resources[ResourceType.Personnel] = civManager.Personnel[PersonnelCategory.Officers].CurrentValue;
             resources[ResourceType.RawMaterials] = civManager.Resources[ResourceType.RawMaterials].CurrentValue;
 
             var usedResources = resources.Clone();
 
             project.Advance(ref buildOutput, usedResources);
 
-            //civManager.Personnel[PersonnelCategory.Officers].AdjustCurrent(
-            //    usedResources[ResourceType.Personnel] - resources[ResourceType.Personnel]);
             civManager.Resources[ResourceType.RawMaterials].AdjustCurrent(
                 usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials]);
         }

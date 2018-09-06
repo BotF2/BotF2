@@ -238,12 +238,6 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PopulationGrowth);
 
-            OnTurnPhaseChanged(game, TurnPhase.PersonnelTraining);
-            GameContext.PushThreadContext(game);
-            try { DoPersonnelTraining(game); }
-            finally { GameContext.PopThreadContext(); }
-            OnTurnPhaseFinished(game, TurnPhase.PersonnelTraining);
-
             OnTurnPhaseChanged(game, TurnPhase.Research);
             GameContext.PushThreadContext(game);
             try { DoResearch(game); }
@@ -829,25 +823,6 @@ namespace Supremacy.Game
                 {
                     GameLog.Print("DoPopulation failed for {1}", civ.Name);
                     GameLog.LogException(e);
-                }
-                finally
-                {
-                    GameContext.PopThreadContext();
-                }
-            });
-        }
-        #endregion
-
-        #region DoPersonnelTraining Method
-        private void DoPersonnelTraining(GameContext game)
-        {
-            ParallelForEach(game.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList(), civManager =>
-            {
-                GameContext.PushThreadContext(game);
-
-                try
-                {
-                    civManager.AgentPool.Update();
                 }
                 finally
                 {
@@ -1951,7 +1926,6 @@ namespace Supremacy.Game
                  * and the credit treasury.
                  */
                 civManager.Resources.UpdateAndReset();
-                civManager.Personnel.UpdateAndReset();
                 civManager.Credits.UpdateAndReset();
                 civManager.OnTurnFinished();
             }

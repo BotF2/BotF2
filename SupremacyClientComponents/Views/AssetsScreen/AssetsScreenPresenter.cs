@@ -37,7 +37,6 @@ namespace Supremacy.Client.Views
         protected override void TerminateOverride()
         {
             base.TerminateOverride();
-            Model.AgentData = null;
             Model.Colonies = null;
         }
 
@@ -52,7 +51,6 @@ namespace Supremacy.Client.Views
 
         private void Update()
         {
-            Model.AgentData = AppContext.LocalPlayerEmpire.AgentPool.CurrentAgents;
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
         }
 

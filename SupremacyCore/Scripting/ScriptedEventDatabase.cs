@@ -15,7 +15,6 @@ using System.Xaml;
 
 using Supremacy.Collections;
 using Supremacy.Game;
-using Supremacy.Personnel;
 using Supremacy.Resources;
 using Supremacy.VFS;
 
@@ -37,8 +36,6 @@ namespace Supremacy.Scripting
             try
             {
                 IVirtualFileInfo fileInfo;
-
-                Debug.Assert(PersonnelConstants.Instance != null);
 
                 if (!ResourceManager.VfsService.TryGetFileInfo(new Uri("vfs:///Resources/Data/ScriptedEvents.xaml"), out fileInfo))
                     return null;

@@ -17,7 +17,6 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
-using Supremacy.Personnel;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -44,7 +43,6 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        private readonly AgentPool _agentPool;
 
         private GameObjectID _homeColonyId;
         private MapLocation? _homeColonyLocation;
@@ -61,7 +59,6 @@ namespace Supremacy.Game
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
             _resources = new ResourcePool();
-            //personnel = new PersonnelPool();
             _colonies = new UniverseObjectList<Colony>();
 
             _globalBonuses = new List<Bonus>();
@@ -98,15 +95,8 @@ namespace Supremacy.Game
             _research = new ResearchPool(civilization, game.ResearchMatrix);
 
             _personnel = new PersonnelPool(civilization);
-            _personnel.AddPersonnel(900);
-            _personnel.UpdateAndReset();
-            _personnel.UpdateAndReset();
-
-            // works: GameLog.Client.GameData.DebugFormat("CivilizationManager.cs: NEXT: New AgentPool for {0} ..., Type={1}", civilization, civilization.CivilizationType.ToString());
 
             var _civType = civilization.CivilizationType.ToString();
-            if (_civType == "Empire")
-            _agentPool = new AgentPool(civilization);
         }
         #endregion
 
@@ -338,12 +328,6 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The desired borders.</value>
         public ConvexHullSet DesiredBorders { get; internal set; }
-
-        [NotNull]
-        public AgentPool AgentPool
-        {
-            get { return _agentPool; }
-        }
         #endregion
 
         #region Methods

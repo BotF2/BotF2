@@ -7,7 +7,6 @@ using Microsoft.Practices.Unity;
 
 using Supremacy.Annotations;
 using Supremacy.Game;
-using Supremacy.Personnel;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
@@ -15,28 +14,8 @@ using Supremacy.Types;
 
 namespace Supremacy.Client.Views
 {
-    public class AgentPresenter
-    {
-        private Agent _agent;
-
-        public AgentPresenter(Agent agent)
-        {
-            if (agent == null)
-                throw new InvalidOperationException("Agent shouldn't be null! BAD BAD BAD!");
-
-            _agent = agent;
-        }
-
-        public Agent Agent
-        {
-            get { return _agent; }
-        }
-    }
-
     public class AssetsScreenPresentationModel : PresentationModelBase, INotifyPropertyChanged
     {
-        private AgentCollection _agentData;
-        private List<AgentPresenter> _agentPresenters;
         [InjectionConstructor]
         public AssetsScreenPresentationModel([NotNull] IAppContext appContext)
             : base(appContext) {}
@@ -47,57 +26,8 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
-            _agentData = DesignTimeAppContext.Instance.LocalPlayerEmpire.AgentPool.CurrentAgents;
             Colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
         }
-
-        #region Agents Property
-        [field: NonSerialized]
-        public event EventHandler AgentsChanged;
-
-        public AgentCollection AgentData
-        {
-            get { return _agentData; }
-            set
-            {
-                if (Equals(value, _agentData))
-                    return;
-
-                _agentData = value;
-
-                List<AgentPresenter>  tmpAgentPresenters = new List<AgentPresenter>();
-                if (_agentData != null)
-                {
-                    foreach (Agent agent in _agentData)
-                    {
-                        tmpAgentPresenters.Add(new AgentPresenter(agent));
-                    }
-                }
-                AgentPresenters = tmpAgentPresenters;
-            }
-        }
-
-        public List<AgentPresenter> AgentPresenters
-        {
-            get { return _agentPresenters; }
-            set
-            {
-                if (Equals(value, _agentPresenters))
-                    return;
-
-                _agentPresenters = value;
-
-                OnAgentsChanged();
-            }
-        }
-
-        protected virtual void OnAgentsChanged()
-        {
-            AgentsChanged.Raise(this);
-            OnPropertyChanged("AgentPresenters");
-        }
-
-        #endregion
 
         #region Colonies Property
 
