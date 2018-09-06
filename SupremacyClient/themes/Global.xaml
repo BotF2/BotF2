@@ -37,7 +37,7 @@
 
     <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="Converters.xaml" />
-    <ResourceDictionary Source="pack://siteoforigin:,,,/Resources/Geometry/Glyphs.xaml" />
+    
     <ResourceDictionary Source="pack://siteoforigin:,,,/Resources/Images/Resources/Icons.xaml" />
 
     
