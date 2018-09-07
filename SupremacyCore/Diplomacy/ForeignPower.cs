@@ -165,6 +165,19 @@ namespace Supremacy.Diplomacy
 
         public void BeginEmbargo()
         {
+            var agreements = GameContext.Current.AgreementMatrix;
+
+            foreach (var agreement in agreements)
+            {
+                foreach (var clause in agreement.Proposal.Clauses)
+                {
+                    if (clause.ClauseType == ClauseType.TreatyTradePact)
+                    {
+                        DiplomacyHelper.BreakAgreement(agreement);
+                    }
+
+                }
+            }
             // TODO: Break any trade agreements
             IsEmbargoInPlace = true;
         }
