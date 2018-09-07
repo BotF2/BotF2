@@ -558,7 +558,9 @@ namespace Supremacy.Orbitals
         protected internal override void OnTurnEnding()
         {
             //Medicate the colony
-            Fleet.Sector.System.Colony.Health.AdjustCurrent(1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10));
+            var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10);
+            Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
+            Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
             //If the colony is not ours, increase regard etc
             if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)

@@ -58,7 +58,7 @@ namespace Supremacy.Types
 
             if (value > float.MaxValue)
                 throw new ArgumentOutOfRangeException("value", "Value must be <= MaxValue.");
-            if (value < 0)
+            if (value < float.MinValue)
                 throw new ArgumentOutOfRangeException("value", "Value must be >= MinValue.");
 
             _value = value;

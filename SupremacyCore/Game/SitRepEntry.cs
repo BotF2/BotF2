@@ -248,7 +248,7 @@ namespace Supremacy.Game
                 sb.AppendLine(ResourceManager.GetString(Application.Description));
                 if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
                 {
-                    sb.Append("[nl/]"+ ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") +"[nl/]");
+                    sb.Append("[nl/]" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + "[nl/]");
                     for (int i = 0; i < _newDesignIds.Length; i++)
                     {
                         var design = GameContext.Current.TechDatabase[_newDesignIds[i]];
@@ -256,7 +256,7 @@ namespace Supremacy.Game
                             continue;
                         sb.Append("[nl/]");
                         sb.Append(ResourceManager.GetString(design.Name));
-                    
+
                     }
                 }
                 return sb.ToString();
@@ -280,11 +280,11 @@ namespace Supremacy.Game
         }
 
         public ResearchCompleteSitRepEntry(
-            Civilization owner, 
+            Civilization owner,
             ResearchApplication application,
             ICollection<TechObjectDesign> newDesigns) : base(owner, SitRepPriority.Yellow)
         {
-            if (application ==null)
+            if (application == null)
                 throw new ArgumentNullException("application");
             _applicationId = application.ApplicationID;
             if (newDesigns != null)
@@ -368,7 +368,7 @@ namespace Supremacy.Game
                 return string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_I"),
                     ResourceManager.GetString(ItemType.Name),
                     GameContext.Current.Universe.Map[Location].Name);
-                
+
             }
         }
 
@@ -551,7 +551,7 @@ namespace Supremacy.Game
             {
                 return string.Format(ResourceManager.GetString("SITREP_SABOTEURS_ATTACKED_PLANETARY_DEFENCES_SUCCESSFULLY"),
                     System.Name, _orbitalBatteriesDestroyed, _shieldHealthRemoved);
-                    //Our agents have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
+                //Our agents have attacked the planetary defences at { 0}, destroying { 1} orbital batteries and damaged the planetary shields by { 2}.
             }
         }
 
@@ -648,7 +648,7 @@ namespace Supremacy.Game
             _systemId = target.System.ObjectID;
         }
     }
-    
+
     [Serializable]
     public class CreditsStolenTargetSitRepEntry : SitRepEntry
     {
@@ -671,7 +671,7 @@ namespace Supremacy.Game
             {
                 return string.Format(ResourceManager.GetString("SITREP_CREDITS_WERE_STOLEN"),
                     _creditsStolen, Target.Name);
-                
+
                 // {0} credits were stolen from our treasury on { 1}.
             }
         }
@@ -858,7 +858,7 @@ namespace Supremacy.Game
                     default:
                         return null;
                 }
-                    
+
             }
         }
 
@@ -974,7 +974,7 @@ namespace Supremacy.Game
                         System.Owner, System.Name, _gainedResearchPointsSum, _gainedOfTotalResearchPoints);
                 }
                 else
-                { 
+                {
                     return string.Format(ResourceManager.GetString("SITREP_INFILTRATE_NO_SUCCESS"),
                         //"Our spies have tried to infiltrate the {0} at {1} but they had no success.",
                         System.Owner, System.Name);
@@ -1848,6 +1848,75 @@ namespace Supremacy.Game
             info.AddValue("_detailText", _detailText);
             info.AddValue("_detailImage", _detailImage);
             info.AddValue("_soundEffect", _soundEffect);
+        }
+    }
+
+    //TODO: This needs fleshing out. Need a definite popup,
+    //image with something to do with medical or death
+    [Serializable]
+    public class PopulationDyingSitRepEntry : SitRepEntry
+    {
+        private Colony _colony;
+
+        public PopulationDyingSitRepEntry(Civilization owner, Colony colony) : base(owner, SitRepPriority.Red)
+        {
+            if (owner == null)
+                throw new ArgumentException("owner");
+            if (colony == null)
+                throw new ArgumentException("colony");
+
+            _colony = colony;
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.ColonyStatus; }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_POPULATION_DYING"),
+                    _colony.Name);
+            }
+        }
+    }
+
+    //TODO: This needs fleshing out a bit more - needs a definite pop up,
+    // image of graveyard or something
+    [Serializable]
+    public class PopulationDiedSitRepEntry : SitRepEntry
+    {
+        private Colony _colony;
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.ColonyStatus; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_POPULATION_DIED"),
+                    _colony.Name);
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public PopulationDiedSitRepEntry(Civilization owner, Colony colony) : base(owner, SitRepPriority.Red)
+        {
+            _colony = colony;
         }
     }
 }
