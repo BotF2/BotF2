@@ -17,6 +17,7 @@ namespace Supremacy.Scripting.Events
     [Serializable]
     public class GammaRayBurstEvent : UnitScopedEvent<Colony>
     {
+        bool m_traceGammaRayBurst = false;
         private int _occurrenceChance = 100;
         public override bool CanExecute
         {
@@ -73,7 +74,12 @@ namespace Supremacy.Scripting.Events
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
+                    var health = target.Health.CurrentValue;
 
+                    if (m_traceGammaRayBurst)
+                    {
+                        GameLog.Print("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
+                    }
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1)
                         GameLog.Client.GameData.DebugFormat("GammaRayBurstEvents.cs: colony amount > 1 for: {0}", target.Name);
 
@@ -86,10 +92,17 @@ namespace Supremacy.Scripting.Events
                             "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png",
                             "vfs:///Resources/SoundFX/ScriptedEvents/GammaRayBurst.mp3",
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-
+               
                     GameLog.Client.GameData.DebugFormat("GammaRayBurstEvents.cs: HomeSystemName is: {0}", target.Name);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population + 40);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population + 30);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health +30 );
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
+
+                    if (m_traceGammaRayBurst)
+                    {
+                        GameLog.Print("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.CurrentValue, GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.CurrentValue);
+                    }
 
                     GameContext.Current.Universe.UpdateSectors();
 
