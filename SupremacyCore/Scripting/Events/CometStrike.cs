@@ -126,12 +126,15 @@ namespace Supremacy.Scripting.Events
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
+                    var health = target.Health.CurrentValue;
 
                     OnUnitTargeted(target);
 
                     // Population
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population + 75);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population/5 * 4);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/2);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     // Facilities
                     int removeFood = target.GetTotalFacilities(ProductionCategory.Food) - 6; // Food: remaining everything up to 6
@@ -170,8 +173,10 @@ namespace Supremacy.Scripting.Events
                                 "vfs:///Resources/SoundFX/ScriptedEvents/AsteroidImpact.wav",
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
-                    GameContext.Current.Universe.UpdateSectors();
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- population / 5 * 4);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
 
+                    GameContext.Current.Universe.UpdateSectors();
                     return;
                 }
 

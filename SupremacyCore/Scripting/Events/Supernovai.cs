@@ -73,6 +73,7 @@ namespace Supremacy.Scripting.Events
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
+                    var health = target.Health.CurrentValue;
 
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1) 
                         GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: colony amount > 1 for: {0}", target.Name);
@@ -88,8 +89,10 @@ namespace Supremacy.Scripting.Events
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: HomeSystemName is: {0}", target.Name);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population + 30);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent( - population/6 * 5);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/ 5);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     GameContext.Current.Universe.UpdateSectors();
 
