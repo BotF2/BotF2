@@ -16,20 +16,7 @@ namespace Supremacy.Game
 
 {
     [Serializable]
-    public class  ReserchBreakthroughs : GameEngine
-    {      
-        bool m_traceNebulaProtomater = true;
-
-        if (m_traceNebulaProtomater)
-        {
-            //GameLog.Print("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.CurrentValue, GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.CurrentValue);
-        }
-
-        GameContext.Current.Universe.UpdateSectors();
-
-                    return;
-                
-            
-        
-    
+    public class ReserchBreakthroughs
+    {
     }
+}

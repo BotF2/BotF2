@@ -833,6 +833,55 @@ namespace Supremacy.Game
         #region DoResearch() Method
         private void DoResearch(GameContext game)
         {
+            var scienceShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
+            Parallel.ForEach(GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science), scienceShip =>
+            {
+                if (scienceShip.Sector.System == null)
+                {
+                    return;
+                }
+
+                var starType = scienceShip.Sector.System.StarType;
+                int researchGained = 20;  //TODO: Multiply this by tech level?
+
+                switch (starType)
+                {
+                    case StarType.Blue:
+                    case StarType.Orange:
+                    case StarType.Red:
+                    case StarType.White:
+                    case StarType.Yellow:
+                        researchGained = researchGained * 1;
+                        break;
+                    case StarType.BlackHole:
+                        researchGained = researchGained * 2;
+                        break;
+                    case StarType.Nebula:
+                        researchGained = researchGained * 1;
+                        break;
+                    case StarType.NeutronStar:
+                        researchGained = researchGained * 1;
+                        break;
+                    case StarType.Quasar:
+                        researchGained = researchGained * 1;
+                        break;
+                    case StarType.RadioPulsar:
+                        researchGained = researchGained * 1;
+                        break;
+                    case StarType.Wormhole:
+                        researchGained = researchGained * 3;
+                        break;
+                    case StarType.XRayPulsar:
+                        break;
+                }
+
+                GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
+                GameLog.Print("{0} in {1} gained {2} research points for {3} by studying the {4} in it's sector",
+                    scienceShip.Name, scienceShip.Sector, researchGained, scienceShip.Owner, starType);
+
+                //TODO: Create SitRep
+            });
+
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
                 GameContext.PushThreadContext(game);
@@ -1896,7 +1945,6 @@ namespace Supremacy.Game
         {
             var destroyedOrbitals = GameContext.Current.Universe.Find<Orbital>(o => o.HullStrength.IsMinimized);
             var allFleets = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
-            var allShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship);
 
             foreach (var orbital in destroyedOrbitals)
             {
@@ -1917,70 +1965,6 @@ namespace Supremacy.Game
                 else if (fleet.Order != null)
                 {
                     fleet.Order.OnTurnEnding();
-                }
-
-                foreach (var ship in allShips)
-                {
-                    if (ship.ShipType == ShipType.Science)
-                    {
-                        var civID = ship.Owner.CivID;
-                        var civ = GameContext.Current.CivilizationManagers[ship.Owner.CivID];
-                        var _starType = StarType.White;
-                        try
-                        {
-                            _starType = ship.Sector.System.StarType;
-                        }
-                        catch
-                        {
-                             _starType = StarType.Red;
-                        }
-                        var _cumRP = civ.Research.CumulativePoints;  
-                        
-                        int _researchGained = 20;  // multiplied with techlevel 1 to 11 would do a steady increasing
-
-                        if (_starType == StarType.Yellow)  // Sol system for testing
-                        {
-
-                            civ.Research.UpdateResearch(_researchGained);
-                            // SitRep: Your ship xx gained xx % at sector xx analyzing the xx (nebula/Black hole etc.)
-
-                            GameLog.Print("{0} {1} ({2}, Owner={3}) at {4} ({5}), added 'a lot of' research points for civ {7}",
-                                ship.ObjectID, ship.Name, ship.ShipType, ship.Owner.Name, ship.Location, _starType, _researchGained, civ.Civilization.Name);
-
-                        }
-
-
-                        if (_starType == StarType.Nebula)
-                        {
-
-                            civ.Research.UpdateResearch(_researchGained);
-                            // SitRep: Your ship xx gained xx % at sector xx analyzing the xx (nebula/Black hole etc.)
-
-                            //GameLog.Print("added 'a lot of' research points for civ {0} analyzing {1} at {2}",
-                            //     civ.Civilization.Name, _starType, ship.Location, _researchGained);
-                            GameLog.Print("{0} {1} ({2}, Owner={3}) at {4} ({5}), added 'a lot of' research points for civ {7}",
-                                ship.ObjectID, ship.Name, ship.ShipType, ship.Owner.Name, ship.Location, _starType, _researchGained, civ.Civilization.Name);
-
-                        }
-
-                        if (_starType == StarType.BlackHole)
-                        {
-                            civ.Research.UpdateResearch(_researchGained * 2);
-                            // SitRep: Your ship xx gained xx % at sector xx analyzing the xx (nebula/Black hole etc.)
-                            GameLog.Print("added 'a lot of' research points for civ {0} analyzing {1} at {2}",
-                                 civ.Civilization.Name, _starType, ship.Location, _researchGained);
-
-                        }
-
-                        if (_starType == StarType.Wormhole)
-                        {
-                            civ.Research.UpdateResearch(_researchGained * 3);
-                            // SitRep: Your ship xx gained xx % at sector xx analyzing the xx (nebula/Black hole etc.)
-                            GameLog.Print("added 'a lot of' research points for civ {0} analyzing {1} at {2}",
-                                 civ.Civilization.Name, _starType, ship.Location, _researchGained);
-
-                        }
-                    }
                 }
             }
 
