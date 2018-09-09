@@ -833,7 +833,6 @@ namespace Supremacy.Game
         #region DoResearch() Method
         private void DoResearch(GameContext game)
         {
-            var scienceShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
             Parallel.ForEach(GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science), scienceShip =>
             {
                 if (scienceShip.Sector.System == null)
