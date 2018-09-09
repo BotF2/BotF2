@@ -40,7 +40,6 @@ namespace Supremacy.Game
         FleetMovement,
         Combat,
         PopulationGrowth,
-        PersonnelTraining,
         Research,
         Scrapping,
         Maintenance,
@@ -835,6 +834,8 @@ namespace Supremacy.Game
         {
             Parallel.ForEach(GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science), scienceShip =>
             {
+                GameContext.PushThreadContext(game);
+
                 if (scienceShip.Sector.System == null)
                 {
                     return;
@@ -871,6 +872,7 @@ namespace Supremacy.Game
                         researchGained = researchGained * 3;
                         break;
                     case StarType.XRayPulsar:
+                        researchGained = researchGained * 1;
                         break;
                 }
 
@@ -879,6 +881,8 @@ namespace Supremacy.Game
                     scienceShip.Name, scienceShip.Sector, researchGained, scienceShip.Owner, starType);
 
                 //TODO: Create SitRep
+
+                GameContext.PopThreadContext();
             });
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
