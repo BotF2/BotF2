@@ -103,17 +103,15 @@
       </ScrollViewer>
 
     </DockPanel>
-    
-    <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
-<!-- OK button not activating -->
-        <!--<Button Margin="3,0,3,0"
-              IsDefault="True"
-              Focusable="True"
-              Command="{x:Static Commands:DialogCommands.AcceptCommand}"
-              Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
-        <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_OK, Case=Upper}" />
-      </Button>-->
-      <Button Margin="3,0,3,0"
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
+            <TextBlock Margin="0,0,6,0"    
+               FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
+               Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
+               FontSize="24pt"
+               Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}"/>
+            
+            <Button Margin="6,0,3,0"
               IsCancel="True"
               Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
         <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
