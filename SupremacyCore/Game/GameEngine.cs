@@ -115,6 +115,7 @@ namespace Supremacy.Game
         private bool m_TraceShipProduction = false;
         private bool m_TraceIntelligience = false;
         private bool m_TraceProduction = false;
+        private bool m_TraceDoScienceShip = true;
         #endregion
 
         #region OnTurnPhaseChanged() Method
@@ -877,6 +878,7 @@ namespace Supremacy.Game
                 }
 
                 GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
+                if (m_TraceDoScienceShip)
                 GameLog.Print("{0} in {1} gained {2} research points for {3} by studying the {4} in it's sector",
                     scienceShip.Name, scienceShip.Sector, researchGained, scienceShip.Owner, starType);
 
