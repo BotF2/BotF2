@@ -213,18 +213,31 @@ namespace Supremacy.Game
     [Serializable]
     public class ScienceShipResearchGainedSitRepEntry : SitRepEntry
     {
-        private readonly int _applicationId;
-        private readonly int[] _newDesignIds;
-        private readonly string _scienceShip;
+
+        private readonly Ship _scienceShip;
         private readonly int _researchGained;
-        private readonly string _starType;
+        private readonly StarType _starType;
         private readonly string _shipName;
-        private readonly string _sector;
+        private readonly Sector _sector;
 
-
-        public ResearchApplication Application
+        public Ship ScienceShip
         {
-            get { return GameContext.Current.ResearchMatrix.GetApplication(_applicationId); }
+            get { return _scienceShip; }
+        }
+
+        public Sector Sector
+        {
+            get { return _scienceShip.Sector; }
+        }
+
+        public StarType StarType
+        {
+            get { return _scienceShip.Sector.System.StarType; }
+        }
+
+        public int ResearchGained
+        {
+            get { return _researchGained; }
         }
 
         public override SitRepCategory Categories
@@ -236,49 +249,26 @@ namespace Supremacy.Game
         {
             get
             {
+                string StarTypeFullText = "";
+                    // _starType.ToString;
+                switch (StarType)
+                {
+                    case StarType.Blue:
+                    case StarType.Orange:
+                    case StarType.Red:
+                    case StarType.White:
+                    case StarType.Yellow:
+                         StarTypeFullText = _starType.ToString() + " star";
+                        break;
+                    default:
+                        StarTypeFullText = _starType.ToString();
+                        break;
+                }
+
                 return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
-                    _shipName, _sector, _researchGained, _starType);
+                    ScienceShip.Name, Sector.ToString(), _researchGained, StarTypeFullText);
             }
         }
-
-        //public override bool HasDetails
-        //{
-        //    get { return true; }
-        //}
-
-       // public override string DetailText
-        //{
-        //    get
-        //    {
-        //        StringBuilder sb = new StringBuilder();
-        //        sb.AppendLine(ResourceManager.GetString(Application.Description));
-        //        if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
-        //        {
-        //            sb.Append("[nl/]" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + "[nl/]");
-        //            for (int i = 0; i < _newDesignIds.Length; i++)
-        //            {
-        //                var design = GameContext.Current.TechDatabase[_newDesignIds[i]];
-        //                if (design == null)
-        //                    continue;
-        //                sb.Append("[nl/]");
-        //                sb.Append(ResourceManager.GetString(design.Name));
-                       
-        //            }
-        //        }
-        //        return sb.ToString();
-        //    }
-        //}
-
-        //public override string DetailImage
-        //{
-        //    get
-        //    {
-        //        var field = Application.Field;
-        //        if (field != null)
-        //            return field.Image;
-        //        return base.DetailImage;
-        //    }
-        //}
 
         public override bool IsPriority
         {
@@ -287,29 +277,15 @@ namespace Supremacy.Game
 
         public ScienceShipResearchGainedSitRepEntry(
             Civilization owner,
-            string shipName,
-            string sector,
+            Ship ScienceShip,
             int researchGained,
-            string starType) 
+            StarType starType) 
             : base(owner, SitRepPriority.Yellow)
         {
-            shipName = _shipName;
-            sector = _sector;
-            researchGained = _researchGained;
-            starType = _starType;
-
-            //if (_shipName == null)
-            //    throw new ArgumentNullException("application");
-            //_applicationId = application.ApplicationID;
-            //if (newDesigns != null)
-            //{
-            //    int i = 0;
-            //    _newDesignIds = new int[newDesigns.Count];
-            //    foreach (TechObjectDesign design in newDesigns)
-            //    {
-            //        _newDesignIds[i++] = design.DesignID;
-            //    }
-            //}
+            _scienceShip = ScienceShip;
+            //_sector = sector;
+            _researchGained = researchGained;
+            _starType = starType;
         }
     }
     #endregion Science Ship SitRepEnteries
