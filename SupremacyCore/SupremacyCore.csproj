@@ -209,6 +209,7 @@
     <Compile Include="Scripting\CivilizationScopedEvent.cs" />
     <Compile Include="Scripting\EventDefinition.cs" />
     <Compile Include="Scripting\Events\AsteroidImpactEvent.cs" />
+    <Compile Include="Game\ResearchBreakthroughs.cs" />
     <Compile Include="Scripting\Events\TerroristsCaptured.cs" />
     <Compile Include="Scripting\Events\Earthquake.cs" />
     <Compile Include="Scripting\Events\GammaRayBurst.cs" />

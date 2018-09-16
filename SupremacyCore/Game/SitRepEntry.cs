@@ -209,6 +209,87 @@ namespace Supremacy.Game
     }
     #endregion
 
+    #region Science Ship SitRepEntries
+    [Serializable]
+    public class ScienceShipResearchGainedSitRepEntry : SitRepEntry
+    {
+
+        private readonly Ship _scienceShip;
+        private readonly int _researchGained;
+        private readonly StarType _starType;
+        private readonly string _shipName;
+        private readonly Sector _sector;
+
+        public Ship ScienceShip
+        {
+            get { return _scienceShip; }
+        }
+
+        public Sector Sector
+        {
+            get { return _scienceShip.Sector; }
+        }
+
+        public StarType StarType
+        {
+            get { return _scienceShip.Sector.System.StarType; }
+        }
+
+        public int ResearchGained
+        {
+            get { return _researchGained; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Research; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                string StarTypeFullText = "";
+                    // _starType.ToString;
+                switch (StarType)
+                {
+                    case StarType.Blue:
+                    case StarType.Orange:
+                    case StarType.Red:
+                    case StarType.White:
+                    case StarType.Yellow:
+                         StarTypeFullText = _starType.ToString() + " star";
+                        break;
+                    default:
+                        StarTypeFullText = _starType.ToString();
+                        break;
+                }
+
+                return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
+                    ScienceShip.Name, Sector.ToString(), _researchGained, StarTypeFullText);
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public ScienceShipResearchGainedSitRepEntry(
+            Civilization owner,
+            Ship ScienceShip,
+            int researchGained,
+            StarType starType) 
+            : base(owner, SitRepPriority.Yellow)
+        {
+            _scienceShip = ScienceShip;
+            //_sector = sector;
+            _researchGained = researchGained;
+            _starType = starType;
+        }
+    }
+    #endregion Science Ship SitRepEnteries
+
     #region Research SitRepEntries
     [Serializable]
     public class ResearchCompleteSitRepEntry : SitRepEntry
