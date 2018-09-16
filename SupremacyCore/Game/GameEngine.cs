@@ -836,14 +836,19 @@ namespace Supremacy.Game
             Parallel.ForEach(GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science), scienceShip =>
             {
                 GameContext.PushThreadContext(game);
+                var owner = GameContext.Current.CivilizationManagers[scienceShip.Owner];
+                var starType = scienceShip.Sector.System.StarType;
+                int researchGained = 20;  //TODO: Multiply this by tech level?
 
+                if (m_TraceDoScienceShip)
+                    GameLog.Print("First {0} in {1} gained {2} research points for {3} by studying the {4} in it's sector",
+                        scienceShip.Name, scienceShip.Sector, researchGained, scienceShip.Owner, starType);
                 if (scienceShip.Sector.System == null)
                 {
                     return;
                 }
 
-                var starType = scienceShip.Sector.System.StarType;
-                int researchGained = 20;  //TODO: Multiply this by tech level?
+               
 
                 switch (starType)
                 {
@@ -879,10 +884,11 @@ namespace Supremacy.Game
 
                 GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
                 if (m_TraceDoScienceShip)
-                GameLog.Print("{0} in {1} gained {2} research points for {3} by studying the {4} in it's sector",
+                GameLog.Print("Second {0} in {1} gained {2} research points for {3} by studying the {4} in it's sector",
                     scienceShip.Name, scienceShip.Sector, researchGained, scienceShip.Owner, starType);
 
                 //TODO: Create SitRep
+                GameContext.Current.CivilizationManagers[scienceShip.Owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip.Name, scienceShip.Sector.ToString(), researchGained, starType.ToString()));
 
                 GameContext.PopThreadContext();
             });

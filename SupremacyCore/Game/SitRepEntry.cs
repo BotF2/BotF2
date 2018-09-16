@@ -209,6 +209,111 @@ namespace Supremacy.Game
     }
     #endregion
 
+    #region Science Ship SitRepEntries
+    [Serializable]
+    public class ScienceShipResearchGainedSitRepEntry : SitRepEntry
+    {
+        private readonly int _applicationId;
+        private readonly int[] _newDesignIds;
+        private readonly string _scienceShip;
+        private readonly int _researchGained;
+        private readonly string _starType;
+        private readonly string _shipName;
+        private readonly string _sector;
+
+
+        public ResearchApplication Application
+        {
+            get { return GameContext.Current.ResearchMatrix.GetApplication(_applicationId); }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Research; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
+                    _shipName, _sector, _researchGained, _starType);
+            }
+        }
+
+        //public override bool HasDetails
+        //{
+        //    get { return true; }
+        //}
+
+       // public override string DetailText
+        //{
+        //    get
+        //    {
+        //        StringBuilder sb = new StringBuilder();
+        //        sb.AppendLine(ResourceManager.GetString(Application.Description));
+        //        if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
+        //        {
+        //            sb.Append("[nl/]" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + "[nl/]");
+        //            for (int i = 0; i < _newDesignIds.Length; i++)
+        //            {
+        //                var design = GameContext.Current.TechDatabase[_newDesignIds[i]];
+        //                if (design == null)
+        //                    continue;
+        //                sb.Append("[nl/]");
+        //                sb.Append(ResourceManager.GetString(design.Name));
+                       
+        //            }
+        //        }
+        //        return sb.ToString();
+        //    }
+        //}
+
+        //public override string DetailImage
+        //{
+        //    get
+        //    {
+        //        var field = Application.Field;
+        //        if (field != null)
+        //            return field.Image;
+        //        return base.DetailImage;
+        //    }
+        //}
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public ScienceShipResearchGainedSitRepEntry(
+            Civilization owner,
+            string shipName,
+            string sector,
+            int researchGained,
+            string starType) 
+            : base(owner, SitRepPriority.Yellow)
+        {
+            shipName = _shipName;
+            sector = _sector;
+            researchGained = _researchGained;
+            starType = _starType;
+
+            //if (_shipName == null)
+            //    throw new ArgumentNullException("application");
+            //_applicationId = application.ApplicationID;
+            //if (newDesigns != null)
+            //{
+            //    int i = 0;
+            //    _newDesignIds = new int[newDesigns.Count];
+            //    foreach (TechObjectDesign design in newDesigns)
+            //    {
+            //        _newDesignIds[i++] = design.DesignID;
+            //    }
+            //}
+        }
+    }
+    #endregion Science Ship SitRepEnteries
+
     #region Research SitRepEntries
     [Serializable]
     public class ResearchCompleteSitRepEntry : SitRepEntry
