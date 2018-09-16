@@ -266,7 +266,7 @@ namespace Supremacy.Game
                 }
 
                 return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
-                    ScienceShip.Name, Sector.ToString(), _researchGained, StarTypeFullText);
+                    ScienceShip.Name, Sector, StarTypeFullText, _researchGained, StarTypeFullText);
             }
         }
 
