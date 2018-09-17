@@ -13,6 +13,7 @@ using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Tech
 {
@@ -64,7 +65,18 @@ namespace Supremacy.Tech
         /// <value>The design.</value>
         public TechObjectDesign Design
         {
-            get { return GameContext.Current.TechDatabase[_designId]; }
+            get {
+                try
+                    {
+       
+                        return GameContext.Current.TechDatabase[_designId];
+                    }
+                catch
+                    {
+                        GameLog.Print("GameLog.Pring # Problem Desgin name {0} design ID {0}", Design.Name);
+                        return GameContext.Current.TechDatabase[_designId];
+                    }
+                }
             set { _designId = (value != null) ? value.DesignID : TechObjectDesign.InvalidDesignID; }
         }
 
