@@ -833,35 +833,27 @@ namespace Supremacy.Game
         #region DoResearch() Method
         private void DoResearch(GameContext game)
         {
-            GameContext.PushThreadContext(game);
-            //Parallel.ForEach(, scienceShip =>   // makes crashes
-            foreach (var scienceShip in GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science))
+            var scienceShips = game.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
+            ParallelForEach(scienceShips, scienceShip =>
             {
+                GameContext.PushThreadContext(game);
+                if (scienceShip.Sector.System == null)
+                {
+                    return;
+                }
                 if (m_TraceDoScienceShip)
-                    GameLog.Print("ScienceShip is progress {0} {1} ({2}) ...",
-                                scienceShip.ObjectID, scienceShip.Name, scienceShip.ShipType); GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
+                    GameLog.Print("{0} {1} is conducting research in {2}...",
+                                scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
+
                 try
                 {
-                    //GameContext.PushThreadContext(game);
                     var owner = GameContext.Current.CivilizationManagers[scienceShip.Owner];
-                    if (scienceShip.Sector.System == null)
-                    {
-                        return;
-                    }
                     var starType = scienceShip.Sector.System.StarType;
-                    int researchGained = 20;  //TODO: Multiply this by tech level?
 
+                    int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
                     if (m_TraceDoScienceShip)
-                        try
-                        {
-                            if (m_TraceDoScienceShip)
-                                GameLog.Print("BEFORE {0} in {1} gained {2} research points for {3} by studying the {4} in it's sector",
-                                scienceShip.Name, scienceShip.Sector, researchGained, scienceShip.Owner, starType);
-                        }
-                        catch
-                        {
-                            GameLog.Print("PROBLEM at First ScienceShipGainResearch");
-                        }
+                            GameLog.Print("Base research gained for {0} {1} is {2}",
+                                scienceShip.ObjectID, scienceShip.Name, researchGained);
 
                     switch (starType)
                     {
@@ -870,81 +862,49 @@ namespace Supremacy.Game
                         case StarType.Red:
                         case StarType.White:
                         case StarType.Yellow:
-                            researchGained = researchGained * 1;
+                            researchGained = researchGained * 10;
                             break;
                         case StarType.BlackHole:
-                            researchGained = researchGained * 2;
+                            researchGained = researchGained * 20;
                             break;
                         case StarType.Nebula:
-                            researchGained = researchGained * 1;
+                            researchGained = researchGained * 10;
                             break;
                         case StarType.NeutronStar:
-                            researchGained = researchGained * 1;
+                            researchGained = researchGained * 10;
                             break;
                         case StarType.Quasar:
-                            researchGained = researchGained * 1;
+                            researchGained = researchGained * 10;
                             break;
                         case StarType.RadioPulsar:
-                            researchGained = researchGained * 1;
+                            researchGained = researchGained * 10;
                             break;
                         case StarType.Wormhole:
-                            researchGained = researchGained * 3;
+                            researchGained = researchGained * 30;
                             break;
                         case StarType.XRayPulsar:
-                            researchGained = researchGained * 1;
+                            researchGained = researchGained * 10;
                             break;
                     }
 
-                    // Try Update Research
-                    try
-                    {
-                        GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
-                    }
-                    catch
-                    {
-                        GameLog.Print("PROBLEM at ScienceShipGainResearch - Updating Research of civ");
-                    }
+                    GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
-                    // Try GameLog
                     if (m_TraceDoScienceShip)
-                        try
-                        {
-                            if (m_TraceDoScienceShip)
-                                GameLog.Print("AFTER {0} in {1} gained {2} research points for {3} by studying the {4} in it's sector",
-                                scienceShip, scienceShip.Sector.ToString(), researchGained, scienceShip.Owner, starType.ToString());
-                        }
-                        catch
-                        {
-                            GameLog.Print("PROBLEM at Second ScienceShipGainResearch");
-                        }
+                        GameLog.Print("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
+                            scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
 
-                    // Try SitRep
-                    try
-                    {
-                        GameContext.Current.CivilizationManagers[scienceShip.Owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained, starType));
-                    }
-                    catch
-                    {
-                        GameLog.Print("PROBLEM at SitRep ScienceShipGainResearch");
-                    }
+                    GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained, starType));
                 }
                 catch
                 {
-                    GameLog.Print("PROBLEM at DoResearch");
+                    GameLog.Print("There was a problem conducting research for {0} {1}",
+                        scienceShip.ObjectID, scienceShip.Name);
                 }
                 finally
                 {
                     GameContext.PopThreadContext();
                 }
-            }
-
-        
-        
-            
-        
-       
-        
-        //});
+            });
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
