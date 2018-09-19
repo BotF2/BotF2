@@ -40,7 +40,6 @@ namespace Supremacy.Game
         FleetMovement,
         Combat,
         PopulationGrowth,
-        PersonnelTraining,
         Research,
         Scrapping,
         Maintenance,
@@ -116,6 +115,7 @@ namespace Supremacy.Game
         private bool m_TraceShipProduction = false;
         private bool m_TraceIntelligience = false;
         private bool m_TraceProduction = false;
+        private bool m_TraceDoScienceShip = true;
         #endregion
 
         #region OnTurnPhaseChanged() Method
@@ -833,6 +833,79 @@ namespace Supremacy.Game
         #region DoResearch() Method
         private void DoResearch(GameContext game)
         {
+            var scienceShips = game.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
+            ParallelForEach(scienceShips, scienceShip =>
+            {
+                GameContext.PushThreadContext(game);
+                if (scienceShip.Sector.System == null)
+                {
+                    return;
+                }
+                if (m_TraceDoScienceShip)
+                    GameLog.Print("{0} {1} is conducting research in {2}...",
+                                scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
+
+                try
+                {
+                    var owner = GameContext.Current.CivilizationManagers[scienceShip.Owner];
+                    var starType = scienceShip.Sector.System.StarType;
+
+                    int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
+                    if (m_TraceDoScienceShip)
+                            GameLog.Print("Base research gained for {0} {1} is {2}",
+                                scienceShip.ObjectID, scienceShip.Name, researchGained);
+
+                    switch (starType)
+                    {
+                        case StarType.Blue:
+                        case StarType.Orange:
+                        case StarType.Red:
+                        case StarType.White:
+                        case StarType.Yellow:
+                            researchGained = researchGained * 10;
+                            break;
+                        case StarType.BlackHole:
+                            researchGained = researchGained * 20;
+                            break;
+                        case StarType.Nebula:
+                            researchGained = researchGained * 10;
+                            break;
+                        case StarType.NeutronStar:
+                            researchGained = researchGained * 10;
+                            break;
+                        case StarType.Quasar:
+                            researchGained = researchGained * 10;
+                            break;
+                        case StarType.RadioPulsar:
+                            researchGained = researchGained * 10;
+                            break;
+                        case StarType.Wormhole:
+                            researchGained = researchGained * 30;
+                            break;
+                        case StarType.XRayPulsar:
+                            researchGained = researchGained * 10;
+                            break;
+                    }
+
+                    GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
+
+                    if (m_TraceDoScienceShip)
+                        GameLog.Print("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
+                            scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
+
+                    GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained, starType));
+                }
+                catch
+                {
+                    GameLog.Print("There was a problem conducting research for {0} {1}",
+                        scienceShip.ObjectID, scienceShip.Name);
+                }
+                finally
+                {
+                    GameContext.PopThreadContext();
+                }
+            });
+
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
                 GameContext.PushThreadContext(game);

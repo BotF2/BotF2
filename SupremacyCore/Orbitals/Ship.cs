@@ -32,6 +32,7 @@ namespace Supremacy.Orbitals
         private bool _isCamouflaged;
         private bool _isAssimilated;
         private Meter _fuelReserve;
+        private ShipType _shipType;
         #endregion
 
         #region Properties
@@ -145,7 +146,7 @@ namespace Supremacy.Orbitals
         /// <value>The type of the ship.</value>
         public ShipType ShipType
         {
-            get { return ShipDesign.ShipType; }
+            get { return _shipType; }
         }
 
         /// <summary>
@@ -315,6 +316,7 @@ namespace Supremacy.Orbitals
         public Ship(ShipDesign design)
             : base(design)
         {
+            _shipType = design.ShipType;
             _fuelReserve = new Meter(design.FuelCapacity, 0, design.FuelCapacity);
             _fuelReserve.CurrentValueChanged += FuelReserve_CurrentValueChanged;
         }
@@ -400,6 +402,7 @@ namespace Supremacy.Orbitals
             writer.Write(_isAssimilated);
             writer.Write(_range);
 			writer.Write(_speed);
+            writer.Write((byte)_shipType);
 		}
 
 		public override void DeserializeOwnedData(SerializationReader reader, object context)
@@ -414,6 +417,7 @@ namespace Supremacy.Orbitals
             _isAssimilated = reader.ReadBoolean();
             _range = reader.ReadByte();
 			_speed = reader.ReadByte();
+            _shipType = (ShipType)reader.ReadByte();
 		}
     }
 }
