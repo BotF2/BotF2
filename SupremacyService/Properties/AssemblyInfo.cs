@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SupremacyService")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Mike Strobel")]
-[assembly: AssemblyProduct("SupremacyService")]
-[assembly: AssemblyCopyright("Copyright © Mike Strobel 2006-2008")]
+[assembly: AssemblyCompany("Birth of the Federation 2 Team")]
+[assembly: AssemblyProduct("Birth of the Federation 2")]
+[assembly: AssemblyCopyright("Copyright (c) 2018 Birth of the Federation 2")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.4.*")]
-[assembly: AssemblyFileVersion("0.4")]
+[assembly: AssemblyVersion("2018.09.20.0")]
+[assembly: AssemblyFileVersion("2018.09.20.0")]

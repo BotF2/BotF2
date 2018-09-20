@@ -40,7 +40,7 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatOrders> _orders;
         protected Dictionary<string, int> _empireStrengths;
 
-        protected bool _traceCombatEngine = true;
+        protected bool _traceCombatEngine = false;
 
         protected int CombatID
         {

@@ -11,9 +11,9 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("SupremacyWPF")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Birth of the Federation 2")]
-[assembly: AssemblyProduct("SupremacyWPF")]
-[assembly: AssemblyCopyright("Copyright © Birth of the Federation 2")]
+[assembly: AssemblyCompany("Birth of the Federation 2 Team")]
+[assembly: AssemblyProduct("Birth of the Federation 2")]
+[assembly: AssemblyCopyright("Copyright (c) 2018 Birth of the Federation 2 Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -47,8 +47,8 @@ using System.Windows.Markup;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.4.*")]
-[assembly: AssemblyFileVersion("0.4")]
+[assembly: AssemblyVersion("2019.09.20.0")]
+[assembly: AssemblyFileVersion("2019.09.20.0")]
 
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]
 [assembly: XmlnsDefinition("http://schemas.startreksupremacy.com/xaml/core", "Supremacy.Client")]

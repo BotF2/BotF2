@@ -14,9 +14,9 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyTitleAttribute("SupremacyNative")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("")];
-[assembly:AssemblyProductAttribute("SupremacyNative")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c)  2007")];
+[assembly:AssemblyCompanyAttribute("Birth of the Federation 2 Team")];
+[assembly:AssemblyProductAttribute("Birth of the Federation 2")];
+[assembly:AssemblyCopyrightAttribute("Copyright (c) 2018 Birth of the Federation 2 Team")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 
@@ -31,8 +31,8 @@ using namespace System::Security::Permissions;
 // You can specify all the value or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("0.4.*")];
-[assembly:AssemblyFileVersionAttribute("0.4")];
+[assembly:AssemblyVersionAttribute("2018.09.20.0")];
+[assembly:AssemblyFileVersionAttribute("2018.09.20.0")];
 
 [assembly:ComVisible(false)];
 
