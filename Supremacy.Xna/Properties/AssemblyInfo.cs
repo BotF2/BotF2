@@ -9,9 +9,9 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("Supremacy.Xna")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Supremacy.Xna")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
+[assembly: AssemblyCompany("Birth of the Federation 2 Team")]
+[assembly: AssemblyProduct("Birth of the Federation")]
+[assembly: AssemblyCopyright("Copyright (c) 2018 Birth of the Federation 2 Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,8 +50,8 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2018.09.20.0")]
+[assembly: AssemblyFileVersion("2018.09.20.0")]
 
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/xna", "sxna")]
 [assembly: XmlnsDefinition("http://schemas.startreksupremacy.com/xaml/xna", "Supremacy.Xna")]

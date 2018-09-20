@@ -115,7 +115,7 @@ namespace Supremacy.Game
         private bool m_TraceShipProduction = false;
         private bool m_TraceIntelligience = false;
         private bool m_TraceProduction = false;
-        private bool m_TraceDoScienceShip = true;
+        private bool m_TraceDoScienceShip = false;
         #endregion
 
         #region OnTurnPhaseChanged() Method

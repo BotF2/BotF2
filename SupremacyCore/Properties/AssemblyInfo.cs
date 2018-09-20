@@ -12,9 +12,9 @@ using Supremacy.Scripting.Runtime;
 [assembly: AssemblyTitle("SupremacyCore")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Birth of the Federation 2")]
-[assembly: AssemblyProduct("SupremacyCore")]
-[assembly: AssemblyCopyright("Copyright © Birth of the Federation 2")]
+[assembly: AssemblyCompany("Birth of the Federation 2 Team")]
+[assembly: AssemblyProduct("Birth of the Federation 2")]
+[assembly: AssemblyCopyright("Copyright (c) 2018 Birth of the Federation 2 Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,8 +37,8 @@ using Supremacy.Scripting.Runtime;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.4")]
-[assembly: AssemblyFileVersion("0.4")]
+[assembly: AssemblyVersion("2018.09.20.0")]
+[assembly: AssemblyFileVersion("2018.09.20.0")]
 
 [assembly: InternalsVisibleTo("SupremacyClient")]
 [assembly: InternalsVisibleTo("SupremacyEditor")]

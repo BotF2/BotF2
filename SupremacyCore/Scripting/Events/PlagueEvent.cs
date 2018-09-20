@@ -19,7 +19,7 @@ namespace Supremacy.Scripting.Events
     {
 
         private int _occurrenceChance = 100;
-        bool m_tracePlague = true;
+        bool m_tracePlague = false;
 
         public override bool CanExecute
         {

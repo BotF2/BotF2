@@ -82,7 +82,7 @@ namespace Supremacy.UI
         private readonly TextBlock _intelligenceScrapText;
         private readonly UnitActivationBar _intelligenceSlider;
 
-        bool _traceSliders = true;
+        bool _traceSliders = false;
 
         #endregion
 
