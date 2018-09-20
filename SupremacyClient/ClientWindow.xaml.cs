@@ -273,12 +273,6 @@ namespace Supremacy.Client
                     Key.F6,
                     ModifierKeys.Alt));
 
-            //this.InputBindings.Add(
-            //    new KeyBinding(
-            //        ClientCommands.ShowEndOfTurnSummary,
-            //        Key.S,
-            //        ModifierKeys.None));
-
             InputBindings.Add(
                 new KeyBinding(
                     ClientCommands.OptionsCommand,
@@ -343,18 +337,6 @@ namespace Supremacy.Client
                 Console.Visibility = Visibility.Visible;
         }
 
-        //private void ExecuteColorInfoScreenCommand(object t)
-        //{
-        //    //if (!_appContext.IsSinglePlayerGame)
-        //    //{
-        //    //    MessageDialog.Show("Cheat Menu is not available in MultiPlayer", "INFO", MessageDialogButtons.Ok);
-        //    //    return;
-        //    //}
-
-        //    var ColorInfoScreen = new ColorInfoScreen(_appContext);
-        //    ColorInfoScreen.ShowDialog();
-        //}
-
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             using (_settingsChangeScope.Enter())
@@ -400,10 +382,6 @@ namespace Supremacy.Client
 
             _eventAggregator.GetEvent<ViewActivatingEvent>().Subscribe(OnViewActivating, ThreadOption.PublisherThread);
 
-#if !NOMUSIC
-            if (_app.CommandLineArguments.NoMusic)
-                return;
-
             _audioEngine.Volume = (float)ClientSettings.Current.MasterVolume;
             _musicPlayer.Volume = (float)ClientSettings.Current.MusicVolume;
             _soundPlayer.Volume = (float)ClientSettings.Current.FXVolume;
@@ -411,14 +389,10 @@ namespace Supremacy.Client
             ClientSettings.Current.MusicVolumeChanged += (s, e) => _musicPlayer.Volume = (float)e.NewValue;
             ClientSettings.Current.FXVolumeChanged += (s, e) => _soundPlayer.Volume = (float)e.NewValue;
             _audioEngine.Start();
-            //_musicPlayer.PlayMode = PlaybackMode.Random | PlaybackMode.Fade;  // original
-            _musicPlayer.PlayMode = PlaybackMode.Sequential | PlaybackMode.Fade;  // original
+            _musicPlayer.PlayMode = PlaybackMode.Sequential | PlaybackMode.Fade;
 
             _musicPlayer.SwitchMusic("DefaultMusic");
             _musicPlayer.Play();
-
-            //ClientEvents.ScreenActivated.Subscribe(e => _musicPlayer.Switch(e.ScreenName));
-#endif
         }
 
         private void OnModelessDialogsRegionSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -644,10 +618,7 @@ namespace Supremacy.Client
 
             SaveWindowDimensions();
             ClientSettings.Current.Save();
-#if !NOMUSIC
-            if (!_app.CommandLineArguments.NoMusic)
-                _audioEngine.Dispose();
-#endif
+            _audioEngine.Dispose();
         }
 
         private CustomPopupPlacement[] ContextMenuPlacementCallback(

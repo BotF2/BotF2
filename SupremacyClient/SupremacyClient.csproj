@@ -263,7 +263,6 @@
     <Compile Include="ClientConsole.xaml.cs">
       <DependentUpon>ClientConsole.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogLevelConverter.cs" />
     <Compile Include="OptionsPages\GeneralOptionsPage.xaml.cs">
       <DependentUpon>GeneralOptionsPage.xaml</DependentUpon>
     </Compile>

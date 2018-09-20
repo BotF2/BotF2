@@ -7,20 +7,8 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
-using Avalon.Windows.Controls;
 using log4net;
 using log4net.Core;
-
 // What are "Practices.Unity" and "Practices.Composite"?
 //      - Looks like this application uses
 //          - (old?) PRISM guidelines (Composite Application Library),
@@ -44,23 +32,29 @@ using Microsoft.Practices.Composite.UnityExtensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Win32;
-
 using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Logging;
 using Supremacy.Client.Services;
+using Supremacy.Collections;
 using Supremacy.Resources;
 using Supremacy.Utility;
 using Supremacy.VFS;
-
-using Xceed.Wpf.DataGrid;
-
-using Scheduler = System.Concurrency.Scheduler;
-
-using Supremacy.Collections;
-using Supremacy.Client.Audio;
+using System;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using Xceed.Wpf.DataGrid;
+using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.Client
 {
@@ -199,7 +193,7 @@ namespace Supremacy.Client
 
             // individual UI
             var themeUri = new Uri(
-                String.Format(
+                string.Format(
                     "/SupremacyClient;Component/themes/{0}/Theme.xaml",
                     theme),
                 UriKind.RelativeOrAbsolute);
@@ -240,7 +234,7 @@ namespace Supremacy.Client
             // https://stackoverflow.com/questions/171970/how-can-i-find-the-method-that-called-the-current-method
             // http://www.csharp-examples.net/reflection-calling-method-name/
 
-            String currentSource = "NOT SET";
+            string currentSource = "NOT SET";
             if (resourceDirectory.Source != null)
             {
                 currentSource = resourceDirectory.Source.ToString();
@@ -288,7 +282,7 @@ namespace Supremacy.Client
 
             // individual UI
             var themeUriShipyard = new Uri(
-                String.Format(
+                string.Format(
                     "/SupremacyClientComponents;Component/Themes/{0}/ShipyardDockView.xaml",
                     themeShipyard),
                 UriKind.RelativeOrAbsolute);
@@ -384,7 +378,7 @@ namespace Supremacy.Client
             ServiceLocator.Current.GetInstance<IUnhandledExceptionHandler>().HandleError((Exception)e.ExceptionObject);
         }
 
-        private static Object ExitFrame(Object state)
+        private static object ExitFrame(object state)
         {
             // Exit the nested message loop.
             var frame = state as DispatcherFrame;
@@ -412,10 +406,10 @@ namespace Supremacy.Client
                 if (!CheckNetFxVersion())
                 {
                     MessageBox.Show(
-                            "Star Trek: Supremacy requires Microsoft .NET Framework 4.6.2."
+                            "Birth of the Federation 2 requires Microsoft .NET Framework 4.6.2."
                             + Environment.NewLine
                             + "It must be installed before running the game.",
-                            "Star Trek: Supremacy",
+                            "Birth of the Federation 2",
                             MessageBoxButton.OK,
                             MessageBoxImage.Hand);
                     return;
@@ -497,9 +491,6 @@ namespace Supremacy.Client
         {
             ClientCommandLineArguments.Parse(CmdLineArgs, args);
 
-            if (CmdLineArgs.Debug)
-                Debugger.Break();
-
             /* If an instance of the game is already running, then exit. */
             if (!CmdLineArgs.AllowMultipleInstances)
             {
@@ -512,23 +503,40 @@ namespace Supremacy.Client
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(CmdLineArgs.LogLevel))
+            Level realLogLevel = Level.Info;
+            switch (CmdLineArgs.LogLevel)
             {
-                var logLevel = LogLevelConverter.Instance.ConvertFromInvariantString(CmdLineArgs.LogLevel) as Level;
-                if (logLevel != null)
-                {
-                    LogManager
-                        .GetAllRepositories()
-                        .OfType<log4net.Repository.Hierarchy.Hierarchy>()
-                        .Select(o => o.Root)
-                        .ForEach(
-                            o =>
-                            {
-                                if (logLevel < o.Level)
-                                    o.Level = logLevel;
-                            });
-                }
+                case SupremacyLogLevel.Debug:
+                    realLogLevel = Level.Debug;
+                    break;
+                case SupremacyLogLevel.Error:
+                    realLogLevel = Level.Error;
+                    break;
+                case SupremacyLogLevel.Fatal:
+                    realLogLevel = Level.Fatal;
+                    break;
+                case SupremacyLogLevel.Info:
+                    realLogLevel = Level.Info;
+                    break;
+                case SupremacyLogLevel.Off:
+                    realLogLevel = Level.Off;
+                    break;
+                case SupremacyLogLevel.Warning:
+                    realLogLevel = Level.Warn;
+                    break;
             }
+
+            LogManager
+                .GetAllRepositories()
+                .OfType<log4net.Repository.Hierarchy.Hierarchy>()
+                .Select(o => o.Root)
+                .ForEach(
+                    o =>
+                    {
+                        if (realLogLevel < o.Level)
+                            o.Level = realLogLevel;
+                    });
+
 
             if (CmdLineArgs.TraceLevel != PresentationTraceLevel.None)
                 PresentationTraceSources.Refresh();
@@ -632,9 +640,6 @@ namespace Supremacy.Client
                 _shell.SourceInitialized += OnGameWindowSourceInitialized;
                 Application.Current.MainWindow = _shell;
                 _shell.Show();
-                //ShellIntegration.TaskListManager.PopulateTaskList(
-                //    new Uri(Assembly.GetEntryAssembly().CodeBase, UriKind.Absolute).LocalPath,
-                //    new WindowInteropHelper(_shell).Handle);
                 Container.RegisterInstance<IGameWindow>(_shell, new ContainerControlledLifetimeManager());
                 return _shell;
             }

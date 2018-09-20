@@ -193,13 +193,11 @@
     <Compile Include="Diplomacy\Visitors\ProposalVisitor.cs" />
     <Compile Include="Diplomacy\Visitors\CreditObligationFulfillmentVisitor.cs" />
     <Compile Include="Diplomacy\Visitors\RejectProposalVisitor.cs" />
-    <Compile Include="Economy\IntelligenceBonusCollection.cs" />
     <Compile Include="Economy\ShipyardBuildSlot.cs" />
     <Compile Include="Entities\ICivIdentity.cs" />
     <Compile Include="Entities\RaceConverter.cs" />
     <Compile Include="Expressions\ForEachExpression.cs" />
     <Compile Include="Game\CivilizationMapData.cs" />
-    <Compile Include="Game\ObjectOwnerPair.cs" />
     <Compile Include="Game\SectorClaim.cs" />
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
     <Compile Include="Markup\TechObjectTextGroupExtension.cs" />
@@ -284,8 +282,6 @@
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingDesign.cs" />
     <Compile Include="Client\ClientBase.cs" />
-    <Compile Include="Client\EventType.cs" />
-    <Compile Include="Client\IEventReporter.cs" />
     <Compile Include="Client\IGameObjectIDService.cs" />
     <Compile Include="Client\IPlayerOrderService.cs" />
     <Compile Include="Collections\ArrayWrapper.cs" />
