@@ -56,5 +56,64 @@ namespace Supremacy.Orbitals
             var source = (predicate != null) ? batteries.Where(predicate) : batteries;
             return source.OrderByDescending(o => o.HullStrength.CurrentValue).FirstOrDefault();
         }
+
+        /// <summary>
+        /// Computes a damage control modifier based on an orbital's
+        /// experience level.  The resulting value should be multiplied
+        /// against the projected hull damage to yield the actual hull
+        /// damage.
+        /// </summary>
+        /// <param name="orbital">
+        /// Orbitalfor which a damage control modifier should be computed
+        /// </param>
+        /// <returns>Damage control modifier</returns>
+        public static double GetDamageControlModifier(this Orbital orbital)
+        {
+            if (orbital == null)
+                throw new ArgumentNullException("orbital");
+
+            var dcmTable = GameContext.Current.Tables.ShipTables["DamageControlModifiers"];
+            if (dcmTable != null)
+            {
+                if (dcmTable[orbital.ExperienceRank.ToString()] != null)
+                {
+                    double modifier;
+                    if (double.TryParse(dcmTable[orbital.ExperienceRank.ToString()][0], out modifier))
+                    {
+                        return modifier;
+                    }
+                }
+            }
+            return 1.0;
+        }
+
+        /// <summary>
+        /// Computes a weapons accuracy modifier based on an orbital's
+        /// experience level.  The resulting value should be multiplied
+        /// against any other computed accuracy value.
+        /// </summary>
+        /// <param name="orbital">
+        /// Orbital for which a weapons accuracy modifier should be computed
+        /// </param>
+        /// <returns>Weapons accuracy modifier</returns>
+        public static double GetAccuracyModifier(this Orbital orbital)
+        {
+            if (orbital == null)
+                throw new ArgumentNullException("orbital");
+
+            var accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
+            if (accuracyTable != null)
+            {
+                if (accuracyTable[orbital.ExperienceRank.ToString()] != null)
+                {
+                    double modifier;
+                    if (double.TryParse(accuracyTable[orbital.ExperienceRank.ToString()][0], out modifier))
+                    {
+                        return modifier;
+                    }
+                }
+            }
+            return 1.0;
+        }
     }
 }

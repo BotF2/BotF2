@@ -374,16 +374,17 @@ namespace Supremacy.Combat
         /// <param name="weapon"></param>
         private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
         {
-            int accuracy = (int)(_experienceAccuracy[source.Source.ExperienceRank] * 100);
+            var sourceAccuracy = source.Source.GetAccuracyModifier();
+            var targetDamageControl = target.Source.GetDamageControlModifier();
 
             if (target.IsDestroyed)
             {
                 return;
             }
 
-            if (RandomHelper.Random(100) >= (100 - accuracy))
+            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))
             {
-                target.TakeDamage(weapon.MaxDamage.CurrentValue);
+                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy));
             }
             weapon.Discharge();
 
