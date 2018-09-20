@@ -440,8 +440,18 @@ namespace Supremacy.Orbitals
                 if (owner.ShipPrefix != null)
                     newShipName = owner.ShipPrefix + " ";
                 newShipName = newShipName + leastUsedName;
-                if (timesUsed > 0)
-                    newShipName = newShipName + " " + Utility.NameSuffixes.GetFromNumber(timesUsed);
+                if (ship.Owner.Key == "BORG")
+                {
+                    newShipName = newShipName + " " + ShipSuffixes.Binary(timesUsed + 1).PadLeft(4, '0');
+                }
+                else
+                {
+                    if (timesUsed > 0)
+                    {
+                        newShipName = newShipName + " " + ShipSuffixes.Alphabetical(timesUsed);
+                    }
+                }
+
                 ship.Name = newShipName;
                 
                 _possibleNames[leastUsedName] = timesUsed + 1;

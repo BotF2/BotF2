@@ -42,7 +42,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
@@ -260,7 +260,7 @@
     <Compile Include="Utility\EnumUtilities.cs" />
     <Compile Include="Utility\GameScheduler.cs" />
     <Compile Include="Utility\GCHelper.cs" />
-    <Compile Include="Utility\NameSuffixes.cs" />
+    <Compile Include="Utility\ShipSuffixes.cs" />
     <Compile Include="Utility\ObjectDumper.cs" />
     <Compile Include="Utility\TryConvert.cs" />
     <Compile Include="Utility\XmlWriterEx.cs" />
