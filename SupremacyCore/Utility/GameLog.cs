@@ -7,13 +7,22 @@
 //
 // All other rights reserved.
 
-using System;
-
 using log4net;
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Supremacy.Utility
 {
+    public enum SupremacyLogLevel
+    {
+        Debug,
+        Info,
+        Warning,
+        Error,
+        Fatal,
+        Off
+    }
+
     public class GameLog
     {
         private readonly string _name;

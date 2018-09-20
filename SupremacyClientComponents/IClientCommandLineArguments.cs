@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Utility;
 using System.Diagnostics;
 
 namespace Supremacy.Client
@@ -14,15 +15,10 @@ namespace Supremacy.Client
     public interface IClientCommandLineArguments
     {
         PresentationTraceLevel TraceLevel { get; }
-        string LogLevel { get; }
-        bool Debug { get; }
+        SupremacyLogLevel LogLevel { get; }
         bool AllowMultipleInstances { get; }
-        bool NoMusic { get; }
         bool ShowUsage { get; }
         string Mod { get; }
-        bool DisableUpdates { get; }
         string SavedGame { get; set; }
-        bool AiExplore { get; set; }
-        bool TraceAudio { get; set; }
     }
 }
