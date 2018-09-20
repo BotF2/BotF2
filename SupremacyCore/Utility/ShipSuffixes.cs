@@ -1,8 +1,10 @@
-﻿namespace Supremacy.Utility
+﻿using System;
+
+namespace Supremacy.Utility
 {
-    class NameSuffixes
+    class ShipSuffixes
     {
-        public static string GetFromNumber(int number)
+        public static string Alphabetical(int number)
         {
             const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -14,6 +16,11 @@
             suffix += letters[number % letters.Length];
 
             return suffix;
+        }
+
+        public static string Binary(int number)
+        {
+            return Convert.ToString(number, 2);
         }
     }
 }
