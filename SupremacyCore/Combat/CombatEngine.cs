@@ -121,23 +121,6 @@ namespace Supremacy.Combat
 
             SyncLock = _orders;
 
-            // TODO: This looks like a waste of time, table is not going to change from one combat to the other
-            // Consider creating the table once instead
-            var accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
-            _experienceAccuracy = new Dictionary<ExperienceRank, double>();
-            foreach (ExperienceRank rank in EnumUtilities.GetValues<ExperienceRank>())
-            {
-                double modifier;
-                if (Double.TryParse(accuracyTable[rank.ToString()][0], out modifier))
-                {
-                    _experienceAccuracy[rank] = modifier;
-                }
-                else
-                {
-                    _experienceAccuracy[rank] = 0.75;
-                }
-            }
-
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
             foreach (CombatAssets civAssets in _assets.ToList())
