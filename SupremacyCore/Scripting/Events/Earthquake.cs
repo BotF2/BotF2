@@ -123,18 +123,21 @@ namespace Supremacy.Scripting.Events
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
+                    var health = target.Health.CurrentValue;
 
                     OnUnitTargeted(target);
 
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(-5);
 
                     // Population
-                    //Don't reduce the population beneath 20
+                    //Don't reduce the population if it is already low
                     if (population >= 40)
                     {
-                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-20);
+                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-5);
                     }
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health/30));
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     // Facilities
                     int removeFood = target.GetTotalFacilities(ProductionCategory.Food) - 1; // Food: remaining everything up to 1

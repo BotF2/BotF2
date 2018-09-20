@@ -296,7 +296,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                var baseGrowthRate = ((decimal)System.GetGrowthRate(Inhabitants) * (decimal)_health.PercentFilled) * 100;
+                var baseGrowthRate = ((decimal)System.GetGrowthRate(Inhabitants) * (((decimal)-0.8 + (decimal)_health.PercentFilled) * 5)) * 100;
                 var modifier = new ValueModifier<decimal>
                                {
                                    IsOffsetAppliedFirst = false,

@@ -92,11 +92,12 @@ namespace Supremacy.Scripting.Events
                             "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png",
                             "vfs:///Resources/SoundFX/ScriptedEvents/GammaRayBurst.mp3",
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-               
+               // see CivStringDatabase.xml for text
+
                     GameLog.Client.GameData.DebugFormat("GammaRayBurstEvents.cs: HomeSystemName is: {0}", target.Name);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population + 30);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- population/3 * 2);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health +30 );
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/3 * 2);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     if (m_traceGammaRayBurst)

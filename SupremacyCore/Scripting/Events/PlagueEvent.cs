@@ -96,7 +96,7 @@ namespace Supremacy.Scripting.Events
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameLog.Client.GameData.DebugFormat("PlagueEvents.cs: HomeSystemName is: {0}", target.Name);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- (population/2));
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- (population/3));
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(- (health/2));
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();

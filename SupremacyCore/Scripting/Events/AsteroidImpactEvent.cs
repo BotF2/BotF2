@@ -121,6 +121,7 @@ namespace Supremacy.Scripting.Events
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
+                    var health = target.Health.CurrentValue;
 
                     List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
                     tmpBuildings.AddRange(target.Buildings.ToList());
@@ -129,8 +130,10 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population + 40);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population/5);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health/5));
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     int removeFood = target.GetTotalFacilities(ProductionCategory.Food) - 3; // Food: remaining everything up to 3
                     if (removeFood < 4)
@@ -174,7 +177,6 @@ namespace Supremacy.Scripting.Events
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameContext.Current.Universe.UpdateSectors();
-
                     return;
                 }
 

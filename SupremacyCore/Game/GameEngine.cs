@@ -782,17 +782,34 @@ namespace Supremacy.Game
                          * growth rate iff we did not suffer a loss due to starvation during the previous turn.
                          * We want to ensure that there is a 1-turn period between population loss and recovery.
                          */
+                        var growthRate = colony.GrowthRate;
                         if (foodDeficit < 0)
                         {
                             popChange = -(int)Math.Floor(0.1 * Math.Sqrt(Math.Abs(colony.Population.CurrentValue * foodDeficit)));
                             civManager.SitRepEntries.Add(new StarvationSitRepEntry(civ, colony));
                         }
-                        else if (colony.Population.LastChange >= 0)
+                        else
                         {                         
-                            popChange = (int)Math.Ceiling(colony.System.GetGrowthRate(colony.Inhabitants) * colony.Population.CurrentValue);
+                            popChange = (int)Math.Ceiling(growthRate * colony.Population.CurrentValue);
+                        }
+
+                        if (growthRate < 0)
+                        {
+                            civManager.SitRepEntries.Add(new PopulationDyingSitRepEntry(civ, colony));
                         }
 
                         int newPopulation = colony.Population.AdjustCurrent(popChange);
+
+                        /*
+                         * TODO: This is disabled for now until I can figure out how to remove players/end a game.
+                         * We need to find out whether the player has any more colonies, and switch government etc
+                         * to that. Failing that, if they have a colony ship, let them continue
+                        if (colony.Population.CurrentValue == 0)
+                        {
+                            civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(civ, colony));
+                            colony.Destroy();
+                            return;
+                        }*/
                         colony.Population.UpdateAndReset();
                         civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
 
