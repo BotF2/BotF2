@@ -293,9 +293,9 @@ namespace Supremacy.UI
                     chrome.TryInvalidateVisual();
                 }
             }
-            catch (Exception ex) //ToDo: Just log or additional handling necessary?
+            catch (Exception ex)
             {
-                GameLog.LogException(ex);
+                GameLog.Client.General.Error(ex);
             }
 
             chrome.UpdateRenderBrush();
@@ -354,9 +354,9 @@ namespace Supremacy.UI
                     chrome.TryInvalidateVisual();
                 }
             }
-            catch (Exception ex) //ToDo: Just log or additional handling necessary?
+            catch (Exception ex)
             {
-                GameLog.LogException(ex);
+                GameLog.Client.General.Error(ex);
             }
 
             chrome.UpdateRenderBrush();
@@ -371,9 +371,9 @@ namespace Supremacy.UI
                     return;
                 chrome.UpdateRenderBrush();
             }
-            catch (Exception ex) //ToDo: Just log or additional handling necessary?
+            catch (Exception ex)
             {
-                GameLog.LogException(ex);
+                GameLog.Client.General.Error(ex);
             }
         }
 

@@ -26,9 +26,6 @@ namespace Supremacy.Client.Audio
         private IAppContext _appContext = null;
         private IAudioGrouping _channelGroup = null;
         private List<IAudioTrack> _audioTracks = new List<IAudioTrack>();
-
-        private bool _audioTraceLocally = false;
-
         #endregion
 
         #region Properties
@@ -42,9 +39,6 @@ namespace Supremacy.Client.Audio
         #region Construction & Lifetime
         public SoundPlayer([NotNull] IAudioEngine engine, [NotNull] IAppContext appContext)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             if (engine == null)
                 throw new ArgumentNullException("engine");
             if (appContext == null)
@@ -57,9 +51,6 @@ namespace Supremacy.Client.Audio
 
         public void Dispose()
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             if (_isDisposed)
                 return;
 
@@ -74,9 +65,9 @@ namespace Supremacy.Client.Audio
                         track.Stop();
                         track.Dispose();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
                 }
                 _audioTracks.Clear();
@@ -99,19 +90,17 @@ namespace Supremacy.Client.Audio
 
             if (track != null)
             {
-                if (_audioTraceLocally)
-                    GameLog.Print("Soundplayer.cs: Play \"{0}\".", track.FileName);
+                GameLog.Client.Audio.DebugFormat("Play \"{0}\".", track.FileName);
                 PlayFile(track.FileName);
             }
-            else GameLog.Client.GameData.DebugFormat(
-                "Soundplayer.cs: Could not locate track \"{0}\".", pack);
+            else
+            {
+                GameLog.Client.GameData.WarnFormat("Soundplayer.cs: Could not locate track \"{0}\".", pack);
+            }
         }
 
         public void PlayAny(string pack)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             MusicPack musicPack = null;
             if(!_appContext.ThemeMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack))
                 _appContext.DefaultMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack);
@@ -120,18 +109,16 @@ namespace Supremacy.Client.Audio
             {
                 var track = musicPack.Random();
                 PlayFile(track.Value.FileName);
-                if (_audioTraceLocally)
-                    GameLog.Print("PlayAny musicPack={0}, Filename={1}", musicPack.Name, track.Value.FileName);
+                GameLog.Client.Audio.DebugFormat("PlayAny musicPack={0}, Filename={1}", musicPack.Name, track.Value.FileName);
             }
-            else GameLog.Client.GameData.DebugFormat(
-                "Could not locate music pack \"{0}\".", pack);
+            else
+            {
+                GameLog.Client.GameData.WarnFormat("Could not locate music pack \"{0}\".", pack);
+            }
         }
 
         public void PlayFile(string fileName)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called! {0}", fileName);
-
             if (fileName == null)
                 throw new ArgumentNullException("fileName");
 
@@ -139,7 +126,7 @@ namespace Supremacy.Client.Audio
 
             if (!File.Exists(resourcePath))
             {
-                GameLog.Client.GameData.DebugFormat($"Could not locate audio file \"{resourcePath}\".");
+                GameLog.Client.Audio.WarnFormat($"Could not locate audio file \"{resourcePath}\".");
                 return;
             }
 
@@ -158,9 +145,6 @@ namespace Supremacy.Client.Audio
 
         private void OnTrackEnd(IAudioTrack track)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             lock (_updateLock)
             {
                 try
@@ -168,10 +152,9 @@ namespace Supremacy.Client.Audio
                     track.Dispose();
                     _audioTracks.Remove(track);
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.Print("####### problem at OnTrackEnd");
-                    GameLog.LogException(e);
+                    GameLog.Client.Audio.Error(e);
                 }
             }
         }

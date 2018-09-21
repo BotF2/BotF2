@@ -510,7 +510,7 @@ namespace Supremacy.UI
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            GameLog.Print("GalaxyGridPanel.cs: OnLoading is beginning...");
+            GameLog.Client.General.DebugFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
             var galaxyScreen = this.FindVisualAncestorByType<GalaxyScreenView>();
             if (galaxyScreen != null)
                 _screenModel = galaxyScreen.Model;
@@ -1016,9 +1016,9 @@ namespace Supremacy.UI
                         return ResourceManager.GetString("SECTOR_NO_OWNER");
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             return null;

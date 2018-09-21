@@ -114,9 +114,9 @@ namespace Supremacy.Client
                         UriKind.Absolute));
                 GalaxyImage.Source = imageSource;
             }
-            catch (Exception e) //ToDo: how to handle this exception? Set to default "missing image"?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -128,9 +128,9 @@ namespace Supremacy.Client
                 //PlayerNameSPInput.Text = StorageManager.ReadSetting<string, string>("LastPlayerName");
                 //PlayerNameSP.CaretIndex = PlayerNameSP.Text.Length;
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
         }
@@ -147,9 +147,9 @@ namespace Supremacy.Client
                 //    StorageManager.WriteSetting("LastPlayerName", playerName);
                 //}
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -159,9 +159,9 @@ namespace Supremacy.Client
             {
                 TrySetLastPlayerName();
             }
-            catch (Exception e) //ToDo: how to handle this exception? Set to default "missing image"?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
         

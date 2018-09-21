@@ -341,7 +341,7 @@ namespace Supremacy.Effects
                 {
                     if (_activationTest.Value)
                     {
-                        GameLog.Debug.Effects.InfoFormat(
+                        GameLog.Core.General.DebugFormat(
                             "Effect condition activated for source object {{{0}}}: {1}",
                             _source,
                             _effectGroupBinding.EffectGroup.ActivationDescription);
@@ -350,7 +350,7 @@ namespace Supremacy.Effects
                     }
                     else
                     {
-                        GameLog.Debug.Effects.InfoFormat(
+                        GameLog.Core.General.DebugFormat(
                             "Effect condition deactivated for source object {{{0}}}: {1}",
                             _source,
                             _effectGroupBinding.EffectGroup.ActivationDescription);

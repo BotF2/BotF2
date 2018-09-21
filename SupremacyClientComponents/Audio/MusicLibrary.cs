@@ -25,8 +25,6 @@ namespace Supremacy.Client.Audio
         #region Fields
         private const string PackDefName = "MusicPack";
         private Dictionary<string, MusicPack> _musicPacks = new Dictionary<string, MusicPack>(StringComparer.OrdinalIgnoreCase);
-
-        bool _tracingMusicLibrary = false;
         #endregion
 
         #region Properties
@@ -67,8 +65,7 @@ namespace Supremacy.Client.Audio
                 musicPack.Load(xmlPack);
                 _musicPacks.Add(musicPack.Name, musicPack);
 
-                if (_tracingMusicLibrary)
-                    GameLog.Print("adding: musicPack.Name={0}", musicPack.Name);
+                GameLog.Client.General.DebugFormat("adding: musicPack.Name={0}", musicPack.Name);
             }
         }
 
@@ -87,8 +84,7 @@ namespace Supremacy.Client.Audio
                 MusicEntry track = null;
                 pack.Dictionary.TryGetValue(trackName, out track);
 
-                if (_tracingMusicLibrary)
-                    GameLog.Print("trackName={0}, track.FileName={1}", trackName, track.FileName);
+                GameLog.Client.General.DebugFormat("trackName={0}, track.FileName={1}", trackName, track.FileName);
 
                 return track;
             }

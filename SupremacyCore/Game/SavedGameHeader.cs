@@ -91,7 +91,7 @@ namespace Supremacy.Game
                 {
                     // ToDo: this is just a workaround. No problem occures having all empires "playable", that means "in the game"
                     //generates much lines of output each second !!!     
-                    GameLog.Print("########### Problem with EmpireNames[LocalPlayerEmpireID]");
+                    GameLog.Core.General.Error("########### Problem with EmpireNames[LocalPlayerEmpireID]");
                     return LocalPlayerEmpireName;
                 }
             }

@@ -418,16 +418,14 @@ namespace Supremacy.Universe
             {
                 try
                 {
-                    GameLog.Print("_effectBindings.Value = {0}", _effectBindings.Value);
                     return _effectBindings.Value;
                 }
-                catch
+                catch (Exception e)
                 {
                     // doesn't work - only crashes when using Life Visual Tree directly in Visual Studio - then just click on Continue - use F5 to continue
-                    GameLog.Print("####### problem with _effectBindings.Value");
+                    GameLog.Core.General.Error(e);
                     return _effectBindings.Value;
                 }
-                //return _effectBindings.Value;
             }
         }
 

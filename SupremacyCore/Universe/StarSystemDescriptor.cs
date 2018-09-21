@@ -533,9 +533,9 @@ namespace Supremacy.Universe
                                 { 
                                     _populationRatio = float.Parse(popRatio, System.Globalization.CultureInfo.InvariantCulture) / 100.0f; 
                                 }
-                                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                catch (Exception e)
                                 {
-                                    GameLog.LogException(e);
+                                    GameLog.Core.GameData.Error(e);
                                 }
                             }
 
@@ -547,9 +547,9 @@ namespace Supremacy.Universe
                                 {
                                     _credits = float.Parse(credits, System.Globalization.CultureInfo.InvariantCulture);
                                 }
-                                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                catch (Exception e)
                                 {
-                                    GameLog.LogException(e);
+                                    GameLog.Core.GameData.Error(e);
                                 }
                             }
 
@@ -561,9 +561,9 @@ namespace Supremacy.Universe
                                 {
                                     _deuterium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
-                                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                catch (Exception e)
                                 {
-                                    GameLog.LogException(e);
+                                    GameLog.Core.GameData.Error(e);
                                 }
                             }
 
@@ -574,9 +574,9 @@ namespace Supremacy.Universe
                                 {
                                     _dilithium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
-                                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                catch (Exception e)
                                 {
-                                    GameLog.LogException(e);
+                                    GameLog.Core.GameData.Error(e);
                                 }
                             }
 
@@ -587,9 +587,9 @@ namespace Supremacy.Universe
                                 {
                                     _rawMaterials = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
-                                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                catch (Exception e)
                                 {
-                                    GameLog.LogException(e);
+                                    GameLog.Core.GameData.Error(e);
                                 }
                             }
 
@@ -600,9 +600,9 @@ namespace Supremacy.Universe
                                 {
                                     _food = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
-                                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                catch (Exception e)
                                 {
-                                    GameLog.LogException(e);
+                                    GameLog.Core.GameData.Error(e);
                                 }
                             }
 
@@ -614,9 +614,9 @@ namespace Supremacy.Universe
                                 {
                                     _morale = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
-                                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                catch (Exception e)
                                 {
-                                    GameLog.LogException(e);
+                                    GameLog.Core.GameData.Error(e);
                                 }
                             }
 
@@ -635,9 +635,9 @@ namespace Supremacy.Universe
                                     {
                                         _foodPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                                 if (pf.HasAttribute("Active"))
@@ -647,9 +647,9 @@ namespace Supremacy.Universe
                                     {
                                         _foodPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                             }
@@ -668,9 +668,9 @@ namespace Supremacy.Universe
                                     {
                                         _industryPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                                 if (pf.HasAttribute("Active"))
@@ -680,9 +680,9 @@ namespace Supremacy.Universe
                                     {
                                         _industryPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                             }
@@ -701,9 +701,9 @@ namespace Supremacy.Universe
                                     {
                                         _energyPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                                 if (pf.HasAttribute("Active"))
@@ -713,9 +713,9 @@ namespace Supremacy.Universe
                                     {
                                         _energyPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                             }
@@ -734,9 +734,9 @@ namespace Supremacy.Universe
                                     {
                                         _researchPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                                 if (pf.HasAttribute("Active"))
@@ -746,9 +746,9 @@ namespace Supremacy.Universe
                                     {
                                         _researchPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                             }
@@ -767,9 +767,9 @@ namespace Supremacy.Universe
                                     {
                                         _intelligencePF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                                 if (pf.HasAttribute("Active"))
@@ -779,9 +779,9 @@ namespace Supremacy.Universe
                                     {
                                         _intelligencePF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
-                                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                                    catch (Exception e)
                                     {
-                                        GameLog.LogException(e);
+                                        GameLog.Core.GameData.Error(e);
                                     }
                                 }
                             }
@@ -800,9 +800,10 @@ namespace Supremacy.Universe
                                         {
                                             shipCount = int.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                         }
-                                        catch 
+                                        catch (Exception e)
                                         {
-                                            shipCount = 0;  // error in the xml, don't spawn the ship
+                                            GameLog.Core.GameData.Error(e);
+                                            shipCount = 0; // error in the xml, don't spawn the ship
                                         }
                                     }
 
@@ -822,7 +823,7 @@ namespace Supremacy.Universe
                                     //GameLog.Print("{0}, playable={1}", this.Name == "Qo'noS", GameContext.Current.Options.KlingonPlayable.ToString());
                                     if (Name == "Qo'noS" && GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No)
                                     {
-                                        GameLog.Print("{0}, playable={1}", Name, GameContext.Current.Options.KlingonPlayable.ToString());
+                                        GameLog.Core.GameData.DebugFormat("{0}, playable={1}", Name, GameContext.Current.Options.KlingonPlayable.ToString());
                                         break;
                                     }
 

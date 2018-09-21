@@ -16,6 +16,7 @@ using Supremacy.Game;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -115,7 +116,7 @@ namespace Supremacy.Orbitals
             if (sectorOwner != null &&
                 sectorOwner != owner)
             {
-                Log.ErrorFormat(
+                GameLog.Core.General.WarnFormat(
                     "{0} cannot spawn {1} at location {2} because that sector is owned by {3}.",
                     owner.Key,
                     Key ?? UnknownDesignKey,

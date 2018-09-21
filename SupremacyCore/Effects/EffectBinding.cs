@@ -15,8 +15,6 @@ namespace Supremacy.Effects
     [Serializable]
     public abstract class EffectBinding: INotifyPropertyChanged
     {
-        private static readonly GameLog _log = GameLog.Debug;
-
         private readonly Effect _effect;
         private readonly EffectGroupBinding _effectGroupBinding;
         private readonly IEffectTarget _target;
@@ -161,7 +159,7 @@ namespace Supremacy.Effects
                 if (_isAttached)
                     return;
 
-                _log.Effects.InfoFormat(
+                GameLog.Core.General.DebugFormat(
                     "Attaching effect to object {{{0}}}: {1}",
                     Target,
                     Description);
@@ -231,7 +229,7 @@ namespace Supremacy.Effects
                 if (!_isAttached)
                     return;
 
-                _log.Effects.InfoFormat(
+                GameLog.Core.General.DebugFormat(
                     "Detaching effect to object {{{0}}}: {1}",
                     Target,
                     Description);

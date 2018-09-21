@@ -244,9 +244,9 @@ namespace Supremacy.Client
                         succeeded = true;
                         break;
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
                 if (!succeeded)

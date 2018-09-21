@@ -615,7 +615,7 @@ namespace Supremacy.Game
 
             gameContext.TurnNumber = 1;
             var civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);
-            GameLog.Client.GameData.DebugFormat("GameContext.cs: civ={0}, type={1}", civ.Name, civ.CivilizationType);
+            GameLog.Client.GameData.DebugFormat("civ={0}, type={1}", civ.Name, civ.CivilizationType);
 
             var civManager = gameContext.CivilizationManagers[civ];
             var homeColony = civManager.HomeColony;
@@ -631,7 +631,7 @@ namespace Supremacy.Game
 
                     for (var i = 0; i <= shipyard.BuildSlots.Count && shipBuildProjects.Count != 0; i++)
                     {
-                        GameLog.Print("shipBuildProjects[0].Description = {0}", shipBuildProjects[0].Description);
+                        GameLog.Core.ShipProduction.DebugFormat("shipBuildProjects[0].Description = {0}", shipBuildProjects[0].Description);
                         shipyard.BuildQueue.Add(new BuildQueueItem(shipBuildProjects[0]));
                         shipBuildProjects.RemoveAt(0);
                     }
@@ -712,11 +712,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Print("#####  Problem while creating a new game context. {0}", e);
-                //throw new SupremacyException(
-                //    "An error occurred while creating a new game context.",
-                //    e,
-                //    SupremacyExceptionAction.Disconnect);
+                GameLog.Core.General.Error("Problem while creating a new game context", e);
                 return new GameContext(options, isMultiplayerGame);
             }
         }
@@ -782,7 +778,7 @@ namespace Supremacy.Game
                     }
                     catch (Exception e)
                     {
-                        GameLog.Client.General.Error(
+                        GameLog.Core.General.Error(
                             string.Format(
                                 "Error initializing scripted event \"{0}\".",
                                 eventDefinition.Description),
@@ -1009,7 +1005,7 @@ namespace Supremacy.Game
 
                                 TechObject instance = null;
                                 Current.TechDatabase.BuildingDesigns[buildingDesign].TrySpawn(colony.Location, colony.Owner, out instance);
-                                        //GameLog.Client.GameData.DebugFormat("GameContext.cs: Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
+                                        //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
                                 if (instance != null)
                                     colony.ActivateBuilding(instance as Building);
                             }
@@ -1024,7 +1020,7 @@ namespace Supremacy.Game
 
                                 TechObject instance = null;
                                 Current.TechDatabase.ShipyardDesigns[shipyardDesign].TrySpawn(colony.Location, colony.Owner, out instance);
-                                        //GameLog.Client.GameData.DebugFormat("GameContext.cs: Starting Shipyards: shipyardDesign={0}, {1}", shipyardDesign, shipyard);
+                                        //GameLog.Client.GameData.DebugFormat("Starting Shipyards: shipyardDesign={0}, {1}", shipyardDesign, shipyard);
                                 if (instance != null)
                                 {
                                     Shipyard newShipyard = instance as Shipyard;
@@ -1051,7 +1047,7 @@ namespace Supremacy.Game
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(outpost))
                             {
                                 var outpostDesign = Current.TechDatabase.DesignIdMap[outpost];
-                                //GameLog.Client.GameData.DebugFormat("GameContext.cs: Starting Outposts: outpostDesign={0}, {1}", outpostDesign, outpost);
+                                //GameLog.Client.GameData.DebugFormat("Starting Outposts: outpostDesign={0}, {1}", outpostDesign, outpost);
                                 Current.TechDatabase.StationDesigns[outpostDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                             }
                         }
@@ -1073,20 +1069,19 @@ namespace Supremacy.Game
                         }
                     }
                 }
-                GameLog.Client.GameData.DebugFormat("starting items are done !");
+                GameLog.Core.General.Debug("Starting items are done!");
                 _sectorClaims = new SectorClaimGrid();
                 _diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
 
                 foreach (var civManager in _civManagers)
                 {
-                    //GameLog.Client.GameData.DebugFormat("GameContext.cs: civType={0} for ", civManager.Civilization.CivilizationType.ToString(), civManager.Civilization.Name);
                     if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
                     {
                         _diplomats.Add(new Diplomat(civManager.Civilization));
                         civManager.EnsureSeatOfGovernment();
                     }
                 }
-                GameLog.Client.GameData.DebugFormat("SeatOfGovernment ensured...");
+                GameLog.Core.General.DebugFormat("SeatOfGovernment ensured...");
 
                 _diplomats.ForEach(d => d.EnsureForeignPowers());
 

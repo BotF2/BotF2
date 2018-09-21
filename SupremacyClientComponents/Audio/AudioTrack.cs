@@ -38,9 +38,6 @@ namespace Supremacy.Client.Audio
         private bool _isDisposed = false;
         private FMODAudioEngine _engine = null;
         private readonly Sound _sound = null;
-
-        private bool _audioTraceLocally = false;
-
         private Channel _channel = null;
         private float _volume = 1.0f;
         private PlaybackEnd_Callback _endCallback = null;
@@ -145,9 +142,6 @@ namespace Supremacy.Client.Audio
         /// </summary>
         internal FMODAudioTrack([NotNull] FMODAudioEngine engine, string filePath)
         {
-            if (_audioTraceLocally)  // -one GameLog to see the played sound
-                GameLog.Print("called! File: {0}", filePath);
-
             _engine = engine;
 
             MODE creationMode = MODE.HARDWARE | MODE.CREATESTREAM | MODE.LOOP_OFF;
@@ -159,9 +153,6 @@ namespace Supremacy.Client.Audio
 
         public void Dispose()
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             lock (_engine.Lock)
             {
                 if (_isDisposed)
@@ -174,13 +165,11 @@ namespace Supremacy.Client.Audio
                     try
                     {
                         Stop();
-                        if (_audioTraceLocally)
-                            GameLog.Print("######### AudioTrack.Dispose - Stopped");
+                        GameLog.Client.Audio.Debug("Stopped");
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.Print("######### problem at AudioTrack.Dispose");
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
                 }
 
@@ -217,10 +206,9 @@ namespace Supremacy.Client.Audio
                     IsPaused = false;
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("############# problem at AudioTrack.Play !");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
            
         }
@@ -238,15 +226,13 @@ namespace Supremacy.Client.Audio
                     {
                         FMODErr.Check(_channel.stop());
                         _channel = null;
-                        if (_audioTraceLocally)
-                            GameLog.Print("############# No problem at AudioTrack.Stop !");
+                        GameLog.Client.Audio.DebugFormat("No problem at AudioTrack.Stop");
                     }
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("############# problem at AudioTrack.Stop !");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
@@ -257,8 +243,6 @@ namespace Supremacy.Client.Audio
         /// <param name="fadeStep">The fade step.</param>
         public void FadeIn(float fadeStep)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
             try
             {
                 lock (_engine.Lock)
@@ -267,10 +251,9 @@ namespace Supremacy.Client.Audio
                 }
 
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("############# problem at AudioTrack.FadeIn !");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
@@ -288,10 +271,9 @@ namespace Supremacy.Client.Audio
                     Volume = Math.Max(Volume - fadeStep, 0f);
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("############# problem at AudioTrack.FadeOut !");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
@@ -307,16 +289,13 @@ namespace Supremacy.Client.Audio
                     Monitor.Exit(_engine.Lock);
                     _endCallback(this);
                     Monitor.Enter(_engine.Lock);
-                    if (_audioTraceLocally)
-                        GameLog.Print("############# AudioTrack.OnPlaybackEnd successfully!");
                 }
 
                 return RESULT.OK;
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("############# problem at AudioTrack.OnPlaybackEnd !");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
                 return RESULT.ERR_DSP_NOTFOUND;
             }
         }

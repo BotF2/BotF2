@@ -236,8 +236,6 @@ namespace Supremacy.Tech
         
         protected const string UnknownDesignKey = "<unknown>";
 
-        private static readonly ILog _log = GameLog.Debug.GameData;
-
         private ushort _designId;
         private string _key;
         //private string _name;
@@ -259,11 +257,6 @@ namespace Supremacy.Tech
         private readonly List<TechObjectDesign> _obsoletedDesigns;
         private readonly PrerequisiteCollection _prerequisites;
         private readonly List<EffectGroup> _effects;
-
-        protected static ILog Log
-        {
-            get { return _log; }
-        }
 
         /// <summary>
         /// Gets or sets the design ID.
@@ -936,7 +929,7 @@ namespace Supremacy.Tech
             var civManager = GameContext.Current.CivilizationManagers[owner];
             if (civManager == null)
             {
-                Log.ErrorFormat(
+                GameLog.Core.General.ErrorFormat(
                     "Cannot spawn {0} at location {1} because " +
                     "owner {2} is not active in this game.",
                     Key,
@@ -951,7 +944,7 @@ namespace Supremacy.Tech
             if (requireSectorOwned &&
                 !Equals(sector.Owner, owner))
             {
-                Log.ErrorFormat(
+                GameLog.Core.General.ErrorFormat(
                     "Cannot spawn {0} at location {1} because " +
                     "the sector is not owned by {2}.",
                     Key,
@@ -966,7 +959,7 @@ namespace Supremacy.Tech
                 var system = sector.System;
                 if (system == null)
                 {
-                    Log.ErrorFormat(
+                    GameLog.Core.General.ErrorFormat(
                         "Cannot spawn {0} at location {1} because " +
                         "there is no star system at that location.",
                         Key,
@@ -977,7 +970,7 @@ namespace Supremacy.Tech
 
                 if (requireColony && !system.HasColony)
                 {
-                    Log.ErrorFormat(
+                    GameLog.Core.General.ErrorFormat(
                         "Cannot spawn {0} at location {1} because " +
                         "there is no colony at that location.",
                         Key,

@@ -223,9 +223,9 @@ namespace Supremacy.Client
             {
                 Stop();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
             finally
             {
@@ -281,9 +281,9 @@ namespace Supremacy.Client
                 {
                     DestroyServiceHost();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
 

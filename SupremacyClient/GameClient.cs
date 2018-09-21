@@ -337,9 +337,9 @@ namespace Supremacy.Client
             {
                 remoteCommand();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -555,9 +555,9 @@ namespace Supremacy.Client
                         serviceClient.InnerChannel.Faulted -= OnChannelFaulted;
                         serviceClient.InnerDuplexChannel.Faulted -= OnChannelFaulted;
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Client.General.Error(e);
                     }
 
             if (!serviceClient.IsClosed)
@@ -566,18 +566,18 @@ namespace Supremacy.Client
                         {
                             serviceClient.Disconnect();
                         }
-                        catch (Exception e) //ToDo: Just log or additional handling necessary?
+                        catch (Exception e)
                         {
-                            GameLog.LogException(e);
+                            GameLog.Client.General.Error(e);
                         }
 
                         try
                         {
                             serviceClient.Close();
                         }
-                        catch(Exception e) //ToDo: Just log or additional handling necessary?
+                        catch(Exception e)
                         {
-                            GameLog.LogException(e);
+                            GameLog.Client.General.Error(e);
                         }
                     }
                     

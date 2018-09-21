@@ -117,16 +117,13 @@ namespace Supremacy.Combat
                         var target = ChooseTarget(attackingShip);
 
 
-                        if (target == null && _traceCombatEngine)
+                        if (target == null)
                         {
-                            GameLog.Print("No target for {0} {1}", attackingShip.Source.ObjectID, attackingShip.Name);
+                            GameLog.Core.Combat.DebugFormat("No target for {0} {1}", attackingShip.Source.ObjectID, attackingShip.Name);
                         }
                         if (target != null)
                         {
-                            if (_traceCombatEngine)
-                            {
-                                GameLog.Print("Target for {0} {1} is {2} {3}", attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
-                            }
+                            GameLog.Core.Combat.DebugFormat("Target for {0} {1} is {2} {3}", attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
 
                             // If we rushed a formation we could take damage
                             int chanceRushingFormation = RandomHelper.Random(100);
@@ -134,21 +131,15 @@ namespace Supremacy.Combat
                             {
                                 attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
 
-                                if (_traceCombatEngine)
-                                {
-                                    GameLog.Print("{0} {1} rushed a formation and took {2} damage to hull ({3} hull left)",
-                                        attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
-                                }
+                                GameLog.Core.Combat.DebugFormat("{0} {1} rushed a formation and took {2} damage to hull ({3} hull left)",
+                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
                             }
 
                             bool assimilationSuccessful = false;
                             //If the attacker is Borg, try and assimilate before you try destroying it
                             if (attackingShip.Owner.Name == "Borg" && target.Owner.Name != "Borg")
                             {
-                                if (_traceCombatEngine)
-                                {
-                                    GameLog.Print("{0} {1} attempting assimilation on {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
-                                }
+                                GameLog.Core.Combat.DebugFormat("{0} {1} attempting assimilation on {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
                                 int chanceToAssimilate = RandomHelper.Random(100);
                                 assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
                             }
@@ -156,10 +147,7 @@ namespace Supremacy.Combat
                             //Perform the assimilation, but only on ships
                             if (assimilationSuccessful && target.Source is Ship)
                             {
-                                if (_traceCombatEngine)
-                                {
-                                    GameLog.Print("{0} {1} successfully assimilated {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
-                                }
+                                GameLog.Core.Combat.DebugFormat("{0} {1} successfully assimilated {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
 
                                 CombatAssets oppositionAssets = GetAssets(target.Owner);
                                 if (!ownerAssets.AssimilatedShips.Contains(target))
@@ -181,10 +169,7 @@ namespace Supremacy.Combat
                             //If we're not assimilating, destroy it instead :)
                             else
                             {
-                                if (_traceCombatEngine)
-                                {
-                                    GameLog.Print("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
-                                }
+                                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
                                 {
@@ -231,27 +216,17 @@ namespace Supremacy.Combat
                         {
                             _combatShips[i].Item1.TakeDamage(_combatShips[i].Item1.Source.OrbitalDesign.HullStrength / 2);  // 50 % down out of Hullstrength of TechObjectDatabase.xml
 
-                            if (_traceCombatEngine)
-                            {
-                                GameLog.Print("{0} {1} failed to retreat whilst being rushed and took {2} damage to hull ({3} hull left)",
-                                    _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.OrbitalDesign.HullStrength / 2, _combatShips[i].Item1.Source.HullStrength);
-                            }
+                            GameLog.Core.Combat.DebugFormat("{0} {1} failed to retreat whilst being rushed and took {2} damage to hull ({3} hull left)",
+                                _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.OrbitalDesign.HullStrength / 2, _combatShips[i].Item1.Source.HullStrength);
                         }
                         break;
 
                     case CombatOrder.Hail:
-                        if (_traceCombatEngine)
-                        {
-                            GameLog.Print("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
-                        }
-
+                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         break;
 
                     case CombatOrder.Standby:
-                        if (_traceCombatEngine)
-                        {
-                            GameLog.Print("{1} {0} ({2}) hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
-                        }
+                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         break;
       
                 }
@@ -390,10 +365,7 @@ namespace Supremacy.Combat
 
             if (target.IsDestroyed)
             {
-                if (_traceCombatEngine)
-                {
-                    GameLog.Print("{0} {1} was destroyed", target.Source.ObjectID, target.Name);
-                }
+                GameLog.Core.Combat.DebugFormat("{0} {1} was destroyed", target.Source.ObjectID, target.Name);
                 CombatAssets targetAssets = GetAssets(target.Owner);
                 if (target.Source is Ship)
                 {

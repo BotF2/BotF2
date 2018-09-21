@@ -178,9 +178,9 @@ namespace Supremacy.Client.Dialogs
 
                 return windowDialogCancelCommandField.GetValue(null) as RoutedCommand;
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             return null;
@@ -504,12 +504,12 @@ namespace Supremacy.Client.Dialogs
         {
             if (_showingAsDialog)
             {
-                GameLog.Print("Cannot call ShowDialog() on a dialog that was already opened with ShowDialog().");
+                GameLog.Client.General.Error("Cannot call ShowDialog() on a dialog that was already opened with ShowDialog().");
             }
 
             if (IsOpen)
             {
-                GameLog.Print("Cannot call ShowDialog() on a dialog that is already open.");
+                GameLog.Client.General.Error("Cannot call ShowDialog() on a dialog that is already open.");
             }
 
             _showingAsDialog = true;
@@ -547,9 +547,9 @@ namespace Supremacy.Client.Dialogs
                 _dispatcherFrame = new DispatcherFrame();
                 Dispatcher.PushFrame(_dispatcherFrame);
             }
-            catch
+            catch (Exception e)
             {
-                GameLog.Print("#####problem here");
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -602,9 +602,9 @@ namespace Supremacy.Client.Dialogs
                 if (_showingAsDialog)
                     DoHideDialog();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             IsActive = false;
@@ -614,9 +614,9 @@ namespace Supremacy.Client.Dialogs
             {
                 DialogRegion.Remove(this);
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             CollectionChangedEventManager.RemoveListener(

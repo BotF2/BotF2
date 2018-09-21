@@ -33,7 +33,7 @@ namespace Supremacy.Client.Views
             foreach (var player in lobbyData.Players)
             { 
                 this[player.Empire].Player = player;
-            GameLog.Print("PlayerID = {0}, Name = {1}, EmpireID = {2}, Empire = {3}", player.PlayerID, player.Name, player.EmpireID, player.Empire );
+                GameLog.Client.General.DebugFormat("PlayerID = {0}, Name = {1}, EmpireID = {2}, Empire = {3}", player.PlayerID, player.Name, player.EmpireID, player.Empire );
             
             }
             UpdateRelationshipStatus();

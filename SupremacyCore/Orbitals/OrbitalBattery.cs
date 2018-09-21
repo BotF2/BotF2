@@ -7,6 +7,7 @@ using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -30,7 +31,7 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    Log.WarnFormat(
+                    GameLog.Core.GameData.WarnFormat(
                         "Invalid unit energy cost specified for design '{0}': {1}",
                         Key ?? UnknownDesignKey,
                         unitEnergyCostText);

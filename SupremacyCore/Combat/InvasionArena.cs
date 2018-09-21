@@ -507,7 +507,7 @@ namespace Supremacy.Combat
             _hasAttackingUnits = _invadingUnits.OfType<InvasionOrbital>().Any(o => !o.IsDestroyed && o.Source.IsCombatant);
             _canLandTroops = _invadingUnits.Where(o => !o.IsDestroyed).Select(o => o.Source).OfType<Ship>().Any(o => o.ShipType == ShipType.Transport);
 
-            GameLog.Print("_canLandTroops(Transport Ships) = {0}, and/but ColonyShieldStrength = {1}, Last Value = {2}",
+            GameLog.Core.Combat.DebugFormat("_canLandTroops(Transport Ships) = {0}, and/but ColonyShieldStrength = {1}, Last Value = {2}",
                 _canLandTroops, ColonyShieldStrength.CurrentValue, ColonyShieldStrength.LastValue);
             if (ColonyShieldStrength.CurrentValue > 0)
                 _canLandTroops = false;
@@ -781,17 +781,17 @@ namespace Supremacy.Combat
             if (_orders.Action == InvasionAction.BombardPlanet || _orders.Action == InvasionAction.UnloadAllOrdinance)
             {
                 if (_orders.Action == InvasionAction.BombardPlanet)
-                    GameLog.Print("Order is Bombardment");
+                    GameLog.Core.Combat.DebugFormat("Order is Bombardment");
 
                 if (_orders.Action == InvasionAction.UnloadAllOrdinance)
-                    GameLog.Print("Order is UnloadAllOrdinance");
+                    GameLog.Core.Combat.DebugFormat("Order is UnloadAllOrdinance");
 
                 ProcessBombardment();
             }
 
             if (_orders.Action == InvasionAction.LandTroops)
             {
-                GameLog.Print("Order is LandTroops");
+                GameLog.Core.Combat.DebugFormat("Order is LandTroops");
                 ProcessGroundCombat();
             }
 

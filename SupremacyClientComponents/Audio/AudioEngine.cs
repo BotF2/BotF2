@@ -50,8 +50,6 @@ namespace Supremacy.Client.Audio
         private static FMODAudioEngine _instance = null;
         private bool _isDisposed = false;
 
-        private bool _audioTraceLocally = false;
-
         private FMOD.System _system = null;
         private FMODGrouping _masterChannelGroup = null;
 
@@ -105,9 +103,6 @@ namespace Supremacy.Client.Audio
         #region Construction & Lifetime
         private FMODAudioEngine()
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             FMODErr.Check(Factory.System_Create(ref _system));
 
             uint version = 0;
@@ -132,9 +127,6 @@ namespace Supremacy.Client.Audio
 
         public void Dispose()
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             if (_isDisposed)
                 return;
 
@@ -146,9 +138,9 @@ namespace Supremacy.Client.Audio
                 {
                     Stop();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.Audio.Error(e);
                 }
 
                 // reverse iterate to allow remove by Dispose()
@@ -158,9 +150,9 @@ namespace Supremacy.Client.Audio
                     {
                         _channelGroups[i].Dispose();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
                 }
                 _channelGroups.Clear();
@@ -172,9 +164,9 @@ namespace Supremacy.Client.Audio
                     {
                         _tracks[i].Dispose();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
                 }
                 _tracks.Clear();
@@ -185,9 +177,9 @@ namespace Supremacy.Client.Audio
                         _system.release();
                     _system = null;
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.Audio.Error(e);
                 }
             }
         }
@@ -196,9 +188,6 @@ namespace Supremacy.Client.Audio
         #region Methods
         public IAudioGrouping CreateGrouping(string name)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             FMODGrouping cg = null;
             lock (_updateLock)
             {
@@ -218,13 +207,14 @@ namespace Supremacy.Client.Audio
                 {
                     track = new FMODAudioTrack(this, fileName);
                     _tracks.Add(track);
-                    if (_audioTraceLocally)
-                        GameLog.Print("called: audio track file \"{0}\" playing", fileName);
+                    GameLog.Client.Audio.DebugFormat("Audio track file \"{0}\" playing", fileName);
                 }
             }
-            else GameLog.Client.GameData.DebugFormat(
-                "Could not locate audio track file \"{0}\".",
-                fileName);
+            else
+            {
+                GameLog.Client.Audio.WarnFormat("Could not locate audio track file \"{0}\".",
+                    fileName);
+            }
 
             return track;
         }
@@ -238,13 +228,12 @@ namespace Supremacy.Client.Audio
                     if (_updateTimerSubscription == null)
                         _updateTimerSubscription = _updateTimer.Subscribe();
 
-                    if (_audioTraceLocally)
-                        GameLog.Print("######### AudioEngine.Start - starting....");
+                    GameLog.Client.Audio.Debug("Starting....");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                GameLog.Print("######### problem at AudioEngine.Start");
+                GameLog.Client.Audio.Error(e);
             }
         }
 
@@ -263,13 +252,11 @@ namespace Supremacy.Client.Audio
                     try
                     {
                         track.Stop();
-                        if (_audioTraceLocally)
-                            GameLog.Print("######### AudioEngine.Stop - stopped track={0}", track.ToString());
+                        GameLog.Client.Audio.DebugFormat("Stopped track {0}", track.ToString());
                     }
                     catch (Exception e) //ToDo: Just log or additional handling necessary?
                     {
-                        GameLog.Print("######### problem at AudioEngine.Stop");
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
                 }
             }
@@ -285,37 +272,32 @@ namespace Supremacy.Client.Audio
                 }
                 catch
                 {
-                    GameLog.Print("unimportant problem at AudioEngine");
+                    //We can ignore a problem here
                 }
             }
         }
         
         internal void RemoveGrouping(FMODGrouping channelGroup)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
             try
             {
                 _channelGroups.Remove(channelGroup);
             }
-            catch
+            catch (Exception e)
             {
-                GameLog.Print("######### problem at AudioEngine.RemoveGrouping");
+                GameLog.Client.Audio.Error(e);
             }
         }
 
         internal void RemoveTrack(FMODAudioTrack audioTrack)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             try
             {
                 _tracks.Remove(audioTrack);
             }
-            catch
+            catch (Exception e)
             {
-                GameLog.Print("######### problem at AudioEngine.RemoveTrack");
+                GameLog.Client.Audio.Error(e);
             }
         }
         #endregion

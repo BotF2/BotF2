@@ -138,9 +138,11 @@ namespace Supremacy.Orbitals
                     {
                         return Source.ClassName;
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        GameLog.Print("Problem with null ClassName ObjectID = {0} Name = {1}", Source.ObjectID, Source.Name);
+                        GameLog.Core.General.Error(string.Format("Problem with null ClassName ObjectID = {0} Name = {1}",
+                            Source.ObjectID, Source.Name),
+                            e);
                     }
                 }
                 return "ClassNameManually";

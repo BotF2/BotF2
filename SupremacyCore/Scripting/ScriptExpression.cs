@@ -17,7 +17,6 @@ namespace Supremacy.Scripting
     [Serializable]
     public class ScriptExpression : INotifyPropertyChanged
     {
-        private static readonly Lazy<GameLog> _log = new Lazy<GameLog>(() => GameLog.ScriptEngine);
         private readonly bool _returnObservableResult;
 
         #region ScriptCode Property
@@ -181,17 +180,17 @@ namespace Supremacy.Scripting
             public override void Add(string message, string path, string code, string line, SourceSpan span, int errorCode, Severity severity)
             {
                 if (severity == Severity.Error || severity == Severity.FatalError)
-                    _log.Value.General.Error(message);
+                    GameLog.Core.General.Error(message);
                 else
-                    _log.Value.General.Warn(message);
+                    GameLog.Core.General.Error(message);
             }
 
             public override void Add(SourceUnit source, string message, SourceSpan span, int errorCode, Severity severity)
             {
                 if (severity == Severity.Error || severity == Severity.FatalError)
-                    _log.Value.General.Error(message);
+                    GameLog.Core.General.Error(message);
                 else
-                    _log.Value.General.Warn(message);
+                    GameLog.Core.General.Error(message);
             }
         }
     }

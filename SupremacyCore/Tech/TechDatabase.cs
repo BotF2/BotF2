@@ -679,9 +679,9 @@ namespace Supremacy.Tech
                         streamWriter.WriteLine(line);
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Print("Cannot write ... FromTechObj-ProductionFacilities_(autoCreated).csv");
+                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-ProductionFacilities_(autoCreated).csv", e);
                 }
 
                 // End of ProductionFacilities
@@ -717,9 +717,9 @@ namespace Supremacy.Tech
                         streamWriter.WriteLine(line);
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Print("Cannot write ... FromTechObj-ShipNames_(autoCreated).csv");
+                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-ShipNames_(autoCreated).csv", e);
                 }
                 // End of PShipNames
                 #endregion PossibleShipNames_To_CSV;
@@ -905,9 +905,9 @@ namespace Supremacy.Tech
                         streamWriter.WriteLine(line);
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Print("Cannot write ... FromTechObj-Ships_(autoCreated).csv");
+                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-Ships_(autoCreated).csv", e);
                 }
 
                 // End of Ships
@@ -1006,9 +1006,9 @@ namespace Supremacy.Tech
                         streamWriter.WriteLine(line);
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Print("Cannot write ... FromTechObj-Shipyards_(autoCreated).csv");
+                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-Shipyards_(autoCreated).csv", e);
                 }
 
                 // End of Shipyards

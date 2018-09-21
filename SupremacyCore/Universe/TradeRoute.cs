@@ -85,16 +85,15 @@ namespace Supremacy.Universe
                             baseModSource = modSrc;
                             baseModTarget = modTarget;
                         }
-                        catch (Exception e) //ToDo: Just log or additional handling necessary?
+                        catch (Exception e)
                         {
-                            GameLog.Print("#### problem with TradeRoute-TargetColony, {0}", e.Message);
-                            //GameLog.LogException(e);
+                            GameLog.Core.General.Error("#### problem with TradeRoute-TargetColony", e);
                         }
                     }
 
                     Credits = (int)(baseModSource * SourceColony.Population.CurrentValue +
                                     baseModTarget * TargetColony.Population.CurrentValue);
-                    GameLog.Print("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    GameLog.Core.General.DebugFormat("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                 }
             }
         }
@@ -137,13 +136,13 @@ namespace Supremacy.Universe
                     var clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
                     if (clientContext == null)
                     {
-                        GameLog.Print("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                        GameLog.Core.General.DebugFormat("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                         return Credits;
                     }
                     var empire = clientContext.LocalPlayer.Empire;
                     if (empire == null)
                     {
-                        GameLog.Print("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                        GameLog.Core.General.DebugFormat("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                         return Credits;
                     }
 
@@ -158,7 +157,7 @@ namespace Supremacy.Universe
 
                     if (colony == null)
                     {
-                        GameLog.Print("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                        GameLog.Core.General.DebugFormat("colony is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                         return Credits;
                     }
 
@@ -168,12 +167,14 @@ namespace Supremacy.Universe
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
                                       .Sum(o => 0.01 * o.Amount);
 
-                    GameLog.Print("Credits from TradeRoute (incl. Bonuses): TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    GameLog.Core.General.DebugFormat("Credits from TradeRoute (incl. Bonuses): TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                     return (int)((1.0 + bonus) * Credits);
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Print("#### problem with ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits", Credits);
+                    GameLog.Core.General.ErrorFormat(string.Format("#### problem with ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits",
+                        Credits),
+                        e);
                     return Credits;
                 }
 

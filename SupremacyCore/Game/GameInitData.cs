@@ -119,7 +119,7 @@ namespace Supremacy.Game
         {
             if (savedGameHeader == null)
                 throw new ArgumentNullException("savedGameHeader");
-            GameLog.Print("CreateFromSavedGame: {0}", savedGameHeader.FileName);
+            GameLog.Core.General.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);
 
             return new GameInitData
                    {
@@ -148,7 +148,7 @@ namespace Supremacy.Game
             {
                 _localPlayerEmpireID = value;
                 OnPropertyChanged("LocalPlayerEmpireID");
-                GameLog.Print("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
+                GameLog.Core.General.DebugFormat("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
             }
         }
 
@@ -159,7 +159,6 @@ namespace Supremacy.Game
             {
                 _localPlayerName = value;
                 OnPropertyChanged("LocalPlayerName");
-                //GameLog.Client.GameData.DebugFormat("LocalPlayerName: {0}", _localPlayerName);
             }
         }
 

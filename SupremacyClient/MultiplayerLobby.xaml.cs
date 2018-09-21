@@ -128,7 +128,7 @@ namespace Supremacy.Client
             if (!AppContext.IsGameHost)
                 return;
 
-            GameLog.Print("EmpireID-Selected={0} ", AppContext.LocalPlayer.EmpireID);
+            GameLog.Client.General.DebugFormat("EmpireID-Selected={0} ", AppContext.LocalPlayer.EmpireID);
 
             // IMPORTANT: at the moment only LocalPlayer is checked whether it's set to NOT Playable. At the moment NO check for the other players in Multi Player
             //switch (AppContext.LocalPlayerEmpire.Civ)
@@ -196,10 +196,10 @@ namespace Supremacy.Client
                         MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
                         return;
                     }
-                    //break;
+            //break;
             //}
 
-            GameLog.Print("EmpireID STARTING Game={0}", AppContext.LocalPlayer.EmpireID);
+            GameLog.Client.General.DebugFormat("EmpireID STARTING Game={0}", AppContext.LocalPlayer.EmpireID);
 
 
             if (AppContext.LobbyData.UnassignedPlayers.Any())
@@ -329,7 +329,7 @@ namespace Supremacy.Client
 
             if (AppContext.IsSinglePlayerGame)
             {
-                GameLog.Print("AppContext.IsSinglePlayerGame={0}", AppContext.IsSinglePlayerGame);
+                GameLog.Client.General.DebugFormat("AppContext.IsSinglePlayerGame={0}", AppContext.IsSinglePlayerGame);
                 return;
             }
 
@@ -348,7 +348,7 @@ namespace Supremacy.Client
                 }
                 else
                 {
-                    GameLog.Print("localplayer.Name={0} is NOT hosting...", localPlayer.Name);
+                    GameLog.Client.General.DebugFormat("localplayer.Name={0} is NOT hosting...", localPlayer.Name);
                     assignablePlayers.RemoveAll(o => !Equals(o, localPlayer) && !Equals(o, playerSlot.Player));
                     if (playerSlot.IsVacant)
                     {

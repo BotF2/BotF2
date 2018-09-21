@@ -23,9 +23,9 @@ namespace System.Linq
                 {
                     return (T)Convert.ChangeType(source, typeof(T));
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.General.Error(e);
                 }
             }
             return default(T);
@@ -39,9 +39,9 @@ namespace System.Linq
                 {
                     return (T)Convert.ChangeType(source, typeof(T));
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.General.Error(e);
                 }
             }
             return default(T);
@@ -55,9 +55,9 @@ namespace System.Linq
                 {
                     return (T)Convert.ChangeType(source, typeof(T));
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.General.Error(e);
                 }
             }
             return defaultValue;
@@ -71,9 +71,9 @@ namespace System.Linq
                 {
                     return (T)Convert.ChangeType(source, typeof(T));
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.General.Error(e);
                 }
             }
             return defaultValue;

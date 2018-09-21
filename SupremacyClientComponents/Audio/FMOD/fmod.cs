@@ -2489,14 +2489,12 @@ namespace FMOD
         {
             try
             {
-                //if (_audioTraceLocally)
-                    GameLog.Print("trying FMOD_Sound_Release(soundraw)");
+                GameLog.Client.Audio.DebugFormat("Trying FMOD_Sound_Release(soundraw)");
                 return FMOD_Sound_Release(soundraw);
             }
             catch (Exception e)
             {
-                GameLog.Print("######### problem here with FMOD_Sound_Release(soundraw)");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
                 return RESULT.ERR_INVALID_PARAM;
             }
         }

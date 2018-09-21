@@ -62,9 +62,9 @@ namespace Supremacy.IO
                     {
                         settings = (Hashtable)formatter.Deserialize(loadStream);
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
 
@@ -82,15 +82,15 @@ namespace Supremacy.IO
                     {
                         formatter.Serialize(writeStream, settings);
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Core.General.Error(e);
             }
         }
 
@@ -110,9 +110,9 @@ namespace Supremacy.IO
                     {
                         settings = (Hashtable)formatter.Deserialize(loadStream);
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
 

@@ -501,7 +501,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                GameLog.Print("{0} percent of whatever", this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory]);
+                GameLog.Core.General.DebugFormat("{0} percent of whatever", this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory]);
                 return this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory];
             }
         }
