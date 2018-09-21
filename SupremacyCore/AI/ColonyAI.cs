@@ -7,10 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Supremacy.Annotations;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -19,6 +15,9 @@ using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.AI
 {
@@ -261,6 +260,7 @@ namespace Supremacy.AI
             });
         }
 
+        //TODO: Move ship production out of colony AI. It requires a greater oversight than just a single colony
         private static void HandleShipProductionEmpire(Colony colony, Civilization civ)
         {
             if (colony.Shipyard == null)

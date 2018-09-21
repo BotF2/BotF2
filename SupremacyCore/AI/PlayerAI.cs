@@ -130,7 +130,7 @@ namespace Supremacy.AI
 
                     var distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
 
-                    if (AtWar(who, loopSector.Owner))
+                    if (DiplomacyHelper.AreAtWar(who, loopSector.Owner))
                     {
                         if (distance <= 2)
                             borderDanger++;
@@ -138,7 +138,7 @@ namespace Supremacy.AI
 
                     foreach (var fleet in GameContext.Current.Universe.FindAt<Fleet>(loopSector.Location))
                     {
-                        if (!AtWar(who, fleet.Owner))
+                        if (!DiplomacyHelper.AreAtWar(who, fleet.Owner))
                             continue;
 
                         if (!fleet.IsCombatant)
@@ -158,28 +158,6 @@ namespace Supremacy.AI
                 count += borderDanger;
 
             return count;
-        }
-
-        public static AIStrategies GetStrategies(Civilization who)
-        {
-            return AIStrategies.Default;
-        }
-
-        public static bool HasMetHuman(Civilization who)
-        {
-            if (who == null)
-                throw new ArgumentNullException("who");
-            foreach (var otherCiv in GameContext.Current.Civilizations)
-            {
-                if (otherCiv != who)
-                {
-                    if (IsHuman(otherCiv) && DiplomacyHelper.IsContactMade(who, otherCiv))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         public static bool IsHuman(Civilization who)
@@ -206,14 +184,6 @@ namespace Supremacy.AI
 
             return false;
         }
-
-        private static bool AtWar(Civilization source, Civilization target)
-        {
-            if ((source == null) || (target == null) || (source == target))
-                return false;
-            return DiplomacyHelper.AreAtWar(source, target);
-        }
-
         #endregion
     }
 }

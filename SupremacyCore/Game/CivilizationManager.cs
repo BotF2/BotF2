@@ -408,7 +408,7 @@ namespace Supremacy.Game
                                                  1d,
                                                  2d / MapLocation.GetDistance(c.Location, homeColonyLocation.Value)));
 
-                                         return DiplomacyHelper.ComputeColonyValue(c) * distanceFactor;
+                                         return c.ColonyValue() * distanceFactor;
                                      });
 
                 seatOfGovernment = (

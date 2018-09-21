@@ -84,6 +84,7 @@ namespace Supremacy.Combat
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
+                //Move this to DiplomacyHelper
                 List<string> allEmpires = new List<string>();
                 allEmpires.AddRange(ownEmpires);
                 allEmpires.AddRange(friendlyEmpires);

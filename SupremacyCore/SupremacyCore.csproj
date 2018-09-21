@@ -193,6 +193,7 @@
     <Compile Include="Diplomacy\Visitors\ProposalVisitor.cs" />
     <Compile Include="Diplomacy\Visitors\CreditObligationFulfillmentVisitor.cs" />
     <Compile Include="Diplomacy\Visitors\RejectProposalVisitor.cs" />
+    <Compile Include="Economy\EconomyHelper.cs" />
     <Compile Include="Economy\ShipyardBuildSlot.cs" />
     <Compile Include="Entities\ICivIdentity.cs" />
     <Compile Include="Entities\RaceConverter.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Text\TextStyle.cs" />
     <Compile Include="Types\IsSetFlag.cs" />
     <Compile Include="Types\NamedGuid.cs" />
+    <Compile Include="Universe\ColonyHelper.cs" />
     <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
     <Compile Include="Utility\Random\RandomHelper.cs" />
