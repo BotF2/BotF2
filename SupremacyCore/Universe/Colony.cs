@@ -100,9 +100,6 @@ namespace Supremacy.Universe
         private int _shipyardId;
         private int _systemId = GameObjectID.InvalidID;
         private CollectionBase<TradeRoute> _tradeRoutes;
-
-        private bool m_traceProduction = false;
-
         private Colony()
         {
             Initialize();
@@ -164,9 +161,9 @@ namespace Supremacy.Universe
 
                         _baseRawMaterials = tmpBaseRaw;
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
             }
@@ -207,9 +204,9 @@ namespace Supremacy.Universe
 
                         baseValuePerGG = tmpBaseValue;
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
 
@@ -526,11 +523,8 @@ namespace Supremacy.Universe
                             modifier.Efficiency += (bonus.Amount / 100f);
                     }
                 }
-                if (m_traceProduction)
-                { 
-                GameLog.Print("owner = {0}, _netIndustry = {1}, adjustedPop = {2}, Bonus = {3}", OriginalOwner, _netIndustry, adjustedPop, modifier.Bonus);
-                GameLog.Print("owner = {0}, output food {1}, Energy {2}, industry {3}, intell {4}, research {5}", OriginalOwner, GetProductionOutput(ProductionCategory.Food), GetProductionOutput(ProductionCategory.Energy), GetProductionOutput(ProductionCategory.Industry), GetProductionOutput(ProductionCategory.Intelligence), GetProductionOutput(ProductionCategory.Research));
-                }
+                GameLog.Core.Production.DebugFormat("owner = {0}, _netIndustry = {1}, adjustedPop = {2}, Bonus = {3}", OriginalOwner, _netIndustry, adjustedPop, modifier.Bonus);
+                GameLog.Core.Production.DebugFormat("owner = {0}, output food {1}, Energy {2}, industry {3}, intell {4}, research {5}", OriginalOwner, GetProductionOutput(ProductionCategory.Food), GetProductionOutput(ProductionCategory.Energy), GetProductionOutput(ProductionCategory.Industry), GetProductionOutput(ProductionCategory.Intelligence), GetProductionOutput(ProductionCategory.Research));
 
                 return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus +  _netIndustry * 3 );
             }

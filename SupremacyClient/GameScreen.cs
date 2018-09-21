@@ -109,9 +109,9 @@ namespace Supremacy.Client
                 {
                     animationsHost.PauseAnimations();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
         }
@@ -124,9 +124,9 @@ namespace Supremacy.Client
                 {
                     animationsHost.ResumeAnimations();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
         }
@@ -205,9 +205,9 @@ namespace Supremacy.Client
                 {
                     animationsHost.StopAnimations();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
         }

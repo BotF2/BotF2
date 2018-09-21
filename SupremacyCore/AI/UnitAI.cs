@@ -27,8 +27,6 @@ namespace Supremacy.AI
     public static class UnitAI
     {
 
-        public static bool unitAITrace = false;
-
         public static void DoTurn([NotNull] Civilization civ)
         {
             if (civ == null)
@@ -39,17 +37,14 @@ namespace Supremacy.AI
 
             foreach (var fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
             {
+                GameLog.Core.AI.DebugFormat("Processing Fleet {0} in {1}...", fleet.ObjectID, fleet.Location);
+
                 foreach (var ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))
                 {
-                    if (unitAITrace)
-                        GameLog.Print("UnitAI: ## ship will be cloaked ## fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                    GameLog.Core.AI.DebugFormat("Cloaking {0} {1}", ship.Name, ship.ObjectID);
 
                     ship.IsCloaked = true;
                 }
-
-                // works
-                if (unitAITrace)
-                    GameLog.Print("UnitAI: fleet={0}, {2}, {3}, {4}, {1}", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
 
                 if (!fleet.CanMove)
                     continue;
@@ -61,12 +56,12 @@ namespace Supremacy.AI
                         fleet.SetOrder(new ExploreOrder());
                         fleet.UnitAIType = UnitAIType.Explorer;
                         fleet.Activity = UnitActivity.Mission;
-                        if (unitAITrace)
-                            GameLog.Print("UnitAI: ## IsScout ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                        GameLog.Core.AI.DebugFormat("Ordering Scout fleet {0} in {1} to explore", fleet.ObjectID, fleet.Location);
                     }
                 }
                 if (fleet.IsColonizer)
                 {
+                    //TODO: This needs a bit of tweaking
                     if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                     {
                         if (CanColonize(civ, fleet.Sector))
@@ -74,8 +69,7 @@ namespace Supremacy.AI
                             fleet.SetOrder(new ColonizeOrder());
                             fleet.UnitAIType = UnitAIType.Colonizer;
                             fleet.Activity = UnitActivity.Mission;
-                            if (unitAITrace)
-                                GameLog.Print("UnitAI: ## IsColonizer-Colonizing ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                            GameLog.Core.AI.DebugFormat("Ordering Colonizer fleet {0} in {1} to colonize", fleet.ObjectID, fleet.Location);
                         }
                         else
                         {
@@ -87,16 +81,14 @@ namespace Supremacy.AI
                                     fleet.SetOrder(new ColonizeOrder());
                                     fleet.UnitAIType = UnitAIType.Colonizer;
                                     fleet.Activity = UnitActivity.Mission;
-                                    if (unitAITrace)
-                                        GameLog.Print("UnitAI: ## IsColonizer - AIM found ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                                    GameLog.Core.AI.DebugFormat("AIM found ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
                                 }
                                 else if (CanEnterSector(result.Location, civ))
                                 {
                                     fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { result.Sector }));
                                     fleet.UnitAIType = UnitAIType.Colonizer;
                                     fleet.Activity = UnitActivity.Mission;
-                                    if (unitAITrace)
-                                        GameLog.Print("UnitAI: ## IsColonizer - Move to AIM because the sector there can be entered ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                                    GameLog.Core.AI.DebugFormat("Move to AIM because the sector there can be entered ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
                                 }
                             }
                         }
@@ -117,33 +109,27 @@ namespace Supremacy.AI
                             fleet.Activity = UnitActivity.Mission;
                         }
                     }
-                    if (unitAITrace)
-                        GameLog.Print("UnitAI: ## IsConstructor ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                    GameLog.Core.AI.DebugFormat("## IsConstructor ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
                 }
 
                 if (fleet.IsBattleFleet)
                 {
-                    if (unitAITrace)
-                        GameLog.Print("UnitAI: ## IsBattleFleet ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                    GameLog.Core.AI.DebugFormat("## IsBattleFleet ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
 
                     var defenseFleet = GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense);
                     if (fleet.Activity == UnitActivity.NoActivity && defenseFleet == null)
                     {
                         fleet.UnitAIType = UnitAIType.SystemDefense;
                         fleet.Activity = UnitActivity.Hold;
-                        if (unitAITrace)
-                            GameLog.Print("UnitAI: ## IsBattleFleet - on SystemDefence ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                        GameLog.Core.AI.DebugFormat("## IsBattleFleet - on SystemDefence ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
                     }
                     else if (fleet.Activity == UnitActivity.NoActivity && fleet.Ships.Count == 1 && fleet.Sector == defenseFleet.Sector)
                     {
                         var ship = fleet.Ships[0];
-                        if (unitAITrace)
-                            GameLog.Print("UnitAI: ## IsBattleFleet - on SystemDefence - Ship added ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                        GameLog.Core.AI.DebugFormat("## IsBattleFleet - on SystemDefence - Ship added ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
 
                         fleet.RemoveShip(ship);
                         defenseFleet.AddShip(ship);
-                        //    if (_unitAITrace == true)
-                        //        GameLog.Print("UnitAI: ## IsBattleFleet - on SystemDefence - Ship added ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
                     }
                 }
             }
@@ -268,9 +254,9 @@ namespace Supremacy.AI
                 if ((civManager != null) && (civManager.MapData != null))
                     return civManager.MapData.IsExplored(unit.Location);
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Core.AI.Error(e);
             }
 
             return false;
@@ -627,13 +613,11 @@ namespace Supremacy.AI
                 //Order by the length of the route
                 possibleRoutes = possibleRoutes.OrderBy(r => r.Length).ToList();
                 //Return the shortest
-                if (unitAITrace)
-                    GameLog.Print("Fleet {0} ordered to explore star in sector {1}", fleet.Name, possibleRoutes[0].Waypoints.Last().ToString());
+                GameLog.Core.AI.DebugFormat("Fleet {0} ordered to explore star in sector {1}", fleet.Name, possibleRoutes[0].Waypoints.Last().ToString());
                 return possibleRoutes[0];
             }
 
-            if (unitAITrace)
-                GameLog.Print("No stars to explore for fleet {0}. Checking for unscanned sectors...", fleet.Name);
+            GameLog.Core.AI.DebugFormat("No stars to explore for fleet {0}. Checking for unscanned sectors...", fleet.Name);
 
             //Second priority is where hasn't been scanned
             var allNotScannedLocations = Enumerable
@@ -667,14 +651,12 @@ namespace Supremacy.AI
                 //Order by the length
                 possibleRoutes = possibleRoutes.OrderBy(r => r.Length).ToList();
                 //Return the shortest
-                if (unitAITrace)
-                    GameLog.Print("Fleet {0} ordered to explore unscanned sector {1}", fleet.Name, possibleRoutes[0].Waypoints.Last().ToString());
+                GameLog.Core.AI.DebugFormat("Fleet {0} ordered to explore unscanned sector {1}", fleet.Name, possibleRoutes[0].Waypoints.Last().ToString());
                 return possibleRoutes[0];
             }
 
             //No route can be found for this ship to explore.
-            if (unitAITrace)
-                GameLog.Print("No unscanned sectors found for fleet {0} to explore. Nothing left to explore", fleet.Name);
+            GameLog.Core.AI.DebugFormat("No unscanned sectors found for fleet {0} to explore. Nothing left to explore", fleet.Name);
             return TravelRoute.Empty;
         }
     }

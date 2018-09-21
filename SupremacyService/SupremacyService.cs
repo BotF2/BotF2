@@ -329,7 +329,7 @@ namespace Supremacy.WCF
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
-                GameLog.LogException(e);
+                GameLog.Server.General.Error(e);
             }
 
             if (playerInfo.Session.Channel.State == CommunicationState.Opened)
@@ -542,7 +542,7 @@ namespace Supremacy.WCF
                             }
                             catch (Exception e) //ToDo: Just log or additional handling necessary?
                             {
-                                GameLog.LogException(e);
+                                GameLog.Server.General.Error(e);
                             }
                         },
                         null);
@@ -1056,7 +1056,7 @@ namespace Supremacy.WCF
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
-                GameLog.LogException(e);
+                GameLog.Server.General.Error(e);
             }
         }
 
@@ -1221,7 +1221,7 @@ namespace Supremacy.WCF
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
-                GameLog.LogException(e);
+                GameLog.Server.General.Error(e);
             }
 
             DropPlayer();
@@ -1410,7 +1410,7 @@ namespace Supremacy.WCF
             //No proper CombatAI, so just for now fake some orders
             else if (!engine.IsCombatOver && !update.Owner.IsHuman)
             {
-                GameLog.Print("Generating fake order for {0}", update.Owner.Name);
+                GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
                 var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
                 if (ownerAssets == null)
                 {
@@ -1444,7 +1444,7 @@ namespace Supremacy.WCF
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {
-                    GameLog.LogException(e);
+                    GameLog.Server.Combat.Error(e);
                 }
                 finally
                 {

@@ -144,7 +144,7 @@ namespace Supremacy.Buildings
 
                 if (!EnumHelper.TryParse(bonusTypeText, out bonusType))
                 {
-                    Log.WarnFormat(
+                    GameLog.Core.GameData.WarnFormat(
                         "Invalid bonus type specified for design '{0}': {1}",
                         Key ?? UnknownDesignKey,
                         bonusTypeText);
@@ -154,7 +154,7 @@ namespace Supremacy.Buildings
 
                 if (!int.TryParse(xmlBonus.GetAttribute("Amount"), out bonusAmount))
                 {
-                    Log.WarnFormat(
+                    GameLog.Core.GameData.WarnFormat(
                         "Invalid bonus amount specified for bonus type '{0}' on design '{1}': {2}",
                         bonusType,
                         Key ?? UnknownDesignKey,

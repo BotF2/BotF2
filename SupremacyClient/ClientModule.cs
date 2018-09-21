@@ -180,9 +180,9 @@ namespace Supremacy.Client
         private void ExecuteLoadGameCommand(SavedGameHeader header)
         {
             var initData = GameInitData.CreateFromSavedGame(header);
-            GameLog.Print("doing ExecuteLoadGameCommand ...");
+            GameLog.Client.General.Debug("doing ExecuteLoadGameCommand ...");
             RunGameController(gameController => gameController.RunLocal(initData), initData.IsMultiplayerGame);
-            GameLog.Print("doing gameController.RunLocal(initData) ...");
+            GameLog.Client.General.Debug("doing gameController.RunLocal(initData) ...");
 
         }
 
@@ -249,7 +249,7 @@ namespace Supremacy.Client
             _appContext.ThemeMusicLibrary.Clear();
             _musicPlayer.SwitchMusic("DefaultMusic");
 
-            GameLog.Print("Game was exited");
+            GameLog.Client.General.Info("Game was exited");
 
             return true;
         }
@@ -259,7 +259,7 @@ namespace Supremacy.Client
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Initialize()
         {
-            GameLog.Print("ClientModule.cs: Initializing... !");
+            GameLog.Client.General.Debug("Initializing... !");
             RegisterViewsAndServices();
             RegisterEventHandlers();
             RegisterCommandHandlers();
@@ -271,7 +271,7 @@ namespace Supremacy.Client
                 return;
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
-            GameLog.Print("ClientModule.cs: MenuScreen activated... ");
+            GameLog.Client.General.Debug("MenuScreen activated... ");
         }
 
         private bool AutoLoadSavedGame()
@@ -561,9 +561,9 @@ namespace Supremacy.Client
             {
                 gameController.Terminate();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             UpdateCommands();
@@ -632,9 +632,9 @@ namespace Supremacy.Client
                 {
                     gameController.Terminate();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
 
@@ -709,7 +709,7 @@ namespace Supremacy.Client
                         }
                         catch (SupremacyException e)
                         {
-                            GameLog.Print("###########   runDelegate.EndInvoke failed");
+                            GameLog.Client.General.Error("runDelegate.EndInvoke failed", e);
                             Interlocked.Exchange(ref _gameController, null);
                             _dispatcherService.InvokeAsync((Action)ClearStatusWindow);
                             _errorService.HandleError(e);
@@ -720,7 +720,7 @@ namespace Supremacy.Client
             }
             catch (SupremacyException e)
             {
-                GameLog.Print("###########   ResolveGameController failed");
+                GameLog.Client.General.Error("ResolveGameController failed", e);
                 ClearStatusWindow();
                 _errorService.HandleError(e);
                 Interlocked.Exchange(ref _gameController, null);

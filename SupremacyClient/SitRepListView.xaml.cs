@@ -31,7 +31,6 @@ namespace Supremacy.Client
         {
             InitializeComponent();
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
-            GameLog.Print("called !  (when is it used ?? - see line 29");
         }
 
         public IAppContext AppContext

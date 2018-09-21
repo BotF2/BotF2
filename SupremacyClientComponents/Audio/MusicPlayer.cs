@@ -48,9 +48,6 @@ namespace Supremacy.Client.Audio
         private IAppContext _appContext = null;
         private IAudioEngine _engine = null;
         private IAudioGrouping _channelGroup = null;
-
-        private bool _audioTraceLocally = false;
-
         private MusicPack _musicPack = null;
         private KeyValuePair<int, MusicEntry> _musicEntry;
         private IAudioTrack _audioTrack = null;
@@ -96,9 +93,6 @@ namespace Supremacy.Client.Audio
         #region Construction & Lifetime
         public MusicPlayer([NotNull] IAudioEngine engine, [NotNull] IAppContext appContext)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             if (engine == null)
                 throw new ArgumentNullException("engine");
             if (appContext == null)
@@ -112,9 +106,6 @@ namespace Supremacy.Client.Audio
 
         public void Dispose()
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
-
             if (_isDisposed)
                 return;
 
@@ -136,10 +127,9 @@ namespace Supremacy.Client.Audio
                         _audioTrack.Dispose();
                         _audioTrack = null;
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.Print("################# problem at MusicPlayer.cs - Dispose - _audioTrack != null");
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
                 }
 
@@ -150,10 +140,9 @@ namespace Supremacy.Client.Audio
                         track.Stop();
                         track.Dispose();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.Print("################# problem at MusicPlayer.cs - Dispose - foreach track Stop & Dispose");
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
                 }
                 _endingTracks.Clear();
@@ -193,24 +182,19 @@ namespace Supremacy.Client.Audio
 
                     if (play && _musicEntry.Value != null)
                     {
-                        if (_audioTraceLocally)
-                            GameLog.Print("called! Trackname: {0}, {1}, playMode={2}", _musicPack.Name, _musicEntry.Value.FileName, _playMode.ToString());
+                        GameLog.Client.Audio.DebugFormat("called! Trackname: {0}, {1}, playMode={2}", _musicPack.Name, _musicEntry.Value.FileName, _playMode.ToString());
                         Play();
                     }
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - LoadMusic");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
         public void SwitchMusic(string packName)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called! packName: {0}", packName);
-
             try
             {
                 MusicPack pack;
@@ -218,10 +202,9 @@ namespace Supremacy.Client.Audio
                     || _appContext.DefaultMusicLibrary.MusicPacks.TryGetValue(packName, out pack) && pack.HasEntries())
                     LoadMusic(pack);
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - SwitchMusic");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
@@ -239,8 +222,7 @@ namespace Supremacy.Client.Audio
                         _audioTrack = _engine.CreateTrack(
                             ResourceManager.GetResourcePath(_musicEntry.Value.FileName));
 
-                        if (_audioTraceLocally)
-                            GameLog.Print("called! _musicEntry.Value.FileName: {0}", _musicEntry.Value.FileName);
+                        GameLog.Client.Audio.DebugFormat("called! _musicEntry.Value.FileName: {0}", _musicEntry.Value.FileName);
 
                         if (_audioTrack != null)
                         {
@@ -254,18 +236,14 @@ namespace Supremacy.Client.Audio
                 }
 
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - Play");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
         public bool Switch(string trackName)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called! Trackname: {0}", trackName);
-
             try
             {
                 lock (_updateLock)
@@ -273,7 +251,7 @@ namespace Supremacy.Client.Audio
                     // TODO: restart track if already played?
                     if (_musicEntry.Value != null && _musicEntry.Value.TrackName.ToUpper().Equals(trackName.ToUpper()))
                     {
-                        GameLog.Print("Switch = true (1)");
+                        GameLog.Client.Audio.Debug("Switch = true (1)");
                         return true;
                     }
 
@@ -287,16 +265,14 @@ namespace Supremacy.Client.Audio
 
                     if (play) Play();
                     {
-                        if (_audioTraceLocally)
-                            GameLog.Print("Switch = true (1), _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Key);
+                        GameLog.Client.Audio.DebugFormat("Switch = true (1), _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Key);
                         return true;
                     }
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - Switch");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
                 return false;
             }
         }
@@ -317,15 +293,13 @@ namespace Supremacy.Client.Audio
                         try
                         {
                             _audioTrack.Stop();
-                            if (_audioTraceLocally)
-                                GameLog.Print("################# Stop - Group={0}, Track={1}", _audioTrack.Group.ToString(), _audioTrack);
+                            GameLog.Client.Audio.DebugFormat("Stop - Group={0}, Track={1}", _audioTrack.Group.ToString(), _audioTrack);
                             _audioTrack.Dispose();
                             _audioTrack = null;
                         }
-                        catch (Exception e) //ToDo: Just log or additional handling necessary?
+                        catch (Exception e)
                         {
-                            GameLog.Print("################# problem at MusicPlayer.cs - Stop - Group={0}", _audioTrack.Group.ToString());
-                            GameLog.LogException(e);
+                            GameLog.Client.Audio.Error(e);
                         }
                     }
                     else
@@ -335,10 +309,9 @@ namespace Supremacy.Client.Audio
                     }
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - Stop");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
@@ -355,23 +328,20 @@ namespace Supremacy.Client.Audio
                         _musicEntry = _musicPack.Random(_musicEntry.Key);
                     else if (_playMode.HasFlag(PlaybackMode.Sequential))
                         _musicEntry = _musicPack.Next(_musicEntry.Key);
-                    if (_audioTraceLocally)
-                        GameLog.Print("################# MusicPlayer.cs - Next at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
+
+                    GameLog.Client.Audio.DebugFormat("Next at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
 
                     Play();
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - Next at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
         public void Prev()
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
             try
             {
                 lock (_updateLock)
@@ -384,22 +354,18 @@ namespace Supremacy.Client.Audio
                     else if (_playMode.HasFlag(PlaybackMode.Sequential))
                         _musicEntry = _musicPack.Prev(_musicEntry.Key);
 
-                    if (_audioTraceLocally)
-                        GameLog.Print("################# MusicPlayer.cs - Prev at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
+                    GameLog.Client.Audio.DebugFormat("Prev at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
                     Play();
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - Prev at _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Value.FileName);
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
         private void OnTrackEnd(IAudioTrack track)
         {
-            if (_audioTraceLocally)
-                GameLog.Print("called!");
             try
             {
                 lock (_updateLock)
@@ -408,10 +374,9 @@ namespace Supremacy.Client.Audio
                     {
                         track.Dispose();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.Print("################# problem at MusicPlayer.cs - OnTrackEnd - Dispose at track.Group={0}", track.Group.ToString());
-                        GameLog.LogException(e);
+                        GameLog.Client.Audio.Error(e);
                     }
 
                     if (track == _audioTrack)
@@ -431,10 +396,9 @@ namespace Supremacy.Client.Audio
                     }
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - OnTrackEnd - DIspose");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
 
@@ -459,10 +423,9 @@ namespace Supremacy.Client.Audio
                     }
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.Print("################# problem at MusicPlayer.cs - Update");
-                GameLog.LogException(e);
+                GameLog.Client.Audio.Error(e);
             }
         }
     }

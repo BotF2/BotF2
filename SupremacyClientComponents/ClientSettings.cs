@@ -68,7 +68,7 @@ namespace Supremacy.Client
                 ClientSettingsFileName);
 
             if (_tracingClientSettings)
-                GameLog.Print("ClientSettings.cs: SAVE     {0}: Content: {1}", filePath, File.ReadAllText(filePath));
+                GameLog.Client.General.DebugFormat("SAVE     {0}: Content: {1}", filePath, File.ReadAllText(filePath));
         }
 
         public event EventHandler Loaded;
@@ -90,7 +90,7 @@ namespace Supremacy.Client
                 while (localValueEnumerator.MoveNext())
                 {
                     var currentEntry = localValueEnumerator.Current;
-                    GameLog.Client.GameData.DebugFormat("ClientSettings.cs RELOAD: Property {0} = {1}",
+                    GameLog.Client.General.DebugFormat("RELOAD: Property {0} = {1}",
                         currentEntry.Property, currentEntry.Value);
                     SetValue(
                         currentEntry.Property,
@@ -104,22 +104,22 @@ namespace Supremacy.Client
                 foreach (var attachableMemberIdentifier in removedMembers)
                 {
                     AttachablePropertyServices.RemoveProperty(this, attachableMemberIdentifier);
-                    GameLog.Client.GameData.DebugFormat("ClientSettings.cs RELOAD: REMOVED entry: {0} = {1}",
+                    GameLog.Client.General.DebugFormat("RELOAD: REMOVED entry: {0} = {1}",
                         attachableMemberIdentifier);
                 }
 
                 foreach (var key in _attachedValues.Keys)
                 { 
                     AttachablePropertyServices.SetProperty(this, key, _attachedValues[key]);
-                    GameLog.Client.GameData.DebugFormat("ClientSettings.cs RELOAD: ADDED entry: {0} = {1}",
+                    GameLog.Client.General.DebugFormat("RELOAD: ADDED entry: {0} = {1}",
                         key, _attachedValues[key]);
                 }
 
                 OnLoaded();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -143,9 +143,9 @@ namespace Supremacy.Client
 
                 OnSaved();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -168,7 +168,7 @@ namespace Supremacy.Client
                         settings = XamlReader.Load(fileReader) as ClientSettings ??
                                    new ClientSettings();
 
-                        GameLog.Print("ClientSettings.cs: LOADCORE {0}: Content: {1}", filePath, File.ReadAllText(filePath));
+                        GameLog.Client.General.DebugFormat("LOADCORE {0}: Content: {1}", filePath, File.ReadAllText(filePath));
                     }
 
                     settings.OnLoaded();
@@ -176,9 +176,9 @@ namespace Supremacy.Client
                     return settings;
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             return new ClientSettings();

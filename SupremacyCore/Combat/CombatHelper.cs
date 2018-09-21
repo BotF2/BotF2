@@ -206,7 +206,7 @@ namespace Supremacy.Combat
                 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Print("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
+                    GameLog.Core.Combat.DebugFormat("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
                 }
             }
 
@@ -218,7 +218,7 @@ namespace Supremacy.Combat
                 orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail)  // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Print("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
+                    GameLog.Core.Combat.DebugFormat("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
                 }
             }
 
@@ -227,7 +227,7 @@ namespace Supremacy.Combat
                 orders.SetOrder(assets.Station.Source, (order == CombatOrder.Retreat) ? CombatOrder.Engage : order);
                 if (_generateBlanketOrdersTracing == true)
                 {
-                    GameLog.Print("{0} is ordered to {1}", assets.Station.Source, order);
+                    GameLog.Core.Combat.DebugFormat("{0} is ordered to {1}", assets.Station.Source, order);
                 }
             }
 
@@ -239,7 +239,7 @@ namespace Supremacy.Combat
             if (colony == null)
                 return 0;
 
-            GameLog.Print("GroundCombat?: Colony={0}, ComputeGroundDefenseMultiplier={1}",
+            GameLog.Core.Combat.DebugFormat("Colony={0}, ComputeGroundDefenseMultiplier={1}",
                 colony.Name,
                 Math.Max(
                 0.1,
@@ -282,7 +282,7 @@ namespace Supremacy.Combat
 
             var result = population * weaponTechMod * raceMod * localGroundCombatMod;
 
-            GameLog.Print("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
+            GameLog.Core.Combat.DebugFormat("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
 
             return (int)result;
         }

@@ -44,6 +44,7 @@ using Supremacy.Utility;
 using Supremacy.VFS;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -89,7 +90,7 @@ namespace Supremacy.Client
         {
             get
             {
-                GameLog.Print("Current.Version= {0}", Current.Version);
+                GameLog.Client.General.InfoFormat("Current Version = {0}", Current.Version);
                 return Current.Version;
             }
         }
@@ -205,7 +206,7 @@ namespace Supremacy.Client
             }
             catch
             {
-                GameLog.Print("themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
+                GameLog.Client.General.Debug("themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
             }
 
             if (themeDictionary == null)
@@ -396,7 +397,7 @@ namespace Supremacy.Client
             [STAThread, UsedImplicitly]
             private static void Main(string[] args)
             {
-                GameLogManager.Initialize();
+                GameLog.Initialize();
 
                 // add dll subdirectories to current process PATH variable
                 var appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -422,7 +423,7 @@ namespace Supremacy.Client
                     var _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
                     if (File.Exists(_soundfileSplashScreen))
                     {
-                        GameLog.Print("Playing LoadingSplash.wav");
+                        GameLog.Client.General.Debug("Playing LoadingSplash.wav");
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
                         player.Play();
                     }
@@ -461,27 +462,27 @@ namespace Supremacy.Client
             }
 
             if (version >= 461808) {
-                GameLog.Print(".NET Framework 4.7.2 or later found");
+                GameLog.Client.General.Info(".NET Framework 4.7.2 or later found");
             } else if (version >= 461308) {
-                GameLog.Print(".NET Framework 4.7.1 found");
+                GameLog.Client.General.Info(".NET Framework 4.7.1 found");
             } else if (version >= 460798) {
-                GameLog.Print(".NET Framework 4.7 found");
+                GameLog.Client.General.Info(".NET Framework 4.7 found");
             } else if (version >= 394802) {
-                GameLog.Print(".NET Framework 4.6.2 found");
+                GameLog.Client.General.Info(".NET Framework 4.6.2 found");
             } else if (version >= 394254) {
-                GameLog.Print(".NET Framework 4.6.1 found");
+                GameLog.Client.General.Info(".NET Framework 4.6.1 found");
             } else if (version >= 393295) {
-                GameLog.Print(".NET Framework 4.6 found");
+                GameLog.Client.General.Info(".NET Framework 4.6 found");
             } else if (version >= 379893) {
-                GameLog.Print(".NET Framework 4.5.2 found");
+                GameLog.Client.General.Info(".NET Framework 4.5.2 found");
             } else if (version >= 378675) {
-                GameLog.Print(".NET Framework 4.5.1 found");
+                GameLog.Client.General.Info(".NET Framework 4.5.1 found");
             } else if (version >= 378389) {
-                GameLog.Print(".NET Framework 4.5 found");
+                GameLog.Client.General.Info(".NET Framework 4.5 found");
             }
             else
             {
-                GameLog.Print(".NET Framework is less than 4.5");
+                GameLog.Client.General.Info(".NET Framework is less than 4.5");
             }
 
             return version >= 394802;
@@ -503,40 +504,12 @@ namespace Supremacy.Client
                 }
             }
 
-            Level realLogLevel = Level.Info;
-            switch (CmdLineArgs.LogLevel)
-            {
-                case SupremacyLogLevel.Debug:
-                    realLogLevel = Level.Debug;
-                    break;
-                case SupremacyLogLevel.Error:
-                    realLogLevel = Level.Error;
-                    break;
-                case SupremacyLogLevel.Fatal:
-                    realLogLevel = Level.Fatal;
-                    break;
-                case SupremacyLogLevel.Info:
-                    realLogLevel = Level.Info;
-                    break;
-                case SupremacyLogLevel.Off:
-                    realLogLevel = Level.Off;
-                    break;
-                case SupremacyLogLevel.Warning:
-                    realLogLevel = Level.Warn;
-                    break;
+            if (!string.IsNullOrWhiteSpace(CmdLineArgs.Traces)) {
+                List<string> traces = CmdLineArgs.Traces.Split(',').ToList();
+                traces.ForEach(t =>
+                    GameLog.SetRepositoryToDebug(t)
+                );
             }
-
-            LogManager
-                .GetAllRepositories()
-                .OfType<log4net.Repository.Hierarchy.Hierarchy>()
-                .Select(o => o.Root)
-                .ForEach(
-                    o =>
-                    {
-                        if (realLogLevel < o.Level)
-                            o.Level = realLogLevel;
-                    });
-
 
             if (CmdLineArgs.TraceLevel != PresentationTraceLevel.None)
                 PresentationTraceSources.Refresh();

@@ -111,11 +111,6 @@ namespace Supremacy.Game
         /// to submit combat orders.
         /// </summary>
         private readonly ManualResetEvent CombatReset = new ManualResetEvent(false);
-
-        private bool m_TraceShipProduction = false;
-        private bool m_TraceIntelligience = false;
-        private bool m_TraceProduction = false;
-        private bool m_TraceDoScienceShip = false;
         #endregion
 
         #region OnTurnPhaseChanged() Method
@@ -396,7 +391,7 @@ namespace Supremacy.Game
                     {
 
                         GameContext.Current.CivilizationManagers.Add(new CivilizationManager(game, civ));
-                        GameLog.Print("New civ added: {0}", civ.Name);
+                        GameLog.Core.General.DebugFormat("New civ added: {0}", civ.Name);
                     }
                 }
                 catch (Exception e)
@@ -412,20 +407,19 @@ namespace Supremacy.Game
             DoMapUpdates(game);
 
             //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
-            GameLog.Print("Options: GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            //GameLog.Print("Map: {0} to {1}", GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            GameLog.Print("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
-            GameLog.Print("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
-            GameLog.Print("Options: PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
-            GameLog.Print("Options: StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
-            GameLog.Print("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
-            GameLog.Print("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
-            GameLog.Print("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
-            GameLog.Print("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
-            GameLog.Print("Options: CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
-            GameLog.Print("Options: DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
-            GameLog.Print("Options: BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
-            GameLog.Print("Options: TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
+            GameLog.Core.General.InfoFormat("Options: GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
+            GameLog.Core.General.InfoFormat("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
+            GameLog.Core.General.InfoFormat("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
+            GameLog.Core.General.InfoFormat("Options: PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
+            GameLog.Core.General.InfoFormat("Options: StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
+            GameLog.Core.General.InfoFormat("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
+            GameLog.Core.General.InfoFormat("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
+            GameLog.Core.General.InfoFormat("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
+            GameLog.Core.General.InfoFormat("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
+            GameLog.Core.General.InfoFormat("Options: CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
+            GameLog.Core.General.InfoFormat("Options: DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
+            GameLog.Core.General.InfoFormat("Options: BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
+            GameLog.Core.General.InfoFormat("Options: TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
 
             game.TurnNumber = 1;
         }
@@ -836,8 +830,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Print("DoPopulation failed for {1}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.General.Error(e);
                 }
                 finally
                 {
@@ -858,9 +851,8 @@ namespace Supremacy.Game
                 {
                     return;
                 }
-                if (m_TraceDoScienceShip)
-                    GameLog.Print("{0} {1} is conducting research in {2}...",
-                                scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
+                GameLog.Core.General.DebugFormat("{0} {1} is conducting research in {2}...",
+                    scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
 
                 try
                 {
@@ -868,9 +860,8 @@ namespace Supremacy.Game
                     var starType = scienceShip.Sector.System.StarType;
 
                     int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
-                    if (m_TraceDoScienceShip)
-                            GameLog.Print("Base research gained for {0} {1} is {2}",
-                                scienceShip.ObjectID, scienceShip.Name, researchGained);
+                    GameLog.Core.General.DebugFormat("Base research gained for {0} {1} is {2}",
+                        scienceShip.ObjectID, scienceShip.Name, researchGained);
 
                     switch (starType)
                     {
@@ -906,16 +897,16 @@ namespace Supremacy.Game
 
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
-                    if (m_TraceDoScienceShip)
-                        GameLog.Print("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
-                            scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
+                    GameLog.Core.General.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
+                        scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
 
                     GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained, starType));
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Print("There was a problem conducting research for {0} {1}",
-                        scienceShip.ObjectID, scienceShip.Name);
+                    GameLog.Core.General.ErrorFormat(string.Format("There was a problem conducting research for {0} {1}",
+                        scienceShip.ObjectID, scienceShip.Name),
+                        e);
                 }
                 finally
                 {
@@ -935,8 +926,9 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Print("DoResearch failed for {0}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.General.Error(string.Format("DoResearch failed for {0}",
+                        civ.Name),
+                        e);
                 }
                 finally
                 {
@@ -1051,8 +1043,9 @@ namespace Supremacy.Game
                 }
                 catch(Exception e)
                 {
-                    GameLog.Print("DoMapUpdate failed for {0}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.General.ErrorFormat(string.Format("DoMapUpdate failed for {0}",
+                        civ.Name),
+                        e);
                 }
                 finally
                 {
@@ -1115,8 +1108,9 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Print("DoSectorClaims failed for {0}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.General.ErrorFormat(string.Format("DoSectorClaims failed for {0}",
+                        civ.Name),
+                        e);
                 }
                 finally
                 {
@@ -1179,8 +1173,7 @@ namespace Supremacy.Game
              */
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
-                if (m_TraceProduction)
-                    GameLog.Print("DoProduction for Civilization {0}", civ.Name);
+                GameLog.Core.Production.DebugFormat("DoProduction for Civilization {0}", civ.Name);
 
                 GameContext.PushThreadContext(game);
                 try
@@ -1208,14 +1201,12 @@ namespace Supremacy.Game
                     /* Iterate through each colony */
                     foreach (Colony colony in colonies)
                     {
-                        if (m_TraceProduction)
-                            GameLog.Print("DoProduction for Colony {0} ({1} with credits = {2})", colony.Name, civ.Name, civManager.Credits);
+                        GameLog.Core.Production.DebugFormat("DoProduction for Colony {0} ({1} with credits = {2})", colony.Name, civ.Name, civManager.Credits);
 
                         //See if there is actually anything to build for this colony
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
                         {
-                            if (m_TraceProduction)
-                                GameLog.Print("Nothing to do for Colony {0} ({1})", colony.Name, civ.Name);
+                            GameLog.Core.Production.DebugFormat("Nothing to do for Colony {0} ({1})", colony.Name, civ.Name);
                             continue;
                         }
 
@@ -1237,8 +1228,7 @@ namespace Supremacy.Game
                             //Check to see if the colony has reached the limit for this building
                             if (TechTreeHelper.IsBuildLimitReached(colony, colony.BuildSlots[0].Project.BuildDesign))
                             {
-                                if (m_TraceProduction)
-                                    GameLog.Print("Removing {0} from queue on {1} ({2}) - Build Limit Reached", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
+                                GameLog.Core.Production.DebugFormat("Removing {0} from queue on {1} ({2}) - Build Limit Reached", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
                                 colony.BuildSlots[0].Project.Cancel();
                                 continue;
                             }
@@ -1253,14 +1243,13 @@ namespace Supremacy.Game
                             totalRes[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
                             ResourceValueCollection totalResClone = totalRes.Clone();
 
-                            if (m_TraceProduction)
-                                GameLog.Print("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
-                                    civ.Name,
-                                    colony.BuildSlots[0].Project.BuildDesign.Name,
-                                    colony.Name,
-                                    civManager.Resources.Deuterium.CurrentValue,
-                                    civManager.Resources.Dilithium.CurrentValue,
-                                    civManager.Resources.RawMaterials.CurrentValue);
+                            GameLog.Core.Production.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
+                                civ.Name,
+                                colony.BuildSlots[0].Project.BuildDesign.Name,
+                                colony.Name,
+                                civManager.Resources.Deuterium.CurrentValue,
+                                civManager.Resources.Dilithium.CurrentValue,
+                                civManager.Resources.RawMaterials.CurrentValue);
 
                             //Try to finish the projects
                             if (colony.BuildSlots[0].Project.IsRushed)
@@ -1269,12 +1258,11 @@ namespace Supremacy.Game
                                 int tmpIndustry = colony.BuildSlots[0].Project.GetCurrentIndustryCost();
                                 civManager.Credits.AdjustCurrent(-tmpIndustry);
                                 colony.BuildSlots[0].Project.Advance(ref tmpIndustry, totalRes);
-                                if (m_TraceProduction)
-                                    GameLog.Print("{0} credits applied to {1} on {2} ({3})",
-                                        tmpIndustry,
-                                        colony.BuildSlots[0].Project.BuildDesign.Name,
-                                        colony.Name,
-                                        civ.Name);
+                                GameLog.Core.Production.DebugFormat("{0} credits applied to {1} on {2} ({3})",
+                                    tmpIndustry,
+                                    colony.BuildSlots[0].Project.BuildDesign.Name,
+                                    colony.Name,
+                                    civ.Name);
                             }
                             else
                             {
@@ -1283,8 +1271,7 @@ namespace Supremacy.Game
 
                             if (colony.BuildSlots[0].Project.IsCompleted)
                             {
-                                if (m_TraceProduction)
-                                    GameLog.Print("Construction of {0} finished on {1} ({2})", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
+                                GameLog.Core.Production.DebugFormat("Construction of {0} finished on {1} ({2})", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
                                 colony.BuildSlots[0].Project.Finish();
                                 colony.BuildSlots[0].Project = null;
                                 continue;
@@ -1316,8 +1303,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Print("DoProduction failed for {0}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.Production.Error(string.Format("DoProduction failed for {0}", civ.Name), e);
                 }
                 finally
                 {
@@ -1379,11 +1365,10 @@ namespace Supremacy.Game
                                 }
                                 if (!slot.HasProject && shipyard.BuildQueue.IsEmpty())
                                 {
-                                    if (m_TraceShipProduction)
-                                        GameLog.Print("Nothing to do for Shipyard Slot {0} on {1} ({2})",
-                                            slot.SlotID,
-                                            colony.Name,
-                                            civ.Name);
+                                    GameLog.Core.ShipProduction.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
+                                        slot.SlotID,
+                                        colony.Name,
+                                        civ.Name);
                                     continue;
                                 }
 
@@ -1391,12 +1376,11 @@ namespace Supremacy.Game
 
                                 if (slot.Project.IsCompleted)
                                 {
-                                    if (m_TraceShipProduction)
-                                        GameLog.Print("{0} in Shipyard Slot {1} on {2} ({3}) is finished",
-                                            slot.Project.BuildDesign,
-                                            slot.SlotID,
-                                            colony.Name,
-                                            civ.Name);
+                                    GameLog.Core.ShipProduction.DebugFormat("{0} in Shipyard Slot {1} on {2} ({3}) is finished",
+                                        slot.Project.BuildDesign,
+                                        slot.SlotID,
+                                        colony.Name,
+                                        civ.Name);
                                     slot.Project.Finish();
                                     slot.Project = null;
                                 }
@@ -1460,8 +1444,7 @@ namespace Supremacy.Game
                 }        
                 catch (Exception e)
                 {
-                    GameLog.Print("DoShipProduction failed for {0}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.ShipProduction.DebugFormat(string.Format("DoShipProduction failed for {0}", civ.Name), e);
                 }
                 finally
                 {
@@ -1572,8 +1555,7 @@ namespace Supremacy.Game
                         //That they have actually met
                         .Where(t => DiplomacyHelper.IsContactMade(civ, t));
 
-                    if (m_TraceIntelligience)
-                        GameLog.Print("empires without the own one & contact made: Available targets = {0}", targets.Count());
+                    GameLog.Core.Intel.DebugFormat("empires without the own one & contact made: Available targets = {0}", targets.Count());
 
                     //Double check that we have viable targets
                     if (targets.Count() == 0)
@@ -1581,14 +1563,12 @@ namespace Supremacy.Game
 
                     //Select one at random
                     CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[targets.RandomElement()];
-                    if (m_TraceIntelligience)
-                        GameLog.Print("targetEmpire = {0}", targetEmpire.Civilization.Name);
+                    GameLog.Core.Intel.DebugFormat("targetEmpire = {0}", targetEmpire.Civilization.Name);
 
                     //Randomly pick one of their colonies to attack
                     Colony targetColony = targetEmpire.Colonies.RandomElement();
-                    
-                    if (m_TraceIntelligience)
-                        GameLog.Print("targetColony = {0}", targetColony.Name);
+
+                    GameLog.Core.Intel.DebugFormat("targetColony = {0}", targetColony.Name);
 
                     //200 intelligience is not taken in to account for attacks
                     if (attackingEmpire.TotalIntelligence > 200)
@@ -1606,9 +1586,8 @@ namespace Supremacy.Game
                     //We need at least a ratio of greater than 1 to attack
                     if (ratio < 1)
                     {
-                        if (m_TraceIntelligience)
-                            GameLog.Print("{0} doesn't have enough attacking intelligence to make an attack against {1} - {2} vs {3}",
-                                attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligence, defenseIntelligence);
+                        GameLog.Core.Intel.DebugFormat("{0} doesn't have enough attacking intelligence to make an attack against {1} - {2} vs {3}",
+                            attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligence, defenseIntelligence);
                         return;
                     }
 
@@ -1635,26 +1614,22 @@ namespace Supremacy.Game
                             //-2 morale at target colony
                             targetColony.Morale.AdjustCurrent(-2);
                             targetColony.Morale.UpdateAndReset();
-                            if (m_TraceIntelligience)
-                                GameLog.Print("Morale at {0} reduced by 2 to {1}", targetColony.Name, targetColony.Morale.CurrentValue);
+                            GameLog.Core.Intel.DebugFormat("Morale at {0} reduced by 2 to {1}", targetColony.Name, targetColony.Morale.CurrentValue);
 
                             //-1 morale at target home colony
                             targetEmpire.HomeColony.Morale.AdjustCurrent(-1);
                             targetEmpire.HomeColony.Morale.UpdateAndReset();
-                            if (m_TraceIntelligience)
-                                GameLog.Print("Morale on {0} reduced by 1 to {1}", targetEmpire.HomeColony.Name, targetEmpire.HomeColony.Morale.CurrentValue);
+                            GameLog.Core.Intel.DebugFormat("Morale on {0} reduced by 1 to {1}", targetEmpire.HomeColony.Name, targetEmpire.HomeColony.Morale.CurrentValue);
 
                             //-1 morale at target seat of government
                             targetEmpire.SeatOfGovernment.Morale.AdjustCurrent(-1);
                             targetEmpire.SeatOfGovernment.Morale.UpdateAndReset();
-                            if (m_TraceIntelligience)
-                                GameLog.Print("Morale on {0} reduced by 1 to {1}", targetEmpire.SeatOfGovernment.Name, targetEmpire.SeatOfGovernment.Morale.CurrentValue);
+                            GameLog.Core.Intel.DebugFormat("Morale on {0} reduced by 1 to {1}", targetEmpire.SeatOfGovernment.Name, targetEmpire.SeatOfGovernment.Morale.CurrentValue);
 
                             //Morale +1 to attacker HomeColony
                             attackingEmpire.HomeColony.Morale.AdjustCurrent(+1);
                             attackingEmpire.HomeColony.Morale.UpdateAndReset();
-                            if (m_TraceIntelligience)
-                                GameLog.Print("Morale on {0} increased by 1 to {1}", attackingEmpire.HomeColony.Name, attackingEmpire.HomeColony.Morale.CurrentValue);
+                            GameLog.Core.Intel.DebugFormat("Morale on {0} increased by 1 to {1}", attackingEmpire.HomeColony.Name, attackingEmpire.HomeColony.Morale.CurrentValue);
                         }
 
                         //Steal Money
@@ -1672,8 +1647,7 @@ namespace Supremacy.Game
                                     attackingEmpire.Credits.AdjustCurrent(stolenCredits);
                                     attackingEmpire.Credits.UpdateAndReset();
 
-                                    if (m_TraceIntelligience)
-                                        GameLog.Print("{0} stole {1} credits from the {2} treasury", attackingEmpire.Civilization.Name, stolenCredits, targetEmpire.Civilization.Name);
+                                    GameLog.Core.Intel.DebugFormat("{0} stole {1} credits from the {2} treasury", attackingEmpire.Civilization.Name, stolenCredits, targetEmpire.Civilization.Name);
 
                                     targetEmpire.SitRepEntries.Add(new CreditsStolenTargetSitRepEntry(targetEmpire.Civilization, targetColony, stolenCredits));
                                     attackingEmpire.SitRepEntries.Add(new CreditsStolenAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, stolenCredits));
@@ -1689,8 +1663,7 @@ namespace Supremacy.Game
                                     attackingEmpire.Credits.AdjustCurrent(stolenCredits);
                                     attackingEmpire.Credits.UpdateAndReset();
 
-                                    if (m_TraceIntelligience)
-                                        GameLog.Print("{0} stole {1} credits from the trade routes on {2}", attackingEmpire.Civilization.Name, stolenCredits, targetColony.Name);
+                                    GameLog.Core.Intel.DebugFormat("{0} stole {1} credits from the trade routes on {2}", attackingEmpire.Civilization.Name, stolenCredits, targetColony.Name);
 
                                     targetEmpire.SitRepEntries.Add(new TradeRouteCreditsStolenTargetSitRepEntry(targetEmpire.Civilization, targetColony, stolenCredits));
                                     attackingEmpire.SitRepEntries.Add(new TradeRouteCreditsStolenAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, stolenCredits));
@@ -1708,8 +1681,7 @@ namespace Supremacy.Game
                                 targetColony.FoodReserves.AdjustCurrent(destroyedFoodReserves * -1);
                                 targetColony.FoodReserves.UpdateAndReset();
 
-                                if (m_TraceIntelligience)
-                                    GameLog.Print("{0} destroyed {1} food at {2}", attackingEmpire.Civilization.Name, destroyedFoodReserves, targetColony.Name);
+                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food at {2}", attackingEmpire.Civilization.Name, destroyedFoodReserves, targetColony.Name);
 
                                 targetEmpire.SitRepEntries.Add(new FoodReservesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, destroyedFoodReserves));
                                 attackingEmpire.SitRepEntries.Add(new FoodReservesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, destroyedFoodReserves));
@@ -1724,8 +1696,7 @@ namespace Supremacy.Game
                                 int destroyedFoodFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Food));
                                 targetColony.RemoveFacilities(ProductionCategory.Food, destroyedFoodFacilities);
 
-                                if (m_TraceIntelligience)
-                                    GameLog.Print("{0} destroyed {1} food faciliities at {2}", attackingEmpire.Civilization.Name, destroyedFoodFacilities, targetColony.Name);
+                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food faciliities at {2}", attackingEmpire.Civilization.Name, destroyedFoodFacilities, targetColony.Name);
 
                                 targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
                                 attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
@@ -1740,8 +1711,7 @@ namespace Supremacy.Game
                                 int destroyedIndustrialFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Industry));
                                 targetColony.RemoveFacilities(ProductionCategory.Industry, destroyedIndustrialFacilities);
 
-                                if (m_TraceIntelligience)
-                                    GameLog.Print("{0} destroyed {1} industrial faciliities at {2}", attackingEmpire.Civilization.Name, destroyedIndustrialFacilities, targetColony.Name);
+                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} industrial faciliities at {2}", attackingEmpire.Civilization.Name, destroyedIndustrialFacilities, targetColony.Name);
 
                                 targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
                                 attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
@@ -1756,8 +1726,7 @@ namespace Supremacy.Game
                                 int destroyedEnergyFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Energy));
                                 targetColony.RemoveFacilities(ProductionCategory.Energy, destroyedEnergyFacilities);
 
-                                if (m_TraceIntelligience)
-                                    GameLog.Print("{0} destroyed {1} energy faciliities at {2}", attackingEmpire.Civilization.Name, destroyedEnergyFacilities, targetColony.Name);
+                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} energy faciliities at {2}", attackingEmpire.Civilization.Name, destroyedEnergyFacilities, targetColony.Name);
 
                                 targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
                                 attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
@@ -1772,8 +1741,7 @@ namespace Supremacy.Game
                                 int destroyedResearchFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Research));
                                 targetColony.RemoveFacilities(ProductionCategory.Research, destroyedResearchFacilities);
 
-                                if (m_TraceIntelligience)
-                                    GameLog.Print("{0} destroyed {1} research facilities at {2}", attackingEmpire.Civilization.Name, destroyedResearchFacilities, targetColony.Name);
+                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} research facilities at {2}", attackingEmpire.Civilization.Name, destroyedResearchFacilities, targetColony.Name);
 
                                 targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
                                 attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
@@ -1788,8 +1756,7 @@ namespace Supremacy.Game
                                 int destroyedIntelFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Intelligence));
                                 targetColony.RemoveFacilities(ProductionCategory.Intelligence, destroyedIntelFacilities);
 
-                                if (m_TraceIntelligience)
-                                    GameLog.Print("{0} destroyed {1} intelligence facilities at {2}", attackingEmpire.Civilization.Name, destroyedIntelFacilities, targetColony.Name);
+                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} intelligence facilities at {2}", attackingEmpire.Civilization.Name, destroyedIntelFacilities, targetColony.Name);
 
                                 targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
                                 attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
@@ -1814,9 +1781,8 @@ namespace Supremacy.Game
                                 targetColony.ShieldStrength.UpdateAndReset();
                             }
 
-                            if (m_TraceIntelligience)
-                                GameLog.Print("{0} destroyed {1} orbital batteries and removed {2} strength from planetary shields at {3}",
-                                    attackingEmpire.Civilization.Name, destroyedOrbitalBatteries, shieldStrengthLost, targetColony.Name);
+                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} orbital batteries and removed {2} strength from planetary shields at {3}",
+                                attackingEmpire.Civilization.Name, destroyedOrbitalBatteries, shieldStrengthLost, targetColony.Name);
 
                             targetEmpire.SitRepEntries.Add(new PlanetaryDefenceAttackTargetSitRepEntry(targetEmpire.Civilization, targetColony, destroyedOrbitalBatteries, shieldStrengthLost));
                             attackingEmpire.SitRepEntries.Add(new PlanetaryDefenceAttackAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, destroyedOrbitalBatteries, shieldStrengthLost));
@@ -1840,8 +1806,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Print("DoIntelligience failed for {0}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.Intel.ErrorFormat(string.Format("DoIntelligience failed for {0}", civ.Name), e);
                 }
                 finally
                 {
@@ -1970,8 +1935,9 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Print("DoTrade failed for {0}", civ.Name);
-                    GameLog.LogException(e);
+                    GameLog.Core.General.DebugFormat(string.Format("DoTrade failed for {0}",
+                        civ.Name),
+                        e);
                 }
                 finally
                 {
@@ -2060,9 +2026,9 @@ namespace Supremacy.Game
                                 UnitAI.DoTurn(civ);
                             }
                         }
-                        catch
+                        catch (Exception e)
                         {
-                            GameLog.Print("###### some problem at doing UnitAI (e.g. Ships) for each civ  #####");
+                            GameLog.Core.General.Error(e);
                         }
                     }
                     catch (Exception e)
@@ -2081,8 +2047,9 @@ namespace Supremacy.Game
             }
 
             if (!errors.IsEmpty)
-                GameLog.Print("###### not everything worked 100% perfect #############################################################");
+            {
                 //throw new AggregateException(errors);
+            }
         }
         #endregion
 

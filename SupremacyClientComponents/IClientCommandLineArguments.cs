@@ -15,7 +15,7 @@ namespace Supremacy.Client
     public interface IClientCommandLineArguments
     {
         PresentationTraceLevel TraceLevel { get; }
-        SupremacyLogLevel LogLevel { get; }
+        string Traces { get; }
         bool AllowMultipleInstances { get; }
         bool ShowUsage { get; }
         string Mod { get; }

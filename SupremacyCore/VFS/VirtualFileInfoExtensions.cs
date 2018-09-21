@@ -506,9 +506,9 @@ namespace Supremacy.VFS
                 writeStream.Write(bytes, 0, bytes.Length);
                 return true;
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Core.General.Error(e);
             }
             finally
             {

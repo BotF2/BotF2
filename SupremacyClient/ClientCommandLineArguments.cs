@@ -19,7 +19,6 @@ namespace Supremacy.Client
     {
         #region Fields
         private PresentationTraceLevel _traceLevel = PresentationTraceLevel.None;
-        private SupremacyLogLevel _logLevel = SupremacyLogLevel.Info;
         #endregion
 
         #region Properties
@@ -34,11 +33,8 @@ namespace Supremacy.Client
 
         [CmdArg(
             RequiredValue = CmdArgRequiredValue.Yes,
-            Description = "Sets the logging level.")]
-        public SupremacyLogLevel LogLevel {
-            get { return _logLevel; }
-            set { _logLevel = value; }
-        }
+            Description = "Sets which systems you want to output debug information for.")]
+        public string Traces { get; set; }
 
         [CmdArg(
             RequiredValue = CmdArgRequiredValue.No,

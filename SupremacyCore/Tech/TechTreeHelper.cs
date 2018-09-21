@@ -454,7 +454,7 @@ namespace Supremacy.Tech
             if (colony.Shipyard != null)
             {
                 if (_tracingTechTreeHelper)
-                    GameLog.Print("shipyard = {0}, first UpgradableDesigns = {1}, Buildqueue has {2} orders", colony.Shipyard.Name, colony.Shipyard.ShipyardDesign.UpgradableDesigns.First().Name, colony.Shipyard.BuildQueue.Count);
+                    GameLog.Core.General.DebugFormat("shipyard = {0}, first UpgradableDesigns = {1}, Buildqueue has {2} orders", colony.Shipyard.Name, colony.Shipyard.ShipyardDesign.UpgradableDesigns.First().Name, colony.Shipyard.BuildQueue.Count);
 
                 results.AddRange(
                     colony.Shipyard.ShipyardDesign.UpgradableDesigns

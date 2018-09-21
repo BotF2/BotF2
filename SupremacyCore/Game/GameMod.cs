@@ -125,9 +125,9 @@ namespace Supremacy.Game
                 {
                     return ReadModConfig(GetModConfigFilePath(modDir));
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.GameData.Error(e);
                 }
             }
             return null;

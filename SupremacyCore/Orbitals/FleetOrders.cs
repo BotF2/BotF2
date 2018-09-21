@@ -428,7 +428,6 @@ namespace Supremacy.Orbitals
             CreateInfiltrate(
                 Fleet.Owner,
                 Fleet.Sector.System);
-            //GameContext.Current.Universe.Destroy(spyShip);
         }
 
         protected internal override void OnOrderAssigned()
@@ -439,11 +438,8 @@ namespace Supremacy.Orbitals
         }
 
 
-        //public IAppContext AppContext { get; set; }
         private static void CreateInfiltrate(Civilization civ, StarSystem system)
         {
-
-
             var infiltratedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
@@ -451,19 +447,19 @@ namespace Supremacy.Orbitals
             int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             if (defenseIntelligence -1 < 0.1)
                 defenseIntelligence = 2;
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: defenseIntelligence={0}", defenseIntelligence);
+            //GameLog.Client.GameData.DebugFormat("defenseIntelligence={0}", defenseIntelligence);
 
             int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             if (attackingIntelligence -1 < 0.1)
                 attackingIntelligence = 1;
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: attackingIntelligence={0}", attackingIntelligence);
+            //GameLog.Client.GameData.DebugFormat("attackingIntelligence={0}", attackingIntelligence);
 
             int ratio = attackingIntelligence / defenseIntelligence;
                 //max ratio for no exceeding gaining points
                 if (ratio > 10)
                     ratio = 10;
 
-            GameLog.Print("FleetOrders.cs: owner= {0}, system= {1} is INFILTRATED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})", 
+            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is INFILTRATED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})", 
                                                     system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
@@ -689,19 +685,19 @@ namespace Supremacy.Orbitals
         int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: defenseIntelligence={0}", defenseIntelligence);
+            //GameLog.Client.GameData.DebugFormat("defenseIntelligence={0}", defenseIntelligence);
 
             int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)
                 attackingIntelligence = 1;
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: attackingIntelligence={0}", attackingIntelligence);
+            //GameLog.Client.GameData.DebugFormat("attackingIntelligence={0}", attackingIntelligence);
 
             int ratio = attackingIntelligence / defenseIntelligence;
             //max ratio for no exceeding gaining points
             if (ratio > 10)
                 ratio = 10;
 
-            GameLog.Print("FleetOrders.cs: owner= {0}, system= {1} is RAIDED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
+            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is RAIDED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
                                                     system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
@@ -719,26 +715,18 @@ namespace Supremacy.Orbitals
                 gainedOfTotalCredits = gainedOfTotalCredits + raided.TaxCredits;
                 var raidedColony = raided;
 
+                GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (raided): TaxCredits={3}, Gained={4}, TotalSum={5} ",
+                    system.Owner, raided.Name, raided.Location,
+                    raided.TaxCredits, gainedCredits, gainedCreditsSum);
+                GameLog.Core.Intel.DebugFormat("our credits before={0}, their credits ={1}",
+                    GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue,
+                    GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
 
-        //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: ------ Beginn of this system");
-        //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: gainedCredits={0}, Sum={1}", gainedCredits, gainedCreditsSum);
-
-
-
-        GameLog.Print("FleetOrders.cs: Owner= {0}, system= {1} at {2} (raided): TaxCredits={3}, Gained={4}, TotalSum={5} ",
-                                                    //Energy ={ 3} out of facilities = { 4 },
-                                         system.Owner, raided.Name, raided.Location,
-                                                    //raided.GetEnergyUsage(),
-                                                    //raided.GetActiveFacilities(ProductionCategory.Energy),
-                                                    raided.TaxCredits, gainedCredits, gainedCreditsSum);
-                GameLog.Print("FleetOrders.cs: our credits before={0}, their credits ={1}", GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
-
-                //GameContext.Current.CivilizationManagers[civ].Research.UpdateResearch(gainedCredits);
                 GameContext.Current.CivilizationManagers[civ].Credits.AdjustCurrent(gainedCredits);
                 GameContext.Current.CivilizationManagers[system.Owner].Credits.AdjustCurrent(gainedCredits* -1);
 
-                GameLog.Print("FleetOrders.cs: our credits after={0}, their credits ={1}", GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);     
-
+                GameLog.Core.Intel.DebugFormat("our credits after={0}, their credits ={1}",
+                    GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);     
             }
             
             civManager.SitRepEntries.Add(new NewRaidSitRepEntry(civ, system.Colony, gainedCreditsSum, gainedOfTotalCredits));
@@ -822,12 +810,8 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System == null)
                 return false;
-            //if (fleet.Sector.System.IsInhabited)
-            //    return false;
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
                 return false;
-            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
-            //    return false;
             foreach (var ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)
@@ -857,41 +841,35 @@ namespace Supremacy.Orbitals
                 Fleet.Route = TravelRoute.Empty;
         }
 
-
-        //public IAppContext AppContext { get; set; }
         private static void CreateSabotage(Civilization civ, StarSystem system)
         {
             var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
-
             int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: defenseIntelligence={0}", defenseIntelligence);
 
             int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)
                 attackingIntelligence = 1;
-            //GameLog.Client.GameData.DebugFormat("FleetOrders.cs: attackingIntelligence={0}", attackingIntelligence);
 
             int ratio = attackingIntelligence / defenseIntelligence;
             //max ratio for no exceeding gaining points
             if (ratio > 10)
                 ratio = 10;
 
-            GameLog.Print("FleetOrders.cs: owner= {0}, system= {1} is SABOTAGED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                                                    system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SABOTAGED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
+                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
-            GameLog.Print("FleetOrders.cs: Owner= {0}, system= {1} at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}", //, ResearchProd={5}, Gained={6}, Sum={7} ",
-                                                system.Owner, system.Name, system.Location,
-                                                system.Colony.GetEnergyUsage(),
-                                                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
-                                                system.Colony.GetTotalFacilities(ProductionCategory.Energy)
-                                                //sabotaged.NetResearch, gainedResearchPoints, gainedResearchPointsSum
-                                                );
-            GameLog.Print("FleetOrders.cs: {0}: TotalEnergyFacilities before={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}",
+                system.Owner, system.Name, system.Location,
+                system.Colony.GetEnergyUsage(),
+                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
+                system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities before={1}",
+                system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
 
             //Effect of sabatoge
             int removeEnergyFacilities = 0;
@@ -915,9 +893,7 @@ namespace Supremacy.Orbitals
                 system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
             }
 
-            //GameContext.Current.CivilizationManagers[civ].Research.UpdateResearch(gainedResearchPoints);
-
-            GameLog.Client.GameData.DebugFormat("FleetOrders.cs: {0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
             civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
@@ -1041,7 +1017,7 @@ namespace Supremacy.Orbitals
             var InfluencedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
-            //GameLog.Print("FleetOrders.cs: owner= {0}, system= {1} is INFLUENCED by civ= {2}",
+            //GameLog.Print("owner= {0}, system= {1} is INFLUENCED by civ= {2}",
             //                                        system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
             foreach (var Influenced in InfluencedCiv)
@@ -1053,11 +1029,11 @@ namespace Supremacy.Orbitals
                 // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
                 if (system.Owner == GameContext.Current.CivilizationManagers[civ].Civilization)
                 {
-                    GameLog.Print("Influence to own colony");
+                    GameLog.Core.Diplomacy.Debug("Influence to own colony");
                     if (system.Colony.Morale.CurrentValue < 95)
                     {
                         system.Colony.Morale.AdjustCurrent(+3);
-                        GameLog.Print("Our mission increased successfully the morale at our colony {0}", system.Name);
+                        GameLog.Core.Diplomacy.DebugFormat("Our mission increased successfully the morale at our colony {0}", system.Name);
                     }
                     return;
                 }
@@ -1065,26 +1041,21 @@ namespace Supremacy.Orbitals
                 // part 2: to *independed* minor race
                 if (!system.Owner.IsEmpire)   // not an empire
                 {
-                    GameLog.Print("Trying influence a minor race {2} ({4}) = ({1} at {0} VS {3}", system.Location, system.Owner.Name, system.Name, civ.Name, system.OwnerID);
+                    GameLog.Core.Diplomacy.DebugFormat("Trying influence a minor race {2} ({4}) = ({1} at {0} VS {3}", system.Location, system.Owner.Name, system.Name, civ.Name, system.OwnerID);
 
                     var _foreignPowerStatus = DiplomacyHelper.GetForeignPowerStatus(system.Owner, civ);
-                    GameLog.Print("_foreignPowerStatus = {0}", _foreignPowerStatus);
+                    GameLog.Core.Diplomacy.DebugFormat("_foreignPowerStatus = {0}", _foreignPowerStatus);
                     DiplomacyHelper.ApplyTrustChange(system.Owner, civ, 288);
                     Diplomat.Get(civ).GetForeignPower(system.Owner).UpdateRegardAndTrustMeters();
-                    //DiplomacyHelper.
-                    //system.Colony.  // don't know how to access foreignPower.Add(regardEvent)
                 }
 
-                GameLog.Print("FleetOrders.cs: Owner= {0}, system= {1} at {2} (influenced): TaxCredits={3} ",
-                                                 //Energy ={ 3} out of facilities = { 4 },
-                                                 system.Owner, Influenced.Name, Influenced.Location,
-                                                            //raided.GetEnergyUsage(),
-                                                            //raided.GetActiveFacilities(ProductionCategory.Energy),
-                                                            Influenced.TaxCredits);
-                GameLog.Print("FleetOrders.cs: our credits before={0}, their credits ={1}", GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
+                GameLog.Core.Diplomacy.DebugFormat("Owner= {0}, system= {1} at {2} (influenced): TaxCredits={3} ",
+                    system.Owner, Influenced.Name, Influenced.Location,
+                    Influenced.TaxCredits);
+                GameLog.Core.Diplomacy.DebugFormat("our credits before={0}, their credits ={1}",
+                    GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
 
             }
-
         }
     }
 
@@ -1403,14 +1374,14 @@ namespace Supremacy.Orbitals
                 if (Fleet.Sector.System.WormholeDestination == null)
                 {
                     var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
-                    GameLog.Print("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
+                    GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
                     // ToDo: Sitrep:   our connection was lost to ship entering wormhole . The fear is that it was destroyed.
                     Fleet.Destroy();
                 }
                 else
                 {
                     Fleet.Location = (MapLocation)Fleet.Sector.System.WormholeDestination;
-                    GameLog.Print("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
+                    GameLog.Core.General.DebugFormat("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
 
                     if (IsComplete)
                         Fleet.SetOrder(Fleet.GetDefaultOrder());

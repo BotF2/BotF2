@@ -39,8 +39,8 @@ namespace Supremacy.Economy
     [Serializable]
     public abstract class BuildProject : INotifyPropertyChanged
     {
-        public const int MaxPriority = Byte.MaxValue;
-        public const int MinPriority = Byte.MinValue;
+        public const int MaxPriority = byte.MaxValue;
+        public const int MinPriority = byte.MinValue;
 
         private readonly int _productionCenterId;
 
@@ -51,7 +51,6 @@ namespace Supremacy.Economy
         private byte _priority;
         private BuildProjectFlags _flags;
         private ResourceValueCollection _resourcesInvested;
-        public bool _buildTracing = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildProject"/> class.
@@ -76,10 +75,9 @@ namespace Supremacy.Economy
             _productionCenterId = productionCenter.ObjectID;
             _resourcesInvested = new ResourceValueCollection();
 
-            if (_buildTracing)
-                if (owner.Name == "borg")
-                GameLog.Print("available entries: owner = {0}, _location = {2}, productionCenterID = {3}, buildType = {1}", 
-                owner.Name, buildType.Name, _location.ToString(), productionCenter.ObjectID);
+            if (owner.Name == "Borg")
+                GameLog.Core.Production.DebugFormat("available entries: owner = {0}, _location = {2}, productionCenterID = {3}, buildType = {1}", 
+                    owner.Name, buildType.Name, _location.ToString(), productionCenter.ObjectID);
         }
 
         /// <summary>
@@ -183,12 +181,10 @@ namespace Supremacy.Economy
         {
             get
             {
-                if (_buildTracing)
-                    GameLog.Print("checking whether BuildProject IsCompleted...");
+                GameLog.Core.Production.DebugFormat("checking whether BuildProject IsCompleted...");
                 if (_industryInvested < IndustryRequired)
                 {
-                    if (_buildTracing)
-                        GameLog.Print("BuildProject: _industryInvested = {0}  < IndustryRequired = {1}", _industryInvested, IndustryRequired);
+                    GameLog.Core.Production.DebugFormat("BuildProject: _industryInvested = {0}  < IndustryRequired = {1}", _industryInvested, IndustryRequired);
                     return false;
                 }
 
@@ -198,14 +194,12 @@ namespace Supremacy.Economy
                     {
                         if (_resourcesInvested[resource] < ResourcesRequired[resource])
                         {
-                        if (_buildTracing)
-                            GameLog.Print("BuildProject: Resource: {0}: _resourcesInvested[resource] = {1}  < ResourcesRequired[resource] = {2}", resource, _resourcesInvested, ResourcesRequired[resource]);
+                        GameLog.Core.Production.DebugFormat("BuildProject: Resource: {0}: _resourcesInvested[resource] = {1}  < ResourcesRequired[resource] = {2}", resource, _resourcesInvested, ResourcesRequired[resource]);
                         return false;
                         }
                     }
 
-                    if (_buildTracing)
-                        GameLog.Print("BuildProject IsCompleted..should be true, Building should be done ");
+                    GameLog.Core.Production.DebugFormat("BuildProject IsCompleted..should be true, Building should be done ");
 
                 return true;
             }
@@ -260,7 +254,8 @@ namespace Supremacy.Economy
         {
             get
             {
-                // works but shows every shipyard of each race      GameLog.Print("IsPartiallyComplete = {0}percent, {1}", this.PercentComplete, this.PercentComplete > 0.0f);
+                // works but shows every shipyard of each race
+                //GameLog.Print("IsPartiallyComplete = {0}percent, {1}", this.PercentComplete, this.PercentComplete > 0.0f);
                 return (PercentComplete > 0.0f);
             }
         }
@@ -376,14 +371,7 @@ namespace Supremacy.Economy
         /// </summary>
         public virtual void Finish()
         {
-
-            bool _tracingBuildProject = false;    // turn true if you need
-
-            if (_buildTracing)
-                _tracingBuildProject = true;
-
-                if (_tracingBuildProject)
-                GameLog.Print("trying to Finish a BuildProject...");
+            GameLog.Core.Production.DebugFormat("trying to Finish a BuildProject...");
 
             var civManager = GameContext.Current.CivilizationManagers[Builder];
 
@@ -398,20 +386,17 @@ namespace Supremacy.Economy
                 if (spawnedInstance.ObjectType == UniverseObjectType.Building)
                 {
                     newEntry = new BuildingBuiltSitRepEntry(Builder, BuildDesign, Location, (spawnedInstance as Building).IsActive);
-                    if (_tracingBuildProject)
-                        GameLog.Print("newEntry = {0}", newEntry);
+                    GameLog.Core.Production.DebugFormat("newEntry = {0}", newEntry);
                 }
             }
 
             if (newEntry == null)
             {
-                if (_tracingBuildProject)
-                    GameLog.Print("{1} built by {0} at {2}", Builder, BuildDesign, Location);
+                GameLog.Core.Production.DebugFormat("{1} built by {0} at {2}", Builder, BuildDesign, Location);
                 newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location);
             }
 
-            if (_tracingBuildProject)
-                GameLog.Print("creating SitRepEntry...");
+            GameLog.Core.Production.DebugFormat("creating SitRepEntry...");
 
             civManager.SitRepEntries.Add(newEntry);
         }
@@ -478,22 +463,17 @@ namespace Supremacy.Economy
             if (timeEstimate <= 0)
                 return;
 
-            if (_buildTracing)
-                GameLog.Print("------------------------------------");
-
             var delta = Math.Min(
                 industry,
                 Math.Max(0, IndustryRequired - _industryInvested));
 
-            if (_buildTracing)
-                GameLog.Print("delta = {0}", delta);
+            GameLog.Core.Production.DebugFormat("delta = {0}", delta);
 
 
             industry -= delta;
 
             IndustryInvested += delta;
-            if (_buildTracing)
-                GameLog.Print("IndustryInvested = {0}", IndustryInvested);
+            GameLog.Core.Production.DebugFormat("IndustryInvested = {0}", IndustryInvested);
             ApplyIndustry(delta);
             OnPropertyChanged("IndustryInvested");
 
@@ -509,8 +489,7 @@ namespace Supremacy.Economy
                 var resource = resourceTypes[i];
 
                 delta = ResourcesRequired[resource] - _resourcesInvested[resource];
-                if (_buildTracing)
-                    GameLog.Print("delta = {0} for  {1}", delta, resource);
+                GameLog.Core.Production.DebugFormat("delta = {0} for  {1}", delta, resource);
 
                 if (delta <= 0)
                     continue;
@@ -519,8 +498,7 @@ namespace Supremacy.Economy
                     delta > resources[resource])
                 {
                     SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    if (_buildTracing)
-                        GameLog.Print("delta = {0} for {1}", delta, resource);
+                    GameLog.Core.Production.DebugFormat("delta = {0} for {1}", delta, resource);
                 }
 
                 if (resources[resource] <= 0)

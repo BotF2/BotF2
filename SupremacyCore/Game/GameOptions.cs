@@ -494,7 +494,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Debug.General.DebugFormat( "GameOptionsManager.SaveDefaults() encountered an error: {0}", e.Message);
+                GameLog.Core.General.Error(e);
             }
             return success;
         }

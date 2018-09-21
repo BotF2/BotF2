@@ -24,7 +24,6 @@ namespace Supremacy.UI
         #region Fields
         private static readonly DependencyProperty CurrentFrameProperty;
         private static readonly CachedBitmap[] Frames;
-        private static readonly ILog _log = GameLog.Debug.GameData;
 
         private readonly Int32Animation _animation;
         private readonly AnimationClock _animationClock;

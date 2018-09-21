@@ -55,7 +55,7 @@ namespace Supremacy.Tech
 
                     if (!EnumHelper.TryParse(restrictionText, out restriction))
                     {
-                        Log.WarnFormat(
+                        GameLog.Core.GameData.WarnFormat(
                             "Invalid build restriction specified for design '{0}': {1}",
                             Key ?? UnknownDesignKey,
                             restrictionText);

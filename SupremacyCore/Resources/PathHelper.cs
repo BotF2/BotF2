@@ -54,9 +54,9 @@ namespace Supremacy.Resources
                         return workingDirectoryInfo.FullName;
                 }
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Core.General.Error(e);
             }
 
             return Environment.CurrentDirectory;

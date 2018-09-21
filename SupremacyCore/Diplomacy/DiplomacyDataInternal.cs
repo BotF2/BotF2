@@ -59,7 +59,7 @@ namespace Supremacy.Diplomacy
             get
             {
                 var count = _motivations.Count;
-                GameLog.Print("_motivations.Count={0}", count);
+                GameLog.Core.Diplomacy.DebugFormat("_motivations.Count={0}", count);
 
                 if (count != 0)
                     return _motivations[count - 1];
@@ -74,7 +74,7 @@ namespace Supremacy.Diplomacy
 
         public void ClearMotivations()
         {
-            GameLog.Print("_motivations cleared...");
+            GameLog.Core.Diplomacy.Debug("_motivations cleared...");
             _motivations.Clear();
         }
 
@@ -98,19 +98,19 @@ namespace Supremacy.Diplomacy
             if (EffectiveRegard >= RegardLevel.ColdWar)
             {
                 LastColdWarAttack = GameContext.Current.TurnNumber;
-                GameLog.Print("EffectiveRegard {0} equal/*UNDER* RegardLevel.ColdWar={1}, so LastColdWarAttack-Turnnumber={2}", EffectiveRegard, RegardLevel.ColdWar, LastColdWarAttack);
+                GameLog.Core.Diplomacy.DebugFormat("EffectiveRegard {0} equal/*UNDER* RegardLevel.ColdWar={1}, so LastColdWarAttack-Turnnumber={2}", EffectiveRegard, RegardLevel.ColdWar, LastColdWarAttack);
             }
             else if (EffectiveRegard <= RegardLevel.TotalWar)
             {
                 LastTotalWarAttack = GameContext.Current.TurnNumber;
-                GameLog.Print("EffectiveRegard {0} equal/*ABOVE* RegardLevel.TotalWar={1}, so LastTotalWarAttack-Turnnumber={2}", EffectiveRegard, RegardLevel.TotalWar, LastTotalWarAttack);
+                GameLog.Core.Diplomacy.DebugFormat("EffectiveRegard {0} equal/*ABOVE* RegardLevel.TotalWar={1}, so LastTotalWarAttack-Turnnumber={2}", EffectiveRegard, RegardLevel.TotalWar, LastTotalWarAttack);
             }
         }
 
         public void OnIncursion()
         {
             LastIncursion = GameContext.Current.TurnNumber;
-            GameLog.Print("this.LastIncursion-TurnNumber={0}", LastIncursion);
+            GameLog.Core.Diplomacy.DebugFormat("this.LastIncursion-TurnNumber={0}", LastIncursion);
         }
 
         public void SetContactTurn(int contactTurn)

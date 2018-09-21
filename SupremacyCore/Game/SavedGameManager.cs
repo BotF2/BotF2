@@ -122,7 +122,7 @@ namespace Supremacy.Game
             {
                 if (!Path.IsPathRooted(fileName))
                     fileName = Path.Combine(SavedGameDirectory, FixFileName(fileName));
-                GameLog.Print("########## loading {0}", fileName);
+                GameLog.Core.General.InfoFormat("Loading saved game {0}", fileName);
 
                 using (var fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
@@ -147,7 +147,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Server.General.Error(
+                GameLog.Core.General.Error(
                     string.Format(
                         "Error occurred loading saved game '{0}'.",
                         fileName),
@@ -157,8 +157,6 @@ namespace Supremacy.Game
                 game = null;
                 timestamp = default(DateTime);
 
-                GameLog.Print("loading ## FAILED ## for {0}", fileName);
-
                 return false;
             }
             return true;
@@ -166,8 +164,6 @@ namespace Supremacy.Game
 
         private static string FixFileName(string fileName)
         {
-            // works    GameLog.Print("FileName={0} (fixed)", fileName);
-
             if (string.Equals(Path.GetExtension(fileName), AutoSaveFileName, StringComparison.OrdinalIgnoreCase))
                 return fileName;
             
@@ -204,26 +200,22 @@ namespace Supremacy.Game
         {
             if (fileName == null)
                 fileName = "_manual_save_(CTRL+S)";
-            //throw new ArgumentNullException("fileName");
 
-            GameLog.Print("SaveGame: localPlayer={1}, fileName= '{0}'",
+            GameLog.Core.General.DebugFormat("SaveGame: localPlayer={1}, fileName= '{0}'",
                                     fileName, localPlayer);
 
             if (game == null)
             {
-                GameLog.Print("SaveGame fileName={0}, Problem with 'game' !!!!");
                 throw new ArgumentNullException("game");
             }
 
             if (localPlayer == null)
             {
-                GameLog.Print("SaveGame fileName={0}, Problem with 'localPlayer' !!!!");
                 throw new ArgumentNullException("localPlayer");
             }
 
             if (lobbyData == null)
             {
-                GameLog.Print("SaveGame fileName={0}, Problem with 'lobbyData' !!!!");
                 throw new ArgumentNullException("lobbyData");
             }
 
@@ -231,14 +223,11 @@ namespace Supremacy.Game
                 fileName = DateTime.Now.ToLongDateString();
 
             SavedGameHeader header;
-            // works     GameLog.Print("SaveGame...SavedGameHeader header is done");
 
             GameContext.PushThreadContext(game);
-            // works     GameLog.Print("SaveGame...GameContext.PushThreadContext(game) is done");
 
             try
             {
-                // works     GameLog.Print("SaveGame...try saving file");
                 fileName = Path.Combine(SavedGameDirectory, FixFileName(fileName));
 
                 if (!Directory.Exists(SavedGameDirectory))
@@ -259,7 +248,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Server.General.Error(
+                GameLog.Core.General.Error(
                     "Error saving game.",
                     e);
 
@@ -286,8 +275,6 @@ namespace Supremacy.Game
             var game = GameContext.Current;
             if (game == null)
                 return false;
-
-            //works    GameLog.Print("doing AutoSave: {0},{1},{2},{3}", AutoSaveFileName, game, localPlayer.Empire, lobbyData.ToString());
 
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);
         }

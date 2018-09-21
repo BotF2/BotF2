@@ -123,9 +123,9 @@ namespace Supremacy.Effects
                         if (internalTarget != null)
                             internalTarget.EffectBindingsInternal.Remove(effectBinding);
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
 

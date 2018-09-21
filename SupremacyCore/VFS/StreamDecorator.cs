@@ -151,9 +151,9 @@ namespace Supremacy.VFS
             {
                 base.Dispose(disposing);
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Core.General.Error(e);
             }
 
             var baseStream = _baseStream;
@@ -165,9 +165,9 @@ namespace Supremacy.VFS
                     {
                         _baseStream.Close();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Core.General.Error(e);
                     }
                 }
                 else

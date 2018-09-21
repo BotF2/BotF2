@@ -71,9 +71,11 @@ namespace Supremacy.Tech
        
                         return GameContext.Current.TechDatabase[_designId];
                     }
-                catch
+                catch (Exception e)
                     {
-                        GameLog.Print("GameLog.Pring # Problem Desgin name {0} design ID {0}", Design.Name);
+                        GameLog.Core.General.Debug(string.Format("GameLog.Pring # Problem Desgin name {0} design ID {0}",
+                            Design.Name),
+                            e);
                         return GameContext.Current.TechDatabase[_designId];
                     }
                 }

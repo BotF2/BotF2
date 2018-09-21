@@ -28,8 +28,6 @@ namespace Supremacy.Combat
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
 
-        private bool _combatUpdateTraceLocally = false;    // turn to true if you want
-
         public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
             if (owner == null)
@@ -106,9 +104,7 @@ namespace Supremacy.Combat
                 {
                     if (assets.HasSurvivingAssets)
                     {
-                        if (_combatUpdateTraceLocally)
-                            GameLog.Print("Combat: friendlyAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
-
+                        GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
                         friendlyAssets++;
                     }
                 }
@@ -118,8 +114,7 @@ namespace Supremacy.Combat
 
                 if (friendlyAssets == 0)
                 {
-                    if (_combatUpdateTraceLocally)
-                        GameLog.Print("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+                    GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
                     return true;
                 }
 
@@ -127,14 +122,12 @@ namespace Supremacy.Combat
                 {
                     if (assets.HasSurvivingAssets)
                     {
-                        if (_combatUpdateTraceLocally)
-                            GameLog.Print("Combat: hostileAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
+                        GameLog.Core.Combat.DebugFormat("Combat: hostileAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
                         hostileAssets++;
                     }
                 }
 
-                if (_combatUpdateTraceLocally)
-                    GameLog.Print("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
+                GameLog.Core.Combat.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
 
                 if (hostileAssets == 0)
                     return true;

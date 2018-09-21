@@ -40,9 +40,9 @@ namespace Supremacy.Network
                 {
                     hostEntry = Dns.GetHostEntry(host);
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.General.Error(e);
                 }
 
                 lock (cache)

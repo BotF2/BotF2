@@ -42,12 +42,9 @@ namespace Supremacy.Universe
         private static readonly Dictionary<Tuple<PlanetSize, MoonSize>, int> PlanetSizeModToMoonSizeDist;
         private static readonly Dictionary<Tuple<PlanetType, MoonSize>, int> PlanetTypeModToMoonSizeDist;
 
-        private static bool m_TraceWormholes = false;
-
         static GalaxyGenerator()
         {
             UniverseTables = UniverseManager.Tables;
-            Log = GameLog.Debug.General;
 
             StarTypeDist = new Dictionary<StarType, int>();
             StarTypeModToPlanetSizeDist = new Dictionary<Tuple<StarType, PlanetSize>, int>();
@@ -231,8 +228,7 @@ namespace Supremacy.Universe
                             if ((sector.System == null) && (GameContext.Current.Universe.Map.GetQuadrant(sector) == Quadrant.Alpha))
                             {
                                 bajoranWormholeLocation = sector.Location;
-                                if (m_TraceWormholes)
-                                    GameLog.Print("Place for Bajoran wormhole found at {0}", sector.Location);
+                                GameLog.Core.GalaxyGenerator.DebugFormat("Place for Bajoran wormhole found at {0}", sector.Location);
                                 break;
                             }
                         }
@@ -248,8 +244,7 @@ namespace Supremacy.Universe
                             if (sector.System == null)
                             {
                                 gammaWormholeLocation = sector.Location;
-                                if (m_TraceWormholes)
-                                    GameLog.Print("Place for Gamma wormhole found at {0}", sector.Location);
+                                GameLog.Core.GalaxyGenerator.DebugFormat("Place for Gamma wormhole found at {0}", sector.Location);
                                 break;
                             }
                         }
@@ -257,8 +252,7 @@ namespace Supremacy.Universe
                     else
                     {
                         gammaWormholeLocation = desiredLocation;
-                        if (m_TraceWormholes)
-                            GameLog.Print("Place for Gamma wormhole found at {0}", desiredLocation);
+                        GameLog.Core.GalaxyGenerator.DebugFormat("Place for Gamma wormhole found at {0}", desiredLocation);
                     }
 
                     //We've found somewhere to place the wormholes. Now to actually do it
@@ -273,8 +267,7 @@ namespace Supremacy.Universe
                         };
                         GameContext.Current.Universe.Objects.Add(bajorWormhole);
                         GameContext.Current.Universe.Map[(MapLocation)bajoranWormholeLocation].System = bajorWormhole;
-                        if (m_TraceWormholes)
-                            GameLog.Print("Bajoran wormhole placed");
+                        GameLog.Core.GalaxyGenerator.DebugFormat("Bajoran wormhole placed");
 
                         StarSystem gammaWormhole = new StarSystem
                         {
@@ -285,13 +278,11 @@ namespace Supremacy.Universe
                         };
                         GameContext.Current.Universe.Objects.Add(gammaWormhole);
                         GameContext.Current.Universe.Map[(MapLocation)gammaWormholeLocation].System = gammaWormhole;
-                        if (m_TraceWormholes)
-                            GameLog.Print("Gamma wormhole placed");
+                        GameLog.Core.GalaxyGenerator.DebugFormat("Gamma wormhole placed");
                     }
                     else
                     {
-                        if (m_TraceWormholes)
-                            GameLog.Print("Unable to place Bajoran and/or Gamma wormholes");
+                        GameLog.Core.GalaxyGenerator.DebugFormat("Unable to place Bajoran and/or Gamma wormholes");
                     }
 
                     break;
@@ -574,15 +565,9 @@ namespace Supremacy.Universe
                             {
                                 location = sector.Location;
                                 empireHomeLocations.Add(location);
-                                if (m_TraceWormholes)
-                                {
-                                    GameLog.Print("Upper left 1/8 of map place for Dominion found at {0}", sector.Location);
-                                }
-
+                                GameLog.Core.GalaxyGenerator.DebugFormat("Upper left 1/8 of map place for Dominion found at {0}", sector.Location);
                             }
-
                         }
-
                     }
                     else if (empireCivs[index].ShortName == "Borg")
                     {
@@ -595,15 +580,9 @@ namespace Supremacy.Universe
                             {
                                 location = sector.Location;
                                 empireHomeLocations.Add(location);
-                                if (m_TraceWormholes)
-                                {
-                                    GameLog.Print("Upper left 1/8 of map place for Borg found at {0}", sector.Location);
-                                }
-
+                                GameLog.Core.GalaxyGenerator.DebugFormat("Upper left 1/8 of map place for Borg found at {0}", sector.Location);
                             }
-
                         }
-
                     }
                     else
                     {
@@ -611,7 +590,7 @@ namespace Supremacy.Universe
                     }
                     chosenCivs.Add(empireCivs[index]);
 
-                    GameLog.Print("Civilization {0} placed as {2}", empireCivs[index].ShortName, location, empireCivs[index].CivilizationType);
+                    GameLog.Core.GalaxyGenerator.DebugFormat("Civilization {0} placed as {2}", empireCivs[index].ShortName, location, empireCivs[index].CivilizationType);
 
                     positions.RemoveAt(iPosition);
 
@@ -666,7 +645,7 @@ namespace Supremacy.Universe
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.GalaxyGenerator.Error(e);
                 }
 
                 try
@@ -677,7 +656,7 @@ namespace Supremacy.Universe
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {
-                    GameLog.LogException(e);
+                    GameLog.Core.GalaxyGenerator.Error(e);
                 }
             }
 
@@ -739,16 +718,11 @@ namespace Supremacy.Universe
                             {
                                 chosenLocation = sector.Location;
                                 minorHomeLocations.Add(chosenLocation);
-                                if (m_TraceWormholes)
-                                {
-                                    GameLog.Print("lower 1/4 of map is place for Bajor at {0}", sector.Location);
-                                }
-
+                                GameLog.Core.GalaxyGenerator.DebugFormat("lower 1/4 of map is place for Bajor at {0}", sector.Location);
                             }
-
                         }
-
                     }
+
                     minorHomeLocations.Add(chosenLocation);
                     chosenCivs.Add(minor);
                     chosenMinorRaces[quadrantWithLessMinors].Add(minor);
@@ -797,7 +771,7 @@ namespace Supremacy.Universe
             homeLocations = new Collections.CollectionBase<MapLocation>();
             var chosenCivs = new List<Civilization>();
 
-            Boolean result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, !GameContext.Current.IsMultiplayerGame);
+            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, !GameContext.Current.IsMultiplayerGame);
             if (minorRaceFrequency != MinorRaceFrequency.None)
                 PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs);
 
@@ -1102,12 +1076,10 @@ namespace Supremacy.Universe
                                 {
                                     system.StarType = StarType.BlackHole;
                                     system.Name = "Black Hole";
-                                    if (m_TraceWormholes)
-                                        GameLog.Print("BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
+                                    GameLog.Core.GalaxyGenerator.DebugFormat("BlackHole in place of a Wormhole in Delta quadrant at {0}", system.Location);
                                     break;
                                 }
-                                if (m_TraceWormholes)
-                                    GameLog.Print("Wormhole placed at {0}", system.Location);
+                                GameLog.Core.GalaxyGenerator.DebugFormat("Wormhole placed at {0}", system.Location);
                                 break;
                             default:
                                 if (starNames.Count == 0)
@@ -1190,19 +1162,16 @@ namespace Supremacy.Universe
                 //Everything less than Nebula is a proper star
                 wormhole.Name = GameContext.Current.Universe.FindNearest<StarSystem>(wormhole.Location,
                     s => s.StarType < StarType.Nebula, false).Name;
-                
-                if (m_TraceWormholes)
-                    GameLog.Print("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
+
+                GameLog.Core.GalaxyGenerator.DebugFormat("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
             }
 
             while (wormholes.Count > 1)
             {
                 GameContext.Current.Universe.Map[wormholes[0].Sector.Location].System.WormholeDestination = wormholes[1].Sector.Location;
                 GameContext.Current.Universe.Map[wormholes[1].Sector.Location].System.WormholeDestination = wormholes[0].Sector.Location;
+                GameLog.Core.GalaxyGenerator.DebugFormat("Wormholes at {0} and {1} linked", wormholes[0].Sector.Location, wormholes[1].Sector.Location);
                 //Call this twice to remove the first 2 wormholes which are now linked
-                m_TraceWormholes = true;
-                if (m_TraceWormholes)
-                    GameLog.Print("Wormholes at {0} and {1} linked", wormholes[0].Sector.Location, wormholes[1].Sector.Location);
                 wormholes.RemoveAt(0);
                 wormholes.RemoveAt(0);
             }

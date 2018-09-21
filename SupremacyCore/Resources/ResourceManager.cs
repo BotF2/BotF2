@@ -114,10 +114,9 @@ namespace Supremacy.Resources
                     _localStrings = StringTable.Load(
                         GetResourcePath(@"Resources\Text\" + CurrentLocale + ".txt"));
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.Print("Hint: local file \\Text\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done. {0}", e.Message);
-                    // works perfect !   GameLog.LogException(e);
+                    GameLog.Core.GameData.Error("Hint: local file \\Text\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done. {0}", e);
                 }
             }
         }

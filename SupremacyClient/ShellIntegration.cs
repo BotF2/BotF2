@@ -141,7 +141,7 @@ namespace Supremacy.Client
                 {
                     iconFile = Path.Combine(currentMod.RootPath, iconDirectory, empireIconFile);
 
-                    GameLog.Print("{0} is used out of {1}...maybe check \\Resources\\Shell", empireIconFile, iconDirectory);
+                    GameLog.Client.General.DebugFormat("{0} is used out of {1}...maybe check \\Resources\\Shell", empireIconFile, iconDirectory);
 
                     if (File.Exists(iconFile))
                         return iconFile;
@@ -156,7 +156,7 @@ namespace Supremacy.Client
                 {
                     iconFile = Path.Combine(currentMod.RootPath, iconDirectory, defaultIconName);
 
-                    GameLog.Print("defaultIcon {0} is used ...maybe check \\Resources\\Shell", defaultIconName);
+                    GameLog.Client.General.DebugFormat("defaultIcon {0} is used ...maybe check \\Resources\\Shell", defaultIconName);
                     
                     if (File.Exists(iconFile))
                         return iconFile;
@@ -167,9 +167,9 @@ namespace Supremacy.Client
                 if (File.Exists(iconFile))
                     return iconFile;
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             return null;

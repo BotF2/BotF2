@@ -713,8 +713,6 @@ namespace Supremacy.Client
         private readonly ResearchApplication _application;
         private readonly ResearchPool _pool;
 
-        bool _tracingResearchApplicationData = false;    // turn true if you need
-
         //var civManager = GameContext.Current.CivilizationManagers[Owner];
 
         public string DisplayText
@@ -728,8 +726,7 @@ namespace Supremacy.Client
                         " ({0:0%})",
                         _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
 
-                    if (_tracingResearchApplicationData)
-                        GameLog.Print("{1} done to Research {0}", _application.Field.TechCategory.ToString(), _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
+                    GameLog.Client.General.DebugFormat("{1} done to Research {0}", _application.Field.TechCategory.ToString(), _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
                     //civManager.SitRepEntries.Add(new ResearchStatusSitRepEntry(Owner, finishedApp, newDesigns))
                 }
                 return result.ToString();

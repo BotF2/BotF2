@@ -597,7 +597,7 @@ namespace Supremacy.Client.Views
 
                     GroundCombatOddsValue = 100 + attack - defend;
 
-                    GameLog.Print("SelectedTransportsCombatStrength = {0}, _defenderCombatStrength.CurrentValue = {1}, GroundCombatOdds = {2}",
+                    GameLog.Client.General.DebugFormat("SelectedTransportsCombatStrength = {0}, _defenderCombatStrength.CurrentValue = {1}, GroundCombatOdds = {2}",
                         SelectedTransportsCombatStrength, _defenderCombatStrength.CurrentValue, GroundCombatOddsValue);
 
                     // 
@@ -895,7 +895,7 @@ namespace Supremacy.Client.Views
             {
                 //GameLog.Print("SystemAssault - Quick Running");
                 playbackDuration = TimeSpan.FromSeconds(1);
-                GameLog.Print("SystemAssault - Quick Running, PlaybackDuration={0}, ClientSettings.Current.EnableCombatScreen={1}", playbackDuration.ToString(), ClientSettings.Current.EnableCombatScreen);
+                GameLog.Client.General.DebugFormat("SystemAssault - Quick Running, PlaybackDuration={0}, ClientSettings.Current.EnableCombatScreen={1}", playbackDuration.ToString(), ClientSettings.Current.EnableCombatScreen);
                 soundEffect = "CombatAll";
             }
 
@@ -938,7 +938,7 @@ namespace Supremacy.Client.Views
             if (newInvasion)
             {
                 StarSystem = GameContext.Current.Universe.Map[colony.Location].System;
-                GameLog.Print("New Invasion on {0} at {1}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location);
+                GameLog.Client.General.DebugFormat("New Invasion on {0} at {1}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location);
 
                 PrimaryPlanet = StarSystem.Planets
                     .OrderByDescending(p => p.GetGrowthRate(colony.Inhabitants))
@@ -1019,7 +1019,7 @@ namespace Supremacy.Client.Views
 
 
 
-            GameLog.Print("Proceeding Invasion on {0} at {1} (Round {4}), LastPopulation={2}, _currentDefenderPopulation={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
+            GameLog.Client.General.DebugFormat("Proceeding Invasion on {0} at {1} (Round {4}), LastPopulation={2}, _currentDefenderPopulation={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
                                             GameContext.Current.Universe.Map[colony.Location].System.Colony.Population, _defenderPopulation, RoundNumber);
 
             if (update.IsFinished)

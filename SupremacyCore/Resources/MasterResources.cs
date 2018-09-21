@@ -13,9 +13,9 @@ namespace Supremacy.Resources
             {
                 if (m_CivDatabase == null)
                 {
-                    GameLog.Print("Loading master copy of civilization database...");
+                    GameLog.Core.GameData.Debug("Loading master copy of civilization database...");
                     m_CivDatabase = CivDatabase.Load();
-                    GameLog.Print("Master civilization database loaded");
+                    GameLog.Core.GameData.Debug("Master civilization database loaded");
                 }
                 return m_CivDatabase;
             }

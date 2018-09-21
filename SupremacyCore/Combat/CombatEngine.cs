@@ -40,8 +40,6 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatOrders> _orders;
         protected Dictionary<string, int> _empireStrengths;
 
-        protected bool _traceCombatEngine = false;
-
         protected int CombatID
         {
             get { return _combatId; }
@@ -248,7 +246,7 @@ namespace Supremacy.Combat
         {
             if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
             {
-                GameLog.Print("Combat is turned off");
+                GameLog.Core.Combat.Info("Combat is turned off");
                 AsyncHelper.Invoke(_combatEndedCallback, this);
                 return;
 
@@ -358,12 +356,9 @@ namespace Supremacy.Combat
                 _empireStrengths[_combatStation.Item1.Owner.Key] += CombatHelper.CalculateOrbitalPower(_combatStation.Item1.Source);
             }
 
-            if (_traceCombatEngine)
+            foreach (var empires in _empireStrengths)
             {
-                foreach (var empires in _empireStrengths)
-                {
-                    GameLog.Print("Strength for {0} = {1}", empires.Key, empires.Value);
-                }
+                GameLog.Core.Combat.DebugFormat("Strength for {0} = {1}", empires.Key, empires.Value);
             }
         }
 
@@ -377,55 +372,49 @@ namespace Supremacy.Combat
             int chanceToRetreat = RandomHelper.Random(100);
             int retreatChanceModifier = 0;
 
-            GameLog.Print("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
+            GameLog.Core.Combat.DebugFormat("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
 
             if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
             {
-                if (_traceCombatEngine)
-                {
-                    GameLog.Print("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
-                }
+                GameLog.Core.Combat.DebugFormat("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
                 return true;
             }
 
             if (weaponRatio > 6) // if you outgun the retreater they are less likely to get away
             {
                 retreatChanceModifier = -30;
-                GameLog.Print("Weapon ratio was {0}. -30 modifier", weaponRatio);
+                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -30 modifier", weaponRatio);
             }
             else if (weaponRatio > 3)
             {
                 retreatChanceModifier = -20;
-                GameLog.Print("Weapon ratio was {0}. -20 modifier", weaponRatio);
+                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -20 modifier", weaponRatio);
             }
             else if (weaponRatio > 1)
             {
                 retreatChanceModifier = -10;
-                GameLog.Print("Weapon ratio was {0}. -10 modifier", weaponRatio);
+                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -10 modifier", weaponRatio);
             }
             else
             {
                 retreatChanceModifier = 0;
-                GameLog.Print("Weapon ratio was {0}. 0 modifier", weaponRatio);
+                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. 0 modifier", weaponRatio);
             }
 
             if (oppositionIsRushing) // if you rush the retreater they are less likely to get away
             {
                 retreatChanceModifier += -20;
-                if (_traceCombatEngine)
-                {
-                    GameLog.Print("Opposition is rushing. -20 modifier (now {0})", retreatChanceModifier);
-                }
+                GameLog.Core.Combat.DebugFormat("Opposition is rushing. -20 modifier (now {0})", retreatChanceModifier);
             }
 
             if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
             {
-                GameLog.Print("{0} {1} succesfully retreated", unit.Source.ObjectID, unit.Source.Name);
+                GameLog.Core.Combat.DebugFormat("{0} {1} succesfully retreated", unit.Source.ObjectID, unit.Source.Name);
                 return true;
             }
             else
             {
-                GameLog.Print("{0} {1} failed to retreat", unit.Source.ObjectID, unit.Source.Name);
+                GameLog.Core.Combat.DebugFormat("{0} {1} failed to retreat", unit.Source.ObjectID, unit.Source.Name);
                 return false;
             }
         }
@@ -453,11 +442,8 @@ namespace Supremacy.Combat
                     ship.Scrap = false;
                     ship.Fleet.Name = "Assimilated Assets";
 
-                    if (_traceCombatEngine)
-                    {
-                        GameLog.Print("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}",
-                            ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, ship.Fleet.OwnerID, ship.Fleet.Order);
-                    }
+                    GameLog.Core.Combat.DebugFormat("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}",
+                        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, ship.Fleet.OwnerID, ship.Fleet.Order);
                 }
             }
         }
@@ -506,14 +492,11 @@ namespace Supremacy.Combat
             }
             catch //(Exception e)
             {
-                GameLog.Print("Unable to get order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                GameLog.Core.Combat.ErrorFormat("Unable to get order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
                 //GameLog.LogException(e);
             }
 
-            if (_traceCombatEngine == true)
-            {
-                GameLog.Print("Setting Retreat as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            }
+            GameLog.Core.Combat.DebugFormat("Setting Retreat as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
             return CombatOrder.Retreat;
         }
 

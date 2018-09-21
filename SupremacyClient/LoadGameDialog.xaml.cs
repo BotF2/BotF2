@@ -66,7 +66,7 @@ namespace Supremacy.Client
             if (saveGameHeader == null)
                 return;
             Close();
-            GameLog.Print("LOAD was pressed (GenericCommandsAcceptCommandExecuted)");
+            GameLog.Client.General.DebugFormat("LOAD was pressed (GenericCommandsAcceptCommandExecuted)");
             ClientCommands.LoadGame.Execute(saveGameHeader);
         }
 

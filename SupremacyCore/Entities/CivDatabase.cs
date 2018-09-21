@@ -252,7 +252,7 @@ namespace Supremacy.Entities
         /// <returns></returns>
         public static CivDatabase Load()
         {
-            GameLog.Print("Loading civilization database....");
+            GameLog.Core.GameData.Debug("Loading civilization database....");
             try
             {
                 var civDatabase = new CivDatabase();
@@ -270,12 +270,12 @@ namespace Supremacy.Entities
                     {
                         civDatabase.Add(new Civilization(civElement));
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        GameLog.Print("#### Problem adding a new Civilization - maybe CivDatabase already loaded ?? {0}", civElement.ToString());
+                        GameLog.Core.GameData.Error(string.Format("Problem adding civilization {0} to CivDatabase", civElement.ToString()), e);
                     }
                 }
-                GameLog.Print("Civilization database loaded");
+                GameLog.Core.GameData.Debug("Civilization database loaded");
                 return civDatabase;
             }
             catch (SupremacyException)

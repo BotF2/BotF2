@@ -19,8 +19,6 @@ namespace Supremacy.Scripting.Events
     {
 
         private int _occurrenceChance = 100;
-        bool m_tracePlague = false;
-
         public override bool CanExecute
         {
             get { return _occurrenceChance > 0 && base.CanExecute; }
@@ -77,13 +75,10 @@ namespace Supremacy.Scripting.Events
                     var population = target.Population.CurrentValue;
                     var health = target.Health.CurrentValue;
 
-                    if (m_tracePlague)
-                    {
-                        GameLog.Print("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
-                    }
+                    GameLog.Core.Events.DebugFormat("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
 
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1)
-                        GameLog.Client.GameData.DebugFormat("PlagueEvents.cs: colony amount > 1 for: {0}", target.Name);
+                        GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
 
                     game.CivilizationManagers[targetCiv].SitRepEntries.Add
                         (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
@@ -95,16 +90,13 @@ namespace Supremacy.Scripting.Events
                             "vfs:///Resources/SoundFX/ScriptedEvents/Plague.mp3",
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
-                    GameLog.Client.GameData.DebugFormat("PlagueEvents.cs: HomeSystemName is: {0}", target.Name);
+                    GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- (population/3));
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(- (health/2));
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
-                    if (m_tracePlague)
-                    {
-                        GameLog.Print("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.CurrentValue, GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.CurrentValue);
-                    }
+                    GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.CurrentValue, GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.CurrentValue);
 
                     GameContext.Current.Universe.UpdateSectors();
 

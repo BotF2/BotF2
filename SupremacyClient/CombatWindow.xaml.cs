@@ -39,8 +39,6 @@ namespace Supremacy.Client
         private CombatAssets _playerAssets;
         private IAppContext _appContext;
 
-        bool _tracingCombatWindow = false;
-
         public CombatWindow()
         {
             InitializeComponent();
@@ -278,10 +276,7 @@ namespace Supremacy.Client
             if (sender == HailButton)
                 order = CombatOrder.Hail;
 
-            if (_tracingCombatWindow)
-            {
-                GameLog.Print("{0} button clicked by player", order);
-            }
+            GameLog.Client.General.DebugFormat("{0} button clicked by player", order);
 
             ButtonsPanel0.IsEnabled = false;
             ButtonsPanel1.IsEnabled = false;

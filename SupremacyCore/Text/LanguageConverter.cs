@@ -44,9 +44,9 @@ namespace Supremacy.Text
             {
                 return CultureInfo.GetCultureInfo(stringValue);
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Core.General.Error(e);
             }
 
             return null;

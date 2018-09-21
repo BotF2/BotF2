@@ -341,7 +341,7 @@ namespace Supremacy.Client
 
             foreach (var sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries)
             {
-                GameLog.Print("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
+                GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
                 if (sitRepEntry.HasDetails && ClientSettings.Current.EnableCombatScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
                     SitRepDetailDialog.Show(sitRepEntry);
             }
@@ -365,7 +365,7 @@ namespace Supremacy.Client
                 // works but doubled
                 if (ClientSettings.Current.EnableCombatScreen == false)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
                 {
-                    GameLog.Print("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
+                    GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
                 }
             }
@@ -408,32 +408,24 @@ namespace Supremacy.Client
         {
             var initializedPresenters = new List<IPresenter>();
 
-            var _CreatePresenterTracing = false;
-
-            if (_CreatePresenterTracing)
-                GameLog.Print("BEGINNING: CreatePresenters");
+            GameLog.Client.General.DebugFormat("BEGINNING: CreatePresenters");
 
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                if (_CreatePresenterTracing)
-                    GameLog.Print("DONE: IGalaxyScreenPresenter");
+                GameLog.Client.General.DebugFormat("DONE: IGalaxyScreenPresenter");
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                if (_CreatePresenterTracing)
-                    GameLog.Print("DONE: IColonyScreenPresenter");
+                GameLog.Client.General.DebugFormat("DONE: IColonyScreenPresenter");
 
                 _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, INewDiplomacyScreenView>>());
-                if (_CreatePresenterTracing)
-                    GameLog.Print("DONE: INewDiplomacyScreenView");
+                GameLog.Client.General.DebugFormat("DONE: INewDiplomacyScreenView");
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                if (_CreatePresenterTracing)
-                    GameLog.Print("DONE: IScienceScreenPresenter");
+                GameLog.Client.General.DebugFormat("DONE: IScienceScreenPresenter");
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                if (_CreatePresenterTracing)
-                    GameLog.Print("DONE: IAssetsScreenPresenter");
+                GameLog.Client.General.DebugFormat("DONE: IAssetsScreenPresenter");
 
                 foreach (var presenter in _screenPresenters)
                 {
@@ -441,13 +433,13 @@ namespace Supremacy.Client
                     { 
                         presenter.Run();
                         initializedPresenters.Add(presenter);
-                        if (_CreatePresenterTracing)
-                            GameLog.Print("DONE: {0}", presenter.ToString());
+                        GameLog.Client.General.DebugFormat("DONE: {0}", presenter.ToString());
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.Print("###### problem with {0}", presenter.ToString());
-                        GameLog.LogException(e);
+                        GameLog.Client.General.Error(string.Format("###### problem with {0}",
+                            presenter.ToString()),
+                            e);
                         throw;
                     }
                 }
@@ -459,13 +451,13 @@ namespace Supremacy.Client
                 {
                     try
                     {
-                        GameLog.Print("###### problem with Terminate Presenter {0}", presenter.ToString());
                         presenter.Terminate();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.Print("###### problem with {0}", presenter.ToString());
-                        GameLog.LogException(e);
+                        GameLog.Client.General.Error(string.Format("###### problem with {0}",
+                            presenter.ToString()),
+                            e);
                     }
                 }
                 throw;
@@ -501,18 +493,18 @@ namespace Supremacy.Client
             {
                 Disconnect();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             try
             {
                 Dispose();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -528,9 +520,9 @@ namespace Supremacy.Client
                 {
                     server.Stop();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
 
@@ -538,9 +530,9 @@ namespace Supremacy.Client
             {
                 server.Dispose();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
         }
 
@@ -617,9 +609,9 @@ namespace Supremacy.Client
             {
                 client.Disconnect();
             }
-            catch (Exception e) //ToDo: Just log or additional handling necessary?
+            catch (Exception e)
             {
-                GameLog.LogException(e);
+                GameLog.Client.General.Error(e);
             }
 
             if (!_suppressClientEvents)
@@ -653,9 +645,9 @@ namespace Supremacy.Client
                     {
                         Terminate();
                     }
-                    catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    catch (Exception e)
                     {
-                        GameLog.LogException(e);
+                        GameLog.Client.General.Error(e);
                     }
 
                     ClientEvents.ClientConnectionFailed.Publish(ClientEventArgs.Default);
@@ -691,9 +683,9 @@ namespace Supremacy.Client
                 {
                     ClientEvents.GameEnding.Publish(ClientEventArgs.Default);
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
 
@@ -724,9 +716,9 @@ namespace Supremacy.Client
                 {
                     presenter.Terminate();
                 }
-                catch (Exception e) //ToDo: Just log or additional handling necessary?
+                catch (Exception e)
                 {
-                    GameLog.LogException(e);
+                    GameLog.Client.General.Error(e);
                 }
             }
             _screenPresenters.Clear();
