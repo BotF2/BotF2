@@ -134,9 +134,6 @@ namespace Supremacy.Client
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
 
-            ClientCommands.ToggleConsole.RegisterCommand(new DelegateCommand<object>(ExecuteToggleConsole));
-            //ClientCommands.ToggleConsole.RegisterCommand(new DelegateCommand<object>(ColorInfoScreen));
-
             _eventAggregator.GetEvent<TurnStartedEvent>().Subscribe(OnTurnStarted, ThreadOption.UIThread);
             _eventAggregator.GetEvent<GameStartedEvent>().Subscribe(OnGameStarted, ThreadOption.UIThread);
             _eventAggregator.GetEvent<GameEndedEvent>().Subscribe(OnGameEnded, ThreadOption.UIThread);
@@ -152,11 +149,6 @@ namespace Supremacy.Client
             ClientSettings.Current.EnableAntiAliasingChanged += OnEnableAntiAliasingSettingsChanged;
 
             ApplyAntiAliasingSettings();
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ToggleConsole,
-                    new KeyGesture(Key.OemTilde, ModifierKeys.Control)));
 
             InputBindings.Add(
                 new KeyBinding(
@@ -327,14 +319,6 @@ namespace Supremacy.Client
                 ContentPanel.ClearValue(RenderOptions.EdgeModeProperty);
             else
                 RenderOptions.SetEdgeMode(ContentPanel, EdgeMode.Aliased);
-        }
-
-        private void ExecuteToggleConsole(object o)
-        {
-            if (Console.Visibility == Visibility.Visible)
-                Console.Visibility = Visibility.Hidden;
-            else
-                Console.Visibility = Visibility.Visible;
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)

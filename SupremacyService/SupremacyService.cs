@@ -9,9 +9,6 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
-using Supremacy.Client;
-using Supremacy.Client.Commands;
-using Supremacy.Client.Input;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
@@ -20,7 +17,6 @@ using Supremacy.Game;
 using Supremacy.Messaging;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
-using Supremacy.Scripting;
 using Supremacy.Text;
 using Supremacy.Types;
 using Supremacy.Utility;
@@ -60,7 +56,6 @@ namespace Supremacy.WCF
         private readonly IGameErrorService _errorService;
         private readonly IScheduler _scheduler;
         private readonly IScheduler _threadPoolScheduler;
-        private readonly DelegateCommand<string> _consoleCommand;
         private GameInitData _gameInitData;
         private IAsyncResult _aiAsyncResult;
         private CombatEngine _combatEngine;
@@ -93,61 +88,8 @@ namespace Supremacy.WCF
                     collection => collection.Count,
                     (collection, index) => collection[index].Player));
 
-            _consoleCommand = new DelegateCommand<string>(ExecuteConsoleCommand);
             _threadPoolScheduler = Scheduler.ThreadPool.AsGameScheduler(() => _game);
         }
-
-        private void ExecuteConsoleCommand(string s)
-        {
-            try
-            {
-                var script = new ScriptExpression(false)
-                {
-                    Parameters = new ScriptParameters(new ScriptParameter("$game", typeof(GameContext)), new ScriptParameter("$gc", typeof(Action))),
-                    ScriptCode = s
-                };
-
-                if (!script.CompileScript())
-                    return;
-
-                GameContext.PushThreadContext(_game);
-
-                try
-                {
-                    var result = script.Evaluate(
-                        new RuntimeScriptParameters
-                        {
-                            new RuntimeScriptParameter(script.Parameters[0], _game),
-                            new RuntimeScriptParameter(
-                                script.Parameters[1],
-                                (Action)(() =>
-                                         {
-                                             var memoryBeforeCollection = GC.GetTotalMemory(false);
-
-                                             GCHelper.Collect();
-
-                                             Channel.Publish(
-                                                 new ConsoleEvent(
-                                                     string.Format(
-                                                         "Garbage collected [{0:#,#,} kb -> {1:#,#,} kb]",
-                                                         memoryBeforeCollection,
-                                                         GC.GetTotalMemory(false))));
-                                         }))
-                        });
-
-                    Channel.Publish(new ConsoleEvent(result));
-                }
-                finally
-                {
-                    GameContext.PopThreadContext();
-                }
-            }
-            catch (Exception e)
-            {
-                GameLog.Server.General.Error(e);
-            }
-        }
-
         #endregion
 
         #region Properties
@@ -202,8 +144,6 @@ namespace Supremacy.WCF
 
             try
             {
-                ClientCommands.ConsoleCommand.RegisterCommand(_consoleCommand);
-
                 if (_playerInfo.Count > 1)
                     SendLobbyUpdate();
 
@@ -384,8 +324,6 @@ namespace Supremacy.WCF
 
             try
             {
-                ClientCommands.ConsoleCommand.UnregisterCommand(_consoleCommand);
-
                 lock (_playerInfo.SyncRoot)
                 {
                     while (_playerInfo.Count > 0)

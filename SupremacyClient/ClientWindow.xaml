@@ -49,8 +49,6 @@
         <scc:DialogManager x:Name="ModalDialogsRegion"
                            cal:RegionManager.RegionName="{x:Static scc:ClientRegions.ModalDialogs}"
                            OrderingMode="Stack" />
-        <Client:ClientConsole x:Name="Console"
-                              Visibility="Hidden" />
       </Grid>
     </scc:GamePopupSite>
   </Grid>

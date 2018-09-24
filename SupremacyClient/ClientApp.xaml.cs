@@ -7,8 +7,6 @@
 //
 // All other rights reserved.
 
-using log4net;
-using log4net.Core;
 // What are "Practices.Unity" and "Practices.Composite"?
 //      - Looks like this application uses
 //          - (old?) PRISM guidelines (Composite Application Library),
@@ -38,7 +36,6 @@ using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Logging;
 using Supremacy.Client.Services;
-using Supremacy.Collections;
 using Supremacy.Resources;
 using Supremacy.Utility;
 using Supremacy.VFS;

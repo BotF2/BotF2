@@ -7,17 +7,16 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net;
-
 using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Game;
 using Supremacy.Network;
 using Supremacy.Types;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Net;
 
 namespace Supremacy.Client
 {
@@ -207,11 +206,6 @@ namespace Supremacy.Client
         public void ClearOrders()
         {
             _orders.Clear();
-        }
-
-        public virtual void Alert(string message)
-        {
-            Console.WriteLine(message);
         }
 
         public abstract void HostGame(string playerName);
