@@ -1,11 +1,10 @@
+using Supremacy.Messaging.Internal;
 using System;
 using System.Collections.Generic;
 using System.Concurrency;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Threading;
-
-using Supremacy.Messaging.Internal;
 
 namespace Supremacy.Messaging
 {

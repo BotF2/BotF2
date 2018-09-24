@@ -7,8 +7,8 @@
 //
 // All other rights reserved.
 
-using System;
 using Supremacy.Utility;
+using System;
 
 namespace Supremacy.Universe
 {
