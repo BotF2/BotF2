@@ -24,7 +24,7 @@ namespace Supremacy.Combat
     {
         public readonly object SyncLock;
         protected const double BaseChanceToRetreat = 0.75;
-        protected const double BaseChanceToAssimilate = 0.20;
+        protected const double BaseChanceToAssimilate = 0.05;
         protected const double BaseChanceToRushFormation = 0.50;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
