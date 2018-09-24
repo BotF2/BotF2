@@ -7,17 +7,7 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Windows.Markup;
-using System.Xml;
-
 using Supremacy.Annotations;
-
-using log4net;
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Effects;
@@ -30,6 +20,13 @@ using Supremacy.Text;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Windows.Markup;
+using System.Xml;
 
 namespace Supremacy.Tech
 {
@@ -929,12 +926,8 @@ namespace Supremacy.Tech
             var civManager = GameContext.Current.CivilizationManagers[owner];
             if (civManager == null)
             {
-                GameLog.Core.General.ErrorFormat(
-                    "Cannot spawn {0} at location {1} because " +
-                    "owner {2} is not active in this game.",
-                    Key,
-                    location,
-                    owner.Key);
+                GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because owner {2} is not active in this game.",
+                    Key, location, owner.Key);
 
                 return false;
             }
@@ -944,12 +937,8 @@ namespace Supremacy.Tech
             if (requireSectorOwned &&
                 !Equals(sector.Owner, owner))
             {
-                GameLog.Core.General.ErrorFormat(
-                    "Cannot spawn {0} at location {1} because " +
-                    "the sector is not owned by {2}.",
-                    Key,
-                    location,
-                    owner.Key);
+                GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because the sector is not owned by {2}.",
+                    Key, location, owner.Key);
 
                 return false;
             }
@@ -959,22 +948,16 @@ namespace Supremacy.Tech
                 var system = sector.System;
                 if (system == null)
                 {
-                    GameLog.Core.General.ErrorFormat(
-                        "Cannot spawn {0} at location {1} because " +
-                        "there is no star system at that location.",
-                        Key,
-                        location);
+                    GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because there is no star system at that location.",
+                        Key, location);
 
                     return false;
                 }
 
                 if (requireColony && !system.HasColony)
                 {
-                    GameLog.Core.General.ErrorFormat(
-                        "Cannot spawn {0} at location {1} because " +
-                        "there is no colony at that location.",
-                        Key,
-                        location);
+                    GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because there is no colony at that location.",
+                        Key, location);
 
                     return false;
                 }
@@ -1092,7 +1075,7 @@ namespace Supremacy.Tech
         /// <filterPriority>2</filterPriority>
         public override string ToString()
         {
-            if (!String.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(Name))
                 return Name;
             return _key;
         }

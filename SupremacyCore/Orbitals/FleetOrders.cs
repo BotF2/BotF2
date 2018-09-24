@@ -674,15 +674,13 @@ namespace Supremacy.Orbitals
                 Fleet.Route = TravelRoute.Empty;
         }
 
-
-        //public IAppContext AppContext { get; set; }
         private static void CreateRaid(Civilization civ, StarSystem system)
         {
             var raidedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
 
-        int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
             //GameLog.Client.GameData.DebugFormat("defenseIntelligence={0}", defenseIntelligence);
@@ -736,8 +734,6 @@ namespace Supremacy.Orbitals
 
         }
     }
-    
-
     #endregion
     
     #region SabotageOrder

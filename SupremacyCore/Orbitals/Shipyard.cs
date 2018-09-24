@@ -7,18 +7,16 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Universe;
-
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Supremacy.Orbitals
 {
