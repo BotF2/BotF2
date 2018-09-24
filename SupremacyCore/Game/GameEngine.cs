@@ -1955,9 +1955,9 @@ namespace Supremacy.Game
 
             foreach (var orbital in destroyedOrbitals)
             {
-                GameContext.Current.Universe.Destroy(orbital);
                 GameContext.Current.CivilizationManagers[orbital.OwnerID].SitRepEntries.Add(
                     new OrbitalDestroyedSitRepEntry(orbital));
+                GameContext.Current.Universe.Destroy(orbital);
             }
 
             foreach (var fleet in allFleets)
