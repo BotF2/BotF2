@@ -1228,7 +1228,7 @@ namespace Supremacy.Game
                             //Check to see if the colony has reached the limit for this building
                             if (TechTreeHelper.IsBuildLimitReached(colony, colony.BuildSlots[0].Project.BuildDesign))
                             {
-                                GameLog.Core.Production.DebugFormat("Removing {0} from queue on {1} ({2}) - Build Limit Reached", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
+                                GameLog.Core.Production.WarnFormat("Removing {0} from queue on {1} ({2}) - Build Limit Reached", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
                                 colony.BuildSlots[0].Project.Cancel();
                                 continue;
                             }
