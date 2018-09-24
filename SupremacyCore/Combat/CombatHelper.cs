@@ -62,16 +62,16 @@ namespace Supremacy.Combat
 
             foreach (var fleet in engagingFleets)
             {
-                if (!assets.ContainsKey(fleet.Owner))
-                {
-                    assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
-                }
-
                 foreach (var ship in fleet.Ships)
                 {
                     if (ship.IsCamouflaged)
                     {
                         continue;
+                    }
+
+                    if (!assets.ContainsKey(fleet.Owner))
+                    {
+                        assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
                     }
 
                     if (ship.IsCombatant)
