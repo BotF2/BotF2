@@ -1084,8 +1084,8 @@ namespace Supremacy.Game
     public class NewRaidSitRepEntry : SitRepEntry
     {
         private readonly int _systemId;
-        private readonly int _gainedCreditsSum;
-        private readonly int _gainedOfTotalCredits;
+        private readonly int _gainedCredits;
+        private readonly int _totalCredits;
 
         public StarSystem System
         {
@@ -1101,11 +1101,11 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_gainedCreditsSum > 0)
+                if (_gainedCredits > 0)
                 {
                     return string.Format(ResourceManager.GetString("SITREP_RAID_SUCCESSFULLY"),
                         //"The {0} at {1} have been raided: we got {2} of {3} credits.",
-                        System.Owner, System.Name, _gainedCreditsSum, _gainedOfTotalCredits);
+                        System.Owner, System.Name, _gainedCredits, _totalCredits);
                 }
                 else
                 {
@@ -1121,15 +1121,15 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public NewRaidSitRepEntry(Civilization owner, Colony colony, int gainedCreditsSum, int gainedOfTotalCredits)
+        public NewRaidSitRepEntry(Civilization owner, Colony colony, int gainedCredits, int totalCredits)
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
             _systemId = colony.System.ObjectID;
 
-            _gainedCreditsSum = gainedCreditsSum;
-            _gainedOfTotalCredits = gainedOfTotalCredits;
+            _gainedCredits = gainedCredits;
+            _totalCredits = totalCredits;
         }
     }
 

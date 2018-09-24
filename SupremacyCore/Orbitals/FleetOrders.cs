@@ -7,11 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-
 using Supremacy.AI;
 using Supremacy.Annotations;
 using Supremacy.Collections;
@@ -19,13 +14,16 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.IO;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Text;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Supremacy.Orbitals
 {
@@ -269,16 +267,14 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System.HasColony)
                 return false;
-            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
-            //    return false;
+            if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
+                return false;
             if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
                 return false;
-            foreach (var ship in fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Colony)
-                    return true;
-            }
-            return false;
+            if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+                return false;
+            
+            return true;
         }
 
         protected internal override void OnTurnBeginning()
@@ -289,33 +285,18 @@ namespace Supremacy.Orbitals
             var colonyShip = FindBestColonyShip();
             if (colonyShip == null)
                 return;
-            CreateColony(
-                Fleet.Owner,
-                Fleet.Sector.System,
-                colonyShip.ShipDesign.WorkCapacity);
-            GameContext.Current.Universe.Destroy(colonyShip);
-        }
-
-        protected internal override void OnOrderAssigned()
-        {
-            base.OnOrderAssigned();
-            if (!Fleet.Route.IsEmpty)
-                Fleet.Route = TravelRoute.Empty;
-        }
-
-        private static void CreateColony(Civilization civ, StarSystem system, int population)
-        {
-            var colony = new Colony(system, civ.Race);
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+            
+            var colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
+            var civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
             colony.ObjectID = GameContext.Current.GenerateID();
-            colony.Population.BaseValue = population;
+            colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity;
             colony.Population.Reset();
-            colony.Name = system.Name;
-            colony.Owner = civ;
+            colony.Name = Fleet.Sector.System.Name;
+            colony.Owner = Fleet.Owner;
 
-            system.Owner = civ;
-            system.Colony = colony;
+            Fleet.Sector.System.Owner = Fleet.Owner;
+            Fleet.Sector.System.Colony = colony;
 
             GameContext.Current.Universe.Objects.Add(colony);
             civManager.Colonies.Add(colony);
@@ -326,8 +307,15 @@ namespace Supremacy.Orbitals
             ColonyBuilder.Build(colony);
 
             civManager.MapData.SetScanned(colony.Location, true, 1);
-            civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, system.Location);
-            civManager.SitRepEntries.Add(new NewColonySitRepEntry(civ, colony));
+            civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
+            civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
+        }
+
+        protected internal override void OnOrderAssigned()
+        {
+            base.OnOrderAssigned();
+            if (!Fleet.Route.IsEmpty)
+                Fleet.Route = TravelRoute.Empty;
         }
     }
 
@@ -639,18 +627,14 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System == null)
                 return false;
-            //if (fleet.Sector.System.IsInhabited)
-            //    return false;
-            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+            if (!fleet.Sector.System.HasColony)
                 return false;
-            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
-            //    return false;
-            foreach (var ship in fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Spy)
-                    return true;
-            }
-            return false;
+            if (fleet.Sector.System.Owner == fleet.Owner)
+                return false;
+            if (!fleet.Ships.Any(s => s.ShipType == ShipType.Spy))
+                return false;
+
+            return true;
         }
 
         protected internal override void OnTurnBeginning()
@@ -661,10 +645,43 @@ namespace Supremacy.Orbitals
             var raidShip = FindBestRaidShip();
             if (raidShip == null)
                 return;
-            CreateRaid(
-                Fleet.Owner,
-                Fleet.Sector.System);
-            //GameContext.Current.Universe.Destroy(raidShip);
+
+            var raidedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
+            var raiderCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
+
+            int defenseIntelligence = raidedCiv.TotalIntelligence + 1;
+            if (defenseIntelligence - 1 < 0.1)
+                defenseIntelligence = 2;
+
+            int attackingIntelligence = raiderCiv.TotalIntelligence + 1;
+            if (attackingIntelligence - 1 < 0.1)
+                attackingIntelligence = 1;
+
+            int ratio = attackingIntelligence / defenseIntelligence;
+            if (ratio > 10)
+                ratio = 10;
+
+            //TODO: Actually do something with the ratio
+
+            GameLog.Core.Intel.DebugFormat("{0} is raiding {1} at {2} (AttackIntel={3}, DefenseIntel={4}, Ratio={5})",
+                raiderCiv, raidedCiv, Fleet.Sector.System, attackingIntelligence, defenseIntelligence, ratio);
+
+            int gainedCredits = Fleet.Sector.System.Colony.TaxCredits;
+
+            if (gainedCredits > 10)
+                gainedCredits = gainedCredits * ratio / 10;
+
+            GameLog.Core.Intel.DebugFormat("{0} gained {1} by raiding the {2} colony at {3}",
+                raiderCiv, gainedCredits, raidedCiv, Fleet.Sector.System);
+            GameLog.Core.Intel.DebugFormat("{0} credits - Before={1}, After={2}",
+                raiderCiv.Credits.CurrentValue, raiderCiv.Credits.CurrentValue + gainedCredits);
+            GameLog.Core.Intel.DebugFormat("{0} credits - Before={1}, After={2}",
+                raidedCiv.Credits.CurrentValue, raidedCiv.Credits.CurrentValue - gainedCredits);
+
+            raiderCiv.SitRepEntries.Add(new NewRaidSitRepEntry(raidedCiv.Civilization, Fleet.Sector.System.Colony, gainedCredits, raidedCiv.Credits.CurrentValue));
+
+            raiderCiv.Credits.AdjustCurrent(gainedCredits);
+            raidedCiv.Credits.AdjustCurrent(gainedCredits * -1);
         }
 
         protected internal override void OnOrderAssigned()
@@ -672,66 +689,6 @@ namespace Supremacy.Orbitals
             base.OnOrderAssigned();
             if (!Fleet.Route.IsEmpty)
                 Fleet.Route = TravelRoute.Empty;
-        }
-
-        private static void CreateRaid(Civilization civ, StarSystem system)
-        {
-            var raidedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
-
-
-            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
-            if (defenseIntelligence - 1 < 0.1)
-                defenseIntelligence = 2;
-            //GameLog.Client.GameData.DebugFormat("defenseIntelligence={0}", defenseIntelligence);
-
-            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
-            if (attackingIntelligence - 1 < 0.1)
-                attackingIntelligence = 1;
-            //GameLog.Client.GameData.DebugFormat("attackingIntelligence={0}", attackingIntelligence);
-
-            int ratio = attackingIntelligence / defenseIntelligence;
-            //max ratio for no exceeding gaining points
-            if (ratio > 10)
-                ratio = 10;
-
-            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is RAIDED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                                                    system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
-
-
-            int gainedCreditsSum = 0;
-            int gainedOfTotalCredits = 0;
-
-            foreach (var raided in raidedCiv)
-            {
-                int gainedCredits = raided.TaxCredits;
-
-                if (gainedCredits > 10)
-                    gainedCredits = gainedCredits* ratio / 10;
-
-                gainedCreditsSum = gainedCreditsSum + gainedCredits;
-                gainedOfTotalCredits = gainedOfTotalCredits + raided.TaxCredits;
-                var raidedColony = raided;
-
-                GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (raided): TaxCredits={3}, Gained={4}, TotalSum={5} ",
-                    system.Owner, raided.Name, raided.Location,
-                    raided.TaxCredits, gainedCredits, gainedCreditsSum);
-                GameLog.Core.Intel.DebugFormat("our credits before={0}, their credits ={1}",
-                    GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue,
-                    GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
-
-                GameContext.Current.CivilizationManagers[civ].Credits.AdjustCurrent(gainedCredits);
-                GameContext.Current.CivilizationManagers[system.Owner].Credits.AdjustCurrent(gainedCredits* -1);
-
-                GameLog.Core.Intel.DebugFormat("our credits after={0}, their credits ={1}",
-                    GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);     
-            }
-            
-            civManager.SitRepEntries.Add(new NewRaidSitRepEntry(civ, system.Colony, gainedCreditsSum, gainedOfTotalCredits));
-
-            gainedCreditsSum = 0;
-            gainedOfTotalCredits = 0;
-
         }
     }
     #endregion
@@ -971,18 +928,11 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System == null)
                 return false;
-            //if (fleet.Sector.System.IsInhabited)
-            //    return false;
-            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))  // to improve moral in your systems, colonies 
-                return true;
-            if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            if (!fleet.Sector.System.HasColony)
                 return false;
-            foreach (var ship in fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Diplomatic)
-                    return true;
-            }
-            return false;
+            if (!fleet.Ships.Any(s => s.ShipType == ShipType.Diplomatic))
+                return false;
+            return true;
         }
 
         protected internal override void OnTurnBeginning()
@@ -993,65 +943,50 @@ namespace Supremacy.Orbitals
             var _influenceShip = FindBestInfluenceShip();
             if (_influenceShip == null)
                 return;
-            CreateInfluence(
-                Fleet.Owner,
-                Fleet.Sector.System);
-            //GameContext.Current.Universe.Destroy(_influenceShipShip);
+
+            var influencedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
+            var influencerCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
+
+            // plan is: 
+            // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
+            // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Tables\DiplomacyTables.txt Line 1 RegardLevels
+
+            // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
+            if (Fleet.Sector.System.Owner == Fleet.Owner)
+            {
+                GameLog.Core.Diplomacy.DebugFormat("{0} is influencing their colony at {1}",
+                    Fleet.Owner, Fleet.Sector.System.Name);
+                if (Fleet.Sector.System.Colony.Morale.CurrentValue < 95)
+                {
+                    Fleet.Sector.System.Colony.Morale.AdjustCurrent(+3);
+                    Fleet.Sector.System.Colony.Morale.UpdateAndReset();
+                    GameLog.Core.Diplomacy.DebugFormat("{0} successfully increased the morale at {1}",
+                        influencerCiv, Fleet.Sector.System.Name);
+                }
+                return;
+            }
+
+            // part 2: to *independed* minor race
+            if (!Fleet.Sector.System.Owner.IsEmpire)   // not an empire
+            {
+                GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2}",
+                    influencerCiv, influencedCiv, Fleet.Sector.System);
+
+                DiplomacyHelper.ApplyTrustChange(influencedCiv, influencerCiv, 288);
+            }
         }
 
         protected internal override void OnOrderAssigned()
         {
             base.OnOrderAssigned();
             if (!Fleet.Route.IsEmpty)
-                Fleet.Route = TravelRoute.Empty; // 
+                Fleet.Route = TravelRoute.Empty;
         }
 
 
-        //public IAppContext AppContext { get; set; }
-        private static void CreateInfluence(Civilization civ, StarSystem system)
+        private void CreateInfluence(Civilization civ, StarSystem system)
         {
-            var InfluencedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
-
-            //GameLog.Print("owner= {0}, system= {1} is INFLUENCED by civ= {2}",
-            //                                        system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
-
-            foreach (var Influenced in InfluencedCiv)
-            {
-                // plan is: 
-                // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
-                // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Tables\DiplomacyTables.txt Line 1 RegardLevels
-
-                // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
-                if (system.Owner == GameContext.Current.CivilizationManagers[civ].Civilization)
-                {
-                    GameLog.Core.Diplomacy.Debug("Influence to own colony");
-                    if (system.Colony.Morale.CurrentValue < 95)
-                    {
-                        system.Colony.Morale.AdjustCurrent(+3);
-                        GameLog.Core.Diplomacy.DebugFormat("Our mission increased successfully the morale at our colony {0}", system.Name);
-                    }
-                    return;
-                }
-
-                // part 2: to *independed* minor race
-                if (!system.Owner.IsEmpire)   // not an empire
-                {
-                    GameLog.Core.Diplomacy.DebugFormat("Trying influence a minor race {2} ({4}) = ({1} at {0} VS {3}", system.Location, system.Owner.Name, system.Name, civ.Name, system.OwnerID);
-
-                    var _foreignPowerStatus = DiplomacyHelper.GetForeignPowerStatus(system.Owner, civ);
-                    GameLog.Core.Diplomacy.DebugFormat("_foreignPowerStatus = {0}", _foreignPowerStatus);
-                    DiplomacyHelper.ApplyTrustChange(system.Owner, civ, 288);
-                    Diplomat.Get(civ).GetForeignPower(system.Owner).UpdateRegardAndTrustMeters();
-                }
-
-                GameLog.Core.Diplomacy.DebugFormat("Owner= {0}, system= {1} at {2} (influenced): TaxCredits={3} ",
-                    system.Owner, Influenced.Name, Influenced.Location,
-                    Influenced.TaxCredits);
-                GameLog.Core.Diplomacy.DebugFormat("our credits before={0}, their credits ={1}",
-                    GameContext.Current.CivilizationManagers[civ].Credits.CurrentValue, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
-
-            }
+            
         }
     }
 
@@ -1486,8 +1421,6 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class BuildStationOrder : FleetOrder
     {
-        private static readonly GameLog s_log = GameLog.GetLog(typeof(BuildStationOrder));
-
         private bool _finished;
         private StationBuildProject _buildProject;
 
@@ -1579,7 +1512,7 @@ namespace Supremacy.Orbitals
 
             if (civManager == null)
             {
-                s_log.General.WarnFormat(
+                GameLog.Core.General.WarnFormat(
                     "Failed to load CivilizationManager for fleet owner (fleet ID = {0}, owner ID = {1})",
                     source.ObjectID,
                     (source.Owner != null) ? source.Owner.ShortName : source.OwnerID.ToString());
@@ -1671,7 +1604,7 @@ namespace Supremacy.Orbitals
             if (civManager == null)
             {
                 var owner = project.ProductionCenter.Owner;
-                s_log.General.WarnFormat(
+                GameLog.Core.General.WarnFormat(
                     "Failed to load CivilizationManager for build project owner (build project ID = {0}, owner ID = {1})",
                     project.ProductionCenter.ObjectID,
                     (owner != null) ? owner.ShortName : "null");
