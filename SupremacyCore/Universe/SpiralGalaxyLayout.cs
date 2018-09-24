@@ -69,7 +69,7 @@ namespace Supremacy.Universe
                         --i;
                         continue;
                     }
-                    Console.WriteLine("Warning: Max star placement attempts reached.");
+                    GameLog.Core.GalaxyGenerator.Warn("Max star placement attempts reached.");
                 }
                 else
                 {

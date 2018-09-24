@@ -148,10 +148,6 @@ namespace Supremacy.Messaging
                         _subscriptions.Remove(subscriber);
                 }
             }
-
-#if DEBUG && WRITETOCONSOLE
-            Debug.WriteLine(string.Format("Unsubscribed, Total Subscribers in Channel {0}: {1}", typeof(T).FullName, _subscriptions.Count));
-#endif
         }
         #endregion
 
