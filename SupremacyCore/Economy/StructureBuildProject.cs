@@ -114,8 +114,8 @@ namespace Supremacy.Economy
         /// </summary>
         public override void Finish()
         {
+            GameLog.Core.Production.DebugFormat("Finishing upgrade of {0}...", UpgradeTarget.Name);
             GameContext.Current.Universe.Destroy(UpgradeTarget);
-            GameLog.Core.Production.DebugFormat("Finish is Destroy STRUCTURE UpgradeTarget = {0}", UpgradeTarget.Name);
             base.Finish();
         }
 
