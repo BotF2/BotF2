@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.Serialization;
-
-using Supremacy.Annotations;
+﻿using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Collections;
 using Supremacy.Economy;
@@ -13,10 +8,12 @@ using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
-
-using System.Linq;
-
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Supremacy.Combat
 {
@@ -693,10 +690,9 @@ namespace Supremacy.Combat
             _invasionArena = invasionArena;
             _invasionArena.Update();    // make sure all stats are up-to-date
 
+            //TODO: Didn't this get moved out of CombatEngine?
             var accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
-
             _experienceAccuracy = new Dictionary<ExperienceRank, double>();
-
             foreach (var rank in EnumHelper.GetValues<ExperienceRank>())
             { 
                 // _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
@@ -708,6 +704,7 @@ namespace Supremacy.Combat
                 else
                     _experienceAccuracy[rank] = 0.75;
             }
+
             SendUpdate();
         }
 
@@ -833,7 +830,7 @@ namespace Supremacy.Combat
             _invasionArena.Update();
 
             var defenderCombatStrength = _invasionArena.DefenderCombatStrength;
-            //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? : defenderCombatStrength = {0}, attacking Transports = {1}",
+            //GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? : defenderCombatStrength = {0}, attacking Transports = {1}",
             //    defenderCombatStrength, transports.Count);
 
             var colony = _invasionArena.Colony;
@@ -842,7 +839,7 @@ namespace Supremacy.Combat
             while (defenderCombatStrength > 0 &&
                    transports.Count != 0)
             {
-                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                //GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
                 //    defenderCombatStrength, transports.Count);
 
                 var transport = transports[0];
@@ -851,16 +848,16 @@ namespace Supremacy.Combat
                     invader,
                     colony.Location,
                     ((Ship)transport.Source).ShipDesign.WorkCapacity);
-                    GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
+                    GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
                             transportCombatStrength);
 
                 int randomResult = RandomProvider.Shared.Next(1, 21);   //  limits random to 20 %
                 transportCombatStrength = transportCombatStrength - (transportCombatStrength * randomResult / 100);
                 //                                 100 -             (     100                * 15        / 100)    
-                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
+                GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? - BEFORE: defenderCombatStrength = {0}, attacking Transports = {1}",
                         defenderCombatStrength, transports.Count);
 
-                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
+                GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
                     transportCombatStrength, randomResult );
 
                 defenderCombatStrength -= transportCombatStrength;
@@ -871,11 +868,11 @@ namespace Supremacy.Combat
                     transport.Destroy();
                 }
 
-                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = {0}, attacking Transports = {1}",
+                GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? - AFTER: defenderCombatStrength = {0}, attacking Transports = {1}",
                     defenderCombatStrength, transports.Count);
 
 
-                //        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: GroundCombat - LandingTroops? : Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                //        GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops? : Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                 //targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
             }
 
@@ -942,7 +939,7 @@ namespace Supremacy.Combat
                             {
                                 if (chanceTree.IsEmpty)
                                     chanceTree = GetBaseGroundTargetHitChanceTree();
-                                GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                GameLog.Core.Combat.DebugFormat("Bombardment: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                                     targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
 
@@ -950,19 +947,19 @@ namespace Supremacy.Combat
                                 _orders.Action == InvasionAction.UnloadAllOrdinance)     // here UnloadAllOrdinance is used
                             {
                                 totalPopDamage += 0.5 * actualDamage;
-                                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - MAXIMUM DAMAGE: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                //GameLog.Core.Combat.DebugFormat("Bombardment - MAXIMUM DAMAGE: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                                 //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                             else if (_orders.TargetingStrategy == InvasionTargetingStrategy.Balanced)
                             {
                                 totalPopDamage += 0.25 * actualDamage;
-                                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - BALANCED: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                //GameLog.Core.Combat.DebugFormat("Bombardment - BALANCED: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                                 //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                             else if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumPrecision)
                             {
                                 totalPopDamage += 0.125 * actualDamage;
-                                //GameLog.Client.GameData.DebugFormat("InvasionArena.cs: Bombardment - maximum PRECISION: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
+                                //GameLog.Core.Combat.DebugFormat("Bombardment - maximum PRECISION: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                                 //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                         }
@@ -999,10 +996,6 @@ namespace Supremacy.Combat
 
             if (_invasionArena.Population.CurrentValue < 5)   // Bombardment ends with pop below 5 to avoid and an never ending bombardment, never going below 1
                 _invasionArena.Population.AdjustCurrent(-1 * _invasionArena.Population.CurrentValue);
-
-            // just for testing
-            //_invasionArena.Population.AdjustCurrent(-1 * _invasionArena.Population.CurrentValue);
-            //GameLog.Print("invasionPopulation set to 0 or? in real={0}", _invasionArena.Population.CurrentValue);
         }
 
         private static bool CanBombard(InvasionUnit unit)
@@ -1099,7 +1092,7 @@ namespace Supremacy.Combat
                     if (confirmedHit)
                     {
                         target.TakeDamage(maxDamage);
-                        GameLog.Client.GameData.DebugFormat("InvasionArena.cs: AttackingOrbitals = SpaceCombat: Target Name = {0}, ID = {1} Hull Strength = {2}, health = {3}", target.Name, target.ObjectID, target.HullStrength, target.Health);
+                        GameLog.Core.Combat.DebugFormat("AttackingOrbitals = SpaceCombat: Target Name = {0}, ID = {1} Hull Strength = {2}, health = {3}", target.Name, target.ObjectID, target.HullStrength, target.Health);
                         if (target.IsDestroyed)
                         {
                             var targetIndex = unitsAbleToAttack.IndexOf(target);

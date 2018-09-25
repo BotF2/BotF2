@@ -7,20 +7,17 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 using Supremacy.AI;
 using Supremacy.Annotations;
 using Supremacy.Collections;
-using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
-
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Supremacy.Game
@@ -226,18 +223,12 @@ namespace Supremacy.Game
         /// <value>The total intelligence.</value>
         public int TotalIntelligence
         {
-            get
-            {
-                return Colonies.Sum(colony => colony.NetIntelligence);
-            }
+            get { return Colonies.Sum(colony => colony.NetIntelligence); }
         }
 
         public int TotalIntelligenceReserve
         {
-            get
-            {
-                return Colonies.Sum(colony => colony.NetIntelligence);
-            }
+            get { return Colonies.Sum(colony => colony.NetIntelligence); }
         }
 
         public bool ControlsHomeSystem

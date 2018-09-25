@@ -794,16 +794,15 @@ namespace Supremacy.Game
 
                         int newPopulation = colony.Population.AdjustCurrent(popChange);
 
-                        /*
-                         * TODO: This is disabled for now until I can figure out how to remove players/end a game.
-                         * We need to find out whether the player has any more colonies, and switch government etc
-                         * to that. Failing that, if they have a colony ship, let them continue
+                        // TODO: We need to figure out how to deal with a civilization having no colonies
+                        // and no colony ships
                         if (colony.Population.CurrentValue == 0)
                         {
                             civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(civ, colony));
                             colony.Destroy();
+                            civManager.EnsureSeatOfGovernment();
                             return;
-                        }*/
+                        }
                         colony.Population.UpdateAndReset();
                         civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
 

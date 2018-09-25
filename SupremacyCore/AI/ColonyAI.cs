@@ -261,6 +261,8 @@ namespace Supremacy.AI
         }
 
         //TODO: Move ship production out of colony AI. It requires a greater oversight than just a single colony
+        //TODO: Is there any need for separate functions for empires and minor races?
+        //TODO: Break these functions up into smaller chunks
         private static void HandleShipProductionEmpire(Colony colony, Civilization civ)
         {
             if (colony.Shipyard == null)
@@ -269,7 +271,7 @@ namespace Supremacy.AI
             var potentialProjects = TechTreeHelper.GetShipyardBuildProjects(colony.Shipyard);
             var shipDesigns = GameContext.Current.TechTrees[colony.OwnerID].ShipDesigns.ToList();
             var fleets = GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList();
-            var homeSector = GameContext.Current.Universe.HomeColonyLookup[civ].Sector;
+            var homeSector = GameContext.Current.CivilizationManagers[civ].SeatOfGovernment.Sector;
             var homeFleets = homeSector.GetOwnedFleets(civ).ToList();
 
             if (colony.Sector == homeSector)

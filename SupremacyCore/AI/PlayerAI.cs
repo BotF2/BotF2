@@ -174,6 +174,7 @@ namespace Supremacy.AI
             try
             {
                 var civManager = GameContext.Current.CivilizationManagers[who];
+                //TODO: Might this be better checking if the civilization isn't in a negative balance?
                 if ((civManager != null) && (civManager.Credits.LastChange < 0))
                     return true;
             }
