@@ -232,20 +232,13 @@ namespace Supremacy.AI
                     .Where(p => p.GetTimeEstimate() <= 1 || p.IsRushed)
                     .ToList();
 
-                var availableResources = otherProjects
-                    .SelectMany(p => EnumHelper.GetValues<ResourceType>().Select(r => new { Resource = r, Cost = p.GetCurrentResourceCost(r) }))
-                    .GroupBy(r => r.Resource)
-                    .Select(g => new { Resource = g.Key, Used = g.Sum(r => r.Cost) })
-                    .ToDictionary(r => r.Resource, r => manager.Resources[r.Resource].CurrentValue - r.Used);
-
                 var cost = otherProjects
                     .Where(p => p.IsRushed)
-                    .Select(p => p.GetCurrentIndustryCost())
+                    .Select(p => p.GetTotalCreditsCost())
                     .DefaultIfEmpty()
                     .Sum();
 
-                if (EnumHelper.GetValues<ResourceType>().Where(availableResources.ContainsKey).All(r => availableResources[r] >= s.Project.GetCurrentResourceCost(r))
-                    && ((manager.Credits.CurrentValue - cost) * 0.2 > s.Project.GetCurrentIndustryCost()))
+                if ((manager.Credits.CurrentValue - cost * 0.2) > s.Project.GetTotalCreditsCost())
                 {
                     var prodOutput = colony.GetFacilityType(ProductionCategory.Industry).UnitOutput * colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue) * (1.0 + colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
                     var maxProdFacility = Math.Min(colony.TotalFacilities[ProductionCategory.Industry].Value, colony.GetAvailableLabor() / colony.GetFacilityType(ProductionCategory.Industry).LaborCost + colony.ActiveFacilities[ProductionCategory.Intelligence].Value + colony.ActiveFacilities[ProductionCategory.Research].Value + colony.ActiveFacilities[ProductionCategory.Industry].Value);
