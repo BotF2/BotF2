@@ -424,6 +424,18 @@ namespace Supremacy.Economy
         }
 
         /// <summary>
+        /// Gets the total amount of credits that it will require to complete this project
+        /// </summary>
+        /// <returns></returns>
+        public virtual int GetTotalCreditsCost()
+        {
+            return GetCurrentIndustryCost() +
+                EconomyHelper.ComputeResourceValue(ResourceType.Deuterium, GetCurrentResourceCost(ResourceType.Deuterium)) +
+                EconomyHelper.ComputeResourceValue(ResourceType.Dilithium, GetCurrentResourceCost(ResourceType.Dilithium)) +
+                EconomyHelper.ComputeResourceValue(ResourceType.RawMaterials, GetCurrentResourceCost(ResourceType.RawMaterials));
+        }
+
+        /// <summary>
         /// Advances this <see cref="BuildProject"/> by one turn.
         /// </summary>
         /// <param name="industry">The industry available for investment.</param>

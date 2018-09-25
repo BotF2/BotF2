@@ -13,6 +13,7 @@ using Supremacy.Utility;
 using Supremacy.Client.Dialogs;
 using Supremacy.Game;
 using Supremacy.Client.Context;
+using Supremacy.Resources;
 
 namespace Supremacy.Client.Services
 {
@@ -138,45 +139,23 @@ namespace Supremacy.Client.Services
             if (project.IsCancelled || project.IsCompleted || project.IsRushed)
                 return;
 
-            if (playerEmpire.Credits.CurrentValue < project.GetCurrentIndustryCost())
+            int creditsNeeded = project.GetTotalCreditsCost();
+
+            if (playerEmpire.Credits.CurrentValue < creditsNeeded)
                 return;
 
-            var resourceTypes = EnumHelper.GetValues<ResourceType>();
-            for (var i = 0; i < resourceTypes.Length; i++)
-            {
-                var resource = resourceTypes[i];
-                if (playerEmpire.Resources[resource].CurrentValue < project.GetCurrentResourceCost(resource))
-                    return;
-            }
-
-            string confirmationMessage = "Are you sure you want to rush this project?\nCost:\n" + project.GetCurrentIndustryCost().ToString() + " out of " +
-                                            playerEmpire.Credits.CurrentValue.ToString() + " Credits\n";
-            for (var i = 0; i < resourceTypes.Length; i++)
-            {
-                var resource = resourceTypes[i];
-                if (project.GetCurrentResourceCost(resource) > 0)
-                    confirmationMessage += project.GetCurrentResourceCost(resource).ToString() + " out of " + playerEmpire.Resources[resource].CurrentValue.ToString() +
-                                                " " + resource.ToString() + "\n";
-            }
+            string confirmationMessage = string.Format(ResourceManager.GetString("CONFIRM_RUSH_BUILDING_MESSAGE"),
+                creditsNeeded, playerEmpire.Credits.CurrentValue);
 
             var confirmResult = MessageDialog.Show(
-                "RUSH PRODUCTION",
+                ResourceManager.GetString("CONFIRM_RUSH_BUILDING_HEADER"),
                 confirmationMessage,
                 MessageDialogButtons.YesNo);
 
             if (confirmResult != MessageDialogResult.Yes)
                 return;
 
-            _logger.Log(string.Format("[INavigationService] Rushing production for Colony: {0}", colony.Name), Category.Debug, Priority.None);
-
-            // temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
-            playerEmpire.Credits.AdjustCurrent(-project.GetCurrentIndustryCost());
-            for (var i = 0; i < resourceTypes.Length; i++)
-            {
-                var resource = resourceTypes[i];
-                if (project.GetCurrentResourceCost(resource) > 0)
-                    playerEmpire.Resources[resource].AdjustCurrent(-project.GetCurrentResourceCost(resource));
-            }
+            _logger.Log(string.Format("Rushing production for Colony: {0}", colony.Name), Category.Debug, Priority.None);
 
             project.IsRushed = true;
             PlayerOrderService.Instance.AddOrder(new RushProductionOrder(project.ProductionCenter));
