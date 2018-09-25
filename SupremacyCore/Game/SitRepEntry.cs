@@ -7,19 +7,11 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Linq;
-
 using Supremacy.Annotations;
 using Supremacy.Diplomacy;
-using Supremacy.Expressions.Serialization;
-
+using Supremacy.Economy;
 using Supremacy.Entities;
+using Supremacy.Expressions.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Scripting;
@@ -27,8 +19,13 @@ using Supremacy.Tech;
 using Supremacy.Text;
 using Supremacy.Universe;
 using Supremacy.Utility;
-using Supremacy.Economy;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Xml.Linq;
 
 namespace Supremacy.Game
 {

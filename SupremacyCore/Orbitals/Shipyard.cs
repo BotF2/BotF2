@@ -120,11 +120,6 @@ namespace Supremacy.Orbitals
             return (int)output;
         }
 
-        public int EffectiveBuildOutput
-        {
-            get { return GetBuildOutput(0); }
-        }
-
         /// <summary>
         /// Gets the build queue at this <see cref="Shipyard"/>.
         /// </summary>
