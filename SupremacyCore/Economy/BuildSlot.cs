@@ -52,10 +52,7 @@ namespace Supremacy.Economy
 
         public bool HasProject
         {
-            get
-            {
-                return (_project != null);
-            }
+            get { return (_project != null); }
         }
 
         [ContractInvariantMethod, UsedImplicitly]

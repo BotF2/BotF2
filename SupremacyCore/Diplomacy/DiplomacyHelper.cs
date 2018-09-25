@@ -7,10 +7,6 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy.Visitors;
@@ -20,6 +16,9 @@ using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Diplomacy
 {
@@ -326,6 +325,11 @@ namespace Supremacy.Diplomacy
                    diplomacyData.Status == ForeignPowerStatus.Neutral;
         }
 
+        /// <summary>
+        /// Whether or not given <see cref="Civilization"/> is independent
+        /// </summary>
+        /// <param name="minorPower"></param>
+        /// <returns></returns>
         public static bool IsIndependent([NotNull] Civilization minorPower)
         {
             if (minorPower == null)
@@ -517,80 +521,6 @@ namespace Supremacy.Diplomacy
             return GameContext.Current.DiplomacyData[source, target].ContactDuration == 0;
         }
 
-        public static int ComputeResourceValue(ResourceType resourceType, int amount)
-        {
-            int baseValue;
-
-            var table = GameContext.Current.Tables.ResourceTables["BaseCreditValues"];
-            if (table == null || !int.TryParse(table[resourceType.ToString()][0], out baseValue))
-                return amount;
-
-            return baseValue * amount;
-        }
-
-        public static int ComputeColonyValue(Colony colony)
-        {
-            if (colony == null)
-                return 0;
-
-            var total = 0;
-
-            /*
-             * Include the value of all buildings.
-             */
-            foreach (var building in colony.Buildings)
-            {
-                total += building.Design.BuildCost;
-                total += EnumHelper.GetValues<ResourceType>().Sum(r => ComputeResourceValue(r, building.Design.BuildResourceCosts[r]));
-            }
-
-            /*
-             * Include the value of the shipyard, but not the ships under construction within (see below).
-             */
-            var shipyard = colony.Shipyard;
-            if (shipyard != null)
-            {
-                total += shipyard.Design.BuildCost;
-                total += EnumHelper.GetValues<ResourceType>().Sum(r => ComputeResourceValue(r, shipyard.Design.BuildResourceCosts[r]));
-            }
-
-            var buildSlots = colony.BuildSlots.Concat(shipyard != null ? shipyard.BuildSlots : IndexedEnumerable.Empty<BuildSlot>());
-
-            /*
-             * Include the resources invested in partially completed construction.
-             */
-            total +=
-                (
-                    from slot in buildSlots
-                    let project = slot.Project
-                    where project != null &&
-                          project.IsPartiallyComplete
-                    let resourceValue = EnumHelper.GetValues<ResourceType>().Sum(r => ComputeResourceValue(r, project.ResourcesInvested[r]))
-                    select project.IndustryInvested + resourceValue
-                ).Sum();
-
-            /*
-             * Include all production facilities.
-             */
-            total +=
-                (
-                    from productionCategory in EnumHelper.GetValues<ProductionCategory>()
-                    let facilityCount = colony.GetTotalFacilities(productionCategory)
-                    where facilityCount > 0
-                    let facilityType = colony.GetFacilityType(productionCategory)
-                    where facilityType != null
-                    let baseCost = facilityType.BuildCost
-                    let resourceCosts = facilityType.BuildResourceCosts.Sum()
-                    select (facilityType.BuildCost + resourceCosts) * facilityCount
-                ).Sum();
-
-            total += colony.Population.CurrentValue * 100;
-
-            // ReSharper restore AccessToModifiedClosure
-
-            return total;
-        }
-
         public static int ComputeEndWarValue(Civilization sender, Civilization recipient)
         {
             if (sender == null)
@@ -610,11 +540,8 @@ namespace Supremacy.Diplomacy
         {
             var diplomacyDatabase = GameContext.Current.DiplomacyDatabase;
 
-            DiplomacyProfile diplomacyProfile;
-            RelationshipMemoryWeight memoryWeight;
-
-            if ((GameContext.Current.DiplomacyDatabase.CivilizationProfiles.TryGetValue(civ, out diplomacyProfile) &&
-                 diplomacyProfile.MemoryWeights.TryGetValue(memoryType, out memoryWeight)) ||
+            if ((GameContext.Current.DiplomacyDatabase.CivilizationProfiles.TryGetValue(civ, out DiplomacyProfile diplomacyProfile) &&
+                 diplomacyProfile.MemoryWeights.TryGetValue(memoryType, out RelationshipMemoryWeight memoryWeight)) ||
                 diplomacyDatabase.DefaultProfile.MemoryWeights.TryGetValue(memoryType, out memoryWeight))
             {
                 maxConcurrentMemories = memoryWeight.MaxConcurrentMemories;

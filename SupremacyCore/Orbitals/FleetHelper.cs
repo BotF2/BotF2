@@ -71,5 +71,26 @@ namespace Supremacy.Orbitals
 
             return (mapData.GetFuelRange(sector.Location) <= fleet.Range);
         }
+
+        public static int Firepower(this Fleet fleet)
+        {
+            if (fleet == null)
+                throw new ArgumentNullException("fleet");
+            return fleet.Ships.Sum(f => f.Firepower());
+        }
+
+        public static int EffectiveCombatStrength(this Fleet fleet)
+        {
+            if (fleet == null)
+                throw new ArgumentNullException("fleet");
+            return fleet.Ships.Sum(f => f.EffectiveCombatStrength());
+        }
+
+        public static int TotalHitPoints(this Fleet fleet)
+        {
+            if (fleet == null)
+                throw new ArgumentNullException("fleet");
+            return fleet.Ships.Sum(f => f.TotalHitPoints());
+        }
     }
 }

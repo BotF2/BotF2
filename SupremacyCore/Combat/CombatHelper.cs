@@ -24,17 +24,6 @@ namespace Supremacy.Combat
     public static class CombatHelper
     {
         /// <summary>
-        /// Calculates the total weapon power of the given <see cref="Orbital"/>
-        /// </summary>
-        /// <param name="orbital"></param>
-        /// <returns></returns>
-        public static int CalculateOrbitalPower(Orbital orbital)
-        {
-            return (orbital.OrbitalDesign.PrimaryWeapon.Damage * orbital.OrbitalDesign.PrimaryWeapon.Count) +
-                   (orbital.OrbitalDesign.SecondaryWeapon.Damage * orbital.OrbitalDesign.SecondaryWeapon.Count);
-        }
-
-        /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
         /// </summary>
         /// <param name="assets"></param>
@@ -50,7 +39,7 @@ namespace Supremacy.Combat
                     from s in assets.Sector.GetNeighbors()
                     let distance = MapLocation.GetDistance(s.Location, nearestFriendlySystem.Location)
                     let hostileOrbitals = GameContext.Current.Universe.FindAt<Orbital>(s.Location).Where(o => o.OwnerID != assets.OwnerID && o.IsCombatant)
-                    let hostileOrbitalPower = hostileOrbitals.Sum(o => CalculateOrbitalPower(o))
+                    let hostileOrbitalPower = hostileOrbitals.Sum(o => o.Firepower())
                     orderby hostileOrbitalPower ascending, distance descending
                     select s
                 );
@@ -73,16 +62,16 @@ namespace Supremacy.Combat
 
             foreach (var fleet in engagingFleets)
             {
-                if (!assets.ContainsKey(fleet.Owner))
-                {
-                    assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
-                }
-
                 foreach (var ship in fleet.Ships)
                 {
                     if (ship.IsCamouflaged)
                     {
                         continue;
+                    }
+
+                    if (!assets.ContainsKey(fleet.Owner))
+                    {
+                        assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
                     }
 
                     if (ship.IsCombatant)

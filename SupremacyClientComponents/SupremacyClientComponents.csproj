@@ -176,7 +176,6 @@
     <Compile Include="ClientSettings.cs" />
     <Compile Include="Collections\CollectionViewModel.cs" />
     <Compile Include="Context\Commands\DialogCommands.cs" />
-    <Compile Include="ConsoleEvent.cs" />
     <Compile Include="Context\DesignTimeContexts.cs" />
     <Compile Include="Controls\CheckedListBox.cs" />
     <Compile Include="Controls\Chevron.cs" />

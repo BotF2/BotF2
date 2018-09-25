@@ -7,12 +7,11 @@
 //
 // All other rights reserved.
 
-using System;
-
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Utility;
+using System;
 
 namespace Supremacy.Economy
 {
@@ -30,11 +29,7 @@ namespace Supremacy.Economy
         /// <value>The description.</value>
         public override string Description
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("ShipBuildProject= {0}", ResourceManager.GetString(BuildDesign.Name));
-                return ResourceManager.GetString(BuildDesign.Name);
-            }
+            get { return ResourceManager.GetString(BuildDesign.Name); }
         }
 
         /// <summary>
@@ -43,11 +38,7 @@ namespace Supremacy.Economy
         /// <value>The dilithium needed.</value>
         public int DilithiumNeeded
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("ResourcesRequired[ResourceType.Dilithium]= {0}", ResourcesRequired[ResourceType.Dilithium]);
-                return ResourcesRequired[ResourceType.Dilithium];
-            }
+            get { return ResourcesRequired[ResourceType.Dilithium]; }
         }
 
         /// <summary>
@@ -56,11 +47,7 @@ namespace Supremacy.Economy
         /// <value>The dilithium used.</value>
         public int DilithiumUsed
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("ResourcesRequired[ResourceType.Dilithium]= {0}", ResourcesRequired[ResourceType.Dilithium]);
-                return ResourcesInvested[ResourceType.Dilithium];
-            }
+            get { return ResourcesInvested[ResourceType.Dilithium]; }
         }
 
         /// <summary>
@@ -69,11 +56,7 @@ namespace Supremacy.Economy
         /// <value>The deuterium needed.</value>
         public int DeuteriumNeeded
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("ResourcesRequired[ResourceType.Deuterium]= {0}", ResourcesRequired[ResourceType.Deuterium]);
-                return ResourcesRequired[ResourceType.Deuterium];
-            }
+            get { return ResourcesRequired[ResourceType.Deuterium]; }
         }
 
         /// <summary>
@@ -82,11 +65,7 @@ namespace Supremacy.Economy
         /// <value>The deuterium used.</value>
         public int DeuteriumUsed
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("ResourcesInvested[ResourceType.Deuterium]= {0}", ResourcesInvested[ResourceType.Deuterium]);
-                return ResourcesInvested[ResourceType.Deuterium];
-            }
+            get { return ResourcesInvested[ResourceType.Deuterium]; }
         }
 
         /// <summary>
@@ -95,11 +74,7 @@ namespace Supremacy.Economy
         /// <value>The raw materials needed.</value>
         public int RawMaterialsNeeded
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("ResourcesRequired[ResourceType.RawMaterials]= {0}", ResourcesRequired[ResourceType.RawMaterials]);
-                return ResourcesRequired[ResourceType.RawMaterials];
-            }
+            get { return ResourcesRequired[ResourceType.RawMaterials]; }
         }
 
         /// <summary>
@@ -108,49 +83,25 @@ namespace Supremacy.Economy
         /// <value>The raw materials used.</value>
         public int RawMaterialsUsed
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("ResourcesInvested[ResourceType.RawMaterials]= {0}", ResourcesInvested[ResourceType.RawMaterials]);
-                return ResourcesInvested[ResourceType.RawMaterials];
-            }
+            get { return ResourcesInvested[ResourceType.RawMaterials]; }
         }
 
         public bool HasRawMaterialsShortage
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("GetFlag(BuildProjectFlags.RawMaterialsShortage)= {0}", GetFlag(BuildProjectFlags.RawMaterialsShortage));
-                return GetFlag(BuildProjectFlags.RawMaterialsShortage);
-            }
+            get { return GetFlag(BuildProjectFlags.RawMaterialsShortage); }
             protected set { SetFlag(BuildProjectFlags.RawMaterialsShortage, value); }
         }
 
         public bool HasDeuteriumShortage
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("GetFlag(BuildProjectFlags.DeuteriumShortage)= {0}", GetFlag(BuildProjectFlags.DeuteriumShortage));
-                return GetFlag(BuildProjectFlags.DeuteriumShortage);
-            }
-            protected set
-            {
-                GameLog.Core.ShipProduction.DebugFormat("GetFlag(BuildProjectFlags.DeuteriumShortage)= {0}", GetFlag(BuildProjectFlags.DeuteriumShortage));
-                SetFlag(BuildProjectFlags.DeuteriumShortage, value);
-            }
+            get { return GetFlag(BuildProjectFlags.DeuteriumShortage); }
+            protected set { SetFlag(BuildProjectFlags.DeuteriumShortage, value); }
         }
 
         public bool HasDilithiumShortage
         {
-            get
-            {
-                GameLog.Core.ShipProduction.DebugFormat("GetFlag(BuildProjectFlags.DilithiumShortage)= {0}", GetFlag(BuildProjectFlags.DilithiumShortage));
-                return GetFlag(BuildProjectFlags.DilithiumShortage);
-            }
-            protected set
-            {
-                GameLog.Core.ShipProduction.DebugFormat("GetFlag(BuildProjectFlags.DilithiumShortage)= {0}", GetFlag(BuildProjectFlags.DilithiumShortage));
-                SetFlag(BuildProjectFlags.DilithiumShortage, value);
-            }
+            get { return GetFlag(BuildProjectFlags.DilithiumShortage); }
+            protected set { SetFlag(BuildProjectFlags.DilithiumShortage, value); }
         }
 
         /// <summary>
@@ -188,7 +139,6 @@ namespace Supremacy.Economy
         /// <returns>The clone.</returns>
         public override BuildProject CloneEquivalent()
         {
-            GameLog.Core.ShipProduction.DebugFormat("ShipBuildProject - BuildProject CloneEquivalent = {0}, {1}", Shipyard.Name, BuildDesign.Name);
             return new ShipBuildProject(Shipyard, BuildDesign as ShipDesign);
         }
     }
@@ -222,7 +172,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                return String.Format(
+                return string.Format(
                     ResourceManager.GetString("SHIP_UPGRADING_FORMAT"),
                     ResourceManager.GetString(BuildDesign.Name));
             }
@@ -256,7 +206,6 @@ namespace Supremacy.Economy
         public ShipUpgradeProject(Shipyard shipyard, Ship upgradeTarget, ShipDesign design)
             : base(shipyard, design)
         {
-            GameLog.Core.ShipProduction.DebugFormat("ShipUpgradeProject - Finish = {0}, {1}, {2}",shipyard.Name, upgradeTarget.Name, design.Name);
             _upgradeTargetId = upgradeTarget.ObjectID;
         }
 
@@ -266,7 +215,6 @@ namespace Supremacy.Economy
         /// <returns>The clone.</returns>
         public override BuildProject CloneEquivalent()
         {
-            GameLog.Core.ShipProduction.DebugFormat("ShipBuildProject - CloneEquivalent 2");
             return null;
         }
     }
@@ -289,9 +237,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                GameLog.Core.ShipProduction.DebugFormat("ShipBuildProject - Repair = {0}, {1}", ResourceManager.GetString("SHIP_REPAIRING_FORMAT"), ResourceManager.GetString(BuildDesign.Name));
-                return string.Format(
-                    ResourceManager.GetString("SHIP_REPAIRING_FORMAT"),
+                return string.Format(ResourceManager.GetString("SHIP_REPAIRING_FORMAT"),
                     ResourceManager.GetString(BuildDesign.Name));
             }
         }

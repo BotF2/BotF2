@@ -75,7 +75,7 @@ namespace Supremacy.AI
                 {
                     yield return new ValueTuple<MapLocation, int>(
                         new MapLocation(x, y),
-                        UnitAI.GetEffectiveCombatStrength(fleet));
+                        fleet.EffectiveCombatStrength());
                 }
             }
 

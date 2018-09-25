@@ -260,9 +260,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientConsole.xaml.cs">
-      <DependentUpon>ClientConsole.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OptionsPages\GeneralOptionsPage.xaml.cs">
       <DependentUpon>GeneralOptionsPage.xaml</DependentUpon>
     </Compile>
@@ -350,10 +347,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ClientConsole.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameOptionsPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
