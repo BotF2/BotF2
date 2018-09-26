@@ -1266,8 +1266,7 @@ namespace Supremacy.Game
                                 tmpResources[ResourceType.Deuterium] = 999999;
                                 tmpResources[ResourceType.Dilithium] = 999999;
                                 tmpResources[ResourceType.RawMaterials] = 999999;
-                                //TODO: Take in to account cost of resources?
-                                civManager.Credits.AdjustCurrent(-tmpIndustry);
+                                civManager.Credits.AdjustCurrent(colony.BuildSlots[0].Project.GetTotalCreditsCost());
                                 colony.BuildSlots[0].Project.Advance(ref tmpIndustry, tmpResources);
                                 GameLog.Core.Production.DebugFormat("{0} credits applied to {1} on {2} ({3})",
                                     tmpIndustry,

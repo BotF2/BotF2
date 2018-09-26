@@ -7,8 +7,7 @@
 //
 // All other rights reserved.
 
-using System;
-using System.ComponentModel;
+using Supremacy.Buildings;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
@@ -17,7 +16,8 @@ using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
-using Supremacy.Buildings;
+using System;
+using System.ComponentModel;
 
 namespace Supremacy.Economy
 {
@@ -421,6 +421,18 @@ namespace Supremacy.Economy
         public virtual int GetCurrentResourceCost(ResourceType resource)
         {
             return ResourcesRequired[resource] - ResourcesInvested[resource];
+        }
+
+        /// <summary>
+        /// Gets the total amount of credits that it will require to complete this project
+        /// </summary>
+        /// <returns></returns>
+        public virtual int GetTotalCreditsCost()
+        {
+            return GetCurrentIndustryCost() +
+                EconomyHelper.ComputeResourceValue(ResourceType.Deuterium, GetCurrentResourceCost(ResourceType.Deuterium)) +
+                EconomyHelper.ComputeResourceValue(ResourceType.Dilithium, GetCurrentResourceCost(ResourceType.Dilithium)) +
+                EconomyHelper.ComputeResourceValue(ResourceType.RawMaterials, GetCurrentResourceCost(ResourceType.RawMaterials));
         }
 
         /// <summary>
