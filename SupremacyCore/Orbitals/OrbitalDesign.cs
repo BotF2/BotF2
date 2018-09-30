@@ -28,6 +28,8 @@ namespace Supremacy.Orbitals
         private Percentage _shieldRechargeRate;
         private Percentage _scienceAbility;
         private byte _scanPower;
+        private byte _cloakStrength;
+        private byte _camouflageStrength;
         private byte _sensorRange;
         private string _shipType;
         private WeaponType _primaryWeapon;
@@ -126,6 +128,26 @@ namespace Supremacy.Orbitals
         {
             get { return _scanPower; }
             set { _scanPower = (byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the cloak strength.
+        /// </summary>
+        /// <value>The cloak strength.</value>
+        public int CloakStrength
+        {
+            get { return _cloakStrength; }
+            set { _cloakStrength = (byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the scan strength.
+        /// </summary>
+        /// <value>The scan strength.</value>
+        public int CamouflageStrength
+        {
+            get { return _camouflageStrength; }
+            set { _camouflageStrength = (byte)value; }
         }
 
         /// <summary>

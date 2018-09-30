@@ -320,6 +320,8 @@ namespace Supremacy.Orbitals
             _shipType = design.ShipType;
             _fuelReserve = new Meter(design.FuelCapacity, 0, design.FuelCapacity);
             _fuelReserve.CurrentValueChanged += FuelReserve_CurrentValueChanged;
+            //_cloakStrength = design.CloakStrength;
+            //_camouflagedStrength = design.CamouflagedStrength;
         }
 
         /// <summary>

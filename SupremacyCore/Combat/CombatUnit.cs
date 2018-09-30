@@ -49,6 +49,8 @@ namespace Supremacy.Combat
             _ownerId = source.OwnerID;
             _hullStrength = source.HullStrength.CurrentValue;
             _shieldStrength = source.ShieldStrength.CurrentValue;
+            //_cloakStrength = ship.ShipDesign.CloakStrength;
+            //_camouflageStrength = ship.ShipDesign.CamouflagedStrength;
             _name = source.Name;
         }
 
@@ -120,7 +122,7 @@ namespace Supremacy.Combat
 
         public int CloakStrength
         {
-            get { return _cloakStrength; }
+            get { return Source.OrbitalDesign.CloakStrength; }
         }
 
         public bool IsCamouflaged
@@ -130,12 +132,12 @@ namespace Supremacy.Combat
 
         public int CamouflageStrength
         {
-            get { return _camouflageStrength; }
+            get { return Source.OrbitalDesign.CamouflageStrength; }
         }
 
         public int ScanStrength
         {
-            get { return _scanStrength}
+            get { return _scanStrength; }
         }
 
         public bool IsDestroyed
