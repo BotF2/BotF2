@@ -32,6 +32,26 @@ namespace Supremacy.Combat
         protected override void ResolveCombatRoundCore()
         {
             _combatShips.RandomizeInPlace();
+            //if (_roundNumber == 1)
+            //{
+                foreach (var ship  in _combatShips)
+                {
+                    int cloakStrength = ship.Item1.CloakStrength;
+                    int camouflageStrength = ship.Item1.CamouflageStrength;
+                    int scanStrength = ship.Item1.ScanStrength;
+                    int maxScanStrengthOpposition = ship.Item1.ScanStrength;
+                    var ownerAssets = GetAssets(ship.Item1.Owner);
+                    var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(ship.Item1.Owner, cs.Item1.Owner));
+
+                if (scanStrength > maxScanStrengthOpposition)
+                    {
+                        
+                    }
+                
+                }
+                
+                var deCloaking = _combatShips.Where(s => s.Item1.);
+            //}
 
             // Scouts and Cloaked ships have a special chance of retreating on the first turn
             // Yes, _roundNumber == 2 *is* correct

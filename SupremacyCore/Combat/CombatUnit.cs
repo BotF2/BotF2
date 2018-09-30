@@ -27,6 +27,9 @@ namespace Supremacy.Combat
         private bool _isCamouflaged;
         private bool _isAssimilated;
         private readonly string _name;
+        private int _cloakStrength;
+        private int _camouflageStrength;
+        private int _scanStrength;
 
         protected CombatUnit() {}
 
@@ -114,9 +117,25 @@ namespace Supremacy.Combat
         {
             get { return _isCloaked; }
         }
+
+        public int CloakStrength
+        {
+            get { return _cloakStrength; }
+        }
+
         public bool IsCamouflaged
         {
             get { return _isCamouflaged; }
+        }
+
+        public int CamouflageStrength
+        {
+            get { return _camouflageStrength; }
+        }
+
+        public int ScanStrength
+        {
+            get { return _scanStrength}
         }
 
         public bool IsDestroyed

@@ -31,6 +31,7 @@ namespace Supremacy.Orbitals
         private byte _camouflagedStrength;
         private bool _isCamouflaged;
         private bool _isAssimilated;
+        private byte _scanStrength;
         private Meter _fuelReserve;
         private ShipType _shipType;
         #endregion
@@ -386,6 +387,7 @@ namespace Supremacy.Orbitals
                 _range = (byte)design.Range;
                 _cloakStrength = (byte)design.CloakStrength;
                 _camouflagedStrength = (byte)design.CamouflagedStrength;
+                _scanStrength = (byte)design.ScanStrength;
             }
             _fuelReserve.UpdateAndReset();
         }
