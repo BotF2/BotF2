@@ -1,10 +1,5 @@
-using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Data;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity;
-
 using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Client.Commands;
@@ -12,19 +7,18 @@ using Supremacy.Client.Dialogs;
 using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Economy;
-
-using System.Linq;
-
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Universe;
-
-using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
-using Supremacy.Utility;
+using System;
 using System.Collections.Generic;
-
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Data;
 using Wintellect.PowerCollections;
+using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
 namespace Supremacy.Client.Views
 {
@@ -682,7 +676,7 @@ namespace Supremacy.Client.Views
             if (project.IsRushed)
             {
                 var civMan = CivilizationManager.For(productionCenter.Owner);
-                civMan.Credits.AdjustCurrent(project.GetCurrentIndustryCost());
+                civMan.Credits.AdjustCurrent(project.GetTotalCreditsCost());
             }
 
             project.Cancel();
@@ -706,24 +700,12 @@ namespace Supremacy.Client.Views
 
             var civMan = CivilizationManager.For(Model.SelectedColony.Owner);
 
-            if (civMan.Credits.CurrentValue < project.GetCurrentIndustryCost())
+            if (civMan.Credits.CurrentValue < project.GetTotalCreditsCost())
             {
                 int missingCredits = project.GetCurrentIndustryCost() - civMan.Credits.CurrentValue;
-                string message = "     No Buying\n \n " + missingCredits + " Credits missing for Buying";
-                var result = MessageDialog.Show(message, MessageDialogButtons.Ok);
+                string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"), missingCredits);
+                var result = MessageDialog.Show(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_HEADER"), message, MessageDialogButtons.Ok);
                 return false;
-            }
-       
-            var resourceTypes = EnumHelper.GetValues<ResourceType>();
-            for (var i = 0; i < resourceTypes.Length; i++)
-            {
-                var resource = resourceTypes[i];
-                if (civMan.Resources[resource].CurrentValue < project.GetCurrentResourceCost(resource))
-                {
-                    string message = "     No Buying\n \n " + resource + " missing for Buying";
-                    var result = MessageDialog.Show(message, MessageDialogButtons.Ok);
-                    return false;
-                }
             }
 
             return true;
@@ -744,31 +726,17 @@ namespace Supremacy.Client.Views
 
             var civMan = CivilizationManager.For(Model.SelectedColony.Owner);
 
-            string confirmationMessage = "Are you sure you want to rush this project?\nCost:\n" + project.GetCurrentIndustryCost().ToString() + " out of " + civMan.Credits.CurrentValue.ToString() + " Credits\n";
-            var resourceTypes = EnumHelper.GetValues<ResourceType>();
-            for (var i = 0; i < resourceTypes.Length; i++)
-            {
-                var resource = resourceTypes[i];
-                if (project.GetCurrentResourceCost(resource) > 0)
-                    confirmationMessage += project.GetCurrentResourceCost(resource).ToString() + " out of " + civMan.Resources[resource].CurrentValue.ToString() + " " + resource.ToString() + "\n";
-            }
-
+            string confirmationMessage = string.Format(ResourceManager.GetString("CONFIRM_RUSH_BUILDING_MESSAGE"),
+                project.GetTotalCreditsCost(), civMan.Credits.CurrentValue);
             var confirmResult = MessageDialog.Show(
-                ResourceManager.GetString("RUSH PRODUCTION"),
+                ResourceManager.GetString("CONFIRM_RUSH_BUILDING_HEADER"),
                 confirmationMessage,
                 MessageDialogButtons.YesNo);
-
             if (confirmResult != MessageDialogResult.Yes)
                 return;
 
-            // temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
-            civMan.Credits.AdjustCurrent(-project.GetCurrentIndustryCost());
-            for (var i = 0; i < resourceTypes.Length; i++)
-            {
-                var resource = resourceTypes[i];
-                if (project.GetCurrentResourceCost(resource) > 0)
-                    civMan.Resources[resource].AdjustCurrent(-project.GetCurrentResourceCost(resource));
-            }
+            // Temporarily update the resources so the player can immediately see the results of his spending, else we would get updated values only at the next turn.
+            civMan.Credits.AdjustCurrent(-project.GetTotalCreditsCost());
 
             project.IsRushed = true;
             PlayerOrderService.AddOrder(new RushProductionOrder(productionCenter));

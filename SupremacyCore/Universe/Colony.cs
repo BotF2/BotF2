@@ -7,16 +7,11 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
 using Obtics.Values;
-
 using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Collections;
+using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Effects;
 using Supremacy.Entities;
@@ -26,8 +21,11 @@ using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
-using Supremacy.Diplomacy;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 
 namespace Supremacy.Universe
 {
@@ -508,7 +506,6 @@ namespace Supremacy.Universe
                 var modifier = new OutputModifier(0, 1.0f);
                 var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                 var adjustedPop = Population.CurrentValue * moraleMod;
-                var _netIndustry = NetIndustry;
 
                 foreach (var building in Buildings) // bonus from special structures
                 {
@@ -523,10 +520,8 @@ namespace Supremacy.Universe
                             modifier.Efficiency += (bonus.Amount / 100f);
                     }
                 }
-                GameLog.Core.Production.DebugFormat("owner = {0}, _netIndustry = {1}, adjustedPop = {2}, Bonus = {3}", OriginalOwner, _netIndustry, adjustedPop, modifier.Bonus);
-                GameLog.Core.Production.DebugFormat("owner = {0}, output food {1}, Energy {2}, industry {3}, intell {4}, research {5}", OriginalOwner, GetProductionOutput(ProductionCategory.Food), GetProductionOutput(ProductionCategory.Energy), GetProductionOutput(ProductionCategory.Industry), GetProductionOutput(ProductionCategory.Intelligence), GetProductionOutput(ProductionCategory.Research));
 
-                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus +  _netIndustry * 3 );
+                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + NetIndustry * 3);
             }
         }
 

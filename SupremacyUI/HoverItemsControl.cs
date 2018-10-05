@@ -64,7 +64,7 @@ namespace Supremacy.UI
 
         void HoverItemsControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Console.Out.WriteLine();
+            
         }
 
         void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)

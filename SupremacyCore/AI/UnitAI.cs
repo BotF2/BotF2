@@ -32,9 +32,6 @@ namespace Supremacy.AI
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
-            //if (PlayerContext.Current.IsHumanPlayer(civ))
-            //    return;
-
             foreach (var fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
             {
                 GameLog.Core.AI.DebugFormat("Processing Fleet {0} in {1}...", fleet.ObjectID, fleet.Location);
@@ -42,7 +39,6 @@ namespace Supremacy.AI
                 foreach (var ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))
                 {
                     GameLog.Core.AI.DebugFormat("Cloaking {0} {1}", ship.Name, ship.ObjectID);
-
                     ship.IsCloaked = true;
                 }
 
@@ -61,7 +57,7 @@ namespace Supremacy.AI
                 }
                 if (fleet.IsColonizer)
                 {
-                    //TODO: This needs a bit of tweaking
+                    //TODO: This could us a bit of tidying up
                     if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                     {
                         if (CanColonize(civ, fleet.Sector))
@@ -155,7 +151,7 @@ namespace Supremacy.AI
                 return 100;
 
             ourStrength = GetCombatStrength(fleet);
-            ourFirepower = GetFirepower(fleet);
+            ourFirepower = fleet.Firepower();
 
             if (ourStrength == 0)
                 return 1;
@@ -163,7 +159,7 @@ namespace Supremacy.AI
             foreach (Orbital defender in defenders)
             {
                 theirStrength += GetCombatStrength(defender);
-                theirFirepower += GetFirepower(defender);
+                theirFirepower += defender.Firepower();
             }
 
             baseOdds = (100 * ourStrength) / (ourStrength + theirStrength);
@@ -176,8 +172,8 @@ namespace Supremacy.AI
             damageToUs = Math.Max(1, (theirFirepower + strengthFactor) / (ourFirepower + strengthFactor));
             damageToThem = Math.Max(1, (ourFirepower + strengthFactor) / (theirFirepower + strengthFactor));
 
-            neededRoundsUs = (GetTotalHitPoints(defenders) + damageToThem - 1) / damageToThem;
-            neededRoundsThem = (GetTotalHitPoints(fleet) + damageToUs - 1) / damageToUs;
+            neededRoundsUs = (OrbitalHelper.TotalHitPoints(defenders) + damageToThem - 1) / damageToThem;
+            neededRoundsThem = (fleet.TotalHitPoints() + damageToUs - 1) / damageToUs;
 
             neededRoundsDiff = (neededRoundsUs - neededRoundsThem);
             if (neededRoundsDiff > 0)
@@ -213,18 +209,13 @@ namespace Supremacy.AI
                 if ((owner == null || defender.Owner == owner) &&
                     IsVisible(defender, owner) &&
                     (!testPotentialEnemy || IsPotentialEnemy(attacker.Owner, defender.Owner)) &&
-                    (!testAtWar || IsAtWar(attacker.Owner, defender.Owner)) &&
+                    (!testAtWar || DiplomacyHelper.AreAtWar(attacker.Owner, defender.Owner)) &&
                     (!testCanMove || defender.CanMove))
                 {
                     defenders.Add(defender);
                 }
             }
             return defenders;
-        }
-
-        public static bool IsAtWar(Civilization source, Civilization target)
-        {
-            return (DiplomacyHelper.GetForeignPowerStatus(source, target) == ForeignPowerStatus.AtWar);
         }
 
         public static bool IsPotentialEnemy(Civilization source, Civilization target)
@@ -262,23 +253,6 @@ namespace Supremacy.AI
             return false;
         }
 
-        public static int GetEffectiveCombatStrength(Fleet fleet)
-        {
-            return fleet.Ships.Sum(ship => GetEffectiveCombatStrength(ship));
-        }
-
-        public static int GetEffectiveCombatStrength(Orbital orbital)
-        {
-            int effectiveStrength = GetCombatStrength(orbital);
-            effectiveStrength *= (orbital.ShieldStrength.Maximum
-                + orbital.ShieldStrength.CurrentValue
-                + orbital.HullStrength.Maximum
-                + orbital.HullStrength.CurrentValue);
-            effectiveStrength *= ((2 * orbital.ShieldStrength.Maximum)
-                                  + (2 * orbital.HullStrength.Maximum));
-            return effectiveStrength;
-        }
-
         public static int GetCombatStrength(Fleet fleet)
         {
             if (fleet == null)
@@ -305,53 +279,7 @@ namespace Supremacy.AI
             strength *= (orbital.ShieldStrength.CurrentValue + orbital.HullStrength.CurrentValue);
             strength /= (orbital.ShieldStrength.Maximum + orbital.HullStrength.Maximum);
             return strength;
-        }
-
-        public static int GetFirepower(Fleet fleet)
-        {
-            if (fleet == null)
-                throw new ArgumentNullException("fleet");
-            return fleet.Ships.Sum(ship => GetFirepower(ship));
-        }
-
-        public static int GetFirepower(Orbital orbital)
-        {
-            if (orbital == null)
-                throw new ArgumentNullException("orbital");
-            int firepower = 0;
-            if (orbital.OrbitalDesign.PrimaryWeapon != null)
-            {
-                firepower += (orbital.OrbitalDesign.PrimaryWeapon.Damage
-                              * orbital.OrbitalDesign.PrimaryWeapon.Count);
-            }
-            if (orbital.OrbitalDesign.SecondaryWeapon != null)
-            {
-                firepower += (orbital.OrbitalDesign.SecondaryWeapon.Damage
-                              * orbital.OrbitalDesign.SecondaryWeapon.Count);
-            }
-            return firepower;
-        }
-
-        public static int GetTotalHitPoints(Orbital orbital)
-        {
-            if (orbital == null)
-                throw new ArgumentNullException("orbital");
-            return (orbital.HullStrength.CurrentValue + orbital.ShieldStrength.CurrentValue);
-        }
-
-        public static int GetTotalHitPoints(IEnumerable<Orbital> orbitals)
-        {
-            if (orbitals == null)
-                throw new ArgumentNullException("orbitals");
-            return orbitals.Sum(orbital => GetTotalHitPoints(orbital));
-        }
-
-        public static int GetTotalHitPoints(Fleet fleet)
-        {
-            if (fleet == null)
-                throw new ArgumentNullException("fleet");
-            return fleet.Ships.Sum(ship => GetTotalHitPoints(ship));
-        }
+        } 
 
         public static bool GetBestSystemToColonize(Civilization owner, MapLocation origin, int radius, IList<MapLocation> except, Fleet fleet, out StarSystem result)
         {

@@ -115,5 +115,64 @@ namespace Supremacy.Orbitals
             }
             return 1.0;
         }
+
+        /// <summary>
+        /// Gets the total firepower for this <see cref="Orbital"/>
+        /// </summary>
+        /// <param name="orbital"></param>
+        /// <returns></returns>
+        public static int Firepower(this Orbital orbital)
+        {
+            if (orbital == null)
+                throw new ArgumentNullException("orbital");
+            int firepower = 0;
+            if (orbital.OrbitalDesign.PrimaryWeapon != null)
+            {
+                firepower += (orbital.OrbitalDesign.PrimaryWeapon.Damage
+                              * orbital.OrbitalDesign.PrimaryWeapon.Count);
+            }
+            if (orbital.OrbitalDesign.SecondaryWeapon != null)
+            {
+                firepower += (orbital.OrbitalDesign.SecondaryWeapon.Damage
+                              * orbital.OrbitalDesign.SecondaryWeapon.Count);
+            }
+            return firepower;
+        }
+
+        /// <summary>
+        /// Calculates a combat strength for the given orbital
+        /// </summary>
+        /// <param name="orbital"></param>
+        /// <returns></returns>
+        public static int EffectiveCombatStrength(this Orbital orbital)
+        {
+            int effectiveStrength = orbital.EffectiveCombatStrength();
+            effectiveStrength *= (orbital.ShieldStrength.Maximum
+                + orbital.ShieldStrength.CurrentValue
+                + orbital.HullStrength.Maximum
+                + orbital.HullStrength.CurrentValue);
+            effectiveStrength *= ((2 * orbital.ShieldStrength.Maximum)
+                                  + (2 * orbital.HullStrength.Maximum));
+            return effectiveStrength;
+        }
+
+        /// <summary>
+        /// Gets the total hit points (Hull + Shield) for this <see cref="Orbital"/>
+        /// </summary>
+        /// <param name="orbital"></param>
+        /// <returns></returns>
+        public static int TotalHitPoints(this Orbital orbital)
+        {
+            if (orbital == null)
+                throw new ArgumentNullException("orbital");
+            return (orbital.HullStrength.CurrentValue + orbital.ShieldStrength.CurrentValue);
+        }
+
+        public static int TotalHitPoints(IList<Orbital> orbitals)
+        {
+            if (orbitals == null)
+                throw new ArgumentNullException("orbitals");
+            return orbitals.Sum(o => o.TotalHitPoints());
+        }
     }
 }

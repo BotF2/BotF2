@@ -7,15 +7,13 @@
 //
 // All other rights reserved.
 
-using System;
-
 using Supremacy.Buildings;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Universe;
-using Supremacy.Utility;
+using System;
 
 namespace Supremacy.Economy
 {
@@ -94,8 +92,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                return String.Format(
-                    ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
+                return string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(BuildDesign.Name));
             }
         }
@@ -115,7 +112,6 @@ namespace Supremacy.Economy
         public override void Finish()
         {
             GameContext.Current.Universe.Destroy(UpgradeTarget);
-            GameLog.Core.Production.DebugFormat("Finish is Destroy STRUCTURE UpgradeTarget = {0}", UpgradeTarget.Name);
             base.Finish();
         }
 
@@ -127,7 +123,6 @@ namespace Supremacy.Economy
         public StructureUpgradeProject(Building upgradeTarget, BuildingDesign design)
             : base(upgradeTarget.Sector.System.Colony, design)
         {
-            GameLog.Core.Production.DebugFormat("STRUCTURE upgradeTarget.ObjectID = {0}", upgradeTarget.ObjectID);
             _upgradeTargetId = upgradeTarget.ObjectID;
         }
 
@@ -169,8 +164,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                return String.Format(
-                    ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
+                return string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(BuildDesign.Name));
             }
         }
@@ -186,7 +180,6 @@ namespace Supremacy.Economy
                 var shipyard = Colony.Shipyard;
                 if (shipyard == null || shipyard.ObjectID != _upgradeTargetId)
                     return null;
-                GameLog.Core.Production.DebugFormat("UpgradeTarget shipyard name = {0}", shipyard.Name );
                 return shipyard;
             }
         }
@@ -196,53 +189,20 @@ namespace Supremacy.Economy
         /// </summary>
         public override void Finish()
         {
-            GameLog.Core.Production.DebugFormat("trying to complete current build project for {0}, UpgradeTarget.IsBuilding(UpgradeTarget.Design) = {1}",
-                UpgradeTarget.Name, UpgradeTarget.IsBuilding(UpgradeTarget.Design));
-
             for (var i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
             {
                 var slot = UpgradeTarget.BuildSlots[i];
 
                 if (slot.HasProject && slot.Project.IsPartiallyComplete)
                 {
-                    GameLog.Core.Production.DebugFormat("slot.HasProject && slot.Project.IsPartiallyComplete ...for {0} in SlotID={1}",
-                        slot.Project.BuildDesign,  slot.SlotID);
-
                     slot.Project.Finish();
-
-                    GameLog.Core.Production.DebugFormat("slot.Project.Finish is done for SlotID = {0}", slot.SlotID);
-
                     slot.Project = null;
-
-                    GameLog.Core.Production.DebugFormat("checking next slotID={0} +1", slot.Project.BuildDesign, slot.SlotID);
-
                 }
             }
 
-            // wrong info.....in some unknown kind even a 2-Turn-Ship is immediately builded while Shpiyard is upgraded
-            // MessageBox.Show("Upgrading SHIPYARD is waiting until BuildQueue is empty", "INFO", MessageBoxButton.OK);
-            //  GameLog.Print("Upgrading is waiting until BuildQueue is empty");    
-
-            //  no MessageDialog available, might due to SupremacyCore      var result = MessageDialog.Show("Upgrading is waiting until BuildQueue is empty", MessageDialogButtons.ok);
-
-
-            GameLog.Core.Production.DebugFormat("trying to complete current build project for {0} - BEFORE Scrapping Upgrade Target", UpgradeTarget.Name);
-
             // next is to scrap Upgrade target which might not be available any more
-            var _scrapped = UpgradeTarget.Name;
-
-            //if (UpgradeTarget.ObjectType = Shipyard)
-            //////////////////////////////////////    new: GameContext.Current.Universe.Scrap(UpgradeTarget);
-            //if (UpgradeTarget.Scrap)
-
-            GameLog.Core.Production.DebugFormat("Finish is Destroy SHIPYARD UpgradeTarget = {0}", _scrapped);
-            // atm no destroying       
+            var _scrapped = UpgradeTarget.Name;            
             GameContext.Current.Universe.Destroy(UpgradeTarget);
-
-            GameLog.Core.Production.DebugFormat("Finish is Destroy SHIPYARD UpgradeTarget = {0}", _scrapped);
-
-            GameLog.Core.Production.DebugFormat("trying to complete current build project for {0} - BEFORE base.Finish", _scrapped);
-
             base.Finish();
         }
 
@@ -254,11 +214,8 @@ namespace Supremacy.Economy
         public ShipyardUpgradeProject(Shipyard upgradeTarget, ShipyardDesign design)
             : base(upgradeTarget.Sector.System.Colony, design)
         {
-            GameLog.Core.Production.DebugFormat("upgradeTarget.ObjectID = {0}", upgradeTarget.ObjectID);
             _upgradeTargetId = upgradeTarget.ObjectID;
         }
-
-
 
         /// <summary>
         /// Creates an equivalent clone of this <see cref="StructureBuildProject"/>.
@@ -266,7 +223,6 @@ namespace Supremacy.Economy
         /// <returns>The clone.</returns>
         public override BuildProject CloneEquivalent()
         {
-            GameLog.Core.Production.DebugFormat("BuildProject CloneEquivalent() ");
             return null;
         }
     }

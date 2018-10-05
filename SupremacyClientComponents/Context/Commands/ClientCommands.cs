@@ -42,8 +42,6 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand SendCombatOrders = new CompositeCommand(true);
         public static readonly CompositeCommand SendInvasionOrders = new CompositeCommand(true);
         public static readonly CompositeCommand EndInvasion = new CompositeCommand(true);
-        public static readonly CompositeCommand ToggleConsole = new CompositeCommand(false);
-        public static readonly CompositeCommand ConsoleCommand = new CompositeCommand(false);
         
         public static readonly RoutedCommand EscapeCommand = new RoutedCommand("Escape", typeof(ClientCommands));
         public static readonly RoutedCommand AutoTurnCommand = new RoutedCommand("AutoTurn", typeof(ClientCommands));

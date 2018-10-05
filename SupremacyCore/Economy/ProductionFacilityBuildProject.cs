@@ -9,16 +9,15 @@
 // All other rights reserved.
 // 
 
-using System;
-using System.Runtime.Serialization;
-using System.Threading;
-
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Runtime.Serialization;
+using System.Threading;
 
 namespace Supremacy.Economy
 {
@@ -128,7 +127,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                return String.Format(
+                return string.Format(
                     ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(FacilityDesign.Name));
             }
@@ -245,7 +244,6 @@ namespace Supremacy.Economy
 
             foreach (var resourceType in EnumHelper.GetValues<ResourceType>())
                 resourcesRequired[resourceType] = (int)Math.Ceiling(base.ResourcesRequired[resourceType] / 2d);
-            GameLog.Core.Production.Warn("infinit loop? Production Facility Building Project");
             _resourcesRequired = resourcesRequired;
         }
 

@@ -443,16 +443,13 @@ namespace Supremacy.Universe
         StarSystem,
         Colony,
         TechObject,
-        //IntelObject,
         Building,
         Shipyard,
         Orbital,
         Ship,
-        //Intel,
         Station,
         DefensePlatform,
         Fleet,
-        //IntelFleet
     }
 
 }

@@ -345,7 +345,7 @@ namespace Supremacy.Combat
                 {
                     _empireStrengths[combatShip.Item1.Owner.Key] = 0;
                 }
-                _empireStrengths[combatShip.Item1.Owner.Key] += CombatHelper.CalculateOrbitalPower(combatShip.Item1.Source);
+                _empireStrengths[combatShip.Item1.Owner.Key] += combatShip.Item1.Source.Firepower();
             }
             if (_combatStation != null)
             {
@@ -353,7 +353,7 @@ namespace Supremacy.Combat
                 {
                     _empireStrengths[_combatStation.Item1.Owner.Key] = 0;
                 }
-                _empireStrengths[_combatStation.Item1.Owner.Key] += CombatHelper.CalculateOrbitalPower(_combatStation.Item1.Source);
+                _empireStrengths[_combatStation.Item1.Owner.Key] += _combatStation.Item1.Source.Firepower();
             }
 
             foreach (var empires in _empireStrengths)
