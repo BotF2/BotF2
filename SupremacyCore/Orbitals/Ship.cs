@@ -397,8 +397,8 @@ namespace Supremacy.Orbitals
 		public override void SerializeOwnedData(SerializationWriter writer, object context)
 		{
 			base.SerializeOwnedData(writer, context);
-			writer.Write(_cloakStrength);
-            writer.Write(_camouflagedStrength);
+			//writer.Write(_cloakStrength);
+            //writer.Write(_camouflagedStrength);
             writer.Write(_fleetId);
 			writer.WriteObject(_fuelReserve);
 			writer.Write(_isCloaked);
@@ -412,8 +412,8 @@ namespace Supremacy.Orbitals
 		public override void DeserializeOwnedData(SerializationReader reader, object context)
 		{
 			base.DeserializeOwnedData(reader, context);
-			_cloakStrength = reader.ReadByte();
-            _camouflagedStrength = reader.ReadByte();
+			//_cloakStrength = reader.ReadByte();
+            //_camouflagedStrength = reader.ReadByte();
             _fleetId = reader.ReadInt32();
 			_fuelReserve = (Meter)reader.ReadObject();
 			_isCloaked = reader.ReadBoolean();

@@ -27,6 +27,8 @@ namespace Supremacy.Orbitals
         private ushort _experienceLevel;
         private Meter _hullStrength;
         private Meter _shieldStrength;
+        private Meter _cloakStrength;
+        private Meter _camouflageStrength;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -72,6 +74,24 @@ namespace Supremacy.Orbitals
         public Meter ShieldStrength
         {
             get { return _shieldStrength; }
+        }
+
+        /// <summary>
+        /// Gets the cloak strength.
+        /// </summary>
+        /// <value>The cloak strength.</value>
+        public Meter CloakStrength
+        {
+            get { return _cloakStrength; }
+        }
+
+        /// <summary>
+        /// Gets the camouflage strength.
+        /// </summary>
+        /// <value>The camouflage strength.</value>
+        public Meter CamouflageStrength
+        {
+            get { return _camouflageStrength; }
         }
 
         /// <summary>
@@ -170,6 +190,8 @@ namespace Supremacy.Orbitals
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
             _hullStrength = new Meter(design.HullStrength, 0, design.HullStrength);
             _shieldStrength = new Meter(design.ShieldStrength, 0, design.ShieldStrength);
+            _cloakStrength = new Meter(design.CloakStrength, 0, design.CloakStrength);
+            _camouflageStrength = new Meter(design.CamouflageStrength, 0, design.CamouflageStrength);
         }
 
         /// <summary>

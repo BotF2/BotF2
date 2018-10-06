@@ -13,6 +13,7 @@ using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
@@ -27,8 +28,8 @@ namespace Supremacy.Combat
         private bool _isCamouflaged;
         private bool _isAssimilated;
         private readonly string _name;
-        private int _cloakStrength;
-        private int _camouflageStrength;
+        private int _cloakStrength = 0;
+        private int _camouflageStrength = 0;
         private int _scanStrength;
 
         protected CombatUnit() {}
@@ -44,13 +45,15 @@ namespace Supremacy.Combat
                 _isCloaked = ship.IsCloaked;
                 _isCamouflaged = ship.IsCamouflaged;
                 _isAssimilated = ship.IsAssimilated;
+                if (source.CloakStrength != null)
+                    _cloakStrength = source.CloakStrength.CurrentValue;
+                if (source.CamouflageStrength != null)
+                    _camouflageStrength = source.CamouflageStrength.CurrentValue;
             }
             _sourceId = source.ObjectID;
             _ownerId = source.OwnerID;
             _hullStrength = source.HullStrength.CurrentValue;
             _shieldStrength = source.ShieldStrength.CurrentValue;
-            //_cloakStrength = ship.ShipDesign.CloakStrength;
-            //_camouflageStrength = ship.ShipDesign.CamouflagedStrength;
             _name = source.Name;
         }
 
@@ -122,7 +125,7 @@ namespace Supremacy.Combat
 
         public int CloakStrength
         {
-            get { return Source.OrbitalDesign.CloakStrength; }
+            get { return _cloakStrength; }
         }
 
         public bool IsCamouflaged
@@ -132,7 +135,7 @@ namespace Supremacy.Combat
 
         public int CamouflageStrength
         {
-            get { return Source.OrbitalDesign.CamouflageStrength; }
+            get { return _camouflageStrength; }
         }
 
         public int ScanStrength

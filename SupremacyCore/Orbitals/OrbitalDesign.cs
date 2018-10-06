@@ -16,6 +16,7 @@ using Supremacy.Orbitals;
 using Supremacy.Annotations;
 using Supremacy.Tech;
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -272,6 +273,14 @@ namespace Supremacy.Orbitals
             if (element["ShieldRecharge"] != null)
             {
                 _shieldRechargeRate = Number.ParsePercentage(element["ShieldRecharge"].InnerText.Trim());
+            }
+            if (element["CloakStrength"] != null)
+            {
+                _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
+            }
+            if (element["CamouflagedStrength"] != null)
+            {
+                _camouflageStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
             }
             if (element["BeamType"] != null)
             {

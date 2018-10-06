@@ -36,9 +36,9 @@ namespace Supremacy.Combat
             int maxScanStrengthOpposition = 0;
 
 
-            // Scouts and Cloaked ships have a special chance of retreating on the first turn
-            // Yes, _roundNumber == 2 *is* correct
-            if (_roundNumber == 2)
+            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
+            // .... cloaked ships might be detecked and decloaked in round 2
+            if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
                     .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
@@ -90,19 +90,32 @@ namespace Supremacy.Combat
                 foreach (var ship in oppositionShips)
                 {
                     if (ship.Item1.Source.OrbitalDesign.ScanStrength > maxScanStrengthOpposition)
+                    {
                         maxScanStrengthOpposition = ship.Item1.Source.OrbitalDesign.ScanStrength;
+                        GameLog.Core.Combat.DebugFormat("Ship {0} {1} ({2}) has ScanStrength/Power of {3}", 
+                            ship.Item1.Source.ObjectID, ship.Item1.Source.Name, ship.Item1.Source.Design.Name,
+                            maxScanStrengthOpposition);
+                    }
                     
                 }
 
                 foreach (var ship in friendlyShips)
                 {
-                    int cloakStrength = ship.Item1.CloakStrength;
-                    int camouflageStrength = ship.Item1.CamouflageStrength;
-                       // .Source.OrbitalDesign.CamouflageStrength;
+                    if (ship.Item1.IsCloaked)
+                    {
+                        int cloakStrength = ship.Item1.Source.CloakStrength.CurrentValue;
 
-                    if (cloakStrength < maxScanStrengthOpposition && camouflageStrength < maxScanStrengthOpposition)
-                        ship.Item1.Decloak();
-                    GameLog.Core.Combat.DebugFormat("maxScanStrengthOpposition = {0}, IsCloaked = {1}, cloakStrength = {2}, IsCamouflaged = {3}, camouflageStrength = {4}", maxScanStrengthOpposition, ship.Item1.IsCloaked, cloakStrength, ship.Item1.IsCamouflaged,   camouflageStrength);
+                        if (cloakStrength < maxScanStrengthOpposition)
+                        {
+                            GameLog.Core.Combat.DebugFormat("Ship {3} {4} ({5}) is decloak due to cloakStrength = {2} is smaller than maxScanStrengthOpposition = {0}, IsCloaked = {1}", 
+                                maxScanStrengthOpposition, ship.Item1.IsCloaked, cloakStrength, 
+                                ship.Item1.Source.ObjectID, ship.Item1.Source.Name, ship.Item1.Source.Design.Name);
+
+                            ship.Item1.Decloak();
+                        }
+                        //GameLog.Core.Combat.DebugFormat("maxScanStrengthOpposition = {0}, IsCloaked = {1}, cloakStrength = {2}, IsCamouflaged = {3}, camouflageStrength = {4}", maxScanStrengthOpposition, ship.Item1.IsCloaked, cloakStrength, ship.Item1.IsCamouflaged, camouflageStrength);
+                        //GameLog.Core.Combat.DebugFormat("maxScanStrengthOpposition = {0}, IsCloaked = {1}, cloakStrength = {2}", maxScanStrengthOpposition, ship.Item1.IsCloaked, cloakStrength);
+                    }
                 }
 
 
@@ -248,11 +261,11 @@ namespace Supremacy.Combat
                         break;
 
                     case CombatOrder.Hail:
-                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
+                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         break;
 
                     case CombatOrder.Standby:
-                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
+                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         break;
       
                 }
@@ -283,10 +296,10 @@ namespace Supremacy.Combat
                 }
             }
 
-            //Decloak any ships
+            //Decloak any ships   // Ships are decloaked from round 2 on if maxScanStrength of opposition overhelms, otherwise at least at round ...
             foreach (var combatShip in _combatShips)
             {
-                if (combatShip.Item1.IsCloaked)
+                if (combatShip.Item1.IsCloaked && _roundNumber == 2)
                 {
                     combatShip.Item1.Decloak();
                 }
