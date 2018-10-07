@@ -1355,13 +1355,15 @@ namespace Supremacy.Game
                         foreach (ShipyardBuildSlot slot in buildSlots)
                         {
 
-                            GameLog.Core.Production.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
+                            // GameLog is making trouble
+                            /*GameLog.Core.ShipProduction.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
                                 civ.Name,
                                 slot.Project.BuildDesign.Name,
                                 colony.Name,
                                 totalResourcesAvailable[ResourceType.Deuterium],
                                 totalResourcesAvailable[ResourceType.Dilithium],
                                 totalResourcesAvailable[ResourceType.RawMaterials]);
+                             */
 
                             int output = shipyard.GetBuildOutput(slot.SlotID);
                             while ((slot.HasProject || !shipyard.BuildQueue.IsEmpty()) && (output > 0))

@@ -59,38 +59,57 @@ namespace Supremacy.Orbitals
         {
             get
             {
+                string _NameString = "";
+
                 if (_ships.Count == 0)
-                    return base.Name;
-                
+                    _NameString = base.Name;
+
                 if (_ships.Count == 1)
-                    return _ships[0].Name;
-                
-                ShipDesign design = null;
-
-                foreach (var ship in _ships)
                 {
-                    if (design == null)
-                        design = ship.ShipDesign;
+                    if (_ships[0].IsCloaked == true)
+                        _NameString = _ships[0].Name + String.Format(ResourceManager.GetString("CLOAKED"));
+                    else
+                    if (_ships[0].IsCamouflaged == true)
+                        _NameString = _ships[0].Name + String.Format(ResourceManager.GetString("CAMOUFLAGED"));
+                    else
+                        _NameString = _ships[0].Name;
+                }
 
-                    if (design != ship.ShipDesign)
+                if (_ships.Count > 1)
+                {
+                    ShipDesign design = null;
+
+                    foreach (var ship in _ships)
                     {
-                        return string.Format(
-                            ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-                            _ships.Count);
+                        if (design == null)
+                        {
+                            design = ship.ShipDesign;
+
+                            _NameString = String.Format(
+                                "{0}x {1}",
+                                _ships.Count,
+                                ResourceManager.GetString(design.Name));
+                        }
+
+                        if (design != ship.ShipDesign)
+                        {
+                            _NameString = String.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
+                        }
+
+                        if (ship.IsCloaked)
+                            _NameString = _NameString + String.Format(ResourceManager.GetString("CLOAKED"));
+                        if (ship.IsCamouflaged)
+                            _NameString = _NameString + String.Format(ResourceManager.GetString("CAMOUFLAGED"));
                     }
-                }
-                
-                if (design == null || design.Name == null)
-                {
-                    return String.Format(
-                        ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-                        _ships.Count);
+
+                    if (design == null || design.Name == null)
+                    {
+                        _NameString = String.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
+                    }
+                        //ToDo: After a changed (Cloaked/Camouflaged) a 'RefreshTaskListView' has to be done, but didn't found a way to do it directly
                 }
 
-                return String.Format(
-                    "{0}x {1}", 
-                    _ships.Count,
-                    ResourceManager.GetString(design.Name));
+                return _NameString;
             }
         }
 
