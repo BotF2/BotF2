@@ -21,9 +21,6 @@
                                 <Border x:Name="SelectionOuterBorder" VerticalAlignment="Top" Margin="0,0,5,0">
                                     <Image x:Name="Insignia" Width="25" Height="25" Source="{Binding Path=InsigniaImage}" Margin="5,0,5,0"/>
                                 </Border>
-                                <Border x:Name="CamouflagedFleetSelectionBorderPink" VerticalAlignment="Top" Margin="0,0,5,0">
-                                    <Image x:Name="InsigniaCamouflaged" Width="25" Height="25" Source="{Binding Path=InsigniaImage}" Margin="5,0,5,0"/>
-                                </Border>
                                 <StackPanel>
                                     <TextBlock FontSize="9" FontFamily="Arial" FontStyle="Italic" Foreground="Wheat" Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}" />
                                     <TextBlock FontSize="10" FontStyle="Normal" FontFamily="Sans Serif" Foreground="LightGray" x:Name="OrderText" Text="{Binding Path=View.Source.Order.DisplayText, Converter={StaticResource StringResourceConverter}}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
@@ -43,7 +40,7 @@
                                 <Setter TargetName="Insignia" Property="Opacity" Value="0.55" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Path=View.Source.IsCamouflaged}" Value="True">
-                                <Setter TargetName="CamouflagedFleetSelectionBorderPink" Property="Background" Value="{StaticResource CamouflagedFleetSelectionBorderPinkBrush}" />
+                                <Setter TargetName="Insignia" Property="Opacity" Value="0.55" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Path=View.Source.IsInTow}" Value="True">
                                 <Setter TargetName="ItemContainerGrid" Property="Visibility" Value="Collapsed" />
