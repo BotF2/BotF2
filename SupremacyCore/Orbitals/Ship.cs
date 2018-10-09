@@ -28,7 +28,7 @@ namespace Supremacy.Orbitals
         private byte _range;
         private byte _cloakStrength;
         private bool _isCloaked;
-        private byte _camouflagedStrength;
+        private byte _camouflageStrength;
         private bool _isCamouflaged;
         private bool _isAssimilated;
         private byte _scanStrength;
@@ -249,20 +249,20 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool CanCamouflage
         {
-            get { return (ShipDesign.CamouflagedStrength > 0); }
+            get { return (ShipDesign.CamouflageStrength > 0); }
         }
 
         /// <summary>
-        /// Gets or sets the camouflaged strength.
+        /// Gets or sets the camouflage strength.
         /// </summary>
-        /// <value>The camouflaged strength.</value>
-        public int CamouflagedStrength
+        /// <value>The camouflage strength.</value>
+        public int CamouflageStrength
         {
-            get { return _camouflagedStrength; }
+            get { return _camouflageStrength; }
             set
             {
-                _camouflagedStrength = (byte)value;
-                OnPropertyChanged("CamouflagedStrength");
+                _camouflageStrength = (byte)value;
+                OnPropertyChanged("CamouflageStrength");
             }
         }
         /// <summary>
@@ -321,7 +321,7 @@ namespace Supremacy.Orbitals
             _fuelReserve = new Meter(design.FuelCapacity, 0, design.FuelCapacity);
             _fuelReserve.CurrentValueChanged += FuelReserve_CurrentValueChanged;
             //_cloakStrength = design.CloakStrength;
-            //_camouflagedStrength = design.CamouflagedStrength;
+            //_camouflageStrength = design.CamouflageStrength;
         }
 
         /// <summary>
@@ -388,7 +388,7 @@ namespace Supremacy.Orbitals
                 _speed = (byte)design.Speed;
                 _range = (byte)design.Range;
                 _cloakStrength = (byte)design.CloakStrength;
-                _camouflagedStrength = (byte)design.CamouflagedStrength;
+                _camouflageStrength = (byte)design.CamouflageStrength;
                 _scanStrength = (byte)design.ScanStrength;
             }
             _fuelReserve.UpdateAndReset();
