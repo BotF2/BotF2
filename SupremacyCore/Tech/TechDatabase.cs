@@ -876,7 +876,7 @@ namespace Supremacy.Tech
 
                             item.Dilithium + separator +
                             item.CloakStrength + separator +
-                            item.CamouflagedStrength + separator +
+                            item.CamouflageStrength + separator +
                             item.Range + separator +
                             item.Speed + separator +
                             item.FuelCapacity + separator +

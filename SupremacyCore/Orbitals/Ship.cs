@@ -262,7 +262,7 @@ namespace Supremacy.Orbitals
             set
             {
                 _camouflageStrength = (byte)value;
-                OnPropertyChanged("CamouflageStrength");
+                OnPropertyChanged("CamouflagedStrength");
             }
         }
         /// <summary>

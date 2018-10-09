@@ -29,7 +29,7 @@ namespace Supremacy.Combat
         private bool _isAssimilated;
         private readonly string _name;
         private int _cloakStrength = 0;
-        private int _camouflageStrength = 0;
+        private int _camouflagedStrength = 0;
         private int _scanStrength;
 
         protected CombatUnit() {}
@@ -47,8 +47,8 @@ namespace Supremacy.Combat
                 _isAssimilated = ship.IsAssimilated;
                 if (source.CloakStrength != null)
                     _cloakStrength = source.CloakStrength.CurrentValue;
-                if (source.CamouflageStrength != null)
-                    _camouflageStrength = source.CamouflageStrength.CurrentValue;
+                if (source.CamouflagedStrength != null)
+                    _camouflagedStrength = source.CamouflagedStrength.CurrentValue;
             }
             _sourceId = source.ObjectID;
             _ownerId = source.OwnerID;
@@ -135,7 +135,7 @@ namespace Supremacy.Combat
 
         public int CamouflageStrength
         {
-            get { return _camouflageStrength; }
+            get { return _camouflagedStrength; }
         }
 
         public int ScanStrength
