@@ -35,7 +35,6 @@ namespace Supremacy.Combat
 
             int maxScanStrengthOpposition = 0;
 
-
             // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
             // .... cloaked ships might be detecked and decloaked in round 2
             if (_roundNumber < 3)
@@ -64,10 +63,10 @@ namespace Supremacy.Combat
                 var friendlyShips = _combatShips.Where(cs => !CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
 
                 List<string> ownEmpires = _combatShips.Where(s =>
-                (s.Item1.Owner == _combatShips[i].Item1.Owner))
-                .Select(s => s.Item1.Owner.Key)
-                .Distinct()
-                .ToList();
+                    (s.Item1.Owner == _combatShips[i].Item1.Owner))
+                    .Select(s => s.Item1.Owner.Key)
+                    .Distinct()
+                    .ToList();
 
                 List<string> friendlyEmpires = _combatShips.Where(s =>
                     (s.Item1.Owner != _combatShips[i].Item1.Owner) &&
@@ -87,47 +86,16 @@ namespace Supremacy.Combat
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
-                foreach (var ship in oppositionShips)
-                {
-                    if (ship.Item1.Source.OrbitalDesign.ScanStrength > maxScanStrengthOpposition)
-                    {
-                        maxScanStrengthOpposition = ship.Item1.Source.OrbitalDesign.ScanStrength;
-                        GameLog.Core.Combat.DebugFormat("Ship {0} {1} ({2}) has ScanStrength/Power of {3}", 
-                            ship.Item1.Source.ObjectID, ship.Item1.Source.Name, ship.Item1.Source.Design.Name,
-                            maxScanStrengthOpposition);
-                    }
-                    
-                }
+                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, we might as well decloak
+                maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+                friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak());
+                GameLog.Core.Combat.Debug("{0} is decloaking due to opposition being able to penetrate the cloak");
 
-                foreach (var ship in friendlyShips)
-                {
-                    if (ship.Item1.IsCloaked)
-                    {
-                        int cloakStrength = ship.Item1.Source.CloakStrength.CurrentValue;
-
-                        if (cloakStrength < maxScanStrengthOpposition)
-                        {
-                            GameLog.Core.Combat.DebugFormat("Ship {3} {4} ({5}) is decloak due to cloakStrength = {2} is smaller than maxScanStrengthOpposition = {0}, IsCloaked = {1}", 
-                                maxScanStrengthOpposition, ship.Item1.IsCloaked, cloakStrength, 
-                                ship.Item1.Source.ObjectID, ship.Item1.Source.Name, ship.Item1.Source.Design.Name);
-
-                            ship.Item1.Decloak();
-                        }
-                        //GameLog.Core.Combat.DebugFormat("maxScanStrengthOpposition = {0}, IsCloaked = {1}, cloakStrength = {2}, IsCamouflaged = {3}, camouflageStrength = {4}", maxScanStrengthOpposition, ship.Item1.IsCloaked, cloakStrength, ship.Item1.IsCamouflaged, camouflageStrength);
-                        //GameLog.Core.Combat.DebugFormat("maxScanStrengthOpposition = {0}, IsCloaked = {1}, cloakStrength = {2}", maxScanStrengthOpposition, ship.Item1.IsCloaked, cloakStrength);
-                    }
-                }
-
-
-
-
-
-                //Move this to DiplomacyHelper
+                //TODO: Move this to DiplomacyHelper
                 List<string> allEmpires = new List<string>();
                 allEmpires.AddRange(ownEmpires);
                 allEmpires.AddRange(friendlyEmpires);
                 allEmpires.AddRange(hostileEmpires);
-
                 foreach (var firstEmpire in allEmpires.Distinct().ToList())
                 {
                     foreach (var secondEmpire in allEmpires.Distinct().ToList())
