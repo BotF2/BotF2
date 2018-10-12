@@ -30,7 +30,7 @@ namespace Supremacy.Orbitals
         private byte _range;
         private byte _fuelCapacity;
         private byte _cloakStrength;
-        private byte _camouflageStrength;
+        private byte _camouflagedStrength;
         private byte _maneuverability;
         private byte _evacuationLimit;
         private ushort _workCapacity;
@@ -165,8 +165,8 @@ namespace Supremacy.Orbitals
         /// <value>The camouflaged strength.</value>
         public int CamouflagedStrength
         {
-            get { return _camouflageStrength; }
-            set { _camouflageStrength = (byte)value; }
+            get { return _camouflagedStrength; }
+            set { _camouflagedStrength = (byte)value; }
         }
         /// <summary>
         /// Gets or sets the type of the ship.
@@ -222,7 +222,7 @@ namespace Supremacy.Orbitals
             }
             if (element["CamouflagedStrength"] != null)
             {
-                _camouflageStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
+                _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
             }
             //if (element["RawMaterials"] != null)
             //{
@@ -321,10 +321,10 @@ namespace Supremacy.Orbitals
                 baseElement.AppendChild(newElement);
             }
 
-            if (CamouflageStrength > 0)
+            if (base.CamouflagedStrength > 0)
             {
                 newElement = doc.CreateElement("CamouflagedStrength");
-                newElement.InnerText = CamouflageStrength.ToString();
+                newElement.InnerText = base.CamouflagedStrength.ToString();
                 baseElement.AppendChild(newElement);
             }
 

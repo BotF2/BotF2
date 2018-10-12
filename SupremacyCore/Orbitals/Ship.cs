@@ -28,7 +28,7 @@ namespace Supremacy.Orbitals
         private byte _range;
         private byte _cloakStrength;
         private bool _isCloaked;
-        private byte _camouflageStrength;
+        private byte _camouflagedStrength;
         private bool _isCamouflaged;
         private bool _isAssimilated;
         private byte _scanStrength;
@@ -249,19 +249,19 @@ namespace Supremacy.Orbitals
         /// </value>
         public bool CanCamouflage
         {
-            get { return (ShipDesign.CamouflageStrength > 0); }
+            get { return (ShipDesign.CamouflagedStrength > 0); }
         }
 
         /// <summary>
         /// Gets or sets the camouflage strength.
         /// </summary>
         /// <value>The camouflage strength.</value>
-        public int CamouflageStrength
+        public int CamouflagedStrength
         {
-            get { return _camouflageStrength; }
+            get { return _camouflagedStrength; }
             set
             {
-                _camouflageStrength = (byte)value;
+                _camouflagedStrength = (byte)value;
                 OnPropertyChanged("CamouflagedStrength");
             }
         }
@@ -321,7 +321,7 @@ namespace Supremacy.Orbitals
             _fuelReserve = new Meter(design.FuelCapacity, 0, design.FuelCapacity);
             _fuelReserve.CurrentValueChanged += FuelReserve_CurrentValueChanged;
             //_cloakStrength = design.CloakStrength;
-            //_camouflageStrength = design.CamouflageStrength;
+            //_camouflagedStrength = design.CamouflagedStrength;
         }
 
         /// <summary>
@@ -388,7 +388,7 @@ namespace Supremacy.Orbitals
                 _speed = (byte)design.Speed;
                 _range = (byte)design.Range;
                 _cloakStrength = (byte)design.CloakStrength;
-                _camouflageStrength = (byte)design.CamouflageStrength;
+                _camouflagedStrength = (byte)design.CamouflagedStrength;
                 _scanStrength = (byte)design.ScanStrength;
             }
             _fuelReserve.UpdateAndReset();

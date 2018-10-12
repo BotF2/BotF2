@@ -30,7 +30,7 @@ namespace Supremacy.Orbitals
         private Percentage _scienceAbility;
         private byte _scanPower;
         private byte _cloakStrength;
-        private byte _camouflageStrength;
+        private byte _camouflagedStrength;
         private byte _sensorRange;
         private string _shipType;
         private WeaponType _primaryWeapon;
@@ -145,10 +145,10 @@ namespace Supremacy.Orbitals
         /// Gets or sets the scan strength.
         /// </summary>
         /// <value>The scan strength.</value>
-        public int CamouflageStrength
+        public int CamouflagedStrength
         {
-            get { return _camouflageStrength; }
-            set { _camouflageStrength = (byte)value; }
+            get { return _camouflagedStrength; }
+            set { _camouflagedStrength = (byte)value; }
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace Supremacy.Orbitals
             }
             if (element["CamouflagedStrength"] != null)
             {
-                _camouflageStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
+                _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
             }
             if (element["BeamType"] != null)
             {

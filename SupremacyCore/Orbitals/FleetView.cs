@@ -232,7 +232,7 @@ namespace Supremacy.Orbitals
                 }
                 else if (ship.IsCamouflaged)
                 {
-                    netScanStrength = scanStrength - ship.CamouflageStrength;
+                    netScanStrength = scanStrength - ship.CamouflagedStrength;
                 }
                 else
                 {

@@ -87,9 +87,14 @@ namespace Supremacy.Combat
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
                 //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, we might as well decloak
-                maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
-                friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak());
-                GameLog.Core.Combat.Debug("{0} is decloaking due to opposition being able to penetrate the cloak");
+                if (oppositionShips.Count() > 0)
+                {
+                    maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+                    friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak());
+                    GameLog.Core.Combat.Debug("A cloaked ship is decloaking due to opposition being able to penetrate the cloak");
+                }
+
+                //TODO: get scan power of strucutes in system and look to decloak and or decamouflage ships in system
 
                 //TODO: Move this to DiplomacyHelper
                 List<string> allEmpires = new List<string>();
@@ -267,7 +272,7 @@ namespace Supremacy.Combat
             //Decloak any ships   // Ships are decloaked from round 2 on if maxScanStrength of opposition overhelms, otherwise at least at round ...
             foreach (var combatShip in _combatShips)
             {
-                if (combatShip.Item1.IsCloaked && _roundNumber == 2)
+                if (combatShip.Item1.IsCloaked && _roundNumber >= 2)
                 {
                     combatShip.Item1.Decloak();
                 }
