@@ -20,6 +20,7 @@ namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
+        //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
@@ -29,18 +30,20 @@ namespace Supremacy.Combat
 
         }
 
+        public IList<CombatAssets> friendlyAssets { get; private set; }
+
         protected override void ResolveCombatRoundCore()
         {
             _combatShips.RandomizeInPlace();
 
             int maxScanStrengthOpposition = 0;
 
-            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
-            // .... cloaked ships might be detecked and decloaked in round 2
+            // Scouts, camouflaged and Cloaked ships have a special chance of retreating BEFORE round 3
+            // .... cloaked or camouflaged ships might be detecked and decloaked decamouflaged in round 2
             if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => s.Item1.IsCloaked || (s.Item1.IsCamouflaged) || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
 
@@ -51,6 +54,7 @@ namespace Supremacy.Combat
                         var ownerAssets = GetAssets(ship.Item1.Owner);
                         ownerAssets.EscapedShips.Add(ship.Item1);
                         ownerAssets.CombatShips.Remove(ship.Item1);
+                        ownerAssets.NonCombatShips.Remove(ship.Item1);
                         _combatShips.Remove(ship);
                     }
                 }
@@ -86,12 +90,22 @@ namespace Supremacy.Combat
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
-                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, we might as well decloak
+                //if(friendlyShips.Count() == 0)
+                //{
+                //    SendUpdates();
+                //}
+                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak or camouflage. If so, will be decloaked and or decamouflaged.
                 if (oppositionShips.Count() > 0)
                 {
                     maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
                     friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak());
-                    GameLog.Core.Combat.Debug("A cloaked ship is decloaking due to opposition being able to penetrate the cloak");
+                    {
+                        GameLog.Core.Combat.Debug("A cloakded or ship is decloaking due to opposition being able to penetrate the cloak");
+                    }
+                    friendlyShips.Where(s => s.Item1.Source.CamouflagedMeter.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decamouflage());
+                    {
+                        GameLog.Core.Combat.Debug("A camouflaged or ship is decamouflaged due to opposition being able to penetrate the camouflage");
+                    }
                 }
 
                 //TODO: get scan power of strucutes in system and look to decloak and or decamouflage ships in system
@@ -275,6 +289,10 @@ namespace Supremacy.Combat
                 if (combatShip.Item1.IsCloaked && _roundNumber >= 2)
                 {
                     combatShip.Item1.Decloak();
+                }
+                if (combatShip.Item1.IsCamouflaged && _roundNumber >= 2)
+                {
+                    combatShip.Item1.Decamouflage();
                 }
             }
         }

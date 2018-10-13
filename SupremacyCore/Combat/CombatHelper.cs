@@ -64,10 +64,10 @@ namespace Supremacy.Combat
             {
                 foreach (var ship in fleet.Ships)
                 {
-                    if (ship.IsCamouflaged)
-                    {
-                        continue;
-                    }
+                    //if (ship.IsCamouflaged)
+                    //{
+                    //    continue;
+                    //}
 
                     if (!assets.ContainsKey(fleet.Owner))
                     {
