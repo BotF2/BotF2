@@ -283,7 +283,9 @@ namespace Supremacy.Orbitals
 			writer.Write(_experienceLevel);
 			writer.WriteObject(_hullStrength);
 			writer.WriteObject(_shieldStrength);
-		}
+            writer.WriteObject(_cloakStrength);
+            writer.WriteObject(_camouflagedMeter);
+        }
 
 		public override void DeserializeOwnedData(SerializationReader reader, object context)
 		{
@@ -292,7 +294,9 @@ namespace Supremacy.Orbitals
 			_experienceLevel = reader.ReadUInt16();
 			_hullStrength = (Meter)reader.ReadObject();
 			_shieldStrength = (Meter)reader.ReadObject();
-			_crew.CurrentValueChanged += Crew_CurrentValueChanged;
+            _cloakStrength = (Meter)reader.ReadObject();
+            _camouflagedMeter = (Meter)reader.ReadObject();
+            _crew.CurrentValueChanged += Crew_CurrentValueChanged;
 		}
     }
 

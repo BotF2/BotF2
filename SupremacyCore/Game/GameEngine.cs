@@ -702,6 +702,7 @@ namespace Supremacy.Game
             foreach (var combat in combats)
             {
                 CombatReset.Reset();
+                GameLog.Core.Combat.DebugFormat("---- COMBAT OCCURED --------------------");
                 OnCombatOccurring(combat);
                 CombatReset.WaitOne();
             }
