@@ -98,13 +98,35 @@ namespace Supremacy.Combat
                 if (oppositionShips.Count() > 0)
                 {
                     maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
-                    friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak());
+                    //GameLog.Core.Combat.DebugFormat("maxScanStrengthOpposition = {0}", maxScanStrengthOpposition);
+
+                    if (_combatShips[i].Item1.IsCamouflaged) // || _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue > 0 || _combatShips[i].Item1.Source.CloakStrength.CurrentValue > 0)
                     {
-                        GameLog.Core.Combat.Debug("A cloakded or ship is decloaking due to opposition being able to penetrate the cloak");
-                    }
-                    friendlyShips.Where(s => s.Item1.Source.CamouflagedMeter.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decamouflage());
-                    {
-                        GameLog.Core.Combat.Debug("A camouflaged or ship is decamouflaged due to opposition being able to penetrate the camouflage");
+                        GameLog.Core.Combat.DebugFormat("for camouflaged ships: {0} {1} ({2}) is IsCamouflaged = {3}, (CamouflagedMeter Value = {4}, maxScanStrengthOpposition = {6})", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.IsCamouflaged, _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue, _combatShips[i].Item1.Source.CloakStrength.CurrentValue, maxScanStrengthOpposition);
+                        //, _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue, _combatShips[i].Item1.Source.CloakStrength.CurrentValue
+
+                        //friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak()); { GameLog.Core.Combat.DebugFormat("{0} is decloaking due to opposition being able to penetrate the cloak", _combatShips[i].Item1.Name); };
+                        //{
+                        //GameLog.Core.Combat.DebugFormat("A cloakded or ship is decloaking due to opposition being able to penetrate the cloak");
+                        //}
+                        //friendlyShips.Where(s => s.Item1.Source.CamouflagedMeter.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decamouflage());
+
+                        //{
+                        //;
+                        //{ GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is IsCamouflaged (False) = {3} (CamouflagedMeter Value = {4}, CloakStrength = {5})", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.IsCamouflaged, _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue, _combatShips[i].Item1.Source.CloakStrength.CurrentValue); }
+                        //GameLog.Core.Combat.DebugFormat("A camouflaged or ship is decamouflaged due to opposition being able to penetrate the camouflage");
+                        //}
+                        //}
+
+                        //if(_combatShips[i].Item1.IsCamouflaged)
+                        //{
+                        //var removingShip = _combatShips[i].Item1;
+                        //var remove = RemoveCamouflaged(removingShip);
+                        //CombatAssets CamouflagedRemovingAssets = GetAssets(_combatShips[i].Item1.Owner);
+                        //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) CamouflagedStrength = {3}, maxScanStrengthOpposition = {4}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.CamouflagedStrength, maxScanStrengthOpposition);
+                        CombatAssets CamouflagedRemovingAssets = GetAssets(_combatShips[i].Item1.Owner);
+                        CamouflagedRemovingAssets.CombatShips.Remove(_combatShips[i].Item1);
+                        CamouflagedRemovingAssets.NonCombatShips.Remove(_combatShips[i].Item1);
                     }
                 }
 
@@ -145,11 +167,11 @@ namespace Supremacy.Combat
 
                         if (target == null)
                         {
-                            GameLog.Core.Combat.DebugFormat("No target for {0} {1}", attackingShip.Source.ObjectID, attackingShip.Name);
+                            GameLog.Core.Combat.DebugFormat("No target for {0} {1} ({2})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design);
                         }
                         if (target != null)
                         {
-                            GameLog.Core.Combat.DebugFormat("Target for {0} {1} is {2} {3}", attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
+                            GameLog.Core.Combat.DebugFormat("Target for {0} {1} ({2}) is {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
                             // If we rushed a formation we could take damage
                             int chanceRushingFormation = RandomHelper.Random(100);
@@ -295,14 +317,15 @@ namespace Supremacy.Combat
                     combatShip.Item1.Decamouflage();
                 }
             }
+
         }
 
-        /// <summary>
-        /// Chooses a target for the given <see cref="CombatUnit"/>
-        /// </summary>
-        /// <param name="attacker"></param>
-        /// <returns></returns>
-        private CombatUnit ChooseTarget(CombatUnit attacker)
+            /// <summary>
+            /// Chooses a target for the given <see cref="CombatUnit"/>
+            /// </summary>
+            /// <param name="attacker"></param>
+            /// <returns></returns>
+            private CombatUnit ChooseTarget(CombatUnit attacker)
         {
             if (attacker == null)
             {
@@ -395,7 +418,7 @@ namespace Supremacy.Combat
 
             if (target.IsDestroyed)
             {
-                GameLog.Core.Combat.DebugFormat("{0} {1} was destroyed", target.Source.ObjectID, target.Name);
+                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) was destroyed", target.Source.ObjectID, target.Name, target.Source.Design);
                 CombatAssets targetAssets = GetAssets(target.Owner);
                 if (target.Source is Ship)
                 {
