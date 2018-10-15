@@ -50,10 +50,10 @@ namespace Supremacy.Combat
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {
             var assets = new Dictionary<Civilization, CombatAssets>();
-            var results = new List<CombatAssets>();
             var sector = GameContext.Current.Universe.Map[location];
-
             var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+            HiddenCombatAssets hiddenAssets = new HiddenCombatAssets();
+            var results = hiddenAssets.ExposeHiddenAssets(location);
 
             if ((engagingFleets.Count == 0) && (sector.Station == null))
             {
@@ -64,10 +64,10 @@ namespace Supremacy.Combat
             {
                 foreach (var ship in fleet.Ships)
                 {
-                    //if (ship.IsCamouflaged)
-                    //{
-                    //    continue;
-                    //}
+                    if (ship.IsCamouflaged) // || ship.IsCloaked)
+                    {
+                        continue;
+                    }
 
                     if (!assets.ContainsKey(fleet.Owner))
                     {

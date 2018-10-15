@@ -242,7 +242,7 @@ namespace Supremacy.Combat
             SendUpdates();
         }
 
-        protected void SendUpdates()
+        private void SendUpdates()
         {
             if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
             {
