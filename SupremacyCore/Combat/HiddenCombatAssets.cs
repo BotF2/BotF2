@@ -25,9 +25,9 @@ namespace Supremacy.Combat
         public List<Fleet> ExposeHiddenAssets(MapLocation location)
         {
             var engagingFleets = new List<Fleet>();
-            var fleetsAtLocation = new List<Fleet>(); // realy need to get something like the next commented out line to collect a list of fleets at location
-                //GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-            
+            var fleetsAtLocation = new List<Fleet>(); // need to collect a list of fleets at map location, something like the next line but get a conflict of linq ToList and using Obtics.Collections when the commented-out code is exposed.
+            //var fleetAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+
             if (fleetsAtLocation != null)
             {
                 for (int i = 0; i < fleetsAtLocation.Count; i++)
