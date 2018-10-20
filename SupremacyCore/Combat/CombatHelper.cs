@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -23,6 +24,7 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
+
         /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
         /// </summary>
@@ -48,43 +50,55 @@ namespace Supremacy.Combat
         }
 
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
-        {
-           
+        {          
             var assets = new Dictionary<Civilization, CombatAssets>();
             var results = new List<CombatAssets>();
+            var units = new Dictionary<Civilization, CombatUnit>();
             var sector = GameContext.Current.Universe.Map[location];
-            // var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-            HiddenCombatAssets hiddenAssets = new HiddenCombatAssets();
-            var engagingFleets = hiddenAssets.ExposeHiddenAssets(location);
+            var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+
+            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
+            var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
+            var friendlyShips = ExposedAssets.FriendlyShips;
+            var oppositionShips = ExposedAssets.OppositionShips;
+            var unitResults = ExposedAssets.UnitResults;
+
 
             if ((engagingFleets.Count == 0) && (sector.Station == null))
             {
                 return results;
             }
 
-            foreach (var fleet in engagingFleets)
+            // _combatShips.Where((Tuple<CombatUnit> s) => s.Item1.CamouflagedStrength < maxScanStrength).ForEach((Tuple<CombatUnit> s) => s.Item1.Decamouflage());
+            foreach (var unit in unitResults)
             {
+                if(unit.CamouflagedStrength < maxOppostionScanStrength)
+                {
+                    GameLog.Core.Combat.DebugFormat("max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}", 
+                        maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
+                    unit.Decamouflage();
+                }
+
+            }
+
+            foreach (var fleet in engagingFleets)
+            {                
                 foreach (var ship in fleet.Ships)
                 {
-                    if (ship.IsCamouflaged) // || ship.IsCloaked)
-                    {
-                        continue;
-                    }
-
                     if (!assets.ContainsKey(fleet.Owner))
                     {
                         assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
                     }
-
-                    if (ship.IsCombatant)
+                    if (ship.IsCombatant && !ship.IsCamouflaged)
                     {
                         assets[fleet.Owner].CombatShips.Add(new CombatUnit(ship));
                     }
-                    else
+                    else if (!ship.IsCamouflaged)
                     {
                         assets[fleet.Owner].NonCombatShips.Add(new CombatUnit(ship));
                     }
                 }
+              
             }
 
             if (sector.Station != null)
