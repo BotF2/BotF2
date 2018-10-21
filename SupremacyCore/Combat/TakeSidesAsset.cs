@@ -1,5 +1,6 @@
 ﻿//using Supremacy.Entities;
 //using Obtics.Collections;
+
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
@@ -67,12 +68,8 @@ namespace Supremacy.Combat
         {
             var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
 
-            //https://www.youtube.com/watch?v=FAj4uvuITe0
             if (fleetsAtLocation != null)
             {
-                //FriendlyShips = new List<Fleet>();
-                //OppositionShips = new List<Fleet>();
-                //UnitResults = new List<CombatUnit>();
 
                 //for (int i = 0; i < fleetsAtLocation.Count; i++)
                 //    FriendlyShips = fleetsAtLocation.Where(cs => !CombatHelper.WillEngage(fleetsAtLocation[i].Owner, cs.Owner));
@@ -92,9 +89,10 @@ namespace Supremacy.Combat
                             FriendlyShips.Add(fleetsAtLocation[j]);
                         }
                     }
-
-                    if (OppositionShips.Count() > 0)
+                    MaxOppositionScanStrengh = -1;
+                    if (OppositionShips.Count() > 0) // oppostion max scan found here vs friendly ships below and then in CombatHelper
                     {
+                        
                         foreach (var fleet in OppositionShips)
                         {
                             if (fleet.ScanStrength > MaxOppositionScanStrengh)
@@ -110,7 +108,8 @@ namespace Supremacy.Combat
                 foreach (var ship in fleet.Ships)
                     {
                         UnitResults.Add(new CombatUnit(ship));
-                    }
+                    //UnitResults.Where((Tuple<CombatUnit> s) => s.Item1.CamouflagedStrength < maxScanStrength).ForEach((Tuple<CombatUnit> s) => s.Item1.Decamouflage());
+                }
             }
         }
     }

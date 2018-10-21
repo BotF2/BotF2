@@ -51,6 +51,7 @@ namespace Supremacy.Combat
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {          
             var assets = new Dictionary<Civilization, CombatAssets>();
+            var unitAssets = new Dictionary<Civilization, CombatAssets>();
             var results = new List<CombatAssets>();
             var units = new Dictionary<Civilization, CombatUnit>();
             var sector = GameContext.Current.Universe.Map[location];
@@ -68,16 +69,6 @@ namespace Supremacy.Combat
             }
 
             // _combatShips.Where((Tuple<CombatUnit> s) => s.Item1.CamouflagedStrength < maxScanStrength).ForEach((Tuple<CombatUnit> s) => s.Item1.Decamouflage());
-            foreach (var unit in unitResults)
-            {
-                if(unit.CamouflagedStrength < maxOppostionScanStrength)
-                {
-                    GameLog.Core.Combat.DebugFormat("max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}", 
-                        maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
-                    unit.Decamouflage();
-                }
-
-            }
 
             foreach (var fleet in engagingFleets)
             {                
@@ -85,18 +76,53 @@ namespace Supremacy.Combat
                 {
                     if (!assets.ContainsKey(fleet.Owner))
                     {
-                        assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
+                        assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);                  
                     }
-                    if (ship.IsCombatant && !ship.IsCamouflaged)
+                    if (!unitAssets.ContainsKey(fleet.Owner))
+                    {
+                        unitAssets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
+                    }
+                    var unit = new CombatUnit(ship);
+
+                    if (ship.IsCombatant) // && !ship.IsCamouflaged)
                     {
                         assets[fleet.Owner].CombatShips.Add(new CombatUnit(ship));
+
+                        if (unit.CamouflagedStrength > maxOppostionScanStrength) // && maxOppostionScanStrength > -1)
+                        {
+                            //unitAssets[fleet.Owner].CombatShips.Add(unit);
+                            assets[fleet.Owner].CombatShips.Remove(unit);
+                            GameLog.Core.Combat.DebugFormat("CombatShip - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}",
+                                maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
+                        }
+
                     }
-                    else if (!ship.IsCamouflaged)
+                    else // if (!ship.IsCamouflaged)
                     {
                         assets[fleet.Owner].NonCombatShips.Add(new CombatUnit(ship));
+
+                        if (unit.CamouflagedStrength > maxOppostionScanStrength) // && maxOppostionScanStrength > -1)
+                        {
+                            assets[fleet.Owner].NonCombatShips.Remove(unit);
+                            //unitAssets[fleet.Owner].NonCombatShips.Add(unit);
+                            GameLog.Core.Combat.DebugFormat("NonCombatShip - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}",
+                                    maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
+                        }
                     }
                 }
-              
+                //foreach (var unit in unitResults)
+                //{
+
+                //    if (unit.CamouflagedStrength > maxOppostionScanStrength)
+                //    {
+                //        unitAssets[fleet.Owner].CombatShips.Add(unit);
+                //        assets[fleet.Owner].CombatShips.Remove(unit);
+                //        GameLog.Core.Combat.DebugFormat("CombatShip - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}",
+                //            maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
+                //    }
+
+                //}
+
             }
 
             if (sector.Station != null)
@@ -112,6 +138,7 @@ namespace Supremacy.Combat
             }
 
             results.AddRange(assets.Values);
+            results.RemoveRange(unitAssets.Values);
 
             return results;
         }
