@@ -38,12 +38,12 @@ namespace Supremacy.Combat
 
             int maxScanStrengthOpposition = 0;
 
-            // Scouts, camouflaged and Cloaked ships have a special chance of retreating BEFORE round 3
-            // .... cloaked or camouflaged ships might be detecked and decloaked decamouflaged in round 2
+            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
+            // .... cloaked ships might be detecked and decloaked in round 2
             if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked || (s.Item1.IsCamouflaged) || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
 

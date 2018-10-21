@@ -24,7 +24,6 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
-
         /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
         /// </summary>
@@ -56,7 +55,6 @@ namespace Supremacy.Combat
             var units = new Dictionary<Civilization, CombatUnit>();
             var sector = GameContext.Current.Universe.Map[location];
             var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-
             TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
             var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
             var friendlyShips = ExposedAssets.FriendlyShips;
