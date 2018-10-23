@@ -32,7 +32,7 @@ namespace Supremacy.Combat
         private int _camouflagedStrength = 0;
         private int _scanStrength;
 
-        protected CombatUnit() {}
+        protected CombatUnit(System.Collections.Generic.IEnumerable<Ship> ship) {}
 
         public CombatUnit(Orbital source)
         {

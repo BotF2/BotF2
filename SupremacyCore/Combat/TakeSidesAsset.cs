@@ -14,7 +14,7 @@ namespace Supremacy.Combat
     {
         private List<Fleet> _friendlyShips;
         private List<Fleet> _oppositionShips;       
-        private List<CombatUnit> _unitResults;
+        //private List<CombatUnit> _unitResults;
 
         public List<Fleet> FriendlyShips
         {
@@ -48,33 +48,12 @@ namespace Supremacy.Combat
         }
         public int MaxOppositionScanStrengh { get; set; }
 
-        public List<CombatUnit> UnitResults
-        {
-            get
-            {
-                if (_unitResults == null)
-                {
-                    _unitResults = new List<CombatUnit>();
-                }
-                return _unitResults;
-            }
-            set
-            {
-                _unitResults = value;
-            }
-        }
-
         public TakeSidesAssets(MapLocation location)
         {
             var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
 
             if (fleetsAtLocation != null)
             {
-
-                //for (int i = 0; i < fleetsAtLocation.Count; i++)
-                //    FriendlyShips = fleetsAtLocation.Where(cs => !CombatHelper.WillEngage(fleetsAtLocation[i].Owner, cs.Owner));
-                // _combatShips.Where((Tuple<CombatUnit> s) => s.Item1.CamouflagedStrength < maxScanStrength).ForEach((Tuple<CombatUnit> s) => s.Item1.Decamouflage());
-                //FriendlyShips.Where((Tuple<Fleet> s) => s.Item1.(!CombatHelper.WillEngage(fleetsAtLocation[i].Owner, cs.Owner)).ForEach((Tuple<CombatUnit> s) => s.Item1.Decamouflage());
 
                 for (int i = 0; i < fleetsAtLocation.Count; i++)
                 {
@@ -89,10 +68,9 @@ namespace Supremacy.Combat
                             FriendlyShips.Add(fleetsAtLocation[j]);
                         }
                     }
-                    MaxOppositionScanStrengh = -1;
-                    if (OppositionShips.Count() > 0) // oppostion max scan found here vs friendly ships below and then in CombatHelper
-                    {
-                        
+                    MaxOppositionScanStrengh = 0;
+                    if (OppositionShips.Count() > 0) 
+                    {                        
                         foreach (var fleet in OppositionShips)
                         {
                             if (fleet.ScanStrength > MaxOppositionScanStrengh)
@@ -101,14 +79,6 @@ namespace Supremacy.Combat
                             }
                         }
                     }
-                }
-            }
-            foreach (var fleet in FriendlyShips)
-            {
-                foreach (var ship in fleet.Ships)
-                    {
-                        UnitResults.Add(new CombatUnit(ship));
-                    //UnitResults.Where((Tuple<CombatUnit> s) => s.Item1.CamouflagedStrength < maxScanStrength).ForEach((Tuple<CombatUnit> s) => s.Item1.Decamouflage());
                 }
             }
         }
