@@ -7,29 +7,24 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Windows;
-
-using Supremacy.Annotations;
 using Supremacy.Client.Services;
 using Supremacy.Types;
+using System;
+using System.Collections.Specialized;
+using System.Net;
+using System.Text;
+using System.Windows;
 
 namespace Supremacy.Client
 {
     internal sealed class ClientUnhandledExceptionHandler : IUnhandledExceptionHandler
     {
         private readonly IGameErrorService _errorService;
+        private const string _reportErrorURL = "http://httpbin.org/post";
 
         #region Fields
         private readonly object _syncLock = new object();
         #endregion
-
-        public ClientUnhandledExceptionHandler([NotNull] IGameErrorService errorService)
-        {
-            if (errorService == null)
-                throw new ArgumentNullException("errorService");
-            _errorService = errorService;
-        }
 
         #region Implementation of IUnhandledExceptionHandler
         public void HandleError(Exception exception)
@@ -45,22 +40,19 @@ namespace Supremacy.Client
             }
             else
             {
+                string errors = "";
                 lock (_syncLock)
                 {
                     var innerException = exception;
 
                     while (innerException != null)
                     {
-                        Console.Error.WriteLine(innerException.Message);
-                        Console.Error.WriteLine();
-                        Console.Error.WriteLine(innerException.StackTrace);
-                        Console.Error.WriteLine();
-                        Console.Error.WriteLine("----------------------------------------");
-                        Console.Error.WriteLine();
-                        Console.Error.Flush();
+                        errors += string.Format("{0}\r\n{1}\r\n----------------------------------------", innerException.Message, innerException.StackTrace);
                         innerException = innerException.InnerException;
                     }
 
+                    Console.Error.WriteLine(errors);
+                    Console.Error.Flush();
                     MessageBox.Show(
                         "An unhandled exception has occurred.  Detailed error information is "
                         + "available in the 'Error.txt' file.",
@@ -68,8 +60,30 @@ namespace Supremacy.Client
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
 
+                    if (ClientSettings.Current.ReportErrors)
+                    {
+                        ReportError(errors);
+                    }
+
                     Environment.Exit(Environment.ExitCode);
                 }
+            }
+        }
+
+        /// <summary>
+        /// If error reporting is enabled, submits the error information to the developers
+        /// </summary>
+        public void ReportError(string errors)
+        {
+            using (var client = new WebClient())
+            {
+                var values = new NameValueCollection();
+                values["GameVersion"] = ClientApp.ClientVersion.ToString();
+                values["Errors"] = errors;
+
+                var response = client.UploadValues(_reportErrorURL, "POST", values);
+
+                MessageBox.Show(Encoding.Default.GetString(response));
             }
         }
         #endregion

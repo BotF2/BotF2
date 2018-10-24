@@ -2,72 +2,46 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Supremacy.Client.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="FullScreenMode" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="EnableDialogAnimations" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MasterVolume" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0.5</Value>
+    <Setting Name="EnableScreenTransitions" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MusicVolume" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0.4</Value>
+    <Setting Name="CheckForUpdatesOnStartup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="FXVolume" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0.5</Value>
+    <Setting Name="WindowHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">768</Value>
     </Setting>
-    <Setting Name="UseHighQualityScaling" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="WindowWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1280</Value>
     </Setting>
-    <Setting Name="UseAnimatedStars" Type="System.Boolean" Scope="User">
+    <Setting Name="UseCombatScreen" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="UseAnimation" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="UseCombatScreen" Type="System.Boolean" Scope="User">
+    <Setting Name="UseAnimatedStars" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="FederationPlayable" Type="System.Boolean" Scope="User">
+    <Setting Name="UseHighQualityScaling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="RomulanPlayable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="FXVolume" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.2</Value>
     </Setting>
-    <Setting Name="KlingonPlayable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="MusicVolume" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.2</Value>
     </Setting>
-    <Setting Name="CardassianPlayable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="MasterVolume" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.2</Value>
     </Setting>
-    <Setting Name="DominionPlayable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="BorgPlayable" Type="System.Boolean" Scope="User">
+    <Setting Name="FullScreenMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TerranEmpirePlayable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="WindowWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1280</Value>
-    </Setting>
-    <Setting Name="WindowHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">768</Value>
-    </Setting>
-    <Setting Name="TextDatabaseConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=|DataDirectory|\Resources\Data\TextDatabase.sdf&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;Microsoft.SqlServerCe.Client.3.5&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=|DataDirectory|\Resources\Data\TextDatabase.sdf</Value>
-    </Setting>
-    <Setting Name="CheckForUpdatesOnStartup" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="EnableScreenTransitions" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="EnableDialogAnimations" Type="System.Boolean" Scope="User">
+    <Setting Name="ReportErrors" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

@@ -395,85 +395,21 @@ namespace Supremacy.Client
         }
         #endregion
 
-        #region Race Playable Properties
-        //TODO: Are these needed or used anymore?
-        public static readonly DependencyProperty DominionPlayableProperty = DependencyProperty.Register(
-            "DominionPlayable",
-            typeof(bool),
-            typeof(ClientSettings),
-            new FrameworkPropertyMetadata(
-                true,
-                FrameworkPropertyMetadataOptions.None));
-
-        public static bool GetDominionPlayable(DependencyObject d)
-        {
-            return (bool)d.GetValue(DominionPlayableProperty);
-        }
-
-        public static void SetDominionPlayable(DependencyObject d, bool value)
-        {
-            d.SetValue(DominionPlayableProperty, value);
-        }
-
-        public bool DominionPlayable
-        {
-             get
-            {
-                GameLog.Client.GameData.DebugFormat("ClientSettings.cs: DominionPlayableProperty={0}, DominionPlayableProperty={1} ", DominionPlayableProperty, DominionPlayable);
-                return (bool)GetValue(DominionPlayableProperty);
-            }
-            set { SetValue(DominionPlayableProperty, value); }
-        }
-
-        public static readonly DependencyProperty BorgPlayableProperty = DependencyProperty.Register(
-            "BorgPlayable",
+        #region ReportErrors Property
+        public static readonly DependencyProperty ReportErrorsProperty = DependencyProperty.Register(
+            "ReportErrors",
             typeof(bool),
             typeof(ClientSettings),
             new FrameworkPropertyMetadata(
                 false,
                 FrameworkPropertyMetadataOptions.None));
 
-        public static bool GetBorgPlayable(DependencyObject d)
+        public bool ReportErrors
         {
-            return (bool)d.GetValue(BorgPlayableProperty);
-        }
-
-        public static void SetBorgPlayable(DependencyObject d, bool value)
-        {
-            d.SetValue(BorgPlayableProperty, value);
-        }
-
-        public bool BorgPlayable
-        {
-            get { return (bool)GetValue(BorgPlayableProperty); }
-            set { SetValue(BorgPlayableProperty, value); }
-        }
-
-        public static readonly DependencyProperty TerranEmpirePlayableProperty = DependencyProperty.Register(
-            "TerranEmpirePlayable",
-            typeof(bool),
-            typeof(ClientSettings),
-            new FrameworkPropertyMetadata(
-                false,
-                FrameworkPropertyMetadataOptions.None));
-
-        public static bool GetTerranEmpirePlayable(DependencyObject d)
-        {
-            return (bool)d.GetValue(TerranEmpirePlayableProperty);
-        }
-
-        public static void SetTerranEmpirePlayable(DependencyObject d, bool value)
-        {
-            d.SetValue(TerranEmpirePlayableProperty, value);
-        }
-
-        public bool TerranEmpirePlayable
-        {
-            get { return (bool)GetValue(TerranEmpirePlayableProperty); }
-            set { SetValue(TerranEmpirePlayableProperty, value); }
+            get { return (bool)GetValue(ReportErrorsProperty); }
+            set { SetValue(ReportErrorsProperty, value); }
         }
         #endregion
-
 
         #region ClientWindowWidth Property
         public static readonly DependencyProperty ClientWindowWidthProperty = DependencyProperty.Register(

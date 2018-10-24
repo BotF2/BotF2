@@ -316,7 +316,6 @@ namespace Supremacy.Client
             {
                 if (value == _currentScreen)
                     return;
-                //var enableScreenTransitions = Properties.Settings.Default.EnableScreenTransitions;
                 lock (_screens)
                 {
                     var lastScreen = _currentScreen;
@@ -326,7 +325,6 @@ namespace Supremacy.Client
                     {
                         if (lastScreen.Effect is TransitionEffect)
                             lastScreen.ClearValue(EffectProperty);
-                        //_lastScreenBitmap.Render(lastScreen);
                         lastScreen.Visibility = Visibility.Hidden;
                         var activeAwareScreen = lastScreen as IActiveAware;
                         if (activeAwareScreen != null)

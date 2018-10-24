@@ -182,5 +182,13 @@
         Content="{s:StringResource SETTINGS_USE_COMBAT_SCREEN}"
         ToolTip="{s:StringResource SETTINGS_USE_COMBAT_SCREEN_TOOLTIP}" 
         />
+        <CheckBox
+        Grid.ColumnSpan="2"
+        Grid.Column="0"
+        Grid.Row="13"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.ReportErrors), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_REPORT_ERRORS}"
+        ToolTip="{s:StringResource SETTINGS_REPORT_ERRORS_TOOLTIP}"
+        />
     </scc:AutoGrid>
 </UserControl>
