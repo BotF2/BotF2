@@ -90,8 +90,9 @@ namespace Supremacy.Combat
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
-                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak If so, will be decloaked.
-                if (oppositionShips.Count() > 0 && _roundNumber == 2)
+                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, will be decloaked.
+                if (oppositionShips.Count() > 0)
+
                 {
                     maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
             
@@ -284,9 +285,7 @@ namespace Supremacy.Combat
                 {
                     combatShip.Item1.Decloak();
                 }
-
             }
-
         }
 
             /// <summary>
