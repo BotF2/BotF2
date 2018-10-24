@@ -203,7 +203,6 @@
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
     <Compile Include="Markup\TechObjectTextGroupExtension.cs" />
     <Compile Include="Orbitals\OrbitalHelper.cs" />
-    <Compile Include="Personnel\AgentCollection.cs" />
     <Compile Include="Resources\MasterResources.cs" />
     <Compile Include="Scripting\CivilizationScopedEvent.cs" />
     <Compile Include="Scripting\EventDefinition.cs" />
@@ -261,7 +260,6 @@
     <Compile Include="Utility\GameScheduler.cs" />
     <Compile Include="Utility\GCHelper.cs" />
     <Compile Include="Utility\ShipSuffixes.cs" />
-    <Compile Include="Utility\ObjectDumper.cs" />
     <Compile Include="Utility\TryConvert.cs" />
     <Compile Include="Utility\XmlWriterEx.cs" />
     <Compile Include="Xaml\XamlHelper.cs" />
@@ -342,7 +340,6 @@
     <Compile Include="Effects\DynamicProperty.cs" />
     <Compile Include="Effects\ItemStructList.cs" />
     <Compile Include="Expressions\DynamicExpressions.cs" />
-    <Compile Include="Collections\IndexedBindingList.cs" />
     <Compile Include="Collections\IndexedCollection.cs" />
     <Compile Include="Collections\INotifyKeyedSetChanged.cs" />
     <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
@@ -411,7 +408,6 @@
     <Compile Include="Client\IClientContext.cs" />
     <Compile Include="Game\IGameTurnListener.cs" />
     <Compile Include="Game\PlayerSlot.cs" />
-    <Compile Include="Personnel\Agent.cs" />
     <Compile Include="Resources\IResourceManager.cs" />
     <Compile Include="Scripting\Events\ReligiousHolidayEvent.cs" />
     <Compile Include="Scripting\ScriptedEvent.cs" />
@@ -449,7 +445,6 @@
     <Compile Include="Utility\EventExtensions.cs" />
     <Compile Include="Utility\Guard.cs" />
     <Compile Include="Utility\ChannelLogAppender.cs" />
-    <Compile Include="Utility\ReaderWriterSpinLock.cs" />
     <Compile Include="Utility\GameLog.cs" />
     <Compile Include="Network\NetException.cs" />
     <Compile Include="Network\NetUtility.cs" />
@@ -523,12 +518,10 @@
     <Compile Include="Universe\BaseGalaxyLayout.cs" />
     <Compile Include="Universe\ClusterGalaxyLayout.cs" />
     <Compile Include="Universe\ColonyBuilder.cs" />
-    <Compile Include="Universe\ColonyView.cs" />
     <Compile Include="Universe\EllipticalGalaxyLayout.cs" />
     <Compile Include="Universe\Enums.cs" />
     <Compile Include="Universe\GalaxyGenerator.cs" />
     <Compile Include="Universe\IGalaxyLayout.cs" />
-    <Compile Include="Universe\IHealthCenter.cs" />
     <Compile Include="Universe\IrregularGalaxyLayout.cs" />
     <Compile Include="Universe\IUniverseObject.cs" />
     <Compile Include="Universe\MapHelper.cs" />
@@ -546,15 +539,12 @@
     <Compile Include="Universe\SpiralGalaxyLayout.cs" />
     <Compile Include="Universe\StarSystem.cs" />
     <Compile Include="Universe\Colony.cs" />
-    <Compile Include="Universe\StarSystemView.cs" />
     <Compile Include="Universe\UninhabitableAttribute.cs" />
     <Compile Include="Universe\UniverseManager.cs" />
     <Compile Include="Universe\UniverseObject.cs" />
     <Compile Include="Universe\UniverseObjectSet.cs" />
-    <Compile Include="Universe\UniverseObjectView.cs" />
     <Compile Include="Utility\AsyncHelper.cs" />
     <Compile Include="Utility\Random\ChanceTree.cs.cs" />
-    <Compile Include="Utility\GameLogManager.cs" />
     <Compile Include="Utility\Random\MersenneTwister.cs" />
     <Compile Include="Utility\Random\RandomProvider.cs" />
     <Compile Include="Utility\RomanNumber.cs" />
