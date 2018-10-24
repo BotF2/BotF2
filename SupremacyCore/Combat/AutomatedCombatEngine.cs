@@ -38,12 +38,12 @@ namespace Supremacy.Combat
 
             int maxScanStrengthOpposition = 0;
 
-            // Scouts, camouflaged and Cloaked ships have a special chance of retreating BEFORE round 3
-            // .... cloaked or camouflaged ships might be detecked and decloaked decamouflaged in round 2
+            // ScoutsCloaked ships have a special chance of retreating BEFORE round 3
+            // .... cloaked ships might be detecked and decloaked in round 2
             if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked || (s.Item1.IsCamouflaged) || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
 
@@ -94,7 +94,7 @@ namespace Supremacy.Combat
                 //{
                 //    SendUpdates();
                 //}
-                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak or camouflage. If so, will be decloaked and or decamouflaged.
+                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, will be decloaked.
                 if (oppositionShips.Count() > 0)
                 {
                     maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
@@ -102,13 +102,13 @@ namespace Supremacy.Combat
 
                     if (_combatShips[i].Item1.IsCamouflaged) // || _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue > 0 || _combatShips[i].Item1.Source.CloakStrength.CurrentValue > 0)
                     {
-                        GameLog.Core.Combat.DebugFormat("for camouflaged ships: {0} {1} ({2}) is IsCamouflaged = {3}, (CamouflagedMeter Value = {4}, maxScanStrengthOpposition = {6})", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.IsCamouflaged, _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue, _combatShips[i].Item1.Source.CloakStrength.CurrentValue, maxScanStrengthOpposition);
+                    //    GameLog.Core.Combat.DebugFormat("for camouflaged ships: {0} {1} ({2}) is IsCamouflaged = {3}, (CamouflagedMeter Value = {4}, maxScanStrengthOpposition = {6})", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.IsCamouflaged, _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue, _combatShips[i].Item1.Source.CloakStrength.CurrentValue, maxScanStrengthOpposition);
                         //, _combatShips[i].Item1.Source.CamouflagedMeter.CurrentValue, _combatShips[i].Item1.Source.CloakStrength.CurrentValue
 
-                        //friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak()); { GameLog.Core.Combat.DebugFormat("{0} is decloaking due to opposition being able to penetrate the cloak", _combatShips[i].Item1.Name); };
-                        //{
-                        //GameLog.Core.Combat.DebugFormat("A cloakded or ship is decloaking due to opposition being able to penetrate the cloak");
-                        //}
+                        friendlyShips.Where(s => s.Item1.Source.CloakStrength.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decloak()); { GameLog.Core.Combat.DebugFormat("{0} is decloaking due to opposition being able to penetrate the cloak", _combatShips[i].Item1.Name); };
+                        {
+                            GameLog.Core.Combat.DebugFormat("A cloakded or ship is decloaking due to opposition being able to penetrate the cloak");
+                        }
                         //friendlyShips.Where(s => s.Item1.Source.CamouflagedMeter.CurrentValue < maxScanStrengthOpposition).ForEach(s => s.Item1.Decamouflage());
 
                         //{
@@ -124,9 +124,9 @@ namespace Supremacy.Combat
                         //var remove = RemoveCamouflaged(removingShip);
                         //CombatAssets CamouflagedRemovingAssets = GetAssets(_combatShips[i].Item1.Owner);
                         //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) CamouflagedStrength = {3}, maxScanStrengthOpposition = {4}", _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.CamouflagedStrength, maxScanStrengthOpposition);
-                        CombatAssets CamouflagedRemovingAssets = GetAssets(_combatShips[i].Item1.Owner);
-                        CamouflagedRemovingAssets.CombatShips.Remove(_combatShips[i].Item1);
-                        CamouflagedRemovingAssets.NonCombatShips.Remove(_combatShips[i].Item1);
+                        //    CombatAssets CamouflagedRemovingAssets = GetAssets(_combatShips[i].Item1.Owner);
+                        //    CamouflagedRemovingAssets.CombatShips.Remove(_combatShips[i].Item1);
+                        //    CamouflagedRemovingAssets.NonCombatShips.Remove(_combatShips[i].Item1);
                     }
                 }
 
@@ -312,12 +312,7 @@ namespace Supremacy.Combat
                 {
                     combatShip.Item1.Decloak();
                 }
-                if (combatShip.Item1.IsCamouflaged && _roundNumber >= 2)
-                {
-                    combatShip.Item1.Decamouflage();
-                }
             }
-
         }
 
             /// <summary>
