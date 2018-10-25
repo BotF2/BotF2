@@ -173,7 +173,6 @@
     <Compile Include="AI\DiplomatAI.cs" />
     <Compile Include="Collections\EnumValueCollection.cs" />
     <Compile Include="Collections\InitOnlyKeyedCollection.cs" />
-    <Compile Include="Collections\KeyedProjection.cs" />
     <Compile Include="Collections\SafeEnumerator.cs" />
     <Compile Include="Collections\StackExtensions.cs" />
     <Compile Include="Combat\InvasionArena.cs" />
@@ -290,13 +289,11 @@
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ConcurrentStack.cs" />
     <Compile Include="Collections\DelegatingIndexedCollection.cs" />
-    <Compile Include="Collections\EmptyKeyedCollection.cs" />
     <Compile Include="Collections\GameObjectList.cs" />
     <Compile Include="Collections\ImmutableAvlTree.cs" />
     <Compile Include="Collections\GameObjectLookupCollection.cs" />
     <Compile Include="Collections\IndexedEnumerable.cs" />
     <Compile Include="Collections\Interfaces.cs" />
-    <Compile Include="Collections\ObservableCollectionExtended.cs" />
     <Compile Include="Collections\ObservableKeyedCollection.cs" />
     <Compile Include="Collections\ReadOnlyCollectionBase.cs" />
     <Compile Include="Collections\WeakDictionary.cs" />
@@ -436,11 +433,9 @@
     <Compile Include="Types\ComparerFromComparison.cs" />
     <Compile Include="Types\DelegatingEqualityComparer.cs" />
     <Compile Include="Types\Disposer.cs" />
-    <Compile Include="Types\FreezableBase.cs" />
     <Compile Include="Types\GameDataException.cs" />
     <Compile Include="Types\SupportInitializeBase.cs" />
     <Compile Include="Types\MapLocationCollection.cs" />
-    <Compile Include="Utility\DelegatingWeakEventListener.cs" />
     <Compile Include="Utility\DoubleUtil.cs" />
     <Compile Include="Utility\EventExtensions.cs" />
     <Compile Include="Utility\Guard.cs" />
