@@ -254,7 +254,6 @@
     <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
     <Compile Include="Utility\Random\RandomHelper.cs" />
-    <Compile Include="Utility\DelegatingWeakCollectionChangedListener.cs" />
     <Compile Include="Utility\EnumUtilities.cs" />
     <Compile Include="Utility\GameScheduler.cs" />
     <Compile Include="Utility\GCHelper.cs" />
@@ -297,7 +296,6 @@
     <Compile Include="Collections\ObservableKeyedCollection.cs" />
     <Compile Include="Collections\ReadOnlyCollectionBase.cs" />
     <Compile Include="Collections\WeakDictionary.cs" />
-    <Compile Include="Collections\WeakList.cs" />
     <Compile Include="Messages\GameSavedMessage.cs" />
     <Compile Include="Messages\PlayerTurnFinishedMessage.cs" />
     <Compile Include="Messages\TurnProgressChangedMessage.cs" />
@@ -338,7 +336,6 @@
     <Compile Include="Effects\ItemStructList.cs" />
     <Compile Include="Expressions\DynamicExpressions.cs" />
     <Compile Include="Collections\IndexedCollection.cs" />
-    <Compile Include="Collections\INotifyKeyedSetChanged.cs" />
     <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
     <Compile Include="Expressions\ExpressionSerializer.cs" />
     <Compile Include="Expressions\LinqExtensions.cs" />
@@ -380,9 +377,7 @@
     <Compile Include="Economy\ResearchPool.cs" />
     <Compile Include="Economy\Treasury.cs" />
     <Compile Include="Encyclopedia\IEncyclopediaEntry.cs" />
-    <Compile Include="Entities\CivilizationView.cs" />
     <Compile Include="Entities\CivilizationPairedMap.cs" />
-    <Compile Include="Entities\CivList.cs" />
     <Compile Include="Expressions\ExpandableExpressionVisitor.cs" />
     <Compile Include="Expressions\ExpandableQuery.cs" />
     <Compile Include="Expressions\ExpressionExpander.cs" />
@@ -546,7 +541,6 @@
     <Compile Include="Utility\Statistics.cs" />
     <Compile Include="Utility\StringHelper.cs" />
     <Compile Include="Utility\TextHelper.cs" />
-    <Compile Include="Utility\WeakEventHelper.cs" />
     <Compile Include="Utility\XmlHelper.cs" />
     <Compile Include="VFS\AbstractSource.cs" />
     <Compile Include="VFS\AbstractWritableSource.cs" />
