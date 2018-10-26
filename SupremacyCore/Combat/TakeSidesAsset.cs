@@ -12,8 +12,8 @@ namespace Supremacy.Combat
 {
     public class TakeSidesAssets
     {
-        private List<Fleet> _oppositionFleets;       
-       
+        private List<Fleet> _oppositionFleets;
+
         public List<Fleet> OppositionFleets
         {
             get
@@ -45,21 +45,20 @@ namespace Supremacy.Combat
                         if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner))
                         {
                             OppositionFleets.Add(fleetsAtLocation[j]);
+                            OppositionFleets.Distinct();                            
                         }
-                    }
-                }
-            }
-        }
-        public void MaxOppostionScanMethod()
-        {
-            MaxOppositionScanStrengh = 0;
-            if (OppositionFleets.Count() > 0)
-            {
-                foreach (var fleet in OppositionFleets)
-                {
-                    if (fleet.ScanStrength > MaxOppositionScanStrengh)
-                    {
-                        MaxOppositionScanStrengh = fleet.ScanStrength;
+
+                        MaxOppositionScanStrengh = 0;
+                        if (OppositionFleets.Count() > 0)
+                        {
+                            foreach (var fleet in OppositionFleets)
+                            {
+                                if (fleet.ScanStrength > MaxOppositionScanStrengh)
+                                {
+                                    MaxOppositionScanStrengh = fleet.ScanStrength;
+                                }
+                            }
+                        }
                     }
                 }
             }
