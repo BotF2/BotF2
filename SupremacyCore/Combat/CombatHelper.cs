@@ -50,67 +50,67 @@ namespace Supremacy.Combat
 
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {          
-            var assets = new Dictionary<Civilization, CombatAssets>();
-            //var unitAssets = new Dictionary<Civilization, CombatAssets>();
+            var assets = new Dictionary<Civilization, CombatAssets>();        
             var results = new List<CombatAssets>();
             var units = new Dictionary<Civilization, CombatUnit>();
             var sector = GameContext.Current.Universe.Map[location];
             var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
             TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
             var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
-            var friendlyShips = ExposedAssets.FriendlyShips;
-            var oppositionShips = ExposedAssets.OppositionShips;
-
-            if ((oppositionShips.Count == 0) && (sector.Station == null))
+           // var friendlyFleets = ExposedAssets.FriendlyFleets;
+            var oppositionFleets = ExposedAssets.OppositionFleets;
+           
+            if ((oppositionFleets.Count == 0) && (sector.Station == null))
             {
                 return results;
             }
+
             else
-            {
-               //FriendlyShips.Where((Tuple<Fleet> s) => s.Item1.(!CombatHelper.WillEngage(fleetsAtLocation[i].Owner, cs.Owner)).ForEach((Tuple<CombatUnit> s) => s.Item1.Decamouflage());
-               //var fleets = engagingFleets.SelectMany(j => j).ToList();
-               //var ship = engagingFleets.SelectMany(i => i).ToList();
-      
+            {             
                var _ships = from p in engagingFleets.SelectMany(l => l.Ships) select p;
              
-                var Ships = _ships.Distinct().ToList();
+               var Ships = _ships.Distinct().ToList();
                
                 foreach (var ship in Ships)
-                { 
+                {
+                    CombatUnit unit = new CombatUnit(ship);
+                    if ((ship.IsCamouflaged) && (unit.CamouflagedStrength >= maxOppostionScanStrength))
+                    {
+                        continue;
+                    }
                     if (!assets.ContainsKey(ship.Owner))
                     {
                         assets[ship.Owner] = new CombatAssets(ship.Owner, location);
                     }
-                    var unit = new CombatUnit(ship);
-
-                    if (ship.IsCombatant && oppositionShips.Count > 0) // && !ship.IsCamouflaged)
+                    if (ship.IsCombatant) 
                     {
                         assets[ship.Owner].CombatShips.Add(new CombatUnit(ship));
-
-                        if ((ship.IsCamouflaged) && (unit.CamouflagedStrength > maxOppostionScanStrength)) // && maxOppostionScanStrength > -1)
+                        
+                        if (ship.IsCamouflaged) 
                         {
                             unit.Decamouflage();
-                            //unitAssets[ship.Owner].CombatShips.Add(unit);
-                            assets[ship.Owner].CombatShips.Remove(unit);
-                            GameLog.Core.Combat.DebugFormat("CombatShip - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}",
-                                maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
+                            ship.IsCamouflaged = false; // do we need an updater here to unit.Decamouflage() reset ship.IsCamouflaged? - so far it does not appear to do this in the GameLog below.
+                                                                    
+                            GameLog.Core.Combat.DebugFormat("CombatShip Decamouflage - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5} Is Camouflaged? {6}",
+                                maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString(), ship.IsCamouflaged.ToString());                         
                         }
 
                     }
-                    else if (oppositionShips.Count > 0) 
+                    else
                     {
                         assets[ship.Owner].NonCombatShips.Add(new CombatUnit(ship));
-
-                        if ((ship.IsCamouflaged) && (unit.CamouflagedStrength > maxOppostionScanStrength)) // && maxOppostionScanStrength > -1)
+                       
+                        if (ship.IsCamouflaged) 
                         {
                             unit.Decamouflage();
-                            assets[ship.Owner].NonCombatShips.Remove(unit);
-                            //unitAssets[ship.Owner].NonCombatShips.Add(unit);
+                            ship.IsCamouflaged = false;
+
+                        
                             GameLog.Core.Combat.DebugFormat("NonCombatShip - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}",
                                     maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
                         }
+
                     }
-        
                 }
             }
             if (sector.Station != null)
@@ -124,9 +124,8 @@ namespace Supremacy.Combat
 
                 assets[owner].Station = new CombatUnit(sector.Station);
             }
-
+                         
             results.AddRange(assets.Values);
-            //results.RemoveRange(unitAssets.Values);
 
             return results;
         }

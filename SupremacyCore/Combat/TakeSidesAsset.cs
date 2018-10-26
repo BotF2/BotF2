@@ -12,38 +12,21 @@ namespace Supremacy.Combat
 {
     public class TakeSidesAssets
     {
-        private List<Fleet> _friendlyShips;
-        private List<Fleet> _oppositionShips;       
-        //private List<CombatUnit> _unitResults;
-
-        public List<Fleet> FriendlyShips
+        private List<Fleet> _oppositionFleets;       
+       
+        public List<Fleet> OppositionFleets
         {
             get
             {
-                if (_friendlyShips == null)
+                if (_oppositionFleets == null)
                 {
-                    _friendlyShips = new List<Fleet>();
+                    _oppositionFleets = new List<Fleet>();
                 }
-                return _friendlyShips;
+                return _oppositionFleets;
             }
             set
             {
-                _friendlyShips = value;
-            }
-        }
-        public List<Fleet> OppositionShips
-        {
-            get
-            {
-                if (_oppositionShips == null)
-                {
-                    _oppositionShips = new List<Fleet>();
-                }
-                return _oppositionShips;
-            }
-            set
-            {
-                _oppositionShips = value;
+                _oppositionFleets = value;
             }
         }
         public int MaxOppositionScanStrengh { get; set; }
@@ -61,23 +44,22 @@ namespace Supremacy.Combat
                     {
                         if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner))
                         {
-                            OppositionShips.Add(fleetsAtLocation[j]);
-                        }
-                        if (!CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner))
-                        {
-                            FriendlyShips.Add(fleetsAtLocation[j]);
+                            OppositionFleets.Add(fleetsAtLocation[j]);
                         }
                     }
-                    MaxOppositionScanStrengh = 0;
-                    if (OppositionShips.Count() > 0) 
-                    {                        
-                        foreach (var fleet in OppositionShips)
-                        {
-                            if (fleet.ScanStrength > MaxOppositionScanStrengh)
-                            {
-                                MaxOppositionScanStrengh = fleet.ScanStrength;
-                            }
-                        }
+                }
+            }
+        }
+        public void MaxOppostionScanMethod()
+        {
+            MaxOppositionScanStrengh = 0;
+            if (OppositionFleets.Count() > 0)
+            {
+                foreach (var fleet in OppositionFleets)
+                {
+                    if (fleet.ScanStrength > MaxOppositionScanStrengh)
+                    {
+                        MaxOppositionScanStrengh = fleet.ScanStrength;
                     }
                 }
             }

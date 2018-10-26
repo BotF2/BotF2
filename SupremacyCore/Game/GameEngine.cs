@@ -677,14 +677,18 @@ namespace Supremacy.Game
             var invasionLocations = new HashSet<MapLocation>();
             var combats = new List<List<CombatAssets>>();
             var invasions = new List<InvasionArena>();
-
-            foreach (var fleet in GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet))
+            var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).GroupBy(p => p.Location).Select(g => g.First()).ToList();
+            
+            foreach (var fleet in fleetsAtLocation)
             {
-                if (!combatLocations.Contains(fleet.Location))
+                //List<Fleet> _owners = new List<Fleet>();
+                //var Owners = _owners.Where(p => p.Owner != null).GroupBy(p => p.Owner).Select(g => g.FirstOrDefault()).ToList();
+
+                if (!combatLocations.Contains(fleet.Location)) // && (Owners.Count > 1))
                 {
                     var assets = CombatHelper.GetCombatAssets(fleet.Location);
                     if (assets.Count > 1)
-                    {
+                        {
                         combats.Add(assets);
                         combatLocations.Add(fleet.Location);
                     }
