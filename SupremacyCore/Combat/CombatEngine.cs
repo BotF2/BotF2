@@ -430,14 +430,13 @@ namespace Supremacy.Combat
             {
                 foreach (var assimilatedShip in assets.AssimilatedShips)
                 {
+                    var destination = CombatHelper.CalculateRetreatDestination(assets);
                     var ship = (Ship)assimilatedShip.Source;
                     ship.Owner = borg;
-
-                    var newfleet = new Fleet();
-                    ship.Fleet.RemoveShip(ship);
-                    newfleet.AddShip(ship);
+                    var newfleet = ship.CreateFleet();
+                    newfleet.Location = destination.Location;
                     newfleet.Owner = borg;
-
+                  
                     newfleet.SetOrder(FleetOrders.EngageOrder.Create());
                     if (newfleet.Order == null)
                     {
