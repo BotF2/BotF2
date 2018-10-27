@@ -93,10 +93,10 @@ namespace Supremacy.WCF
         #endregion
 
         #region Properties
-        internal static GameLog Log
-        {
-            get { return _log.Value; }
-        }
+        //internal static GameLog Log
+        //{
+        //    get { return _log.Value; }
+        //}
 
         internal static ISupremacyCallback Callback
         {
@@ -226,12 +226,12 @@ namespace Supremacy.WCF
             }
             catch (SupremacyException e)
             {
-                Log.General.Error("An error occurred while starting a new game.", e);
+                GameLog.Server.General.Error("An error occurred while starting a new game.", e);
                 _errorService.HandleError(e);
             }
             catch (Exception e)
             {
-                Log.General.Error("An error occurred while starting a new game.", e);
+                GameLog.Server.General.Error("An error occurred while starting a new game.", e);
             }
         }
 
@@ -1120,7 +1120,7 @@ namespace Supremacy.WCF
                     .ToAsync(_scheduler)()
                     .Subscribe(
                     _ => { },
-                    e => Log.General.Error("Error occurred while starting game.", e));
+                    e => GameLog.Server.General.Error("Error occurred while starting game.", e));
             }
 
             return HostGameResult.Success;
