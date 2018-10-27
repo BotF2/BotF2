@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -48,43 +49,69 @@ namespace Supremacy.Combat
         }
 
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
-        {
-            var assets = new Dictionary<Civilization, CombatAssets>();
+        {          
+            var assets = new Dictionary<Civilization, CombatAssets>();        
             var results = new List<CombatAssets>();
+            var units = new Dictionary<Civilization, CombatUnit>();
             var sector = GameContext.Current.Universe.Map[location];
-
             var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-
-            if ((engagingFleets.Count == 0) && (sector.Station == null))
+            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
+            var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;        
+            var oppositionFleets = ExposedAssets.OppositionFleets;
+           
+            if ((oppositionFleets.Count == 0) && (sector.Station == null))
             {
                 return results;
             }
 
-            foreach (var fleet in engagingFleets)
-            {
-                foreach (var ship in fleet.Ships)
+            else
+            {             
+               var _ships = from p in engagingFleets.SelectMany(l => l.Ships) select p;
+             
+               var Ships = _ships.Distinct().ToList();
+               
+                foreach (var ship in Ships)
                 {
-                    if (ship.IsCamouflaged)
+                    CombatUnit unit = new CombatUnit(ship);
+                    if ((ship.IsCamouflaged) && (unit.CamouflagedStrength >= maxOppostionScanStrength))
                     {
                         continue;
                     }
-
-                    if (!assets.ContainsKey(fleet.Owner))
+                    if (!assets.ContainsKey(ship.Owner))
                     {
-                        assets[fleet.Owner] = new CombatAssets(fleet.Owner, location);
+                        assets[ship.Owner] = new CombatAssets(ship.Owner, location);
                     }
-
-                    if (ship.IsCombatant)
+                    if (ship.IsCombatant) 
                     {
-                        assets[fleet.Owner].CombatShips.Add(new CombatUnit(ship));
+                        assets[ship.Owner].CombatShips.Add(new CombatUnit(ship));
+                        
+                        if (ship.IsCamouflaged) 
+                        {
+                            unit.Decamouflage();
+                            ship.IsCamouflaged = false; // do we need an updater here to unit.Decamouflage() reset ship.IsCamouflaged? - so far it does not appear to do this in the GameLog below.
+                                                                    
+                            GameLog.Core.Combat.DebugFormat("CombatShip Decamouflage - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5} Is Camouflaged? {6}",
+                                maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString(), ship.IsCamouflaged.ToString());                         
+                        }
+
                     }
                     else
                     {
-                        assets[fleet.Owner].NonCombatShips.Add(new CombatUnit(ship));
+                        assets[ship.Owner].NonCombatShips.Add(new CombatUnit(ship));
+                       
+                        if (ship.IsCamouflaged) 
+                        {
+                            unit.Decamouflage();
+                            ship.IsCamouflaged = false;
+
+                        
+                            GameLog.Core.Combat.DebugFormat("NonCombatShip - max scan ={0}, unit Camouflage ={1} for{2} {3} {4} at {5}",
+                                    maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString());
+                        }
+
                     }
                 }
             }
-
             if (sector.Station != null)
             {
                 var owner = sector.Station.Owner;
@@ -96,7 +123,7 @@ namespace Supremacy.Combat
 
                 assets[owner].Station = new CombatUnit(sector.Station);
             }
-
+                         
             results.AddRange(assets.Values);
 
             return results;

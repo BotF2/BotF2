@@ -31,6 +31,7 @@ namespace Supremacy.Orbitals
         private byte _camouflagedStrength;
         private bool _isCamouflaged;
         private bool _isAssimilated;
+        private byte _scanStrength;
         private Meter _fuelReserve;
         private ShipType _shipType;
         #endregion
@@ -252,9 +253,9 @@ namespace Supremacy.Orbitals
         }
 
         /// <summary>
-        /// Gets or sets the camouflaged strength.
+        /// Gets or sets the camouflage strength.
         /// </summary>
-        /// <value>The camouflaged strength.</value>
+        /// <value>The camouflage strength.</value>
         public int CamouflagedStrength
         {
             get { return _camouflagedStrength; }
@@ -319,6 +320,8 @@ namespace Supremacy.Orbitals
             _shipType = design.ShipType;
             _fuelReserve = new Meter(design.FuelCapacity, 0, design.FuelCapacity);
             _fuelReserve.CurrentValueChanged += FuelReserve_CurrentValueChanged;
+            //_cloakStrength = design.CloakStrength;
+            //_camouflagedStrength = design.CamouflagedStrength;
         }
 
         /// <summary>
@@ -386,6 +389,7 @@ namespace Supremacy.Orbitals
                 _range = (byte)design.Range;
                 _cloakStrength = (byte)design.CloakStrength;
                 _camouflagedStrength = (byte)design.CamouflagedStrength;
+                _scanStrength = (byte)design.ScanStrength;
             }
             _fuelReserve.UpdateAndReset();
         }
@@ -393,8 +397,8 @@ namespace Supremacy.Orbitals
 		public override void SerializeOwnedData(SerializationWriter writer, object context)
 		{
 			base.SerializeOwnedData(writer, context);
-			writer.Write(_cloakStrength);
-            writer.Write(_camouflagedStrength);
+			//writer.Write(_cloakStrength);
+            //writer.Write(_camouflagedStrength);
             writer.Write(_fleetId);
 			writer.WriteObject(_fuelReserve);
 			writer.Write(_isCloaked);
@@ -408,8 +412,8 @@ namespace Supremacy.Orbitals
 		public override void DeserializeOwnedData(SerializationReader reader, object context)
 		{
 			base.DeserializeOwnedData(reader, context);
-			_cloakStrength = reader.ReadByte();
-            _camouflagedStrength = reader.ReadByte();
+			//_cloakStrength = reader.ReadByte();
+            //_camouflagedStrength = reader.ReadByte();
             _fleetId = reader.ReadInt32();
 			_fuelReserve = (Meter)reader.ReadObject();
 			_isCloaked = reader.ReadBoolean();

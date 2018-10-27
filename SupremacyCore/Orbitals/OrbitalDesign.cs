@@ -16,6 +16,7 @@ using Supremacy.Orbitals;
 using Supremacy.Annotations;
 using Supremacy.Tech;
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -28,6 +29,8 @@ namespace Supremacy.Orbitals
         private Percentage _shieldRechargeRate;
         private Percentage _scienceAbility;
         private byte _scanPower;
+        private byte _cloakStrength;
+        private byte _camouflagedStrength;
         private byte _sensorRange;
         private string _shipType;
         private WeaponType _primaryWeapon;
@@ -126,6 +129,26 @@ namespace Supremacy.Orbitals
         {
             get { return _scanPower; }
             set { _scanPower = (byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the cloak strength.
+        /// </summary>
+        /// <value>The cloak strength.</value>
+        public int CloakStrength
+        {
+            get { return _cloakStrength; }
+            set { _cloakStrength = (byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the scan strength.
+        /// </summary>
+        /// <value>The scan strength.</value>
+        public int CamouflagedStrength
+        {
+            get { return _camouflagedStrength; }
+            set { _camouflagedStrength = (byte)value; }
         }
 
         /// <summary>
@@ -250,6 +273,14 @@ namespace Supremacy.Orbitals
             if (element["ShieldRecharge"] != null)
             {
                 _shieldRechargeRate = Number.ParsePercentage(element["ShieldRecharge"].InnerText.Trim());
+            }
+            if (element["CloakStrength"] != null)
+            {
+                _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
+            }
+            if (element["CamouflagedStrength"] != null)
+            {
+                _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
             }
             if (element["BeamType"] != null)
             {

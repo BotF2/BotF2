@@ -50,8 +50,8 @@ namespace Supremacy.Client.Views
             if (presentationModel == null)
                 return;
 
-            presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();
-            GameLog.Client.General.DebugFormat("presentationModel.SelectedTaskForce.Name = {0}", presentationModel.SelectedTaskForce.Name);
+                presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();
+                //GameLog.Client.General.DebugFormat("presentationModel.SelectedTaskForce.Name = {0}", presentationModel.SelectedTaskForce.Name);
         }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
