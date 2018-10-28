@@ -46,12 +46,10 @@ namespace Supremacy.Client.Views
 
         private void OnShipListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var presentationModel = DataContext as GalaxyScreenPresentationModel;
-            if (presentationModel == null)
+            if (!(DataContext is GalaxyScreenPresentationModel presentationModel))
                 return;
 
-                presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();
-                //GameLog.Client.General.DebugFormat("presentationModel.SelectedTaskForce.Name = {0}", presentationModel.SelectedTaskForce.Name);
+            presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();          
         }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)

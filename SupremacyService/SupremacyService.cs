@@ -1319,15 +1319,23 @@ namespace Supremacy.WCF
 
         public void SendCombatOrders(CombatOrders orders)
         {
-            if (_combatEngine == null || orders == null)
-                return;
-
-            lock (_combatEngine.SyncLock)
+            try
             {
-                _combatEngine.SubmitOrders(orders);
+                if (_combatEngine == null || orders == null)
+                    return;
 
-                if (_combatEngine.Ready)
-                    TryResumeCombat(_combatEngine);
+                lock (_combatEngine.SyncLock)
+                {
+                    _combatEngine.SubmitOrders(orders);
+
+                    if (_combatEngine.Ready)
+                        TryResumeCombat(_combatEngine);
+                }
+            }
+            catch (Exception e) 
+            {
+                GameLog.Server.Combat.DebugFormat("SendCombatOrders null reference issue #164 {0}", orders.ToString());
+                GameLog.Server.Combat.Error(e);
             }
         }
 

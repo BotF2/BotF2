@@ -49,7 +49,7 @@ namespace Supremacy.Combat
 
                 foreach (var ship in easyRetreatShips)
                 {
-                    if (!RandomHelper.Chance(10))
+                    if (!RandomHelper.Chance(10) && (ship.Item1 != null))
                     {
                         var ownerAssets = GetAssets(ship.Item1.Owner);
                         ownerAssets.EscapedShips.Add(ship.Item1);
