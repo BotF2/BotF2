@@ -332,39 +332,6 @@ namespace Supremacy.Client
             bootstrapper.Run();
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        internal void HandleError(Exception e)
-        {
-            if (e is AppDomainUnloadedException)
-                return;
-
-            lock (Current)
-            {
-                Exception ie = e;
-
-                while (ie != null)
-                {
-                    Console.Error.WriteLine(ie.Message);
-                    Console.Error.WriteLine();
-                    Console.Error.WriteLine(ie.StackTrace);
-                    Console.Error.WriteLine();
-                    Console.Error.WriteLine("----------------------------------------");
-                    Console.Error.WriteLine();
-                    Console.Error.Flush();
-                    ie = ie.InnerException;
-                }
-
-                MessageBox.Show(
-                    "An unhandled exception has occurred.  Detailed error information is "
-                    + "available in the 'Error.txt' file.",
-                    "Unhandled Exception",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                Environment.Exit(Environment.ExitCode);
-            }
-        }
-
         private static void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
