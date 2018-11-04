@@ -27,6 +27,8 @@ namespace Supremacy.Orbitals
         private ushort _experienceLevel;
         private Meter _hullStrength;
         private Meter _shieldStrength;
+        private Meter _cloakStrength;
+        private Meter _camouflagedMeter;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -72,6 +74,24 @@ namespace Supremacy.Orbitals
         public Meter ShieldStrength
         {
             get { return _shieldStrength; }
+        }
+
+        /// <summary>
+        /// Gets the cloak strength.
+        /// </summary>
+        /// <value>The cloak strength.</value>
+        public Meter CloakStrength
+        {
+            get { return _cloakStrength; }
+        }
+
+        /// <summary>
+        /// Gets the camouflage strength.
+        /// </summary>
+        /// <value>The camouflage strength.</value>
+        public Meter CamouflagedMeter
+        {
+            get { return _camouflagedMeter; }
         }
 
         /// <summary>
@@ -170,6 +190,8 @@ namespace Supremacy.Orbitals
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
             _hullStrength = new Meter(design.HullStrength, 0, design.HullStrength);
             _shieldStrength = new Meter(design.ShieldStrength, 0, design.ShieldStrength);
+            _cloakStrength = new Meter(design.CloakStrength, 0, design.CloakStrength);
+            _camouflagedMeter = new Meter(design.CamouflagedStrength, 0, design.CamouflagedStrength);
         }
 
         /// <summary>
@@ -261,7 +283,9 @@ namespace Supremacy.Orbitals
 			writer.Write(_experienceLevel);
 			writer.WriteObject(_hullStrength);
 			writer.WriteObject(_shieldStrength);
-		}
+            writer.WriteObject(_cloakStrength);
+            writer.WriteObject(_camouflagedMeter);
+        }
 
 		public override void DeserializeOwnedData(SerializationReader reader, object context)
 		{
@@ -270,7 +294,9 @@ namespace Supremacy.Orbitals
 			_experienceLevel = reader.ReadUInt16();
 			_hullStrength = (Meter)reader.ReadObject();
 			_shieldStrength = (Meter)reader.ReadObject();
-			_crew.CurrentValueChanged += Crew_CurrentValueChanged;
+            _cloakStrength = (Meter)reader.ReadObject();
+            _camouflagedMeter = (Meter)reader.ReadObject();
+            _crew.CurrentValueChanged += Crew_CurrentValueChanged;
 		}
     }
 

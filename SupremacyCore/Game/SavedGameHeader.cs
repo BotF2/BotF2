@@ -26,6 +26,8 @@ namespace Supremacy.Game
             {
                 const string fallback = "(Auto Save)";
 
+                GameLog.Core.General.Debug("just for time stamp point 1");
+
                 try
                 {
                     var localizedTitle = ResourceManager.GetString("AUTO_SAVE_GAME_TITLE");
@@ -127,6 +129,7 @@ namespace Supremacy.Game
         /// <param name="localPlayer">The local player.</param>
         public SavedGameHeader(IGameContext game, Player localPlayer)
         {
+            GameLog.Core.General.Debug("just for time stamp point 2");
             if (game == null)
                 throw new ArgumentNullException("game");
             if (localPlayer == null)

@@ -368,8 +368,8 @@
     <ImageBrush x:Key="FleetSelectionBorderBrush"
               ImageSource="vfs:///Resources/UI/Cardassians/GalaxyScreen/FleetSelectionBorder.png" />
 
-    <ImageBrush x:Key="CamouflagedFleetSelectionBorderBrush"
-              ImageSource="vfs:///Resources/UI/Cardassians/GalaxyScreen/CamouflagedFleetSelectionBorder.png" />
+    <ImageBrush x:Key="CamouflagedFleetSelectionBorderPinkBrush"
+              ImageSource="vfs:///Resources/UI/Cardassians/GalaxyScreen/CamouflagedFleetSelectionBorderPink.png" />
     
     
     <Style x:Key="LockToggleButtonStyle"

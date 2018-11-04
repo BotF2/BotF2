@@ -272,7 +272,7 @@ namespace Supremacy.Combat
                         friendlyAssets.Add(otherAsset);
                     }
                 }
-                if ((hostileAssets.Count == 0) || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))
+                if ((friendlyAssets.Count == 0 || hostileAssets.Count == 0) || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))
                 {
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);   // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
@@ -430,20 +430,24 @@ namespace Supremacy.Combat
             {
                 foreach (var assimilatedShip in assets.AssimilatedShips)
                 {
+                    var destination = CombatHelper.CalculateRetreatDestination(assets);
                     var ship = (Ship)assimilatedShip.Source;
                     ship.Owner = borg;
-                    ship.Fleet.Owner = borg;
-                    ship.Fleet.SetOrder(FleetOrders.EngageOrder.Create());
-                    if (ship.Fleet.Order == null)
+                    var newfleet = ship.CreateFleet();
+                    newfleet.Location = destination.Location;
+                    newfleet.Owner = borg;
+                  
+                    newfleet.SetOrder(FleetOrders.EngageOrder.Create());
+                    if (newfleet.Order == null)
                     {
-                        ship.Fleet.SetOrder(FleetOrders.AvoidOrder.Create());
+                        newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
                     }
                     ship.IsAssimilated = true;
                     ship.Scrap = false;
-                    ship.Fleet.Name = "Assimilated Assets";
+                    newfleet.Name = "Assimilated Assets";
 
-                    GameLog.Core.Combat.DebugFormat("Assismilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}",
-                        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, ship.Fleet.OwnerID, ship.Fleet.Order);
+                    GameLog.Core.Combat.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}",
+                        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order);
                 }
             }
         }

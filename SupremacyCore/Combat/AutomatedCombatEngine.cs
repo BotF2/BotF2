@@ -20,6 +20,7 @@ namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
+        //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
@@ -29,13 +30,17 @@ namespace Supremacy.Combat
 
         }
 
+        public IList<CombatAssets> friendlyAssets { get; private set; }
+
         protected override void ResolveCombatRoundCore()
         {
             _combatShips.RandomizeInPlace();
 
-            // Scouts and Cloaked ships have a special chance of retreating on the first turn
-            // Yes, _roundNumber == 2 *is* correct
-            if (_roundNumber == 2)
+            int maxScanStrengthOpposition = 0;
+
+            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
+            // .... cloaked ships might be detecked and decloaked in round 2
+            if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
                     .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
@@ -44,11 +49,12 @@ namespace Supremacy.Combat
 
                 foreach (var ship in easyRetreatShips)
                 {
-                    if (!RandomHelper.Chance(10))
+                    if (!RandomHelper.Chance(10) && (ship.Item1 != null))
                     {
                         var ownerAssets = GetAssets(ship.Item1.Owner);
                         ownerAssets.EscapedShips.Add(ship.Item1);
                         ownerAssets.CombatShips.Remove(ship.Item1);
+                        ownerAssets.NonCombatShips.Remove(ship.Item1);
                         _combatShips.Remove(ship);
                     }
                 }
@@ -61,10 +67,10 @@ namespace Supremacy.Combat
                 var friendlyShips = _combatShips.Where(cs => !CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
 
                 List<string> ownEmpires = _combatShips.Where(s =>
-                (s.Item1.Owner == _combatShips[i].Item1.Owner))
-                .Select(s => s.Item1.Owner.Key)
-                .Distinct()
-                .ToList();
+                    (s.Item1.Owner == _combatShips[i].Item1.Owner))
+                    .Select(s => s.Item1.Owner.Key)
+                    .Distinct()
+                    .ToList();
 
                 List<string> friendlyEmpires = _combatShips.Where(s =>
                     (s.Item1.Owner != _combatShips[i].Item1.Owner) &&
@@ -84,12 +90,26 @@ namespace Supremacy.Combat
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
-                //Move this to DiplomacyHelper
+                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, will be decloaked.
+                if (oppositionShips.Count() > 0)
+
+                {
+                    maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+            
+                    if (_combatShips[i].Item1.IsCloaked && _combatShips[i].Item1.CloakStrength < maxScanStrengthOpposition) 
+                    {
+                        _combatShips[i].Item1.Decloak();
+                        GameLog.Core.Combat.DebugFormat("{0} has cloak strength {1} vs maxScan {2}", _combatShips[i].Item1.Name, _combatShips[i].Item1.CloakStrength, maxScanStrengthOpposition);
+                    }                    
+                }
+
+                //TODO: get scan power of strucutes in system and look to decloak and or decamouflage ships in system
+
+                //TODO: Move this to DiplomacyHelper
                 List<string> allEmpires = new List<string>();
                 allEmpires.AddRange(ownEmpires);
                 allEmpires.AddRange(friendlyEmpires);
                 allEmpires.AddRange(hostileEmpires);
-
                 foreach (var firstEmpire in allEmpires.Distinct().ToList())
                 {
                     foreach (var secondEmpire in allEmpires.Distinct().ToList())
@@ -120,11 +140,11 @@ namespace Supremacy.Combat
 
                         if (target == null)
                         {
-                            GameLog.Core.Combat.DebugFormat("No target for {0} {1}", attackingShip.Source.ObjectID, attackingShip.Name);
+                            GameLog.Core.Combat.DebugFormat("No target for {0} {1} ({2})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design);
                         }
                         if (target != null)
                         {
-                            GameLog.Core.Combat.DebugFormat("Target for {0} {1} is {2} {3}", attackingShip.Source.ObjectID, attackingShip.Name, target.Source.ObjectID, target.Name);
+                            GameLog.Core.Combat.DebugFormat("Target for {0} {1} ({2}) is {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
                             // If we rushed a formation we could take damage
                             int chanceRushingFormation = RandomHelper.Random(100);
@@ -223,11 +243,11 @@ namespace Supremacy.Combat
                         break;
 
                     case CombatOrder.Hail:
-                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
+                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         break;
 
                     case CombatOrder.Standby:
-                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) hailing...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
+                        GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         break;
       
                 }
@@ -258,22 +278,22 @@ namespace Supremacy.Combat
                 }
             }
 
-            //Decloak any ships
+            //Decloak any ships   // Ships are decloaked from round 2 on if maxScanStrength of opposition overhelms, otherwise at least at round ...
             foreach (var combatShip in _combatShips)
             {
-                if (combatShip.Item1.IsCloaked)
+                if (combatShip.Item1.IsCloaked && _roundNumber >= 2)
                 {
                     combatShip.Item1.Decloak();
                 }
             }
         }
 
-        /// <summary>
-        /// Chooses a target for the given <see cref="CombatUnit"/>
-        /// </summary>
-        /// <param name="attacker"></param>
-        /// <returns></returns>
-        private CombatUnit ChooseTarget(CombatUnit attacker)
+            /// <summary>
+            /// Chooses a target for the given <see cref="CombatUnit"/>
+            /// </summary>
+            /// <param name="attacker"></param>
+            /// <returns></returns>
+            private CombatUnit ChooseTarget(CombatUnit attacker)
         {
             if (attacker == null)
             {
@@ -366,7 +386,7 @@ namespace Supremacy.Combat
 
             if (target.IsDestroyed)
             {
-                GameLog.Core.Combat.DebugFormat("{0} {1} was destroyed", target.Source.ObjectID, target.Name);
+                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) was destroyed", target.Source.ObjectID, target.Name, target.Source.Design);
                 CombatAssets targetAssets = GetAssets(target.Owner);
                 if (target.Source is Ship)
                 {

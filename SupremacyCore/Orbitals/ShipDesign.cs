@@ -321,10 +321,10 @@ namespace Supremacy.Orbitals
                 baseElement.AppendChild(newElement);
             }
 
-            if (CamouflagedStrength > 0)
+            if (base.CamouflagedStrength > 0)
             {
                 newElement = doc.CreateElement("CamouflagedStrength");
-                newElement.InnerText = CamouflagedStrength.ToString();
+                newElement.InnerText = base.CamouflagedStrength.ToString();
                 baseElement.AppendChild(newElement);
             }
 

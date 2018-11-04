@@ -41,6 +41,8 @@ namespace Supremacy.Utility
                 _initialized = true;
             }
             Core.General.Info("Log Initialized");
+            string now = Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog";
+            Core.General.Info(now);  // new line for saving under Date
         }
 
         public static GameLog Client

@@ -119,7 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="DelegatingWeakEventListener.cpp" />
     <ClCompile Include="EnumHelper.cpp" />
     <ClCompile Include="EnumKeyedValueList.cpp" />
     <ClCompile Include="Stdafx.cpp">
@@ -128,7 +127,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DelegatingWeakEventListener.h" />
     <ClInclude Include="EnumHelper.h" />
     <ClInclude Include="EnumKeyedValueList.h" />
     <ClInclude Include="Stdafx.h" />
