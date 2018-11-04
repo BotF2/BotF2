@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Utility;
 using System;
 
 namespace Supremacy.Universe
@@ -22,7 +23,7 @@ namespace Supremacy.Universe
             Random random = new Random(328250362);
             int initialCount = positions.Count;
 
-            double ellipseWidthVsHeight = (random.NextDouble() * 0.2) + 0.4;
+            double ellipseWidthVsHeight = (random.NextDouble() * 0.2) + 0.7;
             double rotation = random.NextDouble() * Math.PI;
             double rotationSin = Math.Sin(rotation);
             double rotationCos = Math.Cos(rotation);
@@ -33,7 +34,7 @@ namespace Supremacy.Universe
                  (i < number) && (attempts < MaxStarPlacementAttempts);
                  i++, attempts++)
             {
-                double radius = random.NextDouble() * gapConstant;
+                double radius = (random.NextDouble() * gapConstant);
                 double angle = random.NextDouble() * 2.0 * Math.PI;
 
                 double x1 = radius * Math.Cos(angle);
@@ -42,9 +43,21 @@ namespace Supremacy.Universe
                 double x = (x1 * rotationCos) - (y1 * rotationSin);
                 double y = (x1 * rotationSin) + (y1 * rotationCos);
 
+                Random r = new Random();
+                int rInt = r.Next(-2, 2);
+
+                int xLoc = (int)(((x + 1.0) * width / 2.0)+rInt);
+                int yLoc = (int)(((y + 1.0) * height / 2.0)+rInt);
+
+                if (xLoc < 0) xLoc = 0;
+                if (xLoc > width) xLoc = width;
+
+                if (yLoc < 0) yLoc = 0;
+                if (yLoc > height) yLoc = height;
+
                 MapLocation location = new MapLocation(
-                    (int)((x + 1.0) * width / 2.0),
-                    (int)((y + 1.0) * height / 2.0));
+                    xLoc,
+                    yLoc);
 
                 var newNode = new MapLocationQuadtreeNode(location);
 
