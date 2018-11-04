@@ -658,7 +658,7 @@
                             Margin="3,0,3,0"
                             Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"/>-->
 
-                                        <TextBlock 
+                              <TextBlock 
                                  Grid.Column="5"
                                  Grid.Row="4"   
                                  FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
@@ -1374,22 +1374,21 @@
                                          Stroke="Goldenrod"/>
                                         </Canvas>
                                         <!--End of Drawing-->
-
-
                                         <!-- Encyclopedia Entry List -->
                     <TreeView x:Name="PART_EncyclopediaEntries"
                               Grid.Column="0"
                               Grid.ColumnSpan="3"
                               Grid.Row="1"
                               Grid.RowSpan="3"
-                              Margin="0,7,7,7"
+                              Margin="0,7,0,7"
                               Background="Transparent"
                               BorderBrush="Transparent"
                               BorderThickness="0"
                               Padding="0"
                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                               Foreground="{DynamicResource DefaultTextBrush}"
-                              FontSize="12pt"
+                              FontSize="12pt" 
+                              HorizontalAlignment="Left"
                               ScrollViewer.CanContentScroll="False"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                       <!--<TreeView.Resources>
@@ -1477,7 +1476,9 @@
                                               Grid.ColumnSpan="3"
                                               Grid.Row="1"
                                               Grid.RowSpan="3"
-                                              Margin="0,7,0,7"
+                                              Margin="0,0,0,0"
+                                              
+                                              HorizontalContentAlignment="Left"
                                               ContextMenuService.IsEnabled="False"
                                               IsSelectionEnabled="False"/>
                   </Grid>

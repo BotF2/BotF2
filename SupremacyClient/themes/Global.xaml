@@ -6484,8 +6484,8 @@
         <ControlTemplate TargetType="{x:Type TreeViewItem}">
           <Grid>
             <Grid.ColumnDefinitions>
-              <ColumnDefinition MinWidth="19"
-                                Width="Auto" />
+              <ColumnDefinition MinWidth="0"
+                                Width="14"/>
               <ColumnDefinition Width="Auto" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
