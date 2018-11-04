@@ -419,6 +419,73 @@ namespace Supremacy.Game
     }
 
     [Serializable]
+    public class DeCamouflagedSitRepEntry : SitRepEntry
+    {
+        private readonly string _name;
+        private readonly MapLocation _location;
+        private readonly string _shipType;
+        private int _scanPower;
+
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        public Sector Sector
+        {
+            get { return GameContext.Current.Universe.Map[Location]; }
+        }
+
+        /// <summary>
+        /// Gets or sets the type of the ship.
+        /// </summary>
+        /// <value>The type of the ship.</value>
+        public string ShipType
+        {
+            get { return _shipType; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Military; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(
+                    ResourceManager.GetString("SITREP_SHIP_DECAMOUFLAGED"),
+                    ResourceManager.GetString(Name),
+                    _shipType,
+                    Location);
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return false; }
+        }
+
+        // ReSharper disable SuggestBaseTypeForParameter
+        public DeCamouflagedSitRepEntry(Orbital orbital)
+            : base(orbital.Owner, SitRepPriority.Yellow)
+        {
+            if (orbital == null)
+                throw new ArgumentNullException("orbital");
+            _name = orbital.Name;
+            _shipType = orbital.OrbitalDesign.ShipType;
+            _location = orbital.Location;
+        }
+        // ReSharper restore SuggestBaseTypeForParameter
+    }
+
+    [Serializable]
     public class ItemBuiltSitRepEntry : SitRepEntry
     {
         private readonly int _itemTypeId;
