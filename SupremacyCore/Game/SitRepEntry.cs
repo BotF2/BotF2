@@ -463,7 +463,8 @@ namespace Supremacy.Game
                     ResourceManager.GetString("SITREP_SHIP_DECAMOUFLAGED"),
                     ResourceManager.GetString(Name),
                     _shipType,
-                    Location);
+                    _location,
+                    _scanPower);
             }
         }
 
@@ -473,7 +474,7 @@ namespace Supremacy.Game
         }
 
         // ReSharper disable SuggestBaseTypeForParameter
-        public DeCamouflagedSitRepEntry(Orbital orbital)
+        public DeCamouflagedSitRepEntry(Orbital orbital, int scanpower)
             : base(orbital.Owner, SitRepPriority.Yellow)
         {
             if (orbital == null)
@@ -481,6 +482,7 @@ namespace Supremacy.Game
             _name = orbital.Name;
             _shipType = orbital.OrbitalDesign.ShipType;
             _location = orbital.Location;
+            _scanPower = scanpower;
         }
         // ReSharper restore SuggestBaseTypeForParameter
     }
