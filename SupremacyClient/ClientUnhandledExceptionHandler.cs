@@ -20,7 +20,7 @@ namespace Supremacy.Client
     internal sealed class ClientUnhandledExceptionHandler : IUnhandledExceptionHandler
     {
         private readonly IGameErrorService _errorService;
-        private const string _reportErrorURL = "http://httpbin.org/post";
+        private const string _reportErrorURL = "https://www.exultantmonkey.co.uk/BotF2/report-error.php";
 
         #region Fields
         private readonly object _syncLock = new object();
@@ -78,12 +78,18 @@ namespace Supremacy.Client
             using (var client = new WebClient())
             {
                 var values = new NameValueCollection();
-                values["GameVersion"] = ClientApp.ClientVersion.ToString();
-                values["Errors"] = errors;
+                values["Version"] = ClientApp.ClientVersion.ToString();
+                values["Exception"] = errors;
 
-                var response = client.UploadValues(_reportErrorURL, "POST", values);
+                try
+                {
+                    var response = client.UploadValues(_reportErrorURL, "POST", values);
+                }
+                catch (Exception e)
+                {
+                    //Don't bother doing anything
+                }
 
-                MessageBox.Show(Encoding.Default.GetString(response));
             }
         }
         #endregion
