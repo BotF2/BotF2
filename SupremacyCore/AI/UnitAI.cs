@@ -283,34 +283,18 @@ namespace Supremacy.AI
 
         public static bool GetBestSystemToColonize(Civilization owner, MapLocation origin, int radius, IList<MapLocation> except, Fleet fleet, out StarSystem result)
         {
-            var systems = new List<StarSystem>(GameContext.Current.Universe.Find<StarSystem>(UniverseObjectType.StarSystem));
             var rect = radius == -1
                 ? new MapRectangle(0, 0, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height)
                 : new MapRectangle(origin.X - radius, origin.Y - radius, origin.X + radius, origin.Y + radius);
-            for (int i = 0; i < systems.Count; i++)
-            {
-                if (!systems[i].Location.Intersects(rect) || except.Contains(systems[i].Location) ||
-                    !FleetHelper.IsSectorWithinFuelRange(systems[i].Sector, fleet) ||
-                    systems[i].IsInhabited || (systems[i].IsOwned && systems[i].Owner != owner))
-                {
-                    systems.RemoveAt(i--);
-                }
-            }
-            systems.Sort(
-                delegate(StarSystem a, StarSystem b)
-                {
-                    //To do a better solution, at the moment we just did to AVOID a crash for (a == null)
-                    if (a == null)
-                        return (int)((b.GetMaxPopulation(owner.Race) * b.GetGrowthRate(owner.Race))
-                                      - (b.GetMaxPopulation(owner.Race) * b.GetGrowthRate(owner.Race)));
-                    foreach (Orbital orbital in GameContext.Current.Universe.FindAt<Orbital>(a.Location))
-                    {
-                        if (IsPotentialEnemy(owner, orbital.Owner))
-                            return -1;
-                    }
-                    return (int)((a.GetMaxPopulation(owner.Race) * a.GetGrowthRate(owner.Race))
-                                  - (b.GetMaxPopulation(owner.Race) * b.GetGrowthRate(owner.Race)));
-                });
+
+            var systems = new List<StarSystem>(GameContext.Current.Universe.Find<StarSystem>(UniverseObjectType.StarSystem));
+            systems.RemoveAll(s => !s.Location.Intersects(rect) || except.Contains(s.Location));
+            systems.RemoveAll(s => !FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet));
+            systems.RemoveAll(s => s.IsInhabited || (s.IsInhabited && s.Owner != owner));
+            systems.RemoveAll(s => GameContext.Current.Universe.FindAt<Orbital>(s.Location).Any(o => IsPotentialEnemy(owner, o.Owner)));
+            
+            systems.OrderBy(s => s.GetMaxPopulation(owner.Race) * s.GetGrowthRate(owner.Race));
+
             if (systems.Count > 0)
             {
                 result = systems[systems.Count - 1];
