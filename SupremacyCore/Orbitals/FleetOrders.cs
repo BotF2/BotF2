@@ -554,6 +554,10 @@ namespace Supremacy.Orbitals
                 Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
             }
         }
+
+        public override bool IsComplete {
+            get { return Fleet.Sector.System.Colony.Health.CurrentValue >= 100; }
+        }
     }
     #endregion
 

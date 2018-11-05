@@ -432,32 +432,15 @@ namespace Supremacy.Game
 
             foreach (var fleet in allFleets)
             {
-                if (fleet.Order == null)
-                    continue;
-
-                if (fleet.Order.IsComplete)
+                //If the fleet is stranded and out of fuel range, it can't move
+                if (fleet.IsStranded && !fleet.IsFleetInFuelRange())
                 {
-                    var completedOrder = fleet.Order;
-                    fleet.Order.OnOrderCompleted();
-                    /* 
-                     * It is possible that invoking OnCompletedOrder() on the completed
-                     * order caused a new (or prior) order to be issued.  In this case,
-                     * we let that order stand.  Otherwise, we revert to the default order.
-                     */
-                    if (fleet.Order == completedOrder)
-                        fleet.SetOrder(fleet.GetDefaultOrder());
-                }
-                else if (!fleet.Order.IsValidOrder(fleet))
-                {
-                    var cancelledOrder = fleet.Order;
-                    fleet.Order.OnOrderCancelled();
-                    if (fleet.Order == cancelledOrder)
-                        fleet.SetOrder(fleet.GetDefaultOrder());
-                }
-            }
+                    if (fleet.IsRouteLocked)
+                        fleet.UnlockRoute();
 
-            foreach (var fleet in allFleets)
-            {
+                    fleet.SetRoute(TravelRoute.Empty);
+                }
+
                 var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
                 int fuelNeeded;
                 var fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
@@ -478,6 +461,7 @@ namespace Supremacy.Game
                     }
                 }
 
+                //Move the ships along their route
                 for (var i = 0; i < fleet.Speed; i++)
                 {
                     if (fleet.MoveAlongRoute())
@@ -509,48 +493,6 @@ namespace Supremacy.Game
                         }
                         //ship.FuelReserve.UpdateAndReset();
                     }
-
-                    if (!fleet.Order.IsComplete)
-                        continue;
-
-                    var completedOrder = fleet.Order;
-
-                    fleet.Order.OnOrderCompleted();
-
-                    /* 
-                     * It is possible that invoking OnCompletedOrder() caused a new (or prior)
-                     * order to be issued.  In this case, we let that order stand.  Otherwise,
-                     * we revert to the default order.
-                     */
-                    if (fleet.Order == completedOrder)
-                        fleet.SetOrder(fleet.GetDefaultOrder());
-                }
-
-                if (fleet.IsStranded && !fleet.IsFleetInFuelRange())
-                {
-                    if (fleet.IsRouteLocked)
-                        fleet.UnlockRoute();
-
-                    fleet.SetRoute(TravelRoute.Empty);
-                }
-
-                if (fleet.Order.IsComplete)
-                {
-                    var completedOrder = fleet.Order;
-
-                    fleet.Order.OnOrderCompleted();
-                    
-                    /* 
-                     * It is possible that invoking OnCompletedOrder() caused a new (or prior)
-                     * order to be issued.  In this case, we let that order stand.  Otherwise,
-                     * we revert to the default order.
-                     */
-                    if (fleet.Order == completedOrder)
-                        fleet.SetOrder(fleet.GetDefaultOrder());
-                }
-                else if (!fleet.Order.IsValidOrder(fleet))
-                {
-                    fleet.SetOrder(fleet.GetDefaultOrder());
                 }
             }
         }
