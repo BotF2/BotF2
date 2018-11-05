@@ -2066,4 +2066,28 @@ namespace Supremacy.Game
             _colony = colony;
         }
     }
+
+    [Serializable]
+    public class ShipDestroyedInWormholeSitRepEntry : SitRepEntry
+    {
+        private MapLocation _wormholeLocation;
+
+        public ShipDestroyedInWormholeSitRepEntry(Civilization owner, MapLocation wormholeLocation) : base(owner, SitRepPriority.Yellow)
+        {
+            _wormholeLocation = wormholeLocation;
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.General; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_FLEET_DESTROYED_UNSTABLE_WORMHOLE"), _wormholeLocation);
+            }
+        }
+    }
 }
