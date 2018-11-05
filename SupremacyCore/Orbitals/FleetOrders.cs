@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Pathfinding;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Text;
@@ -1761,7 +1762,11 @@ namespace Supremacy.Orbitals
                 return;
             if (Fleet.Route.IsEmpty)
             {
-                Fleet.SetRouteInternal(UnitAI.GetBestExploreRoute(Fleet));
+                Sector bestSector;
+                if (UnitAI.GetBestSectorToExplore(Fleet, out bestSector))
+                {
+                    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+                }
             }
         }
     }

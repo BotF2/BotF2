@@ -113,6 +113,7 @@ namespace Supremacy.Game
         NoUnitAI = 0,   // unassigned
         Explorer,
         Colonizer,
+        Medical,
         Constructor,
         Attack,
         Defense,
