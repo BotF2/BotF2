@@ -44,8 +44,8 @@ using System.Windows.Markup;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2018.09.29.0")]
-[assembly: AssemblyFileVersion("2018.09.29.0")]
+[assembly: AssemblyVersion("2018.11.20.0")]
+[assembly: AssemblyFileVersion("2018.11.20.0")]
 
 [assembly: Dependency("WindowsBase,", LoadHint.Always)]
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]
