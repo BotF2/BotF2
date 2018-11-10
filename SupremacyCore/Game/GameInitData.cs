@@ -121,6 +121,18 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("savedGameHeader");
             GameLog.Core.General.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);
 
+           
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;LocalPlayerEmpireID;{0}", savedGameHeader.LocalPlayerEmpireID);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;LocalPlayerName;{0}", savedGameHeader.LocalPlayerName  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;EmpireIDs;{0}", savedGameHeader.EmpireIDs  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", savedGameHeader.EmpireNames  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options;{0}", savedGameHeader.Options  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;FileName;{0}", savedGameHeader.FileName  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;SlotClaims;{0}", savedGameHeader.SlotClaims  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;SlotStatus;{0}", savedGameHeader.SlotStatus  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;IsMultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad  );
+                
+
             return new GameInitData
                    {
                        LocalPlayerEmpireID = savedGameHeader.LocalPlayerEmpireID,
