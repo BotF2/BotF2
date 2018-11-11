@@ -21,6 +21,8 @@ using Supremacy.Orbitals;
 using System.Linq;
 
 using Supremacy.Utility;
+using Supremacy.Data;
+using Supremacy.Types;
 
 namespace Supremacy.Universe
 {
@@ -101,17 +103,68 @@ namespace Supremacy.Universe
             }
         }
 
-        public TradeRoute TradeRoute
+        public bool TradeRouteIndicator
         {
-            get { return _tradeRoute.Value; }
-            internal set
+            get
             {
-                _tradeRoute = new Lazy<TradeRoute>(() => value);
+                //return true;
+                //_tradeRouteImage = null;
 
-                OnPropertyChanged("Owner");
-                OnPropertyChanged("Name");
+                if (System == null || System.Colony == null)
+                    return false;
+
+
+                //if (Sector.TradeRoute == null)  // also show a possible trade route
+                //    return;
+
+                //string tradeRouteImagePath = "";
+
+                Table popReqTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopReq"];
+                Table popModTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
+
+                //if ((Sector.TradeRoute.Owner == PlayerCiv) || DiplomacyHelper.IsContactMade(PlayerCiv, Sector.TradeRoute.Owner))
+                //{
+                int popForTradeRoute;
+
+                var civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
+
+                /*
+                 * See what the minimum population level is for a new trade route for the
+                 * current civilization.  If one is not specified, use the default.
+                 */
+                if (popReqTable[civManager.Civilization.Key] != null)
+                    popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
+                else
+                    popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
+
+                int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;
+                     
+                if (System.Colony.TradeRoutes.Count() < possibleTradeRoutes)
+                {
+                    return true;
+                    //tradeRouteImagePath = "Resources/Images/ScreenIcons/green_hand.png";
+                    //if (string.IsNullOrEmpty(tradeRouteImagePath))
+                    //    tradeRouteImagePath = "Resources/Images/Insignias/__unknown.png";
+                }
+                return false;
             }
         }
+
+        
+
+
+
+    //get { return _tradeRoute.Value; }
+    //internal set
+    //{
+    //    _tradeRoute = new Lazy<TradeRoute>(() => value);
+
+    //    OnPropertyChanged("Owner");
+    //    OnPropertyChanged("Name");
+    //}
+    //}
+
+
         /// <summary>
         /// Gets the name of this <see cref="Sector"/>.
         /// </summary>
@@ -158,7 +211,7 @@ namespace Supremacy.Universe
             _location = location;
             _system = new Lazy<StarSystem>(FindSystem, LazyThreadSafetyMode.PublicationOnly);
             _station = new Lazy<Station>(FindStation, LazyThreadSafetyMode.PublicationOnly);
-            _tradeRoute = new Lazy<TradeRoute>(FindTradeRoute, LazyThreadSafetyMode.PublicationOnly);
+            //_tradeRoute = new Lazy<TradeRoute>(FindTradeRoute, LazyThreadSafetyMode.PublicationOnly);
         }
 
         private StarSystem FindSystem()
@@ -175,11 +228,13 @@ namespace Supremacy.Universe
             return GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location);
         }
 
-        private Station FindTradeRoute()
-        {
-            return GameContext.Current.Universe.FindFirst<TradeRoute>(o => o.SourceColony.Location == _location);
-            //var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-        }
+        //private TradeRoute FindTradeRoute()
+        //{
+        //    GameLog.Core.General.DebugFormat("FindTradeRoute (empty atm");
+        //    //return GameContext.Current.Universe.FindFirst<TradeRoute>(o => o.SourceColony.Location == _location);
+        //    //var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+        //    return;
+        //}
 
         public void Reset()
         {

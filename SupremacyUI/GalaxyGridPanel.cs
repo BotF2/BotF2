@@ -2070,6 +2070,41 @@ namespace Supremacy.UI
                                                 - sText.Height + (sText.Height - sText.Baseline)));
                             dc.DrawGeometry(Brushes.White, sPen, sGeom);
                         }
+
+                        /***************************
+                         * DRAW TradeRoute INDICATORS *
+                         ***************************/
+                        //var tradeRouteIndicator = sector.TradeRouteIndicator;
+                        if (sector.TradeRouteIndicator)
+                        { 
+                        //if ((tradeRouteIndicator != null) &&
+                        //    ((station.Owner == playerCiv) || (scanStrength > 0)))
+                        //{
+
+                        //      int brushId = station.OwnerID;
+                            Pen tPen;
+                        
+                        //if ((station.Owner != playerCiv) && !DiplomacyHelper.IsContactMade(station.Owner, playerCiv))
+                            //{
+                                tPen = new Pen(Brushes.White, 1.0);
+                            //}
+                            //else
+                            //{
+                                // sPen = new Pen(s_colonyNameBrushes[brushId], 1.0);
+                            //}
+                            var tText = new FormattedText(
+                                "T",
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                s_textTypeface,
+                                16.0,
+                                Brushes.White);
+                            var tGeom = tText.BuildGeometry(
+                                new Point(SectorSize * location.X + 45,
+                                            SectorSize * (location.Y + 1) - 5
+                                                - tText.Height + (tText.Height - tText.Baseline)));
+                            dc.DrawGeometry(Brushes.White, tPen, tGeom);
+                        }
                     }
                 }
                 slc.Close();
