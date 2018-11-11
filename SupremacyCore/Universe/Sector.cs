@@ -103,15 +103,17 @@ namespace Supremacy.Universe
             }
         }
 
-        public bool TradeRouteIndicator
+        public int TradeRouteIndicator
         {
             get
             {
                 //return true;
                 //_tradeRouteImage = null;
 
+                //int _tradeRouteIndicator = 0;
+
                 if (System == null || System.Colony == null)
-                    return false;
+                    return 99;
 
 
                 //if (Sector.TradeRoute == null)  // also show a possible trade route
@@ -138,31 +140,20 @@ namespace Supremacy.Universe
                     popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
 
                 int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;
-                     
-                if (System.Colony.TradeRoutes.Count() < possibleTradeRoutes)
-                {
-                    return true;
-                    //tradeRouteImagePath = "Resources/Images/ScreenIcons/green_hand.png";
-                    //if (string.IsNullOrEmpty(tradeRouteImagePath))
-                    //    tradeRouteImagePath = "Resources/Images/Insignias/__unknown.png";
-                }
-                return false;
+
+                return possibleTradeRoutes;
+                //if (System.Colony.TradeRoutes.Count() < possibleTradeRoutes)
+                //{
+                //    return true;
+                //    //tradeRouteImagePath = "Resources/Images/ScreenIcons/green_hand.png";
+                //    //if (string.IsNullOrEmpty(tradeRouteImagePath))
+                //    //    tradeRouteImagePath = "Resources/Images/Insignias/__unknown.png";
+                //}
+                //return false;
             }
         }
 
-        
-
-
-
-    //get { return _tradeRoute.Value; }
-    //internal set
-    //{
-    //    _tradeRoute = new Lazy<TradeRoute>(() => value);
-
-    //    OnPropertyChanged("Owner");
-    //    OnPropertyChanged("Name");
-    //}
-    //}
+       
 
 
         /// <summary>

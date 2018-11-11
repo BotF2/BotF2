@@ -2074,26 +2074,31 @@ namespace Supremacy.UI
                         /***************************
                          * DRAW TradeRoute INDICATORS *
                          ***************************/
-                        //var tradeRouteIndicator = sector.TradeRouteIndicator;
-                        if (sector.TradeRouteIndicator)
-                        { 
-                        //if ((tradeRouteIndicator != null) &&
-                        //    ((station.Owner == playerCiv) || (scanStrength > 0)))
-                        //{
 
-                        //      int brushId = station.OwnerID;
+                        if (sector.TradeRouteIndicator != 99 && sector.TradeRouteIndicator != 0)
+                        {
+                            // my plan is: 
+                            // yellow "2": 2 TradeRoutes done, 2 possible
+                            // green "1": 1 TradeRoutes done, 2 possible -> one available
+
+
+                            //if ((tradeRouteIndicator != null) &&
+                            //    ((station.Owner == playerCiv) || (scanStrength > 0)))
+                            //{
+
+                            //      int brushId = station.OwnerID;
                             Pen tPen;
                         
                         //if ((station.Owner != playerCiv) && !DiplomacyHelper.IsContactMade(station.Owner, playerCiv))
                             //{
-                                tPen = new Pen(Brushes.White, 1.0);
+                                tPen = new Pen(Brushes.Green, 1.0);
                             //}
                             //else
                             //{
                                 // sPen = new Pen(s_colonyNameBrushes[brushId], 1.0);
                             //}
                             var tText = new FormattedText(
-                                "T",
+                                "T:" + sector.TradeRouteIndicator.ToString(),
                                 CultureInfo.CurrentCulture,
                                 FlowDirection.LeftToRight,
                                 s_textTypeface,
@@ -2101,7 +2106,7 @@ namespace Supremacy.UI
                                 Brushes.White);
                             var tGeom = tText.BuildGeometry(
                                 new Point(SectorSize * location.X + 45,
-                                            SectorSize * (location.Y + 1) - 5
+                                            SectorSize * (location.Y + 1) - 40
                                                 - tText.Height + (tText.Height - tText.Baseline)));
                             dc.DrawGeometry(Brushes.White, tPen, tGeom);
                         }
