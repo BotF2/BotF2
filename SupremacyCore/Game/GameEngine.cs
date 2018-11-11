@@ -1190,8 +1190,7 @@ namespace Supremacy.Game
                             {
                                 GameLog.Core.Production.WarnFormat("Removing {0} from queue on {1} ({2}) - Build Limit Reached", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
                                 colony.BuildSlots[0].Project.Cancel();
-                                //TODO: There is an infinite loop here
-                                continue;
+                                break;
                             }
 
                             if (colony.BuildSlots[0].Project.IsPaused) { }

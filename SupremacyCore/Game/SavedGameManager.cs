@@ -276,6 +276,32 @@ namespace Supremacy.Game
             if (game == null)
                 return false;
 
+            try
+            {
+                string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string SavedGameFolder = appDataFolder + "\\Star Trek Supremacy\\Saved Games\\";
+
+                string file_autosav_current = SavedGameFolder + ".autosav";
+                string file_autosav_one_turn_ago = SavedGameFolder + ".autosav_one_turn_ago.sav";
+                string file_autosav_two_turns_ago = SavedGameFolder + ".autosav_two_turns_ago";
+
+                //GameLog.Core.General.DebugFormat("saved {0} + {1} + {2}", file_autosav_current, file_autosav_one_turn_ago, file_autosav_two_turns_ago);
+                //GameLog.Core.General.DebugFormat("saving {0}", file_autosav_current);
+                GameLog.Core.General.DebugFormat("saving {0}", file_autosav_one_turn_ago);
+                //GameLog.Core.General.DebugFormat("saving {0}", file_autosav_two_turns_ago);
+
+                if (File.Exists(file_autosav_one_turn_ago))
+                    File.Copy(file_autosav_one_turn_ago, file_autosav_two_turns_ago, true);
+
+                if (File.Exists(file_autosav_current))
+                    File.Copy(file_autosav_current, file_autosav_one_turn_ago, true);
+
+            }
+            catch
+            {
+                GameLog.Core.General.DebugFormat("Problem at saving autosav and previous autosav");
+            }
+           
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);
         }
     }
