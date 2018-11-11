@@ -50,9 +50,12 @@ namespace Supremacy.Universe
 
         [NonSerialized]
         private Lazy<StarSystem> _system;
-        
+
         [NonSerialized]
         private Lazy<Station> _station;
+
+        [NonSerialized]
+        private Lazy<TradeRoute> _tradeRoute;
 
         /// <summary>
         /// Gets the map location of this <see cref="Sector"/>.
@@ -98,6 +101,17 @@ namespace Supremacy.Universe
             }
         }
 
+        public TradeRoute TradeRoute
+        {
+            get { return _tradeRoute.Value; }
+            internal set
+            {
+                _tradeRoute = new Lazy<TradeRoute>(() => value);
+
+                OnPropertyChanged("Owner");
+                OnPropertyChanged("Name");
+            }
+        }
         /// <summary>
         /// Gets the name of this <see cref="Sector"/>.
         /// </summary>
@@ -144,6 +158,7 @@ namespace Supremacy.Universe
             _location = location;
             _system = new Lazy<StarSystem>(FindSystem, LazyThreadSafetyMode.PublicationOnly);
             _station = new Lazy<Station>(FindStation, LazyThreadSafetyMode.PublicationOnly);
+            _tradeRoute = new Lazy<TradeRoute>(FindTradeRoute, LazyThreadSafetyMode.PublicationOnly);
         }
 
         private StarSystem FindSystem()
@@ -158,6 +173,12 @@ namespace Supremacy.Universe
             //if (GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location) != null)
             //    GameLog.Client.GameData.DebugFormat("FindStation={0}", GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location));
             return GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location);
+        }
+
+        private Station FindTradeRoute()
+        {
+            return GameContext.Current.Universe.FindFirst<TradeRoute>(o => o.SourceColony.Location == _location);
+            //var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
         }
 
         public void Reset()

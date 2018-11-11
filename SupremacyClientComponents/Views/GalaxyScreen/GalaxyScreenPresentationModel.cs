@@ -121,6 +121,57 @@ namespace Supremacy.Client.Views
             return ImageCache.Current.Get(imageUri);
         }
     }
+    public class TradeRoutePresentationModel
+    {
+        private Sector _sector = null;
+        private Civilization _playerCiv = null;
+        private BitmapImage _tradeRouteImage = null;
+
+        public Sector Sector
+        {
+            get { return _sector; }
+            set
+            {
+                _sector = value;
+               UpdateTrade();
+            }
+        }
+        public BitmapImage TradeRoutImage
+        {
+            get { return _tradeRouteImage; }
+        }
+
+        public Civilization PlayerCiv
+        {
+            get { return _playerCiv; }
+            set
+            {
+                _playerCiv = value;
+                UpdateTrade();
+            }
+        }
+
+        private void UpdateTrade()
+        {
+            _tradeRouteImage = null;
+
+            if (Sector == null || PlayerCiv == null)
+                return;
+
+            if (Sector.TradeRoute == null)
+                return;
+
+            string tradeRouteImagePath = "";
+
+            //if ((Sector.TradeRoute.Owner == PlayerCiv) || DiplomacyHelper.IsContactMade(PlayerCiv, Sector.TradeRoute.Owner))
+            //{
+            tradeRouteImagePath = "Resources/Images/Insignias/";
+            //}
+
+            if (string.IsNullOrEmpty(tradeRouteImagePath))
+                tradeRouteImagePath = "Resources/Images/Insignias/__unknown.png";
+        }
+    }
 
     public class GalaxyScreenPresentationModel : PresentationModelBase
     {
