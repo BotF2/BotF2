@@ -2081,28 +2081,16 @@ namespace Supremacy.UI
                             // yellow "2": 2 TradeRoutes done, 2 possible
                             // green "1": 1 TradeRoutes done, 2 possible -> one available
 
-
-                            //if ((tradeRouteIndicator != null) &&
-                            //    ((station.Owner == playerCiv) || (scanStrength > 0)))
-                            //{
-
-                            //      int brushId = station.OwnerID;
                             Pen tPen;
                         
-                        //if ((station.Owner != playerCiv) && !DiplomacyHelper.IsContactMade(station.Owner, playerCiv))
-                            //{
-                                tPen = new Pen(Brushes.Green, 1.0);
-                            //}
-                            //else
-                            //{
-                                // sPen = new Pen(s_colonyNameBrushes[brushId], 1.0);
-                            //}
+                            tPen = new Pen(Brushes.Green, 1.0);
+
                             var tText = new FormattedText(
                                 "T:" + sector.TradeRouteIndicator.ToString(),
                                 CultureInfo.CurrentCulture,
                                 FlowDirection.LeftToRight,
                                 s_textTypeface,
-                                16.0,
+                                12.0,
                                 Brushes.White);
                             var tGeom = tText.BuildGeometry(
                                 new Point(SectorSize * location.X + 45,

@@ -57,7 +57,7 @@ namespace Supremacy.Universe
         private Lazy<Station> _station;
 
         [NonSerialized]
-        private Lazy<TradeRoute> _tradeRoute;
+        private Lazy<TradeRoute> _tradeRouteIndicator;
 
         /// <summary>
         /// Gets the map location of this <see cref="Sector"/>.
@@ -107,19 +107,13 @@ namespace Supremacy.Universe
         {
             get
             {
-                //return true;
-                //_tradeRouteImage = null;
+                //Colony ColonyTR = new Colony;
 
-                //int _tradeRouteIndicator = 0;
+                //return Colony.ColonyTradeRoutes;
+
 
                 if (System == null || System.Colony == null)
                     return 99;
-
-
-                //if (Sector.TradeRoute == null)  // also show a possible trade route
-                //    return;
-
-                //string tradeRouteImagePath = "";
 
                 Table popReqTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopReq"];
                 Table popModTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
@@ -142,14 +136,7 @@ namespace Supremacy.Universe
                 int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;
 
                 return possibleTradeRoutes;
-                //if (System.Colony.TradeRoutes.Count() < possibleTradeRoutes)
-                //{
-                //    return true;
-                //    //tradeRouteImagePath = "Resources/Images/ScreenIcons/green_hand.png";
-                //    //if (string.IsNullOrEmpty(tradeRouteImagePath))
-                //    //    tradeRouteImagePath = "Resources/Images/Insignias/__unknown.png";
-                //}
-                //return false;
+
             }
         }
 

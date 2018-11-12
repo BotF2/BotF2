@@ -50,6 +50,26 @@ namespace Supremacy.Universe
         {
             get { return GetValue(TotalEnergyProperty).CurrentValue; }
         }
+
+
+        #endregion
+
+        #region System Trade Routes Dynamic Property
+        //public static readonly DynamicProperty<int> TotalTradeRoutesProperty = DynamicProperty<int>.Register(
+        //    "ColonyTradeRoutes",
+        //    typeof(Colony),
+        //    new DynamicPropertyMetadata<int>(OnTotalTradeRoutesChanged));
+
+        //public static void OnTotalTradeRoutesChanged(DynamicObject c, DynamicPropertyChangedEventArgs,<int> e)
+        //{
+        //    ((Colony)c).OnPropertyChanged("ColonyTradeRoutes");
+
+        //}
+        //public int ColonyTradeRoutes
+        //{
+        //    get { return GetValue(TotalTradeRoutesProperty).CurrentValue; }
+        //   // get { return _tradeRoutes.Count(); }
+        //}
         #endregion
 
         /// <summary>
