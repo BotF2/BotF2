@@ -108,9 +108,7 @@ namespace Supremacy.Universe
             get
             {
                 //Colony ColonyTR = new Colony;
-
-                //return Colony.ColonyTradeRoutes;
-
+                //return ColonyTR.ColonyTradeRoutes;
 
                 if (System == null || System.Colony == null)
                     return 99;

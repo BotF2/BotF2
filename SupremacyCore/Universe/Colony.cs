@@ -50,8 +50,6 @@ namespace Supremacy.Universe
         {
             get { return GetValue(TotalEnergyProperty).CurrentValue; }
         }
-
-
         #endregion
 
         #region System Trade Routes Dynamic Property
@@ -71,6 +69,11 @@ namespace Supremacy.Universe
         //   // get { return _tradeRoutes.Count(); }
         //}
         #endregion
+
+        //public int ColonyTradeRoutes
+        //{
+        //    get { return _tradeRoutes.Count(); }
+        //}
 
         /// <summary>
         /// The maximum number of production facilities per category that can exist
