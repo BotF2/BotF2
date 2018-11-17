@@ -135,33 +135,33 @@ namespace Supremacy.Scripting.Events
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health/5));
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
-                    int removeFood = target.GetTotalFacilities(ProductionCategory.Food) - 3; // Food: remaining everything up to 3
-                    if (removeFood < 4)
+                    int removeFood = 2; // If you have food 4 or more then take out 2
+                    if (target.GetTotalFacilities(ProductionCategory.Food) < 4)
                         removeFood = 0;
                     target.RemoveFacilities(ProductionCategory.Food, removeFood);
 
-                    int removeIndustry = target.GetTotalFacilities(ProductionCategory.Industry) - 5; // Industry: remaining everything up to 5
-                    if (removeIndustry < 6 ) 
+                    int removeIndustry = 3;  // If you have industry 8 or more then take out 3
+                    if (target.GetTotalFacilities(ProductionCategory.Industry) < 8)
                         removeIndustry = 0;
                     target.RemoveFacilities(ProductionCategory.Industry, removeIndustry);
 
-                    int removeEnergy = target.GetTotalFacilities(ProductionCategory.Energy) - 2;  // Energy: remaining everything up to 2
-                    if (removeEnergy < 3) 
+                    int removeEnergy = 2; ;  // If you have energy 6 or more then take out 2
+                    if (target.GetTotalFacilities(ProductionCategory.Energy) < 6)
                         removeEnergy = 0;
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
 
-                    int removeResearch = target.GetTotalFacilities(ProductionCategory.Research);  // Research: remaining everything up to 0
-                    if (removeResearch < 1)
+                    int removeResearch = 2;   // If you have research 4 or more then take out 2
+                    if (target.GetTotalFacilities(ProductionCategory.Research) < 4)
                         removeResearch = 0;
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
-                    int removeIntelligence = target.GetTotalFacilities(ProductionCategory.Intelligence);  // Research: remaining everything up to 0
-                    if (removeIntelligence < 1)
+                    int removeIntelligence = 3;   // If you have intel 4 or more than take out 3
+                    if (target.GetTotalFacilities(ProductionCategory.Intelligence) < 4)
                         removeIntelligence = 0;
-                    target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
+                    target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence);
 
-                    int removeOrbitalBatteries = target.OrbitalBatteries.Count;  // OrbitalBatteries: remaining everything up to 1
-                    if (removeOrbitalBatteries < 2)
+                    int removeOrbitalBatteries = 2;  // if you have 3 or more orbital batteries take out 2
+                    if (target.OrbitalBatteries.Count <= 2)
                         removeOrbitalBatteries = 0;
                     target.RemoveOrbitalBatteries(removeOrbitalBatteries);
 
