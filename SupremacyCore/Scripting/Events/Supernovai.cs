@@ -18,7 +18,7 @@ namespace Supremacy.Scripting.Events
     public class SupernovaiEvent : UnitScopedEvent<Colony>
     {
         
-        private int _occurrenceChance = 100;
+        private int _occurrenceChance = 200;
         public override bool CanExecute
         {
             get { return _occurrenceChance > 0 && base.CanExecute; }

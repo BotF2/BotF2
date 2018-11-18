@@ -140,20 +140,25 @@ namespace Supremacy.Scripting.Events
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     // Facilities
-                    int removeFood = target.GetTotalFacilities(ProductionCategory.Food) - 1; // Food: remaining everything up to 1
-                    if (removeFood < 2)
+                    int removeFood = 1; // If you have food 4 or more then take out 1
+                    if (target.GetTotalFacilities(ProductionCategory.Food) < 4)
                         removeFood = 0;
                     target.RemoveFacilities(ProductionCategory.Food, removeFood);
 
-                    int removeIndustry = target.GetTotalFacilities(ProductionCategory.Industry) - 2; // Industry: remaining everything up to 4
-                    if (removeIndustry < 5)
+                    int removeIndustry = 2;  // If you have industry 8 or more then take out 2
+                    if (target.GetTotalFacilities(ProductionCategory.Industry) < 8)
                         removeIndustry = 0;
                     target.RemoveFacilities(ProductionCategory.Industry, removeIndustry);
 
-                    int removeEnergy = target.GetTotalFacilities(ProductionCategory.Energy) - 2;  // Energy: remaining everything up to 2
-                    if (removeEnergy < 3)
+                    int removeEnergy = 1; ;  // If you have energy 6 or more then take out 1
+                    if (target.GetTotalFacilities(ProductionCategory.Energy) < 6)
                         removeEnergy = 0;
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
+
+                    int removeResearch = 1;   // If you have research 4 or more then take out 1
+                    if (target.GetTotalFacilities(ProductionCategory.Research) < 4)
+                        removeResearch = 0;
+                    target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
                     game.CivilizationManagers[targetCiv].SitRepEntries.Add(
                         new ScriptedEventSitRepEntry(

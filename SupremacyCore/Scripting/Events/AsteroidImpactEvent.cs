@@ -17,11 +17,11 @@ using System.Linq;
 namespace Supremacy.Scripting.Events
 {
     [Serializable]
-    public class AsteroidImpactEvent : UnitScopedEvent<Colony> 
+    public class AsteroidImpactEvent : UnitScopedEvent<Colony>
     {
         private bool _productionFinished;
         private bool _shipProductionFinished;
-        private int _occurrenceChance = 100;
+        private int _occurrenceChance = 200;
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
@@ -130,9 +130,9 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population/5);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population / 5);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health/5));
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health / 5));
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     int removeFood = 2; // If you have food 4 or more then take out 2
