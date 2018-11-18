@@ -457,6 +457,10 @@ namespace Supremacy.Orbitals
             if (fuelNeeded > 0)
                 ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
 
+            // default we want to be "camouflaged"
+            if (ship.CanCamouflage == true && ship.IsCamouflaged == false)
+                ship.IsCamouflaged = true;
+
             GameContext.Current.Universe.Objects.Add(ship);
             
             civManager.MapData.SetExplored(location, true);
