@@ -1358,13 +1358,30 @@ namespace Supremacy.WCF
             {
                 GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
                 var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
+                var enemyAssets = update.HostileAssets.FirstOrDefault(hostileAssets => hostileAssets.Owner != update.Owner);
+
                 if (ownerAssets == null)
                 {
                     return;
                 }
                 if (update.RoundNumber == 1)
                 {
-                    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Hail));
+                    var blanketOrder = CombatOrder.Hail;
+
+                    int countStation = 0;
+                    if (enemyAssets.Station != null)
+                        countStation = 2;  // counting value for Station = 2 ships
+
+                    // for this situation: one or two combatant ships (maybe Scouts) against a big fire power (Ships or as well Station) -> Retreat is making big sense
+                    if (ownerAssets.CombatShips.Count < 3 && ownerAssets.CombatShips.Count + 1 < enemyAssets.CombatShips.Count + countStation)   // owner is mostly right side, "enemy" is player's side = left
+                    {
+                        //SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, CombatOrder.Hail));
+                        blanketOrder = CombatOrder.Retreat;
+                    }
+                    SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder));
+
+                        //GameLog.Core.Combat.DebugFormat("blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
+                        //   ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
                 }
                 else
                 {
