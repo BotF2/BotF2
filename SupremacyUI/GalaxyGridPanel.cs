@@ -2070,6 +2070,34 @@ namespace Supremacy.UI
                                                 - sText.Height + (sText.Height - sText.Baseline)));
                             dc.DrawGeometry(Brushes.White, sPen, sGeom);
                         }
+
+                        /***************************
+                         * DRAW TradeRoute INDICATORS *
+                         ***************************/
+
+                        if (sector.TradeRouteIndicator != 99 && sector.TradeRouteIndicator != 0)
+                        {
+                            // my plan is: 
+                            // yellow "2": 2 TradeRoutes done, 2 possible
+                            // green "1": 1 TradeRoutes done, 2 possible -> one available
+
+                            Pen tPen;
+                        
+                            tPen = new Pen(Brushes.Green, 1.0);
+
+                            var tText = new FormattedText(
+                                "T:" + sector.TradeRouteIndicator.ToString(),
+                                CultureInfo.CurrentCulture,
+                                FlowDirection.LeftToRight,
+                                s_textTypeface,
+                                12.0,
+                                Brushes.White);
+                            var tGeom = tText.BuildGeometry(
+                                new Point(SectorSize * location.X + 45,
+                                            SectorSize * (location.Y + 1) - 40
+                                                - tText.Height + (tText.Height - tText.Baseline)));
+                            dc.DrawGeometry(Brushes.White, tPen, tGeom);
+                        }
                     }
                 }
                 slc.Close();

@@ -122,6 +122,7 @@ namespace Supremacy.Client.Views
         }
     }
 
+
     public class GalaxyScreenPresentationModel : PresentationModelBase
     {
         #region Fields

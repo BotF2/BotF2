@@ -21,6 +21,8 @@ using Supremacy.Orbitals;
 using System.Linq;
 
 using Supremacy.Utility;
+using Supremacy.Data;
+using Supremacy.Types;
 
 namespace Supremacy.Universe
 {
@@ -50,9 +52,12 @@ namespace Supremacy.Universe
 
         [NonSerialized]
         private Lazy<StarSystem> _system;
-        
+
         [NonSerialized]
         private Lazy<Station> _station;
+
+        [NonSerialized]
+        private Lazy<TradeRoute> _tradeRouteIndicator;
 
         /// <summary>
         /// Gets the map location of this <see cref="Sector"/>.
@@ -97,6 +102,44 @@ namespace Supremacy.Universe
                 OnPropertyChanged("IsOwned");
             }
         }
+
+        public int TradeRouteIndicator
+        {
+            get
+            {
+                //Colony ColonyTR = new Colony;
+                //return ColonyTR.ColonyTradeRoutes;
+
+                if (System == null || System.Colony == null)
+                    return 99;
+
+                Table popReqTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopReq"];
+                Table popModTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
+
+                //if ((Sector.TradeRoute.Owner == PlayerCiv) || DiplomacyHelper.IsContactMade(PlayerCiv, Sector.TradeRoute.Owner))
+                //{
+                int popForTradeRoute;
+
+                var civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
+
+                /*
+                 * See what the minimum population level is for a new trade route for the
+                 * current civilization.  If one is not specified, use the default.
+                 */
+                if (popReqTable[civManager.Civilization.Key] != null)
+                    popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
+                else
+                    popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
+
+                int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;
+
+                return possibleTradeRoutes;
+
+            }
+        }
+
+       
+
 
         /// <summary>
         /// Gets the name of this <see cref="Sector"/>.
@@ -144,6 +187,7 @@ namespace Supremacy.Universe
             _location = location;
             _system = new Lazy<StarSystem>(FindSystem, LazyThreadSafetyMode.PublicationOnly);
             _station = new Lazy<Station>(FindStation, LazyThreadSafetyMode.PublicationOnly);
+            //_tradeRoute = new Lazy<TradeRoute>(FindTradeRoute, LazyThreadSafetyMode.PublicationOnly);
         }
 
         private StarSystem FindSystem()
@@ -159,6 +203,14 @@ namespace Supremacy.Universe
             //    GameLog.Client.GameData.DebugFormat("FindStation={0}", GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location));
             return GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location);
         }
+
+        //private TradeRoute FindTradeRoute()
+        //{
+        //    GameLog.Core.General.DebugFormat("FindTradeRoute (empty atm");
+        //    //return GameContext.Current.Universe.FindFirst<TradeRoute>(o => o.SourceColony.Location == _location);
+        //    //var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+        //    return;
+        //}
 
         public void Reset()
         {
