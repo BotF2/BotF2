@@ -27,6 +27,13 @@ namespace Supremacy.Client.Views
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
             Colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
+            var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
+
+            foreach (var infiltratedColony in AllColonies)
+            {
+                //if Colony that is inflitrated by Klingons add to list Klingon infiltrated colonies)
+            }
+            //InfiltratedColonies = DesignTimeAppContext.Instance.RemotePlayers.InfiltratedColonies;
         }
 
         #region Colonies Property
@@ -38,6 +45,8 @@ namespace Supremacy.Client.Views
 
         private IEnumerable<Colony> _colonies;
 
+        private IEnumerable<Colony> _infiltratedColonies;
+
         public IEnumerable<Colony> Colonies
         {
             get { return _colonies; }
@@ -47,6 +56,22 @@ namespace Supremacy.Client.Views
                     return;
 
                 _colonies = value;
+
+                OnColoniesChanged();
+
+                OnTotalPopulationChanged();
+            }
+        }
+
+        public IEnumerable<Colony> InfiltratedColonies
+        {
+            get { return _infiltratedColonies; }
+            set
+            {
+                if (Equals(value, _infiltratedColonies))
+                    return;
+
+                _infiltratedColonies = value;
 
                 OnColoniesChanged();
 
