@@ -117,6 +117,7 @@ namespace Supremacy.Game
         Constructor,
         Attack,
         Defense,
+        Spy,
         Escort,
         Raider,
         Diplomatic,

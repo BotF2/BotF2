@@ -184,7 +184,32 @@ namespace Supremacy.AI
                 //TODO
                 if (fleet.IsSpy)
                 {
-
+                    if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
+                    {
+                        Colony bestSystemForSpying;
+                        if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
+                        {
+                            if (bestSystemForSpying.Location == fleet.Location)
+                            {
+                                //Spy
+                                fleet.SetOrder(new SabotageOrder());
+                                fleet.UnitAIType = UnitAIType.Spy;
+                                fleet.Activity = UnitActivity.Mission;
+                                GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} in {1} to sabotage the system", fleet.ObjectID, fleet.Location);
+                            }
+                            else
+                            {
+                                fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForSpying.Sector }));
+                                fleet.UnitAIType = UnitAIType.Medical;
+                                fleet.Activity = UnitActivity.Mission;
+                                GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} to {1}", fleet.ObjectID, bestSystemForSpying);
+                            }
+                        }
+                        else
+                        {
+                            GameLog.Core.AI.DebugFormat("Nothing to do for spy fleet {0}", fleet.ObjectID);
+                        }
+                    }
                 }
 
                 //TODO
@@ -347,7 +372,6 @@ namespace Supremacy.AI
             var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             var mapData = civManager.MapData;
 
-            //TODO: Replace stars with sectors
             var starsToExplore = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
                 .Where(s => mapData.IsScanned(s.Location))
@@ -392,7 +416,6 @@ namespace Supremacy.AI
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
-            int ColonyValue = 1000;
             int HomeSystemValue = 2000;
             int SeatOfGovernmentValue = 2000;
 
@@ -402,7 +425,7 @@ namespace Supremacy.AI
 
             if ((sector.System != null) && sector.System.HasColony)
             {
-                value += ColonyValue;
+                value += sector.System.Colony.ColonyValue();
                 if (sector.System == civManager.HomeSystem)
                     value += HomeSystemValue;
 
@@ -525,7 +548,7 @@ namespace Supremacy.AI
             int OwnColonyPriority = 100;
             int AlliedColonyPriority = 15;
             int FriendlyColonyPriority = 10;
-            int NeturalColonyPriority = 5;
+            int NeutralColonyPriority = 5;
 
             int value = 0;
 
@@ -543,12 +566,95 @@ namespace Supremacy.AI
             }
             else if (DiplomacyHelper.AreNeutral(colony.Owner, civ))
             {
-                value += NeturalColonyPriority;
+                value += NeutralColonyPriority;
             }
 
             value += (100 - colony.Health.CurrentValue);
-            GameLog.Core.AI.DebugFormat("Medical value for {0} is {1)", colony, value);
+            GameLog.Core.AI.DebugFormat("Medical value for {0} is {1})", colony, value);
             return value;
+        }
+
+        /*
+         * Spying
+         */
+
+        /// <summary>
+        /// Determines the value of spying on a <see cref="Colony"/>
+        /// to a given <see cref="Civilization"/>
+        /// </summary>
+        /// <param name="colony"></param>
+        /// <param name="civ"></param>
+        /// <returns></returns>
+        public static int GetSpyingValue(Colony colony, Civilization civ)
+        {
+            if (colony == null)
+                throw new ArgumentNullException("colony");
+
+            if (civ == null)
+                throw new ArgumentNullException("civ");
+
+            int EnemyColonyPriority = 50;
+            int NeutralColonyPriority = 25;
+            int FriendlyColonyPriority = 10;
+
+            int value = 0;
+
+            if (DiplomacyHelper.AreAllied(colony.Owner, civ) || DiplomacyHelper.AreFriendly(colony.Owner, civ))
+            {
+                value += FriendlyColonyPriority;
+            }
+            else if (DiplomacyHelper.AreNeutral(colony.Owner, civ))
+            {
+                value += NeutralColonyPriority;
+            }
+            else if (DiplomacyHelper.AreAtWar(colony.Owner, civ))
+            {
+                value += EnemyColonyPriority;
+            }
+
+            GameLog.Core.AI.DebugFormat("Spying value for {0} is {1}", colony, value);
+            return value;
+
+        }
+
+        /// <summary>
+        /// Gets the best <see cref="Colony"/> for a <see cref="Fleet"/> to spy on
+        /// </summary>
+        /// <param name="fleet"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static bool GetBestColonyForSpying(Fleet fleet, out Colony result)
+        {
+            if (fleet == null)
+                throw new ArgumentNullException("fleet");
+
+            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            var mapData = civManager.MapData;
+            var spyShips = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(s => s.IsSpy);
+
+            var possibleColonies = GameContext.Current.Universe.Find<Colony>()
+                //That isn't owned by us
+                .Where(c => c.Owner != fleet.Owner)
+                //We need to know about it (no cheating)
+                .Where(c => mapData.IsScanned(c.Location) && mapData.IsExplored(c.Location))
+                //In fuel range
+                .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
+                //Where there isn't a spy ship already there or heading there
+                .Where(c => !spyShips.Any(f => f.Location == c.Location))
+                .Where(c => !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
+                .ToList();
+
+            if (possibleColonies.Count() == 0)
+            {
+                result = null;
+                return false;
+            }
+
+            possibleColonies.Sort((a, b) =>
+                (GetSpyingValue(a, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
+                .CompareTo(GetSpyingValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
+            result = possibleColonies[possibleColonies.Count() - 1];
+            return true;
         }
 
         /// <summary>
