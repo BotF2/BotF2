@@ -2066,4 +2066,34 @@ namespace Supremacy.Game
             _colony = colony;
         }
     }
+
+    [Serializable]
+    public class BlackHoleEncounterSitRepEntry : SitRepEntry
+    {
+        private int _shipsDestroyed;
+        private int _shipsDamaged;
+        private StarSystem _location;
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.General; }
+        }
+
+        public override string SummaryText
+        {
+            get { return string.Format(ResourceManager.GetString("SITREP_BLACK_HOLE_ENCOUNTER"), _location.Name, _shipsDestroyed, _shipsDamaged); }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public BlackHoleEncounterSitRepEntry(Civilization owner, StarSystem location, int shipsDamaged, int shipsDestroyed) : base(owner, SitRepPriority.Red)
+        {
+            _location = location;
+            _shipsDamaged = shipsDamaged;
+            _shipsDestroyed = shipsDestroyed;
+        }
+    }
 }
