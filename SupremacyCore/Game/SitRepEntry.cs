@@ -2072,11 +2072,38 @@ namespace Supremacy.Game
     {
         private MapLocation _wormholeLocation;
 
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.General; }
+        }
+
         public ShipDestroyedInWormholeSitRepEntry(Civilization owner, MapLocation wormholeLocation) : base(owner, SitRepPriority.Yellow)
         {
             _wormholeLocation = wormholeLocation;
         }
+        
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_FLEET_DESTROYED_UNSTABLE_WORMHOLE"), _wormholeLocation);
+            }
+        }
+        
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+        
+    }
 
+
+    public class BlackHoleEncounterSitRepEntry : SitRepEntry
+    {
+        private int _shipsDestroyed;
+        private int _shipsDamaged;
+        private StarSystem _location;
+        
         public override SitRepCategory Categories
         {
             get { return SitRepCategory.General; }
@@ -2086,8 +2113,20 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("SITREP_FLEET_DESTROYED_UNSTABLE_WORMHOLE"), _wormholeLocation);
+                return string.Format(ResourceManager.GetString("SITREP_BLACK_HOLE_ENCOUNTER"), _location.Name, _shipsDestroyed, _shipsDamaged);
             }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public BlackHoleEncounterSitRepEntry(Civilization owner, StarSystem location, int shipsDamaged, int shipsDestroyed) : base(owner, SitRepPriority.Red)
+        {
+            _location = location;
+            _shipsDamaged = shipsDamaged;
+            _shipsDestroyed = shipsDestroyed;
         }
     }
 }

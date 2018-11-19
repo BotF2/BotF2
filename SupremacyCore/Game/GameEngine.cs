@@ -494,6 +494,32 @@ namespace Supremacy.Game
                         //ship.FuelReserve.UpdateAndReset();
                     }
                 }
+
+                if (fleet.Sector.System != null && (fleet.Sector.System.StarType == StarType.BlackHole))
+                {
+                    int shipsDamaged = 0;
+                    int shipsDestroyed = 0;
+
+                    foreach (var ship in fleet.Ships)
+                    {
+                        int damage = RandomHelper.Roll(ship.HullStrength.CurrentValue);
+                        if (damage >= ship.HullStrength.CurrentValue)
+                        {
+                            shipsDestroyed++;
+                            ship.Destroy();
+                        }
+                        else
+                        {
+                            shipsDamaged++;
+                            ship.HullStrength.AdjustCurrent(-damage);
+                        }
+                    }
+
+                    if ((shipsDamaged > 0) || (shipsDestroyed > 0))
+                    {
+                        civManager.SitRepEntries.Add(new BlackHoleEncounterSitRepEntry(fleet.Owner, fleet.Sector.System, shipsDamaged, shipsDestroyed));
+                    }
+                }
             }
         }
         #endregion
