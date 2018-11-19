@@ -310,6 +310,8 @@ namespace Supremacy.Orbitals
             civManager.MapData.SetScanned(colony.Location, true, 1);
             civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
             civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
+
+            GameContext.Current.Universe.Destroy(colonyShip);
         }
 
         protected internal override void OnOrderAssigned()

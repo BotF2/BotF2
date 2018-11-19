@@ -1779,8 +1779,11 @@ namespace Supremacy.Game
                             }
                             if (route.TargetColony != null)
                             {
-                                route.Credits = (int)((sourceMod * route.SourceColony.Population.CurrentValue) +
-                                                    (targetMod * route.TargetColony.Population.CurrentValue));
+                            int sourceIndustry = route.SourceColony.NetIndustry + 1;  // avoiding a zero
+                            int targetIndustry = route.TargetColony.NetIndustry + 1;
+
+                            route.Credits = 10 * (int)((sourceMod * sourceIndustry) + (targetMod * targetIndustry));
+
                             }
                         }
                             

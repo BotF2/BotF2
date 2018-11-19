@@ -52,6 +52,29 @@ namespace Supremacy.Universe
         }
         #endregion
 
+        #region System Trade Routes Dynamic Property
+        //public static readonly DynamicProperty<int> TotalTradeRoutesProperty = DynamicProperty<int>.Register(
+        //    "ColonyTradeRoutes",
+        //    typeof(Colony),
+        //    new DynamicPropertyMetadata<int>(OnTotalTradeRoutesChanged));
+
+        //public static void OnTotalTradeRoutesChanged(DynamicObject c, DynamicPropertyChangedEventArgs,<int> e)
+        //{
+        //    ((Colony)c).OnPropertyChanged("ColonyTradeRoutes");
+
+        //}
+        //public int ColonyTradeRoutes
+        //{
+        //    get { return GetValue(TotalTradeRoutesProperty).CurrentValue; }
+        //   // get { return _tradeRoutes.Count(); }
+        //}
+        #endregion
+
+        //public int ColonyTradeRoutes
+        //{
+        //    get { return _tradeRoutes.Count(); }
+        //}
+
         /// <summary>
         /// The maximum number of production facilities per category that can exist
         /// on a single colony.

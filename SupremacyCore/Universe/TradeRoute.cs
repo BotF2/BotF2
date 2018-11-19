@@ -16,6 +16,7 @@ using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
+using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Types;
 using Supremacy.Utility;
@@ -29,6 +30,7 @@ namespace Supremacy.Universe
     public class TradeRoute : Cloneable, INotifyPropertyChanged, ICloneable
     {
         private readonly int _sourceColonyId;
+        //private readonly MapLocation _tradeRouteLocation;
         private int _targetColonyId;
         private int _credits;
 
@@ -40,6 +42,12 @@ namespace Supremacy.Universe
         {
             get { return GameContext.Current.Universe.Objects[_sourceColonyId] as Colony; }
         }
+
+        //public MapLocation TradeRouteLocation   
+        //{
+            
+        //   get { return GameContext.Current.Universe.FindAt<StarSystem>(Loc); }
+        //}
 
         /// <summary>
         /// Gets or sets the <see cref="Colony"/> at which the <see cref="TradeRoute"/> terminates.
@@ -210,6 +218,8 @@ namespace Supremacy.Universe
                 //return (int)((1.0 + bonus) * this.Credits);
             }
         }
+
+        public Civilization Owner { get; set; }
 
         internal void NotifyLocalPlayerCreditsChanged()
         {
