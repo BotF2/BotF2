@@ -223,12 +223,15 @@ namespace Supremacy.Game
         /// <value>The total intelligence.</value>
         public int TotalIntelligence
         {
-            get { return Colonies.Sum(colony => colony.NetIntelligence); }
-        }
-
-        public int TotalIntelligenceReserve
-        {
-            get { return Colonies.Sum(colony => colony.NetIntelligence); }
+            get
+            {
+                var baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
+                foreach (var bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
+                {
+                    baseIntel *= bonus.Amount;
+                }
+                return baseIntel;
+            }
         }
 
         public bool ControlsHomeSystem
