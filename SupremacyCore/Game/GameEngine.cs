@@ -1479,6 +1479,10 @@ namespace Supremacy.Game
         #region DoIntelligence() Method
         void DoIntelligence(GameContext game)
         {
+            var innateDefense = 200;
+            var chanceOfAttemptSucceeding = 100;
+            var minProductionFacilitiesToLeave = 5;
+
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
                 GameContext.PushThreadContext(game);
@@ -1488,8 +1492,10 @@ namespace Supremacy.Game
                         return;
 
                     var attackingEmpire = GameContext.Current.CivilizationManagers[civ.CivID];
-
-                    int attackIntelligence = 201;   // avoid bug by deviding by zero  - later it's shrink by 200
+                    if (attackingEmpire.TotalIntelligence <= 0) {
+                        GameLog.Core.Intel.DebugFormat("{0} has no intel power so cannot attack");
+                        return;
+                    }
 
                     //Get a list of all viable target empire
                     var targets = GameContext.Current.Civilizations
@@ -1500,7 +1506,7 @@ namespace Supremacy.Game
                         //That they have actually met
                         .Where(t => DiplomacyHelper.IsContactMade(civ, t));
 
-                    GameLog.Core.Intel.DebugFormat("empires without the own one & contact made: Available targets = {0}", targets.Count());
+                    GameLog.Core.Intel.DebugFormat("Available intel targets for {0}: {1}", civ.Name, targets.Count());
 
                     //Double check that we have viable targets
                     if (targets.Count() == 0)
@@ -1508,31 +1514,24 @@ namespace Supremacy.Game
 
                     //Select one at random
                     CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[targets.RandomElement()];
-                    GameLog.Core.Intel.DebugFormat("targetEmpire = {0}", targetEmpire.Civilization.Name);
+                    GameLog.Core.Intel.DebugFormat("{0} is targeting empire {1}...", civ.Name, targetEmpire.Civilization.Name);
 
                     //Randomly pick one of their colonies to attack
                     Colony targetColony = targetEmpire.Colonies.RandomElement();
 
-                    GameLog.Core.Intel.DebugFormat("targetColony = {0}", targetColony.Name);
+                    GameLog.Core.Intel.DebugFormat("{0} is targeting colony {1}...", civ.Name, targetColony.Name);
 
-                    //200 intelligience is not taken in to account for attacks
-                    if (attackingEmpire.TotalIntelligence > 200)
-                    {
-                        attackIntelligence = attackingEmpire.TotalIntelligence - 200;
-                    }
-
-                    int defenseIntelligence = targetEmpire.TotalIntelligence;
-                    if (defenseIntelligence < 1)   // avoid bug by devided by zero
-                        defenseIntelligence = 1;
+                    int defenseIntelligence = targetEmpire.TotalIntelligence + innateDefense;
+                    int attackIntelligience = attackingEmpire.TotalIntelligence;
 
                     //Get the ratio of the attacking power to defending power
-                    int ratio = attackIntelligence / defenseIntelligence;
+                    int ratio = attackIntelligience / defenseIntelligence;
 
                     //We need at least a ratio of greater than 1 to attack
                     if (ratio < 1)
                     {
                         GameLog.Core.Intel.DebugFormat("{0} doesn't have enough attacking intelligence to make an attack against {1} - {2} vs {3}",
-                            attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligence, defenseIntelligence);
+                            attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligience, defenseIntelligence);
                         return;
                     }
 
@@ -1549,7 +1548,7 @@ namespace Supremacy.Game
 
                     for (int i = 0; i < attempts; i++)
                     {
-                        int action = RandomHelper.Roll(30);
+                        int action = RandomHelper.Roll(chanceOfAttemptSucceeding);
 
                         if (action < 9)
                         {
@@ -1600,7 +1599,7 @@ namespace Supremacy.Game
                             }
                             else //Otherwise siphon credits from trade route
                             {
-                                if ((targetColony.CreditsFromTrade.CurrentValue > 0))
+                                if (targetColony.CreditsFromTrade.CurrentValue > 0)
                                 {
                                     int stolenCredits = RandomHelper.Roll(targetColony.CreditsFromTrade.CurrentValue);
                                     targetColony.CreditsFromTrade.AdjustCurrent(stolenCredits * -1);
@@ -1636,76 +1635,86 @@ namespace Supremacy.Game
                         //Target their food production
                         else if (action == 3)
                         {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Food) > 0)
+                            if (targetColony.GetTotalFacilities(ProductionCategory.Food) <= minProductionFacilitiesToLeave)
                             {
-                                int destroyedFoodFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Food));
-                                targetColony.RemoveFacilities(ProductionCategory.Food, destroyedFoodFacilities);
-
-                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food faciliities at {2}", attackingEmpire.Civilization.Name, destroyedFoodFacilities, targetColony.Name);
-
-                                targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
-                                attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
+                                continue;
                             }
+
+                            int destroyedFoodFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Food) - minProductionFacilitiesToLeave);
+                            targetColony.RemoveFacilities(ProductionCategory.Food, destroyedFoodFacilities);
+
+                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food faciliities at {2}", attackingEmpire.Civilization.Name, destroyedFoodFacilities, targetColony.Name);
+
+                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
+                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
                         }
 
                         //Target industrial production
                         else if (action == 4)
                         {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Industry) > 0)
+                            if (targetColony.GetTotalFacilities(ProductionCategory.Industry) <= minProductionFacilitiesToLeave)
                             {
-                                int destroyedIndustrialFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Industry));
-                                targetColony.RemoveFacilities(ProductionCategory.Industry, destroyedIndustrialFacilities);
-
-                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} industrial faciliities at {2}", attackingEmpire.Civilization.Name, destroyedIndustrialFacilities, targetColony.Name);
-
-                                targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
-                                attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
+                                continue;
                             }
+
+                            int destroyedIndustrialFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Industry) - minProductionFacilitiesToLeave);
+                            targetColony.RemoveFacilities(ProductionCategory.Industry, destroyedIndustrialFacilities);
+
+                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} industrial faciliities at {2}", attackingEmpire.Civilization.Name, destroyedIndustrialFacilities, targetColony.Name);
+
+                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
+                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
                         }
 
                         //Target energy production
                         else if (action == 5)
                         {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Energy) > 0)
+                            if (targetColony.GetTotalFacilities(ProductionCategory.Energy) <= minProductionFacilitiesToLeave)
                             {
-                                int destroyedEnergyFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Energy));
-                                targetColony.RemoveFacilities(ProductionCategory.Energy, destroyedEnergyFacilities);
-
-                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} energy faciliities at {2}", attackingEmpire.Civilization.Name, destroyedEnergyFacilities, targetColony.Name);
-
-                                targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
-                                attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
+                                continue;
                             }
+
+                            int destroyedEnergyFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Energy) - minProductionFacilitiesToLeave);
+                            targetColony.RemoveFacilities(ProductionCategory.Energy, destroyedEnergyFacilities);
+
+                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} energy faciliities at {2}", attackingEmpire.Civilization.Name, destroyedEnergyFacilities, targetColony.Name);
+
+                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
+                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
                         }
 
                         //Target research facilities
                         else if (action == 6)
                         {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Research) > 0)
+                            if (targetColony.GetTotalFacilities(ProductionCategory.Research) <= minProductionFacilitiesToLeave)
                             {
-                                int destroyedResearchFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Research));
-                                targetColony.RemoveFacilities(ProductionCategory.Research, destroyedResearchFacilities);
-
-                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} research facilities at {2}", attackingEmpire.Civilization.Name, destroyedResearchFacilities, targetColony.Name);
-
-                                targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
-                                attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
+                                continue;
                             }
+
+                            int destroyedResearchFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Research) - minProductionFacilitiesToLeave);
+                            targetColony.RemoveFacilities(ProductionCategory.Research, destroyedResearchFacilities);
+
+                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} research facilities at {2}", attackingEmpire.Civilization.Name, destroyedResearchFacilities, targetColony.Name);
+
+                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
+                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
                         }
 
                         //Target intel facilities
                         else if (action == 7)
                         {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Intelligence) > 0)
+                            if (targetColony.GetTotalFacilities(ProductionCategory.Intelligence) <= minProductionFacilitiesToLeave)
                             {
-                                int destroyedIntelFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Intelligence));
-                                targetColony.RemoveFacilities(ProductionCategory.Intelligence, destroyedIntelFacilities);
-
-                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} intelligence facilities at {2}", attackingEmpire.Civilization.Name, destroyedIntelFacilities, targetColony.Name);
-
-                                targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
-                                attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
+                                continue;
                             }
+
+                            int destroyedIntelFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Intelligence) - minProductionFacilitiesToLeave);
+                            targetColony.RemoveFacilities(ProductionCategory.Intelligence, destroyedIntelFacilities);
+
+                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} intelligence facilities at {2}", attackingEmpire.Civilization.Name, destroyedIntelFacilities, targetColony.Name);
+
+                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
+                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
                         }
 
                         //Target planetary defenses
