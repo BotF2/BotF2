@@ -676,7 +676,6 @@ namespace Supremacy.Orbitals
             if (!_ships.Contains(ship))
             {
                 _ships.Add(ship);
-                //works   GameLog.Print("AddShipInternal - ship.Name = {0}", ship.Name);
             }
             OnPropertyChanged("Name");
             OnPropertyChanged("Range");
@@ -684,7 +683,6 @@ namespace Supremacy.Orbitals
             OnPropertyChanged("CanCloak");
             OnPropertyChanged("CanCamouflage");
             OnPropertyChanged("CanEnterWormhole");
-            EnsureValidOrder();
         }
 
         /// <summary>
@@ -701,7 +699,6 @@ namespace Supremacy.Orbitals
             if ((oldFleet != null) && (oldFleet != this))
                 oldFleet.RemoveShip(ship);
             AddShipInternal(ship);
-            //works  GameLog.Print("AddShip - ship.Name = {0}, oldFleet.Name = {1}", ship.Name, oldFleet.Name);
             EnsureValidOrder();
         }
 
@@ -935,6 +932,14 @@ namespace Supremacy.Orbitals
             base.Reset();
             if (_order != null)
             {
+                if (!_order.IsValidOrder(this))
+                {
+                    var cancelledOrder = _order;
+                    _order.OnOrderCancelled();
+                    if (_order == cancelledOrder)
+                        SetOrder(GetDefaultOrder());
+                }
+
                 if (_order.IsComplete)
                 {
                     _order.OnOrderCompleted();

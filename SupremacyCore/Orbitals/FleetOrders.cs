@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Pathfinding;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Text;
@@ -555,6 +556,10 @@ namespace Supremacy.Orbitals
                 Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
                 Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
             }
+        }
+
+        public override bool IsComplete {
+            get { return Fleet.Sector.System.Colony.Health.CurrentValue >= 100; }
         }
     }
     #endregion
@@ -1308,7 +1313,7 @@ namespace Supremacy.Orbitals
                 {
                     var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
                     GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
-                    // ToDo: Sitrep:   our connection was lost to ship entering wormhole . The fear is that it was destroyed.
+                    civManager.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
                     Fleet.Destroy();
                 }
                 else
@@ -1759,7 +1764,11 @@ namespace Supremacy.Orbitals
                 return;
             if (Fleet.Route.IsEmpty)
             {
-                Fleet.SetRouteInternal(UnitAI.GetBestExploreRoute(Fleet));
+                Sector bestSector;
+                if (UnitAI.GetBestSectorToExplore(Fleet, out bestSector))
+                {
+                    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+                }
             }
         }
     }
