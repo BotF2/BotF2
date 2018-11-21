@@ -29,11 +29,9 @@ namespace Supremacy.Client.Views
             Colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
             var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
 
-            foreach (var infiltratedColony in AllColonies)
-            {
-                //if Colony that is inflitrated by Klingons add to list Klingon infiltrated colonies)
-            }
-            //InfiltratedColonies = DesignTimeAppContext.Instance.RemotePlayers.InfiltratedColonies;
+            // need a list of colonies infiltrated by local player, add colony to list on being infiltrated.
+
+            //InfiltratedColonies = DesignTimeAppContext.Instance.LocalPalyerEmpire.InfiltratedColonies;
         }
 
         #region Colonies Property
