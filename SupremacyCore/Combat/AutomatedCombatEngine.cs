@@ -9,6 +9,7 @@
 
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
+using Supremacy.Entities;
 using Supremacy.Orbitals;
 using Supremacy.Utility;
 using System;
@@ -20,7 +21,16 @@ namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
-        private double cycleReduction = 1;
+        private double cycleReduction = 1d;
+        private double countRounds = 1d;
+        private bool firstOwnerBadOdds = false;
+
+        private bool firstHostileBadOdds = false;
+       
+        private int ownCount = 1;
+        private int hostileCount = 1;
+        private object firstOwner;
+       
         //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
@@ -31,16 +41,18 @@ namespace Supremacy.Combat
 
         }
 
-        public IList<CombatAssets> friendlyAssets { get; private set; }
+        private void CastType(object firstOwner)
+        {
+            Civilization actualType = (Civilization)firstOwner;
+        }
 
         protected override void ResolveCombatRoundCore()
         {
             _combatShips.RandomizeInPlace();
-
+           
             int maxScanStrengthOpposition = 0;
 
-            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 2
-            // .... cloaked ships might be detecked and decloaked in round 2
+            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
@@ -58,6 +70,47 @@ namespace Supremacy.Combat
                         ownerAssets.NonCombatShips.Remove(ship.Item1);
                         _combatShips.Remove(ship);
                     }
+                }
+            }
+
+            for (int i = 0; i < _combatShips.Count; i++)  // random chance for what ship owner is "own" and "opposition"
+            {
+                var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
+                var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
+                var friendlyShips = _combatShips.Where(cs => !CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
+
+                List<string> ownEmpires = _combatShips.Where(s =>
+                    (s.Item1.Owner == _combatShips[i].Item1.Owner))
+                    .Select(s => s.Item1.Owner.Key)
+                    .ToList();
+
+                List<string> friendlyEmpires = _combatShips.Where(s =>
+                    (s.Item1.Owner != _combatShips[i].Item1.Owner) &&
+                    CombatHelper.WillFightAlongside(s.Item1.Owner, _combatShips[i].Item1.Owner))
+                    .Select(s => s.Item1.Owner.Key)
+                    .ToList();
+
+                List<string> hostileEmpires = _combatShips.Where(s =>
+                    (s.Item1.Owner != _combatShips[i].Item1.Owner) &&
+                    CombatHelper.WillEngage(s.Item1.Owner, _combatShips[i].Item1.Owner))
+                    .Select(s => s.Item1.Owner.Key)
+                    .ToList();
+
+                if (i == 0)
+                {
+                    firstOwner = ownerAssets.Owner;
+                }
+
+                ownCount = ownEmpires.Count() + friendlyEmpires.Count();
+                hostileCount = hostileEmpires.Count();
+              
+                if (ownCount < hostileCount - 4)
+                {
+                    firstOwnerBadOdds = true; //if there are a lot of targets your "own" ships cannot miss in performAttack
+                }
+                if (ownCount - 4 > hostileCount)
+                {
+                    firstHostileBadOdds = true; //if there are a lot of targets your "hostile" ships cannot miss in performAttack
                 }
             }
 
@@ -212,17 +265,16 @@ namespace Supremacy.Combat
 
                             }
 
-                            //If we're not assimilating, destroy it instead :)
                             else
                             {
                                 GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
                                 {
-                                    if (!target.IsDestroyed)
-                                    {
+                                    //if (!target.IsDestroyed)
+                                    //{
                                         PerformAttack(attackingShip, target, weapon);
-                                    }
+                                    //}
                                 }
                             }
                         }
@@ -392,7 +444,6 @@ namespace Supremacy.Combat
                 }
             }
         }
-
         /// <summary>
         /// Deals damage to the target, and calculates whether the target has been destroyed
         /// </summary>
@@ -403,12 +454,27 @@ namespace Supremacy.Combat
         {
             var sourceAccuracy = source.Source.GetAccuracyModifier();
             var targetDamageControl = target.Source.GetDamageControlModifier();
+            var ownerAssets = GetAssets(source.Owner);
+            var oppositionAssets = GetAssets(target.Owner);
 
             if (target.IsDestroyed)
             {
                 return;
             }
+            if (countRounds != _roundNumber) // if starting a new round rest cycleReduction to 1
+            {
+                cycleReduction = 1d;
+                countRounds += 1;
+            }
 
+            if (firstOwnerBadOdds == true && source.Owner == firstOwner)
+            {
+                sourceAccuracy = 1;
+            }
+            if (firstHostileBadOdds == true && source.Owner != firstOwner)
+            {
+                sourceAccuracy = 1;
+            }
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))
             {
                 target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction));
@@ -426,8 +492,8 @@ namespace Supremacy.Combat
                 CombatAssets targetAssets = GetAssets(target.Owner);
                 if (target.Source is Ship)
                 {
-                    var ownerAssets = GetAssets(source.Owner);
-                    var oppositionAssets = GetAssets(target.Owner);
+                    //var ownerAssets = GetAssets(source.Owner);
+                    //var oppositionAssets = GetAssets(target.Owner);
 
                     if (!oppositionAssets.DestroyedShips.Contains(target))
                     {
