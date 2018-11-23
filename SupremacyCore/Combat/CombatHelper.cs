@@ -56,7 +56,7 @@ namespace Supremacy.Combat
             var sector = GameContext.Current.Universe.Map[location];
             var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
             TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
-            var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;        
+            var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
             var oppositionFleets = ExposedAssets.OppositionFleets;
            
             if ((oppositionFleets.Count == 0) && (sector.Station == null))

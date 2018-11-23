@@ -20,6 +20,7 @@ namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
+        private double cycleReduction = 1;
         //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
@@ -38,7 +39,7 @@ namespace Supremacy.Combat
 
             int maxScanStrengthOpposition = 0;
 
-            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
+            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 2
             // .... cloaked ships might be detecked and decloaked in round 2
             if (_roundNumber < 3)
             {
@@ -91,17 +92,17 @@ namespace Supremacy.Combat
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
                 //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, will be decloaked.
-                if (oppositionShips.Count() > 0)
+                //if (oppositionShips.Count() > 0)
 
-                {
-                    maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
-            
-                    if (_combatShips[i].Item1.IsCloaked && _combatShips[i].Item1.CloakStrength < maxScanStrengthOpposition) 
-                    {
-                        _combatShips[i].Item1.Decloak();
-                        GameLog.Core.Combat.DebugFormat("{0} has cloak strength {1} vs maxScan {2}", _combatShips[i].Item1.Name, _combatShips[i].Item1.CloakStrength, maxScanStrengthOpposition);
-                    }                    
-                }
+                //{
+                //    maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+
+                //    if (_combatShips[i].Item1.IsCloaked && _combatShips[i].Item1.CloakStrength < maxScanStrengthOpposition) 
+                //    {
+                //        _combatShips[i].Item1.Decloak();
+                //        GameLog.Core.Combat.DebugFormat("{0} has cloak strength {1} vs maxScan {2}", _combatShips[i].Item1.Name, _combatShips[i].Item1.CloakStrength, maxScanStrengthOpposition);
+                //    }                    
+                //}
 
                 //TODO: get scan power of strucutes in system and look to decloak and or decamouflage ships in system
 
@@ -114,7 +115,8 @@ namespace Supremacy.Combat
                 {
                     foreach (var secondEmpire in allEmpires.Distinct().ToList())
                     {
-                        if (!DiplomacyHelper.IsContactMade(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire])) {
+                        if (!DiplomacyHelper.IsContactMade(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire]))
+                        {
                             DiplomacyHelper.EnsureContact(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire], _combatShips[0].Item1.Source.Location);
                         }
                     }
@@ -124,7 +126,9 @@ namespace Supremacy.Combat
                 bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Formation));
                 bool oppositionIsHailing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Hail));
                 bool oppositionIsRetreating = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Retreat));
-               
+                bool oppositionIsRaidTransports = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Transports));
+                bool oppositionIsEngage = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Engage));
+
                 var order = GetOrder(_combatShips[i].Item1.Source);
                 switch (order)
                 {
@@ -148,11 +152,32 @@ namespace Supremacy.Combat
 
                             // If we rushed a formation we could take damage
                             int chanceRushingFormation = RandomHelper.Random(100);
-                            if (oppositionIsInFormation && (order == CombatOrder.Rush) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                            if (oppositionIsInFormation && (order == CombatOrder.Rush || order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
                             {
                                 attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
 
-                                GameLog.Core.Combat.DebugFormat("{0} {1} rushed a formation and took {2} damage to hull ({3} hull left)",
+                                GameLog.Core.Combat.DebugFormat("{0} {1} rushed or raid transports in formation and took {2} damage to hull ({3} hull left)",
+                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                            }
+                            if (oppositionIsEngage && (order == CombatOrder.Formation || order == CombatOrder.Rush) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                            {
+                                attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                GameLog.Core.Combat.DebugFormat("{0} {1} in Formation or Rushing while Engaged and took {2} damage to hull ({3} hull left)",
+                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                            }
+                            if (oppositionIsRushing && (order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                            {
+                                attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                GameLog.Core.Combat.DebugFormat("{0} {1} Raiding Transports and got Rushed took {2} damage to hull ({3} hull left)",
+                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                            }
+                            if (oppositionIsRaidTransports && (order == CombatOrder.Engage) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                            {
+                                attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 6);  // 17 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                GameLog.Core.Combat.DebugFormat("{0} {1} Engag order got Raided and took {2} damage to hull ({3} hull left)",
                                     attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
                             }
 
@@ -213,7 +238,7 @@ namespace Supremacy.Combat
                         break;
 
                     case CombatOrder.Retreat:
-                        if (WasRetreateSuccessful(_combatShips[i].Item1, oppositionIsRushing, oppositionIsInFormation, oppositionIsHailing, oppositionIsRetreating, weaponRatio))
+                        if (WasRetreateSuccessful(_combatShips[i].Item1, oppositionIsRushing, oppositionIsEngage, oppositionIsInFormation, oppositionIsHailing, oppositionIsRetreating, oppositionIsRaidTransports, weaponRatio))
                         {
 
                             if (!ownerAssets.EscapedShips.Contains(_combatShips[i].Item1))
@@ -249,7 +274,7 @@ namespace Supremacy.Combat
                     case CombatOrder.Standby:
                         GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[i].Item1.Name, _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Design.Name);
                         break;
-      
+
                 }
             }
 
@@ -278,22 +303,22 @@ namespace Supremacy.Combat
                 }
             }
 
-            //Decloak any ships   // Ships are decloaked from round 2 on if maxScanStrength of opposition overhelms, otherwise at least at round ...
+            //Decloak any cloaked ships  
             foreach (var combatShip in _combatShips)
             {
-                if (combatShip.Item1.IsCloaked && _roundNumber >= 2)
+                if (combatShip.Item1.IsCloaked) //&& _roundNumber >= 2)
                 {
                     combatShip.Item1.Decloak();
                 }
             }
         }
 
-            /// <summary>
-            /// Chooses a target for the given <see cref="CombatUnit"/>
-            /// </summary>
-            /// <param name="attacker"></param>
-            /// <returns></returns>
-            private CombatUnit ChooseTarget(CombatUnit attacker)
+        /// <summary>
+        /// Chooses a target for the given <see cref="CombatUnit"/>
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <returns></returns>
+        private CombatUnit ChooseTarget(CombatUnit attacker)
         {
             if (attacker == null)
             {
@@ -316,7 +341,7 @@ namespace Supremacy.Combat
                 {
                     case CombatOrder.Engage:
                     case CombatOrder.Formation:
-                        //Only ships to target
+                        //Only ships to target                     
                         if (!hasOppositionStation && (oppositionShips.Count() > 0))
                         {
                             return oppositionShips.First().Item1;
@@ -324,7 +349,7 @@ namespace Supremacy.Combat
                         //Has both ships and station to target
                         if (hasOppositionStation && (oppositionShips.Count() > 0))
                         {
-                            if (RandomHelper.Random(4) == 0)
+                            if (RandomHelper.Random(5) == 0)
                             {
                                 return _combatStation.Item1;
                             }
@@ -356,6 +381,12 @@ namespace Supremacy.Combat
                         {
                             return oppositionTransports.First().Item1;
                         }
+                        //If there any ships retreating, target them
+                        var oppositionRetreatingRaid = _combatShips.Where(cs => CombatHelper.WillEngage(attacker.Owner, cs.Item1.Owner) && (GetOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
+                        if (oppositionRetreatingRaid.Count() > 0)
+                        {
+                            return oppositionRetreatingRaid.First().Item1;
+                        }
                         attackerOrder = CombatOrder.Engage;
                         break;
                 }
@@ -380,10 +411,15 @@ namespace Supremacy.Combat
 
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))
             {
-                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy));
+                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction));
+                cycleReduction *= 0.95;
+                if (cycleReduction < 0.5)
+                {
+                    cycleReduction = 0.5;
+                }
             }
             weapon.Discharge();
-
+          
             if (target.IsDestroyed)
             {
                 GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) was destroyed", target.Source.ObjectID, target.Name, target.Source.Design);
