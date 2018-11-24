@@ -1,4 +1,4 @@
-﻿using Supremacy.Annotations;
+﻿  using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Collections;
 using Supremacy.Economy;

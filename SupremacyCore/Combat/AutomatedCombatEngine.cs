@@ -24,9 +24,7 @@ namespace Supremacy.Combat
         private double cycleReduction = 1d;
         private double countRounds = 1d;
         private bool firstOwnerBadOdds = false;
-
-        private bool firstHostileBadOdds = false;
-       
+        private bool firstHostileBadOdds = false;    
         private int ownCount = 1;
         private int hostileCount = 1;
         private object firstOwner;
@@ -103,14 +101,16 @@ namespace Supremacy.Combat
 
                 ownCount = ownEmpires.Count() + friendlyEmpires.Count();
                 hostileCount = hostileEmpires.Count();
-              
-                if (ownCount < hostileCount - 4)
+                if (i == _combatShips.Count() - 1)
                 {
-                    firstOwnerBadOdds = true; //if there are a lot of targets your "own" ships cannot miss in performAttack
-                }
-                if (ownCount - 4 > hostileCount)
-                {
-                    firstHostileBadOdds = true; //if there are a lot of targets your "hostile" ships cannot miss in performAttack
+                    if (ownCount < hostileCount - 4)
+                    {
+                        firstOwnerBadOdds = true; //if there are a lot of targets your "own" ships cannot miss in performAttack
+                    }
+                    if (ownCount - 4 > hostileCount)
+                    {
+                        firstHostileBadOdds = true; //if there are a lot of targets your "hostile" ships cannot miss in performAttack
+                    }
                 }
             }
 
@@ -271,10 +271,10 @@ namespace Supremacy.Combat
 
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
                                 {
-                                    //if (!target.IsDestroyed)
-                                    //{
+                                    if (!target.IsDestroyed)
+                                    {
                                         PerformAttack(attackingShip, target, weapon);
-                                    //}
+                                    }
                                 }
                             }
                         }
@@ -492,9 +492,6 @@ namespace Supremacy.Combat
                 CombatAssets targetAssets = GetAssets(target.Owner);
                 if (target.Source is Ship)
                 {
-                    //var ownerAssets = GetAssets(source.Owner);
-                    //var oppositionAssets = GetAssets(target.Owner);
-
                     if (!oppositionAssets.DestroyedShips.Contains(target))
                     {
                         oppositionAssets.DestroyedShips.Add(target);
