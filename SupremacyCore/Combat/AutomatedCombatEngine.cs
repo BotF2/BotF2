@@ -470,15 +470,26 @@ namespace Supremacy.Combat
             if (firstOwnerBadOdds == true && source.Owner == firstOwner)
             {
                 sourceAccuracy = 1;
+                cycleReduction = 1;
             }
             if (firstHostileBadOdds == true && source.Owner != firstOwner)
             {
                 sourceAccuracy = 1;
+                cycleReduction = 1;
+            }
+
+            if (firstHostileBadOdds == true && source.Owner == firstOwner)
+            {
+                targetDamageControl = 1;
+            }
+            if (firstOwnerBadOdds == true && source.Owner != firstOwner)
+            {
+                targetDamageControl = 1;
             }
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))
             {
                 target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction));
-                cycleReduction *= 0.95;
+                cycleReduction *= 0.90;
                 if (cycleReduction < 0.5)
                 {
                     cycleReduction = 0.5;
