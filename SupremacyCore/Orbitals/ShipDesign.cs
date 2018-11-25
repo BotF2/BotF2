@@ -20,6 +20,7 @@ using Supremacy.Types;
 using Supremacy.Universe;
 using System.Collections.Generic;
 using Supremacy.Utility;
+using System.Linq;
 
 namespace Supremacy.Orbitals
 {
@@ -404,7 +405,25 @@ namespace Supremacy.Orbitals
             var civManager = GameContext.Current.CivilizationManagers[owner];
             var ship = new Ship(this);
 
-            ship.Owner = owner;
+            var shipDesign = ship.ShipDesign.Name;
+
+
+            if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true)
+            {
+                GameLog.Core.General.DebugFormat("{0}, {1}, {2}, {3}, {4}, {5}, ship highest tech level is {6} for {7}, exceeding current Techlevel",
+
+                    ship.ShipDesign.TechRequirements[TechCategory.BioTech],
+                    ship.ShipDesign.TechRequirements[TechCategory.Computers],
+                    ship.ShipDesign.TechRequirements[TechCategory.Construction],
+                    ship.ShipDesign.TechRequirements[TechCategory.Energy],
+                    ship.ShipDesign.TechRequirements[TechCategory.Propulsion],
+                    ship.ShipDesign.TechRequirements[TechCategory.Weapons],
+                    ship.ShipDesign.TechRequirements.HighestTechLevel,
+                    ship
+                    );
+            }
+
+                ship.Owner = owner;
             //If we have any possible names for this ship class, pick one
             if (_possibleNames.Count > 0)
             {
