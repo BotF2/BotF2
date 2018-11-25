@@ -134,19 +134,24 @@ namespace Supremacy.Orbitals
             get
             {
                 var statusFormat = LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "StatusFormat");
+
+                GameLog.Core.Combat.DebugFormat("getting Status of Assault System");
+
                 //var statusFormat = ResourceManager.GetString("SYSTEM_ASSAULT_STATUS_FORMAT");
                 if (statusFormat == null)
                     return OrderName;
 
                 var fleet = Fleet;
                 var sector = (fleet != null) ? fleet.Sector.Name : null;
-                
+
+                GameLog.Core.Combat.DebugFormat("getting Status of Assault System...returning {0}", string.Format(statusFormat, sector));
                 return string.Format(statusFormat, sector);
             }
         }
 
         public override bool IsValidOrder(Fleet fleet)
         {
+            GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - beginning to check..."); 
             if (!base.IsValidOrder(fleet))
                 return false;
 
@@ -156,7 +161,9 @@ namespace Supremacy.Orbitals
             var system = GameContext.Current.Universe.Map[fleet.Location].System;
             if (system == null || !system.IsInhabited)
                 return false;
+            GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - check mostly done...");
 
+            GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner));
             return DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner);
         }
 
