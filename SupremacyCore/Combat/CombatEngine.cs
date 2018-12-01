@@ -374,7 +374,7 @@ namespace Supremacy.Combat
 
             GameLog.Core.Combat.DebugFormat("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
 
-            if (oppositionIsInFormation ||oppositionIsEngage ||oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
+            if (oppositionIsInFormation ||oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
             {
                 GameLog.Core.Combat.DebugFormat("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
                 return true;
@@ -400,6 +400,10 @@ namespace Supremacy.Combat
             //    retreatChanceModifier = 0;
             //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. 0 modifier", weaponRatio);
             //}
+             if (oppositionIsEngage)
+            {
+                retreatChanceModifier += 15;
+            }
 
             if (oppositionIsRushing || oppsoitionIsRaidTransports) // if you rush the retreater they are less likely to get away
             {

@@ -80,7 +80,7 @@ namespace Supremacy.Orbitals
                     double modifier;
                     if (double.TryParse(dcmTable[orbital.ExperienceRank.ToString()][0], out modifier))
                     {
-                        return modifier * 0.1;  // for some reasons the previous way gave a 5 to 10, whyever
+                        return modifier;  // for some reasons the previous way gave a 5 to 10, whyever
                     }
                 }
             }

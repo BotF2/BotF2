@@ -1370,35 +1370,35 @@ namespace Supremacy.WCF
                 var blanketOrder = CombatOrder.Engage; // Standard Order in case no If catches the situation
                 bool IsMinor = false;
 
-                switch (update.OwnerID) // Set standard Order for each Empire
+                switch (update.Owner.Key) // Set standard Order for each Empire
                 {
-                    case 0: // 
+                    case "FEDERATION": // 
                         blanketOrder = CombatOrder.Engage; // 
                         break;
-                    case 1: // 
+                    case "TERRANEMPIRE": // 
                         blanketOrder = CombatOrder.Engage;
                         break;
-                    case 2: // 
+                    case "ROMULANS": // 
                         blanketOrder = CombatOrder.Engage;
                         if (ownerAssets.CombatShips.Count < 2)
                             blanketOrder = CombatOrder.Retreat; // They are cowards afterall
                         break;
-                    case 3: // 
+                    case "KLINGONS": // 
                         if (RandomHelper.Chance(2))
                             blanketOrder = CombatOrder.Rush; // No mercy by the warriors
                         else
                             blanketOrder = CombatOrder.Engage;
                         break;
-                    case 4: // 
+                    case "CARDASSIANS": // 
                         blanketOrder = CombatOrder.Engage;
                         break;
-                    case 5: // 
+                    case "DOMINION": // 
                         if (RandomHelper.Chance(2))
                             blanketOrder = CombatOrder.Rush; // Remember the destroyed Odysee?
                         else
                             blanketOrder = CombatOrder.Engage;
                         break;
-                    case 6: // 
+                    case "BORG": // 
                         blanketOrder = CombatOrder.Engage;
                         break;
                     default: // In case Owner = Minor
@@ -1420,7 +1420,7 @@ namespace Supremacy.WCF
                             blanketOrder = CombatOrder.Rush;
                             break;
                         case 3:
-                            blanketOrder = CombatOrder.Hail;
+                            blanketOrder = CombatOrder.Engage;
                             break;
                         case 4:
                             blanketOrder = CombatOrder.Engage;
@@ -1450,13 +1450,13 @@ namespace Supremacy.WCF
                 else // Check species specifics Changes
                 {
                     if (
-                        (!update.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 3 && ownerAssets.CombatShips.Count > 6)
-                        || (update.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 2 && ownerAssets.CombatShips.Count > 7)
+                        (!update.Sector.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 3 && ownerAssets.CombatShips.Count > 6)
+                        || (update.Sector.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 2 && ownerAssets.CombatShips.Count > 7)
                         || (enemyAssets.CombatShips.Count < 1 && enemyAssets.NonCombatShips.Count < 3) && update.RoundNumber == 1
                         )
                         blanketOrder = CombatOrder.Hail; // Hails if not in own territory and only a few enemies. Or in own territory and only 1 enemy and more then 7 own combat ships. Hail only in turn one.
 
-                    if (!update.Owner.Equals("Romulans") && ownerAssets.CombatShips.Count < 2 && ownerAssets.Owner.Equals("Romulans")) // Update xyz Owner = Romulans added
+                    if (!update.Sector.Owner.Equals("Romulans") && ownerAssets.CombatShips.Count < 2 && update.Owner.Key == "ROMULANS") // Update xyz Owner = Romulans added
                         blanketOrder = CombatOrder.Retreat; // If not enought firepower... retreat
                 }
 
@@ -1474,12 +1474,12 @@ namespace Supremacy.WCF
 
                 // Invade if possible?
 
-
-
                 int countStation = 0;
                 if (enemyAssets.Station != null)
                     countStation = 2;  // counting value for Station = 2 ships
 
+                GameLog.Core.Combat.DebugFormat("blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
+                   ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
                 SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder)); // Sending of the order
             }
