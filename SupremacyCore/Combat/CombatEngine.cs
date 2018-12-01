@@ -23,7 +23,7 @@ namespace Supremacy.Combat
     public abstract class CombatEngine
     {
         public readonly object SyncLock;
-        protected const double BaseChanceToRetreat = 0.75;
+        protected const double BaseChanceToRetreat = 0.50;
         protected const double BaseChanceToAssimilate = 0.05;
         protected const double BaseChanceToRushFormation = 0.50;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
@@ -405,6 +405,10 @@ namespace Supremacy.Combat
             {
                 retreatChanceModifier += -10;
                 GameLog.Core.Combat.DebugFormat("Opposition is rushing. -20 modifier (now {0})", retreatChanceModifier);
+            }
+            if (_roundNumber > 2)
+            {
+                retreatChanceModifier += 25;
             }
 
             if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
