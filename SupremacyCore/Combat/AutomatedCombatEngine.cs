@@ -486,14 +486,25 @@ namespace Supremacy.Combat
             {
                 targetDamageControl = 1;
             }
-            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))
+            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
             {
-                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction));
+                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction * 2));
+                               
+                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), targetShields = {6}, hull = {7}", 
+                    target.Source.ObjectID, target.Name, target.Source.Design,
+                    (int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction),
+                    cycleReduction,
+                    sourceAccuracy,
+                    target.ShieldStrength,
+                    target.HullStrength
+                    );
+
                 cycleReduction *= 0.90;
-                if (cycleReduction < 0.5)
+                if (cycleReduction < 0.6)
                 {
-                    cycleReduction = 0.5;
+                    cycleReduction = 0.6;
                 }
+
             }
             weapon.Discharge();
           
