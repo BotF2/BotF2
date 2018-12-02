@@ -47,7 +47,16 @@ namespace Supremacy.Combat
         protected override void ResolveCombatRoundCore()
         {
             _combatShips.RandomizeInPlace();
-           
+
+            //Decloak any cloaked ships  
+            foreach (var combatShip in _combatShips)
+            {
+                if (combatShip.Item1.IsCloaked) 
+                {
+                    combatShip.Item1.Decloak();
+                }
+            }
+
             int maxScanStrengthOpposition = 0;
 
             // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
@@ -352,15 +361,6 @@ namespace Supremacy.Combat
                     {
                         PerformAttack(_combatStation.Item1, target, weapon);
                     }
-                }
-            }
-
-            //Decloak any cloaked ships  
-            foreach (var combatShip in _combatShips)
-            {
-                if (combatShip.Item1.IsCloaked) //&& _roundNumber >= 2)
-                {
-                    combatShip.Item1.Decloak();
                 }
             }
         }
