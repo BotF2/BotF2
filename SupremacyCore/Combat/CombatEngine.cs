@@ -403,16 +403,18 @@ namespace Supremacy.Combat
              if (oppositionIsEngage)
             {
                 retreatChanceModifier += 15;
+                GameLog.Core.Combat.DebugFormat("Opposition is Engage. +15 modifier (now {0})", retreatChanceModifier);
             }
 
             if (oppositionIsRushing || oppsoitionIsRaidTransports) // if you rush the retreater they are less likely to get away
             {
                 retreatChanceModifier += -10;
-                GameLog.Core.Combat.DebugFormat("Opposition is rushing. -20 modifier (now {0})", retreatChanceModifier);
+                GameLog.Core.Combat.DebugFormat("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
             }
             if (_roundNumber > 2)
             {
                 retreatChanceModifier += 25;
+                GameLog.Core.Combat.DebugFormat("If round is 3 or more. +25 to modifier (now {0})", retreatChanceModifier);
             }
 
             if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
