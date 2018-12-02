@@ -454,6 +454,20 @@ namespace Supremacy.Combat
         {
             var sourceAccuracy = source.Source.GetAccuracyModifier();
             var targetDamageControl = target.Source.GetDamageControlModifier();
+
+            if (sourceAccuracy > 1)
+                sourceAccuracy = sourceAccuracy / 10;
+            if (sourceAccuracy < 0.2)
+                sourceAccuracy = 0.5;
+
+            if (targetDamageControl > 1)
+                targetDamageControl = targetDamageControl / 10;
+            if (targetDamageControl < 0.2)
+                targetDamageControl = 0.5;
+
+
+
+
             var ownerAssets = GetAssets(source.Owner);
             var oppositionAssets = GetAssets(target.Owner);
 
@@ -490,11 +504,12 @@ namespace Supremacy.Combat
             {
                 target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction * 2));
                                
-                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), targetShields = {6}, hull = {7}", 
+                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), targetDamageControl = {6}, targetShields = {7}, hull = {8}", 
                     target.Source.ObjectID, target.Name, target.Source.Design,
                     (int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction),
                     cycleReduction,
                     sourceAccuracy,
+                    targetDamageControl,
                     target.ShieldStrength,
                     target.HullStrength
                     );
