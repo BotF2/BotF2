@@ -272,6 +272,7 @@ namespace Supremacy.Client
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
             GameLog.Client.General.Debug("MenuScreen activated... ");
+            _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.wav");
         }
 
         private bool AutoLoadSavedGame()
