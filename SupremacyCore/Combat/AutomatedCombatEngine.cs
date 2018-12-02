@@ -54,16 +54,18 @@ namespace Supremacy.Combat
                 if (combatShip.Item1.IsCloaked) 
                 {
                     combatShip.Item1.Decloak();
+                    GameLog.Core.Combat.DebugFormat("Ship  {0} {1} ({2}) cloak status {3})", 
+                        combatShip.Item1.Source.ObjectID, combatShip.Item1.Name, combatShip.Item1.Source.Design, combatShip.Item1.IsCloaked);
                 }
             }
 
             int maxScanStrengthOpposition = 0;
 
-            // Scouts and Cloaked ships have a special chance of retreating BEFORE round 3
+            // Scouts and Frigate ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => s.Item1.Source.OrbitalDesign.ShipType == "Frigate" || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
 
