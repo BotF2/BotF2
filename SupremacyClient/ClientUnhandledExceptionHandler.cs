@@ -47,7 +47,9 @@ namespace Supremacy.Client
 
                     while (innerException != null)
                     {
-                        errors += string.Format("{0}\r\n{1}\r\n----------------------------------------", innerException.Message, innerException.StackTrace);
+                        errors += string.Format("{0}\r\n", innerException.Message);
+                        errors += string.Format("{0}\r\n", innerException.StackTrace);
+                        errors += "----------------------------------------\r\n";
                         innerException = innerException.InnerException;
                     }
 
@@ -60,7 +62,7 @@ namespace Supremacy.Client
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
 
-                    if (ClientSettings.Current.ReportErrors)
+                    if (true)
                     {
                         ReportError(errors);
                     }
@@ -73,17 +75,19 @@ namespace Supremacy.Client
         /// <summary>
         /// If error reporting is enabled, submits the error information to the developers
         /// </summary>
-        public void ReportError(string errors)
+        public void ReportError(string stackTrace)
         {
             using (var client = new WebClient())
             {
                 var values = new NameValueCollection();
                 values["Version"] = ClientApp.ClientVersion.ToString();
-                values["Exception"] = errors;
+                values["Title"] = stackTrace.Split('\n')[0];
+                values["StackTrace"] = stackTrace;
 
                 try
                 {
                     var response = client.UploadValues(_reportErrorURL, "POST", values);
+                    var responseString = Encoding.UTF8.GetString(response, 0, response.Length);
                 }
                 catch (Exception e)
                 {
