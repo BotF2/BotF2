@@ -62,7 +62,7 @@ namespace Supremacy.Client
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
 
-                    if (true)
+                    if (ClientSettings.Current.ReportErrors)
                     {
                         ReportError(errors);
                     }
