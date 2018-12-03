@@ -148,7 +148,7 @@ namespace Supremacy.AI
                         if (!fleetView.IsPresenceKnown)
                             continue;
 
-                        if (UnitAI.CanEnterSector(sector, fleet.Owner) && (!testMoves || (fleet.Speed >= distance)))
+                        if (DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && (!testMoves || (fleet.Speed >= distance)))
                             ++count;
                     }
                 }
