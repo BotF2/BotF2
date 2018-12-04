@@ -7,11 +7,7 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-
 using Microsoft.Practices.ServiceLocation;
-
 using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Client;
@@ -25,9 +21,8 @@ using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Universe;
 using Supremacy.Utility;
-
-using Wintellect.PowerCollections;
-
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -478,9 +473,7 @@ namespace Supremacy.Tech
                                      o.UpgradeDesign)));
             }
 
-            Algorithms.SortInPlace(
-                results,
-                CompareBuildProjects);
+            results.SortInPlace(CompareBuildProjects);
 
             return results;
         }
@@ -792,9 +785,7 @@ namespace Supremacy.Tech
             if (designs.Count == 0)
                 return null;
 
-            return Algorithms.Maximum(
-                designs,
-                (a, b) => a.UnitOutput.CompareTo(b.UnitOutput));
+            return designs.MaxBy(d => d.UnitOutput);
         }
 
         /// <summary>

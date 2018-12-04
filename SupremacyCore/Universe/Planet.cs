@@ -7,14 +7,13 @@
 //
 // All other rights reserved.
 
-using System;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
 using Supremacy.Utility;
-
-using Wintellect.PowerCollections;
+using System;
+using System.Linq;
 
 namespace Supremacy.Universe
 {
@@ -151,15 +150,11 @@ namespace Supremacy.Universe
                 }
                 else if (value.Length > MaxMoonsPerPlanet)
                 {
-                    throw new ArgumentException(
-                        "Number of moons must be <= " + MaxMoonsPerPlanet);
+                    throw new ArgumentException("Number of moons must be <= " + MaxMoonsPerPlanet);
                 }
                 if (value.Length > 0)
                 {
-                    value = Algorithms.Sort(value,
-                        new Comparison<MoonType>(
-                            delegate(MoonType a, MoonType b) { return ((int)MoonHelper.GetSize(a)).CompareTo((int)MoonHelper.GetSize(b)); }));
-                    Array.Reverse(value);
+                    value = value.OrderByDescending(mt => MoonHelper.GetSize(mt)).ToArray();
                 }
                 _data[MoonCountSection] = value.Length;
                 for (int i = 0; i < MaxMoonsPerPlanet; i++)

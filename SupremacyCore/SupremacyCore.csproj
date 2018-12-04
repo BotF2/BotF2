@@ -284,13 +284,11 @@
     <Compile Include="Client\IGameObjectIDService.cs" />
     <Compile Include="Client\IPlayerOrderService.cs" />
     <Compile Include="Collections\ArrayWrapper.cs" />
-    <Compile Include="Collections\ArrayList.cs" />
     <Compile Include="Collections\CollectionBase.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ConcurrentStack.cs" />
     <Compile Include="Collections\DelegatingIndexedCollection.cs" />
     <Compile Include="Collections\GameObjectList.cs" />
-    <Compile Include="Collections\ImmutableAvlTree.cs" />
     <Compile Include="Collections\GameObjectLookupCollection.cs" />
     <Compile Include="Collections\IndexedEnumerable.cs" />
     <Compile Include="Collections\Interfaces.cs" />
