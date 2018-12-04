@@ -116,7 +116,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{97FA3A
 		Common\System.Windows.Interactivity.dll = Common\System.Windows.Interactivity.dll
 		Common\System.Windows.Interactivity.xml = Common\System.Windows.Interactivity.xml
 		Common\TransitionEffects.dll = Common\TransitionEffects.dll
-		Common\Xaml.dll = Common\Xaml.dll
 		Common\Xceed.Wpf.Controls.dll = Common\Xceed.Wpf.Controls.dll
 		Common\Xceed.Wpf.DataGrid.dll = Common\Xceed.Wpf.DataGrid.dll
 		Common\Xenocode.Client.dll = Common\Xenocode.Client.dll

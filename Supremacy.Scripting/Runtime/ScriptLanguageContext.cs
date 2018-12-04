@@ -139,11 +139,6 @@ namespace Supremacy.Scripting.Runtime
             LoadAssembly(args.Assembly);
         }
 
-        public void AddDefine(string name)
-        {
-            _defines.Add(name);
-        }
-
         public bool IsConditionalDefined(string name)
         {
             return _defines.Contains(name);
@@ -266,24 +261,6 @@ namespace Supremacy.Scripting.Runtime
             return _aliasedNamespaceGroups.TryGetValue(alias, out alisedNamespaces) ? alisedNamespaces : null;
         }
 
-        private static int GetGenericArity(Type type)
-        {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            if (!type.IsGenericType)
-                return 0;
-            return type.GetGenericArguments().Length;
-        }
-
-        private static int GetGenericArity(TypeTracker type)
-        {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            if (!type.IsGenericType)
-                return 0;
-            return type.Type.GetGenericArguments().Length;
-        }
-
         internal bool TryResolveType(NameExpression typeName, out Type type, out int errorCode, out string errorMessage)
         {
             errorCode = 0;
@@ -322,40 +299,6 @@ namespace Supremacy.Scripting.Runtime
 
                 type = typeTracker.Type;
                 return true;
-            }
-        }
-
-        internal static Type LookupType(TypeName typeName)
-        {
-            if (typeName == null)
-                return null;
-
-            var normalizedName = ReflectionUtils.GetNormalizedTypeName(typeName.Name);
-
-            lock (_typeGroups)
-            {
-                TypeTracker typeTracker;
-
-                if (!_typeGroups.TryGetValue(normalizedName, out typeTracker))
-                    return null;
-
-                var typeGroup = typeTracker as TypeGroup;
-                if (typeGroup != null)
-                {
-                    Type resolvedType;
-
-                    var genericArity = typeName.TypeArguments.Count;
-                    if (typeGroup.TypesByArity.TryGetValue(genericArity, out resolvedType))
-                    {
-                        //if (genericArity == 0)
-                            return resolvedType;
-                    }
-                }
-
-                //var trueTypeName = typeName as TypeName;
-                //if ((trueTypeName != null) && (trueTypeName.GenericArity)
-
-                return typeTracker.Type;
             }
         }
 

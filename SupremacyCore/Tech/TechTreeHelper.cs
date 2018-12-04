@@ -838,15 +838,8 @@ namespace Supremacy.Tech
             var buildCondition = design.BuildCondition;
             if (buildCondition != null)
             {
-                var result = buildCondition.Evaluate<bool>(
-                    new RuntimeScriptParameters
-                    {
-                        new RuntimeScriptParameter(buildCondition.Parameters[0], colony),
-                        new RuntimeScriptParameter(buildCondition.Parameters[1], design)
-                    });
-
-                if (!result)
-                    return false;
+                //TODO
+                return true;
             }
 
             var system = colony.System;
