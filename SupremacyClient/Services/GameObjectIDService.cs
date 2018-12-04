@@ -33,7 +33,7 @@ namespace Supremacy.Client.Services
 
 
         #region Implementation of IGameObjectIDService
-        public GameObjectID? GetNewObjectID()
+        public int? GetNewObjectID()
         {
             var args = new GameObjectIDRequestEventArgs(
                 _appContext,

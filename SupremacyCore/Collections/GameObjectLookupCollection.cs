@@ -26,18 +26,18 @@ namespace Supremacy.Collections
         where TKey : class
         where TValue : class
     {
-        private readonly Func<TKey, GameObjectID> _keyLookupResolver;
+        private readonly Func<TKey, int> _keyLookupResolver;
         private readonly Func<TValue, TKey> _keyResolver;
 
-        private readonly Dictionary<GameObjectID, GameObjectID> _lookupDictionary;
-        private readonly Func<TValue, GameObjectID> _valueLookupResolver;
-        private readonly Func<GameObjectID, TValue> _valueResolver;
+        private readonly Dictionary<int, int> _lookupDictionary;
+        private readonly Func<TValue, int> _valueLookupResolver;
+        private readonly Func<int, TValue> _valueResolver;
 
         public GameObjectLookupCollection(
-            [NotNull] Func<TKey, GameObjectID> keyLookupResolver,
+            [NotNull] Func<TKey, int> keyLookupResolver,
             [NotNull] Func<TValue, TKey> keyResolver,
-            [NotNull] Func<TValue, GameObjectID> valueLookupResolver,
-            [NotNull] Func<GameObjectID, TValue> valueResolver)
+            [NotNull] Func<TValue, int> valueLookupResolver,
+            [NotNull] Func<int, TValue> valueResolver)
         {
             if (keyLookupResolver == null)
                 throw new ArgumentNullException("keyLookupResolver");
@@ -51,7 +51,7 @@ namespace Supremacy.Collections
             _valueResolver = valueResolver;
             _valueLookupResolver = valueLookupResolver;
             _keyResolver = keyResolver;
-            _lookupDictionary = new Dictionary<GameObjectID, GameObjectID>();
+            _lookupDictionary = new Dictionary<int, int>();
         }
 
         #region Properties and Indexers
@@ -60,7 +60,7 @@ namespace Supremacy.Collections
             get
             {
                 var keyLookup = _keyLookupResolver(key);
-                GameObjectID valueLookup;
+                int valueLookup;
                 if (!_lookupDictionary.TryGetValue(keyLookup, out valueLookup))
                     return null;
                 return _valueResolver(valueLookup);
@@ -162,7 +162,7 @@ namespace Supremacy.Collections
         public bool TryGetValue(TKey key, out TValue value)
         {
             var internalKey = _keyLookupResolver(key);
-            GameObjectID valueId;
+            int valueId;
             if (!_lookupDictionary.TryGetValue(internalKey, out valueId))
             {
                 value = default(TValue);

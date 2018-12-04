@@ -133,7 +133,7 @@ namespace Supremacy.Game
             Status = SlotStatus.Open;
             Claim = SlotClaim.Unassigned;
             if ((Player != null) && (Player.EmpireID == EmpireID))
-                Player.EmpireID = GameObjectID.InvalidID;
+                Player.EmpireID = -1;
             Player = null;
         }
 
@@ -144,7 +144,7 @@ namespace Supremacy.Game
             Status = SlotStatus.Closed;
             Claim = SlotClaim.Unassigned;
             if (Player != null)
-                Player.EmpireID = GameObjectID.InvalidID;
+                Player.EmpireID = -1;
             Player = null;
         }
 

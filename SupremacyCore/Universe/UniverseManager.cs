@@ -330,7 +330,7 @@ namespace Supremacy.Universe
         /// </summary>
         /// <typeparam name="T">The design of object.</typeparam>
         /// <returns>The ovbject IDs.</returns>
-        public HashSet<GameObjectID> FindObjectIDs<T>()
+        public HashSet<int> FindObjectIDs<T>()
             where T : UniverseObject
         {
             return _objects.OfType<T>().Select(o => o.ObjectID).ToHashSet();
@@ -581,7 +581,7 @@ namespace Supremacy.Universe
             }
 
             _objects.Remove(item);
-            item.ObjectID = GameObjectID.InvalidID;
+            item.ObjectID = -1;
             return true;
         }
 

@@ -77,11 +77,11 @@ namespace Supremacy.Entities
         /// <summary>
         /// Represents an invalid value for the <see cref="CivID"/> property.
         /// </summary>
-        public static readonly GameObjectID InvalidID = -1;
+        public static readonly int InvalidID = -1;
         #endregion
 
         #region Fields
-        private GameObjectID _civId = InvalidID;
+        private int _civId = InvalidID;
         private CivilizationType _civType;
         private TechCurve _techCurve;
         private string _color;
@@ -223,7 +223,7 @@ namespace Supremacy.Entities
         /// Gets or sets the civilization ID.
         /// </summary>
         /// <value>The civilization ID.</value>
-        public GameObjectID CivID
+        public int CivID
         {
             get { return _civId; }
             set { _civId = value; }

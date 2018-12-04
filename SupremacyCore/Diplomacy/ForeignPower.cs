@@ -36,8 +36,8 @@ namespace Supremacy.Diplomacy
         private CollectionBase<RegardEvent> _regardEvents;
         private DiplomacyDataInternal _diplomacyData;
 
-        public GameObjectID OwnerID { get; private set; }
-        public GameObjectID CounterpartyID { get; private set; }
+        public int OwnerID { get; private set; }
+        public int CounterpartyID { get; private set; }
         public bool IsEmbargoInPlace { get; private set; }
         public IProposal ProposalSent { get; set; }
         public IProposal ProposalReceived { get; set; }
@@ -410,7 +410,7 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of ICivIdentity
 
-        GameObjectID ICivIdentity.CivID
+        int ICivIdentity.CivID
         {
             get { return CounterpartyID; }
         }

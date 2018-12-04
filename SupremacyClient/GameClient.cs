@@ -206,7 +206,7 @@ namespace Supremacy.Client
                 _scheduler)();
         }
 
-        public void NotifyPlayerFinishedTurn(GameObjectID empireId)
+        public void NotifyPlayerFinishedTurn(int empireId)
         {
             Observable.ToAsync(
                 () =>

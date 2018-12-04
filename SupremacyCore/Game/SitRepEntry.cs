@@ -196,9 +196,9 @@ namespace Supremacy.Game
         /// </summary>
         /// <param name="ownerId">The owner ID.</param>
         /// <param name="priority">The priority.</param>
-        protected SitRepEntry(GameObjectID ownerId, SitRepPriority priority)
+        protected SitRepEntry(int ownerId, SitRepPriority priority)
         {
-            if (!ownerId.IsValid)
+            if (ownerId == -1)
                 throw new ArgumentException("invalid Civilization ID", "ownerId");
             _ownerId = ownerId;
             _priority = priority;

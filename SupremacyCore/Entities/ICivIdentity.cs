@@ -4,6 +4,6 @@ namespace Supremacy.Entities
 {
     public interface ICivIdentity
     {
-        GameObjectID CivID { get; }
+        int CivID { get; }
     }
 }

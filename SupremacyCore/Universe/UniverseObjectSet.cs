@@ -24,7 +24,7 @@ namespace Supremacy.Universe
     [Serializable]
     public class UniverseObjectSet : 
         IndexedCollection<UniverseObject>,
-        IKeyedCollection<GameObjectID, UniverseObject>,
+        IKeyedCollection<int, UniverseObject>,
         IOwnedDataSerializableAndRecreatable
     {
         [NonSerialized]
@@ -167,24 +167,24 @@ namespace Supremacy.Universe
         #endregion
 
         #region Implementation of IKeyedCollection<GameObjectID,UniverseObject>
-        UniverseObject IKeyedLookup<GameObjectID, UniverseObject>.this[GameObjectID key]
+        UniverseObject IKeyedLookup<int, UniverseObject>.this[int key]
         {
             get { return this[key]; }
         }
 
-        bool IKeyedLookup<GameObjectID, UniverseObject>.Contains(GameObjectID key)
+        bool IKeyedLookup<int, UniverseObject>.Contains(int key)
         {
-            var @this = (IKeyedCollection<GameObjectID, UniverseObject>)this;
+            var @this = (IKeyedCollection<int, UniverseObject>)this;
 
             return @this.TryGetValue(key, out UniverseObject item);
         }
 
-        IEqualityComparer<GameObjectID> IKeyedLookup<GameObjectID, UniverseObject>.KeyComparer
+        IEqualityComparer<int> IKeyedLookup<int, UniverseObject>.KeyComparer
         {
-            get { return EqualityComparer<GameObjectID>.Default; }
+            get { return EqualityComparer<int>.Default; }
         }
 
-        IEnumerable<GameObjectID> IKeyedCollection<GameObjectID, UniverseObject>.Keys
+        IEnumerable<int> IKeyedCollection<int, UniverseObject>.Keys
         {
             get
             {
@@ -200,7 +200,7 @@ namespace Supremacy.Universe
             }
         }
 
-        bool IKeyedCollection<GameObjectID, UniverseObject>.TryGetValue(GameObjectID key, out UniverseObject value)
+        bool IKeyedCollection<int, UniverseObject>.TryGetValue(int key, out UniverseObject value)
         {
             SyncLock.EnterReadLock();
             try

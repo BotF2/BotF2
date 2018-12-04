@@ -158,7 +158,7 @@ namespace Supremacy.Orbitals
             get { return GameContext.Current.Universe.Objects[_fleetId] as Fleet; }
             internal set
             {
-                _fleetId = (value == null) ? GameObjectID.InvalidID : value.ObjectID;
+                _fleetId = (value == null) ? -1 : value.ObjectID;
                 OnPropertyChanged("Fleet");
             }
         }

@@ -204,7 +204,7 @@ namespace Supremacy.Diplomacy
                 .MinElement(o => o.Regard.CurrentValue)
                 .CounterpartyID;
 
-            if (civId.IsValid)
+            if (civId != -1)
                 return GameContext.Current.Civilizations[civId];
 
             return null;
@@ -497,7 +497,7 @@ namespace Supremacy.Diplomacy
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)
         {
-            var otherCivs = new HashSet<GameObjectID>();
+            var otherCivs = new HashSet<int>();
 
             var colonies = from colony in GameContext.Current.Universe.FindAt<Colony>(location)
                            where colony.OwnerID != civilization.CivID
@@ -532,7 +532,7 @@ namespace Supremacy.Diplomacy
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
         }
 
-        public static bool IsContactMade(GameObjectID sourceId, GameObjectID targetId)
+        public static bool IsContactMade(int sourceId, int targetId)
         {
             if (sourceId == targetId)
                 return true;

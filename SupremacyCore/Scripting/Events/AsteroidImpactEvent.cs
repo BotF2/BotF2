@@ -126,7 +126,7 @@ namespace Supremacy.Scripting.Events
                     List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
                     tmpBuildings.AddRange(target.Buildings.ToList());
                     tmpBuildings.ForEach(o => target.RemoveBuilding(o));
-                    tmpBuildings.ForEach(o => o.ObjectID = GameObjectID.InvalidID);
+                    tmpBuildings.ForEach(o => o.ObjectID = -1);
 
                     OnUnitTargeted(target);
 

@@ -392,7 +392,6 @@
     <Compile Include="Game\GameInitData.cs" />
     <Compile Include="Game\GameMod.cs" />
     <Compile Include="Game\GameObject.cs" />
-    <Compile Include="Game\GameObjectID.cs" />
     <Compile Include="Game\GameOptions.cs" />
     <Compile Include="Game\GameStartData.cs" />
     <Compile Include="Game\GameTables.cs" />

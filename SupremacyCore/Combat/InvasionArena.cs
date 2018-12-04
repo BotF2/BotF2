@@ -47,7 +47,7 @@ namespace Supremacy.Combat
         private readonly int _invasionId;
         private readonly InvasionAction _action;
         private readonly InvasionTargetingStrategy _targetingStrategy;
-        private readonly GameObjectID[] _selectedTransports;
+        private readonly int[] _selectedTransports;
 
         public InvasionOrders(int invasionId, InvasionAction action, InvasionTargetingStrategy targetingStrategy, params InvasionUnit[] selectedTransports)
         : this(invasionId, action, targetingStrategy, (IEnumerable<InvasionUnit>)selectedTransports) { }
@@ -75,7 +75,7 @@ namespace Supremacy.Combat
             get { return _targetingStrategy; }
         }
 
-        public IEnumerable<GameObjectID> SelectedTransports
+        public IEnumerable<int> SelectedTransports
         {
             get { return _selectedTransports; }
         }
@@ -85,8 +85,8 @@ namespace Supremacy.Combat
     [DebuggerDisplay("{Name} ({Health.PercentFilled})")]
     public class InvasionUnit : IEquatable<InvasionUnit>
     {
-        private readonly GameObjectID _objectId;
-        private readonly GameObjectID _ownerId;
+        private readonly int _objectId;
+        private readonly int _ownerId;
         private readonly int _designid = TechObjectDesign.InvalidDesignID;
         private readonly Meter _health;
 
@@ -107,12 +107,12 @@ namespace Supremacy.Combat
                 _designid = design.DesignID;
         }
 
-        public GameObjectID ObjectID
+        public int ObjectID
         {
             get { return _objectId; }
         }
 
-        public GameObjectID OwnerID
+        public int OwnerID
         {
             get { return _ownerId; }
         }
@@ -286,7 +286,7 @@ namespace Supremacy.Combat
 
     [Serializable]
     [DataContract]
-    public class InvasionUnitCollection : KeyedCollectionBase<GameObjectID, InvasionUnit>
+    public class InvasionUnitCollection : KeyedCollectionBase<int, InvasionUnit>
     {
         public InvasionUnitCollection()
             : base(o => o.ObjectID) { }
@@ -385,12 +385,12 @@ namespace Supremacy.Combat
             get { return _invasionId; }
         }
 
-        public GameObjectID InvaderID
+        public int InvaderID
         {
             get { return _invaderId; }
         }
 
-        public GameObjectID DefenderID
+        public int DefenderID
         {
             get { return _defenderId; }
         }

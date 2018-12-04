@@ -297,7 +297,7 @@ namespace Supremacy.Client.Views
 
         #region Implementation of ICivIdentity
 
-        GameObjectID ICivIdentity.CivID
+        int ICivIdentity.CivID
         {
             get { return _foreignPower.CounterpartyID; }
         }

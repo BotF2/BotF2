@@ -867,7 +867,7 @@ namespace Supremacy.Game
                 throw new ArgumentException("TradeRoute cannot have null SourceColony");
             _colonyId = route.SourceColony.ObjectID;
             _routeId = route.SourceColony.TradeRoutes.IndexOf(route);
-            _targetId = route.IsAssigned ? route.TargetColony.ObjectID : GameObjectID.InvalidID;
+            _targetId = route.IsAssigned ? route.TargetColony.ObjectID : -1;
         }
 
         public override bool DoExecute()
@@ -881,7 +881,7 @@ namespace Supremacy.Game
 
             var route = colony.TradeRoutes[_routeId];
 
-            if (_targetId == GameObjectID.InvalidID)
+            if (_targetId == -1)
                 route.TargetColony = null;
             else
                 route.TargetColony = GameContext.Current.Universe.Objects[_targetId] as Colony;

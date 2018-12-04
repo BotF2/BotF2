@@ -134,7 +134,7 @@ namespace Supremacy.Scripting.Events
                         tmpShipyards.ForEach(o => target.DeactivateShipyardBuildSlot(o));
                         tmpShipyards.ForEach(o => GameLog.Client.GameData.DebugFormat("TerroristBombShipyards.cs: affectedProject: {0}", target.Shipyard.BuildSlots.Count));
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
-                        tmpShipyards.ForEach(o => o.Shipyard.ObjectID = GameObjectID.InvalidID);
+                        tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
                         game.CivilizationManagers[targetCiv].SitRepEntries.Add(
                                 new ScriptedEventSitRepEntry(
                                  new ScriptedEventSitRepEntryData(

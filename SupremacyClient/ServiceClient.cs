@@ -162,7 +162,7 @@ namespace Supremacy.Client
         public int GetNewObjectID()
         {
             try { return Channel.GetNewObjectID(); }
-            catch (FaultException) { return GameObjectID.InvalidID; }
+            catch (FaultException) { return -1; }
         }
 
         public void SendCombatOrders(CombatOrders orders)

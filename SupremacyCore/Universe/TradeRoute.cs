@@ -60,7 +60,7 @@ namespace Supremacy.Universe
             {
                 _targetColonyId = (value != null) 
                     ? value.ObjectID 
-                    : GameObjectID.InvalidID;
+                    : -1;
 
                 foreach (TradeRoute route in SourceColony.TradeRoutes)
                 {
@@ -237,7 +237,7 @@ namespace Supremacy.Universe
             if (sourceColony == null)
                 throw new ArgumentNullException("sourceColony");
             _sourceColonyId = sourceColony.ObjectID;
-            _targetColonyId = GameObjectID.InvalidID;
+            _targetColonyId = -1;
             _credits = 0;
         }
 

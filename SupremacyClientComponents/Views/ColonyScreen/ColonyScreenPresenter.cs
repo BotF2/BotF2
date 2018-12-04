@@ -42,7 +42,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _previousColonyCommand;
         private readonly DelegateCommand<object> _nextColonyCommand;
 
-        private GameObjectID _newColonySelection;
+        private int _newColonySelection;
 
         #region Constructors and Finalizers
         public ColonyScreenPresenter(
@@ -158,7 +158,7 @@ namespace Supremacy.Client.Views
         protected override void OnViewActivating()
         {
             var newColonySelection = _newColonySelection;
-            if (!newColonySelection.IsValid)
+            if (newColonySelection == -1)
             {
                 Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
                 return;
