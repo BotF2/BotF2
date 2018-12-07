@@ -3,6 +3,9 @@
 #define THROW_IF_NOT_OPTIMIZABLE
 #endif
 
+using Supremacy.Annotations;
+using Supremacy.Collections;
+using Supremacy.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,10 +17,6 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-
-using Supremacy.Annotations;
-using Supremacy.Collections;
-using Supremacy.Utility;
 
 namespace Supremacy.IO.Serialization
 {
@@ -3347,18 +3346,6 @@ namespace Supremacy.IO.Serialization
         }
 
         /// <summary>
-        /// Returns an ArrayList or null from the stream.
-        /// </summary>
-        /// <returns>An ArrayList instance.</returns>
-        public ArrayList ReadArrayList()
-        {
-            if (readTypeCode() == SerializedType.NullType)
-                return null;
-
-            return new ArrayList(ReadOptimizedObjectArray());
-        }
-
-        /// <summary>
         /// Returns a BitArray or null from the stream.
         /// </summary>
         /// <returns>A BitArray instance.</returns>
@@ -3917,15 +3904,6 @@ namespace Supremacy.IO.Serialization
                 default:
                     return (T[])processArrayTypes(serializedType, typeof(T));
             }
-        }
-
-        /// <summary>
-        /// Returns an ArrayList&gt;T&lt; or null from the stream.
-        /// </summary>
-        /// <returns>An object[] instance.</returns>
-        public ArrayList<T> ReadArrayList<T>()
-        {
-            return new ArrayList<T>(ReadArray<T>());
         }
 
         /// <summary>

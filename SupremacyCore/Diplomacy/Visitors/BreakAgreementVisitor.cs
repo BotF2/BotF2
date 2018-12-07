@@ -45,7 +45,7 @@ namespace Supremacy.Diplomacy.Visitors
             if (data == null || !data.TryGetValue(AcceptProposalVisitor.TransferredColoniesDataKey, out dataEntry))
                 return;
 
-            var transferredColonyIds = dataEntry as List<GameObjectID>;
+            var transferredColonyIds = dataEntry as List<int>;
             if (transferredColonyIds == null)
                 return;
 

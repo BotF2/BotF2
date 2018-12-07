@@ -11,7 +11,6 @@ using Supremacy.Annotations;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
-using Supremacy.Expressions.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Scripting;
@@ -196,9 +195,9 @@ namespace Supremacy.Game
         /// </summary>
         /// <param name="ownerId">The owner ID.</param>
         /// <param name="priority">The priority.</param>
-        protected SitRepEntry(GameObjectID ownerId, SitRepPriority priority)
+        protected SitRepEntry(int ownerId, SitRepPriority priority)
         {
-            if (!ownerId.IsValid)
+            if (ownerId == -1)
                 throw new ArgumentException("invalid Civilization ID", "ownerId");
             _ownerId = ownerId;
             _priority = priority;
@@ -1907,7 +1906,6 @@ namespace Supremacy.Game
     [Serializable]
     public class ScriptedEventSitRepEntry : SitRepEntry, ISerializable
     {
-        private readonly Expression<Func<object>>[] _parameterResolvers;
         private readonly CivString _headerText;
         private readonly CivString _summaryText;
         private readonly CivString _detailText;
@@ -1917,22 +1915,6 @@ namespace Supremacy.Game
         protected ScriptedEventSitRepEntry(SerializationInfo info, StreamingContext context)
             : base(info.GetInt32("OwnerID"), SitRepPriority.Special)
         {
-            var expressionSerializer = new ExpressionSerializer();
-
-            try
-            {
-                _parameterResolvers = ((string[])info.GetValue("_parameterResolvers", typeof(string[]))).Select(
-                    o => (Expression<Func<object>>)expressionSerializer.Deserialize(XElement.Parse(o))).ToArray();
-            }
-            catch
-            {
-                if (System.Diagnostics.Debugger.IsAttached)
-                    System.Diagnostics.Debugger.Break();
-
-                _parameterResolvers =
-                    ((string[])info.GetValue("_parameterResolvers", typeof(string[]))).Select(o => (Expression<Func<object>>)(() => "<error>")).ToArray();
-            }
-
             _headerText = (CivString)info.GetValue("_headerText", typeof(CivString));
             _detailText = (CivString)info.GetValue("_detailText", typeof(CivString));
             _summaryText = (CivString)info.GetValue("_summaryText", typeof(CivString));
@@ -1943,7 +1925,6 @@ namespace Supremacy.Game
         public ScriptedEventSitRepEntry(ScriptedEventSitRepEntryData data)
             : base(data.Owner, SitRepPriority.Special)
         {
-            _parameterResolvers = data.DetailTextParameterResolvers;
             _headerText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.HeaderText);
             _detailText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.DetailText);
             _summaryText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.SummaryText);
@@ -1958,7 +1939,7 @@ namespace Supremacy.Game
 
         public override string HeaderText
         {
-            get { return string.Format(_headerText.Value, _parameterResolvers.Select(f => f.Compile()()).ToArray()); }
+            get { return _headerText.Value; }
         }
 
         public override SitRepCategory Categories
@@ -1968,12 +1949,12 @@ namespace Supremacy.Game
 
         public override string SummaryText
         {
-            get { return string.Format(_summaryText.Value, _parameterResolvers.Select(f => f.Compile()()).ToArray()); }
+            get { return _summaryText.Value; }
         }
 
         public override string DetailText
         {
-            get { return string.Format(_detailText.Value, _parameterResolvers.Select(f => f.Compile()()).ToArray()); }
+            get { return _detailText.Value; }
         }
 
         public override string DetailImage
@@ -1983,11 +1964,9 @@ namespace Supremacy.Game
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            var expressionSerializer = new ExpressionSerializer();
-
-            info.AddValue(
+            /*info.AddValue(
                 "_parameterResolvers",
-                _parameterResolvers.Select(o => expressionSerializer.Serialize(o.CanReduce ? o.Reduce() : o).ToString(SaveOptions.DisableFormatting)).ToArray());
+                _parameterResolvers.Select(o => expressionSerializer.Serialize(o.CanReduce ? o.Reduce() : o).ToString(SaveOptions.DisableFormatting)).ToArray());*/
 
             info.AddValue("OwnerID", OwnerID);
             info.AddValue("_headerText", _headerText);

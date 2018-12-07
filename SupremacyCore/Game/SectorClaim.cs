@@ -31,15 +31,15 @@ namespace Supremacy.Game
         public SectorClaim(ICivIdentity owner, MapLocation location, int weight)
             : this(Guard.ArgumentNotNull(owner, "owner").CivID, location, weight) {}
 
-        public SectorClaim(GameObjectID ownerId, MapLocation location, int weight)
+        public SectorClaim(int ownerId, MapLocation location, int weight)
         {
-            if (!ownerId.IsValid)
+            if (ownerId == -1)
                 throw new ArgumentException("Invalid Civilization ID.", "ownerId");
 
             _data = GetClaim(ownerId, location, weight);
         }
 
-        public GameObjectID OwnerID
+        public int OwnerID
         {
             get { return ExtractOwnerID(_data); }
         }
@@ -69,7 +69,7 @@ namespace Supremacy.Game
                           weight & WeightMask);
         }
 
-        private static GameObjectID ExtractOwnerID(uint claim)
+        private static int ExtractOwnerID(uint claim)
         {
             return (int)((claim & OwnerIdMask) >> OwnerIdOffset);
         }
@@ -85,7 +85,7 @@ namespace Supremacy.Game
         {
             var ownerId = ExtractOwnerID(claim);
 
-            if (!ownerId.IsValid)
+            if (ownerId == -1)
                 return null;
 
             Civilization owner;

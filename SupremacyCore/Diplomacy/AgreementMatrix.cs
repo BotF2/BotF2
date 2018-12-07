@@ -60,7 +60,7 @@ namespace Supremacy.Diplomacy
             return IsAgreementActive(firstCiv.CivID, secondCiv.CivID, clauseType);
         }
 
-        public bool IsAgreementActive(GameObjectID firstCivId, GameObjectID secondCivId, ClauseType clauseType)
+        public bool IsAgreementActive(int firstCivId, int secondCivId, ClauseType clauseType)
         {
             return this[firstCivId, secondCivId].Any(a => a.Proposal.Clauses.Any(c => c.ClauseType == clauseType));
         }
@@ -75,7 +75,7 @@ namespace Supremacy.Diplomacy
             return FindAgreement(firstCiv.CivID, secondCiv.CivID, clauseType);
         }
 
-        public IAgreement FindAgreement(GameObjectID firstCivId, GameObjectID secondCivId, ClauseType clauseType)
+        public IAgreement FindAgreement(int firstCivId, int secondCivId, ClauseType clauseType)
         {
             return this[firstCivId, secondCivId].FirstOrDefault(a => a.Proposal.Clauses.Any(c => c.ClauseType == clauseType));
         }
@@ -90,7 +90,7 @@ namespace Supremacy.Diplomacy
             return FindAgreement(firstCiv.CivID, secondCiv.CivID, predicate);
         }
 
-        public IAgreement FindAgreement(GameObjectID firstCivId, GameObjectID secondCivId, Func<IAgreement, bool> predicate)
+        public IAgreement FindAgreement(int firstCivId, int secondCivId, Func<IAgreement, bool> predicate)
         {
             return this[firstCivId, secondCivId].FirstOrDefault(predicate);
         }
@@ -113,7 +113,7 @@ namespace Supremacy.Diplomacy
             Remove(firstCiv.CivID, secondCiv.CivID, predicate);
         }
 
-        public void Remove(GameObjectID firstCivId, GameObjectID secondCivId, Func<IAgreement, bool> predicate)
+        public void Remove(int firstCivId, int secondCivId, Func<IAgreement, bool> predicate)
         {
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
@@ -138,7 +138,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public IIndexedCollection<IAgreement> this[GameObjectID firstCivId, GameObjectID secondCivId]
+        public IIndexedCollection<IAgreement> this[int firstCivId, int secondCivId]
         {
             get
             {
@@ -153,7 +153,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        protected void ReorderCivIds(ref GameObjectID firstCivId, ref GameObjectID secondCivId)
+        protected void ReorderCivIds(ref int firstCivId, ref int secondCivId)
         {
             if (secondCivId >= firstCivId)
                 return;

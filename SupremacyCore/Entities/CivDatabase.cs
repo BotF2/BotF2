@@ -25,7 +25,7 @@ namespace Supremacy.Entities
     /// <see cref="P:Supremacy.Entities.Civilization.CivID"/> property.
     /// </summary>
     [Serializable]
-    public sealed class CivDatabase : KeyedCollectionBase<GameObjectID, Civilization>
+    public sealed class CivDatabase : KeyedCollectionBase<int, Civilization>
     {
         /// <summary>
         /// The default local path for the civilization database file.
@@ -149,7 +149,7 @@ namespace Supremacy.Entities
         /// Generates a new civilization ID.
         /// </summary>
         /// <returns>The new civilization ID.</returns>
-        public GameObjectID GetNewCivID()
+        public int GetNewCivID()
         {
             return _nextCivId++;
         }

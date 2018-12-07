@@ -21,7 +21,7 @@ namespace Supremacy.Economy
     [Serializable]
     public class StationBuildProject : BuildProject
     {
-        private GameObjectID _productionCenterId;
+        private int _productionCenterId;
 
         public override IProductionCenter ProductionCenter
         {

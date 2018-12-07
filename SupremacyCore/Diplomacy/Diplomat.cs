@@ -22,11 +22,11 @@ namespace Supremacy.Diplomacy
     [Serializable]
     public class Diplomat : IOwnedDataSerializableAndRecreatable
     {
-        private GameObjectID _ownerId;
-        private GameObjectID _seatOfGovernmentId;
+        private int _ownerId;
+        private int _seatOfGovernmentId;
         private CivilizationKeyedMap<ForeignPower> _foreignPowers;
 
-        public GameObjectID OwnerID
+        public int OwnerID
         {
             get { return _ownerId; }
         }
@@ -50,12 +50,12 @@ namespace Supremacy.Diplomacy
         {
             get
             {
-                if (!_seatOfGovernmentId.IsValid)
+                if (_seatOfGovernmentId == -1)
                     return null;
 
                 return GameContext.Current.Universe.Objects[_seatOfGovernmentId] as Colony;
             }
-            internal set { _seatOfGovernmentId = (value != null) ? value.ObjectID : GameObjectID.InvalidID; }
+            internal set { _seatOfGovernmentId = (value != null) ? value.ObjectID : -1; }
         }
 
         public IDiplomacyData GetData(ICivIdentity civilization)
@@ -197,7 +197,7 @@ namespace Supremacy.Diplomacy
             return GameContext.Current.Diplomats[owner.CivID];
         }
 
-        public static Diplomat Get(GameObjectID ownerId)
+        public static Diplomat Get(int ownerId)
         {
             return GameContext.Current.Diplomats[ownerId];
         }

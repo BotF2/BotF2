@@ -29,7 +29,7 @@ namespace Supremacy.Game
         public const int MaxClaimValue = SectorClaim.MaxClaimValue;
 
         private readonly Dictionary<MapLocation, CollectionBase<SectorClaim>> _claims;
-        private readonly Dictionary<GameObjectID, CollectionBase<SectorClaim>> _claimsByOwner;
+        private readonly Dictionary<int, CollectionBase<SectorClaim>> _claimsByOwner;
 
         public IIndexedCollection<SectorClaim> GetClaims(MapLocation location)
         {
@@ -51,7 +51,7 @@ namespace Supremacy.Game
             return ArrayWrapper<SectorClaim>.Empty;
         }
 
-        public IIndexedCollection<SectorClaim> GetClaims(GameObjectID ownerId)
+        public IIndexedCollection<SectorClaim> GetClaims(int ownerId)
         {
             CollectionBase<SectorClaim> claims;
 
@@ -294,7 +294,7 @@ namespace Supremacy.Game
         public SectorClaimGrid()
         {
             _claims = new Dictionary<MapLocation,CollectionBase<SectorClaim>>();
-            _claimsByOwner = new Dictionary<GameObjectID, CollectionBase<SectorClaim>>();
+            _claimsByOwner = new Dictionary<int, CollectionBase<SectorClaim>>();
         }
 
         /// <summary>

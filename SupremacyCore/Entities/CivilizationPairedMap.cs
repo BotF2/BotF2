@@ -38,7 +38,7 @@ namespace Supremacy.Entities
             _map = new Dictionary<int, TValue>();
         }
 
-        private static int GetKey(GameObjectID ownerCivId, GameObjectID otherCivId)
+        private static int GetKey(int ownerCivId, int otherCivId)
         {
             return ((ownerCivId << 16) | otherCivId);
         }
@@ -82,7 +82,7 @@ namespace Supremacy.Entities
             }
         }
 
-        public TValue this[GameObjectID ownerCivId, GameObjectID otherCivId]
+        public TValue this[int ownerCivId, int otherCivId]
         {
             get
             {
@@ -124,7 +124,7 @@ namespace Supremacy.Entities
             return TryGetValue(firstCiv.CivID, secondCiv.CivID, out result);
         }
 
-        public bool TryGetValue(GameObjectID firstCivId, GameObjectID secondCivId, out TValue result)
+        public bool TryGetValue(int firstCivId, int secondCivId, out TValue result)
         {
             return _map.TryGetValue(GetKey(firstCivId, secondCivId), out result);
         }

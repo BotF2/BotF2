@@ -153,7 +153,7 @@ namespace Supremacy.Client.Events
         }
 
         public ManualResetEvent WaitHandle { get; private set; }
-        public GameObjectID? Value { get; set; }
+        public int? Value { get; set; }
     }
 
     public class GameContextEventArgs : ClientEventArgs

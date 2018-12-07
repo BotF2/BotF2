@@ -92,7 +92,7 @@ namespace Supremacy.Game
                            {
                                Options = options,
                                GameType = GameType.MultiplayerNew,
-                               LocalPlayerEmpireID = GameObjectID.InvalidID,
+                               LocalPlayerEmpireID = -1,
                                LocalPlayerName = localPlayerName,
                            };
 

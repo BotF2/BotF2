@@ -12,12 +12,11 @@ using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Universe;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using Wintellect.PowerCollections;
+
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
 namespace Supremacy.Client.Views
@@ -43,7 +42,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<object> _previousColonyCommand;
         private readonly DelegateCommand<object> _nextColonyCommand;
 
-        private GameObjectID _newColonySelection;
+        private int _newColonySelection;
 
         #region Constructors and Finalizers
         public ColonyScreenPresenter(
@@ -159,7 +158,7 @@ namespace Supremacy.Client.Views
         protected override void OnViewActivating()
         {
             var newColonySelection = _newColonySelection;
-            if (!newColonySelection.IsValid)
+            if (newColonySelection == -1)
             {
                 Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
                 return;
@@ -532,26 +531,6 @@ namespace Supremacy.Client.Views
             }
         }
 
-        // *** original void UpdateBuildLists() *** old one from Overlord's code
-        //private void UpdateBuildLists()
-        //{
-        //    var selectedColony = this.Model.SelectedColony;
-        //    if (selectedColony != null)
-        //    {
-        //        this.Model.PlanetaryBuildProjects = TechTreeHelper.GetBuildProjects(this.Model.SelectedColony);
-        //        if (selectedColony.Shipyard != null)
-        //            this.Model.ShipyardBuildProjects = TechTreeHelper.GetShipyardBuildProjects(selectedColony.Shipyard);
-        //        else
-        //            this.Model.ShipyardBuildProjects = Enumerable.Empty<BuildProject>();
-        //    }
-        //    else
-        //    {
-        //        this.Model.PlanetaryBuildProjects = Enumerable.Empty<BuildProject>();
-        //    }
-        //}
-
-
-
         private void UpdateBuildLists()
         {
             var selectedColony = Model.SelectedColony;
@@ -560,13 +539,11 @@ namespace Supremacy.Client.Views
                 Model.PlanetaryBuildProjects = TechTreeHelper.GetBuildProjects(Model.SelectedColony);
                 if (selectedColony.Shipyard != null)
                 {
-                    IList<BuildProject> shipList = TechTreeHelper.GetShipyardBuildProjects(selectedColony.Shipyard);
+                    BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(selectedColony.Shipyard)
+                                                .OrderByDescending(s => s.BuildDesign.BuildCost)
+                                                .ToArray();
 
-                    BuildProject[] shipListArray = Algorithms.Sort(shipList.AsEnumerable<BuildProject>(),
-                        new Comparison<BuildProject>(
-                            delegate(BuildProject a, BuildProject b) { return a.BuildDesign.BuildCost.CompareTo(b.BuildDesign.BuildCost) * -1 /*to reverse the order */; }));
-
-                    Model.ShipyardBuildProjects = shipListArray;
+                    Model.ShipyardBuildProjects = shipList;
 
                 }
                 else

@@ -25,8 +25,8 @@ namespace Supremacy.Diplomacy
 
     public interface IAgreement : IDiplomaticExchange
     {
-        GameObjectID SenderID { get; }
-        GameObjectID RecipientID { get; }
+        int SenderID { get; }
+        int RecipientID { get; }
         int StartTurn { get; }
         int EndTurn { get; }
         IProposal Proposal { get; }
@@ -54,12 +54,12 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of IAgreement
 
-        public GameObjectID SenderID
+        public int SenderID
         {
             get { return Proposal.Sender.CivID; }
         }
 
-        public GameObjectID RecipientID
+        public int RecipientID
         {
             get { return Proposal.Recipient.CivID; }
         }

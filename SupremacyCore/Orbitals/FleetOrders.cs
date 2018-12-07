@@ -1004,7 +1004,7 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class TowOrder : FleetOrder
     {
-        private int _targetFleetId = GameObjectID.InvalidID;
+        private int _targetFleetId = -1;
         private bool _shipsLocked;
         private bool _orderLocked;
         private FleetOrder _lastOrder;
@@ -1033,7 +1033,7 @@ namespace Supremacy.Orbitals
                 if (currentTarget != null)
                     EndTow();
                 if (value == null)
-                    _targetFleetId = GameObjectID.InvalidID;
+                    _targetFleetId = -1;
                 else
                     _targetFleetId = value.ObjectID;
                 OnPropertyChanged("TargetFleet");
@@ -1699,7 +1699,7 @@ namespace Supremacy.Orbitals
 
             #region IUniverseObject Members
 
-            public GameObjectID ObjectID
+            public int ObjectID
             {
                 get { return Fleet.ObjectID; }
             }
@@ -1709,7 +1709,7 @@ namespace Supremacy.Orbitals
                 get { return Fleet.Location; }
             }
 
-            public GameObjectID OwnerID
+            public int OwnerID
             {
                 get { return Fleet.OwnerID; }
             }
