@@ -50,7 +50,7 @@ namespace Supremacy.Combat
 
             int maxScanStrengthOpposition = 0;
 
-            // Scouts and Frigate ships have a special chance of retreating BEFORE round 3
+            // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
             {
                 var easyRetreatShips = _combatShips
@@ -154,20 +154,21 @@ namespace Supremacy.Combat
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
-                //Figure out whether any of the opposition ships have sensors powerful enough to penetrate our cloak. If so, will be decloaked.
-                //if (oppositionShips.Count() > 0)
+                //Figure out if any of the opposition ships have sensors powerful enough to penetrate our camo. If so, will be decamo.
+                if (oppositionShips.Count() > 0)
 
-                //{
-                //    maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+                {
+                    maxScanStrengthOpposition = oppositionShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
 
-                //    if (_combatShips[i].Item1.IsCloaked && _combatShips[i].Item1.CloakStrength < maxScanStrengthOpposition) 
-                //    {
-                //        _combatShips[i].Item1.Decloak();
-                //        GameLog.Core.Combat.DebugFormat("{0} has cloak strength {1} vs maxScan {2}", _combatShips[i].Item1.Name, _combatShips[i].Item1.CloakStrength, maxScanStrengthOpposition);
-                //    }                    
-                //}
+                    if (_combatShips[i].Item1.IsCamouflaged && _combatShips[i].Item1.CamouflagedStrength < maxScanStrengthOpposition)
+                    {
+                        _combatShips[i].Item1.Decamouflage();
+                        GameLog.Core.Combat.DebugFormat("{0} has camou strength {1} vs maxScan {2}",
+                            _combatShips[i].Item1.Name, _combatShips[i].Item1.CamouflagedStrength, maxScanStrengthOpposition);
+                    }
+                }
 
-                //TODO: get scan power of strucutes in system and look to decloak and or decamouflage ships in system
+                //TODO: get scan power of strucutes in system and look to decamouflage ships in system
 
                 //TODO: Move this to DiplomacyHelper
                 List<string> allEmpires = new List<string>();
