@@ -920,6 +920,41 @@ namespace Supremacy.Combat
                     var maxDamage = weapon.MaxDamage.CurrentValue;
 
                     weapon.Discharge();
+                    // Update xyz Strike Cruiser and borg strike diamond being much better at Bombarding then ordinary ships
+
+                    if (ship.ShipType != ShipType.StrikeCruiser) //any non-strike Cruiser
+                    {
+                        // Weapons reduced to 6% for any ordinary  ship
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.06); // Insert Result to maxDamage as Integer
+                    }
+                    else
+                    {
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.3); // StrikeCruiser deal 30% weapondamage
+                    }
+
+                    if (ship.Design.Equals("BORG_CUBE_I")
+                        || ship.Design.Equals("BORG_CUBE_II")
+                        || ship.Design.Equals("BORG_CUBE_III")
+                        ) // _Key DesignName and Name are all BORG_TACITCAL_CUBE?
+                    {
+                        // Change damage to 15% if Borg Cubes are firing
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.15);
+                    }
+
+                    if (ship.Design.Equals("BORG_TACTICAL_CUBE_I")
+                        || ship.Design.Equals("BORG_TACTICAL_CUBE_II")
+                        || ship.Design.Equals("BORG_TACTICAL_CUBE_III")
+                        ) // _Key DesignName and Name are all BORG_TACITCAL_CUBE?
+                    {
+                        // Change damage to 15% if tactical cubes are firing
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.15);
+                    }
+
+                    if (ship.Design.Equals("BORG_FUSION_CUBE"))
+                    {
+                        // Change damage to 15% Everything goes to hell..
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.15);
+                    }
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
 
                     if (maxDamage <= 0)

@@ -168,7 +168,7 @@ namespace Supremacy.Combat
                     }
                 }
 
-                //TODO: get scan power of strucutes in system and look to decamouflage ships in system
+                //TODO: get intel of system to decamouflage spy ships in system
 
                 //TODO: Move this to DiplomacyHelper
                 List<string> allEmpires = new List<string>();
