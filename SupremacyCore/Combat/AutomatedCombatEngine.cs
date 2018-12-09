@@ -487,21 +487,23 @@ namespace Supremacy.Combat
             {
                 sourceAccuracy = 1;
                 cycleReduction = 1;
+                targetDamageControl = 10;
             }
             if (firstHostileBadOdds == true && source.Owner != firstOwner)
             {
                 sourceAccuracy = 1;
                 cycleReduction = 1;
+                targetDamageControl = 10;
             }
 
-            if (firstHostileBadOdds == true && source.Owner == firstOwner)
-            {
-                targetDamageControl = 1;
-            }
-            if (firstOwnerBadOdds == true && source.Owner != firstOwner)
-            {
-                targetDamageControl = 1;
-            }
+            //if (firstHostileBadOdds == true && source.Owner == firstOwner)
+            //{
+            //    targetDamageControl = 0.25;
+            //}
+            //if (firstOwnerBadOdds == true && source.Owner != firstOwner)
+            //{
+            //    targetDamageControl = 1;
+            //}
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
             {
                 target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction * 2));
