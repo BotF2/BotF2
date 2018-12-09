@@ -63,6 +63,8 @@ namespace Supremacy.Orbitals
         /// <param name="element">The XML element.</param>
         public StationDesign(XmlElement element) : base(element)
         {
+            _possibleStationNames = new Dictionary<string, int>();
+
             if (element["RepairSlots"] != null)
             {
                 _buildSlots = Number.ParseByte(element["RepairSlots"].InnerText.Trim());
