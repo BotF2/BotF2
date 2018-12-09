@@ -1368,111 +1368,111 @@ namespace Supremacy.WCF
 
 
                 var blanketOrder = CombatOrder.Engage; // Standard Order in case no If catches the situation
-                bool IsMinor = false;
+                //bool IsMinor = false;
 
-                switch (update.Owner.Key) // Set standard Order for each Empire
-                {
-                    case "FEDERATION": // 
-                        blanketOrder = CombatOrder.Engage; // 
-                        break;
-                    case "TERRANEMPIRE": // 
-                        blanketOrder = CombatOrder.Engage;
-                        break;
-                    case "ROMULANS": // 
-                        blanketOrder = CombatOrder.Engage;
-                        if (ownerAssets.CombatShips.Count < 2)
-                            blanketOrder = CombatOrder.Retreat; // They are cowards afterall
-                        break;
-                    case "KLINGONS": // 
-                        if (RandomHelper.Chance(2))
-                            blanketOrder = CombatOrder.Rush; // No mercy by the warriors
-                        else
-                            blanketOrder = CombatOrder.Engage;
-                        break;
-                    case "CARDASSIANS": // 
-                        blanketOrder = CombatOrder.Engage;
-                        break;
-                    case "DOMINION": // 
-                        if (RandomHelper.Chance(2))
-                            blanketOrder = CombatOrder.Rush; // Remember the destroyed Odysee?
-                        else
-                            blanketOrder = CombatOrder.Engage;
-                        break;
-                    case "BORG": // 
-                        blanketOrder = CombatOrder.Engage;
-                        break;
-                    default: // In case Owner = Minor
-                        IsMinor = true;
-                        blanketOrder = CombatOrder.Engage; // Is randomized a few lines further
-                        break;
-                }
+                //switch (update.Owner.Key) // Set standard Order for each Empire
+                //{
+                //    case "FEDERATION": // 
+                //        blanketOrder = CombatOrder.Engage; // 
+                //        break;
+                //    case "TERRANEMPIRE": // 
+                //        blanketOrder = CombatOrder.Engage;
+                //        break;
+                //    case "ROMULANS": // 
+                //        blanketOrder = CombatOrder.Engage;
+                //        if (ownerAssets.CombatShips.Count < 2)
+                //            blanketOrder = CombatOrder.Retreat; // They are cowards afterall
+                //        break;
+                //    case "KLINGONS": // 
+                //        if (RandomHelper.Chance(2))
+                //            blanketOrder = CombatOrder.Rush; // No mercy by the warriors
+                //        else
+                //            blanketOrder = CombatOrder.Engage;
+                //        break;
+                //    case "CARDASSIANS": // 
+                //        blanketOrder = CombatOrder.Engage;
+                //        break;
+                //    case "DOMINION": // 
+                //        if (RandomHelper.Chance(2))
+                //            blanketOrder = CombatOrder.Rush; // Remember the destroyed Odysee?
+                //        else
+                //            blanketOrder = CombatOrder.Engage;
+                //        break;
+                //    case "BORG": // 
+                //        blanketOrder = CombatOrder.Engage;
+                //        break;
+                //    default: // In case Owner = Minor
+                //        IsMinor = true;
+                //        blanketOrder = CombatOrder.Engage; // Is randomized a few lines further
+                //        break;
+                //}
 
-                if (IsMinor) // Any Minor is set to a random Order
-                    switch (RandomHelper.Roll(4)) // Update xyz if Order is still standard Hail, then randomly change to differnt (for minors)
-                    {
-                        case 0: // In case Rolls can be 0
-                            blanketOrder = CombatOrder.Engage;
-                            break;
-                        case 1:
-                            blanketOrder = CombatOrder.Retreat;
-                            break;
-                        case 2:
-                            blanketOrder = CombatOrder.Rush;
-                            break;
-                        case 3:
-                            blanketOrder = CombatOrder.Engage;
-                            break;
-                        case 4:
-                            blanketOrder = CombatOrder.Engage;
-                            break;
-                    }
+                //if (IsMinor) // Any Minor is set to a random Order
+                //    switch (RandomHelper.Roll(4)) // Update xyz if Order is still standard Hail, then randomly change to differnt (for minors)
+                //    {
+                //        case 0: // In case Rolls can be 0
+                //            blanketOrder = CombatOrder.Engage;
+                //            break;
+                //        case 1:
+                //            blanketOrder = CombatOrder.Retreat;
+                //            break;
+                //        case 2:
+                //            blanketOrder = CombatOrder.Rush;
+                //            break;
+                //        case 3:
+                //            blanketOrder = CombatOrder.Engage;
+                //            break;
+                //        case 4:
+                //            blanketOrder = CombatOrder.Engage;
+                //            break;
+                //    }
 
-                // Minors are (mostly) peacefull if a single scout enters their system.
-                if (enemyAssets.CombatShips.Count < 2 && update.RoundNumber == 1 && IsMinor)
-                {
-                    blanketOrder = CombatOrder.Hail; // Hail if only a scout arrives...
+                //// Minors are (mostly) peacefull if a single scout enters their system.
+                //if (enemyAssets.CombatShips.Count < 2 && update.RoundNumber == 1 && IsMinor)
+                //{
+                //    blanketOrder = CombatOrder.Hail; // Hail if only a scout arrives...
 
-                    if (RandomHelper.Chance(10))
-                    {
-                        blanketOrder = CombatOrder.Engage; // Sometimes (10% of the time) they still fire.
-                    }
-                }
+                //    if (RandomHelper.Chance(10))
+                //    {
+                //        blanketOrder = CombatOrder.Engage; // Sometimes (10% of the time) they still fire.
+                //    }
+                //}
 
-                if (enemyAssets.CombatShips.Count < 2 && update.RoundNumber == 2 && IsMinor) // If turn 2 and Minor and 1 enemycombat ship
-                    blanketOrder = CombatOrder.Formation;
-
-
-
-
-                if (update.Sector.Owner == null)   // Don´t check sector because a null-sector leads to crash   
-                {
-                }
-                else // Check species specifics Changes
-                {
-                    if (
-                        (!update.Sector.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 3 && ownerAssets.CombatShips.Count > 6)
-                        || (update.Sector.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 2 && ownerAssets.CombatShips.Count > 7)
-                        || (enemyAssets.CombatShips.Count < 1 && enemyAssets.NonCombatShips.Count < 3) && update.RoundNumber == 1
-                        )
-                        blanketOrder = CombatOrder.Hail; // Hails if not in own territory and only a few enemies. Or in own territory and only 1 enemy and more then 7 own combat ships. Hail only in turn one.
-
-                    if (!update.Sector.Owner.Equals("Romulans") && ownerAssets.CombatShips.Count < 2 && update.Owner.Key == "ROMULANS") // Update xyz Owner = Romulans added
-                        blanketOrder = CombatOrder.Retreat; // If not enought firepower... retreat
-                }
+                //if (enemyAssets.CombatShips.Count < 2 && update.RoundNumber == 2 && IsMinor) // If turn 2 and Minor and 1 enemycombat ship
+                //    blanketOrder = CombatOrder.Formation;
 
 
 
-                // Situational Changes
 
-                // Retreat in turn 2 if it makes sense
-                if (update.RoundNumber == 2 && ownerAssets.CombatShips.Count < 3 && ownerAssets.NonCombatShips.Count > 0 && enemyAssets.CombatShips.Count > 1)
-                    blanketOrder = CombatOrder.Retreat;
+                //if (update.Sector.Owner == null)   // Don´t check sector because a null-sector leads to crash   
+                //{
+                //}
+                //else // Check species specifics Changes
+                //{
+                //    if (
+                //        (!update.Sector.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 3 && ownerAssets.CombatShips.Count > 6)
+                //        || (update.Sector.Owner.Equals("Federation") && enemyAssets.CombatShips.Count < 2 && ownerAssets.CombatShips.Count > 7)
+                //        || (enemyAssets.CombatShips.Count < 1 && enemyAssets.NonCombatShips.Count < 3) && update.RoundNumber == 1
+                //        )
+                //        blanketOrder = CombatOrder.Hail; // Hails if not in own territory and only a few enemies. Or in own territory and only 1 enemy and more then 7 own combat ships. Hail only in turn one.
 
-                // Protect Transportships
-                if (update.RoundNumber == 2 && ownerAssets.CombatShips.Count > 4 && ownerAssets.NonCombatShips.Count > 2 && (ownerAssets.CombatShips.Count > enemyAssets.CombatShips.Count + 2))
-                    blanketOrder = CombatOrder.Formation;
+                //    if (!update.Sector.Owner.Equals("Romulans") && ownerAssets.CombatShips.Count < 2 && update.Owner.Key == "ROMULANS") // Update xyz Owner = Romulans added
+                //        blanketOrder = CombatOrder.Retreat; // If not enought firepower... retreat
+                //}
 
-                // Invade if possible?
+
+
+                //// Situational Changes
+
+                //// Retreat in turn 2 if it makes sense
+                //if (update.RoundNumber == 2 && ownerAssets.CombatShips.Count < 3 && ownerAssets.NonCombatShips.Count > 0 && enemyAssets.CombatShips.Count > 1)
+                //    blanketOrder = CombatOrder.Retreat;
+
+                //// Protect Transportships
+                //if (update.RoundNumber == 2 && ownerAssets.CombatShips.Count > 4 && ownerAssets.NonCombatShips.Count > 2 && (ownerAssets.CombatShips.Count > enemyAssets.CombatShips.Count + 2))
+                //    blanketOrder = CombatOrder.Formation;
+
+                //// Invade if possible?
 
                 int countStation = 0;
                 if (enemyAssets.Station != null)
