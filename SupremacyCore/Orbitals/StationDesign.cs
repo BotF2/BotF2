@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 
 using Supremacy.Encyclopedia;
@@ -28,6 +29,7 @@ namespace Supremacy.Orbitals
     {
         private byte _buildSlots;
         private ushort _buildOutput;
+        private Dictionary<string, int> _possibleStationNames;
 
         /// <summary>
         /// Gets or sets the build slots.
@@ -69,6 +71,20 @@ namespace Supremacy.Orbitals
             {
                 _buildOutput = Number.ParseUInt16(element["RepairCapacity"].InnerText.Trim());
             }
+            if (element["StationNames"] == null)
+            {
+                GameLog.Core.GameData.DebugFormat("StationNames missing in TechObjectDatabase.xml for {0}", Name);
+            }
+            else
+            {
+                //GameLog.Core.GameData.DebugFormat("StationNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
+
+                foreach (XmlElement name in element["StationNames"])
+                {
+                    _possibleStationNames.Add(name.InnerText.Trim(), 0);
+                    //GameLog.Core.GameData.DebugFormat("StationNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
+                }
+            }
         }
 
         protected override string DefaultImageSubFolder
@@ -94,6 +110,18 @@ namespace Supremacy.Orbitals
             newElement = doc.CreateElement("RepairCapacity");
             newElement.InnerText = BuildOutput.ToString();
             baseElement.AppendChild(newElement);
+
+            if (_possibleStationNames.Count > 0)
+            {
+                newElement = doc.CreateElement("SationNames");
+                foreach (var stationName in _possibleStationNames)
+                {
+                    XmlElement nameElement = doc.CreateElement("StationName");
+                    nameElement.InnerText = stationName.Key;
+                    newElement.AppendChild(nameElement);
+                }
+                baseElement.AppendChild(newElement);
+            }
         }
 
         /// <summary>
@@ -109,10 +137,53 @@ namespace Supremacy.Orbitals
                 spawnedInstance = null;
                 return false;
             }
-
+            var station = new Station(this);
             var sector = GameContext.Current.Universe.Map[location];
             var sectorOwner = sector.Owner;
 
+            if (_possibleStationNames.Count > 0)
+            {
+                //Set this to -1 so we can check if we've checked any yet
+                int timesUsed = -1;
+                string leastUsedName = "";
+                foreach (var stationName in _possibleStationNames)
+                {
+                    //If we haven't checked, assign this straight to the variables
+                    if (timesUsed == -1)
+                    {
+                        timesUsed = stationName.Value;
+                        leastUsedName = stationName.Key;
+                    }
+                    else
+                    {
+                        //Check to see if this name has been used less than the one in the variable
+                        if (stationName.Value < timesUsed)
+                        {
+                            timesUsed = stationName.Value;
+                            leastUsedName = stationName.Key;
+                        }
+                    }
+                }
+                string newStationName = "";
+                if (owner.ShipPrefix != null)
+                    newStationName = owner.ShipPrefix + " ";
+                newStationName = newStationName + leastUsedName;
+                //if (ship.Owner.Key == "BORG")
+                //{
+                //    newShipName = newShipName + " " + ShipSuffixes.Binary(timesUsed + 1).PadLeft(4, '0');
+                //}
+                //else
+                //{
+                    if (timesUsed > 0)
+                    {
+                        newStationName = newStationName + " " + ShipSuffixes.Alphabetical(timesUsed);
+                    }
+                //}
+
+                station.Name = newStationName;
+
+                _possibleStationNames[leastUsedName] = timesUsed + 1;
+            }
             if (sectorOwner != null &&
                 sectorOwner != owner)
             {
@@ -139,7 +210,7 @@ namespace Supremacy.Orbitals
                 GameContext.Current.Universe.Destroy(existingStation);
             }
 
-            var station = new Station(this);
+            //var station = new Station(this);
             var civManager = GameContext.Current.CivilizationManagers[owner];
 
             station.Reset();
