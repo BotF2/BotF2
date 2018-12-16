@@ -230,14 +230,14 @@ namespace Supremacy.Orbitals
                 _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
                 if (_cloakStrength != 0)
                     if (_cloakStrength < 6 || _cloakStrength > 20)   // atm all values between 6 and 18 (or 0 for not having this ability)
-                        GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
             }
             if (element["CamouflagedStrength"] != null)
             {
                 _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
                 if (_camouflagedStrength != 0)
                     if (_camouflagedStrength < 7 || _camouflagedStrength > 9)   // atm all values between 7 and 9 (or 0 for not having this ability)
-                        GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _camouflagedStrength should not be {1}", Name, _camouflagedStrength);
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _camouflagedStrength should not be {1}", Name, _camouflagedStrength);
             }
             //if (element["RawMaterials"] != null)
             //{
@@ -248,13 +248,13 @@ namespace Supremacy.Orbitals
             {
                 _range = Number.ParseByte(element["Range"].InnerText.Trim());
                 if (_range == 0 || _range > 25)  // atm 25 is highest value
-                    GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _range should not be {1}", Name, _range);
+                    GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _range should not be {1}", Name, _range);
             }
             if (element["Speed"] != null)
             {
                 _speed = Number.ParseByte(element["Speed"].InnerText.Trim());
                 if (_speed == 0 || _speed > 15 )
-                    GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _speed should not be {1}", Name, _speed);
+                    GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _speed should not be {1}", Name, _speed);
             }
             if (element["FuelReserve"] != null)
             {
@@ -262,14 +262,14 @@ namespace Supremacy.Orbitals
                 //BuildResourceCosts[ResourceType.Deuterium] = _fuelCapacity;
 
                 if (_fuelCapacity > 9)   // atm Empires have 4 and minors have a zero
-                    GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _fuelCapacity should not be {1}", Name, _fuelCapacity);
+                    GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _fuelCapacity should not be {1}", Name, _fuelCapacity);
             }
             if (element["InterceptAbility"] != null)
             {
                 _interceptAbility = Number.ParsePercentage(element["InterceptAbility"].InnerText.Trim());
                 if (_interceptAbility != 0)
                     if (_interceptAbility * 100 < 1 || _interceptAbility * 100 > 99)   // atm all values between 0% and 45% (or 0 for not having this ability)
-                        GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _interceptAbility should not be {1}", Name, _interceptAbility);
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _interceptAbility should not be {1}", Name, _interceptAbility);
             }
             if (element["RaidAbility"] != null)
             {
@@ -280,14 +280,14 @@ namespace Supremacy.Orbitals
                 _maneuverability = Number.ParseByte(element["Maneuverability"].InnerText.Trim());
                 if (_maneuverability != 0)
                     if (_maneuverability < 1 || _maneuverability > 12)   // atm all values between 1 and 10 (or 0 for not having this ability)
-                        GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _maneuverability should not be {1}", Name, _maneuverability);
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _maneuverability should not be {1}", Name, _maneuverability);
             }
             if (element["EvacuationLimit"] != null)
             {
                 _evacuationLimit = Number.ParseByte(element["EvacuationLimit"].InnerText.Trim());
                 if (_evacuationLimit != 0)
                     if (_evacuationLimit < 1 || _evacuationLimit > 12)   // atm all values between 1 and 10 (or 0 for not having this ability)
-                        GameLog.Core.GameData.DebugFormat("In TechObjectDatabase.xml for {0}: _evacuationLimit should not be {1}", Name, _evacuationLimit);
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _evacuationLimit should not be {1}", Name, _evacuationLimit);
             }
             if (element["WorkCapacity"] != null)
             {
@@ -295,7 +295,7 @@ namespace Supremacy.Orbitals
             }
             if (element["ShipNames"] == null)
             {
-                GameLog.Core.GameData.DebugFormat("ShipNames missing in TechObjectDatabase.xml for {0}", Name);
+                GameLog.Core.GameData.WarnFormat("ShipNames missing in TechObjectDatabase.xml for {0}", Name);
             }
             else
             {
