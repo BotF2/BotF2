@@ -511,7 +511,7 @@ namespace Supremacy.Combat
                         //Only ships to target                     
                         if (!hasOppositionStation && (oppositionShips.Count() > 0))
                         {
-                            return oppositionShips.Last().Item1;
+                            return oppositionShips.RandomElement().Item1;
                         }
                         //Has both ships and station to target
                         if (hasOppositionStation && (oppositionShips.Count() > 0))
@@ -520,7 +520,7 @@ namespace Supremacy.Combat
                             {
                                 return _combatStation.Item1;
                             }
-                            return oppositionShips.Last().Item1;
+                            return oppositionShips.RandomElement().Item1;
                         }
                         //Only has a station to target
                         if (hasOppositionStation)
