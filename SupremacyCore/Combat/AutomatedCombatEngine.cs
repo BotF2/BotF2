@@ -351,13 +351,26 @@ namespace Supremacy.Combat
 
                             else
                             {
-                                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
+                                //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
+
+                                var weapons = _combatShipsTemp[i].Item2.Where(w => w.CanFire);
+                                int amountOfWeapons = weapons.Count();
+                                var partlyFiring = 0;
 
                                 foreach (var weapon in _combatShipsTemp[i].Item2.Where(w => w.CanFire))
                                 {
                                     if (!target.IsDestroyed)
                                     {
-                                        PerformAttack(attackingShip, target, weapon);
+                                        // just not firing full fire power of one ship before the other ship is firing, but ..
+                                        // but each 2nd Weapon e.g. first 5 Beams than 3 Torpedos
+                                        if ((partlyFiring += 1) * 2 < amountOfWeapons)  
+                                        {
+                                            GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}, partlyFiring Step {7}", 
+                                                attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design, 
+                                                amountOfWeapons, partlyFiring);
+
+                                            PerformAttack(attackingShip, target, weapon);
+                                        }
                                     }
                                 }
                             }
@@ -560,11 +573,11 @@ namespace Supremacy.Combat
         //    //}
 
 
-        //    if (targetDamageControl > 1 || targetDamageControl < 0.2)
-        //        targetDamageControl = 0.5; // Normalizing target Damage Controle if values are strangly odd
+            //if (targetDamageControl > 1 || targetDamageControl< 0.2)
+            //    targetDamageControl = 0.5; // Normalizing target Damage Controle if values are strangly odd
 
-        //    if (sourceAccuracy > 1 || sourceAccuracy < 0.2)
-        //        sourceAccuracy = 0.5; // Normalizing target Damage Controle if values are strangly odd
+            //if (sourceAccuracy > 1 || sourceAccuracy< 0.2)
+            //    sourceAccuracy = 0.5; // Normalizing target Damage Controle if values are strangly odd
 
 
         //    if (source.Owner == ownerAssets.Owner && sameshipnumber == oppositionAssets.CombatShips.Count) // then we are dealing with a ship of the fleet that has more ships
@@ -645,7 +658,13 @@ namespace Supremacy.Combat
         private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
         {
             var sourceAccuracy = source.Source.GetAccuracyModifier(); // var? Or double?
+            if (sourceAccuracy > 1)  // if getting a 10 from the table
+                sourceAccuracy = sourceAccuracy / 10;
+
             var targetDamageControl = target.Source.GetDamageControlModifier();
+            if (targetDamageControl > 1)  // if getting a 10 from the table
+                targetDamageControl = targetDamageControl / 10;
+
             var oppositionAssets = GetAssets(target.Owner);
 
             if (countRounds != _roundNumber) // if starting a new round rest cycleReduction to 1
@@ -661,9 +680,9 @@ namespace Supremacy.Combat
             }
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
                 {
-                    target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction *2));
+                    target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction * 3));
 
-                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *2 of all {3} (cycleReduction = {4}, sourceAccuracy = {5}), targetDamageControl = {6}, targetShields = {7}, hull = {8}",
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *3 of all {3} (cycleReduction = {4}, sourceAccuracy = {5}), targetDamageControl = {6}, targetShields = {7}, hull = {8}",
                         target.Source.ObjectID, target.Name, target.Source.Design,
                         (int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction),
                         cycleReduction,
@@ -680,8 +699,9 @@ namespace Supremacy.Combat
   
                 if (friendlyOwnerBadOdds == true && countRounds > FriendlyCombatShips.Count)
                 {
-                    cycleReduction *= 0.90;
-
+                    cycleReduction *= 0.95;
+                    if (cycleReduction < 0.7)
+                        cycleReduction = 0.7;
                 }
 
 
