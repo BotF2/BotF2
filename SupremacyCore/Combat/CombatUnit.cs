@@ -105,7 +105,16 @@ namespace Supremacy.Combat
 
         public Percentage HullIntegrity
         {
-            get { return ((float)HullStrength / Source.OrbitalDesign.HullStrength); }
+
+            get
+            {
+                if (HullStrength == 0)
+                {
+                    return 0;
+                }
+                else
+                return ((float)HullStrength / Source.OrbitalDesign.HullStrength);
+            }
         }
 
         public int ShieldStrength
