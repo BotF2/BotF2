@@ -23,6 +23,7 @@ namespace Supremacy.Combat
     {
         private double cycleReduction = 1d;
         private bool friendlyOwner = true;
+        bool HeroShip = false;
         private object firstOwner;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
@@ -143,7 +144,7 @@ namespace Supremacy.Combat
                     continue;
                 }
                 if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
-                {                    
+                {
                     OppositionCombatShips.Add(combatent);
                 }
                 else
@@ -196,7 +197,7 @@ namespace Supremacy.Combat
                     .ToList();
 
                 firstOwner = _combatShipsTemp[0].Item1.Owner;
-                if ( CombatHelper.WillEngage(_combatShipsTemp[i].Item1.Owner, _combatShipsTemp[0].Item1.Owner) && _combatShipsTemp[0].Item1.Owner != _combatShipsTemp[i].Item1.Owner)
+                if (CombatHelper.WillEngage(_combatShipsTemp[i].Item1.Owner, _combatShipsTemp[0].Item1.Owner) && _combatShipsTemp[0].Item1.Owner != _combatShipsTemp[i].Item1.Owner)
                 {
                     friendlyOwner = false;
                 }
@@ -345,10 +346,10 @@ namespace Supremacy.Combat
                                     {
                                         // just not firing full fire power of one ship before the other ship is firing, but ..
                                         // but each 2nd Weapon e.g. first 5 Beams than 3 Torpedos
-                                        if ((partlyFiring += 1) * 2 < amountOfWeapons)  
+                                        if ((partlyFiring += 1) * 2 < amountOfWeapons)
                                         {
-                                            GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}, partlyFiring Step {7}", 
-                                                attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design, 
+                                            GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}, partlyFiring Step {7}",
+                                                attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design,
                                                 amountOfWeapons, partlyFiring);
 
                                             PerformAttack(attackingShip, target, weapon);
@@ -550,11 +551,11 @@ namespace Supremacy.Combat
         //    }
 
 
-            //if (targetDamageControl > 1 || targetDamageControl< 0.2)
-            //    targetDamageControl = 0.5; // Normalizing target Damage Controle if values are strangly odd
+        //if (targetDamageControl > 1 || targetDamageControl< 0.2)
+        //    targetDamageControl = 0.5; // Normalizing target Damage Controle if values are strangly odd
 
-            //if (sourceAccuracy > 1 || sourceAccuracy< 0.2)
-            //    sourceAccuracy = 0.5; // Normalizing target Damage Controle if values are strangly odd
+        //if (sourceAccuracy > 1 || sourceAccuracy< 0.2)
+        //    sourceAccuracy = 0.5; // Normalizing target Damage Controle if values are strangly odd
 
 
         //    if (source.Owner == ownerAssets.Owner && sameshipnumber == oppositionAssets.CombatShips.Count) // then we are dealing with a ship of the fleet that has more ships
@@ -615,41 +616,144 @@ namespace Supremacy.Combat
             var targetDamageControl = target.Source.GetDamageControlModifier();
             if (targetDamageControl > 1)  // if getting a 10 from the table
                 targetDamageControl = targetDamageControl / 10;
+           
+            // Federation has 7 Enterprises and 2 other Hero Ships
 
-            if (FriendlyCombatShips.Count - 3 <= OppositionCombatShips.Count && FriendlyCombatShips.Count >= OppositionCombatShips.Count - 3 )
+            // 13 Romulan Hero Ships
+
+            // 12 Klingon Hero Ships
+
+            // 5 Cardassians
+
+            // 1 Dominion
+
+            // 3 Borg Ships
+
+            // Bashir
+
+            if (source.Name.Contains("Enterprise") ||
+
+                source.Name.Contains("Defiant") ||
+
+                source.Name.Contains("Voyager") ||
+
+                source.Name.Contains("Apnex") ||
+
+                source.Name.Contains("Deranas") ||
+
+                source.Name.Contains("Devoras") ||
+
+                source.Name.Contains("Gal Gath'thong") ||
+
+                source.Name.Contains("Goraxus") ||
+
+                source.Name.Contains("Khazara") ||
+
+                source.Name.Contains("Haakona") ||
+
+                source.Name.Contains("Pi") ||
+
+                source.Name.Contains("Raptor Two") ||
+
+                source.Name.Contains("Rovaran") ||
+
+                source.Name.Contains("Serrola") ||
+
+                source.Name.Contains("Valdore") ||
+
+                source.Name.Contains("Raptor One") ||
+
+                source.Name.Contains("Bortas") ||
+
+                source.Name.Contains("Cha'Joh") ||
+
+                source.Name.Contains("Gr'oth") ||
+
+                source.Name.Contains("Hegh'ta") ||
+
+                source.Name.Contains("Ki'tang") ||
+
+                source.Name.Contains("Kla'Diyus") ||
+
+                source.Name.Contains("Koraga") ||
+
+                source.Name.Contains("Negh'Var") ||
+
+                source.Name.Contains("Ning'tao") ||
+
+                source.Name.Contains("Rotarran") ||
+
+                source.Name.Contains("Pagh") ||
+
+                source.Name.Contains("Kronos One") ||
+
+                source.Name.Contains("Bralek") ||
+
+                source.Name.Contains("Groumall") ||
+
+                source.Name.Contains("Kraxon") ||
+
+                source.Name.Contains("Prakesh") ||
+
+                source.Name.Contains("Reklar") ||
+
+                source.Name.Contains("Weyoun's Warship") ||
+
+                source.Name.Contains("Queen's Borg Cube") ||
+
+                source.Name.Contains("Locutus's Borg Cube") ||
+
+                source.Name.Contains("Bashir"))
+
+                HeroShip = true; // If fireing ship is Hero Ship? 
+
+            if (HeroShip == true)
+
+                sourceAccuracy = sourceAccuracy * 1.2; // add 20% accuracy
+            targetDamageControl = 1; // Best Damage control for HeroShips
+            HeroShip = false; // reset HeroShip to false
+
+            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
+
             {
-                cycleReduction = 1d;
-            }
-            if (FriendlyCombatShips.Count + 4  < OppositionCombatShips.Count)
-            {
-                //BadOdds = true;
-                if (source.Owner == firstOwner || friendlyOwner) // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
+
+                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 3));
+
+                // Change targetDamageControl to (1.5 - targetDamageControl)
+                if (FriendlyCombatShips.Count - 3 <= OppositionCombatShips.Count && FriendlyCombatShips.Count >= OppositionCombatShips.Count - 3)
                 {
-                    cycleReduction = 1.15d;
-                    sourceAccuracy = 1;
-                    if (FriendlyCombatShips.Count + 6 < OppositionCombatShips.Count)
-                    {
-                        cycleReduction = 2.5d;
-                        targetDamageControl = 1; // outnumbered friendly source owner's target has poor damage control 1 (good control is 0.25)
-                    }
-                }               
-            }
-            if (FriendlyCombatShips.Count > OppositionCombatShips.Count + 4)
-            {
-               
-                if (source.Owner != firstOwner && !friendlyOwner)
+                    cycleReduction = 1d;
+                }
+                if (FriendlyCombatShips.Count + 4 < OppositionCombatShips.Count)
                 {
-                    cycleReduction = 1.5d;
-                    sourceAccuracy = 1;
-                    if (FriendlyCombatShips.Count > OppositionCombatShips.Count + 6)
+                    //BadOdds = true;
+                    if (source.Owner == firstOwner || friendlyOwner) // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
                     {
-                        cycleReduction = 2.5d;
-                        targetDamageControl = 1;
+                        cycleReduction = 1.15d;
+                        sourceAccuracy = 1;
+                        if (FriendlyCombatShips.Count + 6 < OppositionCombatShips.Count)
+                        {
+                            cycleReduction = 2.5d;
+                            targetDamageControl = 1; // outnumbered friendly source owner's target has poor damage control 1 (good control is 0.25)
+                        }
                     }
                 }
-            }
+                if (FriendlyCombatShips.Count > OppositionCombatShips.Count + 4)
+                {
 
-            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons gets a hit
+                    if (source.Owner != firstOwner && !friendlyOwner)
+                    {
+                        cycleReduction = 1.5d;
+                        sourceAccuracy = 1;
+                        if (FriendlyCombatShips.Count > OppositionCombatShips.Count + 6)
+                        {
+                            cycleReduction = 2.5d;
+                            targetDamageControl = 1;
+                        }
+                    }
+                }
+
+                if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons gets a hit
                 {
                     target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction * 3));
 
@@ -665,11 +769,12 @@ namespace Supremacy.Combat
 
 
                     cycleReduction *= 0.98;
-                    if(cycleReduction < 0.6)
+                    if (cycleReduction < 0.6)
                         cycleReduction = 0.6;
-            }
+                }
                 weapon.Discharge();
-        }
+            }
 
+        }
     }
 }
