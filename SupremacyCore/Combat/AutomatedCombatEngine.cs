@@ -22,9 +22,13 @@ namespace Supremacy.Combat
     public sealed class AutomatedCombatEngine : CombatEngine
     {
         private double cycleReduction = 1d;
+        private double newCycleReduction = 1d;
+        private double excessShipsStartingAt;
+        private double shipRatio = 1;
         private bool friendlyOwner = true;
         bool HeroShip = false;
         private object firstOwner;
+        private int wearkerSide =0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2 Oppostion side bigger
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
 
@@ -121,42 +125,113 @@ namespace Supremacy.Combat
             }
             foreach (var combatent in _combatShips)
             {
-                var Assets = GetAssets(combatent.Item1.Owner);
-                if (combatent.Item1.IsDestroyed)
-                {
-                    GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
+                //var Assets = GetAssets(combatent.Item1.Owner);
+                //if (combatent.Item1.IsDestroyed)
+                //{
+                //    GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
 
-                    if (combatent.Item1.Source is Ship)
-                    {
-                        if (!Assets.DestroyedShips.Contains(combatent.Item1))
-                        {
-                            Assets.DestroyedShips.Add(combatent.Item1);
-                        }
-                        if (combatent.Item1.Source.IsCombatant)
-                        {
-                            Assets.CombatShips.Remove(combatent.Item1);
-                        }
-                        else
-                        {
-                            Assets.NonCombatShips.Remove(combatent.Item1);
-                        }
-                    }
-                    continue;
-                }
+                //    if (combatent.Item1.Source is Ship)
+                //    {
+                //        if (!Assets.DestroyedShips.Contains(combatent.Item1))
+                //        {
+                //            Assets.DestroyedShips.Add(combatent.Item1);
+                //        }
+                //        if (combatent.Item1.Source.IsCombatant)
+                //        {
+                //            Assets.CombatShips.Remove(combatent.Item1);
+                //        }
+                //        else
+                //        {
+                //            Assets.NonCombatShips.Remove(combatent.Item1);
+                //        }
+
+                //    }
+                //    continue;
+                //}
                 if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
                 {
                     OppositionCombatShips.Add(combatent);
+                    //if (combatent.Item1.IsDestroyed)
+                    //{
+                    //    OppositionCombatShips.Remove(combatent);
+                    //    //_combatShips.Remove(combatent);
+                    //}
+                    OppositionCombatShips.Randomize();
                 }
                 else
                 {
                     FriendlyCombatShips.Add(combatent);
+                    //if (combatent.Item1.IsDestroyed)
+                    //{
+                    //    FriendlyCombatShips.Remove(combatent);
+                    //    _combatShips.Remove(combatent);
+                    //}
+                    FriendlyCombatShips.Randomize();
                 }
             }
+            //foreach (var combatent in _combatShips) // now earch for destroyed ships
+            //{
+            //    if (combatent.Item1.IsDestroyed)
+            //    {
+            //        GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
 
+            //        if (combatent.Item1.Source is Ship)
+            //        {
+            //            var Assets = GetAssets(combatent.Item1.Owner);
+            //            if (!Assets.DestroyedShips.Contains(combatent.Item1))
+            //            {
+            //                Assets.DestroyedShips.Add(combatent.Item1);
+            //            }
+            //            if (combatent.Item1.Source.IsCombatant)
+            //            {
+            //                Assets.CombatShips.Remove(combatent.Item1);
+            //            }
+            //            else
+            //            {
+            //                Assets.NonCombatShips.Remove(combatent.Item1);
+            //            }
+
+            //        }
+            //        continue;
+            //    }
+            //}
+            if (FriendlyCombatShips.Count - OppositionCombatShips.Count > 0)
+            {
+                excessShipsStartingAt = OppositionCombatShips.Count * 2;
+                shipRatio = FriendlyCombatShips.Count() / OppositionCombatShips.Count();
+                wearkerSide = 1;
+            }
+
+            else
+            {
+                excessShipsStartingAt = FriendlyCombatShips.Count * 2;
+                shipRatio = OppositionCombatShips.Count() / FriendlyCombatShips.Count();
+                wearkerSide = 2;
+            }
+            if (FriendlyCombatShips.Count() == OppositionCombatShips.Count())
+                wearkerSide = 0;
+
+            if (shipRatio > 1.5)
+            {
+                newCycleReduction = 0.25;
+            }
+            if (shipRatio > 2)
+            {
+                newCycleReduction = 0.15;
+            }
+            if (shipRatio > 3)
+            {
+                newCycleReduction = 0.08;
+            }
+            if (shipRatio > 10)
+            {
+                newCycleReduction = 0.05;
+            }
             for (int i = 0; i < _combatShips.Count; i++)
             {
                 if (i <= FriendlyCombatShips.Count - 1)
                     _combatShipsTemp.Add(FriendlyCombatShips[i]);// First Ship in _combatShipsTemp is Friendly (initialization)
+
                 if (i <= OppositionCombatShips.Count - 1)
                     _combatShipsTemp.Add(OppositionCombatShips[i]); // Second Ship in _combatShipsTemp is opposition (initialization)
             }
@@ -169,12 +244,15 @@ namespace Supremacy.Combat
 
             for (int i = 0; i < _combatShipsTemp.Count; i++)
             {
-                GameLog.Core.Combat.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
-                     _combatShipsTemp[i].Item1.Source.ObjectID, _combatShipsTemp[i].Item1.Source.Name, _combatShipsTemp[i].Item1.Source.Design, i);
+                //GameLog.Core.Combat.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
+                //     _combatShipsTemp[i].Item1.Source.ObjectID, _combatShipsTemp[i].Item1.Source.Name, _combatShipsTemp[i].Item1.Source.Design, i);
 
                 var ownerAssets = GetAssets(_combatShipsTemp[i].Item1.Owner);
                 var oppositionShips = _combatShipsTemp.Where(cs => CombatHelper.WillEngage(_combatShipsTemp[i].Item1.Owner, cs.Item1.Owner));
                 var friendlyShips = _combatShipsTemp.Where(cs => !CombatHelper.WillEngage(_combatShipsTemp[i].Item1.Owner, cs.Item1.Owner));
+
+                if (i > excessShipsStartingAt)
+                    cycleReduction = newCycleReduction;
 
                 List<string> ownEmpires = _combatShipsTemp.Where(s =>
                     (s.Item1.Owner == _combatShipsTemp[i].Item1.Owner))
@@ -203,7 +281,7 @@ namespace Supremacy.Combat
                 }
                 else
                 {
-                    firstOwner = true;
+                    friendlyOwner = true;
                 }
 
                 int friendlyWeaponPower = ownEmpires.Sum(e => _empireStrengths[e]) + friendlyEmpires.Sum(e => _empireStrengths[e]);
@@ -331,8 +409,7 @@ namespace Supremacy.Combat
                                 }
 
                             }
-
-                            else
+                            else // if not assmilated attack, perform attack fire weapons
                             {
                                 //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
@@ -353,10 +430,14 @@ namespace Supremacy.Combat
                                                 amountOfWeapons, partlyFiring);
 
                                             PerformAttack(attackingShip, target, weapon);
+                                            
                                         }
                                     }
                                 }
+                                // all weapons fired for current ship i
+
                             }
+                            // now we are outside the if else for combat orders including past assimilation borg not borg 
                         }
 
                         foreach (var combatShip in _combatShipsTemp)
@@ -407,6 +488,31 @@ namespace Supremacy.Combat
                         GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShipsTemp[i].Item1.Name, _combatShipsTemp[i].Item1.Source.ObjectID, _combatShipsTemp[i].Item1.Source.Design.Name);
                         break;
 
+                }
+                // now remove destroid ships while inside the _combatShipsTemp looping
+                if (_combatShipsTemp[i].Item1.IsDestroyed)
+                {
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) was destroyed", _combatShipsTemp[i].Item1.Source.ObjectID, _combatShipsTemp[i].Item1.Name, _combatShipsTemp[i].Item1.Source.Design);
+                    CombatAssets targetAssets = GetAssets(_combatShipsTemp[i].Item1.Owner);
+                    if (_combatShipsTemp[i].Item1.Source is Ship)
+                    {
+                        //var ownerAssets = GetAssets(_combatShipsTemp[i].Item1.Owner);
+                        var oppositionAssets = GetAssets(_combatShipsTemp[i].Item1.Owner);
+
+                        if (!oppositionAssets.DestroyedShips.Contains(_combatShipsTemp[i].Item1))
+                        {
+                            oppositionAssets.DestroyedShips.Add(_combatShipsTemp[i].Item1);
+                        }
+                        if (_combatShipsTemp[i].Item1.Source.IsCombatant)
+                        {
+                            oppositionAssets.CombatShips.Remove(_combatShipsTemp[i].Item1);
+                        }
+                        else
+                        {
+                            oppositionAssets.NonCombatShips.Remove(_combatShipsTemp[i].Item1);
+                        }
+                        _combatShips.RemoveAll(cs => cs.Item1 == _combatShipsTemp[i].Item1);
+                    }
                 }
             }
 
@@ -467,7 +573,7 @@ namespace Supremacy.Combat
                         //Only ships to target                     
                         if (!hasOppositionStation && (oppositionShips.Count() > 0))
                         {
-                            return oppositionShips.RandomElement().Item1;
+                            return oppositionShips.FirstOrDefault().Item1;
                         }
                         //Has both ships and station to target
                         if (hasOppositionStation && (oppositionShips.Count() > 0))
@@ -476,7 +582,7 @@ namespace Supremacy.Combat
                             {
                                 return _combatStation.Item1;
                             }
-                            return oppositionShips.RandomElement().Item1;
+                            return oppositionShips.FirstOrDefault().Item1;
                         }
                         //Only has a station to target
                         if (hasOppositionStation)
@@ -631,129 +737,28 @@ namespace Supremacy.Combat
 
             // Bashir
 
-            if (source.Name.Contains("Enterprise") ||
-
-                source.Name.Contains("Defiant") ||
-
-                source.Name.Contains("Voyager") ||
-
-                source.Name.Contains("Apnex") ||
-
-                source.Name.Contains("Deranas") ||
-
-                source.Name.Contains("Devoras") ||
-
-                source.Name.Contains("Gal Gath'thong") ||
-
-                source.Name.Contains("Goraxus") ||
-
-                source.Name.Contains("Khazara") ||
-
-                source.Name.Contains("Haakona") ||
-
-                source.Name.Contains("Pi") ||
-
-                source.Name.Contains("Raptor Two") ||
-
-                source.Name.Contains("Rovaran") ||
-
-                source.Name.Contains("Serrola") ||
-
-                source.Name.Contains("Valdore") ||
-
-                source.Name.Contains("Raptor One") ||
-
-                source.Name.Contains("Bortas") ||
-
-                source.Name.Contains("Cha'Joh") ||
-
-                source.Name.Contains("Gr'oth") ||
-
-                source.Name.Contains("Hegh'ta") ||
-
-                source.Name.Contains("Ki'tang") ||
-
-                source.Name.Contains("Kla'Diyus") ||
-
-                source.Name.Contains("Koraga") ||
-
-                source.Name.Contains("Negh'Var") ||
-
-                source.Name.Contains("Ning'tao") ||
-
-                source.Name.Contains("Rotarran") ||
-
-                source.Name.Contains("Pagh") ||
-
-                source.Name.Contains("Kronos One") ||
-
-                source.Name.Contains("Bralek") ||
-
-                source.Name.Contains("Groumall") ||
-
-                source.Name.Contains("Kraxon") ||
-
-                source.Name.Contains("Prakesh") ||
-
-                source.Name.Contains("Reklar") ||
-
-                source.Name.Contains("Weyoun's Warship") ||
-
-                source.Name.Contains("Queen's Borg Cube") ||
-
-                source.Name.Contains("Locutus's Borg Cube") ||
-
-                source.Name.Contains("Bashir"))
-
+            if (source.Name.Contains("!"))
                 HeroShip = true; // If fireing ship is Hero Ship? 
 
             if (HeroShip == true)
-
+            {
                 sourceAccuracy = sourceAccuracy * 1.2; // add 20% accuracy
-            targetDamageControl = 1; // Best Damage control for HeroShips
-            HeroShip = false; // reset HeroShip to false
+                targetDamageControl = 1; // Best Damage control for HeroShips
+                HeroShip = false; // reset HeroShip to false
+            }
 
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
-
-            {
-
-                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 3));
-
-                // Change targetDamageControl to (1.5 - targetDamageControl)
-                if (FriendlyCombatShips.Count - 3 <= OppositionCombatShips.Count && FriendlyCombatShips.Count >= OppositionCombatShips.Count - 3)
+                if (wearkerSide == 1)
                 {
-                    cycleReduction = 1d;
-                }
-                if (FriendlyCombatShips.Count + 4 < OppositionCombatShips.Count)
-                {
-                    //BadOdds = true;
-                    if (source.Owner == firstOwner || friendlyOwner) // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
+                    if (source.Owner != firstOwner || !friendlyOwner)
                     {
-                        cycleReduction = 1.15d;
-                        sourceAccuracy = 1;
-                        if (FriendlyCombatShips.Count + 6 < OppositionCombatShips.Count)
-                        {
-                            cycleReduction = 2.5d;
-                            targetDamageControl = 1; // outnumbered friendly source owner's target has poor damage control 1 (good control is 0.25)
-                        }
-                    }
+                        sourceAccuracy = 1.6 - (newCycleReduction *2);
+                    } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
                 }
-                if (FriendlyCombatShips.Count > OppositionCombatShips.Count + 4)
                 {
+                    target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 3));
 
-                    if (source.Owner != firstOwner && !friendlyOwner)
-                    {
-                        cycleReduction = 1.5d;
-                        sourceAccuracy = 1;
-                        if (FriendlyCombatShips.Count > OppositionCombatShips.Count + 6)
-                        {
-                            cycleReduction = 2.5d;
-                            targetDamageControl = 1;
-                        }
-                    }
-                }
-
-                if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons gets a hit
+                    if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons gets a hit
                 {
                     target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction * 3));
 
@@ -768,9 +773,9 @@ namespace Supremacy.Combat
                         );
 
 
-                    cycleReduction *= 0.98;
-                    if (cycleReduction < 0.6)
-                        cycleReduction = 0.6;
+                    //cycleReduction *= 0.98;
+                    //if (cycleReduction < 0.6)
+                    //    cycleReduction = 0.6;
                 }
                 weapon.Discharge();
             }
