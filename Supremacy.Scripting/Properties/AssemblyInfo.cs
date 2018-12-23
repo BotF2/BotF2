@@ -21,6 +21,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Birth of the Federation 2 Team")]
 [assembly: AssemblyProduct("Birth of the Federation 2")]
 [assembly: AssemblyCopyright("Copyright (c) 2018 Birth of the Federation 2 Team")]
-[assembly: AssemblyVersion("2018.09.20.0")]
-[assembly: AssemblyFileVersion("2018.09.20.0")]
+[assembly: AssemblyVersion("2018.11.24.0")]
+[assembly: AssemblyFileVersion("2018.11.24.0")]
 

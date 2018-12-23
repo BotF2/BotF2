@@ -249,38 +249,66 @@ namespace Supremacy.Orbitals
             {
                 _crewSize = Number.ParseUInt16(element["Crew"].InnerText.Trim());
                 //BuildResourceCosts[ResourceType.Personnel] += _crewSize;
+                if (_crewSize != 0)
+                    if (_crewSize < 1 || _crewSize > 79999)   // atm all values between x and x (or 0 for not having this ability)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _crewSize should not be {1}", Name, _crewSize);
             }
             if (element["ScienceAbility"] != null)
             {
                 _scienceAbility = Number.ParsePercentage(element["ScienceAbility"].InnerText.Trim());
+                //if (_scienceAbility != 0)
+                //    if (_scienceAbility < 0.01 || _scienceAbility > 100)   // atm all values between x and x (or 0 for not having this ability)
+                //        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _scienceAbility should not be {1}", Name, _scienceAbility);
+
             }
             if (element["ScanPower"] != null)
             {
                 _scanPower = Number.ParseByte(element["ScanPower"].InnerText.Trim());
+                if (_scanPower != 0)
+                    if (_scanPower < 1 || _scanPower > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _scanPower should not be {1}", Name, _scanPower);
             }
             if (element["SensorRange"] != null)
             {
                 _sensorRange = Number.ParseByte(element["SensorRange"].InnerText.Trim());
+                if (_sensorRange != 0)
+                    if (_sensorRange < 1 || _sensorRange > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _sensorRange should not be {1}", Name, _sensorRange);
             }
             if (element["HullStrength"] != null)
             {
                 _hullStrength = Number.ParseUInt16(element["HullStrength"].InnerText.Trim());
+                if (_hullStrength != 0)
+                    if (_hullStrength < 1 )   // atm all values > 0
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _hullStrength should not be {1}", Name, _hullStrength);
             }
             if (element["ShieldStrength"] != null)
             {
                 _shieldStrength = Number.ParseUInt16(element["ShieldStrength"].InnerText.Trim());
+                if (_shieldStrength != 0)
+                    if (_shieldStrength < 1 || _shieldStrength > 99999)   // atm all values between 1 and 10 (or 0 for not having this ability)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _shieldStrength should not be {1}", Name, _shieldStrength);
             }
             if (element["ShieldRecharge"] != null)
             {
                 _shieldRechargeRate = Number.ParsePercentage(element["ShieldRecharge"].InnerText.Trim());
+                if (_shieldRechargeRate != 0)
+                    if (_shieldRechargeRate < 0.01 || _shieldRechargeRate > 1)   // atm all values between x and x (or 0 for not having this ability)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _shieldRechargeRate should not be {1}", Name, _shieldRechargeRate);
             }
             if (element["CloakStrength"] != null)
             {
                 _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
+                if (_cloakStrength != 0)
+                    if (_cloakStrength < 1 || _cloakStrength > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
             }
             if (element["CamouflagedStrength"] != null)
             {
                 _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
+                if (_camouflagedStrength != 0)
+                    if (_camouflagedStrength < 1 || _camouflagedStrength > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                        GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _camouflagedStrength should not be {1}", Name, _camouflagedStrength);
             }
             if (element["BeamType"] != null)
             {

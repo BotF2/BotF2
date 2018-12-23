@@ -584,7 +584,7 @@ namespace Supremacy.Tech
                 #region ProductionFacilities_To_CSV
                 try // avoid hang up if this file is opened by another program 
                 {
-                    file = "FromTechObj-ProdFac_(autoCreated).csv";
+                    file = "./Resources/Data/FromTechObj-ProdFac_(autoCreated).csv";
 
                     Console.WriteLine("writing {0}", file);
 
@@ -674,7 +674,7 @@ namespace Supremacy.Tech
                         "Restrictions for " + PF.Key + separator +
                         "Bonus for " + PF.Key;
 
-                        Console.WriteLine("{0}", line);
+                        //Console.WriteLine("{0}", line);
 
                         streamWriter.WriteLine(line);
                     }
@@ -692,7 +692,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = "FromTechObj-ShipNames_(autoCreated).csv";
+                    file = "./Resources/Data/FromTechObj-ShipNames_(autoCreated).csv";
                     Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -728,8 +728,8 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // Ships    
-                    file = "FromTechObj-Ships_(autoCreated).csv";
-                    Console.WriteLine("writing {0}", file);
+                    file = "./Resources/Data/FromTechObj-Ships_(autoCreated).csv";
+                    //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
                         goto WriterClose;
@@ -917,8 +917,8 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = "FromTechObj-Shipyards_(autoCreated).csv";
-                    Console.WriteLine("writing {0}", file);
+                    file = "./Resources/Data/FromTechObj-Shipyards_(autoCreated).csv";
+                    //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
                         goto WriterClose;
@@ -1013,6 +1013,136 @@ namespace Supremacy.Tech
 
                 // End of Shipyards
                 #endregion Shipyards_To_CSV
+
+
+                #region Stations_To_CSV
+                try // avoid hang up if this file is opened by another program 
+                {
+                    // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
+                    file = "./Resources/Data/FromTechObj-Stations_(autoCreated).csv";
+                    Console.WriteLine("writing {0}", file);
+
+                    if (file == null)
+                        goto WriterClose;
+
+                    streamWriter = new StreamWriter(file);
+
+                    strHeader =    // Head line
+                        "CE_Station" + separator +
+                        "ATT_Key" + separator +
+
+                        "CE_TechRequirements" + separator +
+                        "CE_BioTech" + separator +
+                        "CE_Computers" + separator +
+                        "CE_Construction" + separator +
+                        "CE_Energy" + separator +
+                        "CE_Propulsion" + separator +
+                        "CE_Weapons" + separator +
+                        "CE_BuildCost" + separator +
+                        "CE_RawMaterails" + separator +
+                        "CE_MaintanceCost" + separator +
+                        "CE_IsUniversallyAvailable" + separator +
+                        "CE_Prerequisites" + separator +
+                        "CE_ObsoletedItems" + separator +
+                        "CE_UpgradeOptions" + separator +
+                        "CE_Crew" + separator +
+                        "CE_StationNames" + separator +
+                        "CE_ScienceAbility" + separator +
+                        "CE_ScanPower" + separator +
+                        //"CE_EnergyCosts_not_used_anymore?" + separator +
+                        "CE_SensorRange" + separator +
+                        "CE_HullStrength" + separator +
+                        "CE_ShieldStrength" + separator +
+                        "CE_ShieldRecharge" + separator +
+
+                        "CE_Beam Count" + separator +
+                        "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
+                        "CE_Damage" + separator +
+                        
+                        "CE_Torpedo Count" + separator +
+                        "CE_Damage" + 
+                    
+                        "CE_RepairSlots" + separator +
+                        "CE_RepairCapacity";
+
+                    streamWriter.WriteLine(strHeader);
+                    // End of head line
+
+                    foreach (var station in db.StationDesigns)   // each shipyard
+                    {
+                        line =
+                        "Station" + separator +
+                        station.Key + separator +
+                        //station.DesignID + separator +   // not useful for current working
+                        //station.ShipType + separator +  // moved down for current working
+                        //station.ClassName + separator +  // moved down for current working
+                        //station.Key;   // just for testing
+
+                        //<TechRequirements>
+                        "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                                           // after GoogleSheet-Export: replace...
+                                           // </Weapons> by </Weapons></TechRequirements>
+                                           // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                        //"<Biotech>" + separator +                // not helpful
+                        station.TechRequirements[TechCategory.BioTech] + separator +
+                        //"</Biotech>" + separator +                 // not helpful
+                        //"<Computers>" + separator +                 // not helpful
+                        station.TechRequirements[TechCategory.Computers] + separator +
+                        //"</Computers>" + separator +                // not helpful
+                        //"<Construction>" + separator +                 // not helpful
+                        station.TechRequirements[TechCategory.Construction] + separator +
+                        //"</Construction>" + separator +                // not helpful
+                        //"<Energy>" + separator +                 // not helpful
+                        station.TechRequirements[TechCategory.Energy] + separator +
+                        //"</Energy>" + separator +                // not helpful
+                        //"<Propulsion>" + separator +                 // not helpful
+                        station.TechRequirements[TechCategory.Propulsion] + separator +
+                        //"</Propulsion>" + separator +                // not helpful
+                        //"<Weapons>" + separator +                 // not helpful
+                        station.TechRequirements[TechCategory.Weapons] + separator +
+                        //"</Weapons>" + separator +                // not helpful
+
+
+                        station.BuildCost + separator +
+                        station.RawMaterials + separator +
+                        station.MaintenanceCost + separator +
+                        station.IsUniversallyAvailable + separator +
+                        "Prerequisites for " + station.Key + separator +
+                        "ObsoletedItems for " + station.Key + separator +
+                        "UpgradeOptions for " + station.Key + separator +
+                        //"EnergyCost_not_used_anymore?" + separator +
+                        station.CrewSize + separator +
+                        "PossibleStationNames" + station.Key + separator +   // doubled ??
+                        station.ScienceAbility + separator +
+                        station.ScanStrength + separator +
+                        station.SensorRange + separator +
+                        station.BuildSlots + separator +
+                        station.HullStrength + separator +
+                        station.ShieldStrength + separator +
+                        station.ShieldRechargeRate + separator;
+
+                        ////"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
+                        //item.PrimaryWeapon.Count + separator +
+                        //item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
+                        //item.PrimaryWeapon.Damage + separator +
+
+                        ////"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
+                        //item.SecondaryWeapon.Count + separator +
+                        //item.SecondaryWeapon.Damage;
+                        
+
+
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-Stations_(autoCreated).csv", e);
+                }
+
+                // End of Stations
+                #endregion Stations_To_CSV
 
                 // End of Autocreated files 
                 streamWriter.Close();

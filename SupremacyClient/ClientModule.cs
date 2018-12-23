@@ -272,6 +272,7 @@ namespace Supremacy.Client
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
             GameLog.Client.General.Debug("MenuScreen activated... ");
+            _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.wav");
         }
 
         private bool AutoLoadSavedGame()
@@ -351,6 +352,8 @@ namespace Supremacy.Client
 
             // first is first shown in Options
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
+            //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(SecondOptionsPage));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(TracesOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AudioOptionsPage));   // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GraphicsOptionsPage));  // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GeneralOptionsPage));
