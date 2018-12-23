@@ -166,6 +166,11 @@ namespace Supremacy.Client.Context
             get { return PlayerContext.Current.Players[0]; }
         }
 
+        //public IPlayer NotLocalPlayer
+        //{
+        //    get { return PlayerContext.Current.Players; }
+        //}
+
         public ILobbyData LobbyData
         {
             get { return _lobbyData; }
@@ -175,6 +180,11 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID]; }
         }
+
+        //public IEnumerable<IPlayer> NotLocalPlayerEmpire
+        //{
+        //    get { return Enumerable.Empty<IPlayer>(); ; }
+        //}
 
         public IEnumerable<IPlayer> RemotePlayers
         {
@@ -209,6 +219,11 @@ namespace Supremacy.Client.Context
         public static IEnumerable<Colony> Colonies
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
+        }
+
+        public static IEnumerable<Colony> InfiltratedColonies
+        {
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.InfiltratedColonies); } 
         }
 
         public static IEnumerable<StarSystem> StarSystems
