@@ -598,6 +598,7 @@ namespace Supremacy.Game
                 {
                     GalaxySize = GalaxySize.Tiny,
                     GalaxyShape = GalaxyShape.Irregular,
+                    GalaxyCanon = GalaxyCanon.Canon,
                     StartingTechLevel = StartingTechLevel.Developed,
 
                     IntroPlayable = EmpirePlayable.No,

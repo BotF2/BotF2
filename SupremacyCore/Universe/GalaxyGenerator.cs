@@ -617,18 +617,31 @@ namespace Supremacy.Universe
             List<Civilization> chosenCivs)
         {
             var minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency;
+            var galaxyCanon = GameContext.Current.Options.GalaxyCanon;
             var totalMinorRaces = 0;
             var minorRaces = new Dictionary<Quadrant, List<Civilization>>();
+            var randomQuadrant = EnumHelper.GetValues<Quadrant>().FirstOrDefault();
             foreach (var quadrant in EnumHelper.GetValues<Quadrant>())
+            {
                 minorRaces[quadrant] = new List<Civilization>();
-
+                randomQuadrant = quadrant;
+            }
             foreach (var civ in minorRaceCivs)
             {
-                if (!minorRaces.ContainsKey(civ.HomeQuadrant))
+                if (galaxyCanon == GalaxyCanon.Canon)
+                {
+                    if (!minorRaces.ContainsKey(civ.HomeQuadrant) && galaxyCanon == GalaxyCanon.Canon)
                     minorRaces[civ.HomeQuadrant] = new List<Civilization>();
-
-                minorRaces[civ.HomeQuadrant].Add(civ);
-                totalMinorRaces++;
+                    minorRaces[civ.HomeQuadrant].Add(civ);
+                    totalMinorRaces++;
+                }
+                else
+                {
+                    //minorRaces[quadrant] = new List<Civilization>();
+                    minorRaces[randomQuadrant].Add(civ);                
+                    totalMinorRaces++;
+                }
+                GameLog.Core.GalaxyGenerator.DebugFormat("civ = {0}, HomeQuadrant = {1}", civ.Name, civ.HomeQuadrant);   // not finished yet
             }
 
             float minorRacePercentage = 0.25f;
@@ -699,9 +712,27 @@ namespace Supremacy.Universe
 
                 minorRaces[quadrantWithLessMinors].RemoveAt(0);
 
-                int iPosition = Algorithms.FindFirstIndexWhere(
-                    positions,
-                    location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
+                //if (GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon)
+                //{
+                    int iPosition = Algorithms.FindFirstIndexWhere(
+                        positions,
+                        location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
+                //}
+                //else  // find random quadrants for minors
+                //{
+                //    int oneOfFour = i+4 / 4;
+                //    var quadrant = Quadrant.Alpha;
+                //    if (i == 0)
+                //        quadrant = Quadrant.Alpha;
+                //    if (i == 1)
+                //        quadrant = Quadrant.Beta;
+                //    if (i == 2)
+                //        quadrant = Quadrant.Gamma;
+                //    if (i == 3)
+                //        quadrant = Quadrant.Delta;
+
+                //    int iPosition = Algorithms.FindFirstIndexWhere(positions, location);
+                //}
 
                 if (iPosition >= 0)
                 {
@@ -733,7 +764,9 @@ namespace Supremacy.Universe
 
                     //GameLog.Print("Civilization {0} placed at location {1}", minor.ShortName, chosenLocation);
 
-                    // hide for data protection      GameLog.Print("Civilization {0} placed as {1}", minor.ShortName, minor.CivilizationType);
+                    // hide for data protection      
+                    GameLog.Client.GalaxyGenerator.DebugFormat("Minor Civilization: file quadrant = {2} location = {3} in game for > {0} placed at {1} ",
+                        minor.ShortName, chosenLocation, minor.HomeQuadrant, GameContext.Current.Universe.Map.GetQuadrant(chosenLocation));
                 }
                 else
                 {

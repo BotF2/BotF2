@@ -93,6 +93,15 @@ namespace Supremacy.Game
     }
 
     /// <summary>
+    /// Defines if races are in their canon quadrants.
+    /// </summary>
+    public enum GalaxyCanon : byte
+    {
+        Canon = 0,
+        Random
+    }
+
+    /// <summary>
     /// Defines the starting tech levels in the game.
     /// </summary>
     public enum StartingTechLevel : byte
@@ -138,6 +147,7 @@ namespace Supremacy.Game
             PlanetDensity = PlanetDensity.Medium;
             StarDensity = StarDensity.Sparse;
             MinorRaceFrequency = MinorRaceFrequency.Many;
+            GalaxyCanon = GalaxyCanon.Canon;
             StartingTechLevel = StartingTechLevel.Developed;
             //PlayerNameSP = "choice your name";
             IntroPlayable = EmpirePlayable.No;  // just place holder
@@ -206,6 +216,14 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The minor race frequency.</value>
         public MinorRaceFrequency MinorRaceFrequency { get; set; }
+
+        /// <summary>
+        /// Gets or sets the galaxy canon.
+        /// </summary>
+        /// <value>The galaxy canon.</value>
+        /// 
+        public GalaxyCanon GalaxyCanon { get; set; }
+
 
         /// <summary>
         /// Gets or sets the starting tech level.
@@ -305,6 +323,7 @@ namespace Supremacy.Game
             writer.Write((byte)PlanetDensity);
             writer.Write((byte)StarDensity);
             writer.Write((byte)MinorRaceFrequency);
+            writer.Write((byte)GalaxyCanon);
             writer.Write((byte)StartingTechLevel);
             writer.Write((byte)IntroPlayable);
             writer.Write((byte)FederationPlayable);
@@ -365,6 +384,7 @@ namespace Supremacy.Game
 
             StarDensity = (StarDensity)reader.ReadByte();
             MinorRaceFrequency = (MinorRaceFrequency)reader.ReadByte();
+            GalaxyCanon = (GalaxyCanon)reader.ReadByte();
             StartingTechLevel = (StartingTechLevel)reader.ReadByte();
             IntroPlayable = (EmpirePlayable)reader.ReadByte();
             FederationPlayable = (EmpirePlayable)reader.ReadByte();
@@ -420,7 +440,8 @@ namespace Supremacy.Game
                 return false;
             if (!Enum.IsDefined(typeof(StarDensity), options.StarDensity))
                 return false;
-
+            if (!Enum.IsDefined(typeof(GalaxyCanon), options.GalaxyCanon))
+                return false;
             //if (!Enum.IsDefined(typeof(BorgPlayable), options.BorgPlayable))
             //    return false;
 

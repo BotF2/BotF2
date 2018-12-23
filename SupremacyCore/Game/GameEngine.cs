@@ -413,6 +413,7 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Options: PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
             GameLog.Core.General.InfoFormat("Options: StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
             GameLog.Core.General.InfoFormat("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
+            GameLog.Core.General.InfoFormat("Options: GalaxyCanon = {0}", GameContext.Current.Options.GalaxyCanon);
             GameLog.Core.General.InfoFormat("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
             GameLog.Core.General.InfoFormat("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
             GameLog.Core.General.InfoFormat("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
