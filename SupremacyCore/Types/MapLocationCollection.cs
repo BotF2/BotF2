@@ -10,86 +10,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-
-using Wintellect.PowerCollections;
 
 namespace Supremacy.Universe
 {
-    [Serializable]
-    public class MapLocationCollection : C5.ArrayList<MapLocation>
-    {
-        private readonly OrderedSet<MapLocation> _sorted;
-
-        public MapLocationCollection(int maxCapacity) : base(maxCapacity)
-        {
-            _sorted = new OrderedSet<MapLocation>();
-        }
-
-        protected override void raiseItemsAdded(MapLocation item, int count)
-        {
-            _sorted.Add(item);
-            base.raiseItemsAdded(item, count);
-        }
-
-        protected override void raiseItemsRemoved(MapLocation item, int count)
-        {
-            _sorted.Remove(item);
-            base.raiseItemsRemoved(item, count);
-        }
-
-        public int GetDistanceBetweenNearestLocations()
-        {
-            if (Count < 2)
-                return int.MaxValue;
-            if (Count == 2)
-                return MapLocation.GetDistance(this[0], this[1]);
-
-            Triple<int, MapLocation, MapLocation> best = new Triple<int, MapLocation, MapLocation>(
-                MapLocation.GetDistanceSquared(this[0], this[1]),
-                this[0],
-                this[1]);
-
-            FindNearest(best, _sorted.AsList());
-
-            return MapLocation.GetDistance(best.Second, best.Third);
-        }
-
-        private static void FindNearest(Triple<int, MapLocation, MapLocation> best, IList<MapLocation> list)
-        {
-            if (list.Count < 2)
-                return;
-
-            int split = list.Count / 2;
-            MapLocation splitX = list[split];
-
-            IList<MapLocation> left = Algorithms.Range(list, 0, split);
-            IList<MapLocation> right = Algorithms.Range(list, split, list.Count - split);
-            
-            FindNearest(best, left);
-            FindNearest(best, right);
-
-            Algorithms.MergeSorted(left, right);
-
-            foreach(int i in Enumerable.Range(0, list.Count))
-            {
-                foreach (int j in Enumerable.Range(1, 8))
-                {
-                    if ((i + j) < list.Count)
-                    {
-                        int distanceSquared = MapLocation.GetDistanceSquared(list[i], list[i + j]);
-                        if (distanceSquared < best.First)
-                        {
-                            best.First = distanceSquared;
-                            best.Second = list[i];
-                            best.Third = list[i + j];
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     /// <summary>
     /// A QuadTree
     /// </summary>
@@ -448,14 +371,6 @@ namespace Supremacy.Universe
         public static bool operator !=(MapRectangle a, MapRectangle b)
         {
             return !a.Equals(b);
-        }
-    }
-
-    public static class MapLocationExtensions
-    {
-        public static bool Intersects(this MapLocation location, MapRectangle rectangle)
-        {
-            return rectangle.Intersects(new MapRectangle(location.X, location.Y, location.X, location.Y));
         }
     }
 }

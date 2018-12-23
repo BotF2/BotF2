@@ -104,6 +104,7 @@ namespace Supremacy.Universe
 
         private KeyedCollectionBase<GameObjectID, Building> _buildings;
         //private KeyedCollectionBase<GameObjectID, Inflitration> _infiltrations;
+
         private UniverseObjectList<OrbitalBattery> _orbitalBatteries;
         private ObservableCollection<BuildQueueItem> _buildQueue;
         private BuildSlot _buildSlot;
@@ -120,7 +121,7 @@ namespace Supremacy.Universe
         private Meter _shieldStrength;
 
         private int _shipyardId;
-        private int _systemId = GameObjectID.InvalidID;
+        private int _systemId = -1;
         private CollectionBase<TradeRoute> _tradeRoutes;
         private Colony()
         {
@@ -144,7 +145,7 @@ namespace Supremacy.Universe
 
             _inhabitantId = inhabitants.Key;
 
-            _shipyardId = GameObjectID.InvalidID;
+            _shipyardId = -1;
             _systemId = system.ObjectID;
 
             if (system.HasRawMaterialsBonus)
@@ -404,14 +405,14 @@ namespace Supremacy.Universe
         {
             get
             {
-                if (_shipyardId == GameObjectID.InvalidID)
+                if (_shipyardId == -1)
                     return null;
                 return GameContext.Current.Universe.Objects[_shipyardId] as Shipyard;
             }
             set
             {
                 if (value == null)
-                    _shipyardId = GameObjectID.InvalidID;
+                    _shipyardId = -1;
                 else
                     _shipyardId = value.ObjectID;
 
@@ -647,14 +648,14 @@ namespace Supremacy.Universe
         /// CivID property of the owner Civilization.
         /// </summary>
         /// <value>The owner ID.</value>
-        public override GameObjectID OwnerID
+        public override int OwnerID
         {
             get { return base.OwnerID; }
             set
             {
                 base.OwnerID = value;
 
-                if (value != GameObjectID.InvalidID)
+                if (value != -1)
                 {
                     var system = System;
                     if (system != null)
@@ -664,7 +665,7 @@ namespace Supremacy.Universe
                         building.OwnerID = value;
                 }
 
-                if (_originalOwnerId == GameObjectID.InvalidID)
+                if (_originalOwnerId == -1)
                     _originalOwnerId = (short)value;
             }
         }
@@ -775,7 +776,7 @@ namespace Supremacy.Universe
             _foodReserves = new Meter(0, Meter.MaxValue);
 
             _tradeRoutes = new CollectionBase<TradeRoute>();
-            _buildings = new KeyedCollectionBase<GameObjectID, Building>(o => o.ObjectID);
+            _buildings = new KeyedCollectionBase<int, Building>(o => o.ObjectID);
             _orbitalBatteries = new UniverseObjectList<OrbitalBattery>();
             _creditsFromTrade = new Meter();
             _buildSlot = new BuildSlot();
@@ -2039,7 +2040,7 @@ namespace Supremacy.Universe
             _baseDeuteriumGeneration = typedSource._baseDeuteriumGeneration;
         }
 
-        private void CloneBuildings([NotNull] IKeyedCollection<GameObjectID, Building> sourceBuildings, ICloneContext context)
+        private void CloneBuildings([NotNull] IKeyedCollection<int, Building> sourceBuildings, ICloneContext context)
         {
             if (sourceBuildings == null)
                 throw new ArgumentNullException("sourceBuildings");

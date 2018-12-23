@@ -1,15 +1,11 @@
-﻿using System;
+﻿using Supremacy.Economy;
+using Supremacy.Tech;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Linq;
-
-using Supremacy.Economy;
-using Supremacy.Tech;
-using Wintellect.PowerCollections;
-using System.Collections.Generic;
 
 namespace Supremacy.Client.Views
 {
@@ -19,13 +15,11 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
 
-            IList<BuildProject> shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard);
+            BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard)
+                                        .OrderByDescending(s => s.BuildDesign.BuildCost)
+                                        .ToArray();
 
-            BuildProject[] shipListArray = Algorithms.Sort(shipList.AsEnumerable<BuildProject>(),
-                new Comparison<BuildProject>(
-                    delegate(BuildProject a, BuildProject b) { return a.BuildDesign.BuildCost.CompareTo(b.BuildDesign.BuildCost) * -1; }));
-
-            BuildProjectList.ItemsSource = shipListArray;
+            BuildProjectList.ItemsSource = shipList;
 
             SetBinding(
                 SelectedBuildProjectProperty,

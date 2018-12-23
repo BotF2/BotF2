@@ -29,7 +29,7 @@ namespace Supremacy.Game
     public class CivilizationManager : INotifyPropertyChanged, ICivIdentity
     {
         #region Fields
-        private readonly GameObjectID _civId;
+        private readonly int _civId;
         private readonly Meter _credits;
         private readonly List<Bonus> _globalBonuses;
         private readonly CivilizationMapData _mapData;
@@ -42,9 +42,9 @@ namespace Supremacy.Game
         private readonly UniverseObjectList<Colony> _colonies;
         private readonly UniverseObjectList<Colony> _infiltratedColonies;
 
-        private GameObjectID _homeColonyId;
+        private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
-        private GameObjectID _seatOfGovernmentId = GameObjectID.InvalidID;
+        private int _seatOfGovernmentId = -1;
 
         #endregion
 
@@ -104,7 +104,7 @@ namespace Supremacy.Game
         /// Gets the civilization ID.
         /// </summary>
         /// <value>The civilization ID.</value>
-        public GameObjectID CivilizationID
+        public int CivilizationID
         {
             get { return _civId; }
         }
@@ -198,7 +198,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if (!_seatOfGovernmentId.IsValid)
+                if (_seatOfGovernmentId == -1)
                     return null;
 
                 return GameContext.Current.Universe.Objects[_seatOfGovernmentId] as Colony;
@@ -235,12 +235,15 @@ namespace Supremacy.Game
         /// <value>The total intelligence.</value>
         public int TotalIntelligence
         {
-            get { return Colonies.Sum(colony => colony.NetIntelligence); }
-        }
-
-        public int TotalIntelligenceReserve
-        {
-            get { return Colonies.Sum(colony => colony.NetIntelligence); }
+            get
+            {
+                var baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
+                foreach (var bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
+                {
+                    baseIntel *= bonus.Amount;
+                }
+                return baseIntel;
+            }
         }
 
         public bool ControlsHomeSystem
@@ -277,7 +280,7 @@ namespace Supremacy.Game
             get { return GameContext.Current.Universe.Get<Colony>(_homeColonyId); }
             internal set
             {
-                _homeColonyId = (value != null) ? value.ObjectID : GameObjectID.InvalidID;
+                _homeColonyId = (value != null) ? value.ObjectID : -1;
                 
                 if (value != null)
                     _homeColonyLocation = value.Location;
@@ -425,7 +428,7 @@ namespace Supremacy.Game
                 if (seatOfGovernment != null)
                     _seatOfGovernmentId = seatOfGovernment.ObjectID;
                 else
-                    _seatOfGovernmentId = GameObjectID.InvalidID;
+                    _seatOfGovernmentId = -1;
             }
 
             var diplomat = GameContext.Current.Diplomats[_civId];
@@ -480,7 +483,7 @@ namespace Supremacy.Game
             return GameContext.Current.CivilizationManagers[civKey];
         }
 
-        public static CivilizationManager For(GameObjectID civId)
+        public static CivilizationManager For(int civId)
         {
             return GameContext.Current.CivilizationManagers[civId];
         }
@@ -489,7 +492,7 @@ namespace Supremacy.Game
 
         #region Implementation of ICivIdentity
 
-        GameObjectID ICivIdentity.CivID
+        int ICivIdentity.CivID
         {
             get { return _civId; }
         }
@@ -502,11 +505,11 @@ namespace Supremacy.Game
     /// civilization ID and indexed by civilization ID or civilization.
     /// </summary>
     [Serializable]
-    public class CivilizationKeyedMap<TValue> : KeyedCollectionBase<GameObjectID, TValue>
+    public class CivilizationKeyedMap<TValue> : KeyedCollectionBase<int, TValue>
     {
         #region Constructors
 
-        public CivilizationKeyedMap(Func<TValue, GameObjectID> keyRetriever)
+        public CivilizationKeyedMap(Func<TValue, int> keyRetriever)
             : base(keyRetriever) {}
 
         #endregion

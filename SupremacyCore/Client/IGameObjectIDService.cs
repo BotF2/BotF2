@@ -13,6 +13,6 @@ namespace Supremacy.Client
 {
     public interface IGameObjectIDService
     {
-        GameObjectID? GetNewObjectID();
+        int? GetNewObjectID();
     }
 }

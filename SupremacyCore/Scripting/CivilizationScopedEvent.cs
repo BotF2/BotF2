@@ -46,7 +46,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected IKeyedCollection<GameObjectID, CivTargetHistoryEntry> CivilizationTargetHistory
+        protected IKeyedCollection<int, CivTargetHistoryEntry> CivilizationTargetHistory
         {
             get { return _civilizationTargetHistory; }
         } 
@@ -110,14 +110,14 @@ namespace Supremacy.Scripting
             if (CivilizationRecurrencePeriod < 0)
                 return;
 
-            HashSet<GameObjectID> removedItems = null;
+            HashSet<int> removedItems = null;
 
             foreach (var entry in _civilizationTargetHistory)
             {
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > CivilizationRecurrencePeriod)
                 {
                     if (removedItems == null)
-                        removedItems = new HashSet<GameObjectID>();
+                        removedItems = new HashSet<int>();
                     removedItems.Add(entry.CivID);
                 }
             }
@@ -134,7 +134,7 @@ namespace Supremacy.Scripting
         [Serializable]
         protected sealed class CivTargetHistoryEntry : IOwnedDataSerializableAndRecreatable
         {
-            private GameObjectID _civId;
+            private int _civId;
             private int _turnNumber;
 
             public CivTargetHistoryEntry([NotNull] Civilization civ, int turnNumber)
@@ -148,7 +148,7 @@ namespace Supremacy.Scripting
                 _turnNumber = turnNumber;
             }
 
-            public GameObjectID CivID
+            public int CivID
             {
                 get { return _civId; }
             }

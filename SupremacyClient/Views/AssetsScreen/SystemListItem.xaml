@@ -185,7 +185,7 @@
                    Visibility="{Binding Path=Shipyard, Converter={StaticResource NullValueVisibilityConverter}}">
     	<scc:GameLabel.Label>
         <MultiBinding StringFormat="{}{0} x {1}" FallbackValue="n/a">
-          <Binding Path="Shipyard.EffectiveBuildOutput" />
+          <Binding Path="Shipyard.ShipyardDesign.BuildSlotOutput" />
           <Binding Path="Shipyard.ShipyardDesign.BuildSlots" />
         </MultiBinding>
     	</scc:GameLabel.Label>

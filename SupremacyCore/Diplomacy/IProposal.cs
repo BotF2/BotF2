@@ -30,8 +30,8 @@ namespace Supremacy.Diplomacy
     public class NewProposal : IProposal
     {
         private readonly int _turnSent;
-        private readonly GameObjectID _sender;
-        private readonly GameObjectID _recipient;
+        private readonly int _sender;
+        private readonly int _recipient;
         private readonly CollectionBase<IClause> _clauses;
 
         public NewProposal(Civilization sender, Civilization recipient, params IClause[] clauses)

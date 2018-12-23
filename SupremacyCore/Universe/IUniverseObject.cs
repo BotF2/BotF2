@@ -28,7 +28,7 @@ namespace Supremacy.Universe
         /// CivID property of the owner Civilization.
         /// </summary>
         /// <value>The owner ID.</value>
-        GameObjectID OwnerID { get;}
+        int OwnerID { get;}
 
         /// <summary>
         /// Gets the owner of this <see cref="IUniverseObject"/>.

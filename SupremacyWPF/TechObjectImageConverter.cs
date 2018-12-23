@@ -175,7 +175,7 @@ namespace Supremacy.Client
             {
                 if (value is string)
                     objectKey = (string)value;
-                else if (value is int || value is GameObjectID)
+                else if (value is int)
                     objectKey = GameContext.Current.Civilizations[(int)value].Key;
                 else if (value is ICivIdentity)
                     objectKey = GameContext.Current.Civilizations[((ICivIdentity)value).CivID].Key;

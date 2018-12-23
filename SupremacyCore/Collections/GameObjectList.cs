@@ -31,16 +31,16 @@ namespace Supremacy.Collections
         private const string CountPropertyName = "Count";
         private const string IndexerName = "Item[]";
 
-        private readonly Func<GameObjectID, T> _lookupFunction;
-        private readonly List<GameObjectID> _internalList;
+        private readonly Func<int, T> _lookupFunction;
+        private readonly List<int> _internalList;
 
-        public GameObjectList([NotNull] Func<GameObjectID, T> lookupFunction)
+        public GameObjectList([NotNull] Func<int, T> lookupFunction)
         {
             if (lookupFunction == null)
                 throw new ArgumentNullException("lookupFunction");
 
             _lookupFunction = lookupFunction;
-            _internalList = new List<GameObjectID>();
+            _internalList = new List<int>();
         }
 
         public void TrimExcess()
@@ -68,12 +68,12 @@ namespace Supremacy.Collections
             Insert(_internalList.Count, item);
         }
 
-        public void Add(GameObjectID itemId)
+        public void Add(int itemId)
         {
             Insert(_internalList.Count, itemId);
         }
 
-        public void AddRange([NotNull] IEnumerable<GameObjectID> itemIds)
+        public void AddRange([NotNull] IEnumerable<int> itemIds)
         {
             if (itemIds == null)
                 throw new ArgumentNullException("itemIds");
@@ -101,7 +101,7 @@ namespace Supremacy.Collections
             return _internalList.Contains(item.ObjectID);
         }
 
-        public bool Contains(GameObjectID itemId)
+        public bool Contains(int itemId)
         {
             return _internalList.Contains(itemId);
         }
@@ -124,7 +124,7 @@ namespace Supremacy.Collections
             return true;
         }
 
-        public bool Remove(GameObjectID itemId)
+        public bool Remove(int itemId)
         {
             var index = _internalList.IndexOf(itemId);
             if (index < 0)
@@ -168,13 +168,13 @@ namespace Supremacy.Collections
             OnCollectionReset();
         }
 
-        private void Insert(int index, GameObjectID itemId)
+        private void Insert(int index, int itemId)
         {
             _internalList.Insert(index, itemId);
             OnCollectionChanged(NotifyCollectionChangedAction.Add, _lookupFunction(itemId), index);
         }
 
-        public void InsertRange(int index, [NotNull] IEnumerable<GameObjectID> itemIds)
+        public void InsertRange(int index, [NotNull] IEnumerable<int> itemIds)
         {
             if (itemIds == null)
                 throw new ArgumentNullException("itemIds");
@@ -200,7 +200,7 @@ namespace Supremacy.Collections
             get { return this[itemId]; }
         }
 
-        public T this[GameObjectID itemId]
+        public T this[int itemId]
         {
             get { return _lookupFunction(_internalList[itemId]); }
             set

@@ -197,7 +197,6 @@
     <Compile Include="Economy\ShipyardBuildSlot.cs" />
     <Compile Include="Entities\ICivIdentity.cs" />
     <Compile Include="Entities\RaceConverter.cs" />
-    <Compile Include="Expressions\ForEachExpression.cs" />
     <Compile Include="Game\CivilizationMapData.cs" />
     <Compile Include="Game\SectorClaim.cs" />
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
@@ -284,13 +283,11 @@
     <Compile Include="Client\IGameObjectIDService.cs" />
     <Compile Include="Client\IPlayerOrderService.cs" />
     <Compile Include="Collections\ArrayWrapper.cs" />
-    <Compile Include="Collections\ArrayList.cs" />
     <Compile Include="Collections\CollectionBase.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ConcurrentStack.cs" />
     <Compile Include="Collections\DelegatingIndexedCollection.cs" />
     <Compile Include="Collections\GameObjectList.cs" />
-    <Compile Include="Collections\ImmutableAvlTree.cs" />
     <Compile Include="Collections\GameObjectLookupCollection.cs" />
     <Compile Include="Collections\IndexedEnumerable.cs" />
     <Compile Include="Collections\Interfaces.cs" />
@@ -335,11 +332,7 @@
     <Compile Include="Effects\DynamicObject.cs" />
     <Compile Include="Effects\DynamicProperty.cs" />
     <Compile Include="Effects\ItemStructList.cs" />
-    <Compile Include="Expressions\DynamicExpressions.cs" />
     <Compile Include="Collections\IndexedCollection.cs" />
-    <Compile Include="Expressions\ExpressionSerializationTypeResolver.cs" />
-    <Compile Include="Expressions\ExpressionSerializer.cs" />
-    <Compile Include="Expressions\LinqExtensions.cs" />
     <Compile Include="Combat\AutomatedCombatEngine.cs" />
     <Compile Include="Combat\CombatAssets.cs" />
     <Compile Include="Combat\CombatEngine.cs" />
@@ -379,12 +372,6 @@
     <Compile Include="Economy\Treasury.cs" />
     <Compile Include="Encyclopedia\IEncyclopediaEntry.cs" />
     <Compile Include="Entities\CivilizationPairedMap.cs" />
-    <Compile Include="Expressions\ExpandableExpressionVisitor.cs" />
-    <Compile Include="Expressions\ExpandableQuery.cs" />
-    <Compile Include="Expressions\ExpressionExpander.cs" />
-    <Compile Include="Expressions\Extensions.cs" />
-    <Compile Include="Expressions\Linq.cs" />
-    <Compile Include="Expressions\PredicateBuilder.cs" />
     <Compile Include="Game\ChatMessage.cs" />
     <Compile Include="Game\CivHelper.cs" />
     <Compile Include="Game\CivilizationManager.cs" />
@@ -394,7 +381,6 @@
     <Compile Include="Game\GameInitData.cs" />
     <Compile Include="Game\GameMod.cs" />
     <Compile Include="Game\GameObject.cs" />
-    <Compile Include="Game\GameObjectID.cs" />
     <Compile Include="Game\GameOptions.cs" />
     <Compile Include="Game\GameStartData.cs" />
     <Compile Include="Game\GameTables.cs" />

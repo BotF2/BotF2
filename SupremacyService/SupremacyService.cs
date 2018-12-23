@@ -1193,7 +1193,7 @@ namespace Supremacy.WCF
 
                     var playerInfoCopy = playerInfo;
 
-                    ((Action<GameObjectID>)callback.NotifyPlayerFinishedTurn)
+                    ((Action<int>)callback.NotifyPlayerFinishedTurn)
                         .ToAsync(_scheduler)(currentPlayer.EmpireID)
                         .Subscribe(
                             _ => { },

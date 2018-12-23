@@ -7,14 +7,12 @@
 //
 // All other rights reserved.
 
+using Supremacy.Game;
+using Supremacy.Universe;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
-using Supremacy.Collections;
-using Supremacy.Game;
-using Supremacy.Universe;
 
 namespace Supremacy.AI
 {
@@ -22,13 +20,13 @@ namespace Supremacy.AI
     public class ConvexHullSet : IEnumerable<ConvexHull>
     {
         #region Fields
-        private readonly ArrayList<ConvexHull> _items;
+        private readonly List<ConvexHull> _items;
         #endregion
 
         #region Constructors
         public ConvexHullSet(IEnumerable<ConvexHull> items)
         {
-            _items = new ArrayList<ConvexHull>(items);
+            _items = new List<ConvexHull>(items);
         }
         #endregion
 

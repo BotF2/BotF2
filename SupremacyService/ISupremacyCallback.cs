@@ -62,6 +62,6 @@ namespace Supremacy.WCF
         void NotifyInvasionUpdate(InvasionArena update);
 
         [OperationContract(IsOneWay = true)]
-        void NotifyPlayerFinishedTurn(GameObjectID empireId);
+        void NotifyPlayerFinishedTurn(int empireId);
     }
 }

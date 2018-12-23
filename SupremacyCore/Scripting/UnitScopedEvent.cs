@@ -25,12 +25,12 @@ namespace Supremacy.Scripting
     public abstract class UnitScopedEvent<TUnit> : CivilizationScopedEvent
         where TUnit : UniverseObject
     {
-        private readonly KeyedCollectionBase<GameObjectID, UnitTargetHistoryEntry> _unitTargetHistory;
+        private readonly KeyedCollectionBase<int, UnitTargetHistoryEntry> _unitTargetHistory;
         private int _unitRecurrencePeriod = NoRecurrenceLimit;
 
         protected UnitScopedEvent()
         {
-            _unitTargetHistory = new KeyedCollectionBase<GameObjectID, UnitTargetHistoryEntry>(entry => entry.TargetID);
+            _unitTargetHistory = new KeyedCollectionBase<int, UnitTargetHistoryEntry>(entry => entry.TargetID);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected IKeyedCollection<GameObjectID, UnitTargetHistoryEntry> UnitTargetHistory
+        protected IKeyedCollection<int, UnitTargetHistoryEntry> UnitTargetHistory
         {
             get { return _unitTargetHistory; }
         }
@@ -116,14 +116,14 @@ namespace Supremacy.Scripting
             if (UnitRecurrencePeriod < 0)
                 return;
 
-            HashSet<GameObjectID> removedItems = null;
+            HashSet<int> removedItems = null;
 
             foreach (var entry in _unitTargetHistory)
             {
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > UnitRecurrencePeriod)
                 {
                     if (removedItems == null)
-                        removedItems = new HashSet<GameObjectID>();
+                        removedItems = new HashSet<int>();
                     removedItems.Add(entry.TargetID);
                 }
             }
@@ -140,8 +140,8 @@ namespace Supremacy.Scripting
         [Serializable]
         protected sealed class UnitTargetHistoryEntry
         {
-            private readonly GameObjectID _targetId;
-            private readonly GameObjectID _ownerId;
+            private readonly int _targetId;
+            private readonly int _ownerId;
             private readonly int _turnNumber;
 
             public UnitTargetHistoryEntry([NotNull] TUnit target, int turnNumber)
@@ -166,12 +166,12 @@ namespace Supremacy.Scripting
                 get { return GameContext.Current.Civilizations[_ownerId]; }
             }
 
-            public GameObjectID TargetID
+            public int TargetID
             {
                 get { return _targetId; }
             }
 
-            public GameObjectID OwnerID
+            public int OwnerID
             {
                 get { return _ownerId; }
             }

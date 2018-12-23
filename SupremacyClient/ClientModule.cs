@@ -316,7 +316,7 @@ namespace Supremacy.Client
             _container.RegisterType<IGameServer, GameServer>(new TransientLifetimeManager());
             _container.RegisterType<IPlayerOrderService, PlayerOrderService>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IGameController, GameController>(new TransientLifetimeManager());
-            _container.RegisterInstance<IScriptService>(new ScriptService());
+            //_container.RegisterInstance<IScriptService>(new ScriptService());*/
 
             _container.RegisterType<StatusWindow>(new ContainerControlledLifetimeManager());
             _container.RegisterInstance(new CombatWindow());
@@ -326,8 +326,6 @@ namespace Supremacy.Client
             _container.RegisterType<DiplomacyScreenViewModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ScienceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<AssetsScreenPresentationModel>(new ExternallyControlledLifetimeManager());
-            ////_container.RegisterType<IntelligenceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
-            //_container.RegisterType<IntelScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<SystemAssaultScreenViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
@@ -343,8 +341,6 @@ namespace Supremacy.Client
             _container.RegisterType<IColonyScreenPresenter, ColonyScreenPresenter>(new ExternallyControlledLifetimeManager());
             //_container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IScienceScreenPresenter, ScienceScreenPresenter>(new ExternallyControlledLifetimeManager());
-            ////_container.RegisterType<IIntelligenceScreenPresenter, IntelligenceScreenPresenter>(new ExternallyControlledLifetimeManager());
-            //_container.RegisterType<IIntelScreenPresenter, IntelScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenPresenter, AssetsScreenPresenter>(new ExternallyControlledLifetimeManager());
 
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MenuScreen, typeof(MenuScreen));

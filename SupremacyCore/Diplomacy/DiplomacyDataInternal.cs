@@ -18,7 +18,7 @@ namespace Supremacy.Diplomacy
         public int LastColdWarAttack { get; protected set; }
         public int LastIncursion { get; protected set; }
 
-        public DiplomacyDataInternal(GameObjectID ownerId, GameObjectID counterpartyid)
+        public DiplomacyDataInternal(int ownerId, int counterpartyid)
         {
             _baseData = new DiplomacyData(ownerId, counterpartyid);
             _motivations = new CollectionBase<Motivation>();
@@ -34,12 +34,12 @@ namespace Supremacy.Diplomacy
 
         #region IDiplomacyDataExtended Members
 
-        public GameObjectID OwnerID
+        public int OwnerID
         {
             get { return _baseData.OwnerID; }
         }
 
-        public GameObjectID CounterpartyID
+        public int CounterpartyID
         {
             get { return _baseData.CounterpartyID; }
         }

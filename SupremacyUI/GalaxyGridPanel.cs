@@ -2093,7 +2093,7 @@ namespace Supremacy.UI
                                 12.0,
                                 Brushes.White);
                             var tGeom = tText.BuildGeometry(
-                                new Point(SectorSize * location.X + 45,
+                                new Point(SectorSize * location.X + 50,
                                             SectorSize * (location.Y + 1) - 40
                                                 - tText.Height + (tText.Height - tText.Baseline)));
                             dc.DrawGeometry(Brushes.White, tPen, tGeom);

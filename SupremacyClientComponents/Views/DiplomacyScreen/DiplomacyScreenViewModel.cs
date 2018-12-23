@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-
-using Microsoft.Practices.Composite.Presentation.Events;
+﻿using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Composite.Regions;
 using Supremacy.Annotations;
+using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Utility;
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Supremacy.Client.Context;
+using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {

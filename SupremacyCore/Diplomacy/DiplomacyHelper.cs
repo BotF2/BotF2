@@ -204,7 +204,7 @@ namespace Supremacy.Diplomacy
                 .MinElement(o => o.Regard.CurrentValue)
                 .CounterpartyID;
 
-            if (civId.IsValid)
+            if (civId != -1)
                 return GameContext.Current.Civilizations[civId];
 
             return null;
@@ -243,6 +243,13 @@ namespace Supremacy.Diplomacy
                 ClauseType.TreatyOpenBorders);
         }
 
+        /// <summary>
+        /// Whether a given <see cref="Civilization"/> can travel through a particular
+        /// <see cref="Sector"/>
+        /// </summary>
+        /// <param name="traveller"></param>
+        /// <param name="sector"></param>
+        /// <returns></returns>
         public static bool IsTravelAllowed(Civilization traveller, Sector sector)
         {
             if (traveller == null)
@@ -263,6 +270,12 @@ namespace Supremacy.Diplomacy
                 ClauseType.TreatyNonAggression);
         }
 
+        /// <summary>
+        /// Whether two <see cref="Civilization"/>s are allies
+        /// </summary>
+        /// <param name="who"></param>
+        /// <param name="whoElse"></param>
+        /// <returns></returns>
         public static bool AreAllied(Civilization who, Civilization whoElse)
         {
             if (who == null)
@@ -275,6 +288,12 @@ namespace Supremacy.Diplomacy
                    GameContext.Current.AgreementMatrix.IsAgreementActive(who, whoElse, ClauseType.TreatyMembership);
         }
 
+        /// <summary>
+        /// Whether two <see cref="Civilization"/>s are on friendly terms
+        /// </summary>
+        /// <param name="who"></param>
+        /// <param name="whoElse"></param>
+        /// <returns></returns>
         public static bool AreFriendly(Civilization who, Civilization whoElse)
         {
             if (who == null)
@@ -289,7 +308,7 @@ namespace Supremacy.Diplomacy
         }
 
         /// <summary>
-        ///  Determines whether two particular civilizations are at war
+        /// Determines whether two particular <see cref="Civilization"/>s are at war
         /// </summary>
         public static bool AreAtWar(Civilization who, Civilization whoElse)
         {
@@ -305,11 +324,32 @@ namespace Supremacy.Diplomacy
         }
 
         /// <summary>
-        /// Determines whether the given civilization is at war with anybody
+        /// Determines whether the given <see cref="Civilization"/> is at war with anybody
         /// </summary>
         public static bool IsAtWar(Civilization who)
         {
             return (GameContext.Current.DiplomacyData.CountWhere(c => c.Status == ForeignPowerStatus.AtWar) > 0);
+        }
+       
+        public static bool ArePotentialEnemies(Civilization civ1, Civilization civ2)
+        {
+            if (civ1 == null)
+                throw new ArgumentNullException("civ1");
+            if (civ2 == null)
+                throw new ArgumentNullException("civ2");
+
+            if (civ1 == civ2)
+                return true;
+
+            switch (GetForeignPowerStatus(civ1, civ2))
+            {
+                case ForeignPowerStatus.AtWar:
+                case ForeignPowerStatus.Neutral:
+                case ForeignPowerStatus.NoContact:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         public static bool AreNeutral(Civilization who, Civilization whoElse)
@@ -457,7 +497,7 @@ namespace Supremacy.Diplomacy
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)
         {
-            var otherCivs = new HashSet<GameObjectID>();
+            var otherCivs = new HashSet<int>();
 
             var colonies = from colony in GameContext.Current.Universe.FindAt<Colony>(location)
                            where colony.OwnerID != civilization.CivID
@@ -492,7 +532,7 @@ namespace Supremacy.Diplomacy
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
         }
 
-        public static bool IsContactMade(GameObjectID sourceId, GameObjectID targetId)
+        public static bool IsContactMade(int sourceId, int targetId)
         {
             if (sourceId == targetId)
                 return true;

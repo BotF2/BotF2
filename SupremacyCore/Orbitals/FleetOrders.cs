@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Pathfinding;
 using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Text;
@@ -563,6 +564,10 @@ namespace Supremacy.Orbitals
                 Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
             }
         }
+
+        public override bool IsComplete {
+            get { return Fleet.Sector.System.Colony.Health.CurrentValue >= 100; }
+        }
     }
     #endregion
 
@@ -1006,7 +1011,7 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class TowOrder : FleetOrder
     {
-        private int _targetFleetId = GameObjectID.InvalidID;
+        private int _targetFleetId = -1;
         private bool _shipsLocked;
         private bool _orderLocked;
         private FleetOrder _lastOrder;
@@ -1035,7 +1040,7 @@ namespace Supremacy.Orbitals
                 if (currentTarget != null)
                     EndTow();
                 if (value == null)
-                    _targetFleetId = GameObjectID.InvalidID;
+                    _targetFleetId = -1;
                 else
                     _targetFleetId = value.ObjectID;
                 OnPropertyChanged("TargetFleet");
@@ -1315,7 +1320,7 @@ namespace Supremacy.Orbitals
                 {
                     var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
                     GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
-                    // ToDo: Sitrep:   our connection was lost to ship entering wormhole . The fear is that it was destroyed.
+                    civManager.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
                     Fleet.Destroy();
                 }
                 else
@@ -1701,7 +1706,7 @@ namespace Supremacy.Orbitals
 
             #region IUniverseObject Members
 
-            public GameObjectID ObjectID
+            public int ObjectID
             {
                 get { return Fleet.ObjectID; }
             }
@@ -1711,7 +1716,7 @@ namespace Supremacy.Orbitals
                 get { return Fleet.Location; }
             }
 
-            public GameObjectID OwnerID
+            public int OwnerID
             {
                 get { return Fleet.OwnerID; }
             }
@@ -1766,7 +1771,11 @@ namespace Supremacy.Orbitals
                 return;
             if (Fleet.Route.IsEmpty)
             {
-                Fleet.SetRouteInternal(UnitAI.GetBestExploreRoute(Fleet));
+                Sector bestSector;
+                if (UnitAI.GetBestSectorToExplore(Fleet, out bestSector))
+                {
+                    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+                }
             }
         }
     }

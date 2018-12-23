@@ -130,7 +130,7 @@ namespace Supremacy.Game
         /// Generates a new object ID for use in the current game.
         /// </summary>
         /// <returns>The object ID.</returns>
-        GameObjectID GenerateID();
+        int GenerateID();
 
         AgreementMatrix AgreementMatrix { get; }
     }
@@ -473,7 +473,7 @@ namespace Supremacy.Game
         /// Generates a new object ID for use in the current game.
         /// </summary>
         /// <returns>The object ID.</returns>
-        public GameObjectID GenerateID()
+        public int GenerateID()
         {
             return _nextObjectId++;
         }

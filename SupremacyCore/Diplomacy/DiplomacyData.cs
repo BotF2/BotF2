@@ -23,8 +23,8 @@ namespace Supremacy.Diplomacy
 {
     public interface IDiplomacyData
     {
-        GameObjectID OwnerID { get; }
-        GameObjectID CounterpartyID { get; }
+        int OwnerID { get; }
+        int CounterpartyID { get; }
         Meter Regard { get; }
         Meter Trust { get; }
         RegardLevel EffectiveRegard { get; }
@@ -56,8 +56,8 @@ namespace Supremacy.Diplomacy
     [Serializable]      
     public class DiplomacyData : IDiplomacyData, INotifyPropertyChanged, IOwnedDataSerializableAndRecreatable
     {
-        private GameObjectID _ownerId;
-        private GameObjectID _counterpartyId;
+        private int _ownerId;
+        private int _counterpartyId;
         private Meter _regard;
         private Meter _trust;
         private int _contactTurn;
@@ -69,7 +69,7 @@ namespace Supremacy.Diplomacy
             get { return GameContext.Current.Tables.DiplomacyTables; }
         }
 
-        public DiplomacyData(GameObjectID ownerId, GameObjectID counterpartyId)
+        public DiplomacyData(int ownerId, int counterpartyId)
         {
             _ownerId = ownerId;
             _counterpartyId = counterpartyId;
@@ -90,12 +90,12 @@ namespace Supremacy.Diplomacy
             OnPropertyChanged("EffectiveRegard");
         }
 
-        public GameObjectID OwnerID
+        public int OwnerID
         {
             get { return _ownerId; }
         }
 
-        public GameObjectID CounterpartyID
+        public int CounterpartyID
         {
             get { return _counterpartyId; }
         }

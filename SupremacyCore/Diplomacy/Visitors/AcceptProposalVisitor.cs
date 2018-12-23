@@ -176,7 +176,7 @@ namespace Supremacy.Diplomacy.Visitors
                 member = Proposal.Sender;
             }
 
-            var transferredColonyIds = new List<GameObjectID>();
+            var transferredColonyIds = new List<int>();
 
             foreach (var colony in GameContext.Current.Universe.FindOwned<Colony>(member))
             {

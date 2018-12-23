@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Wintellect.PowerCollections;
+
 
 namespace Supremacy.Universe
 {
@@ -203,7 +203,7 @@ namespace Supremacy.Universe
 
                     GameContext.Current.Universe = new UniverseManager(mapSize);
 
-                    var starPositions = GetStarPositions();
+                    var starPositions = GetStarPositions().ToList();
                     var starNames = GetStarNames();
 
                     starNames.RandomizeInPlace();
@@ -521,7 +521,7 @@ namespace Supremacy.Universe
             GameContext.Current.Universe.Objects.Add(homeSystem.Colony);
         }
 
-        private static bool PlaceEmpireHomeworlds(Collections.CollectionBase<MapLocation> positions,
+        private static bool PlaceEmpireHomeworlds(List<MapLocation> positions,
             IList<string> starNames,
             HomeSystemsDatabase homeSystemDatabase,
             List<Civilization> empireCivs,
@@ -536,19 +536,17 @@ namespace Supremacy.Universe
             {
                 
                 var localIndex = index;
-                int iPosition = Algorithms.FindFirstIndexWhere(
-                        positions,
-                        delegate (MapLocation location)
-                        {
-                        if (mustRespectQuadrants)
-                        {
-                            if (GameContext.Current.Universe.Map.GetQuadrant(location) != empireCivs[localIndex].HomeQuadrant)
-                                return false;
-                        }
-                           
-                        return empireHomeLocations.All(t => MapLocation.GetDistance(location, t) >= minHomeDistance);
-                               
-                        });
+
+                int iPosition = positions.FirstIndexWhere((l) =>
+                {
+                    if (mustRespectQuadrants)
+                    {
+                        if (GameContext.Current.Universe.Map.GetQuadrant(l) != empireCivs[localIndex].HomeQuadrant)
+                            return false;
+                    }
+
+                    return empireHomeLocations.All(t => MapLocation.GetDistance(l, t) >= minHomeDistance);
+                });
 
                 if (iPosition >= 0)
                 {
@@ -609,7 +607,7 @@ namespace Supremacy.Universe
             return true;
         }
 
-        private static void PlaceMinorRaceHomeworlds(Collections.CollectionBase<MapLocation> positions,
+        private static void PlaceMinorRaceHomeworlds(List<MapLocation> positions,
             IList<string> starNames,
             HomeSystemsDatabase homeSystemDatabase,
             List<Civilization> minorRaceCivs,
@@ -712,6 +710,7 @@ namespace Supremacy.Universe
 
                 minorRaces[quadrantWithLessMinors].RemoveAt(0);
 
+
                 //if (GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon)
                 //{
                     int iPosition = Algorithms.FindFirstIndexWhere(
@@ -733,6 +732,9 @@ namespace Supremacy.Universe
 
                 //    int iPosition = Algorithms.FindFirstIndexWhere(positions, location);
                 //}
+
+                // old    int iPosition = positions.FirstIndexWhere(location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
+
 
                 if (iPosition >= 0)
                 {
@@ -778,7 +780,7 @@ namespace Supremacy.Universe
             }
         }
 
-        private static bool PlaceHomeworlds(Collections.CollectionBase<MapLocation> positions,
+        private static bool PlaceHomeworlds(List<MapLocation> positions,
             IList<string> starNames,
             out Collections.CollectionBase<MapLocation> homeLocations)
         {

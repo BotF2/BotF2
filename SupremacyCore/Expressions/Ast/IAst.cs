@@ -1,4 +1,0 @@
-namespace Supremacy.Expressions.Ast
-{
-    
-}

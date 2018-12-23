@@ -141,7 +141,7 @@ namespace Supremacy.Game
             }
             else
             {
-                GameObjectID? newFleetId;
+                int? newFleetId;
                 try
                 {
                     newFleetId = GameObjectIDService.GetNewObjectID();

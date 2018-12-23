@@ -15,7 +15,7 @@
              xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
-             TextBlock.Foreground="{StaticResource LCARS_BeigeTextBrush}"
+             TextBlock.Foreground="{StaticResource LCARS_ParagraphBrush}"
              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
              TextBlock.FontSize="14pt">
     <Grid IsEnabled="{Binding Path=IsFrozen, Converter={StaticResource IsFalseValueConverter}}">
@@ -49,16 +49,16 @@
         <TextBlock Grid.Column="0"
             Grid.ColumnSpan="2"
             Grid.Row="0"
-            Background="{StaticResource LCARS_BlueGradient_Bottom_Top}"  
-            Foreground="Black"
-            FontSize="16pt"
+            Background="{StaticResource LCARS_PurpleGradient_Right_Left}"  
+            
+            FontSize="18pt"
             MinHeight="24"
-            Width="226"
+            Width="248"
             TextAlignment="Center"
             VerticalAlignment="Bottom"
             HorizontalAlignment="Center"
             Text="{s:StringResource GAME_OPTIONS}"
-            Margin="0,0,20,5" />
+            Margin="10,0,0,4" Height="26" />
 
 
         <!--Text infront of DropDowns = ComboBoxes-->
@@ -76,17 +76,17 @@
 
         <TextBlock Grid.Column="1"
             Grid.Row="1"
-            Margin="7,0,0,5"
+            Margin="7,0,0,6"
             Text="{s:StringResource PLAYABLE_HEADER}"
             Background="DarkBlue"
             TextAlignment="Center"
             FontSize="14pt"                  
             Height="24"
-            Width="95"
+            Width="122"
             HorizontalAlignment="Left"
             VerticalAlignment="Center" />
 
-        
+
         <TextBlock 
             Grid.Column="0"
             Grid.Row="2" 
@@ -102,7 +102,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center" />
 
-        
+
         <TextBlock Grid.Column="0"
             Grid.Row="3"
             Margin="5,6,0,0"
@@ -129,7 +129,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center" />
 
-        
+
         <TextBlock Grid.Column="0"
             Grid.Row="5"
             Margin="5,6,0,0"
@@ -142,7 +142,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center" />
 
-        
+
         <TextBlock Grid.Column="0"
             Grid.Row="6"
             Margin="5,6,0,0"
@@ -156,7 +156,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center" />
 
-        
+
         <TextBlock Grid.Column="0"
             Grid.Row="7"
             Margin="5,6,0,0"
@@ -169,7 +169,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center" />
 
-        
+
         <TextBlock Grid.Column="0"
             Grid.Row="8"
             Margin="5,6,0,0"
@@ -211,7 +211,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="10"
             Margin="5,7,0,0"
-            Foreground="Black"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
             Text="{s:StringResource GALAXY_SHAPE}"
             Background="DodgerBlue"
 
@@ -224,7 +224,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="11"
             Margin="5,7,0,0"
-            Foreground="Black"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
             Text="{s:StringResource GALAXY_SIZE}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -236,7 +236,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="12"
             Margin="5,7,0,0"
-            Foreground="Black"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
             Text="{s:StringResource PLANET_DENSITY}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -248,7 +248,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="13"
             Margin="5,7,0,0"
-            Foreground="Black"  
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
             Text="{s:StringResource STAR_DENSITY}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -260,7 +260,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="14"
             Margin="5,7,0,0"
-            Foreground="Black" 
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
             Text="{s:StringResource MINOR_RACES}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -272,6 +272,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="15"
             Margin="5,7,0,0"
+
             Foreground="Black"
             Text="{s:StringResource GALAXY_CANON}"
             Background="DodgerBlue"
@@ -285,6 +286,7 @@
             Grid.Row="16"
             Margin="5,7,0,0"
             Foreground="Black"
+
             Text="{s:StringResource TECH_LEVEL}"
             Background="DodgerBlue"
             TextAlignment="Right"

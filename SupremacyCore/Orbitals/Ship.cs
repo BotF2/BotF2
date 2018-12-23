@@ -294,7 +294,7 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    _fleetId = GameObjectID.InvalidID;
+                    _fleetId = -1;
                     OnPropertyChanged("Fleet");
                 }
                 if ((oldFleet != null) && (value != oldFleet))

@@ -77,7 +77,7 @@ namespace Supremacy.Universe
         /// </summary>
         /// <value>The owner ID.</value>
         [Indexable]
-        public virtual GameObjectID OwnerID
+        public virtual int OwnerID
         {
             get { return _ownerId; }
             set

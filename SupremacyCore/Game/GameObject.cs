@@ -21,7 +21,7 @@ namespace Supremacy.Game
 {
     public interface IGameObject
     {
-        GameObjectID ObjectID { get; }
+        int ObjectID { get; }
     }
 
     [Serializable]
@@ -32,7 +32,7 @@ namespace Supremacy.Game
                                        INotifyPropertyChanged
     // ReSharper restore RedundantExtendsListEntry
     {
-        private GameObjectID _objectId;
+        private int _objectId;
         
         [field:NonSerialized]
         public event EventHandler ObjectIDChanged;
@@ -45,7 +45,7 @@ namespace Supremacy.Game
 
         protected GameObject(int objectId)
         {
-            if (objectId <= GameObjectID.InvalidID)
+            if (objectId <= -1)
                 throw new ArgumentException("Invalid object ID.");
             _objectId = objectId;
         }
@@ -65,7 +65,7 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>Object ID</value>
         [Indexable]
-        public GameObjectID ObjectID
+        public int ObjectID
         {
             get { return _objectId; }
             protected internal set

@@ -7,21 +7,18 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
-using System.Xml.Schema;
-
 using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Utility;
-
-using Wintellect.PowerCollections;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace Supremacy.Tech
 {
@@ -228,9 +225,7 @@ namespace Supremacy.Tech
 
         private static int GetMaxTechLevel(IBuildable design)
         {
-            return Algorithms.Maximum(
-                design.TechRequirements,
-                (a, b) => a.Value.CompareTo(b.Value)).Value; 
+            return design.TechRequirements.Max(r => r.Value);
         }
 
         /// <summary>

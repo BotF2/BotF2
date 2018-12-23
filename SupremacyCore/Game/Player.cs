@@ -39,7 +39,7 @@ namespace Supremacy.Game
         /// Gets or sets the selected empire ID.
         /// </summary>
         /// <value>The selected empire ID.</value>
-        GameObjectID EmpireID { get; }
+        int EmpireID { get; }
 
         /// <summary>
         /// Gets or sets the selected empire.
@@ -179,7 +179,7 @@ namespace Supremacy.Game
         /// Gets or sets the selected empire ID.
         /// </summary>
         /// <value>The selected empire ID.</value>
-        public GameObjectID EmpireID
+        public int EmpireID
         {
             get { return _empireId; }
             set { _empireId = value; }
@@ -290,7 +290,7 @@ namespace Supremacy.Game
 
         #region Implementation of ICivIdentity
 
-        GameObjectID ICivIdentity.CivID
+        int ICivIdentity.CivID
         {
             get { return _empireId; }
         }
