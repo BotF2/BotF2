@@ -119,18 +119,51 @@ namespace Supremacy.Game
         {
             if (savedGameHeader == null)
                 throw new ArgumentNullException("savedGameHeader");
-            GameLog.Core.General.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);
 
-           
+            GameLog.Core.General.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);  // GameLog always ... Core.General
+
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;FileName;{0}", savedGameHeader.FileName);
             GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;LocalPlayerEmpireID;{0}", savedGameHeader.LocalPlayerEmpireID);
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;LocalPlayerName;{0}", savedGameHeader.LocalPlayerName  );
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;EmpireIDs;{0}", savedGameHeader.EmpireIDs  );
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", savedGameHeader.EmpireNames  );
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options;{0}", savedGameHeader.Options  );
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;FileName;{0}", savedGameHeader.FileName  );
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;SlotClaims;{0}", savedGameHeader.SlotClaims  );
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;SlotStatus;{0}", savedGameHeader.SlotStatus  );
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;IsMultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad  );
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;LocalPlayerName;{0}", savedGameHeader.LocalPlayerName);
+            foreach (var empire in savedGameHeader.EmpireIDs)
+            {
+                GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", empire);
+            }
+            foreach (var empireName in savedGameHeader.EmpireNames)
+            {
+                GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", empireName);
+            }
+
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - GalaxySize;{0}", savedGameHeader.Options.GalaxySize);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - GalaxyShape;{0}", savedGameHeader.Options.GalaxyShape);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - StarDensity;{0}", savedGameHeader.Options.StarDensity);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - PlanetDensity;{0}", savedGameHeader.Options.PlanetDensity);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - StartingTechLevel (once);{0}", savedGameHeader.Options.StartingTechLevel);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - MinorRaceFrequency;{0}", savedGameHeader.Options.MinorRaceFrequency);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - FederationPlayable;{0}", savedGameHeader.Options.FederationPlayable);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - RomulanPlayable;{0}", savedGameHeader.Options.RomulanPlayable);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - KlingonPlayable;{0}", savedGameHeader.Options.KlingonPlayable);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - CardassianPlayable;{0}", savedGameHeader.Options.CardassianPlayable);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - DominionPlayable;{0}", savedGameHeader.Options.DominionPlayable);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - BorgPlayable;{0}", savedGameHeader.Options.BorgPlayable);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - TerranEmpirePlayable;{0}", savedGameHeader.Options.TerranEmpirePlayable);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - UseHomeQuadrants;{0}", savedGameHeader.Options.UseHomeQuadrants);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - TurnTimer;{0}", savedGameHeader.Options.TurnTimer);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - CombatTimer;{0}", savedGameHeader.Options.CombatTimer);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - AIMode    ;{0}", savedGameHeader.Options.AIMode);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - AITakeover;{0}", savedGameHeader.Options.AITakeover);
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Options - ModID     ;{0}", savedGameHeader.Options.ModID);
+
+            foreach (var slotClaim in savedGameHeader.SlotClaims)
+            {
+                GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;SlotClaims;{0}", slotClaim);
+            }
+            foreach (var slotStatus in savedGameHeader.SlotStatus)
+            {
+                GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;SlotClaims;{0}", slotStatus);
+            }
+
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: savedGameHeader;Single or MultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad  );
                 
 
             return new GameInitData

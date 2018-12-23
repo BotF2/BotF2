@@ -618,7 +618,7 @@ namespace Supremacy.Universe
 
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
-                GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: item=Colony;{0};{1};{2};{3};", colony.Location, colony.Owner, colony.Name, colony.Population);
+                // working   GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: item=Colony;{0};{1};{2};{3};", colony.Location, colony.Owner, colony.Name, colony.Population);
 
                 foreach (var building in buildingLocationLookup[colony.Location])
                     colony.BuildingsInternal.Add(building);
