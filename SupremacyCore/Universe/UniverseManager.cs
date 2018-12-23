@@ -609,6 +609,7 @@ namespace Supremacy.Universe
             var systemLocationLookup = _objects.OfType<StarSystem>().ToLookup(o => o.Location);
             var buildingLocationLookup = _objects.OfType<Building>().ToLookup(o => o.Location);
 
+            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: item=Colony;Location;Owner;Name;Population");
             foreach (var colony in colonies)
             {
                 var system = systemLocationLookup[colony.Location].FirstOrDefault();
@@ -617,6 +618,7 @@ namespace Supremacy.Universe
 
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
+                // working   GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: item=Colony;{0};{1};{2};{3};", colony.Location, colony.Owner, colony.Name, colony.Population);
 
                 foreach (var building in buildingLocationLookup[colony.Location])
                     colony.BuildingsInternal.Add(building);

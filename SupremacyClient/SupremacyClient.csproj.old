@@ -260,9 +260,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OptionsPages\TracesOptionsPage.xaml.cs">
-      <DependentUpon>TracesOptionsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OptionsPages\GeneralOptionsPage.xaml.cs">
       <DependentUpon>GeneralOptionsPage.xaml</DependentUpon>
     </Compile>
@@ -384,10 +381,6 @@
     <Page Include="MultiplayerSetupScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="OptionsPages\TracesOptionsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

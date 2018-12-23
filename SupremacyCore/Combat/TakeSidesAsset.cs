@@ -45,7 +45,7 @@ namespace Supremacy.Combat
                         if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner))
                         {
                             OppositionFleets.Add(fleetsAtLocation[j]);
-                            OppositionFleets.Distinct();                            
+                            OppositionFleets.Distinct();
                         }
 
                         MaxOppositionScanStrengh = 0;

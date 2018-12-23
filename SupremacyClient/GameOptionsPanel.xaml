@@ -24,6 +24,7 @@
             <ColumnDefinition Width="129"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+           
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
@@ -34,6 +35,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="80"/>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -270,7 +272,21 @@
         <TextBlock Grid.Column="0"
             Grid.Row="15"
             Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
+
+            Foreground="Black"
+            Text="{s:StringResource GALAXY_CANON}"
+            Background="DodgerBlue"
+            TextAlignment="Right"
+                FontSize="14pt"                  
+            Height="24"
+            Width="119"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="0"
+            Grid.Row="16"
+            Margin="5,7,0,0"
+            Foreground="Black"
+
             Text="{s:StringResource TECH_LEVEL}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -353,7 +369,6 @@
 
 
         <!--Row 8 is GalaxyImage (Preview Image)"-->
-
         <ComboBox x:Name="lstGalaxyShape"
               Grid.Column="1"
               Grid.Row="10"
@@ -394,9 +409,17 @@
               IsEditable="False"
               IsReadOnly="True"
               VerticalAlignment="Center" />
-        <ComboBox x:Name="lstTechLevel"
+        <ComboBox x:Name="lstGalaxyCanon"
               Grid.Column="1"
               Grid.Row="15"
+              SelectedItem="{Binding Path=GalaxyCanon, Mode=TwoWay}"
+              Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center"/>
+        <ComboBox x:Name="lstTechLevel"
+              Grid.Column="1"
+              Grid.Row="16"
               SelectedItem="{Binding Path=StartingTechLevel, Mode=TwoWay}"
               Margin="7,7,0,0"
               IsEditable="False"

@@ -395,6 +395,265 @@ namespace Supremacy.Client
         }
         #endregion
 
+        #region TracesClearAll Property
+        public static readonly DependencyProperty TracesClearAllProperty = DependencyProperty.Register(
+            "TracesClearAll",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesClearAll
+        {
+            get { return (bool)GetValue(TracesGeneralProperty); }
+            set
+            {
+                SetValue(TracesClearAllProperty, value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug(" ");
+            }
+        }
+        #endregion
+
+        #region TracesAI Property
+        public static readonly DependencyProperty TracesAIProperty = DependencyProperty.Register(
+            "TracesAI",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesAI
+        {
+            get { return (bool)GetValue(TracesAIProperty); }
+            set
+            {
+                SetValue(TracesAIProperty, value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("TracesAI");
+            }
+        }
+
+        #endregion
+
+        #region TracesAudio Property
+        public static readonly DependencyProperty TracesAudioProperty = DependencyProperty.Register(
+            "TracesAudio",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesAudio
+        {
+            get { return (bool)GetValue(TracesAudioProperty); }
+            set { SetValue(TracesAudioProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesCombat Property
+        public static readonly DependencyProperty TracesCombatProperty = DependencyProperty.Register(
+            "TracesCombat",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesCombat
+        {
+            get { return (bool)GetValue(TracesCombatProperty); }
+            set { SetValue(TracesCombatProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesDiplomacy Property
+        public static readonly DependencyProperty TracesDiplomacyProperty = DependencyProperty.Register(
+            "TracesDiplomacy",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesDiplomacy
+        {
+            get { return (bool)GetValue(TracesDiplomacyProperty); }
+            set { SetValue(TracesDiplomacyProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesEvents Property
+        public static readonly DependencyProperty TracesEventsProperty = DependencyProperty.Register(
+            "TracesEvents",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesEvents
+        {
+            get { return (bool)GetValue(TracesEventsProperty); }
+            set { SetValue(TracesEventsProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesIntel Property
+        public static readonly DependencyProperty TracesIntelProperty = DependencyProperty.Register(
+            "TracesIntel",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesIntel
+        {
+            get { return (bool)GetValue(TracesIntelProperty); }
+            set { SetValue(TracesIntelProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesGalaxyGenerator Property
+        public static readonly DependencyProperty TracesGalaxyGeneratorProperty = DependencyProperty.Register(
+            "TracesGalaxyGenerator",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesGalaxyGenerator
+        {
+            get { return (bool)GetValue(TracesGalaxyGeneratorProperty); }
+            set { SetValue(TracesGalaxyGeneratorProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesGameData Property
+        public static readonly DependencyProperty TracesGameDataProperty = DependencyProperty.Register(
+            "TracesGameData",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesGameData
+        {
+            get { return (bool)GetValue(TracesGameDataProperty); }
+            set { SetValue(TracesGameDataProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesGeneral Property
+        public static readonly DependencyProperty TracesGeneralProperty = DependencyProperty.Register(
+            "TracesGeneral",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesGeneral
+        {
+            get { return (bool)GetValue(TracesGeneralProperty); }
+            set
+            {
+                SetValue(TracesGeneralProperty, value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("TracesGeneral");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesProduction Property
+        public static readonly DependencyProperty TracesProductionProperty = DependencyProperty.Register(
+            "TracesProduction",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesProduction
+        {
+            get { return (bool)GetValue(TracesProductionProperty); }
+            set { SetValue(TracesProductionProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesShipProduction Property
+        public static readonly DependencyProperty TracesShipProductionProperty = DependencyProperty.Register(
+            "TracesShipProduction",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesShipProduction
+        {
+            get { return (bool)GetValue(TracesShipProductionProperty); }
+            set { SetValue(TracesShipProductionProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+
         #region ReportErrors Property
         public static readonly DependencyProperty ReportErrorsProperty = DependencyProperty.Register(
             "ReportErrors",

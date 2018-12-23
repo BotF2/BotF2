@@ -56,7 +56,7 @@ namespace Supremacy.Combat
             var sector = GameContext.Current.Universe.Map[location];
             var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
             TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
-            var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;        
+            var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
             var oppositionFleets = ExposedAssets.OppositionFleets;
            
             if ((oppositionFleets.Count == 0) && (sector.Station == null))
@@ -223,7 +223,7 @@ namespace Supremacy.Combat
                 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.Combat.DebugFormat("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
 
@@ -235,7 +235,7 @@ namespace Supremacy.Combat
                 orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail)  // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.Combat.DebugFormat("{0} {1} is ordered to {2}", ship.Source.ObjectID, ship.Source.Name, order);
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
 

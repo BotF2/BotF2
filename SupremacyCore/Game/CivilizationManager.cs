@@ -40,6 +40,7 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
+        private readonly UniverseObjectList<Colony> _infiltratedColonies;
 
         private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
@@ -57,6 +58,7 @@ namespace Supremacy.Game
             _treasury = new Treasury(5000);
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
+            _infiltratedColonies = new UniverseObjectList<Colony>();
 
             _globalBonuses = new List<Bonus>();
             _mapData = new CivilizationMapData(
@@ -180,6 +182,16 @@ namespace Supremacy.Game
         public UniverseObjectList<Colony> Colonies
         {
             get { return _colonies; }
+        }
+
+        /// <summary>
+        /// Gets a list of the civilization's infiltrated colonies.
+        /// </summary>
+        /// <value>The infiltrated colonies.</value>
+        [NotNull]
+        public UniverseObjectList<Colony> InfiltratedColonies
+        {
+            get { return _infiltratedColonies; }
         }
 
         public Colony SeatOfGovernment
@@ -371,6 +383,7 @@ namespace Supremacy.Game
         public void Compact()
         {
             _colonies.TrimExcess();
+            _infiltratedColonies.TrimExcess();
             _globalBonuses.TrimExcess();
             _sitRepEntries.TrimExcess();
         }

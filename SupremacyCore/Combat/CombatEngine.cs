@@ -23,11 +23,12 @@ namespace Supremacy.Combat
     public abstract class CombatEngine
     {
         public readonly object SyncLock;
-        protected const double BaseChanceToRetreat = 0.75;
+        protected const double BaseChanceToRetreat = 0.50;
         protected const double BaseChanceToAssimilate = 0.05;
         protected const double BaseChanceToRushFormation = 0.50;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
+        protected List<Tuple<CombatUnit, CombatWeapon[]>> _combatShipsTemp; // Update xyz declare temp array done
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         private readonly int _combatId;
         protected int _roundNumber;
@@ -367,14 +368,14 @@ namespace Supremacy.Combat
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
-        protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, bool oppositonIsHailing, bool oppsoitionIsRetreating, int weaponRatio)
+        protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, bool oppositionIsEngage, bool oppositonIsHailing, bool oppsoitionIsRetreating, bool oppsoitionIsRaidTransports, int weaponRatio)
         {
             int chanceToRetreat = RandomHelper.Random(100);
             int retreatChanceModifier = 0;
 
             GameLog.Core.Combat.DebugFormat("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
 
-            if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
+            if (oppositionIsInFormation ||oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
             {
                 GameLog.Core.Combat.DebugFormat("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
                 return true;
@@ -382,29 +383,39 @@ namespace Supremacy.Combat
 
             if (weaponRatio > 6) // if you outgun the retreater they are less likely to get away
             {
-                retreatChanceModifier = -30;
+                retreatChanceModifier = -10;
                 GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -30 modifier", weaponRatio);
             }
-            else if (weaponRatio > 3)
+            //else if (weaponRatio > 3)
+            //{
+            //    retreatChanceModifier = -20;
+            //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -20 modifier", weaponRatio);
+            //}
+            //else if (weaponRatio > 1)
+            //{
+            //    retreatChanceModifier = -10;
+            //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -10 modifier", weaponRatio);
+            //}
+            //else
+            //{
+            //    retreatChanceModifier = 0;
+            //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. 0 modifier", weaponRatio);
+            //}
+             if (oppositionIsEngage)
             {
-                retreatChanceModifier = -20;
-                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -20 modifier", weaponRatio);
-            }
-            else if (weaponRatio > 1)
-            {
-                retreatChanceModifier = -10;
-                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -10 modifier", weaponRatio);
-            }
-            else
-            {
-                retreatChanceModifier = 0;
-                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. 0 modifier", weaponRatio);
+                retreatChanceModifier += 15;
+                GameLog.Core.Combat.DebugFormat("Opposition is Engage. +15 modifier (now {0})", retreatChanceModifier);
             }
 
-            if (oppositionIsRushing) // if you rush the retreater they are less likely to get away
+            if (oppositionIsRushing || oppsoitionIsRaidTransports) // if you rush the retreater they are less likely to get away
             {
-                retreatChanceModifier += -20;
-                GameLog.Core.Combat.DebugFormat("Opposition is rushing. -20 modifier (now {0})", retreatChanceModifier);
+                retreatChanceModifier += -10;
+                GameLog.Core.Combat.DebugFormat("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
+            }
+            if (_roundNumber > 2)
+            {
+                retreatChanceModifier += 25;
+                GameLog.Core.Combat.DebugFormat("If round is 3 or more. +25 to modifier (now {0})", retreatChanceModifier);
             }
 
             if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)

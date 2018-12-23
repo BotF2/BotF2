@@ -40,6 +40,7 @@ namespace Supremacy.Client
             lstPlanetDensity.ItemsSource = EnumHelper.GetValues<PlanetDensity>();
             lstStarDensity.ItemsSource = EnumHelper.GetValues<StarDensity>();
             lstMinorRaces.ItemsSource = EnumHelper.GetValues<MinorRaceFrequency>();
+            lstGalaxyCanon.ItemsSource = EnumHelper.GetValues<GalaxyCanon>();
             lstTechLevel.ItemsSource = EnumHelper.GetValues<StartingTechLevel>();
             //lstIntroPlayable.ItemsSource = EnumHelper.GetValues<IntroPlayable>();
             lstFederationPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
@@ -56,6 +57,7 @@ namespace Supremacy.Client
             lstPlanetDensity.SelectionChanged += (sender, args) => OnOptionsChanged();
             lstStarDensity.SelectionChanged += (sender, args) => OnOptionsChanged();
             lstMinorRaces.SelectionChanged += (sender, args) => OnOptionsChanged();
+            lstGalaxyCanon.SelectionChanged += (sender, args) => OnOptionsChanged();
             lstTechLevel.SelectionChanged += (sender, args) => OnOptionsChanged();
             //lstIntroPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstFederationPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };

@@ -32,13 +32,13 @@ namespace Supremacy.Combat
         private int _camouflagedStrength = 0;
         private int _scanStrength;
 
-        protected CombatUnit(System.Collections.Generic.IEnumerable<Ship> ship) {}
+        protected CombatUnit(System.Collections.Generic.IEnumerable<Ship> ship) { }
 
         public CombatUnit(Orbital source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            
+
             var ship = source as Ship;
             if (ship != null)
             {
@@ -70,9 +70,9 @@ namespace Supremacy.Combat
         public string Description
         {
             get
-            { 
+            {
                 //GameLog.Client.GameData.DebugFormat("CombatUnit.cs: : Description.GetString");
-            
+
                 if (Source is Station)
                 {
                     return ResourceManager.GetString("COMBAT_DESCRIPTION_STATION");
@@ -105,7 +105,16 @@ namespace Supremacy.Combat
 
         public Percentage HullIntegrity
         {
-            get { return ((float)HullStrength / Source.OrbitalDesign.HullStrength); }
+
+            get
+            {
+                if (HullStrength == 0)
+                {
+                    return 0;
+                }
+                else
+                return ((float)HullStrength / Source.OrbitalDesign.HullStrength);
+            }
         }
 
         public int ShieldStrength
@@ -115,7 +124,17 @@ namespace Supremacy.Combat
 
         public Percentage ShieldIntegrity
         {
-            get { return ((float)ShieldStrength / Source.OrbitalDesign.ShieldStrength); }
+            get
+            {
+                if (ShieldStrength == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    { return ((float)ShieldStrength / Source.OrbitalDesign.ShieldStrength); }
+                }
+            }
         }
 
         public bool IsCloaked

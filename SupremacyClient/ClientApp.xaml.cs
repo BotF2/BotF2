@@ -87,7 +87,8 @@ namespace Supremacy.Client
         {
             get
             {
-                GameLog.Client.General.InfoFormat("Current Version = {0}", Current.Version);
+                string now = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute;
+                GameLog.Client.General.InfoFormat("Current Version = {0}, builded at {1}" , Current.Version, now);
                 return Current.Version;
             }
         }
