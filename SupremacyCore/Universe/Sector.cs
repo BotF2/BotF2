@@ -56,8 +56,8 @@ namespace Supremacy.Universe
         [NonSerialized]
         private Lazy<Station> _station;
 
-        [NonSerialized]
-        private Lazy<TradeRoute> _tradeRouteIndicator;
+        //[NonSerialized]
+        //private Lazy<TradeRoute> _tradeRouteIndicator;
 
         /// <summary>
         /// Gets the map location of this <see cref="Sector"/>.
