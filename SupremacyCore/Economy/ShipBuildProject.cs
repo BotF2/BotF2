@@ -151,7 +151,7 @@ namespace Supremacy.Economy
     {
         private int _upgradeTargetId;
 
-        private bool _shipUpgradeProjectTracing = true;
+        //private bool _shipUpgradeProjectTracing = true;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="ShipUpgradeProject"/> is an upgrade project.

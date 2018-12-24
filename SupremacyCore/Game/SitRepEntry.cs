@@ -213,8 +213,8 @@ namespace Supremacy.Game
         private readonly Ship _scienceShip;
         private readonly int _researchGained;
         private readonly StarType _starType;
-        private readonly string _shipName;
-        private readonly Sector _sector;
+        //private readonly string _shipName;
+        //private readonly Sector _sector;
 
         public Ship ScienceShip
         {
