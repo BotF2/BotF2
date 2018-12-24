@@ -710,12 +710,15 @@ namespace Supremacy.Universe
 
                 minorRaces[quadrantWithLessMinors].RemoveAt(0);
 
+                // old    
+                int iPosition = positions.FirstIndexWhere(location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
+
 
                 //if (GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon)
                 //{
-                    int iPosition = Algorithms.FindFirstIndexWhere(
-                        positions,
-                        location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
+                    //int iPosition = Algorithms.FindFirstIndexWhere(
+                    //    positions,
+                    //    location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
                 //}
                 //else  // find random quadrants for minors
                 //{
@@ -733,7 +736,7 @@ namespace Supremacy.Universe
                 //    int iPosition = Algorithms.FindFirstIndexWhere(positions, location);
                 //}
 
-                // old    int iPosition = positions.FirstIndexWhere(location => GameContext.Current.Universe.Map.GetQuadrant(location) == minor.HomeQuadrant);
+
 
 
                 if (iPosition >= 0)
