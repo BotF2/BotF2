@@ -29,7 +29,7 @@ namespace Supremacy.Universe
         public const double MinDistanceBetweenStars = 1.25;
         public const int MinHomeworldDistanceFromInterference = 2;
 
-        private static readonly ILog Log;
+        //private static readonly ILog Log;
 
         private static TableMap UniverseTables;
 
@@ -597,7 +597,7 @@ namespace Supremacy.Universe
                 }
                 else
                 {
-                    Log.WarnFormat("Failed to find a suitable home sector for civilization {0}.  Galaxy generation will start over.",
+                    GameLog.Core.GalaxyGenerator.WarnFormat("Failed to find a suitable home sector for civilization {0}.  Galaxy generation will start over.",
                         empireCivs[index].ShortName);
                     empireCivs.RemoveAt(index--);
                     return false;
@@ -702,7 +702,7 @@ namespace Supremacy.Universe
 
                 if (minorRaces[quadrantWithLessMinors].Count == 0)
                 {
-                    Log.WarnFormat("No more minor race definitions available (create more).  Galaxy generation will stop.");
+                    GameLog.Core.GalaxyGenerator.WarnFormat("No more minor race definitions available (create more).  Galaxy generation will stop.");
                     return;
                 }
 
@@ -775,7 +775,7 @@ namespace Supremacy.Universe
                 }
                 else
                 {
-                    Log.WarnFormat(
+                    GameLog.Core.GalaxyGenerator.WarnFormat(
                         "Failed to find a suitable home sector for civilization {0}.  Galaxy generation will stop.",
                         minor.ShortName);
                     return;

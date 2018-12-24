@@ -250,7 +250,7 @@ namespace Supremacy.Orbitals
                 _crewSize = Number.ParseUInt16(element["Crew"].InnerText.Trim());
                 //BuildResourceCosts[ResourceType.Personnel] += _crewSize;
                 if (_crewSize != 0)
-                    if (_crewSize < 1 || _crewSize > 79999)   // atm all values between x and x (or 0 for not having this ability)
+                    if (_crewSize < 1 || _crewSize > 65000)   // atm all values between x and x (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _crewSize should not be {1}", Name, _crewSize);
             }
             if (element["ScienceAbility"] != null)
@@ -265,14 +265,14 @@ namespace Supremacy.Orbitals
             {
                 _scanPower = Number.ParseByte(element["ScanPower"].InnerText.Trim());
                 if (_scanPower != 0)
-                    if (_scanPower < 1 || _scanPower > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                    if (_scanPower < 1 || _scanPower > 255)   // atm all values between x and x (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _scanPower should not be {1}", Name, _scanPower);
             }
             if (element["SensorRange"] != null)
             {
                 _sensorRange = Number.ParseByte(element["SensorRange"].InnerText.Trim());
                 if (_sensorRange != 0)
-                    if (_sensorRange < 1 || _sensorRange > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                    if (_sensorRange < 1 || _sensorRange > 255)   // atm all values between x and x (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _sensorRange should not be {1}", Name, _sensorRange);
             }
             if (element["HullStrength"] != null)
@@ -286,7 +286,7 @@ namespace Supremacy.Orbitals
             {
                 _shieldStrength = Number.ParseUInt16(element["ShieldStrength"].InnerText.Trim());
                 if (_shieldStrength != 0)
-                    if (_shieldStrength < 1 || _shieldStrength > 99999)   // atm all values between 1 and 10 (or 0 for not having this ability)
+                    if (_shieldStrength < 1 || _shieldStrength > 65000)   // atm all values between 1 and 10 (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _shieldStrength should not be {1}", Name, _shieldStrength);
             }
             if (element["ShieldRecharge"] != null)
@@ -300,14 +300,14 @@ namespace Supremacy.Orbitals
             {
                 _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
                 if (_cloakStrength != 0)
-                    if (_cloakStrength < 1 || _cloakStrength > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                    if (_cloakStrength < 1 || _cloakStrength > 255)   // atm all values between x and x (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
             }
             if (element["CamouflagedStrength"] != null)
             {
                 _camouflagedStrength = Number.ParseByte(element["CamouflagedStrength"].InnerText.Trim());
                 if (_camouflagedStrength != 0)
-                    if (_camouflagedStrength < 1 || _camouflagedStrength > 9999)   // atm all values between x and x (or 0 for not having this ability)
+                    if (_camouflagedStrength < 1 || _camouflagedStrength > 255)   // atm all values between x and x (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _camouflagedStrength should not be {1}", Name, _camouflagedStrength);
             }
             if (element["BeamType"] != null)

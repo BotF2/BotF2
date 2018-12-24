@@ -1,5 +1,0 @@
-﻿<PersonnelConstants xmlns="http://schemas.startreksupremacy.com/xaml/core"
-                    MaxActiveAgentsPerEmpire="8"
-                    MinTurnsBetweenAgentRecruitment="5"
-                    NaturalSkillsPerAgent="2" />
- 
