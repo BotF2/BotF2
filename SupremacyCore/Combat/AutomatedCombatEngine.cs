@@ -125,88 +125,38 @@ namespace Supremacy.Combat
             }
             foreach (var combatent in _combatShips)
             {
-                //var Assets = GetAssets(combatent.Item1.Owner);
-                //if (combatent.Item1.IsDestroyed)
-                //{
-                //    GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
-
-                //    if (combatent.Item1.Source is Ship)
-                //    {
-                //        if (!Assets.DestroyedShips.Contains(combatent.Item1))
-                //        {
-                //            Assets.DestroyedShips.Add(combatent.Item1);
-                //        }
-                //        if (combatent.Item1.Source.IsCombatant)
-                //        {
-                //            Assets.CombatShips.Remove(combatent.Item1);
-                //        }
-                //        else
-                //        {
-                //            Assets.NonCombatShips.Remove(combatent.Item1);
-                //        }
-
-                //    }
-                //    continue;
-                //}
                 if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
                 {
                     OppositionCombatShips.Add(combatent);
-                    //if (combatent.Item1.IsDestroyed)
-                    //{
-                    //    OppositionCombatShips.Remove(combatent);
-                    //    //_combatShips.Remove(combatent);
-                    //}
                     OppositionCombatShips.Randomize();
                 }
                 else
                 {
                     FriendlyCombatShips.Add(combatent);
-                    //if (combatent.Item1.IsDestroyed)
-                    //{
-                    //    FriendlyCombatShips.Remove(combatent);
-                    //    _combatShips.Remove(combatent);
-                    //}
                     FriendlyCombatShips.Randomize();
                 }
             }
-            //foreach (var combatent in _combatShips) // now earch for destroyed ships
-            //{
-            //    if (combatent.Item1.IsDestroyed)
-            //    {
-            //        GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
-
-            //        if (combatent.Item1.Source is Ship)
-            //        {
-            //            var Assets = GetAssets(combatent.Item1.Owner);
-            //            if (!Assets.DestroyedShips.Contains(combatent.Item1))
-            //            {
-            //                Assets.DestroyedShips.Add(combatent.Item1);
-            //            }
-            //            if (combatent.Item1.Source.IsCombatant)
-            //            {
-            //                Assets.CombatShips.Remove(combatent.Item1);
-            //            }
-            //            else
-            //            {
-            //                Assets.NonCombatShips.Remove(combatent.Item1);
-            //            }
-
-            //        }
-            //        continue;
-            //    }
-            //}
-            if (FriendlyCombatShips.Count - OppositionCombatShips.Count > 0)
+            if (OppositionCombatShips.Count == 0 || FriendlyCombatShips.Count == 0)
             {
-                excessShipsStartingAt = OppositionCombatShips.Count * 2;
-                shipRatio = FriendlyCombatShips.Count() / OppositionCombatShips.Count();
-                wearkerSide = 1;
+                shipRatio = 1;
+                excessShipsStartingAt = 0;
+                wearkerSide = 0;
             }
-
             else
             {
-                excessShipsStartingAt = FriendlyCombatShips.Count * 2;
-                shipRatio = OppositionCombatShips.Count() / FriendlyCombatShips.Count();
-                wearkerSide = 2;
+                if (FriendlyCombatShips.Count - OppositionCombatShips.Count > 0)
+                {
+                    excessShipsStartingAt = OppositionCombatShips.Count * 2;
+                    shipRatio = FriendlyCombatShips.Count() / OppositionCombatShips.Count();
+                    wearkerSide = 1;
+                }
+
+                else
+                {
+                    excessShipsStartingAt = FriendlyCombatShips.Count * 2;
+                    shipRatio = OppositionCombatShips.Count() / FriendlyCombatShips.Count();
+                    wearkerSide = 2;
+                }
             }
             if (FriendlyCombatShips.Count() == OppositionCombatShips.Count())
                 wearkerSide = 0;
