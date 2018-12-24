@@ -563,7 +563,7 @@ namespace Supremacy.Universe
                             {
                                 location = sector.Location;
                                 empireHomeLocations.Add(location);
-                                GameLog.Core.GalaxyGenerator.DebugFormat("Upper left 1/8 of map place for Dominion found at {0}", sector.Location);
+                                //GameLog.Core.GalaxyGenerator.DebugFormat("Upper left 1/8 of map place for Dominion found at {0}", sector.Location);
                             }
                         }
                     }
@@ -578,7 +578,7 @@ namespace Supremacy.Universe
                             {
                                 location = sector.Location;
                                 empireHomeLocations.Add(location);
-                                GameLog.Core.GalaxyGenerator.DebugFormat("Upper left 1/8 of map place for Borg found at {0}", sector.Location);
+                                //GameLog.Core.GalaxyGenerator.DebugFormat("Upper left 1/8 of map place for Borg found at {0}", sector.Location);
                             }
                         }
                     }
@@ -639,7 +639,7 @@ namespace Supremacy.Universe
                     minorRaces[randomQuadrant].Add(civ);                
                     totalMinorRaces++;
                 }
-                GameLog.Core.GalaxyGenerator.DebugFormat("civ = {0}, HomeQuadrant = {1}", civ.Name, civ.HomeQuadrant);   // not finished yet
+                //GameLog.Core.GalaxyGenerator.DebugFormat("civ = {0}, HomeQuadrant = {1}", civ.Name, civ.HomeQuadrant);   // not finished yet
             }
 
             float minorRacePercentage = 0.25f;
