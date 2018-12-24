@@ -1,9 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-  <Geometry x:Key="Geometry:Agents:Recall">
-    F1 M 5.99749,9.99944L 5.99749,13.9994L 14.9987,13.9994L 9.99805,18L 16.999,18L 24,11.9992L 16.999,5.99832L 9.99804,5.99832L 14.9987,9.99888L 5.99749,9.99944 Z
-       M 17.9993,-0.0033474L -0.00321706,-0.0033474L -0.00321706,24L 17.9993,24L 17.9993,18.9993L 15.999,18.9993L 15.999,21.9997L 1.99707,21.9997L 1.99707,1.99693L 15.999,1.99693L 15.999,4.99735L 17.9993,4.99735L 17.9993,-0.0033474 Z
-  </Geometry>
-
-</ResourceDictionary>
