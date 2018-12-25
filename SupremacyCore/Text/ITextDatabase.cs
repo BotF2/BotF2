@@ -22,6 +22,8 @@ using System.Linq;
 
 using Supremacy.Resources;
 using Supremacy.Types;
+using Supremacy.Utility;
+using System.IO;
 
 namespace Supremacy.Text
 {
@@ -86,31 +88,77 @@ namespace Supremacy.Text
                 .Elements("Entries")
                 .Elements("Entry");
 
-            foreach (var entryElement in techObjectEntries)
+            // for Output file
+            var separator = ";";
+            var line = "";
+            StreamWriter streamWriter;
+            var file = "./lib/test.txt";
+            streamWriter = new StreamWriter(file);
+            String strHeader = "";  // first line of output files
+
+            try // avoid hang up if this file is opened by another program 
             {
-                var key = (string)entryElement.Attribute("Key");
-                
-                if (key == null)
-                    continue;
 
-                var entry = new ClientTextDatabaseEntry<ITechObjectTextDatabaseEntry>(key);
-                var localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
+                file = "./Resources/Data/FromTextDatabase_(autoCreated).csv";
+                Console.WriteLine("writing {0}", file);
 
-                foreach (var localizedEntryElement in localizedEntries)
+                if (file == null)
+                    goto WriterCloseFromTextDatabase;
+
+                streamWriter = new StreamWriter(file);
+
+                strHeader =    // Head line
+                    "ATT_Key" + separator +
+                    "CE_Name" + separator +
+                    "CE_Description" + separator +
+                    "CE_Custom1" + separator +
+                    "CE_Custom2";
+
+                streamWriter.WriteLine(strHeader);
+                // End of head line
+
+                foreach (var entryElement in techObjectEntries)
                 {
-                    var localizedEntry = new TechObjectTextDatabaseEntry(
-                        (string)localizedEntryElement.Attribute("Language"),
-                        (string)localizedEntryElement.Element("Name"),
-                        //(string)localizedEntryElement.Element("ClassLevel"),
-                        (string)localizedEntryElement.Element("Description"),
-                        (string)localizedEntryElement.Element("Custom1"),
-                        (string)localizedEntryElement.Element("Custom2"));
-                    
-                    entry.AddInternal(localizedEntry);
+                    var key = (string)entryElement.Attribute("Key");
+
+                    if (key == null)
+                        continue;
+
+                    var entry = new ClientTextDatabaseEntry<ITechObjectTextDatabaseEntry>(key);
+                    var localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
+
+
+                    foreach (var localizedEntryElement in localizedEntries)
+                    {
+                        //App.DoEvents();  // for avoid error after 60 seconds
+                        var localizedEntry = new TechObjectTextDatabaseEntry(
+                            (string)localizedEntryElement.Attribute("Language"),
+                            (string)localizedEntryElement.Element("Name"),
+                            //(string)localizedEntryElement.Element("ClassLevel"),
+                            (string)localizedEntryElement.Element("Description"),
+                            (string)localizedEntryElement.Element("Custom1"),
+                            (string)localizedEntryElement.Element("Custom2"));
+
+                        entry.AddInternal(localizedEntry);
+
+                        //for output file
+                        line =
+                            entry.Key + separator +
+                            (string)localizedEntryElement.Attribute("Language") + separator +
+                            (string)localizedEntryElement.Element("Name") + separator +
+                            (string)localizedEntryElement.Element("Description") + separator +
+                            (string)localizedEntryElement.Element("Custom1") + separator +
+                            (string)localizedEntryElement.Element("Custom2");
+                        //Console.WriteLine("{0}", line);
+                        streamWriter.WriteLine(line);
+
+                    }
                 }
 
-                techObjectTable.AddInternal(entry);
-            }
+                streamWriter.Close();
+                WriterCloseFromTextDatabase:;
+                // End of Autocreated files   
+
 
             var raceTable = database.RaceTextTable;
             var raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
@@ -119,38 +167,43 @@ namespace Supremacy.Text
                 .Where(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType))
                 .FirstOrDefault();
 
-            if (raceTableElement == null)
-                return database;
+            if (raceTableElement == null)    // Races might be done in RaceDatabase.cs
+                    return database;
 
             var raceEntries = raceTableElement
                 .Elements("Entries")
                 .Elements("Entry");
 
-            foreach (var entryElement in raceEntries)
-            {
-                var key = (string)entryElement.Attribute("Key");
-
-                if (key == null)
-                    continue;
-
-                var entry = new ClientTextDatabaseEntry<IRaceTextDatabaseEntry>(key);
-                var localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
-
-                foreach (var localizedEntryElement in localizedEntries)
+                foreach (var entryElement in raceEntries)
                 {
-                    var localizedEntry = new RaceTextDatabaseEntry(
-                        (string)localizedEntryElement.Attribute("Language"),
-                        (string)localizedEntryElement.Element("SingularName"),
-                        (string)localizedEntryElement.Element("PluralName"),
-                        //(string)localizedEntryElement.Element("ClassLevel"),
-                        (string)localizedEntryElement.Element("Description"));
+                    var key = (string)entryElement.Attribute("Key");
 
-                    entry.AddInternal(localizedEntry);
+                    if (key == null)
+                        continue;
+
+                    var entry = new ClientTextDatabaseEntry<IRaceTextDatabaseEntry>(key);
+                    var localizedEntries = entryElement.Elements("LocalizedEntries").Elements("LocalizedEntry");
+
+                    foreach (var localizedEntryElement in localizedEntries)
+                    {
+                        var localizedEntry = new RaceTextDatabaseEntry(
+                            (string)localizedEntryElement.Attribute("Language"),
+                            (string)localizedEntryElement.Element("SingularName"),
+                            (string)localizedEntryElement.Element("PluralName"),
+                            //(string)localizedEntryElement.Element("ClassLevel"),
+                            (string)localizedEntryElement.Element("Description"));
+
+                        entry.AddInternal(localizedEntry);
+                    }
+
+                    raceTable.AddInternal(entry);
                 }
-
-                raceTable.AddInternal(entry);
             }
-
+            catch (Exception e)
+            {
+                GameLog.Core.GameData.Error("Cannot write ... FromTextDatabase_(autoCreated).csv", e);
+            }
+ 
             return database;
         }
 
