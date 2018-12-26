@@ -10,11 +10,9 @@
 using log4net;
 using log4net.Config;
 using log4net.Core;
-using Supremacy.Collections;
 using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
+
 
 namespace Supremacy.Utility
 {
@@ -71,7 +69,9 @@ namespace Supremacy.Utility
             public const string GalaxyGenerator = "GalaxyGenerator";
             public const string GameData = "GameData";
             public const string General = "General";
+            public const string Multiplay = "Multiplay";
             public const string Production = "Production";
+            public const string SaveLoad = "SaveLoad";
             public const string ShipProduction = "ShipProduction";
         }
 
@@ -118,6 +118,16 @@ namespace Supremacy.Utility
         public ILog General
         {
             get { return LogManager.GetLogger(Repositories.General); }
+        }
+
+        public ILog Multiplay
+        {
+            get { return LogManager.GetLogger(Repositories.Multiplay); }
+        }
+
+        public ILog SaveLoad
+        {
+            get { return LogManager.GetLogger(Repositories.SaveLoad); }
         }
 
         public ILog Production
