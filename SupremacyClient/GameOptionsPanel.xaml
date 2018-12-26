@@ -273,7 +273,7 @@
             Grid.Row="15"
             Margin="5,7,0,0"
 
-            Foreground="Black"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
             Text="{s:StringResource GALAXY_CANON}"
             Background="DodgerBlue"
             TextAlignment="Right"
@@ -285,7 +285,7 @@
         <TextBlock Grid.Column="0"
             Grid.Row="16"
             Margin="5,7,0,0"
-            Foreground="Black"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
 
             Text="{s:StringResource TECH_LEVEL}"
             Background="DodgerBlue"

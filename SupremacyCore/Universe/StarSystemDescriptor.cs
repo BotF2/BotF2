@@ -193,7 +193,7 @@ namespace Supremacy.Universe
 
 
                     strLine2 =
-                        civId + separator +
+                        civId + separator +       //  following entries not working yet
                         //db[civId].StartingOutposts + separator +
                         //db[civId].StartingShipyards + separator +
                         //db[civId].StartingBuildings + separator +
