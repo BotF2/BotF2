@@ -824,7 +824,8 @@ namespace Supremacy.UI
                 FlowDirection.LeftToRight,
                 s_textTypeface,
                 StarNameFontSize,
-                Brushes.White);
+                Brushes.White,
+                VisualTreeHelper.GetDpi(visual).PixelsPerDip);
             using (var dc = visual.RenderOpen())
             {
                 const int padding = 3;
@@ -2063,7 +2064,8 @@ namespace Supremacy.UI
                                 FlowDirection.LeftToRight,
                                 s_textTypeface,
                                 16.0,
-                                Brushes.White);
+                                Brushes.White,
+                                VisualTreeHelper.GetDpi(this).PixelsPerDip);
                             var sGeom = sText.BuildGeometry(
                                 new Point(SectorSize * location.X + 5,
                                             SectorSize * (location.Y + 1) - 5
@@ -2091,7 +2093,8 @@ namespace Supremacy.UI
                                 FlowDirection.LeftToRight,
                                 s_textTypeface,
                                 12.0,
-                                Brushes.White);
+                                Brushes.White,
+                                VisualTreeHelper.GetDpi(this).PixelsPerDip);
                             var tGeom = tText.BuildGeometry(
                                 new Point(SectorSize * location.X + 50,
                                             SectorSize * (location.Y + 1) - 40
