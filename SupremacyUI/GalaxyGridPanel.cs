@@ -826,6 +826,7 @@ namespace Supremacy.UI
                 StarNameFontSize,
                 Brushes.White,
                 VisualTreeHelper.GetDpi(visual).PixelsPerDip);
+
             using (var dc = visual.RenderOpen())
             {
                 const int padding = 3;
@@ -902,7 +903,7 @@ namespace Supremacy.UI
                     break;
             }
 
-            var starName = new FormattedText(
+            FormattedText starName = new FormattedText(
                 nameText,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
@@ -916,6 +917,21 @@ namespace Supremacy.UI
                     Trimming = TextTrimming.CharacterEllipsis,
                     LineHeight = StarNameFontSize
                 };
+    //        //var starName = new FormattedText(
+                //nameText,
+                //CultureInfo.CurrentCulture,
+                //FlowDirection.LeftToRight,
+                //s_textTypeface,
+                //StarNameFontSize,
+                //brush,
+                //VisualTreeHelper.GetDpi(brush).PixelsPerDip)    <- this line or "this" doesn't work. Without this line there is a warning (nothing more)
+                //        {
+                //            MaxTextWidth = (SectorSize - 6),
+                //            TextAlignment = TextAlignment.Center,
+                //            MaxLineCount = 2,
+                //            Trimming = TextTrimming.CharacterEllipsis,
+                //            LineHeight = StarNameFontSize
+                //        };
             return starName;
         }
 
