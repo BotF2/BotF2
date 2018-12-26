@@ -43,7 +43,7 @@ namespace Supremacy.Game
             if (options == null)
                 throw new ArgumentNullException("options");
 
-            GameLog.Client.GameData.DebugFormat("GameInitData.cs: CreateSinglePlayerGame: SinglePlayerGameName={0}, localPlayerEmpireID={1}, SinglePlayerName={2}", 
+            GameLog.Client.GameData.DebugFormat("CreateSinglePlayerGame: SP-GameName={0}, SP-Name={2}, localPlayerEmpireID={1}", 
                                                         SinglePlayerGameName, localPlayerEmpireID, SinglePlayerName);
 
             var initData = new GameInitData
