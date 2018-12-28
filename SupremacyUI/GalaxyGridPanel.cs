@@ -825,8 +825,8 @@ namespace Supremacy.UI
                 s_textTypeface,
                 StarNameFontSize,
                 Brushes.White,
-                VisualTreeHelper.GetDpi(visual).PixelsPerDip
-                );
+                VisualTreeHelper.GetDpi(visual).PixelsPerDip);
+
             using (var dc = visual.RenderOpen())
             {
                 const int padding = 3;

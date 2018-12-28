@@ -461,7 +461,9 @@ namespace Supremacy.Client.Controls
                     TextElement.GetFontWeight(element),
                     TextElement.GetFontStretch(element)
                     ),
-                TextElement.GetFontSize(element), TextElement.GetForeground(element), VisualTreeHelper.GetDpi(element).PixelsPerDip);
+                TextElement.GetFontSize(element), TextElement.GetForeground(element),
+                VisualTreeHelper.GetDpi(element).PixelsPerDip);
+
         }
 
         internal static void DrawExternalLabelImage(DrawingContext drawingContext, UIElement element, Rect bounds)

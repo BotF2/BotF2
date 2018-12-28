@@ -92,8 +92,8 @@ namespace Supremacy.Text
             var separator = ";";
             var line = "";
             StreamWriter streamWriter;
-            var file = "./lib/test.txt";
-            streamWriter = new StreamWriter(file);
+            var file = "./lib/test3.txt";
+            //streamWriter = new StreamWriter(file);
             String strHeader = "";  // first line of output files
 
             try // avoid hang up if this file is opened by another program 

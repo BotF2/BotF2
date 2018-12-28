@@ -159,7 +159,8 @@ namespace Supremacy.Xna
                 FlowDirection.LeftToRight,
                 new Typeface(FontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
                 24d * 96d / 72d,
-                Brushes.White)
+                Brushes.White,
+                VisualTreeHelper.GetDpi(this).PixelsPerDip)
                           {
                               MaxTextWidth = targetSize.Width,
                               TextAlignment = TextAlignment.Center

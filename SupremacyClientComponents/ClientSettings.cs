@@ -611,6 +611,48 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesMultiPlay Property
+        public static readonly DependencyProperty TracesMultiPlayProperty = DependencyProperty.Register(
+            "TracesMultiPlay",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesMultiPlay
+        {
+            get { return (bool)GetValue(TracesMultiPlayProperty); }
+            set { SetValue(TracesMultiPlayProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesSaveLoad Property
+        public static readonly DependencyProperty TracesSaveLoadProperty = DependencyProperty.Register(
+            "TracesSaveLoad",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesSaveLoad
+        {
+            get { return (bool)GetValue(TracesSaveLoadProperty); }
+            set { SetValue(TracesSaveLoadProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
         #region TracesProduction Property
         public static readonly DependencyProperty TracesProductionProperty = DependencyProperty.Register(
             "TracesProduction",

@@ -754,7 +754,7 @@ namespace Supremacy.Universe
                             {
                                 chosenLocation = sector.Location;
                                 minorHomeLocations.Add(chosenLocation);
-                                GameLog.Core.GalaxyGenerator.DebugFormat("lower 1/4 of map is place for Bajor at {0}", sector.Location);
+                                //GameLog.Core.GalaxyGenerator.DebugFormat("lower 1/4 of map is place for Bajor at {0}", sector.Location);
                             }
                         }
                     }
@@ -770,7 +770,7 @@ namespace Supremacy.Universe
                     //GameLog.Print("Civilization {0} placed at location {1}", minor.ShortName, chosenLocation);
 
                     // hide for data protection      
-                    GameLog.Client.GalaxyGenerator.DebugFormat("Minor Civilization: file quadrant = {2} location = {3} in game for > {0} placed at {1} ",
+                    GameLog.Client.GalaxyGenerator.DebugFormat("Minor-Quadrant (file/real): {2}/{3} for > {0} placed at {1} ",
                         minor.ShortName, chosenLocation, minor.HomeQuadrant, GameContext.Current.Universe.Map.GetQuadrant(chosenLocation));
                 }
                 else

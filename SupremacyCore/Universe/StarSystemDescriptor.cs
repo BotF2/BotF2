@@ -50,13 +50,222 @@ namespace Supremacy.Universe
 
             xmlRoot = xmlDoc.DocumentElement;
 
-            foreach (XmlElement homeSystemElement in xmlRoot.GetElementsByTagName("HomeSystem"))
+            var separator = ";";
+            //var line = "";
+            StreamWriter streamWriter;
+            StreamWriter streamWriter2;
+            var file = "./lib/test2.txt";
+            var file2 = "./lib/test4.txt";
+            streamWriter = new StreamWriter(file);
+            streamWriter2 = new StreamWriter(file2);
+            streamWriter.Close();
+            streamWriter2.Close();
+            String strHeader = "";  // first line of output files
+            String strLine = "";   // each civ gets one line
+            String strLine2 = "";   // each civ gets one line
+
+
+            try // avoid hang up if this file is opened by another program 
             {
-                string civId = homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant();
-                db[civId] = new StarSystemDescriptor(homeSystemElement["StarSystem"]);
-                //GameLog.Client.GameData.DebugFormat("HomeSystems.xml-civId={0}", civId);
+                // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
+                file = "./Resources/Data/FromHomeSystemsXML_(autoCreated).csv";
+
+                Console.WriteLine("writing {0}", file);
+
+                if (file == null)
+                    goto WriterCloseHomeSystemsXML;
+
+
+                streamWriter = new StreamWriter(file);
+
+                strHeader =    // Head line
+                    "Civilization" + separator +
+                    "StarName" + separator +
+
+                    "StarType" + separator +
+                    "Inhabitants" + separator +
+                    "CE_Computers" + separator +
+                    "CE_Construction" + separator +
+                    "CE_Energy" + separator +
+                    "CE_Propulsion" + separator +
+                    "CE_Weapons" + separator +
+                    "CE_BuildCost" + separator +
+                    "CE_IsUniversallyAvailable" + separator +
+                    "CE_Prerequisites" + separator +
+                    "CE_ObsoletedItems" + separator +
+                    "CE_UpgradeOptions" + separator +
+                    "CE_Restrictions" + separator +
+                    //"CE_EnergyCosts_not_used_anymore?" + separator +
+                    "CE_BuildSlots" + separator +
+                    "CE_BuildSlotMaxOutput" + separator +
+                    "CE_BuildSlotOutputType" + separator +
+                    "CE_BuildSlotOutput" + separator +
+                    "CE_BuildSlotEnergyCost" + separator +
+                    "CE_MaxBuildTechLevel";
+
+                streamWriter.WriteLine(strHeader);
+                // End of head line
+
+
+
+                file2 = "./Resources/Data/FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
+
+                Console.WriteLine("writing {0}", file2);
+
+                if (file2 == null)
+                    goto WriterCloseHomeSystemsXML;
+
+
+                streamWriter2 = new StreamWriter(file2);
+
+                string strHeader2 =    // Head line
+                    "Civilization" + separator +
+                    "StarName" + separator +
+
+                    "StarType" + separator +
+                    "Inhabitants" + separator +
+                    "CE_Computers" + separator +
+                    "CE_Construction" + separator +
+                    //"CE_Energy" + separator +
+                    //"CE_Propulsion" + separator +
+                    //"CE_Weapons" + separator +
+                    //"CE_BuildCost" + separator +
+                    //"CE_IsUniversallyAvailable" + separator +
+                    //"CE_Prerequisites" + separator +
+                    //"CE_ObsoletedItems" + separator +
+                    //"CE_UpgradeOptions" + separator +
+                    //"CE_Restrictions" + separator +
+                    ////"CE_EnergyCosts_not_used_anymore?" + separator +
+                    //"CE_BuildSlots" + separator +
+                    //"CE_BuildSlotMaxOutput" + separator +
+                    //"CE_BuildSlotOutputType" + separator +
+                    //"CE_BuildSlotOutput" + separator +
+                    //"CE_BuildSlotEnergyCost" + separator +
+                    "CE_MaxBuildTechLevel";
+
+                foreach (XmlElement homeSystemElement in xmlRoot.GetElementsByTagName("HomeSystem"))
+                {
+                    string civId = homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant();
+                    db[civId] = new StarSystemDescriptor(homeSystemElement["StarSystem"]);
+                    //GameLog.Client.GameData.DebugFormat("HomeSystems.xml-civId={0}", civId);
+
+                    strLine =
+                        civId + separator +
+                        db[civId].Name + separator +
+                        db[civId].StarType + separator +
+                        db[civId].Inhabitants + separator +
+                        //db[civId].inh + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        db[civId].Name + separator
+                        ;
+
+                    streamWriter.WriteLine(strLine);
+
+
+                    
+
+
+                    strLine2 =
+                        civId + separator +       //  following entries not working yet
+                        //db[civId].StartingOutposts + separator +
+                        //db[civId].StartingShipyards + separator +
+                        //db[civId].StartingBuildings + separator +
+                        //db[civId].StartingOrbitalBatteries.Count + separator +
+                        //db[civId].StartingShips.Count + separator +
+
+                        //db[civId].FoodPF.DesignType + separator +
+                        //db[civId].FoodPF.Active + separator +
+                        //db[civId].FoodPF.Count + separator +
+
+                        //db[civId].IndustryPF.DesignType + separator +
+                        //db[civId].IndustryPF.Active + separator +
+                        //db[civId].IndustryPF.Count + separator +
+
+
+                        //db[civId].EnergyPF.DesignType + separator +
+                        //db[civId].EnergyPF.Active + separator +
+                        //db[civId].EnergyPF.Count + separator +
+
+                        //db[civId].ResearchPF.DesignType + separator +
+                        //db[civId].ResearchPF.Active + separator +
+                        //db[civId].ResearchPF.Count + separator +
+
+                        //db[civId].IntelligencePF.DesignType + separator +
+                        //db[civId].IntelligencePF.Active + separator +
+                        //db[civId].IntelligencePF.Count + separator +
+
+
+                        //db[civId].IndustryPF.Count + separator +
+                        //db[civId].FoodPF.Count + separator +
+                        //db[civId].EnergyPF.Count + separator +
+                        //db[civId].ResearchPF.Count + separator +
+                        //db[civId].IntelligencePF.count + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        //db[civId].Name + separator +
+                        db[civId].Name + separator
+                        ;
+
+                    streamWriter2.WriteLine(strLine2);
+
+                    
+                }  // end of foreach
+            WriterCloseHomeSystemsXML:;
+            streamWriter.Close();
+            streamWriter2.Close();
+            }
+            catch (Exception e)
+            {
+                GameLog.Core.GameData.Error("Problem with HomeSystems.xml or writing file FromHomeSystemsXML_(autoCreated).csv", e);
             }
 
+                                       
             return db;
         }
 
