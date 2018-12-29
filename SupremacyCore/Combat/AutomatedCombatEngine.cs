@@ -252,8 +252,6 @@ namespace Supremacy.Combat
                     }
                 }
 
-                //TODO: get intel of system to decamouflage spy ships in system
-
                 //TODO: Move this to DiplomacyHelper
                 List<string> allEmpires = new List<string>();
                 allEmpires.AddRange(ownEmpires);
