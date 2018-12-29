@@ -154,7 +154,7 @@ namespace Supremacy.Orbitals
         /// Gets or sets the cloak strength.
         /// </summary>
         /// <value>The cloak strength.</value>
-        public int CloakStrength
+        public new int CloakStrength
         {
             get { return _cloakStrength; }
             set { _cloakStrength = (byte)value; }
@@ -164,7 +164,7 @@ namespace Supremacy.Orbitals
         /// Gets or sets the camouflaged strength.
         /// </summary>
         /// <value>The camouflaged strength.</value>
-        public int CamouflagedStrength
+        public new int CamouflagedStrength
         {
             get { return _camouflagedStrength; }
             set { _camouflagedStrength = (byte)value; }
