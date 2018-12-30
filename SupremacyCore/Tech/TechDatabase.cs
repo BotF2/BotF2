@@ -574,6 +574,7 @@ namespace Supremacy.Tech
 
             if (_traceTechObjectDatabase == true)
             {
+                var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
                 var separator = ";";
                 var line = "";
                 StreamWriter streamWriter;
@@ -584,7 +585,7 @@ namespace Supremacy.Tech
                 #region ProductionFacilities_To_CSV
                 try // avoid hang up if this file is opened by another program 
                 {
-                    file = "./Resources/Data/FromTechObj-ProdFac_(autoCreated).csv";
+                    file = pathOutputFile + "FromTechObj-ProdFac_(autoCreated).csv";
 
                     Console.WriteLine("writing {0}", file);
 
@@ -692,7 +693,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = "./Resources/Data/FromTechObj-ShipNames_(autoCreated).csv";
+                    file = pathOutputFile + "FromTechObj-ShipNames_(autoCreated).csv";
                     Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -728,7 +729,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // Ships    
-                    file = "./Resources/Data/FromTechObj-Ships_(autoCreated).csv";
+                    file = pathOutputFile + "FromTechObj-Ships_(autoCreated).csv";
                     //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -917,7 +918,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = "./Resources/Data/FromTechObj-Shipyards_(autoCreated).csv";
+                    file = pathOutputFile + "FromTechObj-Shipyards_(autoCreated).csv";
                     //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -1019,7 +1020,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = "./Resources/Data/FromTechObj-Stations_(autoCreated).csv";
+                    file = pathOutputFile + "FromTechObj-Stations_(autoCreated).csv";
                     Console.WriteLine("writing {0}", file);
 
                     if (file == null)
