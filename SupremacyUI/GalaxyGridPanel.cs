@@ -2095,27 +2095,33 @@ namespace Supremacy.UI
 
                         if (sector.TradeRouteIndicator != 99 && sector.TradeRouteIndicator != 0)
                         {
-                            // my plan is: 
-                            // yellow "2": 2 TradeRoutes done, 2 possible
-                            // green "1": 1 TradeRoutes done, 2 possible -> one available
+                            if (!mapData.IsScanned(location))
+                            {
+                                // my plan is: 
+                                // yellow "2": 2 TradeRoutes done, 2 possible
+                                // green "1": 1 TradeRoutes done, 2 possible -> one available
 
-                            Pen tPen;
-                        
-                            tPen = new Pen(Brushes.Green, 1.0);
+                                Pen tPen;
 
-                            var tText = new FormattedText(
-                                "T:" + sector.TradeRouteIndicator.ToString(),
-                                CultureInfo.CurrentCulture,
-                                FlowDirection.LeftToRight,
-                                s_textTypeface,
-                                12.0,
-                                Brushes.White,
-                                VisualTreeHelper.GetDpi(this).PixelsPerDip);
-                            var tGeom = tText.BuildGeometry(
-                                new Point(SectorSize * location.X + 50,
-                                            SectorSize * (location.Y + 1) - 40
-                                                - tText.Height + (tText.Height - tText.Baseline)));
-                            dc.DrawGeometry(Brushes.White, tPen, tGeom);
+                                tPen = new Pen(Brushes.Green, 1.0);
+
+                                int tradeRouteAvailable = sector.TradeRouteIndicator - sector.System.Colony.TradeRoutes.Count();
+                                GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", sector.Location,  tradeRouteAvailable, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutes.Count());
+
+                                var tText = new FormattedText(
+                                    "T:" + sector.TradeRouteIndicator.ToString(),
+                                    CultureInfo.CurrentCulture,
+                                    FlowDirection.LeftToRight,
+                                    s_textTypeface,
+                                    12.0,
+                                    Brushes.White,
+                                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                                var tGeom = tText.BuildGeometry(
+                                    new Point(SectorSize * location.X + 50,
+                                                SectorSize * (location.Y + 1) - 40
+                                                    - tText.Height + (tText.Height - tText.Baseline)));
+                                dc.DrawGeometry(Brushes.White, tPen, tGeom);
+                            }
                         }
                     }
                 }

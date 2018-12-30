@@ -5,8 +5,10 @@
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
   <scc:AutoGrid Orientation="Vertical">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
 
     <Grid.RowDefinitions>
@@ -38,102 +40,12 @@
         <RowDefinition Height="18" />
         <RowDefinition Height="18" />
         <RowDefinition Height="18" />
+        <RowDefinition Height="18" />
+        <RowDefinition Height="18" />
+        <RowDefinition Height="18" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-
-        <!--MASTER_VOLUME--><!--
-        <Label Grid.Column="0"
-        Grid.Row="0"
-        Content="{s:StringResource SETTINGS_MASTER_VOLUME}"
-        VerticalAlignment="Center" />
-        <DockPanel Grid.Column="1"
-        Grid.Row="0"
-        LastChildFill="True"
-        Margin="6,0,0,0">
-        <RepeatButton DockPanel.Dock="Left"
-        Margin="0,0,4,0"
-        Command="{x:Static s:BlockBar.DecrementCommand}"
-        CommandTarget="{Binding ElementName=MasterVolumeBlockBar}"
-        Style="{StaticResource BlockBarDecrementButtonStyle}" />
-        <Label DockPanel.Dock="Right"
-        Content="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.MasterVolume), Mode=OneWay, Converter={StaticResource FormatStringConverter}, ConverterParameter='{}{0:0%}'}"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Center"
-        Width="48" />
-        <RepeatButton DockPanel.Dock="Right"
-        Margin="4,0,0,0"
-        Command="{x:Static s:BlockBar.IncrementCommand}"
-        CommandTarget="{Binding ElementName=MasterVolumeBlockBar}"
-        Style="{StaticResource BlockBarIncrementButtonStyle}" />
-        <s:BlockBar x:Name="MasterVolumeBlockBar"
-        Height="28"
-        BlockCount="16"
-        BlockMargin="4"
-        Value="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.MasterVolume), Mode=TwoWay}" />
-        </DockPanel>
-
-        --><!--MUSIC_VOLUME--><!--
-        <Label Grid.Column="0"
-        Grid.Row="2"
-        Content="{s:StringResource SETTINGS_MUSIC_VOLUME}"
-        VerticalAlignment="Center" />
-        <DockPanel Grid.Column="1"
-        Grid.Row="2"
-        LastChildFill="True"
-        Margin="6,0,0,0">
-        <RepeatButton DockPanel.Dock="Left"
-        Margin="0,0,4,0"
-        Command="{x:Static s:BlockBar.DecrementCommand}"
-        CommandTarget="{Binding ElementName=MusicVolumeBlockBar}"
-        Style="{StaticResource BlockBarDecrementButtonStyle}" />
-        <Label DockPanel.Dock="Right"
-        Content="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.MusicVolume), Mode=OneWay, Converter={StaticResource FormatStringConverter}, ConverterParameter='{}{0:0%}'}"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Center"
-        Width="48" />
-        <RepeatButton DockPanel.Dock="Right"
-        Margin="4,0,0,0"
-        Command="{x:Static s:BlockBar.IncrementCommand}"
-        CommandTarget="{Binding ElementName=MusicVolumeBlockBar}"
-        Style="{StaticResource BlockBarIncrementButtonStyle}" />
-        <s:BlockBar x:Name="MusicVolumeBlockBar"
-        Height="28"
-        BlockCount="16"
-        BlockMargin="4"
-        Value="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.MusicVolume), Mode=TwoWay}" />
-        </DockPanel>
-
-        --><!--FX_VOLUME--><!--
-        <Label Grid.Column="0"
-        Grid.Row="4"
-        Content="{s:StringResource SETTINGS_FX_VOLUME}"
-        VerticalAlignment="Center" />
-        <DockPanel Grid.Column="1"
-        Grid.Row="4"
-        LastChildFill="True"
-        Margin="6,0,0,0">
-        <RepeatButton DockPanel.Dock="Left"
-        Margin="0,0,4,0"
-        Command="{x:Static s:BlockBar.DecrementCommand}"
-        CommandTarget="{Binding ElementName=FXVolumeBlockBar}"
-        Style="{StaticResource BlockBarDecrementButtonStyle}" />
-        <Label DockPanel.Dock="Right"
-        Content="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.FXVolume), Mode=OneWay, Converter={StaticResource FormatStringConverter}, ConverterParameter='{}{0:0%}'}"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Center"
-        Width="48" />
-        <RepeatButton DockPanel.Dock="Right"
-        Margin="4,0,0,0"
-        Command="{x:Static s:BlockBar.IncrementCommand}"
-        CommandTarget="{Binding ElementName=FXVolumeBlockBar}"
-        Style="{StaticResource BlockBarIncrementButtonStyle}" />
-        <s:BlockBar x:Name="FXVolumeBlockBar"
-        Height="28"
-        BlockCount="16"
-        BlockMargin="4"
-        Value="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.FXVolume), Mode=TwoWay}" />
-        </DockPanel>-->
 
         <!--public const string AI = "AI";
             public const string Audio = "Audio";
@@ -147,10 +59,19 @@
             public const string Production = "Production";
             public const string ShipProduction = "ShipProduction";-->
 
+        <CheckBox
+        Grid.ColumnSpan="2"
+        Grid.Column="0"
+        Grid.Row="5"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.ReportErrors), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_REPORT_ERRORS}"
+        ToolTip="{s:StringResource SETTINGS_REPORT_ERRORS_TOOLTIP}"
+        />
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="0" 
-        Grid.Row="5"
+        Grid.Row="19"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesClearAll), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_CLEAR_ALL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_CLEAR_ALL_TOOLTIP}" 
@@ -221,52 +142,60 @@
         />
         <CheckBox 
         Grid.ColumnSpan="2"
-        Grid.Column="0" 
-        Grid.Row="14"
+        Grid.Column="3" 
+        Grid.Row="5"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesGeneral), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_GENERAL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_GENERAL_TOOLTIP}" 
         />
         <CheckBox 
         Grid.ColumnSpan="2"
-        Grid.Column="0" 
-        Grid.Row="15"
+        Grid.Column="3" 
+        Grid.Row="6"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesProduction), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_PRODUCTION_GENERATOR}"
         ToolTip="{s:StringResource SETTINGS_TRACES_PRODUCTION_TOOLTIP}" 
         />
         <CheckBox 
         Grid.ColumnSpan="2"
-        Grid.Column="0" 
-        Grid.Row="16"
+        Grid.Column="3" 
+        Grid.Row="7"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesShipProduction), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_SHIPPRODUCTION}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SHIPPRODUCTION_TOOLTIP}" 
         />
    <!--// more stuff planned-->
-        <!--<CheckBox 
+        <CheckBox 
         Grid.ColumnSpan="2"
-        Grid.Column="0" 
-        Grid.Row="17"
+        Grid.Column="3" 
+        Grid.Row="8"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesProduction), Mode=TwoWay}"
-        Content="{s:StringResource SETTINGS_TRACES_PRODUCTION_GENERATOR}"
-        ToolTip="{s:StringResource SETTINGS_TRACES_PRODUCTION_TOOLTIP}" 
+        Content="{s:StringResource SETTINGS_TRACES_MULTIPLAY}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_MULTIPLAY_TOOLTIP}" 
         />
         <CheckBox 
         Grid.ColumnSpan="2"
-        Grid.Column="0" 
-        Grid.Row="18"
+        Grid.Column="3" 
+        Grid.Row="9"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesProduction), Mode=TwoWay}"
-        Content="{s:StringResource SETTINGS_TRACES_PRODUCTION_GENERATOR}"
-        ToolTip="{s:StringResource SETTINGS_TRACES_PRODUCTION_TOOLTIP}"
-        />-->
-        <CheckBox
+        Content="{s:StringResource SETTINGS_TRACES_SAVELOAD_GENERATOR}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_SAVELOAD_TOOLTIP}"
+        />
+        <CheckBox 
+        Grid.ColumnSpan="2"
+        Grid.Column="3" 
+        Grid.Row="10"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesProduction), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_TRACES_TRADEROUTES}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_TRADEROUTES_TOOLTIP}"
+        />
+        <!--<CheckBox
         Grid.ColumnSpan="2"
         Grid.Column="0"
         Grid.Row="19"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.ReportErrors), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_REPORT_ERRORS}"
         ToolTip="{s:StringResource SETTINGS_REPORT_ERRORS_TOOLTIP}"
-        />
+        />-->
     </scc:AutoGrid>
 </UserControl>

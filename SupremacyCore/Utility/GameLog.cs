@@ -73,6 +73,7 @@ namespace Supremacy.Utility
             public const string Production = "Production";
             public const string SaveLoad = "SaveLoad";
             public const string ShipProduction = "ShipProduction";
+            public const string TradeRoutes = "TradeRoutes";
         }
 
         public ILog AI
@@ -138,6 +139,11 @@ namespace Supremacy.Utility
         public ILog ShipProduction
         {
             get { return LogManager.GetLogger(Repositories.ShipProduction); }
+        }
+
+        public ILog TradeRoutes
+        {
+            get { return LogManager.GetLogger(Repositories.TradeRoutes); }
         }
 
         protected GameLog(Type type)

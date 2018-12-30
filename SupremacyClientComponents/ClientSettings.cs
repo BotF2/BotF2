@@ -695,6 +695,26 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesTradeRoutes Property
+        public static readonly DependencyProperty TracesTradeRoutesProperty = DependencyProperty.Register(
+            "TradeRoutes",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesTradeRoutes
+        {
+            get { return (bool)GetValue(TracesTradeRoutesProperty); }
+            set { SetValue(TracesTradeRoutesProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
 
         #region ReportErrors Property
         public static readonly DependencyProperty ReportErrorsProperty = DependencyProperty.Register(
