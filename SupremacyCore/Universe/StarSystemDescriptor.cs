@@ -54,6 +54,7 @@ namespace Supremacy.Universe
             //var line = "";
             StreamWriter streamWriter;
             StreamWriter streamWriter2;
+            var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
             var file = "./lib/test2.txt";
             var file2 = "./lib/test4.txt";
             streamWriter = new StreamWriter(file);
@@ -68,7 +69,7 @@ namespace Supremacy.Universe
             try // avoid hang up if this file is opened by another program 
             {
                 // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
-                file = "./Resources/Data/FromHomeSystemsXML_(autoCreated).csv";
+                file = pathOutputFile + "FromHomeSystemsXML_(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
 
@@ -108,7 +109,7 @@ namespace Supremacy.Universe
 
 
 
-                file2 = "./Resources/Data/FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
+                file2 = pathOutputFile + "FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file2);
 
