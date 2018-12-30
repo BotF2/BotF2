@@ -646,12 +646,23 @@ namespace Supremacy.Game
             var invasionLocations = new HashSet<MapLocation>();
             var combats = new List<List<CombatAssets>>();
             var invasions = new List<InvasionArena>();
-            var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).GroupBy(p => p.Location).Select(g => g.First())
-                 .Where(p => !p.IsCamouflaged).ToList();
+            var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
+                 //.Where(p => !p.IsCamouflaged).ToList();
             foreach (var fleet in fleetsAtLocation)
             {
+
+
                 GameLog.Core.Combat.DebugFormat("fleet objectid {0} name {1} location {2} order {3} is Camouflaged {4} Is Cloaked {5}",
                     fleet.ObjectID, fleet.Name,fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+
+                if (fleet.IsCamouflaged)
+                {
+                    GameLog.Core.Combat.DebugFormat("fleet objectid {0} name {1} location {2} order {3} is Camouflaged {4} = TRUE, Cloaked {5}",
+                        fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                    //fleetsAtLocation.Remove(fleet);
+                }
+
+
                 //List<Fleet> _owners = new List<Fleet>();
                 //var Owners = _owners.Where(p => p.Owner != null).GroupBy(p => p.Owner).Select(g => g.FirstOrDefault()).ToList();
 

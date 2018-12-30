@@ -73,8 +73,17 @@ namespace Supremacy.Combat
                 foreach (var ship in Ships)
                 {
                     CombatUnit unit = new CombatUnit(ship);
+                    GameLog.Core.Combat.DebugFormat("maxOppostionScanStrength =  {0}", maxOppostionScanStrength);
+                    GameLog.Core.Combat.DebugFormat("!ship! {0} {1} ({2}) at {3} is Camouflaged {4}, Cloaked {5}",
+                        ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
+                    GameLog.Core.Combat.DebugFormat("!unit! {0} {1} ({2}) at {3} is Camouflaged {4}, Cloaked {5}",
+                        ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
                     if ((ship.IsCamouflaged) && (unit.CamouflagedStrength >= maxOppostionScanStrength))
                     {
+                        GameLog.Core.Combat.DebugFormat("!ship! {0} {1} ({2}) at {3} is Camouflaged {4} = TRUE, Cloaked {5}",
+                            ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
+                        GameLog.Core.Combat.DebugFormat("!unit! {0} {1} ({2}) at {3} is Camouflaged {4} = TRUE, Cloaked {5}",
+                            ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
                         continue;
                     }
                     if (!assets.ContainsKey(ship.Owner))
