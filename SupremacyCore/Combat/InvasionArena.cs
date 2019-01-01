@@ -517,7 +517,7 @@ namespace Supremacy.Combat
                 _status = InvasionStatus.Victory;
             else if (_invadingUnits.All(o => o.IsDestroyed))
                 _status = InvasionStatus.Defeat;
-            else if (IsMultiplayerGame & RoundNumber == 3)
+            else if (IsMultiplayerGame && RoundNumber == 5) // Change roundnumber in MP to 5 (was 3)
                 _status = InvasionStatus.Stalemate;
             else if (RoundNumber > MaxRounds)
                 _status = InvasionStatus.Stalemate;
@@ -752,7 +752,7 @@ namespace Supremacy.Combat
 
         private void ProcessRound()
         {
-            RechargeUnits();
+            //RechargeUnits(); // commented, so that Recharge only after invasion is over
 
             if (_orders.Action == InvasionAction.StandDown)
             {
@@ -760,7 +760,8 @@ namespace Supremacy.Combat
                 {
                     var defendingUnits = _invasionArena.DefendingUnits.Where(o => !o.IsDestroyed).OfType<InvasionOrbital>().ToList();
                     var invadingUnits = _invasionArena.InvadingUnits.Where(o => !o.IsDestroyed).OfType<InvasionOrbital>().ToList();
-                    ProcessSpaceCombat(invadingUnits, defendingUnits);
+                    // Current X
+                    //  ProcessSpaceCombat(invadingUnits, defendingUnits); // out-commented to enable retreat.
                 }
                 _invasionArena.Update();
                 _invasionArena.Retreat();
@@ -891,6 +892,7 @@ namespace Supremacy.Combat
 
         private void ProcessBombardment()
         {
+            // Update Strike Cruiser vs. Shields // Exchange ProcessBombardment
             var chanceTree = GetBaseGroundTargetHitChanceTree();
             var totalPopDamage = 0d;
 
@@ -900,7 +902,16 @@ namespace Supremacy.Combat
 
                 var ship = unit.Source as Ship;
                 if (ship != null)
-                    accuracyThreshold = 1d - ship.GetAccuracyModifier();
+                    // use standard 0.5 if odd number where returned
+                    // bug of accuary modifer and targetdamagecontrol needs to be addressed later
+                    if (ship.GetAccuracyModifier() < 0.1 || ship.GetAccuracyModifier() > 1)
+                    {
+                        accuracyThreshold = 1d - 0.5;
+                    }
+                    else
+                    {
+                        accuracyThreshold = 1d - ship.GetAccuracyModifier(); //why -4?
+                    }
 
                 if (chanceTree.IsEmpty)
                 {
@@ -918,44 +929,41 @@ namespace Supremacy.Combat
                         break;
 
                     var maxDamage = weapon.MaxDamage.CurrentValue;
-
-                    weapon.Discharge();
-                    // Update xyz Strike Cruiser and borg strike diamond being much better at Bombarding then ordinary ships
+                  
 
                     if (ship.ShipType != ShipType.StrikeCruiser) //any non-strike Cruiser
                     {
-                        // Weapons reduced to 6% for any ordinary  ship
-                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.06); // Insert Result to maxDamage as Integer
+                        // Weapons reduced to 2% for any ordinary  ship
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.03); // Insert Result to maxDamage as Integer
                     }
                     else
                     {
-                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.3); // StrikeCruiser deal 30% weapondamage
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.30); // StrikeCruiser deal 20% weapondamage. Should work for Borg Strike Diamonds, but untested.
+                    }
+                    // Now, check for the best Orbital Assault Cruiser
+                    if (ship.Owner.Key == "CARD_STRIKE_CRUISER_II"
+                        || ship.Owner.Key == "CARD_STRIKE_CRUISER_III"
+                        || ship.Owner.Key == "TERRAN_CRUISER_I"
+                        || ship.Owner.Key == "TERRAN_STRIKE_CRUISER_I"
+                        || ship.Owner.Key == "TERRAN_STRIKE_CRUISER_II"
+                        || ship.Owner.Key == "TERRAN_STRIKE_CRUISER_III")
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.40); // 30 % for best suitable ships
+                    // Cardassian Keldon class Strike Cruiser
+                    // Terran Constiution Class
+                    // Terran Strike Cruiser
+
+                    if (ship.Design.Key.Contains("KLING_CRUISER") && !ship.Design.Key.Contains("HEAVY") && !ship.Design.Key.Contains("STRIKE"))
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.25); // Klingon BattleCruiser work both as anti-ship-Warship (100%) as well as a StrikeCruiser (17.5%)
+
+                    if (ship.Design.Key.Contains("CUBE"))  // All cubes are okay when it comes to orbital bombardment (15%)
+                    {
+                        // Change damage to 10% if Borg Cubes are firing
+                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.10);
                     }
 
-                    if (ship.Design.Equals("BORG_CUBE_I")
-                        || ship.Design.Equals("BORG_CUBE_II")
-                        || ship.Design.Equals("BORG_CUBE_III")
-                        ) // _Key DesignName and Name are all BORG_TACITCAL_CUBE?
-                    {
-                        // Change damage to 15% if Borg Cubes are firing
-                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.15);
-                    }
-
-                    if (ship.Design.Equals("BORG_TACTICAL_CUBE_I")
-                        || ship.Design.Equals("BORG_TACTICAL_CUBE_II")
-                        || ship.Design.Equals("BORG_TACTICAL_CUBE_III")
-                        ) // _Key DesignName and Name are all BORG_TACITCAL_CUBE?
-                    {
-                        // Change damage to 15% if tactical cubes are firing
-                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.15);
-                    }
-
-                    if (ship.Design.Equals("BORG_FUSION_CUBE"))
-                    {
-                        // Change damage to 15% Everything goes to hell..
-                        maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.15);
-                    }
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
+
+                    weapon.Discharge();
 
                     if (maxDamage <= 0)
                         continue;
@@ -981,7 +989,7 @@ namespace Supremacy.Combat
                             if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumDamage ||
                                 _orders.Action == InvasionAction.UnloadAllOrdinance)     // here UnloadAllOrdinance is used
                             {
-                                totalPopDamage += 0.5 * actualDamage;
+                                totalPopDamage += 1.0 * actualDamage; //from 0.5 to 1.0
                                 //GameLog.Core.Combat.DebugFormat("Bombardment - MAXIMUM DAMAGE: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                                 //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
@@ -993,12 +1001,12 @@ namespace Supremacy.Combat
                             }
                             else if (_orders.TargetingStrategy == InvasionTargetingStrategy.MaximumPrecision)
                             {
-                                totalPopDamage += 0.125 * actualDamage;
+                                totalPopDamage += 0.05 * actualDamage; // from 0.125 to 0.05
                                 //GameLog.Core.Combat.DebugFormat("Bombardment - maximum PRECISION: Target Name = {0}, ID = {1} Design = {2}, health = {3}",
                                 //    targetUnit.Name, targetUnit.ObjectID, targetUnit.Design, targetUnit.Health);
                             }
                         }
-                        //else if (target == colony)
+                        //else if (target == colony) // ?
                         //{
                         //    totalPopDamage += maxDamage;
                         //}
@@ -1077,23 +1085,114 @@ namespace Supremacy.Combat
 
         private void ProcessSpaceCombat(IList<InvasionOrbital> invadingUnits, IList<InvasionOrbital> defendingUnits)
         {
+            // Update 1701M Name: Orbital Re-balancing. Replace full ProcessSpaceCombat with it.
             _invasionArena.AttackOccurred = true;
 
             var nonRetreatingUnits = (_orders.Action == InvasionAction.StandDown) ? defendingUnits : defendingUnits.Concat(invadingUnits);
             var unitsAbleToAttack = nonRetreatingUnits.Where(o => o.Weapons.Any(w => w.CanFire)).ToList();
             unitsAbleToAttack.RandomizeInPlace();
+
             var defenderTargets = new LinkedList<InvasionOrbital>(invadingUnits.Randomize());
             var invaderTargets = new LinkedList<InvasionOrbital>(defendingUnits.Randomize());
 
-            while (unitsAbleToAttack.Count != 0 &&
-                   defenderTargets.Count != 0 &&
-                   invaderTargets.Count != 0)
+
+            var unitsAbleToAttackDef = nonRetreatingUnits // Sort Invasion lists
+                .Where(o => o.Design.Key.Contains("ORBITAL"))
+                .Where(o => o.Weapons.Any(w => w.CanFire)).ToList();
+            unitsAbleToAttackDef.RandomizeInPlace();
+            var unitsAbleToAttackInv = nonRetreatingUnits
+                .Where(o => !o.Design.Key.Contains("ORBITAL"))
+                .Where(o => o.Weapons.Any(w => w.CanFire)).ToList();
+            unitsAbleToAttackInv.RandomizeInPlace();
+            
+            var z = 0; // inserted and initialized
+
+            while (z < 1) // only one rounds now,Orbitals vs. Ships
             {
+                if ((unitsAbleToAttack.Count == 0 ||
+                   defenderTargets.Count == 0 ||
+                   invaderTargets.Count == 0))
+                    break; // Only one round if no more unites available
+
+                // 
+                int a = 0;
+                int b = 0;
+                // Sort combat Invasion List
+                for (var i = 0; i < unitsAbleToAttack.Count;)
+                {
+
+                    if ((a < unitsAbleToAttackDef.Count && i % 2 == 0)
+                        || (unitsAbleToAttackDef.Count > unitsAbleToAttackInv.Count
+                        && i > unitsAbleToAttackInv.Count
+                        && a < unitsAbleToAttackDef.Count))
+                    {
+
+                        unitsAbleToAttack[i] = unitsAbleToAttackDef[a];
+                        a = a + 1;
+                    }
+
+
+                    if ((b < unitsAbleToAttackInv.Count && i % 2 == 1)
+                        || (unitsAbleToAttackDef.Count < unitsAbleToAttackInv.Count
+                        && i > unitsAbleToAttackDef.Count
+                        && b < unitsAbleToAttackInv.Count))
+                    {
+
+                        unitsAbleToAttack[i] = unitsAbleToAttackInv[b];
+                        b = b + 1;
+                    }
+                    i++;
+                }
+
+                z = z + 1;
                 for (var i = 0; i < unitsAbleToAttack.Count; i++)
                 {
+                    // Strike vs. Orbital Batterys
+                    double shiptypemodifier = 0; // edited, initialized.
                     var attacker = unitsAbleToAttack[i];
+                    shiptypemodifier = 0.50; // Low weapons for common ships. Strike Cruiser are 1.5 times better...
+                    if (attacker.Design.Key.Contains("STRIKE"))
+                        shiptypemodifier = 5.00; // Strike Cruiser are good suited
+                                                 //if(attacker.Source.Owner.Race == "CARDASSIANS")
+                                                 //   shiptypemodifier = 7.5;
+                    if ((attacker.Design.Key.Contains("KLING_CRUISER") && !attacker.Design.Key.Contains("HEAVY") && !attacker.Design.Key.Contains("STRIKE"))
+                        || attacker.Design.Key.Contains("CUBE")) // Klingon BattleCruiser and Borg Cubes are 2nd best
+                        shiptypemodifier = 4.50;
 
-                    var weapon = attacker.Weapons.Where(w => w.CanFire).OrderByDescending(o => o.MaxDamage.CurrentValue).FirstOrDefault();
+                    // Now, check for the best Orbital Assault Cruiser
+                    if (attacker.Source.Design.Key == ("CARD_STRIKE_CRUISER_II")
+                        || attacker.Source.Design.Key == ("CARD_STRIKE_CRUISER_III")
+                        || attacker.Source.Design.Key == ("TERRAN_CRUISER_I")
+                        || attacker.Source.Design.Key == ("TERRAN_STRIKE_CRUISER_I")
+                        || attacker.Source.Design.Key == ("TERRAN_STRIKE_CRUISER_II")
+                        || attacker.Source.Design.Key == ("TERRAN_STRIKE_CRUISER_III"))
+                        shiptypemodifier = 6.5;
+                    // Cardassian Keldon class Strike Cruiser
+                    // Terran Constiution Class
+                    // Terran Strike Cruiser
+
+
+                    //shiptypemodifer is also used to modify Orbital Batterys
+                    if (attacker.Design.Key.Contains("ORBITAL_BATTERY_I") &&
+                        !attacker.Design.Key.Contains("ORBITAL_BATTERY_II") &&
+                        !attacker.Design.Key.Contains("ORBITAL_BATTERY_III")) // = Orbital I
+                        shiptypemodifier = 4.0;
+                    if (attacker.Design.Key.Contains("ORBITAL_BATTERY_II") &&
+                        !attacker.Design.Key.Contains("ORBITAL_BATTERY_III")) // Orbital II
+                        shiptypemodifier = 6.0;
+                    if (attacker.Design.Key.Contains("ORBITAL_BATTERY_III")) // Orbital III
+                        shiptypemodifier = 10.0;
+                    if (attacker.Design.Key.Contains("MINOR")) // Minors
+                        shiptypemodifier = shiptypemodifier * 2.0; // Modifies Minor Orbital Strenght. 
+                    if (attacker.Name.Contains("!") && !attacker.Name.Contains("ORBITAL")) // HeroShips get bonus (most ain´t Strike Cruiser however so its not much)
+                        shiptypemodifier = shiptypemodifier * 3;
+
+
+
+                    var weapon = attacker.Weapons.Where(w => w.CanFire).OrderByDescending(o => o.MaxDamage.CurrentValue * shiptypemodifier).FirstOrDefault();
+
+
+
                     if (weapon == null)
                     {
                         unitsAbleToAttack.RemoveAt(i--);
@@ -1107,19 +1206,31 @@ namespace Supremacy.Combat
                         unitsAbleToAttack.RemoveAt(i--);
                         continue;
                     }
+                    // Orbital Re-balancing -> Changing targets for orbitals
+                    var target = targetList.Last.Value; // 
 
-                    var target = targetList.First.Value;
-
-                    targetList.RemoveFirst();
-                    targetList.AddLast(target);
+                    //  targetList.RemoveFirst(); // Stay at the same target
+                    // targetList.AddLast(target); 
 
                     var accuracyThreshold = 0d;
 
                     var ship = attacker.Source as Ship;
                     if (ship != null)
-                        accuracyThreshold = 1d - ship.GetAccuracyModifier();
+                    {
+                        if (ship.GetAccuracyModifier() > 1 || ship.GetAccuracyModifier() < 0.1)
+                        {
+                            accuracyThreshold = 1d - 0.5;
+                        }
+                        else
+                        {
+                            accuracyThreshold = 1d - ship.GetAccuracyModifier(); // why -4? for ships...
+                        }                        
+                    }
 
                     var maxDamage = weapon.MaxDamage.CurrentValue;
+                    maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * shiptypemodifier); // added
+
+
 
                     weapon.Discharge();
 
@@ -1128,6 +1239,7 @@ namespace Supremacy.Combat
                     {
                         target.TakeDamage(maxDamage);
                         GameLog.Core.Combat.DebugFormat("AttackingOrbitals = SpaceCombat: Target Name = {0}, ID = {1} Hull Strength = {2}, health = {3}", target.Name, target.ObjectID, target.HullStrength, target.Health);
+
                         if (target.IsDestroyed)
                         {
                             var targetIndex = unitsAbleToAttack.IndexOf(target);

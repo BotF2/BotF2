@@ -518,3 +518,4 @@ namespace Supremacy.Combat
         protected abstract void ResolveCombatRoundCore();
     }
 }
+
