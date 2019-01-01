@@ -611,13 +611,13 @@ namespace Supremacy.Combat
                 HeroShip = false; // reset HeroShip to false
             }
 
-            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
-                if (wearkerSide == 1)
+            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons hits a target
+                if (wearkerSide == 1) // if weakeSide equals 1 then first(friendly) side is bigger
                 {
-                    if (source.Owner != firstOwner || !friendlyOwner)
+                    if (source.Owner != firstOwner || !friendlyOwner) // if it is the smaller side improve accuracy
                     {
                         sourceAccuracy = 1.6 - (newCycleReduction *2);
-                    } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
+                    } 
                 }
                 {
                     target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 3));
