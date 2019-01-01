@@ -58,7 +58,7 @@ namespace Supremacy.Combat
 
         private object firstOwner;
 
-        private int wearkerSide =0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2 Oppostion side bigger
+        private int wearkerSide =0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
 
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
 
@@ -1219,34 +1219,56 @@ namespace Supremacy.Combat
                 targetDamageControl = 0.5;
 
 
-            // if side ==2 is stronger, they get the bonus
-            if (wearkerSide == 1)
+            // if side ==2 opposition is stronger, first frienldy side gets the bonus and side ==1 first friendly side has more ships, opposition side gets the bonus
+            switch (wearkerSide)
             {
-
-                if (source.Owner != firstOwner || !friendlyOwner) //Plz DOUBLECHECK
-
-                {
-                    sourceAccuracy = 1.0 + (1 - newCycleReduction);
-                    if (sourceAccuracy > 1.5)
+                //if (wearkerSide == 1) //first (Friendly) side has more ships
+                case 1:
                     {
-                        sourceAccuracy = 1.45;
+
+                        if (source.Owner != firstOwner || !friendlyOwner) //Plz DOUBLECHECK (If it is an opposition ship[ not first owner of firendly to first owner] improve on thier fire)
+
+                        {
+                            sourceAccuracy = 1.0 + (1 - newCycleReduction);
+                            if (sourceAccuracy > 1.5)
+                            {
+                                sourceAccuracy = 1.45;
+                            }
+                            cycleReduction = 1;
+                        }
+                        else
+                        {
+                            cycleReduction = newCycleReduction;
+                        }// First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
+                        break;
                     }
-                    cycleReduction = 1;
-                } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
+                //else if (wearkerSide == 0)
+                case 0:
+                    {
+                        // if wearkerSide == 0, then both are equal. Do no change
+                        cycleReduction = 1;
+                        break;
+                    }
+                //else if (wearkerSide == 2) 
+                case 2:// Opposition side has more ships so cycle
+                    {
+                        if (source.Owner == firstOwner || friendlyOwner) //Plz DOUBLECHECK (If it is samne owner as first, or friendly to first, improve on thier fire)
+                        {
+                            sourceAccuracy = 1.0 + (1 - newCycleReduction);
+                            if (sourceAccuracy > 1.5)
+                            {
+                                sourceAccuracy = 1.45;
+                            }
+                            cycleReduction = 1;
+                        } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
+                        else
+                        {
+                            cycleReduction = newCycleReduction;
+                        }
+                        break;
+                    }
 
             }
-            else if (wearkerSide == 0)
-            {
-                // if wearkerSide == 0, then both are equal. Do no change
-                cycleReduction = 1;
-            }
-            else if (wearkerSide == 2) // Meaning the current ship is of the stronger side
-            {
-                cycleReduction = newCycleReduction;
-            }
-
-
-
 
             // if firing ship OR targeted ship are heroShips, change values to be better.
             if (source.Name.Contains("!"))
