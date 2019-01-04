@@ -283,7 +283,10 @@ namespace Supremacy.Combat
 
             }
 
+            double ratioATemp = 0.00; // used to transform ship.Count to double decimals
+            double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
 
+            
             // Prevent division by 0, if one side has been wiped out / or retreated.
             if (OppositionCombatShips.Count == 0 || FriendlyCombatShips.Count == 0)
 
@@ -307,7 +310,10 @@ namespace Supremacy.Combat
 
                     excessShipsStartingAt = OppositionCombatShips.Count * 2;
 
-                    shipRatio = FriendlyCombatShips.Count() / OppositionCombatShips.Count();
+
+                    ratioATemp = FriendlyCombatShips.Count();
+                    ratioBTemp = OppositionCombatShips.Count();
+                    shipRatio = ratioATemp / ratioBTemp;
 
                     wearkerSide = 1;
 
@@ -320,8 +326,9 @@ namespace Supremacy.Combat
                 {
 
                     excessShipsStartingAt = FriendlyCombatShips.Count * 2;
-
-                    shipRatio = OppositionCombatShips.Count() / FriendlyCombatShips.Count();
+                    ratioATemp = FriendlyCombatShips.Count();
+                    ratioBTemp = OppositionCombatShips.Count();
+                    shipRatio = ratioBTemp / ratioATemp;
 
                     wearkerSide = 2;
 
@@ -333,13 +340,13 @@ namespace Supremacy.Combat
 
                 wearkerSide = 0;
 
-            if (shipRatio > 1.2)
+            if (shipRatio > 1.0)
             {
                 newCycleReduction = 0.5;
             }
 
 
-            if (shipRatio > 1.5)
+            if (shipRatio > 1.2)
 
             {
 
@@ -347,7 +354,7 @@ namespace Supremacy.Combat
 
             }
 
-            if (shipRatio > 2)
+            if (shipRatio > 1.5)
 
             {
 
@@ -355,7 +362,7 @@ namespace Supremacy.Combat
 
             }
 
-            if (shipRatio > 3)
+            if (shipRatio > 2.5)
 
             {
 
@@ -372,7 +379,7 @@ namespace Supremacy.Combat
             }
             if(FriendlyCombatShips.Count() < 4 || OppositionCombatShips.Count() < 4) // small fleets attack each other at full power
             {
-                newCycleReduction = 1;
+                newCycleReduction = 1; 
             }
             
             for (int i = 0; i < _combatShips.Count; i++) // sorting combat Ships to have one ship of each side alternating
@@ -439,11 +446,14 @@ namespace Supremacy.Combat
 
 
 
-                if (i + 1 > excessShipsStartingAt && excessShipsStartingAt != 0) // added: if ships equal = 0 = excessShips, then no cycle reduction
+                if (i +1 > excessShipsStartingAt && excessShipsStartingAt != 0) // added: if ships equal = 0 = excessShips, then no cycle reduction
                 {
                     cycleReduction = newCycleReduction;
                 } // +1 because a 2nd ship can have full firepower, but not the 3rd exceeding the other side
-
+                else
+                {
+                    cycleReduction = 1;
+                }
                 
                 List<string> ownEmpires = _combatShips.Where(s =>
 
@@ -1238,7 +1248,7 @@ namespace Supremacy.Combat
                         }
                         else
                         {
-                            cycleReduction = newCycleReduction;
+                            //cycleReduction = newCycleReduction; cycleReduction is already filled before when firing ship is a ship exceeding the tie of ships
                         }// First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
                         break;
                     }
@@ -1263,7 +1273,7 @@ namespace Supremacy.Combat
                         } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
                         else
                         {
-                            cycleReduction = newCycleReduction;
+                            //cycleReduction = newCycleReduction; cycleReduction is already filled before when firing ship is a ship exceeding the tie of ships
                         }
                         break;
                     }
@@ -1281,8 +1291,7 @@ namespace Supremacy.Combat
                 targetDamageControl = 1;
             }
 
-
-
+           
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
             { 
                             
@@ -1322,6 +1331,7 @@ namespace Supremacy.Combat
     }
 
 }
+
 
 
 
