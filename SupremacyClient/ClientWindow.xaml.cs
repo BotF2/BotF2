@@ -267,6 +267,18 @@ namespace Supremacy.Client
 
             InputBindings.Add(
                 new KeyBinding(
+                    ClientCommands.ErrorTxtCommand,
+                    Key.E,
+                    ModifierKeys.Control));
+
+            InputBindings.Add(
+                new KeyBinding(
+                    ClientCommands.LogTxtCommand,
+                    Key.L,
+                    ModifierKeys.Control));
+
+            InputBindings.Add(
+                new KeyBinding(
                     ClientCommands.OptionsCommand,
                     Key.O,
                     ModifierKeys.Control));
