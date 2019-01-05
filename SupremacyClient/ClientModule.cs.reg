@@ -35,7 +35,6 @@ using Supremacy.WCF;
 using System;
 using System.Concurrency;
 using System.IO;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -66,8 +65,6 @@ namespace Supremacy.Client
         private readonly ClientOptionsDialog _optionsDialog;
 
         private readonly DelegateCommand<object> _optionsCommand;
-        private readonly DelegateCommand<object> _logTxtCommand;
-        private readonly DelegateCommand<object> _errorTxtCommand;
         private readonly DelegateCommand<object> _startSinglePlayerGameCommand;
         private readonly DelegateCommand<object> _continueGameCommand;
         private readonly DelegateCommand<bool> _endGameCommand;
@@ -126,12 +123,6 @@ namespace Supremacy.Client
 
             _optionsCommand = new DelegateCommand<object>(
                 ExecuteOptionsCommand);
-
-            _logTxtCommand = new DelegateCommand<object>(
-                ExecuteLogTxtCommand);
-
-            _errorTxtCommand = new DelegateCommand<object>(
-                ExecuteErrorTxtCommand);
 
             _startSinglePlayerGameCommand = new DelegateCommand<object>(
                 ExecuteStartSinglePlayerGameCommand);
@@ -198,60 +189,6 @@ namespace Supremacy.Client
         private void ExecuteOptionsCommand(object obj)
         {
             _optionsDialog.ShowDialog();
-        }
-
-        private void ExecuteLogTxtCommand(object obj)
-        {
-            var folder = ResourceManager.GetResourcePath("");
-            var logfile = Path.Combine(
-                folder,
-                "Log.txt");
-            // maybe not working ->    GameLog.Client.General.DebugFormat("Logfile at {0}", logfile);
-
-            if (logfile != null) //&& resourceFile.Exists)
-            {
-                var p = new Process();
-                ProcessStartInfo pi = new ProcessStartInfo();
-                pi.UseShellExecute = true;
-                pi.FileName = logfile;
-                p.StartInfo = pi;
-                try
-                {
-                    p.Start();
-                }
-                catch 
-                {
-                    MessageBox.Show("Could not load Log.txt");
-                }
-            }
-        }
-
-        private void ExecuteErrorTxtCommand(object obj)
-        {
-            var folder = ResourceManager.GetResourcePath("");
-            var errorfile = Path.Combine(
-                folder,
-                "Error.txt");
-            // maybe not working ->    GameLog.Client.General.DebugFormat("Logfile at {0}", errorfile);
-
-            double fileSize = new FileInfo(errorfile).Length;
-            if (File.Exists(errorfile) && fileSize > 0)
-            {
-                var p = new Process();
-                ProcessStartInfo pi = new ProcessStartInfo();
-                pi.UseShellExecute = true;
-                pi.FileName = errorfile;
-                p.StartInfo = pi;
-                    
-                try
-                {
-                    p.Start();
-                }
-                catch
-                {
-                    MessageBox.Show("Could not load Error.txt");
-                }
-            }
         }
 
         private void ExecuteContinueGameCommand(object obj)
@@ -333,9 +270,32 @@ namespace Supremacy.Client
             if (AutoLoadSavedGame())
                 return;
 
+            AutoStartGame();
+            if (AutoStartGame() == true)
+                return;
+
+                _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.wav");
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
-            GameLog.Client.General.Debug("MenuScreen activated... ");
-            _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.wav");
+                GameLog.Client.General.Debug("MenuScreen activated... ");
+            
+        }
+
+        private bool AutoStartGame()  // starts SP with Federation
+        {
+
+
+            try
+            {
+                var initData = GameInitData.CreateSinglePlayerGame(GameContext.Current.Options, 0);
+            }
+            catch (Exception exception)
+            {
+                GameLog.Core.GameData.ErrorFormat(
+                    string.Format(@"##ERROR loading AutoStart game "),
+                    exception);
+            }
+
+            return false;
         }
 
         private bool AutoLoadSavedGame()
@@ -379,7 +339,7 @@ namespace Supremacy.Client
             _container.RegisterType<IGameServer, GameServer>(new TransientLifetimeManager());
             _container.RegisterType<IPlayerOrderService, PlayerOrderService>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IGameController, GameController>(new TransientLifetimeManager());
-            //_container.RegisterInstance<IScriptService>(new ScriptService());*/
+            _container.RegisterInstance<IScriptService>(new ScriptService());
 
             _container.RegisterType<StatusWindow>(new ContainerControlledLifetimeManager());
             _container.RegisterInstance(new CombatWindow());
@@ -389,6 +349,8 @@ namespace Supremacy.Client
             _container.RegisterType<DiplomacyScreenViewModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ScienceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<AssetsScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            ////_container.RegisterType<IntelligenceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            //_container.RegisterType<IntelScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<SystemAssaultScreenViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
@@ -404,6 +366,8 @@ namespace Supremacy.Client
             _container.RegisterType<IColonyScreenPresenter, ColonyScreenPresenter>(new ExternallyControlledLifetimeManager());
             //_container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IScienceScreenPresenter, ScienceScreenPresenter>(new ExternallyControlledLifetimeManager());
+            ////_container.RegisterType<IIntelligenceScreenPresenter, IntelligenceScreenPresenter>(new ExternallyControlledLifetimeManager());
+            //_container.RegisterType<IIntelScreenPresenter, IntelScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenPresenter, AssetsScreenPresenter>(new ExternallyControlledLifetimeManager());
 
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MenuScreen, typeof(MenuScreen));
@@ -411,8 +375,6 @@ namespace Supremacy.Client
 
             // first is first shown in Options
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
-            //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(SecondOptionsPage));
-            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(TracesOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AudioOptionsPage));   // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GraphicsOptionsPage));  // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GeneralOptionsPage));
@@ -549,8 +511,6 @@ namespace Supremacy.Client
             bool gameControllerExists = (Interlocked.CompareExchange(ref _gameController, null, null) != null);
 
             _optionsCommand.IsActive = true;
-            _logTxtCommand.IsActive = true;
-            _errorTxtCommand.IsActive = true;
             _showCreditsDialogCommand.IsActive = true;
             _startSinglePlayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _joinMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
@@ -711,8 +671,6 @@ namespace Supremacy.Client
         private void RegisterCommandHandlers()
         {
             ClientCommands.OptionsCommand.RegisterCommand(_optionsCommand);
-            ClientCommands.LogTxtCommand.RegisterCommand(_logTxtCommand);
-            ClientCommands.ErrorTxtCommand.RegisterCommand(_errorTxtCommand);
             ClientCommands.StartSinglePlayerGame.RegisterCommand(_startSinglePlayerGameCommand);
             ClientCommands.ContinueGame.RegisterCommand(_continueGameCommand);
             ClientCommands.EndGame.RegisterCommand(_endGameCommand);

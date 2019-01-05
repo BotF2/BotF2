@@ -78,13 +78,14 @@
         <TextBlock Grid.Row="25" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F12 = nothing</TextBlock>
         <TextBlock Grid.Row="27" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > ESC = just try</TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > ALT + F12 = toggles window and full screen (on laptops also use FN-Key), ALT + ENTER while running Visual Studio</TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use arrow keys right or left in System screen</TextBlock>
-        <TextBlock Grid.Row="17" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use CTRL for REDEPLOY more than one ship</TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use arrow keys right or left in System screen</TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use CTRL for REDEPLOY more than one ship</TextBlock>
         <TextBlock Grid.Row="35" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > ALT + A =  starts and ends AUTOTURN function</TextBlock>
         <TextBlock Grid.Row="37" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CTRL + SHIFT + G = CollectGarbage (coding only)</TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CRTL + o =  opens OptionsDialog</TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CRTL + s =  opens SaveGameDialog</TextBlock>
         <TextBlock Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CRTL + t =  doing END TURN</TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > CRTL + l =  loads Log.txt</TextBlock>
         <TextBlock Grid.Row="11" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > Galaxy Map only: CRTL + ENTER =  doing END TURN</TextBlock>
         <TextBlock Grid.Row="13" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > Galaxy Map only: CRTL + plus or minus =  zoom in or out</TextBlock>
         <TextBlock Grid.Row="15" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > Galaxy Map only: F12 = lift fog (not in MultiPlayer)</TextBlock>
