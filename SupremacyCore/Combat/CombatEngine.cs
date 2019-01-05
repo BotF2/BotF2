@@ -175,6 +175,7 @@ namespace Supremacy.Combat
         {
             lock (_orders)
             {
+                GameLog.Core.Combat.DebugFormat("ResolveCombatRound");
                 Running = true;
 
                 _assets.ForEach(a => a.CombatID = _combatId);
@@ -189,7 +190,10 @@ namespace Supremacy.Combat
                 {
                     PerformAssimilation();
                 }
+                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before PerformRetreat");
                 PerformRetreat();
+
+                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
                 UpdateOrbitals();
 
                 if (!IsCombatOver)
@@ -202,12 +206,14 @@ namespace Supremacy.Combat
 
             SendUpdates();
 
+            GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
             RemoveDefeatedPlayers();
 
             Running = false;
 
             if (IsCombatOver)
             {
+                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - IsCombatOver = TRUE");
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
         }
@@ -468,19 +474,30 @@ namespace Supremacy.Combat
         /// </summary>
         protected void PerformRetreat()
         {
-            foreach (var assets in _assets)
+            try
             {
-                var destination = CombatHelper.CalculateRetreatDestination(assets);
-
-                if (destination == null)
+                GameLog.Core.Combat.DebugFormat("PerformRetreat begins");
+                foreach (var assets in _assets)
                 {
-                    continue;
-                }
+                    var destination = CombatHelper.CalculateRetreatDestination(assets);
 
-                foreach (var shipStats in assets.EscapedShips)
-                {
-                    ((Ship)shipStats.Source).Fleet.Location = destination.Location;
+                    if (destination == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (var shipStats in assets.EscapedShips)
+                    {
+                        ((Ship)shipStats.Source).Fleet.Location = destination.Location;
+                        GameLog.Core.Combat.DebugFormat("PerformRetreat: {0} {1} retreats to {2}",
+                            ((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString());
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                GameLog.Core.Combat.DebugFormat("##### Problem at PerformRetreat");
+                    //((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString(), e);
             }
         }
 
