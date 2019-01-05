@@ -564,6 +564,7 @@ namespace Supremacy.Combat
                 _roundNumber += 1;
                 var allRetreatShips = _combatShips
                     .Where(s => !s.Item1.IsDestroyed)
+                    .Where(s => s.Item1.Owner != s.Item1.Source.Sector.Owner) // Ships in own territory make a stand (remain in the system they own), after 5 turns.
                     .ToList();
                 foreach (var ship in allRetreatShips)
                 {
