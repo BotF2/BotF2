@@ -365,8 +365,8 @@ namespace Supremacy.Combat
                     from f in GameContext.Current.Universe.FindAt<Fleet>(colony.Location)
                     where f.OwnerID == _invaderId && f.Order is AssaultSystemOrder
                     from ship in f.Ships
-                    where ship.IsCombatant || ship.ShipType == ShipType.Transport
                     select ship
+                    //where ship.IsCombatant || ship.ShipType == ShipType.Transport
                 );
 
             _invadingUnits.AddRange(invadingUnits.Select(o => new InvasionOrbital(o)));
@@ -753,20 +753,26 @@ namespace Supremacy.Combat
         private void ProcessRound()
         {
             //RechargeUnits(); // commented, so that Recharge only after invasion is over
-
-            if (_orders.Action == InvasionAction.StandDown)
+            try
             {
-                if (_invasionArena.RoundNumber > 1)
+                if (_orders.Action == InvasionAction.StandDown)
                 {
-                    var defendingUnits = _invasionArena.DefendingUnits.Where(o => !o.IsDestroyed).OfType<InvasionOrbital>().ToList();
-                    var invadingUnits = _invasionArena.InvadingUnits.Where(o => !o.IsDestroyed).OfType<InvasionOrbital>().ToList();
-                    // Current X
-                    //  ProcessSpaceCombat(invadingUnits, defendingUnits); // out-commented to enable retreat.
+                    if (_invasionArena.RoundNumber > 1)
+                    {
+                        var defendingUnits = _invasionArena.DefendingUnits.Where(o => !o.IsDestroyed).OfType<InvasionOrbital>().ToList();
+                        var invadingUnits = _invasionArena.InvadingUnits.Where(o => !o.IsDestroyed).OfType<InvasionOrbital>().ToList();
+                        // Current X
+                        //  ProcessSpaceCombat(invadingUnits, defendingUnits); // out-commented to enable retreat.
+                    }
+                    _invasionArena.Update();
+                    _invasionArena.Retreat();
+                    _invasionArena.Update();
+                    return;
                 }
-                _invasionArena.Update();
-                _invasionArena.Retreat();
-                _invasionArena.Update();
-                return;
+            }
+            catch (Exception e)
+            {
+                GameLog.Core.Combat.DebugFormat("##### Problem at Invasion-StandDown {0}", e);
             }
 
             if (_invasionArena.HasOrbitalDefenses)
