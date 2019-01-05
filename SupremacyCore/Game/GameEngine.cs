@@ -124,7 +124,10 @@ namespace Supremacy.Game
             if (phase != TurnPhase.SendUpdates)
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
-                    scriptedEvent.OnTurnPhaseStarted(game, phase);
+                {
+                    if (GameContext.Current.TurnNumber >= 50)
+                        scriptedEvent.OnTurnPhaseStarted(game, phase);
+                }
             }
 
             var handler = TurnPhaseChanged;
@@ -144,7 +147,10 @@ namespace Supremacy.Game
             if (phase != TurnPhase.SendUpdates)
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
-                    scriptedEvent.OnTurnPhaseFinished(game, phase);
+                {
+                    if (GameContext.Current.TurnNumber >= 50)
+                        scriptedEvent.OnTurnPhaseFinished(game, phase);
+                }
             }
 
             var handler = TurnPhaseFinished;
@@ -186,7 +192,7 @@ namespace Supremacy.Game
                     game.ScriptedEvents.Remove(eventToRemove);
 
                 //If we've reached turn 20, start running scripted events
-                if (GameContext.Current.TurnNumber >= 20)
+                if (GameContext.Current.TurnNumber >= 50)
                 {
                     foreach (var scriptedEvent in game.ScriptedEvents)
                     {
@@ -297,7 +303,11 @@ namespace Supremacy.Game
             try
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
-                    scriptedEvent.OnTurnFinished(game);
+                {
+                    if (GameContext.Current.TurnNumber >= 50)
+                        scriptedEvent.OnTurnFinished(game);
+                }
+                   
             }
             finally { GameContext.PopThreadContext(); }
 

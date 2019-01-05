@@ -692,12 +692,9 @@ namespace Supremacy.Combat
         /// 
 
         private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
-        {
-            ShipDesign shipDesign = new ShipDesign();
-            //var ship = target
-            //shipDesign.Maneuverability
+        { 
             var sourceAccuracy = source.Source.GetAccuracyModifier(); // var? Or double?
-            //var manuver = target.C
+            var maneuverability = target.Source.GetManeuverablility(); // byte
             if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
                 sourceAccuracy = 0.5;
 
@@ -774,7 +771,21 @@ namespace Supremacy.Combat
             {
                 targetDamageControl = 1.4;
             } // end added lines
-            if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
+            // currentx
+            double currentManeuverability = maneuverability;// insert gotten m. here // get int maneuverablity, convert to double
+            double ManeuverabilityModifer = 0.0;
+            var sourceAccuracyTemp = 0.5;
+            if (sourceAccuracy > 0.9 && sourceAccuracy < 1.7)
+                sourceAccuracyTemp = 0.6;
+            ManeuverabilityModifer = ((5 - currentManeuverability) / 10); // +/- 0.4
+            sourceAccuracyTemp = sourceAccuracyTemp + ManeuverabilityModifer;
+            if (sourceAccuracyTemp < 0.1 || sourceAccuracyTemp > 0.9) // prevent odd numbers
+                sourceAccuracyTemp = 0.5;
+
+            if (sourceAccuracy == 1.7) // if heroship value, use it
+                sourceAccuracyTemp = 1.7;
+            
+            if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
             {
 
 

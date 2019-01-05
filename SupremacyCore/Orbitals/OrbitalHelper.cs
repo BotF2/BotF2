@@ -116,6 +116,21 @@ namespace Supremacy.Orbitals
             return 1.0;
         }
 
+        public static byte GetManeuverablility(this Orbital orbital)
+        {
+            if (orbital == null)
+            {
+                throw new ArgumentNullException("orbital");
+            }
+            if (orbital.IsMobile)
+            {
+                byte maneuverablity = orbital.OrbitalDesign.Maneuverability;
+                return maneuverablity;
+            }
+            return 0;
+        
+        }
+
         /// <summary>
         /// Gets the total firepower for this <see cref="Orbital"/>
         /// </summary>
