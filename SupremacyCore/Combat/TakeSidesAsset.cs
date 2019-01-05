@@ -49,7 +49,9 @@ namespace Supremacy.Combat
                             OppositionFleets.Distinct();
                         }
 
-                        GameLog.Core.Combat.DebugFormat("OppositionFleets.Count() = {0} ", OppositionFleets.Count());
+                        if (OppositionFleets.Count() > 0)
+                            GameLog.Core.Combat.DebugFormat("OppositionFleets.Count() = {0} ", OppositionFleets.Count());
+
                         MaxOppositionScanStrengh = 0;
                         if (OppositionFleets.Count() > 0)
                         {
