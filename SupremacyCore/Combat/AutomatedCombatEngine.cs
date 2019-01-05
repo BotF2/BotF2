@@ -58,7 +58,7 @@ namespace Supremacy.Combat
 
         private object firstOwner;
 
-        private int wearkerSide =0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
+        private int weakerSide =0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
 
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
 
@@ -153,7 +153,7 @@ namespace Supremacy.Combat
             // Setting variables to standard (initilization)
             shipRatio = 1;
             excessShipsStartingAt = 0; 
-            wearkerSide = 0;
+            weakerSide = 0;
             cycleReduction = 1;
             newCycleReduction = 1;
 
@@ -247,15 +247,15 @@ namespace Supremacy.Combat
 
 
 
-            for (int i = 0; i < _combatShips.Count; i++)
+            //for (int i = 0; i < _combatShips.Count; i++)
 
-            {
+            //{
 
-                GameLog.Core.Combat.DebugFormat("unsorted combat ships {3} = {0} {1} ({2})",
+            //    //GameLog.Core.Combat.DebugFormat("unsorted combat ships {3} = {0} {1} ({2})",
 
-                    _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, i);
+            //        //_combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, i);
 
-            }
+            //}
 
             foreach (var combatent in _combatShips)
 
@@ -296,7 +296,7 @@ namespace Supremacy.Combat
 
                 excessShipsStartingAt = 0; 
 
-                wearkerSide = 0;
+                weakerSide = 0;
 
             }
 
@@ -315,7 +315,7 @@ namespace Supremacy.Combat
                     ratioBTemp = OppositionCombatShips.Count();
                     shipRatio = ratioATemp / ratioBTemp;
 
-                    wearkerSide = 1;
+                    weakerSide = 1;
 
                 }
 
@@ -330,7 +330,7 @@ namespace Supremacy.Combat
                     ratioBTemp = OppositionCombatShips.Count();
                     shipRatio = ratioBTemp / ratioATemp;
 
-                    wearkerSide = 2;
+                    weakerSide = 2;
 
                 }
 
@@ -338,7 +338,7 @@ namespace Supremacy.Combat
 
             if (FriendlyCombatShips.Count() == OppositionCombatShips.Count())
 
-                wearkerSide = 0;
+                weakerSide = 0;
 
             if (shipRatio > 1.0)
             {
@@ -1230,7 +1230,7 @@ namespace Supremacy.Combat
 
 
             // if side ==2 opposition is stronger, first frienldy side gets the bonus and side ==1 first friendly side has more ships, opposition side gets the bonus
-            switch (wearkerSide)
+            switch (weakerSide)
             {
                 //if (wearkerSide == 1) //first (Friendly) side has more ships
                 case 1:
@@ -1301,7 +1301,7 @@ namespace Supremacy.Combat
 
                     
                
-                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *3 of all {3} (cycleReduction = {4}, sourceAccuracy = {5}), targetDamageControl = {6}, targetShields = {7}, hull = {8}",
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *3 of all {3} (cycleRed.= {4}, s_Accuracy = {5}), DamageControl = {6}, Shields = {7}, hull = {8}",
 
                         target.Source.ObjectID, target.Name, target.Source.Design,
 
