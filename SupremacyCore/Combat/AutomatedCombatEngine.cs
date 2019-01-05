@@ -240,6 +240,7 @@ namespace Supremacy.Combat
 
 
                 var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
+                //var ships = new List<Ship>(_combatShips.).ToList();
                 //for (int ship = 0; ship < _combatShips.; ship++)
                 //{
 
