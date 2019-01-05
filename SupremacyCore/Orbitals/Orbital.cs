@@ -234,18 +234,19 @@ namespace Supremacy.Orbitals
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
             if (claimingCiv == Owner)
             {
-                if ((Sector.System != null) && Sector.System.HasColony)
+                // Added that system must be owned by ship´s owner
+                if ((Sector.System != null) && Sector.System.HasColony && Sector.System.Owner == Owner)
                 {
                     increase = 0.10;
-                }
-                else if (Sector.Station != null)
+                }// Added that Station must be owned by ship´s owner
+                else if (Sector.Station != null && Sector.System.Owner == Owner)
                 {
                     increase = 0.05;
                 }
-                else
-                {
-                    increase = 0.025;
-                }
+                //else // no more Hull repair without a base
+                //{
+                //    increase = 0.025;
+                //}
             }
 
             HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
@@ -255,8 +256,18 @@ namespace Supremacy.Orbitals
         /// Regenerates the shields.
         /// </summary>
         public void RegenerateShields()
-        {
-            double increase = OrbitalDesign.ShieldRechargeRate * ShieldStrength.Maximum;
+        {       //Bases regenerate their own shields 4 times quicker. See ship repair in simular line elsewhere
+            double increase = (OrbitalDesign.ShieldRechargeRate / 7) * ShieldStrength.Maximum; //  Reduce Ship ShieldRecharge to 1/7th of XML %tage
+            if (OrbitalDesign.Key.Contains("BASE") 
+                || OrbitalDesign.Key.Contains("OUTPOST")
+                || OrbitalDesign.Key.Contains("TRANSWARP")
+                || OrbitalDesign.Key.Contains("STATION")
+                )
+                //OrbitalDesign.ShipType.Contains("BASE") || OrbitalDesign.ShipType.Contains("OUTPOST"))
+            {
+                increase = increase * 4;
+            }
+
             ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
         }
 
@@ -269,14 +280,49 @@ namespace Supremacy.Orbitals
         protected internal override void Reset()
         {
             base.Reset();
+            //base.DynamicObjectType // that?
+            // No shield regeneration // use Reharge value /7 from it. Here is where the ship regeneration is 
+            // next 2 lines not needed they are in Regnerate shields -> no they are needed, its that thats working
+            double increase = (OrbitalDesign.ShieldRechargeRate /7) * ShieldStrength.Maximum; // Reduce Oribtal ShieldRecharge to 50% Not yet tested
+            ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
 
-            _shieldStrength.Reset(_shieldStrength.Maximum);
-            
-            RegenerateHull();
-            _hullStrength.UpdateAndReset();
+
+            // orignal stuff. No longer full recovery after battle.
+            // _shieldStrength.Reset(_shieldStrength.Maximum);
+            // RegenerateHull();
+
+            // full regeneration at homebases
+            //double increase = 0.01; // only minimal hull repair on non-bases
+            Entities.Civilization claimingCiv = null;
+            if (GameContext.Current.SectorClaims != null)
+                claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
+            if (claimingCiv == Owner)
+            {
+                if ((Sector.System != null) && Sector.System.HasColony && Sector.System.Owner == Owner)
+                {
+                    _shieldStrength.Reset(_shieldStrength.Maximum);
+
+                    RegenerateHull();
+                    increase = 0.07;
+                    HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
+                }
+                if (Sector.Station != null && Sector.System.Owner == Owner) // no more Else-If, both Colony and Station can work together
+                {
+                    _shieldStrength.Reset(_shieldStrength.Maximum);
+                    increase = 0.10;
+                    RegenerateHull();
+                    HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
+                }
+
+            }
+
+
+
+            // no more instant-repair outcomment the following line
+            //_hullStrength.UpdateAndReset();
         }
 
-		public override void SerializeOwnedData(SerializationWriter writer, object context)
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
 		{
 			base.SerializeOwnedData(writer, context);
 			writer.WriteObject(_crew);
@@ -312,3 +358,4 @@ namespace Supremacy.Orbitals
         Legendary
     }
 }
+
