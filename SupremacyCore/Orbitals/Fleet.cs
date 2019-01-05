@@ -806,6 +806,7 @@ namespace Supremacy.Orbitals
         /// <param name="route">The route.</param>
         public void SetRoute(TravelRoute route)
         {
+            //GameLog.Core.Combat.DebugFormat("SetRoute begins...");
             if (IsRouteLocked)
                 return;
             
@@ -816,14 +817,28 @@ namespace Supremacy.Orbitals
 
             SetRouteInternal(route);
             OnPropertyChanged("Route");
+            //GameLog.Core.Combat.DebugFormat("SetRoute changed...");
 
             if ((lastRoute == route) || (_order == null) || !_order.IsAssigned)
                 return;
 
+            //GameLog.Core.Combat.DebugFormat("NEXT: if IsCancelledOnRouteChange...");
             if (_order.IsCancelledOnRouteChange)
                 CancelOrder();
             else
+                if (_order is AssaultSystemOrder)
+            {
+                //GameLog.Core.Combat.DebugFormat("if (_order is AssaultSystemOrder)...");
+                CancelOrder();
+                OnPropertyChanged("Order");
+                //GameLog.Core.Combat.DebugFormat("if (_order is AssaultSystemOrder)... order NEW = {0}", _order);
+            }
+            else
+            {
+                //GameLog.Core.Combat.DebugFormat("_order.OnFleetRouteChanged();...");
                 _order.OnFleetRouteChanged();
+                OnPropertyChanged("Order");
+            }
         }
 
         /// <summary>
