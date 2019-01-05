@@ -651,14 +651,16 @@ namespace Supremacy.Game
             foreach (var fleet in fleetsAtLocation)
             {
 
-
-                GameLog.Core.Combat.DebugFormat("fleet objectid {0} name {1} location {2} order {3} is Camouflaged {4} Is Cloaked {5}",
-                    fleet.ObjectID, fleet.Name,fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                if (fleet.IsCamouflaged == false)
+                {
+                    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4}, IsCloaked = {5}",
+                    fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                }
 
                 if (fleet.IsCamouflaged)
                 {
-                    GameLog.Core.Combat.DebugFormat("fleet objectid {0} name {1} location {2} order {3} is Camouflaged {4} = TRUE, Cloaked {5}",
-                        fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4} (TRUE??), IsCloaked = {5}",
+                            fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
                     //fleetsAtLocation.Remove(fleet);
                 }
 

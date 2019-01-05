@@ -104,7 +104,7 @@ namespace Supremacy.Combat
                 {
                     if (assets.HasSurvivingAssets)
                     {
-                        GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
+                        //GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
                         friendlyAssets++;
                     }
                 }
@@ -122,7 +122,7 @@ namespace Supremacy.Combat
                 {
                     if (assets.HasSurvivingAssets)
                     {
-                        GameLog.Core.Combat.DebugFormat("Combat: hostileAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
+                        //GameLog.Core.Combat.DebugFormat("Combat: hostileAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
                         hostileAssets++;
                     }
                 }

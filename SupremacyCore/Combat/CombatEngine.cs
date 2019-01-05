@@ -384,7 +384,7 @@ namespace Supremacy.Combat
             if (weaponRatio > 6) // if you outgun the retreater they are less likely to get away
             {
                 retreatChanceModifier = -10;
-                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -30 modifier", weaponRatio);
+                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. - Modifier was {1}", weaponRatio, retreatChanceModifier);
             }
             //else if (weaponRatio > 3)
             //{
