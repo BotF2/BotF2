@@ -623,11 +623,21 @@ namespace Supremacy.Combat
                         //Has both ships and station to target
                         if (hasOppositionStation && (oppositionShips.Count() > 0))
                         {
-                            if (RandomHelper.Random(5) == 0)
+                            var oppOrder = GetOrder(oppositionShips.FirstOrDefault().Item1.Source);
+                            if (oppOrder == CombatOrder.Formation) //(RandomHelper.Random(5) == 0)
+                            {
+                                GameLog.Core.Combat.DebugFormat("",
+                                 oppositionShips.FirstOrDefault().Item1.Source.ObjectID,
+                                  oppositionShips.FirstOrDefault().Item1.Source.Name,
+                                  oppositionShips.FirstOrDefault().Item1.Source.Design,
+                                  oppOrder);
+                                return oppositionShips.FirstOrDefault().Item1;
+                            }
+                            else
                             {
                                 return _combatStation.Item1;
                             }
-                            return oppositionShips.FirstOrDefault().Item1; // ´MAYBE needs change that target cannot be retreated ships...
+                            // ´MAYBE needs change that target cannot be retreated ships...
                         }
                         //Only has a station to target
                         if (hasOppositionStation)
@@ -743,13 +753,24 @@ namespace Supremacy.Combat
             {
                 targetDamageControl = 1;
             }
-
+            // Added lines to reduce damage to SB to 10%. Also  Changed damage to 2.5 instead of 4. and 10 instead of 50
+            if (!target.IsMobile &&
+                target.Source.Sector.Name == "Sol"
+                || target.Source.Sector.Name == "Terra"
+                || target.Source.Sector.Name == "Omarion Nebula"
+                || target.Source.Sector.Name == "Borg Nebula"
+                || target.Source.Sector.Name == "Kronos"
+                || target.Source.Sector.Name == "Romulus"
+                || target.Source.Sector.Name == "Cardassia")
+            {
+                targetDamageControl = 1.4;
+            } // end added lines
             if (RandomHelper.Random(100) <= (100 * sourceAccuracy))  // not every weapons does a hit
             {
 
 
                 // Fire Weapons, inflict damage
-                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 4 + 50)); // minimal damage of 50 included
+                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
 
 
                 GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *3 of all {3} (cycleRed.= {4}, s_Accuracy = {5}), DamageControl = {6}, Shields = {7}, hull = {8}",
