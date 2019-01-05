@@ -31,7 +31,7 @@ namespace Supremacy.Combat
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
-
+   
         public List<Tuple<CombatUnit, CombatWeapon[]>> FriendlyCombatShips
         {
             get
@@ -240,6 +240,10 @@ namespace Supremacy.Combat
 
 
                 var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
+                //for (int ship = 0; ship < _combatShips.; ship++)
+                //{
+
+                //}
 
                 var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
                 var friendlyShips = _combatShips.Where(cs => !CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
@@ -688,7 +692,11 @@ namespace Supremacy.Combat
 
         private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
         {
+            ShipDesign shipDesign = new ShipDesign();
+            //var ship = target
+            //shipDesign.Maneuverability
             var sourceAccuracy = source.Source.GetAccuracyModifier(); // var? Or double?
+            //var manuver = target.C
             if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
                 sourceAccuracy = 0.5;
 
