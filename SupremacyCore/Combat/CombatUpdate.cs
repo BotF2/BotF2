@@ -127,10 +127,11 @@ namespace Supremacy.Combat
                     }
                 }
 
-                GameLog.Core.Combat.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
-
                 if (hostileAssets == 0)
+                {
+                    //GameLog.Core.Combat.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
                     return true;
+                }
 
                 return (hostileAssets == 0);
             }

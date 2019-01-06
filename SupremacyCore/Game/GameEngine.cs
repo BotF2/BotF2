@@ -661,18 +661,17 @@ namespace Supremacy.Game
             foreach (var fleet in fleetsAtLocation)
             {
 
-                if (fleet.IsCamouflaged == false)
-                {
-                    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4}, IsCloaked = {5}",
-                    fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
-                }
+                //if (fleet.IsCamouflaged == false)
+                //{
+                //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4}, IsCloaked = {5}",
+                //    fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                //}
 
-                if (fleet.IsCamouflaged)
-                {
-                    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4} (TRUE??), IsCloaked = {5}",
-                            fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
-                    //fleetsAtLocation.Remove(fleet);
-                }
+                //if (fleet.IsCamouflaged)
+                //{
+                //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4} (TRUE??), IsCloaked = {5}",
+                //            fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                //}
 
 
                 //List<Fleet> _owners = new List<Fleet>();

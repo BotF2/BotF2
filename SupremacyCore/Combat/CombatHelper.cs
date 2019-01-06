@@ -82,7 +82,7 @@ namespace Supremacy.Combat
                     //    ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
                     if ((ship.IsCamouflaged) && (unit.CamouflagedStrength >= maxOppostionScanStrength))
                     {
-                        GameLog.Core.Combat.DebugFormat("!ship! {0} {1} ({2}) at {3} is Camouflaged {4} = TRUE, Cloaked {5}",
+                        GameLog.Core.Combat.DebugFormat("ship at {3} is Camouflaged {4} = TRUE?, Cloaked {5} for ({2}) {0} {1} ",
                             ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
                         // seems to be no difference between ship and unit
                         //GameLog.Core.Combat.DebugFormat("!unit! {0} {1} ({2}) at {3} is Camouflaged {4} = TRUE, Cloaked {5}",
