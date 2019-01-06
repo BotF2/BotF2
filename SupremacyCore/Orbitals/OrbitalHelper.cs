@@ -100,41 +100,33 @@ namespace Supremacy.Orbitals
         {
             if (orbital == null)
                 throw new ArgumentNullException("orbital");
-
+            double returnModifier = 0.4;
             var accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
             if (accuracyTable != null)
             {
                 if (accuracyTable[orbital.ExperienceRank.ToString()] != null)
                 {
-                    double modifier;
-                    if (double.TryParse(accuracyTable[orbital.ExperienceRank.ToString()][0], out modifier))
+                    if (double.TryParse(accuracyTable[orbital.ExperienceRank.ToString()][0], out double modifier))
                     {
-                        return modifier; 
+                        returnModifier = modifier;
                     }
                 }
             }
-            return 1.0;
+            return returnModifier;
         }
 
-        /// <summary>
-        /// Gets Maneuverability byte value for orbitals 
-        /// </summary>
-        /// <param name="orbital">
-        /// Orbital for which maneuverability is needed
-        /// </param>
-        /// <returns>orbital maneuverability</returns>
         public static byte GetManeuverablility(this Orbital orbital)
         {
-            byte wendig = 0;
             if (orbital == null)
             {
                 throw new ArgumentNullException("orbital");
             }
             if (orbital.IsMobile)
             {
-                wendig = orbital.OrbitalDesign.Maneuverability;
+                byte maneuverablity = orbital.OrbitalDesign.Maneuverability;
+                return maneuverablity;
             }
-            return wendig;
+            return 0;
         
         }
 

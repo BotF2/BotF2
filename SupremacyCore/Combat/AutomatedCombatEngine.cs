@@ -354,15 +354,16 @@ namespace Supremacy.Combat
                         if (order != CombatOrder.Formation)
                         {
                             var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
-                            target.TakeDamage(target.Source.OrbitalDesign.HullStrength * maneuver/32); // max possible hull damage of 25%
+                            //target.TakeDamage((target.Source.OrbitalDesign.HullStrength +1) * (maneuver/32)+1); // max possible hull damage of 25%
 
                             GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}", 
                                 target.Source.ObjectID, target.Source.Name, target.Source.Design,
                                 target.Source.OrbitalDesign.HullStrength,
-                                target.Source.OrbitalDesign.HullStrength * maneuver / 32,
+                                (target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1,
                                 maneuver,
                                 attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.Design
                                 );
+                            target.TakeDamage((target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1); // max possible hull damage of 25%
                         }
                         if (target == null)
                         {
@@ -718,8 +719,10 @@ namespace Supremacy.Combat
             var sourceAccuracy = source.Source.GetAccuracyModifier(); // var? Or double?
             var maneuverability = target.Source.GetManeuverablility(); // byte
             if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
+            {
+                GameLog.Core.Combat.DebugFormat("sourceAccuracy {0} out of range, now reset to 0.5", sourceAccuracy);
                 sourceAccuracy = 0.5;
-            
+            }    
             var targetDamageControl = target.Source.GetDamageControlModifier();
             if (targetDamageControl > 1 || targetDamageControl < 0.1)  // if getting damge control is odd, take standard until bug fixed
                 targetDamageControl = 0.5;
@@ -816,9 +819,9 @@ namespace Supremacy.Combat
                 target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
 
 
-                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *3 of all {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
+                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
                     target.Source.ObjectID, target.Name, target.Source.Design,
-                    (int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction),
+                    (int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10),
                     cycleReduction,
                     sourceAccuracy,
                     targetDamageControl,
