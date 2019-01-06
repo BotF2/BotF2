@@ -205,6 +205,13 @@ namespace Supremacy.Combat
             {
                 newCycleReduction = 1;
             }
+            GameLog.Core.Combat.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}", 
+                newCycleReduction,
+                excessShipsStartingAt,
+                ratioATemp,
+                ratioBTemp, 
+                shipRatio,
+                weakerSide);
 
             for (int i = 0; i < _combatShips.Count; i++) // sorting combat Ships to have one ship of each side alternating
             {
@@ -348,6 +355,14 @@ namespace Supremacy.Combat
                         {
                             var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
                             target.TakeDamage(target.Source.OrbitalDesign.HullStrength * maneuver/32); // max possible hull damage of 25%
+
+                            GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}", 
+                                target.Source.ObjectID, target.Source.Name, target.Source.Design,
+                                target.Source.OrbitalDesign.HullStrength,
+                                target.Source.OrbitalDesign.HullStrength * maneuver / 32,
+                                maneuver,
+                                attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.Design
+                                );
                         }
                         if (target == null)
                         {
@@ -436,15 +451,21 @@ namespace Supremacy.Combat
                                         // but each 2nd Weapon e.g. first 5 Beams than 3 Torpedos
                                         //    commend unknown/old stuff if ((partlyFiring += 1) * 2 < amountOfWeapons)
                                         // {
-                                        GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}, partlyFiring Step {7}",
-                                            attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design,
-                                            amountOfWeapons, partlyFiring);
+
+
+                                        //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}, partlyFiring Step {7}",
+                                        //    attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design,
+                                        //    amountOfWeapons, partlyFiring);
 
                                         PerformAttack(attackingShip, target, weapon);
 
                                         //}
                                     }
                                 }
+                                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}",
+                                    attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, 
+                                    target.Source.ObjectID, target.Name, target.Source.Design,
+                                    amountOfWeapons);
                                 // all weapons fired for current ship i
 
                             }
@@ -756,13 +777,14 @@ namespace Supremacy.Combat
             if (!target.IsMobile &&
                 target.Source.Sector.Name == "Sol"
                 || target.Source.Sector.Name == "Terra"
-                || target.Source.Sector.Name == "Omarion Nebula"
-                || target.Source.Sector.Name == "Borg Nebula"
+                || target.Source.Sector.Name == "Omarion"
+                || target.Source.Sector.Name == "Borg"
                 || target.Source.Sector.Name == "Qo'noS"
                 || target.Source.Sector.Name == "Romulus"
                 || target.Source.Sector.Name == "Cardassia")
             {
                 targetDamageControl = 1.4;
+                //GameLog.Core.Combat.DebugFormat("targetDamageControl = {0} due to HomeSystemStation or OB at {1}", targetDamageControl, target.Source.Sector.Name);
             } // end added lines
             // currentx
             double currentManeuverability = maneuverability;// get int target maneuverablity, convert to double
@@ -777,7 +799,16 @@ namespace Supremacy.Combat
 
             if (sourceAccuracy == 1.7) // if heroship value, use it
                 sourceAccuracyTemp = 1.7;
-            
+
+            GameLog.Core.Combat.DebugFormat("various values: sourceAccuracy = {0}, sourceAccuracyTemp = {1}, maneuverability = {2}, currentManeuverability = {3}, ManeuverabilityModifer = {4}, targetDamageControl = {5}",
+                sourceAccuracy,
+                sourceAccuracyTemp,
+                maneuverability,
+                currentManeuverability,
+                ManeuverabilityModifer,
+                targetDamageControl
+                );
+
             if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
             {
 
@@ -785,7 +816,7 @@ namespace Supremacy.Combat
                 target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
 
 
-                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *3 of all {3} (cycleRed.= {4}, s_Accuracy = {5}), DamageControl = {6}, Shields = {7}, hull = {8}",
+                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage *3 of all {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
                     target.Source.ObjectID, target.Name, target.Source.Design,
                     (int)(weapon.MaxDamage.CurrentValue * targetDamageControl * sourceAccuracy * cycleReduction),
                     cycleReduction,
