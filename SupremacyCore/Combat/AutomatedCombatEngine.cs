@@ -337,17 +337,18 @@ namespace Supremacy.Combat
                 var order = GetOrder(_combatShips[i].Item1.Source);
                 switch (order)
                 {
-
                     case CombatOrder.Engage:
                     case CombatOrder.Rush:
                     case CombatOrder.Transports:
                     case CombatOrder.Formation:
 
-
                         var attackingShip = _combatShips[i].Item1;
                         var target = ChooseTarget(attackingShip);
-
-
+                        if (order != CombatOrder.Formation)
+                        {
+                            var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
+                            target.TakeDamage(target.Source.OrbitalDesign.HullStrength * maneuver/32); // max possible hull damage of 25%
+                        }
                         if (target == null)
                         {
                             GameLog.Core.Combat.DebugFormat("No target for {0} {1} ({2})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design);
@@ -697,7 +698,7 @@ namespace Supremacy.Combat
             var maneuverability = target.Source.GetManeuverablility(); // byte
             if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
                 sourceAccuracy = 0.5;
-
+            
             var targetDamageControl = target.Source.GetDamageControlModifier();
             if (targetDamageControl > 1 || targetDamageControl < 0.1)  // if getting damge control is odd, take standard until bug fixed
                 targetDamageControl = 0.5;
@@ -705,10 +706,10 @@ namespace Supremacy.Combat
             // if side ==2 opposition is stronger, first frienldy side gets the bonus and side ==1 first friendly side has more ships, opposition side gets the bonus
             switch (weakerSide)
             {
-                //if (wearkerSide == 1) //first (Friendly) side has more ships
+                //if (weakerSide == 1) //first (Friendly) side has more ships
                 case 1:
                     {
-                        if (source.Owner != firstOwner || !friendlyOwner) //Plz DOUBLECHECK (If it is an opposition ship[ not first owner of firendly to first owner] improve on thier fire)
+                        if (source.Owner != firstOwner || !friendlyOwner) //(If it is an opposition ship[ not first owner of firendly to first owner] improve on thier fire)
                         {
                             sourceAccuracy = 1.0 + (1 - newCycleReduction);
                             if (sourceAccuracy > 1.5)
@@ -717,10 +718,6 @@ namespace Supremacy.Combat
                             }
                             cycleReduction = 1;
                         }
-                        else
-                        {
-                            //cycleReduction = newCycleReduction; cycleReduction is already filled before when firing ship is a ship exceeding the tie of ships
-                        }// First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
                         break;
                     }
                 //else if (wearkerSide == 0)
@@ -733,7 +730,7 @@ namespace Supremacy.Combat
                 //else if (wearkerSide == 2) 
                 case 2:// Opposition side has more ships so cycle
                     {
-                        if (source.Owner == firstOwner || friendlyOwner) //Plz DOUBLECHECK (If it is samne owner as first, or friendly to first, improve on thier fire)
+                        if (source.Owner == firstOwner || friendlyOwner) //(If it is samne owner as first, or friendly to first, improve on thier fire)
                         {
                             sourceAccuracy = 1.0 + (1 - newCycleReduction);
                             if (sourceAccuracy > 1.5)
@@ -742,10 +739,6 @@ namespace Supremacy.Combat
                             }
                             cycleReduction = 1;
                         } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
-                        else
-                        {
-                            //cycleReduction = newCycleReduction; cycleReduction is already filled before when firing ship is a ship exceeding the tie of ships
-                        }
                         break;
                     }
             }
@@ -759,27 +752,27 @@ namespace Supremacy.Combat
             {
                 targetDamageControl = 1;
             }
-            // Added lines to reduce damage to SB to 10%. Also  Changed damage to 2.5 instead of 4. and 10 instead of 50
+            // Added lines to reduce damage to SB and OB to 10%. Also  Changed damage to 2.5 instead of 4. and 10 instead of 50
             if (!target.IsMobile &&
                 target.Source.Sector.Name == "Sol"
                 || target.Source.Sector.Name == "Terra"
                 || target.Source.Sector.Name == "Omarion Nebula"
                 || target.Source.Sector.Name == "Borg Nebula"
-                || target.Source.Sector.Name == "Kronos"
+                || target.Source.Sector.Name == "Qo'noS"
                 || target.Source.Sector.Name == "Romulus"
                 || target.Source.Sector.Name == "Cardassia")
             {
                 targetDamageControl = 1.4;
             } // end added lines
             // currentx
-            double currentManeuverability = maneuverability;// insert gotten m. here // get int maneuverablity, convert to double
+            double currentManeuverability = maneuverability;// get int target maneuverablity, convert to double
             double ManeuverabilityModifer = 0.0;
             var sourceAccuracyTemp = 0.5;
             if (sourceAccuracy > 0.9 && sourceAccuracy < 1.7)
                 sourceAccuracyTemp = 0.6;
-            ManeuverabilityModifer = ((5 - currentManeuverability) / 10); // +/- 0.4
+            ManeuverabilityModifer = ((5 - currentManeuverability) / 10); // +/- 0.4 Targets maneuverablity
             sourceAccuracyTemp = sourceAccuracyTemp + ManeuverabilityModifer;
-            if (sourceAccuracyTemp < 0.1 || sourceAccuracyTemp > 0.9) // prevent odd numbers
+            if (sourceAccuracyTemp < 0.0 || sourceAccuracyTemp > 1) // prevent out of range numbers
                 sourceAccuracyTemp = 0.5;
 
             if (sourceAccuracy == 1.7) // if heroship value, use it
@@ -787,7 +780,6 @@ namespace Supremacy.Combat
             
             if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
             {
-
 
                 // Fire Weapons, inflict damage
                 target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
@@ -802,7 +794,6 @@ namespace Supremacy.Combat
                     target.ShieldStrength,
                     target.HullStrength
                     );
-
             }
             weapon.Discharge();
         }

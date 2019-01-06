@@ -553,15 +553,28 @@ namespace Supremacy.Orbitals
         {
             //Medicate the colony
             var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10);
-            Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
-            Fleet.Sector.System.Colony.Health.UpdateAndReset();
-
-            //If the colony is not ours, increase regard etc
-            if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
+            if (Fleet.Sector.System.Colony is null) // currentx
             {
-                DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
-                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
-                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                //do nothing
+            }
+            else
+            {
+                Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
+                Fleet.Sector.System.Colony.Health.UpdateAndReset();
+            }
+            //If the colony is not ours, increase regard etc
+            if (Fleet.Sector.System.Colony is null) // currentx
+            {
+                //do nothing
+            }
+            else
+            {
+                if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
+                {
+                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
+                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
+                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                }
             }
         }
 

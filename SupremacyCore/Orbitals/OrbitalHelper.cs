@@ -116,18 +116,25 @@ namespace Supremacy.Orbitals
             return 1.0;
         }
 
+        /// <summary>
+        /// Gets Maneuverability byte value for orbitals 
+        /// </summary>
+        /// <param name="orbital">
+        /// Orbital for which maneuverability is needed
+        /// </param>
+        /// <returns>orbital maneuverability</returns>
         public static byte GetManeuverablility(this Orbital orbital)
         {
+            byte wendig = 0;
             if (orbital == null)
             {
                 throw new ArgumentNullException("orbital");
             }
             if (orbital.IsMobile)
             {
-                byte maneuverablity = orbital.OrbitalDesign.Maneuverability;
-                return maneuverablity;
+                wendig = orbital.OrbitalDesign.Maneuverability;
             }
-            return 0;
+            return wendig;
         
         }
 
