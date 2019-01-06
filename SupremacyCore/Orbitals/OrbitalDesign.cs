@@ -351,7 +351,7 @@ namespace Supremacy.Orbitals
             if (element["Maneuverability"] != null)
             {
                 _maneuverability = Number.ParseByte(element["Maneuverability"].InnerText.Trim());
-                GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _maneuverability = {1}", Name, _maneuverability);        
+                //GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _maneuverability = {1}", Name, _maneuverability);        
             }
 
         }

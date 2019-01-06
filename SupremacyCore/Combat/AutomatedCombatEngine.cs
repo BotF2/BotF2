@@ -340,7 +340,6 @@ namespace Supremacy.Combat
                 bool oppositionIsRaidTransports = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Transports));
                 bool oppositionIsEngage = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetOrder(os.Item1.Source) == CombatOrder.Engage));
 
-
                 var order = GetOrder(_combatShips[i].Item1.Source);
                 switch (order)
                 {
@@ -351,7 +350,7 @@ namespace Supremacy.Combat
 
                         var attackingShip = _combatShips[i].Item1;
                         var target = ChooseTarget(attackingShip);
-                        if (order != CombatOrder.Formation)
+                        if (order != CombatOrder.Formation && order != CombatOrder.Engage)
                         {
                             var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
                             //target.TakeDamage((target.Source.OrbitalDesign.HullStrength +1) * (maneuver/32)+1); // max possible hull damage of 25%
@@ -488,26 +487,31 @@ namespace Supremacy.Combat
 
                         if (WasRetreateSuccessful(_combatShips[i].Item1, oppositionIsRushing, oppositionIsEngage, oppositionIsInFormation, oppositionIsHailing, oppositionIsRetreating, oppositionIsRaidTransports, weaponRatio))
                         {
-
-                            // added destroyed ship cannot retreat
-                            if (!ownerAssets.EscapedShips.Contains(_combatShips[i].Item1) && !_combatShips[i].Item1.IsDestroyed)
+                            try
                             {
+                                // added destroyed ship cannot retreat
+                                if (!ownerAssets.EscapedShips.Contains(_combatShips[i].Item1) && !_combatShips[i].Item1.IsDestroyed)
+                                {
 
-                                ownerAssets.EscapedShips.Add(_combatShips[i].Item1);
+                                    ownerAssets.EscapedShips.Add(_combatShips[i].Item1);
+                                }
+
+                                if (_combatShips[i].Item1.Source.IsCombatant)
+                                {
+
+                                    ownerAssets.CombatShips.Remove(_combatShips[i].Item1);
+                                }
+                                else
+                                {
+
+                                    ownerAssets.NonCombatShips.Remove(_combatShips[i].Item1);
+                                }
+
                             }
-
-                            if (_combatShips[i].Item1.Source.IsCombatant)
+                            catch(Exception e)
                             {
-
-                                ownerAssets.CombatShips.Remove(_combatShips[i].Item1);
+                                GameLog.Core.Combat.DebugFormat("Exception e {0} ship {1} {2} {3}", e, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.ObjectID);
                             }
-                            else
-                            {
-
-                                ownerAssets.NonCombatShips.Remove(_combatShips[i].Item1);
-                            }
-
-
                             _combatShips.Remove(_combatShips[i]);
                         }
 
