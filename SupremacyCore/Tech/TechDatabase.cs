@@ -1057,11 +1057,11 @@ namespace Supremacy.Tech
                         "CE_ShieldRecharge" + separator +
 
                         "CE_Beam Count" + separator +
-                        "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
-                        "CE_Damage" + separator +
+                        //"CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
+                        //"CE_Damage" + separator +
                         
                         "CE_Torpedo Count" + separator +
-                        "CE_Damage" + 
+                        //"CE_Damage" + 
                     
                         "CE_RepairSlots" + separator +
                         "CE_RepairCapacity";
@@ -1116,22 +1116,25 @@ namespace Supremacy.Tech
                         station.CrewSize + separator +
                         "PossibleStationNames" + station.Key + separator +   // doubled ??
                         station.ScienceAbility + separator +
-                        station.ScanStrength + separator +
+                        station.ScanStrength + separator +  // equal to ScanPower
                         station.SensorRange + separator +
-                        station.BuildSlots + separator +
+                        
                         station.HullStrength + separator +
                         station.ShieldStrength + separator +
-                        station.ShieldRechargeRate + separator;
+                        station.ShieldRechargeRate + separator +
 
-                        ////"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
+                        "Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
                         //item.PrimaryWeapon.Count + separator +
                         //item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
                         //item.PrimaryWeapon.Damage + separator +
 
-                        ////"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
+                        "Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
                         //item.SecondaryWeapon.Count + separator +
                         //item.SecondaryWeapon.Damage;
-                        
+
+                        station.BuildSlots +
+                        station.BuildOutput +
+                        separator;  // ends with an empty column
 
 
                         streamWriter.WriteLine(line);
