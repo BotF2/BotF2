@@ -213,13 +213,15 @@ namespace Supremacy.Combat
                 shipRatio,
                 weakerSide);
 
+            OppositionCombatShips.Randomize();
+            FriendlyCombatShips.Randomize();
             for (int i = 0; i < _combatShips.Count; i++) // sorting combat Ships to have one ship of each side alternating
             {
                 if (i <= FriendlyCombatShips.Count - 1)
                     _combatShipsTemp.Add(FriendlyCombatShips[i]);// First Ship in _ is Friendly (initialization)
 
-                if (i <= OppositionCombatShips.Count - 1)
-                    _combatShipsTemp.Add(OppositionCombatShips[i]); // Second Ship in _combatShipsTemp is opposition (initialization)
+                if (i <= OppositionCombatShips.Count - 1)                    
+                    _combatShipsTemp.Add(OppositionCombatShips[i]); // Second Ship in _combatShipsTemp is opposition (initialization)   
             }
 
             _combatShips.Clear(); //  after ships where sorted into Temp, delete 
@@ -227,8 +229,10 @@ namespace Supremacy.Combat
             for (int i = 0; i < _combatShipsTemp.Count; i++)
             {
                 _combatShips.Add(_combatShipsTemp[i]);
+
             }
             _combatShipsTemp.Clear(); // Temp cleared for next runthrough
+            _combatShips.Randomize();
 
 
             // Stop using Temp, only use it to sort and then get rid of it
@@ -573,18 +577,26 @@ namespace Supremacy.Combat
                     if (combatent.Item1.Source is Ship)
                     {
                         var Assets = GetAssets(combatent.Item1.Owner);
-                        if (!Assets.DestroyedShips.Contains(combatent.Item1))
+                        if (Assets != null)
                         {
-                            Assets.DestroyedShips.Add(combatent.Item1);
-                        }
-                        if (combatent.Item1.Source.IsCombatant)
-                        {
-                            Assets.CombatShips.Remove(combatent.Item1);
+                            GameLog.Core.Combat.DebugFormat("Name of Owner = {0}, Assets.CombatShips{1}, Assets.NonCobatShips{2}", Assets.Owner.Name, Assets.CombatShips.Count, Assets.NonCombatShips.Count);
+
+                            if (!Assets.DestroyedShips.Contains(combatent.Item1))
+                            {
+                                Assets.DestroyedShips.Add(combatent.Item1);
+                            }
+                            if (combatent.Item1.Source.IsCombatant)
+                            {
+                                Assets.CombatShips.Remove(combatent.Item1);
+                            }
+                            else
+                            {
+                                Assets.NonCombatShips.Remove(combatent.Item1);
+                            }
                         }
                         else
-                        {
-                            Assets.NonCombatShips.Remove(combatent.Item1);
-                        }
+                            GameLog.Core.Combat.DebugFormat("Assets Null");
+                                
                     }
                     continue;
                 }
