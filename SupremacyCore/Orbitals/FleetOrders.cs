@@ -136,7 +136,7 @@ namespace Supremacy.Orbitals
             {
                 var statusFormat = LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "StatusFormat");
 
-                GameLog.Core.Combat.DebugFormat("getting Status of Assault System");
+                //GameLog.Core.Combat.DebugFormat("getting Status of Assault System");
 
                 //var statusFormat = ResourceManager.GetString("SYSTEM_ASSAULT_STATUS_FORMAT");
                 if (statusFormat == null)
@@ -145,14 +145,14 @@ namespace Supremacy.Orbitals
                 var fleet = Fleet;
                 var sector = (fleet != null) ? fleet.Sector.Name : null;
 
-                GameLog.Core.Combat.DebugFormat("getting Status of Assault System...returning {0}", string.Format(statusFormat, sector));
+                //GameLog.Core.Combat.DebugFormat("getting Status of Assault System...returning {0}", string.Format(statusFormat, sector));
                 return string.Format(statusFormat, sector);
             }
         }
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - beginning to check..."); 
+            //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - beginning to check..."); 
             if (!base.IsValidOrder(fleet))
                 return false;
 
@@ -162,9 +162,9 @@ namespace Supremacy.Orbitals
             var system = GameContext.Current.Universe.Map[fleet.Location].System;
             if (system == null || !system.IsInhabited)
                 return false;
-            GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - check mostly done...");
+            //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - check mostly done...");
 
-            GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner));
+            //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner));
             return DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner);
         }
 
@@ -553,15 +553,28 @@ namespace Supremacy.Orbitals
         {
             //Medicate the colony
             var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10);
-            Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
-            Fleet.Sector.System.Colony.Health.UpdateAndReset();
-
-            //If the colony is not ours, increase regard etc
-            if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
+            if (Fleet.Sector.System.Colony is null) // currentx
             {
-                DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
-                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
-                Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                //do nothing
+            }
+            else
+            {
+                Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
+                Fleet.Sector.System.Colony.Health.UpdateAndReset();
+            }
+            //If the colony is not ours, increase regard etc
+            if (Fleet.Sector.System.Colony is null) // currentx
+            {
+                //do nothing
+            }
+            else
+            {
+                if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
+                {
+                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
+                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
+                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                }
             }
         }
 

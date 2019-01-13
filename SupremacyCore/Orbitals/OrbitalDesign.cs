@@ -36,6 +36,13 @@ namespace Supremacy.Orbitals
         private WeaponType _primaryWeapon;
         private WeaponType _secondaryWeapon;
         private string _modelFile;
+        private byte _maneuverability;
+
+        public byte Maneuverability
+        {
+            get { return _maneuverability; }
+            set { _maneuverability = (byte)value; }
+        }
 
         /// <summary>
         /// Gets or sets the size of the crew.
@@ -341,6 +348,12 @@ namespace Supremacy.Orbitals
             {
                 _modelFile = element["ModelFile"].InnerText.Trim();
             }
+            if (element["Maneuverability"] != null)
+            {
+                _maneuverability = Number.ParseByte(element["Maneuverability"].InnerText.Trim());
+                //GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _maneuverability = {1}", Name, _maneuverability);        
+            }
+
         }
 
         /// <summary>
