@@ -47,17 +47,17 @@ namespace Supremacy.Entities
 
     public enum CivTraits : ushort
     {
-        Aggressive = 0x0001,
-        Charismatic = 0x0002,
-        Creative = 0x0004,
-        Expansive = 0x0008,
-        Financial = 0x0010,
-        Imperialist = 0x0020,
-        Industrious = 0x0040,
-        Organized = 0x0080,
-        Philosophical = 0x0100,
-        Protective = 0x0200,
-        Spiritual = 0x0400
+        Warlike = 0x0001,
+        Peaceful = 0x0002,
+        Superiority = 0x0004,
+        Submissive = 0x0008,
+        Materialistic = 0x0010,
+        Spiritual = 0x0020,
+        Kindness = 0x0040,
+        Hostile = 0x0080,
+        Honourable = 0x0100,
+        Subversive = 0x0200
+        //Spiritual = 0x0400
     }
 
     /// <summary>
@@ -84,6 +84,7 @@ namespace Supremacy.Entities
         private int _civId = InvalidID;
         private CivilizationType _civType;
         private TechCurve _techCurve;
+        private string _traits;
         private string _color;
         private string _diplomacyReport;
         private Quadrant _homeQuadrant;
@@ -140,6 +141,9 @@ namespace Supremacy.Entities
             var ns = element.Document.Root.Name.Namespace;
 
             _key = (string)element.Attribute("Key");
+
+            //GameLog.Core.GameData.DebugFormat("reading Civilizations.xml for {0}", _key);
+
             _raceId = (string)element.Element(ns + "Race");
             _shortName = (string)element.Element(ns + "ShortName");
             _longName = (string)element.Element(ns + "LongName");
@@ -165,6 +169,42 @@ namespace Supremacy.Entities
                 if (convRatio > 0)
                     _industryToCreditsConversionRatio = (float)convRatio / 100.0f;
             }
+
+            // new Traits
+
+            _traits = (string)element.Element(ns + "Traits");
+
+            _traits = _traits.Trim();
+
+            GameLog.Core.GameData.DebugFormat("reading Civilizations.xml for {0}: Traits are: {1}", _key, _traits);
+
+
+
+            //EnumHelper.TryParse((string)element.Element(ns + "Traits"), out _traits);
+
+            //string traitsElement = (string)element.Element(ns + "Traits");
+            ////var traitsElement = element.OwnerDocument.CreateElement("Bonuses");
+            //if (!string.IsNullOrEmpty(traitsElement))
+            //{
+            //    EnumHelper.TryParse((string)element.Element(ns + "TechCurve"), out _techCurve);
+            //    var traitElement = systemElement.OwnerDocument.CreateElement("Bonus");
+            //    bonusElement.SetAttribute("Type", SystemBonus.NoBonus.ToString());
+            //    traitsElement.AppendChild(bonusElement);
+            //}
+            //else
+            //{
+            //    foreach (SystemBonus bonus in EnumUtilities.GetValues<SystemBonus>())
+            //    {
+            //        if ((bonus != SystemBonus.NoBonus) && HasBonus(bonus))
+            //        {
+            //            EnumHelper.TryParse((string)element.Element(ns + "TechCurve"), out _techCurve);
+            //            var bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
+            //            bonusElement.SetAttribute("Type", bonus.ToString());
+            //            traitsElement.AppendChild(bonusElement);
+            //        }
+            //    }
+            //}
+            //systemElement.AppendChild(traitsElement);
 
             // When starting a game, options is null
             if (GameContext.Current.Options != null)
@@ -357,6 +397,16 @@ namespace Supremacy.Entities
         }
 
         /// <summary>
+        /// Gets or sets the traits of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The tech curve.</value>
+        public string Traits
+        {
+            get { return _traits; }
+            //set { _traits = value; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this <see cref="Civilization"/> is an empire.
         /// </summary>
         /// <value>
@@ -545,6 +595,7 @@ namespace Supremacy.Entities
             writer.WriteElementString("HomeQuadrant", HomeQuadrant.ToString());
             writer.WriteElementString("CivilizationType", CivilizationType.ToString());
             writer.WriteElementString("TechCurve", TechCurve.ToString());
+            writer.WriteElementString("Traits", _traits);
             writer.WriteElementString("IndustryToCreditsConversionRatio", ((int)(IndustryToCreditsConversionRatio * 100)).ToString());
             writer.WriteElementString("ShipPrefix", _shipPrefix);
             writer.WriteElementString("BaseMoraleLevel", _baseMoraleLevel.ToString());
@@ -591,6 +642,9 @@ namespace Supremacy.Entities
                         CivilizationType),
                     new XElement(
                         ns + "TechCurve",
+                        TechCurve),
+                    new XElement(
+                        ns + "Traits",
                         TechCurve),
                     new XElement(
                         ns + "IndustryToCreditsConversionRatio",
