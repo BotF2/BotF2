@@ -176,7 +176,7 @@ namespace Supremacy.Entities
 
             _traits = _traits.Trim();
 
-            GameLog.Core.GameData.DebugFormat("reading Civilizations.xml for {0}: Traits are: {1}", _key, _traits);
+            GameLog.Core.GameData.DebugFormat("reading Civilizations.xml for {0} (Quadrant {1}): Traits are: {2}", _key, _homeQuadrant, _traits);
 
 
 
