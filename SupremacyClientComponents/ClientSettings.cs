@@ -576,12 +576,27 @@ namespace Supremacy.Client
         public bool TracesGameData
         {
             get { return (bool)GetValue(TracesGameDataProperty); }
-            set { SetValue(TracesGameDataProperty, value); }
+            set
+            {
+                SetValue(TracesGameDataProperty, value);
+                GameLog.Client.General.DebugFormat("TracesGameData is turned: {0}", value);
+            }
         }
-        //public bool EnableCombatScreen
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesGameDataChanged;
+
+        //private void OnTracesGameDataChanged(bool)
         //{
-        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
-        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //    var handler = OnTracesGameDataChanged;
+        //    if (handler != null)
+        //        GameLog.Client.General.DebugFormat("TracesGameData changed");
+        //        //handler(this, new)
+        //}
+
+        //public bool TracesGameData
+        //{
+        //    get { return (bool)GetValue(TracesGameDataProperty); }
+        //    set { SetValue(TracesGameDataProperty, value); }
         //}
         #endregion
 
