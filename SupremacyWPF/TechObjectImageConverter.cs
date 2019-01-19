@@ -309,10 +309,15 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            // works - Text is coming out of en.txt and maybe other files from \Text-folder
+            //GameLog.Core.General.DebugFormat("StringResourceConverter: value = {0}, targetType = {1}, parameter = {2}, culture = {3}", 
+            //    value, targetType, parameter, culture);
             if (value == null)
                 return null;
             if (parameter != null)
                 return ResourceManager.GetString(value.ToString()).ToUpperInvariant();
+            //GameLog.Core.General.DebugFormat("StringResourceConverter: returning = {0}",
+            //    ResourceManager.GetString(value.ToString()));
             return ResourceManager.GetString(value.ToString());
         }
 

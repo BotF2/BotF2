@@ -16,7 +16,9 @@ using System.Xml;
 using System.Xml.Schema;
 
 using Supremacy.Buildings;
+using Supremacy.Client;
 using Supremacy.Collections;
+
 using Supremacy.Economy;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -571,7 +573,6 @@ namespace Supremacy.Tech
 
             bool _traceTechObjectDatabase = true;  // file is writen while starting a game -> Federation -> Start
 
-
             if (_traceTechObjectDatabase == true)
             {
                 var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
@@ -1042,11 +1043,12 @@ namespace Supremacy.Tech
                         "CE_BuildCost" + separator +
                         "CE_RawMaterails" + separator +
                         "CE_MaintanceCost" + separator +
+                        "CE_Crew" + separator +
                         "CE_IsUniversallyAvailable" + separator +
                         "CE_Prerequisites" + separator +
                         "CE_ObsoletedItems" + separator +
                         "CE_UpgradeOptions" + separator +
-                        "CE_Crew" + separator +
+                        
                         "CE_StationNames" + separator +
                         "CE_ScienceAbility" + separator +
                         "CE_ScanPower" + separator +
@@ -1057,12 +1059,13 @@ namespace Supremacy.Tech
                         "CE_ShieldRecharge" + separator +
 
                         "CE_Beam Count" + separator +
-                        //"CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
-                        //"CE_Damage" + separator +
-                        
+                        "CE_Damage" + separator +
+                        "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
+
+
                         "CE_Torpedo Count" + separator +
-                        //"CE_Damage" + 
-                    
+                        "CE_Damage" +
+
                         "CE_RepairSlots" + separator +
                         "CE_RepairCapacity";
 
@@ -1109,11 +1112,12 @@ namespace Supremacy.Tech
                         station.RawMaterials + separator +
                         station.MaintenanceCost + separator +
                         station.IsUniversallyAvailable + separator +
+                        station.CrewSize + separator +
                         "Prerequisites for " + station.Key + separator +
                         "ObsoletedItems for " + station.Key + separator +
                         "UpgradeOptions for " + station.Key + separator +
                         //"EnergyCost_not_used_anymore?" + separator +
-                        station.CrewSize + separator +
+                        
                         "PossibleStationNames" + station.Key + separator +   // doubled ??
                         station.ScienceAbility + separator +
                         station.ScanStrength + separator +  // equal to ScanPower
@@ -1124,16 +1128,17 @@ namespace Supremacy.Tech
                         station.ShieldRechargeRate + separator +
 
                         "Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
-                        //item.PrimaryWeapon.Count + separator +
-                        //item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
-                        //item.PrimaryWeapon.Damage + separator +
+                        station.PrimaryWeapon.Count + separator +
+                        station.PrimaryWeapon.Damage + separator +
+                        station.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
+
 
                         "Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
-                        //item.SecondaryWeapon.Count + separator +
-                        //item.SecondaryWeapon.Damage;
+                        station.SecondaryWeapon.Count + separator +
+                        station.SecondaryWeapon.Damage + separator +
 
-                        station.BuildSlots +
-                        station.BuildOutput +
+                        station.BuildSlots + separator +
+                        station.BuildOutput + separator +
                         separator;  // ends with an empty column
 
 
