@@ -154,6 +154,7 @@ namespace Supremacy.Text
                         streamWriter.WriteLine(line);
 
                     }
+                    techObjectTable.AddInternal(entry);
                 }
 
                 streamWriter.Close();
