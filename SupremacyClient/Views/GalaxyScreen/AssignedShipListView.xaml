@@ -129,7 +129,18 @@
                             BorderThickness="2"
                             BorderBrush="{Binding Path=(s:ShipView.Source), Converter={StaticResource CivBrushConverter}}"
                             CornerRadius="4"
-                            ToolTip="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}">
+                            >
+                            <!--ToolTip="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}"-->
+                            <Border.ToolTip>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}" />
+                                    <TextBlock Text=" - " />
+                                    <TextBlock Text="{Binding Path=Source.ClassName}"
+
+                                    />
+                                                    
+                                </StackPanel>
+                            </Border.ToolTip>
                       <Border.Background>
                         <ImageBrush Stretch="Uniform"
                                     ImageSource="{Binding Path=Source.ShipDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
