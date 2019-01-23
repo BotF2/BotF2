@@ -14,7 +14,7 @@
              d:DesignHeight="690"
              d:DesignWidth="1060"
              Height="690"
-             Width="1060"
+             Width="1160"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
@@ -35,7 +35,7 @@
     -->
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="350" />
       <ColumnDefinition Width="450" />
             <ColumnDefinition Width="300" />
         </Grid.ColumnDefinitions>
@@ -49,12 +49,12 @@
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="Black"
                Margin="1,1,0,0"
-               FontSize="24pt"
+               FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
     <TextBlock Grid.ColumnSpan="2"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="24pt"
+               FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
 
     <ListBox x:Name="BuildProjectList"
@@ -83,9 +83,9 @@
                    Grid.Row="1"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="24pt"
+               FontSize="18pt"
                    TextWrapping="Wrap"
-               Text="{local:StringResource Key=INFO_AT_SELECT_A_SHIP}"/>
+               Text="{local:StringResource Key=FED_SHIP_INFO}"/>
 
         <DockPanel 
         Grid.Column="1"

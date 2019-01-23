@@ -136,9 +136,7 @@
                                     <TextBlock Text="{Binding Path=Source.Name, Converter={StaticResource StringResourceConverter}}" />
                                     <TextBlock Text=" - " />
                                     <TextBlock Text="{Binding Path=Source.ClassName}"
-
                                     />
-                                                    
                                 </StackPanel>
                             </Border.ToolTip>
                       <Border.Background>
