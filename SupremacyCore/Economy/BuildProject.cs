@@ -276,6 +276,39 @@ namespace Supremacy.Economy
         }
 
         /// <summary>
+        /// Gets the empire specific ShipInfoText
+        /// </summary>
+        /// <value>empire specific ShipInfoText</value>
+        public virtual string ShipInfoEmpire
+        {
+            get
+            {
+                var _owner = Builder.Key;
+                GameLog.Core.General.DebugFormat("");
+
+                switch (Builder.Key)
+                {
+                    case "FEDERATION":
+                        return ResourceManager.GetString("FED_SHIP_INFO"); 
+                    case "KLINGONS":
+                        return ResourceManager.GetString("KLING_SHIP_INFO");
+                    case "ROMULANS":
+                        return ResourceManager.GetString("ROM_SHIP_INFO");
+                    case "DOMINION":
+                        return ResourceManager.GetString("DOM_SHIP_INFO");
+                    case "TERRANS":
+                        return ResourceManager.GetString("TERRANS_SHIP_INFO");
+                    case "BORG":
+                        return ResourceManager.GetString("BORG_SHIP_INFO");
+                    case "CARDASSIANS":
+                        return ResourceManager.GetString("CARD_SHIP_INFO");
+                    default:
+                        return ResourceManager.GetString("DEFAULT_SHIP_INFO");
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the number of turns remaining until this <see cref="BuildProject"/> is completed.
         /// </summary>
         /// <value>The turns remaining.</value>

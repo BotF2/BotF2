@@ -36,8 +36,8 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="350" />
-      <ColumnDefinition Width="450" />
-            <ColumnDefinition Width="300" />
+      <ColumnDefinition Width="420" />
+            <ColumnDefinition Width="320" />
         </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -77,15 +77,19 @@
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ListBox>
-
-        <TextBlock Margin="0,0,6,0"    
-                   Grid.Column="3"
-                   Grid.Row="1"
-               FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
-               Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="18pt"
-                   TextWrapping="Wrap"
-               Text="{local:StringResource Key=FED_SHIP_INFO}"/>
+        <Border BorderBrush="{StaticResource {x:Static local:ClientResources.ImageBorderBrushKey}}" 
+                Grid.Column="3" 
+                Grid.Row="1"
+                BorderThickness="2"> 
+            <TextBlock Margin="6,10,4,0"    
+            Grid.Column="3"
+            Grid.Row="1"
+            FontFamily="{StaticResource {x:Static local:ClientResources.InfoPaneFontFamilyKey}}"
+            Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
+            FontSize="16pt"
+            TextWrapping="Wrap"
+            Text="{Binding ElementName=_self, Path=SelectedBuildProject.ShipInfoEmpire}" />
+        </Border>
 
         <DockPanel 
         Grid.Column="1"
@@ -93,14 +97,6 @@
                LastChildFill="True"
                Width="360"
                Margin="22,0,0,0">
-
-            <!--<DockPanel.Background>
-                <TextBlock Margin="0,0,6,0"    
-               FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
-               Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="24pt"
-               Text="HELLOLECT_A_SHIP_TO_CONSTRUCT"/>
-            </DockPanel.Background>--> 
 
             <Image DockPanel.Dock="Top"
              MaxWidth="270"

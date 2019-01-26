@@ -29,6 +29,9 @@ namespace Supremacy.Client.Views
                     Path = new PropertyPath(Selector.SelectedItemProperty),
                     Mode = BindingMode.OneWay
                 });
+
+            if (BuildProjectList.Items.Count > 0)  
+                BuildProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
         }
 
         #region SelectedBuildProject Property
