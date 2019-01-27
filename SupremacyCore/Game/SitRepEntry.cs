@@ -2076,7 +2076,7 @@ namespace Supremacy.Game
         
     }
 
-
+    [Serializable]
     public class BlackHoleEncounterSitRepEntry : SitRepEntry
     {
         private int _shipsDestroyed;
@@ -2092,7 +2092,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("SITREP_BLACK_HOLE_ENCOUNTER"), _location.Name, _shipsDestroyed, _shipsDamaged);
+                return string.Format(ResourceManager.GetString("SITREP_BLACK_HOLE_ENCOUNTER"), _location.Location, _shipsDestroyed, _shipsDamaged);
             }
         }
 
