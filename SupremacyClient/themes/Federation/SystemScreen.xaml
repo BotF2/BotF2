@@ -181,19 +181,24 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="450" />
                     </Grid.ColumnDefinitions>
-                                        <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
-                                    Grid.Column="0"
+                    <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
+                                  Grid.Column="0"
                                   Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
-                                            <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                          <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
-                        </ItemsPanelTemplate>
+                      <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                              <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
+                          </ItemsPanelTemplate>
                       </ItemsControl.ItemsPanel>
                       <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
                           <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>
+                      <!--<ItemsControl.ItemTemplate> // Do we need to put in an scc:NewShipSelectionView? - think not, Think it is viewed from ColonyScreenPresenter and NewShipSelectionView.xaml
+                        <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
+                            <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
+                        </DataTemplate>
+                       </ItemsControl.ItemTemplate>-->
                     </ItemsControl>
                 </Grid>
                 </TabItem>

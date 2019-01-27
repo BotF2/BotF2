@@ -654,7 +654,21 @@
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
             </wpf:AutoGrid.ColumnDefinitions>
-            <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                        <TextBlock VerticalAlignment="Bottom"
+                       TextAlignment="Center"
+                        Grid.ColumnSpan="2"
+                        FontSize="24"
+                       Text="{Binding Path=Design.ClassName}"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                        <TextBlock VerticalAlignment="Top"
+                       TextAlignment="Center"
+                        Grid.ColumnSpan="2"
+                        FontSize="24"
+                       Text=""
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap" />
+                        <TextBlock Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                        FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                        Margin="0,0,7,0"
                        VerticalAlignment="Top"
