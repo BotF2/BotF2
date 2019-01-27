@@ -304,35 +304,6 @@ namespace Supremacy.Client
             return true;
         }
 
-        public bool LoadThemeResourcesNewShipSelectionView(string themeShipyard)
-        {
-            if (Current.IsShuttingDown)
-                return false;
-
-            // individual UI
-            var themeUriNewShipSelectionView = new Uri(
-                string.Format(
-                    "/SupremacyClientComponents;Component/Themes/{0}/NewShipSelectionView.xaml",
-                    themeShipyard),
-                UriKind.RelativeOrAbsolute);
-
-            ResourceDictionary themeDictionaryNewShipSelectionView = null;
-            try
-            {
-                themeDictionaryNewShipSelectionView = LoadComponent(themeUriNewShipSelectionView) as ResourceDictionary;
-            }
-            catch
-            {
-                GameLog.Client.GameData.DebugFormat("themeDictionaryNewShipSelectionView = LoadComponent(themeUriNewShipSelectionView)");
-            }
-
-            if (themeDictionaryNewShipSelectionView == null)
-                return false;
-
-            Current.Resources.MergedDictionaries.Add(themeDictionaryNewShipSelectionView);
-
-            return true;
-        }
         protected override void OnExit(ExitEventArgs e)
         {
             _isShuttingDown = true;

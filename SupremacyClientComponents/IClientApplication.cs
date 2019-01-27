@@ -12,6 +12,5 @@ namespace Supremacy.Client
         bool LoadDefaultResources();
         bool LoadThemeResources(string theme);
         bool LoadThemeResourcesShipyard(string themeShipyard);
-        bool LoadThemeResourcesNewShipSelectionView(string themeShipyard); // a new bool or could we use the one above?
     }
 }

@@ -284,27 +284,28 @@ namespace Supremacy.Economy
             get
             {
                 var _owner = Builder.Key;
-                GameLog.Core.General.DebugFormat("");
-
+                //GameLog.Core.General.DebugFormat("");
+                var message = "DEFAULT_SHIP_INFO";
                 switch (Builder.Key)
                 {
                     case "FEDERATION":
-                        return ResourceManager.GetString("FED_SHIP_INFO"); 
+                        message ="FED_SHIP_INFO"; break;
                     case "KLINGONS":
-                        return ResourceManager.GetString("KLING_SHIP_INFO");
+                        message = "KLING_SHIP_INFO"; break;
                     case "ROMULANS":
-                        return ResourceManager.GetString("ROM_SHIP_INFO");
+                        message = "ROM_SHIP_INFO"; break;
                     case "DOMINION":
-                        return ResourceManager.GetString("DOM_SHIP_INFO");
+                        message ="DOM_SHIP_INFO"; break;
                     case "TERRANS":
-                        return ResourceManager.GetString("TERRANS_SHIP_INFO");
+                        message ="TERRANS_SHIP_INFO"; break;
                     case "BORG":
-                        return ResourceManager.GetString("BORG_SHIP_INFO");
+                        message ="BORG_SHIP_INFO"; break;
                     case "CARDASSIANS":
-                        return ResourceManager.GetString("CARD_SHIP_INFO");
+                        message ="CARD_SHIP_INFO"; break;
                     default:
-                        return ResourceManager.GetString("DEFAULT_SHIP_INFO");
+                        message ="DEFAULT_SHIP_INFO"; break;
                 }
+                return ResourceManager.GetString(message);
             }
         }
 
