@@ -258,15 +258,16 @@ namespace Supremacy.Orbitals
         public void RegenerateShields()
         {       //Bases regenerate their own shields 4 times quicker. See ship repair in simular line elsewhere
             double increase = (OrbitalDesign.ShieldRechargeRate) * ShieldStrength.Maximum;   // ShieldStrength shown in Encyclopedia
-            if (OrbitalDesign.Key.Contains("BASE") 
-                || OrbitalDesign.Key.Contains("OUTPOST")
-                || OrbitalDesign.Key.Contains("TRANSWARP")
-                || OrbitalDesign.Key.Contains("STATION")
-                )
-                //OrbitalDesign.ShipType.Contains("BASE") || OrbitalDesign.ShipType.Contains("OUTPOST"))
-            {
-                increase = increase * 4;
-            }
+
+            // recently values were divided by seven and for stations multiplied with 4 - not neccessary anymore
+            //if (OrbitalDesign.Key.Contains("BASE") 
+            //    || OrbitalDesign.Key.Contains("OUTPOST")
+            //    || OrbitalDesign.Key.Contains("TRANSWARP")
+            //    || OrbitalDesign.Key.Contains("STATION")
+            //    )
+            //{
+            //    increase = increase * 4;
+            //}
 
             ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
         }
