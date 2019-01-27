@@ -636,7 +636,7 @@ namespace Supremacy.Orbitals
             Ship bestShip = null;
             foreach (Ship ship in Fleet.Ships)
             {
-                if (ship.ShipType == ShipType.Spy)
+                if (ship.ShipType == ShipType.FastAttack)
                 {
                     if ((bestShip == null)
                         || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
@@ -658,7 +658,7 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System.Owner == fleet.Owner)
                 return false;
-            if (!fleet.Ships.Any(s => s.ShipType == ShipType.Spy))
+            if (!fleet.Ships.Any(s => s.ShipType == ShipType.FastAttack))
                 return false;
 
             return true;
