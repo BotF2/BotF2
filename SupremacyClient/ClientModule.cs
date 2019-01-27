@@ -602,7 +602,6 @@ namespace Supremacy.Client
             themeShipyard = theme;
 
             _app.LoadThemeResourcesShipyard(themeShipyard);
-            _app.LoadThemeResourcesNewShipSelectionView(themeShipyard);
 
             // load theme music
             _appContext.ThemeMusicLibrary.Load(Path.Combine(MusicThemeBasePath, theme, MusicPackFileName));
