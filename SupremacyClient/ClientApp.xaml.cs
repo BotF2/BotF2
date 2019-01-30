@@ -23,7 +23,6 @@
 //      - DI pattern                https://en.wikipedia.org/wiki/Dependency_injection#Examples
 //      - Bootstrapper              https://msdn.microsoft.com/en-us/library/ff921139.aspx
 //      - Tutorial:                 https://www.codeproject.com/Articles/37164/Introduction-to-Composite-WPF-CAL-Prism-Part
-using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Presentation.Regions;
 using Microsoft.Practices.Composite.UnityExtensions;
@@ -34,7 +33,6 @@ using Supremacy.Annotations;
 using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
-using Supremacy.Client.Logging;
 using Supremacy.Client.Services;
 using Supremacy.Resources;
 using Supremacy.Utility;
@@ -46,7 +44,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -87,8 +84,7 @@ namespace Supremacy.Client
         {
             get
             {
-                string now = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute;
-                GameLog.Client.General.InfoFormat("Current Version = {0}, builded at {1}" , Current.Version, now);
+                GameLog.Client.General.InfoFormat("Current Version = {0}", Current.Version);
                 return Current.Version;
             }
         }
@@ -152,7 +148,7 @@ namespace Supremacy.Client
             }
             catch
             {
-                GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: Current.Resources = LoadComponent");
+                GameLog.Client.GameData.DebugFormat("Current.Resources = LoadComponent");
             }
         }
 
@@ -171,7 +167,7 @@ namespace Supremacy.Client
             }
             catch
             {
-                GameLog.Client.GameData.DebugFormat("ClientApp.xaml.cs: var themeUri = new Uri");
+                GameLog.Client.GameData.DebugFormat("var themeUri = new Uri");
             }
 
             if (themeDictionary == null)
@@ -364,15 +360,14 @@ namespace Supremacy.Client
             {
                 GameLog.Initialize();
 
-                // add dll subdirectories to current process PATH variable
+                //Add dll subdirectories to current process PATH variable
                 var appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH")
-                    + ";" + appDir + "\\lib");
+                Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + appDir + "\\lib");
 
                 if (!CheckNetFxVersion())
                 {
                     MessageBox.Show(
-                            "Birth of the Federation 2 requires Microsoft .NET Framework 4.6.2."
+                            "Birth of the Federation 2 requires Microsoft .NET Framework 4.6.2 or greater"
                             + Environment.NewLine
                             + "It must be installed before running the game.",
                             "Birth of the Federation 2",
@@ -522,22 +517,6 @@ namespace Supremacy.Client
             // What is Unity Bootstrapper? --> https://msdn.microsoft.com/en-us/library/ff921139.aspx
 
             private ClientWindow _shell;
-            private ILoggerFacade _clientLogger;
-
-            protected override ILoggerFacade LoggerFacade
-            {
-                get
-                {
-                    if (_clientLogger == null)
-                    {
-                        TextWriter textWriter;
-                        try { textWriter = new StreamWriter("Log_Bootstrapper.txt", false); }
-                        catch{ textWriter = Console.Out; }
-                        _clientLogger = new FilteredTextLogger(textWriter);
-                    }
-                    return _clientLogger;
-                }
-            }
 
             protected override IModuleCatalog GetModuleCatalog()
             {

@@ -13,6 +13,7 @@ using Supremacy.IO.Serialization;
 using Supremacy.Types;
 using Supremacy.Utility;
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Supremacy.Universe
@@ -29,15 +30,15 @@ namespace Supremacy.Universe
         #endregion
 
         #region Fields
-        private static readonly BitField32.Section MoonCountSection;
-        private static readonly BitField32.Section[] MoonShapeSections;
-        private static readonly BitField32.Section[] MoonSizeSections;
-        private static readonly BitField32.Section PlanetSizeSection;
-        private static readonly BitField32.Section PlanetTypeSection;
-        private static readonly BitField32.Section VariationSection;
+        private static readonly BitVector32.Section MoonCountSection;
+        private static readonly BitVector32.Section[] MoonShapeSections;
+        private static readonly BitVector32.Section[] MoonSizeSections;
+        private static readonly BitVector32.Section PlanetSizeSection;
+        private static readonly BitVector32.Section PlanetTypeSection;
+        private static readonly BitVector32.Section VariationSection;
 
         private PlanetBonus _bonuses;
-        private BitField32 _data;
+        private BitVector32 _data;
         private string _name;
         #endregion
 
@@ -46,20 +47,20 @@ namespace Supremacy.Universe
         {
             var sizes = EnumUtilities.GetValues<PlanetSize>();
             var types = EnumUtilities.GetValues<PlanetType>();
-            MoonShapeSections = new BitField32.Section[MaxMoonsPerPlanet];
-            MoonSizeSections = new BitField32.Section[MaxMoonsPerPlanet];
+            MoonShapeSections = new BitVector32.Section[MaxMoonsPerPlanet];
+            MoonSizeSections = new BitVector32.Section[MaxMoonsPerPlanet];
 
-            PlanetSizeSection = BitField32.CreateSection((short)(sizes[sizes.Count - 1] - 1), default(BitField32.Section));
-            PlanetTypeSection = BitField32.CreateSection((short)(types[types.Count - 1] - 1), PlanetSizeSection);
-            VariationSection = BitField32.CreateSection(3, PlanetTypeSection);
-            MoonCountSection = BitField32.CreateSection(MaxMoonsPerPlanet, VariationSection);
+            PlanetSizeSection = BitVector32.CreateSection((short)(sizes[sizes.Count - 1] - 1), default(BitVector32.Section));
+            PlanetTypeSection = BitVector32.CreateSection((short)(types[types.Count - 1] - 1), PlanetSizeSection);
+            VariationSection = BitVector32.CreateSection(3, PlanetTypeSection);
+            MoonCountSection = BitVector32.CreateSection(MaxMoonsPerPlanet, VariationSection);
 
-            BitField32.Section lastSection = MoonCountSection;
+            BitVector32.Section lastSection = MoonCountSection;
             for (int i = 0; i < MaxMoonsPerPlanet; i++)
             {
-                MoonShapeSections[i] = BitField32.CreateSection(3, lastSection);
+                MoonShapeSections[i] = BitVector32.CreateSection(3, lastSection);
                 lastSection = MoonShapeSections[i];
-                MoonSizeSections[i] = BitField32.CreateSection(3, lastSection);
+                MoonSizeSections[i] = BitVector32.CreateSection(3, lastSection);
                 lastSection = MoonSizeSections[i];
             }
         }
@@ -69,7 +70,7 @@ namespace Supremacy.Universe
         /// </summary>
         public Planet()
         {
-            _data = new BitField32();
+            _data = new BitVector32();
         }
         #endregion
 
@@ -358,7 +359,7 @@ namespace Supremacy.Universe
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
             _bonuses = (PlanetBonus)reader.ReadByte();
-            _data.Data = reader.ReadUInt32();
+            _data = new BitVector32((int)reader.ReadUInt32());
             _name = reader.ReadOptimizedString();
         }
     }

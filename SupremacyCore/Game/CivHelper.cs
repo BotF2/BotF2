@@ -10,6 +10,7 @@
 using Supremacy.Entities;
 using Supremacy.Universe;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Game
 {
@@ -25,8 +26,44 @@ namespace Supremacy.Game
         /// <returns>The current ranking.</returns>
         public static int GetRank(Civilization civ)
         {
-            // TODO: actual implementation
-            return 1;
+
+            //This is for a game where the victory condition is to control most of the map.
+            //Hideously inefficient, but is not used at the moment, it's just to flesh the idea
+            //out for when we do actually start using it
+            Dictionary<Civilization, int> sectorsOwned = new Dictionary<Civilization, int>();
+            for (int x = 0; x <= GameContext.Current.Universe.Map.Width; x++)
+            {
+                for (int y = 0; y <= GameContext.Current.Universe.Map.Height; y++)
+                {
+                    if (GameContext.Current.Universe.Map[x, y].IsOwned)
+                    {
+                        var owner = GameContext.Current.Universe.Map[x, y].Owner;
+                        if (!sectorsOwned.ContainsKey(owner))
+                        {
+                            sectorsOwned.Add(owner, 0);
+                        }
+                        sectorsOwned[owner]++;
+
+                        //TODO: Need to take account of alliances
+                    }
+                }
+            }
+
+            if (!sectorsOwned.ContainsKey(civ))
+            {
+                return 0;
+            }
+
+            var sectorsOwnerSorted = sectorsOwned.OrderByDescending(x => x.Value);
+            for (int i = 0; i <= sectorsOwnerSorted.Count(); i++)
+            {
+                if (sectorsOwnerSorted.ElementAt(i).Key == civ)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
 
         public static int GetClosestDistanceBetweenBorderClaims(Civilization civ1, Civilization civ2)

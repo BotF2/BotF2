@@ -8,8 +8,10 @@
 // All other rights reserved.
 
 using Supremacy.Annotations;
+using Supremacy.Collections;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
@@ -17,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using Wintellect.PowerCollections;
 
 namespace Supremacy.Economy
@@ -425,10 +428,21 @@ namespace Supremacy.Economy
     /// </summary>
     [Serializable]
     public class ResearchPoolValueCollection 
-        : EnumKeyedValueList<TechCategory, Meter>,
+        : Dictionary<TechCategory, Meter>,
+          IOwnedDataSerializableAndRecreatable,
           ICloneable
     {
-        #region ICloneable Members
+
+        public ResearchPoolValueCollection()
+        {
+            EnumHelper.GetValues<TechCategory>().ForEach(t => this.Add(t, new Meter()));
+        }
+
+        public ResearchPoolValueCollection(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+
+        }
+
         object ICloneable.Clone()
         {
             return Clone();
@@ -437,11 +451,23 @@ namespace Supremacy.Economy
         public ResearchPoolValueCollection Clone()
         {
             var clone = new ResearchPoolValueCollection();
-            for (var i = 0; i < Values.Length; i++)
-                clone.Values[i] = Values[i].Clone();
+            foreach (var entry in this)
+            {
+                clone.Add(entry.Key, entry.Value.Clone());
+            }
             return clone;
         }
-        #endregion
+
+        public void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            writer.Write(this);
+        }
+
+        public void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            var data = reader.ReadDictionary<TechCategory, Meter>();
+            EnumHelper.GetValues<TechCategory>().ForEach(r => this[r] = data[r].Clone());
+        }
     }
 
     /// <summary>

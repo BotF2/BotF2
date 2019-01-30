@@ -1171,10 +1171,6 @@
       <Name>SupremacyCore</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\SupremacyNative\SupremacyNative.vcxproj">
-      <Project>{b86ce700-6763-44c2-85fa-594f68b50347}</Project>
-      <Name>SupremacyNative</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SupremacyService\SupremacyService.csproj">
       <Project>{fd1224e7-bb54-40f9-a46e-631ffea6d577}</Project>
       <Name>SupremacyService</Name>

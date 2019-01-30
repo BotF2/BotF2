@@ -198,8 +198,8 @@ namespace Supremacy.Universe
                     var galaxySizes = UniverseTables["GalaxySizes"];
 
                     var mapSize = new Dimension(
-                        Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToStringCached()]["Width"]),
-                        Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToStringCached()]["Height"]));
+                        Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Width"]),
+                        Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Height"]));
 
                     GameContext.Current.Universe = new UniverseManager(mapSize);
 
@@ -651,7 +651,7 @@ namespace Supremacy.Universe
             {
                 try
                 {
-                    var divisor = (double?)minorRaceTable.GetValue(minorRaceFrequency.ToStringCached(), "AvailableSystemsDivisor");
+                    var divisor = (double?)minorRaceTable.GetValue(minorRaceFrequency.ToString(), "AvailableSystemsDivisor");
                     if (divisor.HasValue)
                         minorRacePercentage = (float)(1d / divisor.Value);
                 }
@@ -662,7 +662,7 @@ namespace Supremacy.Universe
 
                 try
                 {
-                    var limit = (int?)minorRaceTable.GetValue(minorRaceFrequency.ToStringCached(), "MaxCount");
+                    var limit = (int?)minorRaceTable.GetValue(minorRaceFrequency.ToString(), "MaxCount");
                     if (limit.HasValue)
                         minorRaceLimit = limit.Value;
                 }
