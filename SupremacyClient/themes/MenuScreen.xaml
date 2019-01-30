@@ -58,11 +58,6 @@
                                     Background="{DynamicResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
                         </StackPanel>
 
-                        <!--<ui:Animation HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="576" Height="480"/>-->
-
-                        <!--<ui:AsteroidsView HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="300" Height="200"/>-->
-
-                        <!--<ui:Animation HorizontalAlignment="Right" VerticalAlignment="Top" Width="300" Height="200"/>-->
                         <TextBlock Foreground="{StaticResource LCARS_ParagraphBrush}"
                             FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="12"
@@ -71,12 +66,9 @@
                             VerticalAlignment="Bottom"
                             SnapsToDevicePixels="True">
                             <TextBlock.Text>
-                                <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="{}Development Build&#0013;Version {0}" />
+                                <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="Version {0}" />
                             </TextBlock.Text>
                         </TextBlock>
-                        <!--<views:SystemAssaultScreen/>-->
-                        <!--<sxna:InvasionExplosionsOverlay Width="256" Height="256" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
-                        <!--<local:PopupTest />-->
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -129,15 +129,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyWPF", "SupremacyWPF\SupremacyWPF.csproj", "{1D1ACB96-9C27-4A1F-AE76-B5083A36ED05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyCore", "SupremacyCore\SupremacyCore.csproj", "{04E34C27-6942-4EA8-93FF-DF3C4026B22A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B86CE700-6763-44C2-85FA-594F68B50347} = {B86CE700-6763-44C2-85FA-594F68B50347}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyUI", "SupremacyUI\SupremacyUI.csproj", "{529A2A01-9D15-4BAF-AB7B-C3398F5F2B14}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyService", "SupremacyService\SupremacyService.csproj", "{FD1224E7-BB54-40F9-A46E-631FFEA6D577}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SupremacyNative", "SupremacyNative\SupremacyNative.vcxproj", "{B86CE700-6763-44C2-85FA-594F68B50347}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyClientComponents", "SupremacyClientComponents\SupremacyClientComponents.csproj", "{4836D1C7-B3C6-4021-9B5F-CEEF027251EC}"
 EndProject
@@ -219,19 +214,6 @@ Global
 		{FD1224E7-BB54-40F9-A46E-631FFEA6D577}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FD1224E7-BB54-40F9-A46E-631FFEA6D577}.Release|Win32.ActiveCfg = Release|Any CPU
 		{FD1224E7-BB54-40F9-A46E-631FFEA6D577}.Release|x86.ActiveCfg = Release|Any CPU
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Debug|Any CPU.Build.0 = Debug|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Debug|Win32.Build.0 = Debug|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Debug|x86.ActiveCfg = Debug|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Release|Any CPU.ActiveCfg = Release|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Release|Win32.ActiveCfg = Release|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Release|Win32.Build.0 = Release|Win32
-		{B86CE700-6763-44C2-85FA-594F68B50347}.Release|x86.ActiveCfg = Release|Win32
 		{4836D1C7-B3C6-4021-9B5F-CEEF027251EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4836D1C7-B3C6-4021-9B5F-CEEF027251EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4836D1C7-B3C6-4021-9B5F-CEEF027251EC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

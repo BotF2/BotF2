@@ -127,8 +127,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnumHelper.h" />
-    <ClInclude Include="EnumKeyedValueList.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

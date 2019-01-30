@@ -147,10 +147,6 @@
       <Name>SupremacyCore</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\SupremacyNative\SupremacyNative.vcxproj">
-      <Project>{b86ce700-6763-44c2-85fa-594f68b50347}</Project>
-      <Name>SupremacyNative</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
