@@ -1314,10 +1314,10 @@ namespace Supremacy.Client.Views
         private TimeSpan _explosionIntervalBalanced = TimeSpan.FromSeconds(0.5);
         private TimeSpan _explosionIntervalMaxDamage = TimeSpan.FromSeconds(0.25);
         private TimeSpan _explosionIntervalUnloadAllOrdinance = TimeSpan.FromSeconds(0.05);
-        private TimeSpan _attackOrbitalDefensesReplayDuration = TimeSpan.FromSeconds(11);
-        private TimeSpan _bombardmentReplayDuration = TimeSpan.FromSeconds(8);
-        private TimeSpan _unloadAllOrdinanceReplayDuration = TimeSpan.FromSeconds(11);
-        private TimeSpan _landTroopsReplayDuration = TimeSpan.FromSeconds(16);
+        private TimeSpan _attackOrbitalDefensesReplayDuration = TimeSpan.FromSeconds(3); // Don´t want to wait 11 secounds... for animation/sound
+        private TimeSpan _bombardmentReplayDuration = TimeSpan.FromSeconds(2); // 2 is better then 8
+        private TimeSpan _unloadAllOrdinanceReplayDuration = TimeSpan.FromSeconds(3); //AHA! Don´t want to wait 11 secounds... for animation/sound
+        private TimeSpan _landTroopsReplayDuration = TimeSpan.FromSeconds(2); // from 16 to2
 
         public TimeSpan ExplosionIntervalMaxPrecision
         {

@@ -114,7 +114,7 @@ namespace Supremacy.Orbitals
         /// Gets or sets the maneuverability rating.
         /// </summary>
         /// <value>The maneuverability rating.</value>
-        public int Maneuverability
+        public new int Maneuverability
         {
             get { return _maneuverability; }
             set { _maneuverability = (byte)Math.Max(0, Math.Min(value, Byte.MaxValue)); }
@@ -154,7 +154,7 @@ namespace Supremacy.Orbitals
         /// Gets or sets the cloak strength.
         /// </summary>
         /// <value>The cloak strength.</value>
-        public int CloakStrength
+        public new int CloakStrength
         {
             get { return _cloakStrength; }
             set { _cloakStrength = (byte)value; }
@@ -164,7 +164,7 @@ namespace Supremacy.Orbitals
         /// Gets or sets the camouflaged strength.
         /// </summary>
         /// <value>The camouflaged strength.</value>
-        public int CamouflagedStrength
+        public new int CamouflagedStrength
         {
             get { return _camouflagedStrength; }
             set { _camouflagedStrength = (byte)value; }
@@ -229,7 +229,7 @@ namespace Supremacy.Orbitals
             {
                 _cloakStrength = Number.ParseByte(element["CloakStrength"].InnerText.Trim());
                 if (_cloakStrength != 0)
-                    if (_cloakStrength < 6 || _cloakStrength > 20)   // atm all values between 6 and 18 (or 0 for not having this ability)
+                    if (_cloakStrength < 4 || _cloakStrength > 20)   // atm all values between 6 and 18 (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _cloakStrength should not be {1}", Name, _cloakStrength);
             }
             if (element["CamouflagedStrength"] != null)

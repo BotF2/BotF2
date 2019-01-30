@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using Supremacy.Utility;
+
 namespace Supremacy.Client.Properties {
     
     
@@ -186,8 +188,10 @@ namespace Supremacy.Client.Properties {
             get {
                 return ((bool)(this["ReportErrors"]));
             }
-            set {
+            set
+            {
                 this["ReportErrors"] = value;
+                GameLog.Client.General.DebugFormat("ReportErrors is set to {0}", value);
             }
         }
         

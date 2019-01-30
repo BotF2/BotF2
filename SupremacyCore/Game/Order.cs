@@ -777,6 +777,10 @@ namespace Supremacy.Game
             if (fleet == null)
                 throw new ArgumentNullException("fleet");
             _fleetId = fleet.ObjectID;
+
+            if (fleet.Order is AssaultSystemOrder)
+                fleet.Order = fleet.GetDefaultOrder();
+            
             _route = fleet.Route;
         }
 

@@ -32,7 +32,7 @@ namespace Supremacy.Client
     /// <summary>
     /// Interaction logic for CombatWindow.xaml
     /// </summary>
-
+    
     public partial class CombatWindow
     {
         private CombatUpdate _update;
@@ -85,6 +85,16 @@ namespace Supremacy.Client
 
             if (update.IsCombatOver)
             {
+                if (update.RoundNumber == 6) // add fitting text, for when the battle is over Roundnumber must be 1 more then in the forced reatreat/combat ending.
+                {
+                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
+                        + String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
+                    SubHeaderText.Text = String.Format(
+                        ResourceManager.GetString("COMBAT_TEXT_LONG_BATTLE_OVER"),
+                        _update.Sector.Name);
+                } 
+
+
                 if (_update.IsStandoff)
                 {
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "

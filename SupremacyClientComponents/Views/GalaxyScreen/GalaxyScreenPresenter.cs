@@ -491,6 +491,7 @@ namespace Supremacy.Client.Views
             {
                 case GalaxyScreenInputMode.Normal:
                     Model.AvailableShips = Enumerable.Empty<Ship>();
+                    Model.TradeRoutes = Enumerable.Empty<TradeRoute>();
                     Model.SelectedTaskForce = null;
                     Model.SelectedShipInTaskForce = null;
                     Model.SelectedShip = null;

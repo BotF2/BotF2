@@ -264,6 +264,8 @@ namespace Supremacy.Entities
 
                 xmlDoc.Validate(_xmlSchemas, ValidateXml, true);
 
+
+
                 foreach (var civElement in xmlDoc.Root.Elements(ns + "Civilization"))
                 {
                     try

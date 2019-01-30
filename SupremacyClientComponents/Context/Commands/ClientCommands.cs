@@ -19,6 +19,8 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand StartMultiplayerGame = new CompositeCommand(true);
         public static readonly CompositeCommand ContinueGame = new CompositeCommand(true);
         public static readonly CompositeCommand OptionsCommand = new CompositeCommand(true);
+        public static readonly CompositeCommand LogTxtCommand = new CompositeCommand(true);
+        public static readonly CompositeCommand ErrorTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ShowCreditsDialog = new CompositeCommand(true);
         public static readonly CompositeCommand ShowMultiplayerConnectDialog = new CompositeCommand(true);
         public static readonly CompositeCommand GameInfoScreen = new CompositeCommand(true);

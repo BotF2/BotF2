@@ -881,9 +881,9 @@
           <GroupStyle>
             <GroupStyle.HeaderTemplate>
               <DataTemplate DataType="{x:Type GroupItem}">
-                <TextBlock FontSize="14pt"
+                <!--<TextBlock FontSize="14pt"
                            Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                           Text="{Binding Path=Name, Converter={scc:LocalizedEnumStringConverter}}" />
+                           Text="{Binding Path=Name, Converter={scc:LocalizedEnumStringConverter}}" />-->
               </DataTemplate>
             </GroupStyle.HeaderTemplate>
           </GroupStyle>
@@ -942,13 +942,13 @@
                     RenderOptions.BitmapScalingMode="HighQuality" />
                 </Border>
                 <Border DockPanel.Dock="Bottom"
-                      Width="24"
+                      Width="48"
                       Height="24"
                       Margin="0,4,0,0">
                 <TextBlock 
                    Margin="0,0"
                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                   FontSize="18pt"
+                   FontSize="14pt"
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Text="{Binding Path=ColonyShieldStrength.CurrentValue}" />   
               </Border>

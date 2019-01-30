@@ -576,12 +576,27 @@ namespace Supremacy.Client
         public bool TracesGameData
         {
             get { return (bool)GetValue(TracesGameDataProperty); }
-            set { SetValue(TracesGameDataProperty, value); }
+            set
+            {
+                SetValue(TracesGameDataProperty, value);
+                GameLog.Client.General.DebugFormat("TracesGameData is turned: {0}", value);
+            }
         }
-        //public bool EnableCombatScreen
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesGameDataChanged;
+
+        //private void OnTracesGameDataChanged(bool)
         //{
-        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
-        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //    var handler = OnTracesGameDataChanged;
+        //    if (handler != null)
+        //        GameLog.Client.General.DebugFormat("TracesGameData changed");
+        //        //handler(this, new)
+        //}
+
+        //public bool TracesGameData
+        //{
+        //    get { return (bool)GetValue(TracesGameDataProperty); }
+        //    set { SetValue(TracesGameDataProperty, value); }
         //}
         #endregion
 
@@ -695,6 +710,26 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesTradeRoutes Property
+        public static readonly DependencyProperty TracesTradeRoutesProperty = DependencyProperty.Register(
+            "TradeRoutes",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesTradeRoutes
+        {
+            get { return (bool)GetValue(TracesTradeRoutesProperty); }
+            set { SetValue(TracesTradeRoutesProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
 
         #region ReportErrors Property
         public static readonly DependencyProperty ReportErrorsProperty = DependencyProperty.Register(

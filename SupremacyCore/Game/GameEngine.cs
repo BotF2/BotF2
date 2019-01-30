@@ -124,7 +124,10 @@ namespace Supremacy.Game
             if (phase != TurnPhase.SendUpdates)
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
-                    scriptedEvent.OnTurnPhaseStarted(game, phase);
+                {
+                    if (GameContext.Current.TurnNumber >= 50)
+                        scriptedEvent.OnTurnPhaseStarted(game, phase);
+                }
             }
 
             var handler = TurnPhaseChanged;
@@ -144,7 +147,10 @@ namespace Supremacy.Game
             if (phase != TurnPhase.SendUpdates)
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
-                    scriptedEvent.OnTurnPhaseFinished(game, phase);
+                {
+                    if (GameContext.Current.TurnNumber >= 50)
+                        scriptedEvent.OnTurnPhaseFinished(game, phase);
+                }
             }
 
             var handler = TurnPhaseFinished;
@@ -186,7 +192,7 @@ namespace Supremacy.Game
                     game.ScriptedEvents.Remove(eventToRemove);
 
                 //If we've reached turn 20, start running scripted events
-                if (GameContext.Current.TurnNumber >= 20)
+                if (GameContext.Current.TurnNumber >= 50)
                 {
                     foreach (var scriptedEvent in game.ScriptedEvents)
                     {
@@ -297,7 +303,11 @@ namespace Supremacy.Game
             try
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
-                    scriptedEvent.OnTurnFinished(game);
+                {
+                    if (GameContext.Current.TurnNumber >= 50)
+                        scriptedEvent.OnTurnFinished(game);
+                }
+                   
             }
             finally { GameContext.PopThreadContext(); }
 
@@ -646,10 +656,24 @@ namespace Supremacy.Game
             var invasionLocations = new HashSet<MapLocation>();
             var combats = new List<List<CombatAssets>>();
             var invasions = new List<InvasionArena>();
-            var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).GroupBy(p => p.Location).Select(g => g.First()).ToList();
-            
+            var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
+                 //.Where(p => !p.IsCamouflaged).ToList();
             foreach (var fleet in fleetsAtLocation)
             {
+
+                //if (fleet.IsCamouflaged == false)
+                //{
+                //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4}, IsCloaked = {5}",
+                //    fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                //}
+
+                //if (fleet.IsCamouflaged)
+                //{
+                //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4} (TRUE??), IsCloaked = {5}",
+                //            fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
+                //}
+
+
                 //List<Fleet> _owners = new List<Fleet>();
                 //var Owners = _owners.Where(p => p.Owner != null).GroupBy(p => p.Owner).Select(g => g.FirstOrDefault()).ToList();
 

@@ -9,6 +9,8 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
+using Supremacy.Client;
+using Supremacy.Client.Commands;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
@@ -28,6 +30,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.WCF
@@ -226,12 +229,18 @@ namespace Supremacy.WCF
             }
             catch (SupremacyException e)
             {
+                MessageBox.Show("An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
                 _errorService.HandleError(e);
+                SendKeys.Send("^l"); // Log.txt
+                SendKeys.Send("^e"); // Error.txt
             }
             catch (Exception e)
             {
+                MessageBox.Show("An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
+                SendKeys.Send("^l"); // Log.txt
+                SendKeys.Send("^e"); // Error.txt
             }
         }
 

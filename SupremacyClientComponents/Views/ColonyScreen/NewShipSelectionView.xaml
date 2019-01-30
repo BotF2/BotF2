@@ -11,10 +11,10 @@
              xmlns:Dialogs="clr-namespace:Supremacy.Client.Dialogs"
              xmlns:Commands="clr-namespace:Supremacy.Client.Commands"
              mc:Ignorable="d"
-             d:DesignHeight="640"
-             d:DesignWidth="840"
-             Height="640"
-             Width="860"
+             d:DesignHeight="690"
+             d:DesignWidth="1060"
+             Height="690"
+             Width="1160"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
@@ -35,9 +35,10 @@
     -->
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
+      <ColumnDefinition Width="350" />
+      <ColumnDefinition Width="420" />
+            <ColumnDefinition Width="320" />
+        </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -48,12 +49,12 @@
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="Black"
                Margin="1,1,0,0"
-               FontSize="24pt"
+               FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
     <TextBlock Grid.ColumnSpan="2"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="24pt"
+               FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
 
     <ListBox x:Name="BuildProjectList"
@@ -76,8 +77,22 @@
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ListBox>
+        <Border BorderBrush="{StaticResource {x:Static local:ClientResources.ImageBorderBrushKey}}" 
+                Grid.Column="3" 
+                Grid.Row="1"
+                BorderThickness="2"> 
+            <TextBlock Margin="6,10,4,0"    
+            Grid.Column="3"
+            Grid.Row="1"
+            FontFamily="{StaticResource {x:Static local:ClientResources.InfoPaneFontFamilyKey}}"
+            Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
+            FontSize="16pt"
+            TextWrapping="Wrap"
+            Text="{Binding ElementName=_self, Path=SelectedBuildProject.ShipInfoEmpire}" />
+        </Border>
 
-    <DockPanel Grid.Column="1"
+        <DockPanel 
+        Grid.Column="1"
                Grid.RowSpan="2"
                LastChildFill="True"
                Width="360"
@@ -104,12 +119,12 @@
 
     </DockPanel>
 
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
-            <TextBlock Margin="0,0,6,0"    
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
+            <!--<TextBlock Margin="0,0,6,0"    
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
                FontSize="24pt"
-               Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}"/>
+               Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}"/>-->
             
             <Button Margin="6,0,3,0"
               IsCancel="True"

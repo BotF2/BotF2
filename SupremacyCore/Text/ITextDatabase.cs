@@ -89,6 +89,7 @@ namespace Supremacy.Text
                 .Elements("Entry");
 
             // for Output file
+            var pathOutputfile = "./lib/";  // instead of ./Resources/Data/
             var separator = ";";
             var line = "";
             StreamWriter streamWriter;
@@ -99,7 +100,7 @@ namespace Supremacy.Text
             try // avoid hang up if this file is opened by another program 
             {
 
-                file = "./Resources/Data/FromTextDatabase_(autoCreated).csv";
+                file = pathOutputfile + "FromTextDatabase_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
@@ -153,6 +154,7 @@ namespace Supremacy.Text
                         streamWriter.WriteLine(line);
 
                     }
+                    techObjectTable.AddInternal(entry);
                 }
 
                 streamWriter.Close();
