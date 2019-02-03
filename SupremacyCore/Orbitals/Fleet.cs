@@ -67,10 +67,10 @@ namespace Supremacy.Orbitals
                 if (_ships.Count == 1)
                 {
                     if (_ships[0].IsCloaked == true)
-                        _NameString = _ships[0].Name + " - " + String.Format(ResourceManager.GetString("CLOAKED"));
+                        _NameString = _ships[0].Name + " " + ResourceManager.GetString("CLOAKED");
                     else
                     if (_ships[0].IsCamouflaged == true)
-                        _NameString = _ships[0].Name +  " - " + String.Format(ResourceManager.GetString("CAMOUFLAGED"));
+                        _NameString = _ships[0].Name +  " " + ResourceManager.GetString("CAMOUFLAGED");
                     else
                         _NameString = _ships[0].Name;
                 }

@@ -296,7 +296,7 @@ namespace Supremacy.Economy
                         message = "ROM_SHIP_INFO"; break;
                     case "DOMINION":
                         message ="DOM_SHIP_INFO"; break;
-                    case "TERRANS":
+                    case "TERRANEMPIRE":
                         message ="TERRANS_SHIP_INFO"; break;
                     case "BORG":
                         message ="BORG_SHIP_INFO"; break;

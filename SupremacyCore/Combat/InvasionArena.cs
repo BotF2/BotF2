@@ -907,6 +907,10 @@ namespace Supremacy.Combat
                 var accuracyThreshold = 0d;
 
                 var ship = unit.Source as Ship;
+
+                if (ship == null)
+                    break;
+
                 if (ship != null)
                     // use standard 0.5 if odd number where returned
                     // bug of accuary modifer and targetdamagecontrol needs to be addressed later
@@ -967,7 +971,16 @@ namespace Supremacy.Combat
                         maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.10);
                     }
 
+                    if (ship.Design.Key.Contains("CARD_AUTOMATED_MISSILE")) 
+                    {
+                        // Change damage to kill the colony and destroy the cardassian automated missile
+                        
+                            maxDamage = 100000;
+                            //GameLog.Core.Combat.DebugFormat("CARD_AUTOMATED_MISSILE: maxDamage = {0}", maxDamage);
+                            //ship.Destroy();   // don't destroy it here
+                    }
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
+                    GameLog.Core.Combat.DebugFormat(" _invasionArena.ColonyShieldStrength = {0}", _invasionArena.ColonyShieldStrength);
 
                     weapon.Discharge();
 
@@ -1272,7 +1285,17 @@ namespace Supremacy.Combat
         protected void FinishInvasion()
         {
             foreach (var unit in _invasionArena.DefendingUnits.Concat(_invasionArena.InvadingUnits))
+            {
                 unit.CommitSourceChanges();
+
+                if (_invasionArena.Colony.Population.IsMinimized && unit.Design.Key.Contains("CARD_AUTOMATED_MISSILE"))
+                {
+                    GameLog.Core.Combat.DebugFormat("CARD_AUTOMATED_MISSILE will be destroyed = {0} because colony pop is null", unit.Name);
+                    unit.Destroy();
+                    //GameLog.Core.Combat.DebugFormat("CARD_AUTOMATED_MISSILE was destroyed because colony pop is null");
+                }
+
+            }
 
             _invasionArena.Population.UpdateAndReset();
             _invasionArena.ColonyShieldStrength.UpdateAndReset();
