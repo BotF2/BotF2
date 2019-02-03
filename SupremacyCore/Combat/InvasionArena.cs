@@ -967,6 +967,12 @@ namespace Supremacy.Combat
                         maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.10);
                     }
 
+                    if (ship.Design.Key.Contains("CARD_AUTOMATED_MISSILE")) 
+                    {        
+                            // Change damage to kill the colony and destroy the cardassian automated missile
+                            maxDamage = 100000;
+                            ship.Destroy();
+                    }
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
 
                     weapon.Discharge();
