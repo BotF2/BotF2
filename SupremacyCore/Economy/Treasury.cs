@@ -63,7 +63,7 @@ namespace Supremacy.Economy
 
         public int NetChange
         {
-            get { return FinalCreditReserves - InitialCreditReserves; }
+            get { return FinalCreditReserves - _initialCreditReserves; }
         }
     }
 

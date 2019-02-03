@@ -7,28 +7,29 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 using Supremacy.Collections;
 using Supremacy.IO.Serialization;
-using Supremacy.Types;
 using Supremacy.Utility;
-
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Supremacy.Economy
 {
     [Serializable]
     public sealed class ResourceValueCollection
-        : EnumKeyedValueList<ResourceType, int>,
+        : Dictionary<ResourceType, int>,
           IOwnedDataSerializableAndRecreatable,
-          ICloneable,
-        IEnumerable<Tuple<ResourceType, int>>
+          ICloneable
     {
         public const int MaxValue = int.MaxValue;
         public const int MinValue = 0;
+
+        public ResourceValueCollection()
+        {
+            EnumHelper.GetValues<ResourceType>().ForEach(r => base.Add(r, 0));
+        }
 
         public bool MeetsOrExceeds(ResourceValueCollection resources)
         {
@@ -38,7 +39,7 @@ namespace Supremacy.Economy
             return !EnumHelper.GetValues<ResourceType>().Any(o => this[o] < resources[o]);
         }
 
-        public void Add(ResourceType resourceType, int value)
+        public new void Add(ResourceType resourceType, int value)
         {
             this[resourceType] += value;
         }
@@ -52,44 +53,32 @@ namespace Supremacy.Economy
                 this[resource] += resources[resource];
         }
 
-        #region ICloneable Members
+        public ResourceValueCollection Clone()
+        {
+            var clone = new ResourceValueCollection();
+            EnumHelper.GetValues<ResourceType>().ForEach(r => clone[r] = this[r]);
+            return clone;
+        }
+
         object ICloneable.Clone()
         {
             return Clone();
         }
 
-        public ResourceValueCollection Clone()
-        {
-            var clone = new ResourceValueCollection();
-            for (var i = 0; i < Values.Length; i++)
-                clone.Values[i] = Values[i];
-            return clone;
-        }
-        #endregion
-
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
-            writer.Write(ToArray());
+            writer.Write(this);
         }
 
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
-            var values = reader.ReadInt32Array();
-            for (var i = 0; i < values.Length; i++)
-                Values[i] = values[i];
+            var data = reader.ReadDictionary<ResourceType, int>();
+            EnumHelper.GetValues<ResourceType>().ForEach(r => this[r] = data[r]);
         }
 
-        #region Implementation of IEnumerable
-        IEnumerator<Tuple<ResourceType, int>> IEnumerable<Tuple<ResourceType, int>>.GetEnumerator()
+        public ResourceValueCollection(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            foreach (var resourceType in EnumHelper.GetValues<ResourceType>())
-                yield return new Tuple<ResourceType, int>(resourceType, this[resourceType]);
-        }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable<Tuple<ResourceType, int>>)this).GetEnumerator();
         }
-        #endregion
     }
 }

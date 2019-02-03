@@ -253,6 +253,7 @@
     <Compile Include="Universe\ColonyHelper.cs" />
     <Compile Include="Universe\MapLocation.cs" />
     <Compile Include="Universe\PlanetTypeFlags.cs" />
+    <Compile Include="Utility\EnumHelper.cs" />
     <Compile Include="Utility\Random\RandomHelper.cs" />
     <Compile Include="Utility\EnumUtilities.cs" />
     <Compile Include="Utility\GameScheduler.cs" />
@@ -475,7 +476,6 @@
     <Compile Include="Text\StringTableNode.cs" />
     <Compile Include="Text\StringTableReader.cs" />
     <Compile Include="Text\StringTableWriter.cs" />
-    <Compile Include="Types\BitField32.cs" />
     <Compile Include="Types\Delegates.cs" />
     <Compile Include="Types\Dimension.cs" />
     <Compile Include="Types\Distribution.cs" />
@@ -571,10 +571,6 @@
       <Project>{25AEA57E-9376-4B73-93D4-A2DCDB15D2D2}</Project>
       <Name>Supremacy.Scripting</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SupremacyNative\SupremacyNative.vcxproj">
-      <Project>{b86ce700-6763-44c2-85fa-594f68b50347}</Project>
-      <Name>SupremacyNative</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

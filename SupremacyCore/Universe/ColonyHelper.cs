@@ -1,11 +1,7 @@
 ﻿using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Utility;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supremacy.Universe
 {
@@ -63,7 +59,7 @@ namespace Supremacy.Universe
                     let facilityType = colony.GetFacilityType(productionCategory)
                     where facilityType != null
                     let baseCost = facilityType.BuildCost
-                    let resourceCosts = facilityType.BuildResourceCosts.Sum()
+                    let resourceCosts = EnumHelper.GetValues<ResourceType>().Sum(r => EconomyHelper.ComputeResourceValue(r, facilityType.BuildResourceCosts[r]))
                     select (facilityType.BuildCost + resourceCosts) * facilityCount
                 ).Sum();
 

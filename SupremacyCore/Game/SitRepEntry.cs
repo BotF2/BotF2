@@ -2076,7 +2076,7 @@ namespace Supremacy.Game
         
     }
 
-
+    [Serializable]
     public class BlackHoleEncounterSitRepEntry : SitRepEntry
     {
         private int _shipsDestroyed;
