@@ -28,10 +28,11 @@ namespace Supremacy.Universe
     {
         public const double MinDistanceBetweenStars = 1.25;
         public const int MinHomeworldDistanceFromInterference = 2;
-
+        
         //private static readonly ILog Log;
 
         private static TableMap UniverseTables;
+        private static StarType LastStarType;
 
         private static readonly Dictionary<StarType, int> StarTypeDist;
         private static readonly Dictionary<Tuple<StarType, PlanetSize>, int> StarTypeModToPlanetSizeDist;
@@ -1225,15 +1226,21 @@ namespace Supremacy.Universe
         {
             var result = StarType.White;
             var maxRoll = 0;
+
             foreach (var type in EnumUtilities.GetValues<StarType>())
             {
-                var currentRoll = RandomHelper.Roll(100 + StarTypeDist[type]);
+                if (type == LastStarType)
+                    continue;
+                var currentRoll = RandomHelper.Roll(75 + StarTypeDist[type]);
                 if (currentRoll > maxRoll)
                 {
                     result = type;
+                    LastStarType = type;
                     maxRoll = currentRoll;
                 }
+                //GameLog.Core.GalaxyGenerator.DebugFormat("the GetStarType result = {0} maxRoll = {1}, currentRoll = {2}", result, maxRoll, currentRoll);
             }
+
             return result;
         }
 
