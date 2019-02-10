@@ -493,6 +493,23 @@ namespace Supremacy.Diplomacy
 
             if (secondManager != null)
                 secondManager.SitRepEntries.Add(new FirstContactSitRepEntry(secondCiv, firstCiv, location));
+
+            GameLog.Core.Diplomacy.DebugFormat("firstManager.Civilization.Key = {0}, second = {1}", firstManager.Civilization.Key, secondManager.Civilization.Key);
+            if (firstManager.Civilization.Key == "BORG")
+            {
+                foreignPower.DeclareWar();
+                firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+                secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+                // playing _soundPlayer.Play("Menu", "BorgSelection");   at SitRep "Resistance is fut...."
+            }
+
+            if (secondManager.Civilization.Key == "BORG")
+            {
+                foreignPower.DeclareWar();
+                firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+                secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+            }
+
         }
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)
