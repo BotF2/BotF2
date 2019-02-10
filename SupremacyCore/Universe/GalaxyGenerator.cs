@@ -28,8 +28,6 @@ namespace Supremacy.Universe
     {
         public const double MinDistanceBetweenStars = 1.25;
         public const int MinHomeworldDistanceFromInterference = 2;
-        
-        //private static readonly ILog Log;
 
         private static TableMap UniverseTables;
         private static StarType LastStarType;
@@ -1238,7 +1236,7 @@ namespace Supremacy.Universe
                     LastStarType = type;
                     maxRoll = currentRoll;
                 }
-                //GameLog.Core.GalaxyGenerator.DebugFormat("the GetStarType result = {0} maxRoll = {1}, currentRoll = {2}", result, maxRoll, currentRoll);
+                GameLog.Core.GalaxyGenerator.DebugFormat("the GetStarType result = {0} maxRoll = {1}, currentRoll = {2}", result, maxRoll, currentRoll);
             }
 
             return result;
