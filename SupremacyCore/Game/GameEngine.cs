@@ -549,7 +549,7 @@ namespace Supremacy.Game
                 {
                     if (civ1 == civ2)
                         continue;
-
+                    // if (civ1.key == "BORG")
                     var foreignPower = diplomat.GetForeignPower(civ2);
 
                     switch (foreignPower.PendingAction)
