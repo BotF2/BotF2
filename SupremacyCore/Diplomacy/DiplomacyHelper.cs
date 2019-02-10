@@ -19,12 +19,14 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 
 namespace Supremacy.Diplomacy
 {
     public static class DiplomacyHelper
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
+        
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
@@ -465,6 +467,8 @@ namespace Supremacy.Diplomacy
 
         public static void EnsureContact([NotNull] Civilization firstCiv, [NotNull] Civilization secondCiv, MapLocation location, int contactTurn = 0)
         {
+            SoundPlayer _soundPlayer = null;
+
             if (firstCiv == null)
                 throw new ArgumentNullException("firstCiv");
             if (secondCiv == null)
@@ -500,14 +504,19 @@ namespace Supremacy.Diplomacy
                 foreignPower.DeclareWar();
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
-                // playing _soundPlayer.Play("Menu", "BorgSelection");   at SitRep "Resistance is fut...."
+                // playing 
+                var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");
+                //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
+                //_soundPlayer.Play("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.mp3"); // at SitRep "Resistance is fut...."
             }
 
             if (secondManager.Civilization.Key == "BORG")
             {
                 foreignPower.DeclareWar();
-                firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
-                secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+                firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");
+                //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
             }
 
         }
