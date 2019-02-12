@@ -74,6 +74,8 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="0.00001*" />
     </Grid.RowDefinitions>
       
@@ -99,23 +101,38 @@
     <TextBlock Grid.Column="0"
                Grid.Row="3"
                VerticalAlignment="Center"
-               Text="Building:" />
-
+               Text="Building Production:" />
+    <TextBlock Grid.Column="0"
+                Grid.Row="4"
+                VerticalAlignment="Center"
+                Text="Shipyard 1:" />
+    <TextBlock Grid.Column="0"
+                Grid.Row="5"
+                VerticalAlignment="Center"
+                Text="Shipyard 2:" />
     <TextBlock Grid.Column="2"
-               Grid.Row="3"
-               VerticalAlignment="Center"
-               Text="{Binding Path=BuildSlots[0].Project}" />
-    <scc:GameButton Grid.Column="4"
-                    Grid.Row="3"
-                    DisplayMode="Tiny"
-                    VerticalAlignment="Center"
-                    Label="Buy"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
-                    CommandParameter="{Binding FallbackValue={x:Null}}" />
+                Grid.Row="3"
+                VerticalAlignment="Center"
+                Text="{Binding Path=BuildSlots[0].Project}" />
+    <TextBlock Grid.Column="2"
+                Grid.Row="4"
+                VerticalAlignment="Center"
+                Text="{Binding Path=Shipyard.BuildSlots[0].Project}" />
+    <TextBlock Grid.Column="2"
+                Grid.Row="5"
+                VerticalAlignment="Center"
+                Text="{Binding Path=Shipyard.BuildSlots[1].Project}" />
+        <scc:GameButton Grid.Column="4"
+                Grid.Row="3"
+                DisplayMode="Tiny"
+                VerticalAlignment="Center"
+                Label="Buy"
+                Foreground="Black"
+                Background="Transparent"
+                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                BorderThickness="2"
+                Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
+                CommandParameter="{Binding FallbackValue={x:Null}}" />
 
     <scc:GameLabel Grid.Column="2"
                    Grid.Row="1"

@@ -215,6 +215,7 @@ namespace Supremacy.Diplomacy
         }
         // looks like MinElement of Regard.CurrentValue is 'worst enemy' (used to check if minor is allied with your enemy) vs whatever trust is
         // see bool IsAlliedWithWorstEnemy() below
+        // RegardEventType is enum of events that appear to alter regard levels
         //ToDo look at old Supremacy code for agent and diplomat code
         public static Civilization GetWorstEnemy([NotNull] Civilization who)
         {
