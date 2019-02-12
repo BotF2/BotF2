@@ -40,7 +40,7 @@ namespace Supremacy.Diplomacy
 
             return GameContext.Current.DiplomacyData[owner.CivID, counterparty.CivID].Status;
         }
-
+            // ToDo look at bringin diplomatic ships to use the old diplomatic code and set up the Civilization-to-diplomat map for games (GameContext.Current.Diplomats)
         public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta)
         {
             if (civ == null)
@@ -213,7 +213,9 @@ namespace Supremacy.Diplomacy
                     where diplomacyData.IsContactMade()
                     select whoElse).ToList();
         }
-
+        // looks like MinElement of Regard.CurrentValue is 'worst enemy' (used to check if minor is allied with your enemy) vs whatever trust is
+        // see bool IsAlliedWithWorstEnemy() below
+        //ToDo look at old Supremacy code for agent and diplomat code
         public static Civilization GetWorstEnemy([NotNull] Civilization who)
         {
             if (who == null)
