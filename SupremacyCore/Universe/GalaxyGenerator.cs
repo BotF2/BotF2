@@ -738,9 +738,9 @@ namespace Supremacy.Universe
 
                     iPosition = positions.FirstIndexWhere(location => GameContext.Current.Universe.Map.GetQuadrant(location) == randomQuadrant2);
 
-                    if (randomQuadrant != minor.HomeQuadrant)
-                        GameLog.Client.GalaxyGenerator.DebugFormat("Minor-Quadrant randomize (file/real): {2}/{3} for > {0} placed ",  // no position for data protection
-                        minor.ShortName, positions[iPosition], minor.HomeQuadrant, GameContext.Current.Universe.Map.GetQuadrant(positions[iPosition]));
+                    //if (randomQuadrant != minor.HomeQuadrant) // getting a out of range crash from this gamelog so outcommented for now
+                    //    GameLog.Client.GalaxyGenerator.DebugFormat("Minor-Quadrant randomize (file/real): {2}/{3} for > {0} placed, positions {1} ",  // no position for data protection
+                    //    minor.ShortName, positions[iPosition], minor.HomeQuadrant, GameContext.Current.Universe.Map.GetQuadrant(positions[iPosition]));
                 }
         
 
