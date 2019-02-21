@@ -279,59 +279,59 @@ namespace Supremacy.Economy
         /// Gets the empire specific ShipInfoText
         /// </summary>
         /// <value>empire specific ShipInfoText</value>
-        public virtual string ShipInfoEmpire
-        {
-            get
-            {
-                var _owner = Builder.Key;
-                //GameLog.Core.General.DebugFormat("");
-                var message = "DEFAULT_SHIP_INFO";
-                switch (Builder.Key)
-                {
-                    case "FEDERATION":
-                        message = "vfs:///Resources/UI/Federation/ColonyScreen/ship_selection.png";
-                        break;
-                    case "KLINGONS":
-                        message = "vfs:///Resources/UI/Klingons/ColonyScreen/ship_selection.png";
-                        break;
-                    case "ROMULANS":
-                        message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
-                        break;
-                    case "DOMINION":
-                        message = "vfs:///Resources/UI/Dominion/ColonyScreen/ship_selection.png";
-                        break;
-                    case "TERRANEMPIRE":
-                        message = "vfs:///Resources/UI/TerranEmpire/ColonyScreen/ship_selection.png";
-                        break;
-                    case "BORG":
-                        message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
-                        break;
-                    case "CARDASSIANS":
-                        message = "vfs:///Resources/UI/Cardassians/ColonyScreen/ship_selection.png";
-                        break;
-                    default:
-                        message = "vfs:///Resources/UI/Default/ship_selection.png";
-                        break;
-                        //case "FEDERATION":
-                        //    message ="FED_SHIP_INFO"; break;
-                        //case "KLINGONS":
-                        //    message = "KLING_SHIP_INFO"; break;
-                        //case "ROMULANS":
-                        //    message = "ROM_SHIP_INFO"; break;
-                        //case "DOMINION":
-                        //    message ="DOM_SHIP_INFO"; break;
-                        //case "TERRANEMPIRE":
-                        //    message ="TERRANS_SHIP_INFO"; break;
-                        //case "BORG":
-                        //    message ="BORG_SHIP_INFO"; break;
-                        //case "CARDASSIANS":
-                        //    message ="CARD_SHIP_INFO"; break;
-                        //default:
-                        //    message ="DEFAULT_SHIP_INFO"; break;
-                }
-                return ResourceManager.GetResourcePath(message);
-            }
-        }
+        //public virtual string ShipInfoEmpire
+        //{
+        //    get
+        //    {
+        //        var _owner = Builder.Key;
+        //        //GameLog.Core.General.DebugFormat("");
+        //        var message = "DEFAULT_SHIP_INFO";
+        //        switch (Builder.Key)
+        //        {
+        //            case "FEDERATION":
+        //                message = "vfs:///Resources/UI/Federation/ColonyScreen/ship_selection.png";
+        //                break;
+        //            case "KLINGONS":
+        //                message = "vfs:///Resources/UI/Klingons/ColonyScreen/ship_selection.png";
+        //                break;
+        //            case "ROMULANS":
+        //                message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
+        //                break;
+        //            case "DOMINION":
+        //                message = "vfs:///Resources/UI/Dominion/ColonyScreen/ship_selection.png";
+        //                break;
+        //            case "TERRANEMPIRE":
+        //                message = "vfs:///Resources/UI/TerranEmpire/ColonyScreen/ship_selection.png";
+        //                break;
+        //            case "BORG":
+        //                message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
+        //                break;
+        //            case "CARDASSIANS":
+        //                message = "vfs:///Resources/UI/Cardassians/ColonyScreen/ship_selection.png";
+        //                break;
+        //            default:
+        //                message = "vfs:///Resources/UI/Default/ship_selection.png";
+        //                break;
+        //                //case "FEDERATION":
+        //                //    message ="FED_SHIP_INFO"; break;
+        //                //case "KLINGONS":
+        //                //    message = "KLING_SHIP_INFO"; break;
+        //                //case "ROMULANS":
+        //                //    message = "ROM_SHIP_INFO"; break;
+        //                //case "DOMINION":
+        //                //    message ="DOM_SHIP_INFO"; break;
+        //                //case "TERRANEMPIRE":
+        //                //    message ="TERRANS_SHIP_INFO"; break;
+        //                //case "BORG":
+        //                //    message ="BORG_SHIP_INFO"; break;
+        //                //case "CARDASSIANS":
+        //                //    message ="CARD_SHIP_INFO"; break;
+        //                //default:
+        //                //    message ="DEFAULT_SHIP_INFO"; break;
+        //        }
+        //        return ResourceManager.GetResourcePath(message);
+        //    }
+        //}
 
         /// <summary>
         /// Gets the number of turns remaining until this <see cref="BuildProject"/> is completed.

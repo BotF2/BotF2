@@ -99,34 +99,29 @@
         </ScrollViewer>
     </DockPanel>
     <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
-            <Button Margin="6,0,3,0"
-                  IsCancel="True"
-                  Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
-                <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
-            </Button>
+        <Button Margin="6,0,3,0"
+                IsCancel="True"
+                Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
+            <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
+        </Button>
     </StackPanel>
-    <!--<Border BorderBrush="{StaticResource {x:Static local:ClientResources.ImageBorderBrushKey}}" 
-            Grid.Column="3" 
-            Grid.Row="1"
-            BorderThickness="2">-->
-     <DockPanel 
+    <DockPanel 
             Grid.Column="2"
             Grid.RowSpan="2"
             LastChildFill="True"
             Width="320"
             Margin="22,0,0,0"
             Background="Black">
-
-         <Image DockPanel.Dock="Top"
-             MaxWidth="320"
-             MaxHeight="1385" 
-             StretchDirection="DownOnly"
-             x:Name="ImageContent"
-             Source="vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-
-               
-     </DockPanel>
-    </Grid>
+        <Image DockPanel.Dock="Top"
+                    MaxWidth="320"
+                    MaxHeight="1385" 
+                    StretchDirection="DownOnly"
+                    x:Name="ImageContent"
+                    Source="{Binding ElementName=_self, Path=ShipInfoEmpire}"
+                    Stretch="Uniform"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" />
+    </DockPanel>
+  </Grid>
 
 </Dialogs:Dialog>

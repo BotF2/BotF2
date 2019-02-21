@@ -1,5 +1,8 @@
-﻿using Supremacy.Economy;
+﻿using Microsoft.Practices.Composite.Presentation.Commands;
+using Supremacy.Economy;
 using Supremacy.Tech;
+using Supremacy.Universe;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,10 +10,14 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
+
 namespace Supremacy.Client.Views
 {
     public partial class NewShipSelectionView
     {
+        private DelegateCommand<Sector> _selectSectorCommand;
+        private string _builderKey = "FEDERATION";
+
         public NewShipSelectionView(ShipyardBuildSlot buildSlot)
         {
             InitializeComponent();
@@ -46,6 +53,62 @@ namespace Supremacy.Client.Views
             get { return (ShipBuildProject)GetValue(SelectedBuildProjectProperty); }
             set { SetValue(SelectedBuildProjectProperty, value); }
         }
+
+        public string ShipInfoEmpire
+        {
+            get
+            {
+                
+                _selectSectorCommand = new DelegateCommand<Sector>(
+                    sector =>
+                    {
+                        var system = sector.System;
+                        if (system == null)
+                            return;
+                        var colony = system.Colony;
+                        _builderKey = colony.Owner.Name;
+
+                    });
+
+                string imagePath = "vfs:///Resources/UI/Default/Ship_Functions.png";
+                switch (_builderKey)
+                {
+                    case "FEDERATION":
+                        imagePath = "vfs:///Resources/UI/Federation/ColonyScreen/Ship_Functions.png";
+                        break;
+                    case "KLINGONS":
+                        imagePath = "vfs:///Resources/UI/Klingons/ColonyScreen/Ship_Functions.png";
+                        break;
+                    case "ROMULANS":
+                        imagePath = "vfs:///Resources/UI/Borg/ColonyScreen/Ship_Functions.png";
+                        break;
+                    case "DOMINION":
+                        imagePath = "vfs:///Resources/UI/Dominion/ColonyScreen/Ship_Functions.png";
+                        break;
+                    case "TERRANEMPIRE":
+                        imagePath = "vfs:///Resources/UI/TerranEmpire/ColonyScreen/Ship_Functions.png";
+                        break;
+                    case "BORG":
+                        imagePath = "vfs:///Resources/UI/Borg/ColonyScreen/Ship_Functions.png";
+                        break;
+                    case "CARDASSIANS":
+                        imagePath = "vfs:///Resources/UI/Cardassians/ColonyScreen/Ship_Functions.png";
+                        break;
+                    default:
+                        imagePath = "vfs:///Resources/UI/Default/Ship_Functions.png";
+                        break;
+
+                }
+                return imagePath;
+            }
+        }
+
+
+
+
+ 
+            //set { SetValue(SelectedBuildProjectProperty, value); }
+      
         #endregion
 
         #region AdditionalContent Property
