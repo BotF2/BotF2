@@ -289,28 +289,29 @@ namespace Supremacy.Economy
                 switch (Builder.Key)
                 {
                     case "FEDERATION":
-                        message = "Resources/UI/Federation/ColonyScreen/Ship_Selection.png";
+                        message = "vfs:///Resources/UI/Federation/ColonyScreen/ship_selection.png";
                         break;
                     case "KLINGONS":
-                        message = "Resources/UI/Klingons/ColonyScreen/Ship_Selection.png";
+                        message = "vfs:///Resources/UI/Klingons/ColonyScreen/ship_selection.png";
                         break;
                     case "ROMULANS":
-                        message = "Resources/UI/Romulans/ColonyScreen/Ship_Selection.png";
+                        message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
                         break;
                     case "DOMINION":
-                        message = "Resources/UI/Dominion/ColonyScreen/Ship_Selection.png";
+                        message = "vfs:///Resources/UI/Dominion/ColonyScreen/ship_selection.png";
                         break;
                     case "TERRANEMPIRE":
-                        message = "Resources/UI/TerranEmpire/ColonyScreen/Ship_Selection.png";
+                        message = "vfs:///Resources/UI/TerranEmpire/ColonyScreen/ship_selection.png";
                         break;
                     case "BORG":
-                        message = "Resources/UI/Borg/ColonyScreen/Ship_Selection.png";
+                        message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
                         break;
                     case "CARDASSIANS":
-                        message = "Resources/UI/Cardassians/ColonyScreen/Ship_Selection.png";
+                        message = "vfs:///Resources/UI/Cardassians/ColonyScreen/ship_selection.png";
                         break;
                     default:
-                        message = "DEFAULT_SHIP_INFO"; break;
+                        message = "vfs:///Resources/UI/Default/ship_selection.png";
+                        break;
                         //case "FEDERATION":
                         //    message ="FED_SHIP_INFO"; break;
                         //case "KLINGONS":
