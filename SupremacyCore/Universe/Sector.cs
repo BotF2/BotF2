@@ -83,6 +83,7 @@ namespace Supremacy.Universe
                 OnPropertyChanged("Name");
                 OnPropertyChanged("Owner");
                 OnPropertyChanged("IsOwned");
+                GameLog.Client.General.DebugFormat("Sector _system = {0}_system.value = {1}",_system, _system.Value);
             }
         }
 
@@ -102,6 +103,11 @@ namespace Supremacy.Universe
                 OnPropertyChanged("IsOwned");
             }
         }
+
+        //public bool Equals(Sector sector)
+        //{
+        //    return Location == _location && System == _system.Value && Station == _station.Value;
+        //}
 
         public int TradeRouteIndicator
         {
@@ -326,12 +332,13 @@ namespace Supremacy.Universe
         /// <c>true</c> if <paramref name="sector"/> is equal to this <see cref="Sector"/>;
         /// otherwise, <c>false</c>.
         /// </returns>
+        
         public virtual bool Equals(Sector sector)
         {
             if (ReferenceEquals(sector, null))
                 return false;
 
-            return (sector._location == _location);
+            return (sector._location == _location); //&& sector._station == _station && sector._system == _system);
         }
 
         /// <summary>
@@ -389,6 +396,7 @@ namespace Supremacy.Universe
             return Equals(obj as Sector);
         }
 
+    
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
