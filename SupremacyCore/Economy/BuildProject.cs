@@ -289,23 +289,46 @@ namespace Supremacy.Economy
                 switch (Builder.Key)
                 {
                     case "FEDERATION":
-                        message ="FED_SHIP_INFO"; break;
+                        message = "Resources/UI/Federation/ColonyScreen/Ship_Selection.png";
+                        break;
                     case "KLINGONS":
-                        message = "KLING_SHIP_INFO"; break;
+                        message = "Resources/UI/Klingons/ColonyScreen/Ship_Selection.png";
+                        break;
                     case "ROMULANS":
-                        message = "ROM_SHIP_INFO"; break;
+                        message = "Resources/UI/Romulans/ColonyScreen/Ship_Selection.png";
+                        break;
                     case "DOMINION":
-                        message ="DOM_SHIP_INFO"; break;
+                        message = "Resources/UI/Dominion/ColonyScreen/Ship_Selection.png";
+                        break;
                     case "TERRANEMPIRE":
-                        message ="TERRANS_SHIP_INFO"; break;
+                        message = "Resources/UI/TerranEmpire/ColonyScreen/Ship_Selection.png";
+                        break;
                     case "BORG":
-                        message ="BORG_SHIP_INFO"; break;
+                        message = "Resources/UI/Borg/ColonyScreen/Ship_Selection.png";
+                        break;
                     case "CARDASSIANS":
-                        message ="CARD_SHIP_INFO"; break;
+                        message = "Resources/UI/Cardassians/ColonyScreen/Ship_Selection.png";
+                        break;
                     default:
-                        message ="DEFAULT_SHIP_INFO"; break;
+                        message = "DEFAULT_SHIP_INFO"; break;
+                        //case "FEDERATION":
+                        //    message ="FED_SHIP_INFO"; break;
+                        //case "KLINGONS":
+                        //    message = "KLING_SHIP_INFO"; break;
+                        //case "ROMULANS":
+                        //    message = "ROM_SHIP_INFO"; break;
+                        //case "DOMINION":
+                        //    message ="DOM_SHIP_INFO"; break;
+                        //case "TERRANEMPIRE":
+                        //    message ="TERRANS_SHIP_INFO"; break;
+                        //case "BORG":
+                        //    message ="BORG_SHIP_INFO"; break;
+                        //case "CARDASSIANS":
+                        //    message ="CARD_SHIP_INFO"; break;
+                        //default:
+                        //    message ="DEFAULT_SHIP_INFO"; break;
                 }
-                return ResourceManager.GetString(message);
+                return ResourceManager.GetResourcePath(message);
             }
         }
 
