@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.Composite.Presentation.Commands;
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.Tech;
 using Supremacy.Universe;
 using System;
@@ -10,13 +11,14 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
+using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
 namespace Supremacy.Client.Views
 {
     public partial class NewShipSelectionView
     {
-        private DelegateCommand<Sector> _selectSectorCommand;
-        private string _builderKey = "FEDERATION";
+        private string _builderKey;
+      
 
         public NewShipSelectionView(ShipyardBuildSlot buildSlot)
         {
@@ -27,6 +29,8 @@ namespace Supremacy.Client.Views
                                         .ToArray();
 
             BuildProjectList.ItemsSource = shipList;
+
+            _builderKey = shipList[0].Builder.Key; // set up for the switch in ShipInfoByEmpire
 
             SetBinding(
                 SelectedBuildProjectProperty,
@@ -53,23 +57,13 @@ namespace Supremacy.Client.Views
             get { return (ShipBuildProject)GetValue(SelectedBuildProjectProperty); }
             set { SetValue(SelectedBuildProjectProperty, value); }
         }
+        #endregion
 
-        public string ShipInfoEmpire
+        #region ShipInfoByEmpire Property
+        public string ShipInfoByEmpire
         {
             get
             {
-                
-                _selectSectorCommand = new DelegateCommand<Sector>(
-                    sector =>
-                    {
-                        var system = sector.System;
-                        if (system == null)
-                            return;
-                        var colony = system.Colony;
-                        _builderKey = colony.Owner.Name;
-
-                    });
-
                 string imagePath = "vfs:///Resources/UI/Default/Ship_Functions.png";
                 switch (_builderKey)
                 {
@@ -97,20 +91,27 @@ namespace Supremacy.Client.Views
                     default:
                         imagePath = "vfs:///Resources/UI/Default/Ship_Functions.png";
                         break;
-
                 }
                 return imagePath;
             }
+            set
+            {
+                if (SelectedBuildProject == null)
+                {
+                    var property = DependencyProperty.Register(
+                         "SelectedBuildProject",
+                         typeof(ShipBuildProject),
+                         typeof(NewShipSelectionView),
+                         new PropertyMetadata());
+                    var project = (ShipBuildProject)GetValue(property);
+                    _builderKey = project.Builder.Key;
+                    _builderKey = value;
+                }
+                SelectedBuildProject.Builder.Key = value;
+            }
         }
-
-
-
-
- 
-            //set { SetValue(SelectedBuildProjectProperty, value); }
-      
         #endregion
-
+        
         #region AdditionalContent Property
         public static readonly DependencyProperty AdditionalContentProperty = DependencyProperty.Register(
             "AdditionalContent",

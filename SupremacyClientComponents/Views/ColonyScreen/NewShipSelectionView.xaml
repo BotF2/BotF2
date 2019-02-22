@@ -117,7 +117,7 @@
                     MaxHeight="1385" 
                     StretchDirection="DownOnly"
                     x:Name="ImageContent"
-                    Source="{Binding ElementName=_self, Path=ShipInfoEmpire}"
+                    Source="{Binding ElementName=_self, Path=ShipInfoByEmpire}"
                     Stretch="Uniform"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center" />
