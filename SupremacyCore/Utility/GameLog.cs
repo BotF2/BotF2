@@ -62,8 +62,11 @@ namespace Supremacy.Utility
         {
             public const string AI = "AI";
             public const string Audio = "Audio";
+            public const string Colonies = "Colonies";
             public const string Combat = "Combat";
+            public const string CombatDetails = "CombatDetails";
             public const string Diplomacy = "Diplomacy";
+            public const string Energy = "Energy";
             public const string Events = "Events";
             public const string Intel = "Intel";
             public const string GalaxyGenerator = "GalaxyGenerator";
@@ -71,9 +74,14 @@ namespace Supremacy.Utility
             public const string General = "General";
             public const string Multiplay = "Multiplay";
             public const string Production = "Production";
+            public const string Research = "Research";
             public const string SaveLoad = "SaveLoad";
             public const string ShipProduction = "ShipProduction";
+            public const string Structures = "Structures";
+            public const string SystemAssault = "SystemAssault";
+            public const string SystemAssaultDetails = "SystemAssaultDetails";
             public const string TradeRoutes = "TradeRoutes";
+            public const string UI = "UI";
         }
 
         public ILog AI
@@ -86,14 +94,29 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.Audio); }
         }
 
+        public ILog Colonies
+        {
+            get { return LogManager.GetLogger(Repositories.Colonies); }
+        }
+
         public ILog Combat
         {
             get { return LogManager.GetLogger(Repositories.Combat); }
         }
 
+        public ILog CombatDetails
+        {
+            get { return LogManager.GetLogger(Repositories.CombatDetails); }
+        }
+
         public ILog Diplomacy
         {
             get { return LogManager.GetLogger(Repositories.Diplomacy); }
+        }
+
+        public ILog Energy
+        {
+            get { return LogManager.GetLogger(Repositories.Energy); }
         }
 
         public ILog Events
@@ -136,14 +159,34 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.Production); }
         }
 
+        public ILog Research
+        {
+            get { return LogManager.GetLogger(Repositories.Research); }
+        }
+
         public ILog ShipProduction
         {
             get { return LogManager.GetLogger(Repositories.ShipProduction); }
         }
 
+        public ILog SystemAssault
+        {
+            get { return LogManager.GetLogger(Repositories.SystemAssault); }
+        }
+
+        public ILog SystemAssaultDetails
+        {
+            get { return LogManager.GetLogger(Repositories.SystemAssaultDetails); }
+        }
+
         public ILog TradeRoutes
         {
             get { return LogManager.GetLogger(Repositories.TradeRoutes); }
+        }
+
+        public ILog UI
+        {
+            get { return LogManager.GetLogger(Repositories.UI); }
         }
 
         protected GameLog(Type type)

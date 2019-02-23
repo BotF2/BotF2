@@ -459,6 +459,27 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesColonies Property
+        public static readonly DependencyProperty TracesColoniesProperty = DependencyProperty.Register(
+            "Colonies",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesColonies
+        {
+            get { return (bool)GetValue(TracesColoniesProperty); }
+            set { SetValue(TracesColoniesProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
         #region TracesCombat Property
         public static readonly DependencyProperty TracesCombatProperty = DependencyProperty.Register(
             "TracesCombat",
@@ -480,6 +501,27 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesCombatDetails Property
+        public static readonly DependencyProperty TracesCombatDetailsProperty = DependencyProperty.Register(
+            "CombatDetails",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesCombatDetails
+        {
+            get { return (bool)GetValue(TracesCombatDetailsProperty); }
+            set { SetValue(TracesCombatDetailsProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
         #region TracesDiplomacy Property
         public static readonly DependencyProperty TracesDiplomacyProperty = DependencyProperty.Register(
             "TracesDiplomacy",
@@ -493,6 +535,27 @@ namespace Supremacy.Client
         {
             get { return (bool)GetValue(TracesDiplomacyProperty); }
             set { SetValue(TracesDiplomacyProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesEnergy Property
+        public static readonly DependencyProperty TracesEnergyProperty = DependencyProperty.Register(
+            "Energy",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesEnergy
+        {
+            get { return (bool)GetValue(TracesEnergyProperty); }
+            set { SetValue(TracesEnergyProperty, value); }
         }
         //public bool EnableCombatScreen
         //{
@@ -647,27 +710,6 @@ namespace Supremacy.Client
         //}
         #endregion
 
-        #region TracesSaveLoad Property
-        public static readonly DependencyProperty TracesSaveLoadProperty = DependencyProperty.Register(
-            "TracesSaveLoad",
-            typeof(bool),
-            typeof(ClientSettings),
-            new FrameworkPropertyMetadata(
-                false,
-                FrameworkPropertyMetadataOptions.None));
-
-        public bool TracesSaveLoad
-        {
-            get { return (bool)GetValue(TracesSaveLoadProperty); }
-            set { SetValue(TracesSaveLoadProperty, value); }
-        }
-        //public bool EnableCombatScreen
-        //{
-        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
-        //    set { SetValue(EnableCombatScreenProperty, value); }
-        //}
-        #endregion
-
         #region TracesProduction Property
         public static readonly DependencyProperty TracesProductionProperty = DependencyProperty.Register(
             "TracesProduction",
@@ -681,6 +723,48 @@ namespace Supremacy.Client
         {
             get { return (bool)GetValue(TracesProductionProperty); }
             set { SetValue(TracesProductionProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesResearch Property
+        public static readonly DependencyProperty TracesResearchProperty = DependencyProperty.Register(
+            "Research",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesResearch
+        {
+            get { return (bool)GetValue(TracesResearchProperty); }
+            set { SetValue(TracesResearchProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesSaveLoad Property
+        public static readonly DependencyProperty TracesSaveLoadProperty = DependencyProperty.Register(
+            "TracesSaveLoad",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesSaveLoad
+        {
+            get { return (bool)GetValue(TracesSaveLoadProperty); }
+            set { SetValue(TracesSaveLoadProperty, value); }
         }
         //public bool EnableCombatScreen
         //{
@@ -710,6 +794,69 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesStructures Property
+        public static readonly DependencyProperty TracesStructuresProperty = DependencyProperty.Register(
+            "Structures",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesStructures
+        {
+            get { return (bool)GetValue(TracesStructuresProperty); }
+            set { SetValue(TracesStructuresProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesSystemAssault Property
+        public static readonly DependencyProperty TracesSystemAssaultProperty = DependencyProperty.Register(
+            "SystemAssault",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesSystemAssault
+        {
+            get { return (bool)GetValue(TracesSystemAssaultProperty); }
+            set { SetValue(TracesSystemAssaultProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesSystemAssaultDetails Property
+        public static readonly DependencyProperty TracesSystemAssaultDetailsProperty = DependencyProperty.Register(
+            "SystemAssaultDetails",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesSystemAssaultDetails
+        {
+            get { return (bool)GetValue(TracesSystemAssaultDetailsProperty); }
+            set { SetValue(TracesSystemAssaultDetailsProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
         #region TracesTradeRoutes Property
         public static readonly DependencyProperty TracesTradeRoutesProperty = DependencyProperty.Register(
             "TradeRoutes",
@@ -723,6 +870,27 @@ namespace Supremacy.Client
         {
             get { return (bool)GetValue(TracesTradeRoutesProperty); }
             set { SetValue(TracesTradeRoutesProperty, value); }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesUI Property
+        public static readonly DependencyProperty TracesUIProperty = DependencyProperty.Register(
+            "UI",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesUI
+        {
+            get { return (bool)GetValue(TracesUIProperty); }
+            set { SetValue(TracesUIProperty, value); }
         }
         //public bool EnableCombatScreen
         //{
