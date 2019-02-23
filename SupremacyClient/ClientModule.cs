@@ -322,7 +322,7 @@ namespace Supremacy.Client
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Initialize()
         {
-            GameLog.Client.General.Debug("Initializing... !");
+            GameLog.Client.General.InfoFormat("Initializing... !");
             RegisterViewsAndServices();
             RegisterEventHandlers();
             RegisterCommandHandlers();
@@ -334,7 +334,7 @@ namespace Supremacy.Client
                 return;
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
-            GameLog.Client.General.Debug("MenuScreen activated... ");
+            GameLog.Client.General.InfoFormat("MenuScreen activated... ");
             _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.wav");
         }
 

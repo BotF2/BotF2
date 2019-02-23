@@ -116,7 +116,7 @@ namespace Supremacy.Resources
                 }
                 catch 
                 {
-                    GameLog.Core.GameData.Warn("Hint: local file \\Text\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done");
+                    GameLog.Core.GameData.Info("Hint: local file \\Text\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done");
                 }
             }
         }

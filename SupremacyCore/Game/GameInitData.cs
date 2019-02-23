@@ -193,7 +193,7 @@ namespace Supremacy.Game
             {
                 _localPlayerEmpireID = value;
                 OnPropertyChanged("LocalPlayerEmpireID");
-                GameLog.Core.General.DebugFormat("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
+                GameLog.Core.General.InfoFormat("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
             }
         }
 

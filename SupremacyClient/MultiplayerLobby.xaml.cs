@@ -329,7 +329,7 @@ namespace Supremacy.Client
 
             if (AppContext.IsSinglePlayerGame)
             {
-                GameLog.Client.General.DebugFormat("AppContext.IsSinglePlayerGame={0}", AppContext.IsSinglePlayerGame);
+                GameLog.Client.General.InfoFormat("AppContext.IsSinglePlayerGame={0}", AppContext.IsSinglePlayerGame);
                 return;
             }
 

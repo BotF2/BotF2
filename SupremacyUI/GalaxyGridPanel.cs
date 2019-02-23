@@ -510,7 +510,7 @@ namespace Supremacy.UI
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            GameLog.Client.General.DebugFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
+            GameLog.Client.General.InfoFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
             var galaxyScreen = this.FindVisualAncestorByType<GalaxyScreenView>();
             if (galaxyScreen != null)
                 _screenModel = galaxyScreen.Model;
