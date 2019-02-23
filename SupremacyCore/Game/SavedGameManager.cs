@@ -201,7 +201,7 @@ namespace Supremacy.Game
             if (fileName == null)
                 fileName = "_manual_save_(CTRL+S)";
 
-            GameLog.Core.General.DebugFormat("SaveGame: localPlayer={1}, fileName= '{0}'",
+            GameLog.Core.SaveLoad.DebugFormat("SaveGame: localPlayer={1}, fileName= '{0}'",
                                     fileName, localPlayer);
 
             if (game == null)

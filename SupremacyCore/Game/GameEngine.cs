@@ -848,7 +848,7 @@ namespace Supremacy.Game
                 {
                     return;
                 }
-                GameLog.Core.General.DebugFormat("{0} {1} is conducting research in {2}...",
+                GameLog.Core.Research.DebugFormat("{0} {1} is conducting research in {2}...",
                     scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
 
                 try
@@ -857,7 +857,7 @@ namespace Supremacy.Game
                     var starType = scienceShip.Sector.System.StarType;
 
                     int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
-                    GameLog.Core.General.DebugFormat("Base research gained for {0} {1} is {2}",
+                    GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
                         scienceShip.ObjectID, scienceShip.Name, researchGained);
 
                     switch (starType)
@@ -894,14 +894,14 @@ namespace Supremacy.Game
 
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
-                    GameLog.Core.General.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
+                    GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
                         scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
 
                     GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained, starType));
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.General.ErrorFormat(string.Format("There was a problem conducting research for {0} {1}",
+                    GameLog.Core.Research.ErrorFormat(string.Format("There was a problem conducting research for {0} {1}",
                         scienceShip.ObjectID, scienceShip.Name),
                         e);
                 }

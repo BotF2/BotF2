@@ -26,7 +26,7 @@ namespace Supremacy.Game
             {
                 const string fallback = "(Auto Save)";
 
-                GameLog.Core.General.Debug("just for time stamp point 1");
+                GameLog.Core.SaveLoad.Debug("just for time stamp point 1");
 
                 try
                 {
@@ -129,7 +129,7 @@ namespace Supremacy.Game
         /// <param name="localPlayer">The local player.</param>
         public SavedGameHeader(IGameContext game, Player localPlayer)
         {
-            GameLog.Core.General.Debug("just for time stamp point 2");
+            GameLog.Core.SaveLoad.Debug("just for time stamp point 2");
             if (game == null)
                 throw new ArgumentNullException("game");
             if (localPlayer == null)

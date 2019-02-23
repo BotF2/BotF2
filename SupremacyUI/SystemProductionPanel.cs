@@ -745,7 +745,7 @@ namespace Supremacy.UI
 
                 _sliderGroup.ResetPool(colony.Population.CurrentValue);
 
-                GameLog.Client.General.DebugFormat("Pop = {0}, Food = {1}, Ind = {2}, Energy = {3}, Research = {4}, Intel = {5}, FreePoolSize = {6}", colony.Population.CurrentValue, 
+                GameLog.Client.Production.DebugFormat("Pop = {0}, Food = {1}, Ind = {2}, Energy = {3}, Research = {4}, Intel = {5}, FreePoolSize = {6}", colony.Population.CurrentValue, 
                                                                       colony.GetActiveFacilities(ProductionCategory.Food),
                                                                       colony.GetActiveFacilities(ProductionCategory.Industry),
                                                                       colony.GetActiveFacilities(ProductionCategory.Energy),

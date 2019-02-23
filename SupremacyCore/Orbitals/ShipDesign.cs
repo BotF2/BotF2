@@ -440,7 +440,7 @@ namespace Supremacy.Orbitals
 
             if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true)
             {
-                GameLog.Core.General.DebugFormat("{0}, {1}, {2}, {3}, {4}, {5}, ship highest tech level is {6} for {7}, exceeding current Techlevel",
+                GameLog.Core.GameData.DebugFormat("{0}, {1}, {2}, {3}, {4}, {5}, ship highest tech level is {6} for {7}, exceeding current Techlevel",
 
                     ship.ShipDesign.TechRequirements[TechCategory.BioTech],
                     ship.ShipDesign.TechRequirements[TechCategory.Computers],
