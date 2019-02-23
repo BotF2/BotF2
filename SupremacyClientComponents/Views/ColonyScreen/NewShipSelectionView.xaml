@@ -12,7 +12,7 @@
              xmlns:Commands="clr-namespace:Supremacy.Client.Commands"
              mc:Ignorable="d"
              d:DesignHeight="690"
-             d:DesignWidth="1060"
+             d:DesignWidth="1099"
              Height="690"
              Width="1160"
              Foreground="White"
@@ -30,15 +30,17 @@
   <Dialogs:Dialog.CommandBindings>
     <CommandBinding Command="{x:Static Commands:DialogCommands.AcceptCommand}" CanExecute="CanExecuteAcceptCommand" Executed="ExecuteAcceptCommand" />
   </Dialogs:Dialog.CommandBindings>
-  <!--
-      MAIN CONTENT
-    -->
-  <Grid>
+  
+    <!--       MAIN CONTENT     -->
+  <Grid Background="Black">
+
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="350" />
-      <ColumnDefinition Width="420" />
-      <ColumnDefinition Width="320" />
+
+      <ColumnDefinition Width="330" />
+      <ColumnDefinition Width="400" />
+      <ColumnDefinition Width="380" />
     </Grid.ColumnDefinitions>
+
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -78,6 +80,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
     </ListBox>
+
     <DockPanel 
             Grid.Column="1"
             Grid.RowSpan="2"
@@ -86,8 +89,8 @@
             Margin="22,0,0,0"
             Background="Black">
         <Image DockPanel.Dock="Top"
-                MaxWidth="270"
-                MaxHeight="225"
+                MaxWidth="360"
+                MaxHeight="250"
                 Stretch="Uniform"
                 StretchDirection="DownOnly"
                 Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}"/>
@@ -98,30 +101,33 @@
                     Content="{Binding ElementName=_self, Path=AdditionalContent}" />
         </ScrollViewer>
     </DockPanel>
-    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
-        <Button Margin="6,0,3,0"
-                IsCancel="True"
-                Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
-            <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
-        </Button>
-    </StackPanel>
-    <DockPanel 
-            Grid.Column="2"
-            Grid.RowSpan="2"
-            LastChildFill="True"
-            Width="320"
-            Margin="22,0,0,0"
-            Background="Black">
-        <Image DockPanel.Dock="Top"
-                    MaxWidth="320"
-                    MaxHeight="1385" 
-                    StretchDirection="DownOnly"
-                    x:Name="ImageContent"
-                    Source="{Binding ElementName=_self, Path=ShipInfoByEmpire}"
-                    Stretch="Uniform"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center" />
-    </DockPanel>
-  </Grid>
 
+        <DockPanel 
+        Grid.Column="2"
+                Grid.RowSpan="3"   
+               LastChildFill="True"
+               Width="380"
+               Margin="0,0,0,0">
+
+            <Image DockPanel.Dock="Top"
+             StretchDirection="DownOnly"
+             Source="{Binding ElementName=_self, Path=ShipFunctionPath}"/>
+
+            <!-- model files:  we just have a few model files - to less model files
+            <sx:ShipModelViewer DockPanel.Dock="Top"
+                          Height="240"
+                          CameraDistanceMultiplier="2"  
+                          ModelFile="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.ModelFile}" />
+            -->
+        </DockPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
+            <Button Margin="6,0,3,0"
+              IsCancel="True"
+              Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
+                <AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
+            </Button>
+        </StackPanel>
+  </Grid>
+      
 </Dialogs:Dialog>
