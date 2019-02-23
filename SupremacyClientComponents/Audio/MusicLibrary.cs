@@ -65,7 +65,7 @@ namespace Supremacy.Client.Audio
                 musicPack.Load(xmlPack);
                 _musicPacks.Add(musicPack.Name, musicPack);
 
-                GameLog.Client.General.DebugFormat("adding: musicPack.Name={0}", musicPack.Name);
+                GameLog.Client.Audio.DebugFormat("adding: musicPack.Name={0}", musicPack.Name);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Supremacy.Client.Audio
                 MusicEntry track = null;
                 pack.Dictionary.TryGetValue(trackName, out track);
 
-                GameLog.Client.General.DebugFormat("trackName={0}, track.FileName={1}", trackName, track.FileName);
+                GameLog.Client.Audio.DebugFormat("trackName={0}, track.FileName={1}", trackName, track.FileName);
 
                 return track;
             }
