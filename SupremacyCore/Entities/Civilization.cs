@@ -103,7 +103,7 @@ namespace Supremacy.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class.
         /// </summary>
-        public Civilization() {}
+        public Civilization() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class.
@@ -433,9 +433,24 @@ namespace Supremacy.Entities
         /// </summary>
         /// <value>The primary race.</value>
         public Race Race
-        {
-            get { return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId]; }
-            set { _raceId = (value != null) ? value.Key : Race.InvalidRaceKey; }
+        { 
+        get
+            {
+               try
+                {
+                    return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];
+                }
+                catch
+                {
+                    GameLog.Core.GameData.ErrorFormat("##### Problem with Race = {0}", Race);
+                    
+                }
+                return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];
+            }
+            set
+            {
+                _raceId = (value != null) ? value.Key : Race.InvalidRaceKey;
+            }
         }
 
         /// <summary>
