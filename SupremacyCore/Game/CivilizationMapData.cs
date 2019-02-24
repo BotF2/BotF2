@@ -1,4 +1,5 @@
 ﻿using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,23 @@ namespace Supremacy.Game
     [Serializable]
     public class CivilizationMapData
     {
-        public const int MaxScanStrength = 31;
-        public const int MinScanStrength = -32;
+
+
+        public const int MaxScanStrength = 31; // binary               11.111
+        public const int MinScanStrength = -32;  // binary            100.000
 
         private int[,] _mapData;
 
-        private int ExploredMask = 16384;
-        private int FuelRangeMask = 255;
-        private int FuelRangeOffset = 0;
-        private int MaxFuelRange = 255;
-        private int MaxAdjustedScanStrength = 63;
-        private int ScanStrengthAdjustment = 32;
-        private int ScannedMask = 32768;
-        private int ScanStrengthMask = 16128;
-        private int ScanStrengthOffset = 8;
+        private int ExploredMask = 16384;       // binary 100.000.000.000.000
+        private int FuelRangeMask = 255;        // binary          11.111.111
+        private int FuelRangeOffset = 0;        //                          0
+        private int MaxFuelRange = 255;         // binary          11.111.111
+        private int MaxAdjustedScanStrength = 63;  // binary          111.111
+        private int ScanStrengthAdjustment = 32; // binary            100.000
+        private int ScannedMask = 32768;     // binary  1.000.000.000.000.000
+        private int ScanStrengthMask = 16128;    // binary 11.111.100.000.000
+        private int ScanStrengthOffset = 8;    // binary                1.000
+
 
         public CivilizationMapData(int width, int height)
         {
@@ -45,17 +49,64 @@ namespace Supremacy.Game
 
         public int GetScanStrength(MapLocation location)
         {
+            //if (((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment  > 0)  // old: if not 8 as Offset
+            //    {
+            //    GameLog.Core.GameData.InfoFormat("ScanStrengthMask  = {1}, ScanStrengthAdjustment = {2}, mapData= {3}, RESULT: {0}: ScanStrength = {4}",
+            //        location,
+            //        ScanStrengthMask,
+            //        ScanStrengthAdjustment,
+            //        (_mapData[location.X, location.Y] & ScanStrengthMask),
+            //        ((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment 
+            //        );
+            //    }
+            
             return ((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment;
         }
 
         public bool IsExplored(MapLocation location)
         {
-            return ((_mapData[location.X, location.Y] & ExploredMask) != 0);
+            if ((_mapData[location.X, location.Y] & ExploredMask) != 0)
+            {
+                GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '&' = {2}",
+                    location,
+                    ExploredMask,
+                    (_mapData[location.X, location.Y] & ExploredMask)
+                    );
+            }
+            //if ((_mapData[location.X, location.Y] & ExploredMask) > 0)
+            //{
+            //    GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '-' = {2}",
+            //        location,
+            //        ExploredMask,
+            //        (_mapData[location.X, location.Y] - ExploredMask)
+            //        );
+            //}
+
+            return ((_mapData[location.X, location.Y] & ExploredMask) != 0);  // ExploredMask = 16384;  // binary 100.000.000.000.000
         }
 
         public bool IsScanned(MapLocation location)
         {
-            return ((_mapData[location.X, location.Y] & ScannedMask) != 0);
+            //var result = ((_mapData[location.X, location.Y] & ScannedMask) != 0);
+            //if (result == true)
+            //{
+            //    GameLog.Core.GameData.InfoFormat("ScannedMask = {1}, RESULT: {0}: ScanStrength '& != 0' = {2}",
+            //        location,
+            //        ScannedMask,
+            //        (_mapData[location.X, location.Y] & ScannedMask)
+            //        );
+            //}
+
+            ////if ((_mapData[location.X, location.Y] - ScannedMask > 0))
+            ////{
+            ////    GameLog.Core.GameData.InfoFormat("ScannedMask = {1}, RESULT: {0}: ScanStrength '- > 0' = {2}",
+            ////        location,
+            ////        ScannedMask,
+            ////        (_mapData[location.X, location.Y] - ScannedMask)
+            ////        );
+            ////}
+
+            return ((_mapData[location.X, location.Y] & ScannedMask) != 0); // ScannedMask = 32768;  // hex 3F00   // binary  1.000.000.000.000.000
         }
 
         public void ResetScanStrengthAndFuelRange()

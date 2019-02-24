@@ -408,24 +408,24 @@ namespace Supremacy.Client
         {
             var initializedPresenters = new List<IPresenter>();
 
-            GameLog.Client.General.DebugFormat("BEGINNING: CreatePresenters");
+            GameLog.Client.UI.DebugFormat("BEGINNING: CreatePresenters");
 
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                GameLog.Client.General.DebugFormat("DONE: IGalaxyScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IGalaxyScreenPresenter");
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                GameLog.Client.General.DebugFormat("DONE: IColonyScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IColonyScreenPresenter");
 
                 _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, INewDiplomacyScreenView>>());
-                GameLog.Client.General.DebugFormat("DONE: INewDiplomacyScreenView");
+                GameLog.Client.UI.DebugFormat("DONE: INewDiplomacyScreenView");
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                GameLog.Client.General.DebugFormat("DONE: IScienceScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IScienceScreenPresenter");
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                GameLog.Client.General.DebugFormat("DONE: IAssetsScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IAssetsScreenPresenter");
 
                 foreach (var presenter in _screenPresenters)
                 {
@@ -433,11 +433,11 @@ namespace Supremacy.Client
                     { 
                         presenter.Run();
                         initializedPresenters.Add(presenter);
-                        GameLog.Client.General.DebugFormat("DONE: {0}", presenter.ToString());
+                        GameLog.Client.UI.DebugFormat("DONE: {0}", presenter.ToString());
                     }
                     catch (Exception e)
                     {
-                        GameLog.Client.General.Error(string.Format("###### problem with {0}",
+                        GameLog.Client.UI.Error(string.Format("###### problem with {0}",
                             presenter.ToString()),
                             e);
                         throw;

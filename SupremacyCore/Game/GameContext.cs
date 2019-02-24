@@ -1070,7 +1070,7 @@ namespace Supremacy.Game
                         }
                     }
                 }
-                GameLog.Core.General.Debug("Starting items are done!");
+                GameLog.Core.General.InfoFormat("Starting items are done!");
                 _sectorClaims = new SectorClaimGrid();
                 _diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
 
@@ -1082,7 +1082,7 @@ namespace Supremacy.Game
                         civManager.EnsureSeatOfGovernment();
                     }
                 }
-                GameLog.Core.General.DebugFormat("SeatOfGovernment ensured...");
+                GameLog.Core.General.InfoFormat("SeatOfGovernment ensured...");
 
                 _diplomats.ForEach(d => d.EnsureForeignPowers());
 

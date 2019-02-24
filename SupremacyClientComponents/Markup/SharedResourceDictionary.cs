@@ -28,7 +28,7 @@ namespace Supremacy.Client.Markup
             {
                 _sourceUri = value;
 
-                GameLog.Client.General.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
+                GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
 
                 ResourceDictionary sharedDictionary;
 
@@ -46,7 +46,7 @@ namespace Supremacy.Client.Markup
                     // add it to the cache
                     SharedDictionaries.Add(value, this);
 
-                    GameLog.Client.General.DebugFormat("SharedResourceDictionary.cs: Count={0}, Added to sharedDictionary={1}", SharedDictionaries.Count, value);
+                    GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: Count={0}, Added to sharedDictionary={1}", SharedDictionaries.Count, value);
                 }
             }
         }

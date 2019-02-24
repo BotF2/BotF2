@@ -495,13 +495,13 @@ namespace Supremacy.WCF
                         null);
                 }
 
-                GameLog.Server.General.DebugFormat("AI processing time: {0}", stopwatch.Elapsed);
+                GameLog.Server.General.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
 
                 stopwatch.Restart();
 
                 await DoTurnCore().ConfigureAwait(false);
 
-                GameLog.Server.General.DebugFormat("Turn processing time: {0}", stopwatch.Elapsed);
+                GameLog.Server.General.InfoFormat("Turn processing time: {0}", stopwatch.Elapsed);
 
                 Task autoSaveTask = null;
 

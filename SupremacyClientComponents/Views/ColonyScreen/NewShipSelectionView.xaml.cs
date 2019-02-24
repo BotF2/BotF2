@@ -1,6 +1,10 @@
 ﻿using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.Tech;
+using Supremacy.Utility;
+using Supremacy.Client;
 using System.Linq;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -9,11 +13,15 @@ using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {
+
+
     public partial class NewShipSelectionView
     {
         public NewShipSelectionView(ShipyardBuildSlot buildSlot)
         {
             InitializeComponent();
+
+            
 
             BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard)
                                         .OrderByDescending(s => s.BuildDesign.BuildCost)
@@ -64,6 +72,18 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
+        
+
+        public string ShipFunctionPath 
+        {
+            get
+            {
+                return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization + "/ColonyScreen/Ship_Functions.png";
+            }
+        }
+
+
+
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = (SelectedBuildProject != null);
@@ -75,6 +95,8 @@ namespace Supremacy.Client.Views
                 return;
             DialogResult = true;
         }
+
+
 
         private void OnBuildProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

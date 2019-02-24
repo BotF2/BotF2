@@ -201,7 +201,7 @@ namespace Supremacy.Game
             if (fileName == null)
                 fileName = "_manual_save_(CTRL+S)";
 
-            GameLog.Core.General.DebugFormat("SaveGame: localPlayer={1}, fileName= '{0}'",
+            GameLog.Core.SaveLoad.DebugFormat("SaveGame: localPlayer={1}, fileName= '{0}'",
                                     fileName, localPlayer);
 
             if (game == null)
@@ -285,10 +285,10 @@ namespace Supremacy.Game
                 string file_autosav_one_turn_ago = SavedGameFolder + ".autosav_one_turn_ago.sav";
                 string file_autosav_two_turns_ago = SavedGameFolder + ".autosav_two_turns_ago";
 
-                //GameLog.Core.General.DebugFormat("saved {0} + {1} + {2}", file_autosav_current, file_autosav_one_turn_ago, file_autosav_two_turns_ago);
-                //GameLog.Core.General.DebugFormat("saving {0}", file_autosav_current);
-                GameLog.Core.General.DebugFormat("saving {0}", file_autosav_one_turn_ago);
-                //GameLog.Core.General.DebugFormat("saving {0}", file_autosav_two_turns_ago);
+                //GameLog.Core.SaveLoad.InfoFormat("saved {0} + {1} + {2}", file_autosav_current, file_autosav_one_turn_ago, file_autosav_two_turns_ago);
+                GameLog.Core.General.InfoFormat("saving {0}", file_autosav_current);
+                //GameLog.Core.SaveLoad.InfoFormat("saving {0}", file_autosav_one_turn_ago);
+                //GameLog.Core.SaveLoad.InfoFormat("saving {0}", file_autosav_two_turns_ago);
 
                 if (File.Exists(file_autosav_one_turn_ago))
                     File.Copy(file_autosav_one_turn_ago, file_autosav_two_turns_ago, true);
@@ -299,7 +299,7 @@ namespace Supremacy.Game
             }
             catch
             {
-                GameLog.Core.General.DebugFormat("Problem at saving autosav and previous autosav");
+                GameLog.Core.SaveLoad.WarnFormat("Problem at saving autosav and previous autosav");
             }
            
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);
