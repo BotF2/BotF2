@@ -55,22 +55,25 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="SystemListColumn0" />
-      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="5" />
       <ColumnDefinition Width="Auto" MinWidth="128" SharedSizeGroup="SystemListColumn1" />
-      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="5" />
       <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn2" />
-      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="5" />
       <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn3" />
-      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="5" />
       <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn4" />
-      <ColumnDefinition Width="16" />
-      <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn5" />
-      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="5" />
+      <ColumnDefinition Width="Auto" MinWidth="74" SharedSizeGroup="SystemListColumn5" />
+      <ColumnDefinition Width="1" />
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="0.00001*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
@@ -94,31 +97,128 @@
     <TextBlock Grid.Column="0"
                Grid.Row="2"
                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
                Text="{Binding Path=Inhabitants.PluralName}" />
 
     <TextBlock Grid.Column="0"
                Grid.Row="3"
                VerticalAlignment="Center"
-               Text="Building:" />
-
+               FontWeight="DemiBold"  
+               Text="Building: " />
     <TextBlock Grid.Column="2"
-               Grid.Row="3"
-               VerticalAlignment="Center"
-               Text="{Binding Path=BuildSlots[0].Project}" />
+                Grid.Row="3"
+                VerticalAlignment="Center"
+                Text="{Binding Path=BuildSlots[0].Project}" />
     <scc:GameButton Grid.Column="4"
-                    Grid.Row="3"
-                    DisplayMode="Tiny"
-                    VerticalAlignment="Center"
-                    Label="Buy"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
-                    CommandParameter="{Binding FallbackValue={x:Null}}" />
-
-    <scc:GameLabel Grid.Column="2"
+                Grid.Row="3"
+                DisplayMode="Tiny"
+                VerticalAlignment="Center"
+                Label="Buy"
+                Foreground="Black"
+                Background="Transparent"
+                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                BorderThickness="2"
+                Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
+                CommandParameter="{Binding FallbackValue={x:Null}}" />
+    <TextBlock Grid.Column="0"
+                Grid.Row="4"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                FontWeight="DemiBold"              
+                Text="Shipyard 1:" />
+    <TextBlock Grid.Column="4"
+                Grid.Row="4"
+                Grid.ColumnSpan="1"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text=" Shipyard 4:" />
+    <TextBlock Grid.Column="10"
+                Grid.Row="4"
+               Grid.ColumnSpan="2"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text="Shipyard 7:" />
+    <TextBlock Grid.Column="0"
+                Grid.Row="5"
+                HorizontalAlignment="Left"
+                Grid.ColumnSpan="1"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text="Shipyard 2:" />
+    <TextBlock Grid.Column="4"
+                Grid.Row="5"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text=" Shipyard 5:" />
+    <TextBlock Grid.Column="10"
+                Grid.Row="5"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text="Shipyard 8:" />
+        <TextBlock Grid.Column="0"
+                Grid.Row="6"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                   FontWeight="DemiBold"  
+                Text="Shipyard 3:" />
+        <TextBlock Grid.Column="4"
+                Grid.Row="6"
+                Grid.ColumnSpan="1"
+                VerticalAlignment="Center"
+                   FontWeight="DemiBold"  
+                Text=" Shipyard 6:" />
+        <TextBlock Grid.Column="1"
+                Grid.Row="4"
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[0].Project}" />
+    <TextBlock Grid.Column="6"
+                Grid.Row="4"
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[3].Project}" />
+        <TextBlock Grid.Column="11"
+                Grid.ColumnSpan="2" 
+                Grid.Row="4"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[6].Project}" />
+        <TextBlock Grid.Column="1"
+                Grid.Row="5"
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[1].Project}" />
+        <TextBlock Grid.Column="6"
+                Grid.Row="5"
+                Grid.ColumnSpan="3"                   
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />
+        <TextBlock Grid.Column="11"
+                Grid.Row="5"
+                Grid.ColumnSpan="2" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[7].Project}" />
+        <TextBlock Grid.Column="1"
+                Grid.Row="6"
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[2].Project}" />
+        <TextBlock Grid.Column="6"
+                Grid.Row="6"
+                Grid.ColumnSpan="3"                   
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[5].Project}" />      
+        <scc:GameLabel Grid.Column="2"
                    Grid.Row="1"
+                Grid.ColumnSpan="2"                        
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">

@@ -1581,6 +1581,10 @@ namespace Supremacy.Game
                         ? "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US"
                         : "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM");
             }
+            if (owner.Key == "BORG" && owner == aggressor)
+            {
+                _detailText = new CivString(owner, CivString.DiplomacyCategory,"MESSAGE_SITREP_RESISTANCE_IS_FUTILE");
+            }
         }
     }
 

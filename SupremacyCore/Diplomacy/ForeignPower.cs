@@ -202,6 +202,12 @@ namespace Supremacy.Diplomacy
             DiplomacyData.Status = ForeignPowerStatus.AtWar;
             CounterpartyForeignPower.DiplomacyData.Status = ForeignPowerStatus.AtWar;
 
+            if (Owner.Key == "BORG")   // lines above:  Status for Borg is set to AtWar   // every turn, also if Borg make a proposal for friendship
+                return; // War is declared at FirstContact, always from the Borg, no option to be declared for the other party
+
+            if (Counterparty.Key == "BORG")   // lines above:  Status for Borg is set to AtWar   // every turn, also if Borg make a proposal for friendship
+                return; // War is declared at FirstContact, always from the Borg, no option to be declared for the other party
+
             var owner = Owner;
             var counterparty = Counterparty;
 
