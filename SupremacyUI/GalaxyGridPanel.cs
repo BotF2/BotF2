@@ -940,7 +940,17 @@ namespace Supremacy.UI
             var playerEmpire = AppContext.LocalPlayerEmpire;
             if (playerEmpire == null)
                 return false;
+
+            //if (playerEmpire.MapData.IsExplored(location) == true)
+            //{
+            //    GameLog.Core.GameData.InfoFormat("location = {0}, playerEmpire = {1}, IsScanned = {2}, IsEXPLORED = {3}",
+            //        location, playerEmpire.Civilization.Name,
+            //        playerEmpire.MapData.IsScanned(location), playerEmpire.MapData.IsExplored(location)
+            //        );
+            //}
+
             return playerEmpire.MapData.IsExplored(location);
+            //return true;  //just for testing
         }
 
         private static bool IsScanned(MapLocation location)
@@ -948,7 +958,22 @@ namespace Supremacy.UI
             var playerEmpire = AppContext.LocalPlayerEmpire;
             if (playerEmpire == null)
                 return false;
+
+            //if (playerEmpire.MapData.IsScanned(location) == true)
+            //{
+            //    GameLog.Core.GameData.InfoFormat("location = {0}, playerEmpire = {1}, IsSCANNED = {2}, Strength = {3}, IsExplored = {4}",
+            //        location, playerEmpire.Civilization.Name,
+            //        playerEmpire.MapData.IsScanned(location),
+            //        playerEmpire.MapData.GetScanStrength(location),
+            //        playerEmpire.MapData.IsExplored(location)
+            //        );
+            //}
+
+            //playerEmpire.MapData.IsExplored(playerEmpire.HomeSystem.Location) = true;
+            //playerEmpire.MapData.IsExplored = true;
+
             return playerEmpire.MapData.IsScanned(location);
+            //return true;  //just for testing
         }
 
         private static bool IsSectorInRange(Fleet fleet, MapLocation location)

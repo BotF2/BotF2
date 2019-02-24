@@ -68,7 +68,7 @@ namespace Supremacy.Client
                 ClientSettingsFileName);
 
             if (_tracingClientSettings)
-                GameLog.Client.General.InfoFormat("SAVE     {0}: Content: " + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+                GameLog.Client.General.InfoFormat("SAVE     {0}: Content: " + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
         }
 
         public event EventHandler Loaded;
@@ -168,7 +168,7 @@ namespace Supremacy.Client
                         settings = XamlReader.Load(fileReader) as ClientSettings ??
                                    new ClientSettings();
 
-                        GameLog.Client.General.InfoFormat("LOADCORE {0}: Content: "+ Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+                        GameLog.Client.General.InfoFormat("LOADCORE {0}: Content: " + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
                     }
 
                     settings.OnLoaded();
