@@ -65,22 +65,22 @@ namespace Supremacy.Game
 
         public bool IsExplored(MapLocation location)
         {
-            if ((_mapData[location.X, location.Y] & ExploredMask) != 0)
-            {
-                GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '&' = {2}",
-                    location,
-                    ExploredMask,
-                    (_mapData[location.X, location.Y] & ExploredMask)
-                    );
-            }
-            //if ((_mapData[location.X, location.Y] & ExploredMask) > 0)
+            //if ((_mapData[location.X, location.Y] & ExploredMask) != 0)
             //{
-            //    GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '-' = {2}",
+            //    GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '&' = {2}",
             //        location,
             //        ExploredMask,
-            //        (_mapData[location.X, location.Y] - ExploredMask)
+            //        (_mapData[location.X, location.Y] & ExploredMask)
             //        );
             //}
+            ////if ((_mapData[location.X, location.Y] & ExploredMask) > 0)
+            ////{
+            ////    GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '-' = {2}",
+            ////        location,
+            ////        ExploredMask,
+            ////        (_mapData[location.X, location.Y] - ExploredMask)
+            ////        );
+            ////}
 
             return ((_mapData[location.X, location.Y] & ExploredMask) != 0);  // ExploredMask = 16384;  // binary 100.000.000.000.000
         }
