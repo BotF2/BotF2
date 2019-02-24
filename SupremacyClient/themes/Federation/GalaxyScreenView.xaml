@@ -802,6 +802,7 @@
                               Grid.Row="1"
                               Margin="7,0,7,0"
                               Height="128"
+                              Visibility="Visible"
                               FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                               cal:RegionManager.RegionName="{x:Static scc:CommonGameScreenRegions.PlanetsView}" />
                             <local:ChatPanel x:Name="PART_ChatPanel"
