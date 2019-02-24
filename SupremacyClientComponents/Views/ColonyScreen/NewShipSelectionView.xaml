@@ -14,7 +14,7 @@
              d:DesignHeight="690"
              d:DesignWidth="1099"
              Height="690"
-             Width="1160"
+             Width="1130"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
@@ -36,8 +36,8 @@
 
     <Grid.ColumnDefinitions>
 
-      <ColumnDefinition Width="330" />
-      <ColumnDefinition Width="400" />
+      <ColumnDefinition Width="320" />
+      <ColumnDefinition Width="390" />
       <ColumnDefinition Width="380" />
     </Grid.ColumnDefinitions>
 
@@ -86,7 +86,7 @@
             Grid.RowSpan="2"
             LastChildFill="True"
             Width="360"
-            Margin="22,0,0,0"
+            Margin="10,0,0,0"
             Background="Black">
         <Image DockPanel.Dock="Top"
                 MaxWidth="360"
@@ -108,9 +108,10 @@
                LastChildFill="True"
                Width="380"
                Margin="0,0,0,0">
-
+               
             <Image DockPanel.Dock="Top"
              StretchDirection="DownOnly"
+             
              Source="{Binding ElementName=_self, Path=ShipFunctionPath}"/>
 
             <!-- model files:  we just have a few model files - to less model files
