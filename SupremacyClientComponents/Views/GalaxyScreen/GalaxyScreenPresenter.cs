@@ -547,7 +547,8 @@ namespace Supremacy.Client.Views
                 if (starSystem != null)
                 {
                     colony = starSystem.Colony;
-                    GameLog.Client.UI.DebugFormat("selected {0} {1}", colony.Location, colony.Name);
+                    if (colony != null)
+                        GameLog.Client.UI.DebugFormat("selected {0} {1}", colony.Location, colony.Name);
                     if (colony != null && colony.OwnerID == playerEmpire.CivilizationID)
                         tradeRoutes = colony.TradeRoutes;
                 }
