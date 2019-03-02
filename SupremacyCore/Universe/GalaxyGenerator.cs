@@ -1135,8 +1135,26 @@ namespace Supremacy.Universe
                                 break;
                         }
 
-                        //If the system supports planets, generate them
-                        if (starType.SupportsPlanets())
+                        // below "SupportsPlanets" doesn't work atm ... so here manually (to get some sector available to COLONIZE)
+                        bool _supportPlanets = true;
+                        switch (system.StarType)
+                        {
+                            case StarType.White:
+                            case StarType.Blue:
+                            case StarType.Yellow:
+                            case StarType.Orange:
+                            case StarType.Red:
+                            case StarType.Nebula:
+                                _supportPlanets = true;
+                                break;
+                            default:
+                                _supportPlanets = false;
+                                break;
+                        }
+
+                                //If the system supports planets, generate them
+                                //doesn't work atm:   if (starType.SupportsPlanets())
+                        if (_supportPlanets == true)
                         {
                             for (var i = 0; i < maxPlanets - 1; i++)
                             {
