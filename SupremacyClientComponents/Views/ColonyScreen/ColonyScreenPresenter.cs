@@ -11,6 +11,7 @@ using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -429,8 +430,12 @@ namespace Supremacy.Client.Views
         {
             var e = (PropertyChangedRoutedEventArgs<Colony>)args;
 
+            //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 1");
+
             if (!IsRunning)
                 return;
+
+            //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 2");
 
             //if (this.Model.Colonies == null)
             //    this.Model.Colonies = this.AppContext.LocalPlayerEmpire.Colonies;
@@ -447,7 +452,11 @@ namespace Supremacy.Client.Views
 
             UpdateOrbitalBatteries();
 
+            //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 3");
+
             var selectedColony = Model.SelectedColony;
+            GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: selectedColony = {0}", selectedColony);  // Colony changes...
+                 // ..."in the background", in F2 = System Screen (only own colonies), not in Galaxy View showing planets of foreign colonies
             if (selectedColony != null)
             {
                 var regionManager = CompositeRegionManager.GetRegionManager((DependencyObject)View);
@@ -459,6 +468,7 @@ namespace Supremacy.Client.Views
                 {
                     var planetsViewRegion = regionManager.Regions[CommonGameScreenRegions.PlanetsView];
                     planetsViewRegion.Context = selectedColony.Sector;
+                    GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
                 }
             }
 

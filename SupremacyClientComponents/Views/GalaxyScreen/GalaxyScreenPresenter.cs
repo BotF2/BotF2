@@ -528,8 +528,10 @@ namespace Supremacy.Client.Views
         private void OnSelectedSectorChanged(object sender, EventArgs e)
         {
             var selectedSector = Model.SelectedSector;
+            GameLog.Core.UI.InfoFormat("selectedSector = {0}", selectedSector);
             if (selectedSector == null)
             {
+                GameLog.Core.UI.InfoFormat("selectedSector = NULL");
                 Model.TaskForces = Enumerable.Empty<FleetViewWrapper>();
                 Model.TradeRoutes = Enumerable.Empty<TradeRoute>();
                 Model.SelectedSectorAllegiance = null;
@@ -575,10 +577,14 @@ namespace Supremacy.Client.Views
                 planetsViewRegion.Context = selectedSector;
                 //GameLog.Client.UI.DebugFormat("isExplored {0} {1}, planetsViewRegion.Context = {2}", selectedSector.Location, selectedSector.Name, planetsViewRegion.Context.ToString());
 
+                GameLog.Core.UI.InfoFormat("planetsViewRegion.Context = {0}", planetsViewRegion.Context);
                 if ((colony != null) && Equals(colony.OwnerID, playerEmpire.CivilizationID))
                 {
+                    //GameLog.Core.UI.InfoFormat("colony.OwnerID = {0}, playerEmpire.CivilizationID = {1}, " +
+                    //    "playerEmpire.Civilization= {2}, colony.Name = {3}, colony.Location = {4}", 
+                    //    colony.OwnerID, playerEmpire.CivilizationID, playerEmpire.Civilization, colony.Name, colony.Location);
+
                     GalaxyScreenCommands.SelectSector.Execute(colony.Sector);
-                    //GameLog.Client.UI.DebugFormat("isExplored {0} {1}, Colony.OwnerID={2} , Player={3}, planetsViewRegion.Context = {4}", selectedSector.Location, selectedSector.Name, colony.OwnerID, playerEmpire.CivilizationID, planetsViewRegion.Context.ToString());
                 }
             }
         }
