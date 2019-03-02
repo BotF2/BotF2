@@ -67,7 +67,7 @@ namespace Supremacy.Game
         {
             if ((_mapData[location.X, location.Y] & ExploredMask) != 0)
             {
-                GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '&' = {2}",
+                GameLog.Core.GameData.DebugFormat("ExploredMask  = {1}, RESULT: {0}: Explored '&' = {2}",
                     location,
                     ExploredMask,
                     (_mapData[location.X, location.Y] & ExploredMask)
