@@ -31,6 +31,7 @@ using Supremacy.Xna;
 
 using System.Linq;
 using Supremacy.Client.Context;
+using Supremacy.Utility;
 
 namespace Supremacy.UI
 {
@@ -249,14 +250,17 @@ namespace Supremacy.UI
         public void Refresh()
         {
             var system = System;
-
+            GameLog.Client.UI.DebugFormat("trying to refreshing PlanetView for {0}", system.Name);
             _grid.Children.Clear();
 
             if (ShowStats)
                 DisplayStats(system);
-
-            if ((system != null) && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system))
+            //GameLog.Client.UI.DebugFormat("refreshing StarSystemPanel");
+            if ((system != null) && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system)) // && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system))
+                {
+                GameLog.Client.UI.DebugFormat("refreshing PlanetView");
                 DisplayVisuals(system);
+            }
         }
 
         protected override Visual GetVisualChild(int index)
@@ -453,6 +457,7 @@ namespace Supremacy.UI
 
         private void DisplayVisuals(StarSystem system)
         {
+            //GameLog.Client.UI.DebugFormat("DisplayVisuals for {0} {1}", system.Location, system.Name);
             var starContainer = new Grid();
             var view = new Viewbox();
             var visuals = new StackPanel();
@@ -471,8 +476,10 @@ namespace Supremacy.UI
 
             if (IsExplored(Sector))
             {
+                GameLog.Client.UI.DebugFormat("{0} {1} is explored and planets are displayed", Sector.Location, Sector.Name);
                 foreach (var planet in system.Planets.Reverse())
                 {
+                    //GameLog.Client.UI.DebugFormat("planet {0}", planet.Name);
                     if (planet.PlanetType == PlanetType.Asteroids)
                     {
                         var asteroids = new AsteroidsView { Margin = new Thickness(0, 0, 14, 0) };
@@ -530,6 +537,7 @@ namespace Supremacy.UI
                             };
                             planetContainer.Children.Add(bonusIcon);
                         }
+                        //GameLog.Client.UI.DebugFormat("trying add planetContainer {0}", planetContainer.Name);
                         visuals.Children.Add(planetContainer);
                     }
                 }
@@ -571,6 +579,7 @@ namespace Supremacy.UI
                                           "QUADRANT_" + system.Quadrant.ToString().ToUpperInvariant()),
                                       ResourceManager.GetString("QUADRANT"));
 
+            //GameLog.Client.UI.DebugFormat("trying add starContainer {0}", starContainer.Name);
             starContainer.Children.Add(star);
 
             if (IsExplored(system.Sector))
@@ -620,6 +629,7 @@ namespace Supremacy.UI
             view.Stretch = Stretch.Uniform;
             view.StretchDirection = StretchDirection.DownOnly;
             view.Child = visuals;
+            //GameLog.Client.UI.DebugFormat("trying add view {0}", view.Name);
             _grid.Children.Add(view);
         }
 

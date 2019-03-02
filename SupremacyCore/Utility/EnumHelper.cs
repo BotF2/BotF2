@@ -33,6 +33,7 @@ namespace Supremacy.Utility
         public static bool MatchAttribute<T>(this T source, Attribute attribute) where T : struct
         {
             bool result;
+            GameLog.Core.UI.DebugFormat("Matching Attributes");
             if (EnumAttributeMatchCache.TryGetValue(new Tuple<Enum, Attribute>(source as Enum, attribute), out result))
             {
                 result = false;
@@ -46,6 +47,7 @@ namespace Supremacy.Utility
                 }
                 EnumAttributeMatchCache[new Tuple<Enum, Attribute>(source as Enum, attribute)] = result;
             }
+            GameLog.Core.UI.DebugFormat("Matching Attributes: result = {0}", result);
             return result;
         }
 

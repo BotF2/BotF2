@@ -258,6 +258,7 @@ namespace Supremacy.Universe
         {
             if (starSystem == null)
                 return false;
+            //GameLog.Client.UI.DebugFormat("SupportsPlanets for {0}, x = {1} planets", starSystem.Name, starSystem.Planets.Count);
 
             return SupportsPlanets(starSystem.StarType);
         }
@@ -300,6 +301,7 @@ namespace Supremacy.Universe
 
         public static bool SupportsPlanets(this StarType starType)
         {
+            GameLog.Client.UI.DebugFormat("SupportsPlanets = {0}", starType.MatchAttribute(SupportsPlanetsAttribute.Default));
             return starType.MatchAttribute(SupportsPlanetsAttribute.Default);
         }
 
