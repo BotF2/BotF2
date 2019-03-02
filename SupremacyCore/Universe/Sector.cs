@@ -83,7 +83,7 @@ namespace Supremacy.Universe
                 OnPropertyChanged("Name");
                 OnPropertyChanged("Owner");
                 OnPropertyChanged("IsOwned");
-                GameLog.Core.GameData.DebugFormat("Sector _system = {0}_system.value = {1}",_system, _system.Value);
+                //GameLog.Client.General.DebugFormat("Sector _system = {0}_system.value = {1}",_system, _system.Value);
             }
         }
 
