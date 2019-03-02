@@ -547,8 +547,8 @@ namespace Supremacy.Client.Views
                 if (starSystem != null)
                 {
                     colony = starSystem.Colony;
-                    if (colony != null)
-                        GameLog.Client.UI.DebugFormat("selected {0} {1}", colony.Location, colony.Name);
+                    //if (colony != null)
+                    //    GameLog.Client.UI.DebugFormat("selected {0} {1}", colony.Location, colony.Name);
                     if (colony != null && colony.OwnerID == playerEmpire.CivilizationID)
                         tradeRoutes = colony.TradeRoutes;
                 }
@@ -578,7 +578,7 @@ namespace Supremacy.Client.Views
                 if ((colony != null) && Equals(colony.OwnerID, playerEmpire.CivilizationID))
                 {
                     GalaxyScreenCommands.SelectSector.Execute(colony.Sector);
-                    GameLog.Client.UI.DebugFormat("isExplored {0} {1}, Colony.OwnerID={2} , Player={3}, planetsViewRegion.Context = {4}", selectedSector.Location, selectedSector.Name, colony.OwnerID, playerEmpire.CivilizationID, planetsViewRegion.Context.ToString());
+                    //GameLog.Client.UI.DebugFormat("isExplored {0} {1}, Colony.OwnerID={2} , Player={3}, planetsViewRegion.Context = {4}", selectedSector.Location, selectedSector.Name, colony.OwnerID, playerEmpire.CivilizationID, planetsViewRegion.Context.ToString());
                 }
             }
         }

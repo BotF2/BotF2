@@ -250,7 +250,7 @@ namespace Supremacy.UI
         public void Refresh()
         {
             var system = System;
-            GameLog.Client.UI.DebugFormat("trying to refreshing PlanetView for {0}", system.Name);
+            //GameLog.Client.UI.DebugFormat("trying to refreshing PlanetView for {0}", system.Name);
             _grid.Children.Clear();
 
             if (ShowStats)
@@ -258,7 +258,7 @@ namespace Supremacy.UI
             //GameLog.Client.UI.DebugFormat("refreshing StarSystemPanel");
             if ((system != null) && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system)) // && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system))
                 {
-                GameLog.Client.UI.DebugFormat("refreshing PlanetView");
+                //GameLog.Client.UI.DebugFormat("refreshing PlanetView");
                 DisplayVisuals(system);
             }
         }
@@ -476,7 +476,7 @@ namespace Supremacy.UI
 
             if (IsExplored(Sector))
             {
-                GameLog.Client.UI.DebugFormat("{0} {1} is explored and planets are displayed", Sector.Location, Sector.Name);
+                //GameLog.Client.UI.DebugFormat("{0} {1} is explored and planets are displayed", Sector.Location, Sector.Name);
                 foreach (var planet in system.Planets.Reverse())
                 {
                     //GameLog.Client.UI.DebugFormat("planet {0}", planet.Name);

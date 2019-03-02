@@ -33,17 +33,17 @@ namespace Supremacy.Utility
         public static bool MatchAttribute<T>(this T source, Attribute attribute) where T : struct
         {
             bool result;
-            GameLog.Core.UI.DebugFormat("Matching Attributes - check these code lines !!");
+            //GameLog.Core.UI.DebugFormat("Matching Attributes - check these code lines !!");
             if (EnumAttributeMatchCache.TryGetValue(new Tuple<Enum, Attribute>(source as Enum, attribute), out result))
             {
                 result = false;
-                GameLog.Core.UI.DebugFormat("Matching Attributes - result was set to FALSE as default");
+                // no hit ! for:GameLog.Core.UI.DebugFormat("Matching Attributes - result was set to FALSE as default");
                 foreach (Attribute customAttribute in Attribute.GetCustomAttributes(source.GetType().GetField(source.ToString()), attribute.GetType()))
                 {
-                    GameLog.Core.UI.DebugFormat("Matching Attributes for {0}, type = {1}", customAttribute, customAttribute.GetType());
+                    // no hit ! for:   GameLog.Core.UI.DebugFormat("Matching Attributes for {0}, type = {1}", customAttribute, customAttribute.GetType());
                     if (attribute.Match(customAttribute))
                     {
-                        GameLog.Core.UI.DebugFormat("Matching Attributes for {0}, type = {1}", customAttribute, customAttribute.GetType());
+                        GameLog.Core.UI.DebugFormat("working again: Matching Attributes for {0}, type = {1}", customAttribute, customAttribute.GetType());
                         result = true;
                         break;
                     }
@@ -51,7 +51,7 @@ namespace Supremacy.Utility
                 // everything set to FALSE because foreach doesn't run successfully ??
                 EnumAttributeMatchCache[new Tuple<Enum, Attribute>(source as Enum, attribute)] = result;
             }
-            GameLog.Core.UI.DebugFormat("Matching Attributes: result = {0}", result);
+            //GameLog.Core.UI.DebugFormat("Matching Attributes: result = {0}", result);
             return result;
         }
 
