@@ -78,7 +78,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization + "/ColonyScreen/Ship_Functions.png";
+                return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
             }
         }
 
