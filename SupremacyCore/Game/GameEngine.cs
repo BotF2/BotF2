@@ -125,7 +125,7 @@ namespace Supremacy.Game
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
-                    if (GameContext.Current.TurnNumber >= 50)
+                    //if (GameContext.Current.TurnNumber >= 1)
                         scriptedEvent.OnTurnPhaseStarted(game, phase);
                 }
             }
@@ -148,7 +148,7 @@ namespace Supremacy.Game
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
-                    if (GameContext.Current.TurnNumber >= 50)
+                    //if (GameContext.Current.TurnNumber >= 50)
                         scriptedEvent.OnTurnPhaseFinished(game, phase);
                 }
             }
@@ -191,8 +191,8 @@ namespace Supremacy.Game
                 foreach (var eventToRemove in eventsToRemove)
                     game.ScriptedEvents.Remove(eventToRemove);
 
-                //If we've reached turn 20, start running scripted events
-                if (GameContext.Current.TurnNumber >= 50)
+                //If we've reached turn x, start running scripted events
+                if (GameContext.Current.TurnNumber >= 1)
                 {
                     foreach (var scriptedEvent in game.ScriptedEvents)
                     {
@@ -304,7 +304,7 @@ namespace Supremacy.Game
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
-                    if (GameContext.Current.TurnNumber >= 50)
+                    //if (GameContext.Current.TurnNumber >= 50)
                         scriptedEvent.OnTurnFinished(game);
                 }
                    
