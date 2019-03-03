@@ -72,8 +72,6 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        
-
         public string ShipFunctionPath 
         {
             get
@@ -81,8 +79,6 @@ namespace Supremacy.Client.Views
                 return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
             }
         }
-
-
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -95,8 +91,6 @@ namespace Supremacy.Client.Views
                 return;
             DialogResult = true;
         }
-
-
 
         private void OnBuildProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
