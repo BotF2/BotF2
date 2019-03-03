@@ -500,9 +500,23 @@ namespace Supremacy.Client
         private void ShowLoadingScreen()
         {
             var statusWindow = _container.Resolve<StatusWindow>();
-            statusWindow.Header = _resourceManager.GetString("LOADING_GAME_MESSAGE");
-            //"Loading Game. . . .   " + Environment.NewLine + Environment.NewLine +
-            //"- For more information on game play please read the manual.";
+            //statusWindow.Header = _resourceManager.GetString("LOADING_GAME_MESSAGE");
+            statusWindow.Header = " ***     Loading Game . . .      ***  " +Environment.NewLine;
+                //"----------------------------"; // + Environment.NewLine +
+
+                statusWindow.Content =
+                //"----------------------------" + Environment.NewLine +
+                "- For more information on game play please read the manual." + Environment.NewLine +
+                "----------------------------" + Environment.NewLine +
+
+                "Star Trek and it's related images and characters are solely owned " + Environment.NewLine +
+                "by CBS Studios and Paramount Pictures. " + Environment.NewLine +
+                "----------------------------" + Environment.NewLine +
+                "This fan game is not endores or affiliated with them. " + Environment.NewLine +
+                "It is a non-commercial, free, unfunded, amature game for " + Environment.NewLine +
+                "recreational use only. No commerical exhibition is permitted.";
+
+
 
             // Hints screen will not show for host of a multiplayer game so is excluded here, the host cannot progress to the loaded game.
             // to do line 425 to 435 add hint for people new to game
@@ -523,7 +537,7 @@ namespace Supremacy.Client
                 }
             }
 
-            statusWindow.Content = null;
+            //statusWindow.Content = null;
             statusWindow.Show();
 
             var gameScreensRegion = _container.Resolve<IRegionManager>().Regions[ClientRegions.GameScreens];
