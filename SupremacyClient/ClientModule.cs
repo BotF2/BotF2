@@ -512,9 +512,9 @@ namespace Supremacy.Client
                 "Star Trek and it's related images and characters are solely owned " + Environment.NewLine +
                 "by CBS Studios and Paramount Pictures. " + Environment.NewLine +
                 "----------------------------" + Environment.NewLine +
-                "This fan game is not endores or affiliated with them. " + Environment.NewLine +
-                "It is a non-commercial, free, unfunded, amature game for " + Environment.NewLine +
-                "recreational use only. No commerical exhibition is permitted.";
+                "This fan game is not endorsed or affiliated with them. " + Environment.NewLine +
+                "It is a non-commercial, free, unfunded, amateur game for " + Environment.NewLine +
+                "recreational use only. No commercial exhibition is permitted.";
 
 
 
