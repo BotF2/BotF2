@@ -468,7 +468,7 @@ namespace Supremacy.Client.Views
                 {
                     var planetsViewRegion = regionManager.Regions[CommonGameScreenRegions.PlanetsView];
                     planetsViewRegion.Context = selectedColony.Sector;
-                    GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
+                    //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
                 }
             }
 
