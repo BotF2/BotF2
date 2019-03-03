@@ -155,7 +155,7 @@
         </TabItem>
 
 <!--TAB for STATIONS-->
-            <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=STATIONS_TAB_HEADER}">
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=STATIONS_TAB_HEADER}">
                 <Grid>
                 <!--Grid just for Head line-->
                 <Grid.RowDefinitions>
@@ -234,5 +234,9 @@
                         Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
                 </Grid>
             </TabItem>
-        </TabControl>
+        <!--TAB for Spy Ship-->
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
+            <!--Grid just for Head line-->
+        </TabItem>
+    </TabControl>
 </scc:ThemedUserControl>
