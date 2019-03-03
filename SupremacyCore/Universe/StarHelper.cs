@@ -240,6 +240,7 @@ namespace Supremacy.Universe
         public static int MaxNumberOfPlanets(StarType starType)
         {
             var supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
+            //GameLog.Core.UI.DebugFormat("current star type = {0}, supportsPlanetsAttribute = {1}", starType.ToString(), supportsPlanetsAttribute);
             if (supportsPlanetsAttribute != null)
                 return supportsPlanetsAttribute.MaxNumberOfPlanets;
 
@@ -258,8 +259,38 @@ namespace Supremacy.Universe
         {
             if (starSystem == null)
                 return false;
+            //GameLog.Client.UI.DebugFormat("SupportsPlanets for {0}, x = {1} planets", starSystem.Name, starSystem.Planets.Count);
+            //GameLog.Core.UI.DebugFormat("current star type = {0}, supportsPlanetsAttribute = {1}", starSystem.StarType, SupportsPlanets(starSystem.StarType));
 
-            return SupportsPlanets(starSystem.StarType);
+            switch (starSystem.StarType)
+            {
+                case StarType.White:
+                case StarType.Blue:
+                case StarType.Yellow:
+                case StarType.Orange:
+                case StarType.Red:
+                case StarType.Nebula:
+                    return true;
+                default:
+                    return false;
+                    //break;
+                //case StarType.Wormhole:
+                //    break;
+                //case StarType.NeutronStar:
+                //    break;
+                //case StarType.RadioPulsar:
+                //    break;
+                //case StarType.XRayPulsar:
+                //    break;
+                //case StarType.Quasar:
+                //    break;
+                //case StarType.BlackHole:
+                //    break;
+
+                    //break;
+            }
+
+            //return SupportsPlanets(starSystem.StarType);
         }
 
         public static bool SupportsPlanets(Sector sector)
@@ -300,6 +331,7 @@ namespace Supremacy.Universe
 
         public static bool SupportsPlanets(this StarType starType)
         {
+            //GameLog.Client.UI.DebugFormat("SupportsPlanets = {0}", starType.MatchAttribute(SupportsPlanetsAttribute.Default));
             return starType.MatchAttribute(SupportsPlanetsAttribute.Default);
         }
 

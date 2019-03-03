@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Utility;
 using System;
 
 namespace Supremacy.Universe
@@ -20,6 +21,7 @@ namespace Supremacy.Universe
         private PlanetType[] _allowedTypes;
         private int _maxNumberOfPlanets = StarSystem.MaxPlanetsPerSystem;
         #endregion
+
 
         #region Properties
         public int MaxNumberOfPlanets
@@ -61,6 +63,7 @@ namespace Supremacy.Universe
         #region Methods
         public override bool Match(object obj)
         {
+            GameLog.Core.UI.DebugFormat("Matching Attribut: incoming obj = {0}, matched with {1}", obj, obj is SupportsPlanetsAttribute);
             return (obj is SupportsPlanetsAttribute);
         }
 

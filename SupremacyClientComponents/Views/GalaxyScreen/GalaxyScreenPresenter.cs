@@ -549,6 +549,8 @@ namespace Supremacy.Client.Views
                 if (starSystem != null)
                 {
                     colony = starSystem.Colony;
+                    //if (colony != null)
+                    //    GameLog.Client.UI.DebugFormat("selected {0} {1}", colony.Location, colony.Name);
                     if (colony != null && colony.OwnerID == playerEmpire.CivilizationID)
                         tradeRoutes = colony.TradeRoutes;
                 }
@@ -562,7 +564,7 @@ namespace Supremacy.Client.Views
                     if (playerEmpire.MapData.IsExplored(selectedSector.Location))
                         selectedSectorInhabitants = owner.ShortName;
                     selectedSectorAllegiance = owner.ShortName;
-                    GameLog.Core.UI.InfoFormat("selectedSector = {0} {1}", selectedSector.Location, selectedSector.Name);
+                    //GameLog.Client.UI.DebugFormat("isExplored {0} {1}", selectedSector.Location, selectedSector.Name);
                 }
 
                 Model.TradeRoutes = tradeRoutes;
@@ -573,17 +575,17 @@ namespace Supremacy.Client.Views
 
                 var planetsViewRegion = CompositeRegionManager.GetRegionManager((DependencyObject)View).Regions[CommonGameScreenRegions.PlanetsView];
                 planetsViewRegion.Context = selectedSector;
+                //GameLog.Client.UI.DebugFormat("isExplored {0} {1}, planetsViewRegion.Context = {2}", selectedSector.Location, selectedSector.Name, planetsViewRegion.Context.ToString());
 
                 GameLog.Core.UI.InfoFormat("planetsViewRegion.Context = {0}", planetsViewRegion.Context);
                 if ((colony != null) && Equals(colony.OwnerID, playerEmpire.CivilizationID))
                 {
-                    GameLog.Core.UI.InfoFormat("colony.OwnerID = {0}, playerEmpire.CivilizationID = {1}, " +
-                        "playerEmpire.Civilization= {2}, colony.Name = {3}, colony.Location = {4}", 
-                        colony.OwnerID, playerEmpire.CivilizationID, playerEmpire.Civilization, colony.Name, colony.Location);
+                    //GameLog.Core.UI.InfoFormat("colony.OwnerID = {0}, playerEmpire.CivilizationID = {1}, " +
+                    //    "playerEmpire.Civilization= {2}, colony.Name = {3}, colony.Location = {4}", 
+                    //    colony.OwnerID, playerEmpire.CivilizationID, playerEmpire.Civilization, colony.Name, colony.Location);
 
                     GalaxyScreenCommands.SelectSector.Execute(colony.Sector);
                 }
-
             }
         }
 
