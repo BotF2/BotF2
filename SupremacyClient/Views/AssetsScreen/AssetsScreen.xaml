@@ -238,5 +238,10 @@
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
             <!--Grid just for Head line-->
         </TabItem>
+        <!--TAB for Economy-->
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ECONOMY_TAB_HEADER}">
+            <!--Grid just for Head line-->
+        </TabItem>
+
     </TabControl>
 </scc:ThemedUserControl>
