@@ -210,7 +210,6 @@ namespace Supremacy.Universe
         ConqueredSystem     = 0x00000008,
         WhiteStar           = 0x00000010,
         BlueStar            = 0x00000020,
-        //GreenStar           = 0x00000040,
         YellowStar          = 0x00000080,
         OrangeStar          = 0x00000100,
         RedStar             = 0x00000200,

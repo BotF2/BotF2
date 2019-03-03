@@ -85,7 +85,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations)
+            // Updtate 3 March 2019 Rebalancing
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >55)
             {
                 var affectedCivs = game.Civilizations
                     .Where(
@@ -100,6 +101,8 @@ namespace Supremacy.Scripting.Events
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
 
+               
+
                 foreach (var group in targetGroups)
                 {
                     var productionCenters = group.ToList();
@@ -107,7 +110,7 @@ namespace Supremacy.Scripting.Events
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("TerroristBombShipyards.cs: target.Name: {0}", target.Name);
 
-                    if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion Nebula" || target.Name == "Romulus" || target.Name == "Borg Nebula")
+                    if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
                         return;
 
                     var affectedProjects = target.BuildSlots

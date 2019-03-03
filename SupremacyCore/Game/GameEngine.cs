@@ -126,7 +126,7 @@ namespace Supremacy.Game
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
                     //if (GameContext.Current.TurnNumber >= 1)
-                        scriptedEvent.OnTurnPhaseStarted(game, phase);
+                    scriptedEvent.OnTurnPhaseStarted(game, phase);
                 }
             }
 
@@ -149,7 +149,7 @@ namespace Supremacy.Game
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
                     //if (GameContext.Current.TurnNumber >= 50)
-                        scriptedEvent.OnTurnPhaseFinished(game, phase);
+                    scriptedEvent.OnTurnPhaseFinished(game, phase);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace Supremacy.Game
                 foreach (var eventToRemove in eventsToRemove)
                     game.ScriptedEvents.Remove(eventToRemove);
 
-                //If we've reached turn x, start running scripted events
+                //Update If we've reached turn x, start running scripted events
                 if (GameContext.Current.TurnNumber >= 1)
                 {
                     foreach (var scriptedEvent in game.ScriptedEvents)
@@ -209,7 +209,7 @@ namespace Supremacy.Game
 
             OnTurnPhaseChanged(game, TurnPhase.PreTurnOperations);
             GameContext.PushThreadContext(game);
-            try { DoPreTurnOperations(game); }       
+            try { DoPreTurnOperations(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PreTurnOperations);
 
@@ -305,9 +305,9 @@ namespace Supremacy.Game
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
                     //if (GameContext.Current.TurnNumber >= 50)
-                        scriptedEvent.OnTurnFinished(game);
+                    scriptedEvent.OnTurnFinished(game);
                 }
-                   
+
             }
             finally { GameContext.PopThreadContext(); }
 
@@ -455,7 +455,7 @@ namespace Supremacy.Game
                 var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
                 int fuelNeeded;
                 var fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
-                
+
                 /*
                  * If the fleet is within fueling range, then try to top off the reserves of
                  * each ship in the fleet.  We do this now in case a ship is out of fuel, but
@@ -511,20 +511,30 @@ namespace Supremacy.Game
                     int shipsDamaged = 0;
                     int shipsDestroyed = 0;
 
-                    foreach (var ship in fleet.Ships)
+
+
+                    if (fleet.Ships != null) // Update FixBlackholeCrash (hopefully) 2 March 2019
                     {
-                        int damage = RandomHelper.Roll(ship.HullStrength.CurrentValue);
-                        if (damage >= ship.HullStrength.CurrentValue)
+
+                        foreach (var ship in fleet.Ships)
                         {
-                            shipsDestroyed++;
-                            ship.Destroy();
+                            int damage = RandomHelper.Roll(ship.HullStrength.CurrentValue);
+                            if (damage >= ship.HullStrength.CurrentValue)
+                            {
+                                shipsDestroyed++;
+                                ship.Destroy();
+                            }
+                            else
+                            {
+                                shipsDamaged++;
+                                ship.HullStrength.AdjustCurrent(-damage);
+                            }
+                            if (fleet.Ships != null) // 2nd try to fix blackhole 3 march 2019
+                                break;
                         }
-                        else
-                        {
-                            shipsDamaged++;
-                            ship.HullStrength.AdjustCurrent(-damage);
-                        }
+
                     }
+
 
                     if ((shipsDamaged > 0) || (shipsDestroyed > 0))
                     {
@@ -580,7 +590,7 @@ namespace Supremacy.Game
                             break;
                         case PendingDiplomacyAction.RejectProposal:
                             if (foreignPower.LastProposalReceived != null)
-                                RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
+                                RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);
                             break;
                     }
 
@@ -677,7 +687,7 @@ namespace Supremacy.Game
             var combats = new List<List<CombatAssets>>();
             var invasions = new List<InvasionArena>();
             var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
-                 //.Where(p => !p.IsCamouflaged).ToList();
+            //.Where(p => !p.IsCamouflaged).ToList();
             foreach (var fleet in fleetsAtLocation)
             {
 
@@ -701,7 +711,7 @@ namespace Supremacy.Game
                 {
                     var assets = CombatHelper.GetCombatAssets(fleet.Location);
                     if (assets.Count > 1)
-                        {
+                    {
                         combats.Add(assets);
                         combatLocations.Add(fleet.Location);
                     }
@@ -756,7 +766,7 @@ namespace Supremacy.Game
             });
         }
         #endregion
-    
+
         #region DoPopulation() Method
         void DoPopulation(GameContext game)
         {
@@ -801,7 +811,7 @@ namespace Supremacy.Game
                             civManager.SitRepEntries.Add(new StarvationSitRepEntry(civ, colony));
                         }
                         else
-                        {                         
+                        {
                             popChange = (int)Math.Ceiling(growthRate * colony.Population.CurrentValue);
                         }
 
@@ -963,7 +973,7 @@ namespace Supremacy.Game
             GameContext.PushThreadContext(game);
 
             var map = game.Universe.Map;
-            
+
             var interference = new Task<int[,]>(() =>
             {
                 var array = new int[map.Width, map.Height];
@@ -983,8 +993,8 @@ namespace Supremacy.Game
             });
 
             interference.Start();
-            
-            ParallelForEach(game.Civilizations, civ => 
+
+            ParallelForEach(game.Civilizations, civ =>
             {
                 GameContext.PushThreadContext(game);
                 try
@@ -1020,7 +1030,7 @@ namespace Supremacy.Game
                     foreach (var colony in civManager.Colonies)
                     {
                         int scanModifier = 0;
-                            
+
                         var scanBonuses = colony.Buildings
                             .Where(o => o.IsActive)
                             .SelectMany(o => o.BuildingDesign.Bonuses)
@@ -1048,7 +1058,7 @@ namespace Supremacy.Game
                             var sector = map[x, y];
 
                             foreach (var fuelLocation in fuelLocations)
-                            {    
+                            {
                                 mapData.UpgradeFuelRange(
                                     sector.Location,
                                     MapLocation.GetDistance(fuelLocation, sector.Location));
@@ -1058,7 +1068,7 @@ namespace Supremacy.Game
 
                     mapData.ApplyScanInterference(interference.Result);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     GameLog.Core.General.ErrorFormat(string.Format("DoMapUpdate failed for {0}",
                         civ.Name),
@@ -1265,7 +1275,7 @@ namespace Supremacy.Game
                             }
 
                             if (colony.BuildSlots[0].Project.IsPaused) { }
-                                //TODO: Not sure how to handle this
+                            //TODO: Not sure how to handle this
 
                             GameLog.Core.Production.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
                                 civ.Name,
@@ -1431,7 +1441,7 @@ namespace Supremacy.Game
                             }
                         }
                     }
-                }        
+                }
                 catch (Exception e)
                 {
                     GameLog.Core.ShipProduction.Error(string.Format("DoShipProduction failed for {0}", civ.Name), e);
@@ -1472,10 +1482,10 @@ namespace Supremacy.Game
 
                         /* Add any morale bonuses from active buildings at the colony. */
                         var colonyBonus = (from building in colony.Buildings
-                                            where building.IsActive
-                                            from bonus in building.BuildingDesign.Bonuses
-                                            where bonus.BonusType == BonusType.Morale
-                                            select bonus.Amount).Sum();
+                                           where building.IsActive
+                                           from bonus in building.BuildingDesign.Bonuses
+                                           where bonus.BonusType == BonusType.Morale
+                                           select bonus.Amount).Sum();
 
                         colony.Morale.AdjustCurrent(colonyBonus);
 
@@ -1537,7 +1547,8 @@ namespace Supremacy.Game
                         return;
 
                     var attackingEmpire = GameContext.Current.CivilizationManagers[civ.CivID];
-                    if (attackingEmpire.TotalIntelligence <= 0) {
+                    if (attackingEmpire.TotalIntelligence <= 0)
+                    {
                         GameLog.Core.Intel.DebugFormat("{0} has no intel power so cannot attack");
                         return;
                     }
@@ -1774,7 +1785,8 @@ namespace Supremacy.Game
                                 targetColony.RemoveOrbitalBatteries(destroyedOrbitalBatteries);
                             }
 
-                            if (targetColony.ShieldStrength.CurrentValue > 0) {
+                            if (targetColony.ShieldStrength.CurrentValue > 0)
+                            {
                                 shieldStrengthLost = RandomHelper.Roll(targetColony.ShieldStrength.CurrentValue);
                                 targetColony.ShieldStrength.AdjustCurrent(-1 * shieldStrengthLost);
                                 targetColony.ShieldStrength.UpdateAndReset();
@@ -1859,20 +1871,20 @@ namespace Supremacy.Game
                             }
                             if (route.TargetColony != null)
                             {
-                            int sourceIndustry = route.SourceColony.NetIndustry + 1;  // avoiding a zero
-                            int targetIndustry = route.TargetColony.NetIndustry + 1;
+                                int sourceIndustry = route.SourceColony.NetIndustry + 1;  // avoiding a zero
+                                int targetIndustry = route.TargetColony.NetIndustry + 1;
 
-                            route.Credits = 10 * (int)((sourceMod * sourceIndustry) + (targetMod * targetIndustry));
+                                route.Credits = 10 * (int)((sourceMod * sourceIndustry) + (targetMod * targetIndustry));
 
                             }
                         }
-                            
+
                         /*
                          * Calculate how many trade routes the colony is allowed to have.
                          * Take into consideration any routes added by building bonuses.
                          */
                         int tradeRoutes = colony.Population.CurrentValue / popForTradeRoute;
-                            
+
                         tradeRoutes += colony.Buildings
                             .Where(o => o.IsActive)
                             .SelectMany(o => o.BuildingDesign.Bonuses)
@@ -1889,7 +1901,7 @@ namespace Supremacy.Game
                             for (int i = 0; i < tradeRouteDeficit; i++)
                                 colony.TradeRoutes.Add(new TradeRoute(colony));
                         }
-                            
+
                         /*
                          * If the colony has too many trade routes, we need to remove some.
                          * To be generous, we sort them in order of credits generated so that
@@ -1904,7 +1916,7 @@ namespace Supremacy.Game
                             foreach (var extraTradeRoute in extraTradeRoutes)
                                 colony.TradeRoutes.Remove(extraTradeRoute);
                         }
-                            
+
                         /*
                          * Iterate through the remaining trade routes and deposit the credit
                          * income into the civilization's treasury.
@@ -1924,7 +1936,7 @@ namespace Supremacy.Game
                         civManager.Credits.AdjustCurrent(colony.CreditsFromTrade.CurrentValue);
                         colony.ResetCreditsFromTrade();
                     }
-                        
+
                     /* 
                      * Apply all global "+% Total Credits" bonuses for the civilization.  At present, we have now
                      * completed all adjustments to the civilization's treasury for this turn.  If that changes in

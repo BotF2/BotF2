@@ -21,7 +21,9 @@ namespace Supremacy.Scripting.Events
     {
         private bool _productionFinished;
         private bool _shipProductionFinished;
-        private int _occurrenceChance = 100;
+        // Update Earthquake 2 March 2019. Likelyhood of Event is in scripedevents.xml. Small balancing changes
+        private int _occurrenceChance = 100000;
+        
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
@@ -131,12 +133,12 @@ namespace Supremacy.Scripting.Events
 
                     // Population
                     //Don't reduce the population if it is already low
-                    if (population >= 40)
+                    if (population >= 65)
                     {
                         GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-5);
                     }
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health/30));
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health/6));
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     // Facilities

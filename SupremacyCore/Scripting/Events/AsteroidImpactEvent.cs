@@ -85,7 +85,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations)
+            // Update 2 March 2019 Minor Balancing Asteroid Impacts : Start occurance on turn 40
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >=40)
             {
                 var affectedCivs = game.Civilizations
                     .Where(
@@ -100,7 +101,7 @@ namespace Supremacy.Scripting.Events
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (var group in targetGroups) 
                 {
                     var productionCenters = group.ToList();
 
@@ -140,7 +141,7 @@ namespace Supremacy.Scripting.Events
                         removeFood = 0;
                     target.RemoveFacilities(ProductionCategory.Food, removeFood);
 
-                    int removeIndustry = 3;  // If you have industry 8 or more then take out 3
+                    int removeIndustry = 4;  // If you have industry 8 or more then take out 4
                     if (target.GetTotalFacilities(ProductionCategory.Industry) < 8)
                         removeIndustry = 0;
                     target.RemoveFacilities(ProductionCategory.Industry, removeIndustry);
@@ -160,8 +161,8 @@ namespace Supremacy.Scripting.Events
                         removeIntelligence = 0;
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence);
 
-                    int removeOrbitalBatteries = 2;  // if you have 3 or more orbital batteries take out 2
-                    if (target.OrbitalBatteries.Count <= 2)
+                    int removeOrbitalBatteries = 10;  // if you have 11 or more orbital batteries take out 10
+                    if (target.OrbitalBatteries.Count <= 11)
                         removeOrbitalBatteries = 0;
                     target.RemoveOrbitalBatteries(removeOrbitalBatteries);
 

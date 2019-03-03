@@ -75,7 +75,7 @@ namespace Supremacy.Scripting.Events
                     int targetColonyId = target.ObjectID;
                     OnUnitTargeted(target);
 
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+3);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
 
                     game.CivilizationManagers[targetCiv].SitRepEntries.Add(

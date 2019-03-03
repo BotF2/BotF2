@@ -206,10 +206,10 @@
     <Compile Include="Scripting\CivilizationScopedEvent.cs" />
     <Compile Include="Scripting\EventDefinition.cs" />
     <Compile Include="Scripting\Events\AsteroidImpactEvent.cs" />
+    <Compile Include="Scripting\Events\MajorAsteroidImpact.cs" />
     <Compile Include="Scripting\Events\TerroristsCaptured.cs" />
     <Compile Include="Scripting\Events\Earthquake.cs" />
     <Compile Include="Scripting\Events\GammaRayBurst.cs" />
-    <Compile Include="Scripting\Events\CometStrike.cs" />
     <Compile Include="Scripting\Events\PlagueEvent.cs" />
     <Compile Include="Scripting\Events\Supernovai.cs" />
     <Compile Include="Scripting\Events\TerroristBombingOfShipProduction.cs" />

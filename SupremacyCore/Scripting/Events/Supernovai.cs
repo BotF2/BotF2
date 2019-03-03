@@ -67,7 +67,7 @@ namespace Supremacy.Scripting.Events
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
-                    if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion Nebula" || target.Name == "Romulus" || target.Name == "Borg Nebula")
+                    if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
                         return;
 
                     var targetCiv = target.Owner;
@@ -75,7 +75,7 @@ namespace Supremacy.Scripting.Events
                     var population = target.Population.CurrentValue;
                     var health = target.Health.CurrentValue;
 
-                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1) 
+                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 4) // only when many colonies are there
                         GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: colony amount > 1 for: {0}", target.Name);
 
                     game.CivilizationManagers[targetCiv].SitRepEntries.Add
@@ -89,7 +89,7 @@ namespace Supremacy.Scripting.Events
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: HomeSystemName is: {0}", target.Name);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent( - population/6 * 5);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent( - population/6 * 3);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/ 5);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
