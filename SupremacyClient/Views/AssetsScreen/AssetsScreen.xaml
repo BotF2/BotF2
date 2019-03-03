@@ -234,13 +234,72 @@
                         Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
                 </Grid>
             </TabItem>
-        <!--TAB for Spy Ship-->
+        <!--TAB for Spy Ship Report of colony-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
-            <!--Grid just for Head line-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0" Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="2" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="3" Text="Spy Ship Report to follow"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                </Grid>
+            </Grid>
         </TabItem>
+      
         <!--TAB for Economy-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ECONOMY_TAB_HEADER}">
-            <!--Grid just for Head line-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0" Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="2" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="3" Text="It is the economy stupid"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                </Grid>
+            </Grid>
         </TabItem>
 
     </TabControl>
