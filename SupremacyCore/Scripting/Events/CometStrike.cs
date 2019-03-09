@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2009 Mike Strobel
+﻿// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
@@ -17,7 +17,7 @@ using System.Linq;
 namespace Supremacy.Scripting.Events
 {
     [Serializable]
-    public class MajorAsteroidImpact : UnitScopedEvent<Colony>
+    public class COMETSTRIKEVENT : UnitScopedEvent<Colony>
     {
         private bool _productionFinished;
         private bool _shipProductionFinished;
@@ -46,7 +46,7 @@ namespace Supremacy.Scripting.Events
             }
         }
 
-        public MajorAsteroidImpact()
+        public COMETSTRIKEVENT()
         {
             _affectedProjects = new List<BuildProject>();
             _affectedBuildings = new List<Building>();
@@ -85,8 +85,8 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            // Update 3 March 2019: Add Major Asteroid Impact
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 1) 
+            // Update 2 March 2019: CometStrike is not used
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber < -1) //
             {
                 var affectedCivs = game.Civilizations
                     .Where(
@@ -106,13 +106,10 @@ namespace Supremacy.Scripting.Events
                     var productionCenters = group.ToList();
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
-                    GameLog.Client.GameData.DebugFormat("MajorAsteroidImpact.cs: target.Name: {0}", target.Name);
+                    GameLog.Client.GameData.DebugFormat("CometStrikeEvents.cs: target.Name: {0}", target.Name);
 
-                    if (GameContext.Current.TurnNumber < 200)
-                    {
-                        if (target.Name == "Solx" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
-                            return;
-                    }
+                    if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                        return;
 
                     var affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
@@ -121,7 +118,7 @@ namespace Supremacy.Scripting.Events
 
                     foreach (var affectedProject in affectedProjects)
                     {
-                        GameLog.Client.GameData.DebugFormat("MajorAsteroidImpact.cs: affectedProject: {0}", affectedProject.Description);
+                        GameLog.Client.GameData.DebugFormat("CometStrikeEvents.cs: affectedProject: {0}", affectedProject.Description);
 
 
                         AffectedProjects.Add(affectedProject);
@@ -135,9 +132,9 @@ namespace Supremacy.Scripting.Events
                     OnUnitTargeted(target);
 
                     // Population
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population / 5 * 3);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population/5 * 4);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health / 5);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/2);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     // Facilities
@@ -156,12 +153,12 @@ namespace Supremacy.Scripting.Events
                         removeEnergy = 0;
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
 
-                    int removeResearch = target.GetTotalFacilities(ProductionCategory.Research) -3;  // Research: remaining everything up to 3
+                    int removeResearch = target.GetTotalFacilities(ProductionCategory.Research) - 3;  // Research: remaining everything up to 3
                     if (removeResearch < 4)
                         removeResearch = 0;
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
-                    int removeIntelligence = target.GetTotalFacilities(ProductionCategory.Intelligence)-3;  // Research: remaining everything up to 3
+                    int removeIntelligence = target.GetTotalFacilities(ProductionCategory.Intelligence) - 3;  // Research: remaining everything up to 3
                     if (removeIntelligence < 4)
                         removeIntelligence = 0;
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
@@ -170,14 +167,14 @@ namespace Supremacy.Scripting.Events
                         new ScriptedEventSitRepEntry(
                             new ScriptedEventSitRepEntryData(
                                 targetCiv,
-                                "MAJOR_ASTEROID_STRIKE_HEADER_TEXT",
-                                "MAJOR_ASTEROID_STRIKE_SUMMARY_TEXT",
-                                "MAJOR_ASTEROID_STRIKE_DETAIL_TEXT",
-                                "vfs:///Resources/Images/ScriptedEvents/MajorAsteroidImpact.png",
-                                "vfs:///Resources/SoundFX/ScriptedEvents/MajorAsteroidImpact.wav",
+                                "COMET_STRIKE_HEADER_TEXT",
+                                "COMET_STRIKE_SUMMARY_TEXT",
+                                "COMET_STRIKE_DETAIL_TEXT",
+                                "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png",
+                                "vfs:///Resources/SoundFX/ScriptedEvents/AsteroidImpact.wav",
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
-                    //GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population / 5 * 4);
+                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- population / 5 * 4);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
 
                     GameContext.Current.Universe.UpdateSectors();

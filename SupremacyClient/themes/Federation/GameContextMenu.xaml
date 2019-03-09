@@ -118,8 +118,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Systems"
-                                        Canvas.Left="250"
-                                        Canvas.Top="69"
+                                        Canvas.Left="245"
+                                        Canvas.Top="64"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -146,7 +146,7 @@
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Dip"
                                         Canvas.Left="400"
-                                        Canvas.Top="53"
+                                        Canvas.Top="63"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -172,8 +172,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Science"
-                                        Canvas.Left="68"
-                                        Canvas.Top="245"
+                                        Canvas.Left="45"
+                                        Canvas.Top="242"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -199,8 +199,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Intel"
-                                        Canvas.Left="245"
-                                        Canvas.Top="245"
+                                        Canvas.Left="235"
+                                        Canvas.Top="248"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.PersonnelScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -226,8 +226,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Menu"
-                                        Canvas.Left="420"
-                                        Canvas.Top="240"
+                                        Canvas.Left="400"
+                                        Canvas.Top="250"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">

@@ -108,11 +108,11 @@ namespace Supremacy.Scripting.Events
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("MajorAsteroidImpact.cs: target.Name: {0}", target.Name);
 
-                    if (GameContext.Current.TurnNumber < 200)
-                    {
-                        if (target.Name == "Solx" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
-                            return;
-                    }
+                    //if (GameContext.Current.TurnNumber < 200)
+                    //{
+                    //    if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                    //        return;
+                    //}
 
                     var affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
@@ -156,12 +156,12 @@ namespace Supremacy.Scripting.Events
                         removeEnergy = 0;
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
 
-                    int removeResearch = target.GetTotalFacilities(ProductionCategory.Research) -3;  // Research: remaining everything up to 3
+                    int removeResearch = target.GetTotalFacilities(ProductionCategory.Research) - 3;  // Research: remaining everything up to 3
                     if (removeResearch < 4)
                         removeResearch = 0;
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
-                    int removeIntelligence = target.GetTotalFacilities(ProductionCategory.Intelligence)-3;  // Research: remaining everything up to 3
+                    int removeIntelligence = target.GetTotalFacilities(ProductionCategory.Intelligence) - 3;  // Research: remaining everything up to 3
                     if (removeIntelligence < 4)
                         removeIntelligence = 0;
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
@@ -173,7 +173,7 @@ namespace Supremacy.Scripting.Events
                                 "MAJOR_ASTEROID_STRIKE_HEADER_TEXT",
                                 "MAJOR_ASTEROID_STRIKE_SUMMARY_TEXT",
                                 "MAJOR_ASTEROID_STRIKE_DETAIL_TEXT",
-                                "vfs:///Resources/Images/ScriptedEvents/MajorAsteroidImpact.png",
+                                "vfs:///Resources/Images/ScriptedEvents/MajorAsteroidStrike.png",
                                 "vfs:///Resources/SoundFX/ScriptedEvents/MajorAsteroidImpact.wav",
                                 () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
