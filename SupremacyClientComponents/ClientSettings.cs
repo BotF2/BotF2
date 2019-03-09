@@ -445,8 +445,8 @@ namespace Supremacy.Client
             typeof(ClientSettings),
             new FrameworkPropertyMetadata(
                 false,
-                (o, args) => ((ClientSettings)o).OnTracesAIChanged((bool)args.OldValue, (bool)args.NewValue)));
-        //FrameworkPropertyMetadataOptions.None));
+                //(o, args) => ((ClientSettings)o).OnTracesAIChanged((bool)args.OldValue, (bool)args.NewValue)));
+                FrameworkPropertyMetadataOptions.None));
 
         public bool TracesAI
         {
