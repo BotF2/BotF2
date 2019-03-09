@@ -86,7 +86,7 @@ namespace Supremacy.Scripting.Events
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
             // Update 3 March 2019: Add Major Asteroid Impact
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 1) 
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 72) 
             {
                 var affectedCivs = game.Civilizations
                     .Where(
@@ -110,7 +110,7 @@ namespace Supremacy.Scripting.Events
 
                     if (GameContext.Current.TurnNumber < 200)
                     {
-                        if (target.Name == "Solx" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                        if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
                             return;
                     }
 
