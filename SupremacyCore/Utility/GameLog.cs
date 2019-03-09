@@ -39,7 +39,7 @@ namespace Supremacy.Utility
                 _initialized = true;
             }
             Core.General.Info("Log Initialized");
-            string now = Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog" + Environment.NewLine;
+            string now = "Possible file name prepared... (see next line)" + Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog.txt" + Environment.NewLine;
             Core.General.Info(now);  // new line for saving under Date
         }
 
@@ -218,6 +218,13 @@ namespace Supremacy.Utility
         public static void SetRepositoryToDebug(string repository)
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Debug;
+            GameLog.Client.General.InfoFormat("    Log.txt: Trace is set to      DEBUG for '{0}' ", repository);
+        }
+
+        public static void SetRepositoryToErrorOnly(string repository)
+        {
+            ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Error;
+            GameLog.Client.General.InfoFormat("Log.txt: Trace is set to ERROR only for '{0}' ", repository);
         }
     }
 }
