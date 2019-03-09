@@ -200,7 +200,7 @@
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Intel"
                                         Canvas.Left="235"
-                                        Canvas.Top="248"
+                                        Canvas.Top="247"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.PersonnelScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
