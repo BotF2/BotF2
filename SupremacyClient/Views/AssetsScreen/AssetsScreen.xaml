@@ -16,6 +16,9 @@
                        UseLayoutRounding="True"
                        Margin="6,6,6,6">
   <TabControl>
+
+
+        <!--TAB for COLONIES-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=COLONIES_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -34,13 +37,13 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                            <TextBlock 
+                    <TextBlock 
                         Grid.Column="2" Text="{Binding Path=TotalPopulation}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                 </Grid>
-            <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
+                <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
                 <Button x:Name="SummaryButton"
                         Grid.Row="0"
                         VerticalAlignment="Top"
@@ -57,5 +60,247 @@
                         Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
             </Grid>
         </TabItem>
+
+        <!--TAB for SHIPS-->
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPS_TAB_HEADER}">
+            <!--Grid just for Head line-->
+            <Grid>
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="0" Text="Maintance Cost Total (not done yet)"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="1" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="3" Text="Maintance Cost Colonies (not done yet)"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="4" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="6" Text="Maintance Cost Ships (not done yet)"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="7" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="8" Text="Maintance Cost Stations (not done yet)"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                <TextBlock 
+                        Grid.Row="0"
+                        Grid.Column="9" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                </Grid>
+            
+                <!--<v:ShipsList Grid.Row="2" DataContext="{Binding Path=Colonies}" />-->
+                
+            <!--<Button x:Name="SummaryButton"
+                        Grid.Row="0"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Width="250"
+                        Height="30"
+                                
+                        Style="{StaticResource LCARS_StandardButtonStyle}"
+                        Content="Click for Summary"
+                        FontSize="14pt"
+                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                        Foreground="Black"
+                        Margin="0,0,0,0"
+                        Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
+            <!--</Grid>-->
+        </TabItem>
+
+<!--TAB for STATIONS-->
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=STATIONS_TAB_HEADER}">
+                <Grid>
+                <!--Grid just for Head line-->
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock 
+                        Grid.Row="1"
+                        Grid.Column="0" Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                        <TextBlock 
+                        Grid.Row="1"
+                        Grid.Column="1" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                        <TextBlock 
+                        Grid.Row="2"
+                        Grid.Column="0" Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                        <TextBlock 
+                        Grid.Row="2"
+                        Grid.Column="1" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                        <TextBlock 
+                        Grid.Row="3"
+                        Grid.Column="0" Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                        <TextBlock 
+                        Grid.Row="3"
+                        Grid.Column="1" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    </Grid>
+                    
+                    <!--<v:StationsList Grid.Row="2" DataContext="{Binding Path=Colonies}" />-->
+                    
+                    <!--<Button x:Name="SummaryButton"
+                        Grid.Row="0"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Width="250"
+                        Height="30"
+                                
+                        Style="{StaticResource LCARS_StandardButtonStyle}"
+                        Content="Click for Summary"
+                        FontSize="14pt"
+                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                        Foreground="Black"
+                        Margin="0,0,0,0"
+                        Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
+                </Grid>
+            </TabItem>
+        <!--TAB for Spy Ship Report of colony-->
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0" Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="2" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="3" Text="Spy Ship Report to follow"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+      
+        <!--TAB for Economy-->
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ECONOMY_TAB_HEADER}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0" Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="2" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="3" Text="It is the economy stupid"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+
     </TabControl>
 </scc:ThemedUserControl>

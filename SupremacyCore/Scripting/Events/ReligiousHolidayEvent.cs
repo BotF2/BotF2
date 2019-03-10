@@ -97,8 +97,8 @@ namespace Supremacy.Scripting.Events
                     if (target.Owner.Name == "Borg") // Borg do not have religious holidays
                         return;
 
-                    if (target.Name == "Omarion")
-                        return;
+                   // if (target.Name == "Omarion")
+                     //   return;
 
                     var affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())

@@ -45,7 +45,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >65)
             {
                 var affectedCivs = game.Civilizations
                     .Where(
@@ -66,9 +66,11 @@ namespace Supremacy.Scripting.Events
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Core.Events.DebugFormat("target.Name: {0}", target.Name);
-
-                    if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion Nebula" || target.Name == "Romulus" || target.Name == "Borg Nebula")
-                        return;
+                    if (GameContext.Current.TurnNumber < 290)
+                    {
+                        if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                            return;
+                    }
 
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
@@ -77,7 +79,7 @@ namespace Supremacy.Scripting.Events
 
                     GameLog.Core.Events.DebugFormat("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
 
-                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1)
+                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 2) // >2
                         GameLog.Core.Events.DebugFormat("colony amount > 1 for: {0}", target.Name);
 
                     game.CivilizationManagers[targetCiv].SitRepEntries.Add

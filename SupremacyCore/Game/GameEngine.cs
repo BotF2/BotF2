@@ -125,7 +125,7 @@ namespace Supremacy.Game
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
-                    if (GameContext.Current.TurnNumber >= 50)
+                    //if (GameContext.Current.TurnNumber >= 1)
                         scriptedEvent.OnTurnPhaseStarted(game, phase);
                 }
             }
@@ -148,7 +148,7 @@ namespace Supremacy.Game
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
-                    if (GameContext.Current.TurnNumber >= 50)
+                    //if (GameContext.Current.TurnNumber >= 50)
                         scriptedEvent.OnTurnPhaseFinished(game, phase);
                 }
             }
@@ -191,8 +191,8 @@ namespace Supremacy.Game
                 foreach (var eventToRemove in eventsToRemove)
                     game.ScriptedEvents.Remove(eventToRemove);
 
-                //If we've reached turn 20, start running scripted events
-                if (GameContext.Current.TurnNumber >= 50)
+                //Update If we've reached turn x, start running scripted events
+                if (GameContext.Current.TurnNumber >= 1)
                 {
                     foreach (var scriptedEvent in game.ScriptedEvents)
                     {
@@ -304,7 +304,7 @@ namespace Supremacy.Game
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
-                    if (GameContext.Current.TurnNumber >= 50)
+                    //if (GameContext.Current.TurnNumber >= 50)
                         scriptedEvent.OnTurnFinished(game);
                 }
                    
@@ -511,20 +511,30 @@ namespace Supremacy.Game
                     int shipsDamaged = 0;
                     int shipsDestroyed = 0;
 
-                    foreach (var ship in fleet.Ships)
+
+
+                    if (fleet.Ships != null) // Update FixBlackholeCrash (hopefully) 2 March 2019
                     {
-                        int damage = RandomHelper.Roll(ship.HullStrength.CurrentValue);
-                        if (damage >= ship.HullStrength.CurrentValue)
+                        
+                        foreach (var ship in fleet.Ships)
                         {
-                            shipsDestroyed++;
-                            ship.Destroy();
+                            int damage = RandomHelper.Roll(ship.HullStrength.CurrentValue);
+                            if (damage >= ship.HullStrength.CurrentValue)
+                            {
+                                shipsDestroyed++;
+                                ship.Destroy();
+                            }
+                            else
+                            {
+                                shipsDamaged++;
+                                ship.HullStrength.AdjustCurrent(-damage);
+                            }
+                            if (fleet.Ships != null) // 2nd try to fix blackhole 3 march 2019
+                                break;
                         }
-                        else
-                        {
-                            shipsDamaged++;
-                            ship.HullStrength.AdjustCurrent(-damage);
-                        }
+
                     }
+                
 
                     if ((shipsDamaged > 0) || (shipsDestroyed > 0))
                     {
