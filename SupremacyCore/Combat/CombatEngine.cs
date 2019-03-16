@@ -153,93 +153,32 @@ namespace Supremacy.Combat
             }
         }
 
-        //protected CombatEngine(
-        //    List<CombatAssets> assets,
-        //    SendCombatUpdateCallback updateCallback,
-        //    NotifyCombatEndedCallback combatEndedCallback)
-        //{
-        //    if (assets == null)
-        //    {
-        //        throw new ArgumentNullException("assets");
-        //    }
-        //    if (updateCallback == null)
-        //    {
-        //        throw new ArgumentNullException("updateCallback");
-        //    }
-        //    if (combatEndedCallback == null)
-        //    {
-        //        throw new ArgumentNullException("combatEndedCallback");
-        //    }
-
-        //    _running = false;
-        //    _allSidesStandDown = false;
-        //    _combatId = GameContext.Current.GenerateID();
-        //    _roundNumber = 1;
-        //    _assets = assets;
-        //    _updateCallback = updateCallback;
-        //    _combatEndedCallback = combatEndedCallback;
-        //    _orders = new Dictionary<int, CombatOrders>();
-
-        //    SyncLock = _orders;
-
-        //    _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-
-        //    foreach (CombatAssets civAssets in _assets.ToList())
-        //    {
-        //        if (civAssets.Station != null)
-        //        {
-        //            _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
-        //                civAssets.Station,
-        //                CombatWeapon.CreateWeapons(civAssets.Station.Source));
-        //        }
-        //        foreach (CombatUnit shipStats in civAssets.CombatShips)
-        //        {
-        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
-        //                shipStats,
-        //                CombatWeapon.CreateWeapons(shipStats.Source)));
-        //        }
-        //        foreach (CombatUnit shipStats in civAssets.NonCombatShips)
-        //        {
-        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
-        //                shipStats,
-        //                CombatWeapon.CreateWeapons(shipStats.Source)));
-        //        }
-        //    }
-        //}
-
-        protected CombatEngine(List<CombatAssets> assets,
-            Dictionary<Civilization, CombatOrder> _combatOrderByCiv, List<Civilization> _civilization,
-            bool _battleInOwnTerritory,
-            Civilization _targetOfACivilzation,
-            int _totalFirepower,
-            double _favorTheBoldMalus,
-            int _fleetAsCommandshipBonus,
-            bool _has20PlusPercentFastAttack)
-
+        protected CombatEngine(
+            List<CombatAssets> assets,
+            SendCombatUpdateCallback updateCallback,
+            NotifyCombatEndedCallback combatEndedCallback)
         {
             if (assets == null)
             {
                 throw new ArgumentNullException("assets");
             }
-
-            if (_combatOrderByCiv == null)
+            if (updateCallback == null)
             {
-                throw new ArgumentNullException("combatOrderByCiv");
+                throw new ArgumentNullException("updateCallback");
             }
-
-            if (_civilization == null)
+            if (combatEndedCallback == null)
             {
-                throw new ArgumentNullException("civilization");
+                throw new ArgumentNullException("combatEndedCallback");
             }
 
             _running = false;
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
+            _roundNumber = 1;
             _assets = assets;
-            // _roundNumber = 1;
-            //_updateCallback = updateCallback;
-            //_combatEndedCallback = combatEndedCallback;
-            //_orders = new Dictionary<int, CombatOrders>();
+            _updateCallback = updateCallback;
+            _combatEndedCallback = combatEndedCallback;
+            _orders = new Dictionary<int, CombatOrders>();
 
             SyncLock = _orders;
 
@@ -267,6 +206,67 @@ namespace Supremacy.Combat
                 }
             }
         }
+
+        //protected CombatEngine(List<CombatAssets> assets,
+        //    Dictionary<Civilization, CombatOrder> _combatOrderByCiv, List<Civilization> _civilization,
+        //    bool _battleInOwnTerritory,
+        //    Civilization _targetOfACivilzation,
+        //    int _totalFirepower,
+        //    double _favorTheBoldMalus,
+        //    int _fleetAsCommandshipBonus,
+        //    bool _has20PlusPercentFastAttack)
+
+        //{
+        //    if (assets == null)
+        //    {
+        //        throw new ArgumentNullException("assets");
+        //    }
+
+        //    if (_combatOrderByCiv == null)
+        //    {
+        //        throw new ArgumentNullException("combatOrderByCiv");
+        //    }
+
+        //    if (_civilization == null)
+        //    {
+        //        throw new ArgumentNullException("civilization");
+        //    }
+
+        //    _running = false;
+        //    _allSidesStandDown = false;
+        //    _combatId = GameContext.Current.GenerateID();
+        //    _assets = assets;
+        //    // _roundNumber = 1;
+        //    //_updateCallback = updateCallback;
+        //    //_combatEndedCallback = combatEndedCallback;
+        //    //_orders = new Dictionary<int, CombatOrders>();
+
+        //    SyncLock = _orders;
+
+        //    _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+
+        //    foreach (CombatAssets civAssets in _assets.ToList())
+        //    {
+        //        if (civAssets.Station != null)
+        //        {
+        //            _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
+        //                civAssets.Station,
+        //                CombatWeapon.CreateWeapons(civAssets.Station.Source));
+        //        }
+        //        foreach (CombatUnit shipStats in civAssets.CombatShips)
+        //        {
+        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+        //                shipStats,
+        //                CombatWeapon.CreateWeapons(shipStats.Source)));
+        //        }
+        //        foreach (CombatUnit shipStats in civAssets.NonCombatShips)
+        //        {
+        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+        //                shipStats,
+        //                CombatWeapon.CreateWeapons(shipStats.Source)));
+        //        }
+        //    }
+        //}
 
         public void SubmitOrders(CombatOrders orders)
         {
