@@ -1,441 +1,479 @@
-<!--
-  
-   GameOptionsPanel.xaml
-  
-   Copyright (c) 2007 Mike Strobel
-  
-   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
-   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
-  
-   All other rights reserved.
-  
-  -->
-<UserControl x:Class="Supremacy.Client.GameOptionsPanel"
-             xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation" 
-             xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
-             TextBlock.Foreground="{StaticResource LCARS_ParagraphBrush}"
-             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-             TextBlock.FontSize="14pt">
-    <Grid IsEnabled="{Binding Path=IsFrozen, Converter={StaticResource IsFalseValueConverter}}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="129"/>
-            <ColumnDefinition Width="129"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-           
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+<scc:Dialog x:Class="Supremacy.Client.SinglePlayerStartScreen"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            HasBorder="False"
+            IsModal="False">
+    <scc:Dialog.Resources>
+        <Style TargetType="{x:Type TabItem}"
+           BasedOn="{StaticResource {x:Type TabItem}}">
+            <Setter Property="Margin"
+              Value="0,0,0,1" />
+            <Setter Property="Header"
+              Value="{Binding Path=ShortName, Converter={StaticResource UpperCaseConverter}}" />
+        </Style>
+
+        <DataTemplate x:Key="CivSelectorContentTemplate"
+                  DataType="{x:Type s:Civilization}">
+
+            <DockPanel LastChildFill="True"
+                 TextBlock.FontSize="14"
+                 TextBlock.Foreground="{StaticResource LCARS_ParagraphBrush}"
+                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
+                <Border DockPanel.Dock="Top"
+                VerticalAlignment="Top"
+                Margin="140,0,0,0"
+                BorderBrush="White"
+                BorderThickness="2"
+                Width="160">
+                    <Image Source="{Binding Converter={StaticResource CivImageConverter}}" />
+
+                </Border>
+                <ScrollViewer CanContentScroll="False"
+                      VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Path=LongName, Converter={StaticResource UpperCaseConverter}}"
+                       FontSize="22"
+                       Foreground="{StaticResource LCARS_HeaderBrush}"
+                       FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+                        <ScrollViewer Margin="0,12,0,0"
+                          VerticalScrollBarVisibility="Auto">
+                            <TextBlock FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}"
+                         Text="{Binding Path=DiplomacyReport}"
+                         TextWrapping="Wrap" />
+                        </ScrollViewer>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </DataTemplate>
+
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Border>
+                            <ItemsPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"
+                        IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CivSelectorItemStyle"
+           TargetType="{x:Type TabItem}">
+            <Setter Property="Width"
+              Value="140" />
+            <Setter Property="ContentTemplate"
+              Value="{StaticResource CivSelectorContentTemplate}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
 
 
-        <TextBlock Grid.Column="0"
+                        <DockPanel LastChildFill="True">
+                            <Rectangle x:Name="SelectionHiglight"
+                         DockPanel.Dock="Left"
+                         Opacity="0.25"
+                         Fill="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                         Width="12" />
+
+                            <Rectangle x:Name="GrayedOut"
+                         DockPanel.Dock="Left"
+                         Opacity="0.25"
+                         Fill="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
+                         Width="12" />
+
+                            <Image DockPanel.Dock="Left"
+                     Height="28"
+                     Width="28"
+                     Stretch="Uniform"
+                     Margin="3,0,3,0"
+                     Source="{Binding Converter={StaticResource CivInsigniaConverter}}" />
+
+                            <ToggleButton Style="{DynamicResource LCARS_SimpleToggleButtonStyle}"
+                            Padding="6,3,6,3"
+                            FontSize="18"
+                            HorizontalContentAlignment="Left"
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                            Content="{Binding Path=ShortName, Converter={StaticResource UpperCaseConverter}}"
+                            IsChecked="{Binding Path=(Selector.IsSelected), Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </DockPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected"
+                       Value="True">
+                                <Setter TargetName="SelectionHiglight"
+                        Property="Opacity"
+                        Value="1.0" />
+                            </Trigger>
+
+                            <!--<Trigger Property="IsDeactivated"
+                       Value="True">
+                                <Setter TargetName="GrayedOut"
+                        Property="Opacity"
+                        Value="1.0" />
+                </Trigger>-->
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                    <!--<ControlTemplate TargetType="{x:Type ListBoxItem}">
+            <DockPanel LastChildFill="False"
+                       MaxWidth="225"
+                       Margin="6,0,6,0">
+              <Grid x:Name="ImageHost"
+                    DockPanel.Dock="Top">
+                <Border x:Name="ImageBorder"
+                        CornerRadius="16"
+                        BorderThickness="2"
+                        BorderBrush="Silver"
+                        Width="120"
+                        Height="160">
+                  <Border.Background>
+                    <ImageBrush ImageSource="{Binding Converter={StaticResource CivImageConverter}}"
+                                Stretch="UniformToFill" />
+                  </Border.Background>
+                </Border>
+                <Image HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Height="32"
+                       Width="32"
+                       Margin="8"
+                       Source="{Binding Converter={StaticResource CivInsigniaConverter}}"
+                       Stretch="Uniform">
+		<UIElement.Effect>
+			<DropShadowEffect ShadowDepth="0" BlurRadius="10.0" Color="Black" Opacity="1.0" />
+		</UIElement.Effect>
+                </Image>
+              </Grid>
+              <TextBlock DockPanel.Dock="Top"
+                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                         FontSize="16pt"
+                         Foreground="{StaticResource LCARS_HeaderBrush}"
+                         Text="{Binding Path=LongName, Converter={StaticResource UpperCaseConverter}}"
+                         HorizontalAlignment="Center"
+                         Margin="6,12,6,0" />
+              <TextBlock DockPanel.Dock="Top"
+                         FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                         FontSize="14"
+                         Foreground="{StaticResource LCARS_ParagraphBrush}"
+                         Text="{Binding Path=DiplomacyText}"
+                         TextTrimming="WordEllipsis"
+                         TextWrapping="Wrap"
+                         Margin="0,12,0,0" />
+            </DockPanel>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsSelected"
+                       Value="True">
+                <Setter TargetName="ImageBorder"
+                        Property="Opacity"
+                        Value="1.0" />
+                <Setter TargetName="ImageBorder"
+                        Property="BorderBrush"
+                        Value="DodgerBlue" />
+              </Trigger>
+              <Trigger Property="IsMouseOver"
+                       Value="True">
+                <Setter TargetName="ImageBorder"
+                        Property="BorderBrush"
+                        Value="White" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>-->
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </scc:Dialog.Resources>
+
+    <Border CornerRadius="32"
+          Background="#cc000000">
+
+
+        <!--<Grid Width="1024"
+          Height="768">
+      <ListBox ItemsSource="{Binding}"
+               ItemContainerStyle="{StaticResource EmpireListBoxItemStyle}"
+               HorizontalAlignment="Stretch">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal"
+                       IsItemsHost="True" />
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+      </ListBox>
+    </Grid>-->
+        <Grid Width="1160"
+          Height="720">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="390" />
+                <!--Game Option column-->
+                <ColumnDefinition Width="28" />
+                <!--empty space column, previously 28 -->
+                <!--250+28 is 278 in total - remind that for UpeerLeftCorner-->
+                <ColumnDefinition Width="140" />
+                <!--Select Empire column, , previously 140 -->
+                <ColumnDefinition Width="*" />
+                <!--empire image + text column-->
+                <ColumnDefinition Width="Auto" />
+                <!--right border-->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Path x:Name="UpperLeftCorner"
+            Grid.Column="0"
             Grid.ColumnSpan="2"
             Grid.Row="0"
-            Background="{StaticResource LCARS_PurpleGradient_Right_Left}"  
-            
-            FontSize="18pt"
-            MinHeight="24"
-            Width="248"
-            TextAlignment="Center"
-            VerticalAlignment="Bottom"
-            HorizontalAlignment="Center"
-            Text="{s:StringResource GAME_OPTIONS}"
-            Margin="10,0,0,4" Height="26" />
+            Width="288"
+            Height="40"
+            Fill="{StaticResource LCARS_PurpleGradient_Right_Left}"
+            Data="F1 M 0,40L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 288,0L 288,13L 268,13C 263,13 260,16.5554 260,21L 260,40L 0,40 Z" />
+
+            <DockPanel Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,2,0,0"
+                Background="{StaticResource LCARS_BlueGradient_Right_Left}"
+                LastChildFill="True">
+
+                <!--<Rectangle 
+                Grid.Column="0"
+                
+                Grid.Row="0"
+                Grid.RowSpan="16"
+                  Width="Auto"
+                  Height="Auto"
+                   Fill="{StaticResource LCARS_GrayGradient_Right_Left}"/>-->
+
+                <DockPanel DockPanel.Dock="Top"
+                   MaxWidth="390">
+                    <!--GameOptionsPanel-->
+
+                    <!-- "MAKE YOUR CHOICES"-->
+                    <!--<TextBlock FontSize="14pt"
+                               DockPanel.Dock="Left"
+                     Foreground="Black"
+                     VerticalAlignment="Bottom"
+                     HorizontalAlignment="Left"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                     Text="{s:StringResource SINGLE_PLAYER_SETUP_SELECT_OPTIONS}"
+                     Margin="6,3,6,3" />-->
+
+                    <local:GameOptionsPanel x:Name="OptionsPanel"
+                            DockPanel.Dock="Top" />
+                    <StackPanel DockPanel.Dock="Bottom"
+                      Orientation="Horizontal"
+                      Margin="14,14,0,0"
+                                
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Bottom">
+                        <Button x:Name="CancelButton"
+                            IsCancel="True"
+                            HorizontalAlignment="Left"
+                            Margin="7,0,0,0"
+                            Style="{StaticResource LCARS_SimpleButtonStyle}">
+                            <AccessText Text="{s:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
+                        </Button>
+                        <!--<Button x:Name="OkButton"
+                                IsDefault="True"
+                                Style="{StaticResource LCARS_SimpleButtonStyle}"
+                                Click="OkButton_Click">
+                            <AccessText Text="{s:StringResource Key=MESSAGE_DIALOG_STARTGAME, Case=Upper}" />
+                        </Button>-->
+
+                    </StackPanel>
+                </DockPanel>
+            </DockPanel>
 
 
-        <!--Text infront of DropDowns = ComboBoxes-->
-        <TextBlock Grid.Column="0"
-            Grid.Row="1"
-            Margin="5,0,0,5"
-            Text="{s:StringResource EMPIRES_HEADER}"
-            Background="DarkBlue"
-            TextAlignment="Center"
-            FontSize="16pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
+            <DockPanel 
+                Grid.Column="2"
+                 Grid.Row="1"
+                 Grid.ColumnSpan="2"
+                 Margin="0,1,0,0"
+                 LastChildFill="True">
+                <Border DockPanel.Dock="Top"
+                        MinHeight="28">
+                    <!--
+                    Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                    MinHeight="48"
+                    -->
 
-        <TextBlock Grid.Column="1"
-            Grid.Row="1"
-            Margin="7,0,0,6"
-            Text="{s:StringResource PLAYABLE_HEADER}"
-            Background="DarkBlue"
-            TextAlignment="Center"
-            FontSize="14pt"                  
-            Height="24"
-            Width="122"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center" />
+                    <TextBlock FontSize="14pt"
+                     
+                     VerticalAlignment="Bottom"
+                     HorizontalAlignment="Left"
+                     
+                     Text="{s:StringResource SINGLE_PLAYER_SETUP_SELECT_EMPIRE}"
+                     Margin="0,0,0,0" />
+                    <!--<TextBlock FontSize="14pt"
+                     Foreground="Black"
+                     VerticalAlignment="Bottom"
+                     HorizontalAlignment="Left"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                     Text="{s:StringResource SINGLE_PLAYER_SETUP_PLAYABLE_EMPIRE}"    ->  that's the new string
+                     Margin="6,3,6,3" />-->
+
+                </Border>
+                <!--CivSelector... bringing in an own tab-->
+                <TabControl x:Name="CivSelector"
+                    DockPanel.Dock="Left"
+                            
+                    Margin="0,2,25,0"
+                    BorderThickness="0"
+                    Background="Transparent"
+                    ItemStringFormat=""
+                    ItemsSource="{Binding}"
+                    IsSynchronizedWithCurrentItem="True" />
+
+                <ContentControl Content="{Binding ElementName=CivSelector, Path=SelectedContent}"
+                        ContentTemplate="{StaticResource CivSelectorContentTemplate}" />
+
+                <!--blue vertikal bar ... before... between civs and GameOptions right side-->
+                <!--<Rectangle DockPanel.Dock="Right"
+                   Fill="{StaticResource LCARS_BlueGradient_Left_Right}"
+                   Width="8"
+                   Margin="16,0,16,0" />-->
 
 
-        <TextBlock 
+                <!--Vertical Orange Bars-->
+                <!--<Grid x:Name="UpperLeftSide"
+                    Margin="0,0,0,0">
+                    <Border Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                  BorderThickness="0"
+                  Width="69"
+                  Height="Auto"
+                  HorizontalAlignment="Left" />
+                    <Border Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                  BorderThickness="0"
+                  Width="69"
+                  Height="Auto"
+                  HorizontalAlignment="Right" />
+                </Grid>-->
+
+                <!--<Grid IsEnabled="{Binding Path=IsFrozen, Converter={StaticResource IsFalseValueConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="140" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                </Grid>-->
+            </DockPanel>
+
+            <DockPanel Grid.Row="1"
+                 Grid.Column="2"
+                 LastChildFill="True">
+                <DockPanel DockPanel.Dock="Top"
+                   MaxWidth="250">
+                    <!--GameOptionsPanel-->
+
+                    <!-- "MAKE YOUR CHOICES"-->
+                    <!--<TextBlock FontSize="14pt"
+                     Foreground="Black"
+                     VerticalAlignment="Bottom"
+                     HorizontalAlignment="Left"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                     Text="{s:StringResource SINGLE_PLAYER_SETUP_SELECT_EMPIRE}"   
+                     Margin="6,3,6,3" />-->
+
+                    <!--<local:GameOptionsPanel x:Name="OptionsPanel"
+                            DockPanel.Dock="Top" />-->
+                    <StackPanel DockPanel.Dock="Bottom"
+                      Orientation="Horizontal"
+                      Margin="14,14,0,0"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Bottom">
+                        <!--<Button x:Name="CancelButton"
+                            IsCancel="True"
+                            HorizontalAlignment="Left"
+                            Margin="7,0,0,0"
+                            Style="{StaticResource LCARS_SimpleButtonStyle}">
+                            <AccessText Text="{s:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />
+                        </Button>-->
+                        <Button x:Name="StartGameButton"
+                                IsDefault="True"
+                                Style="{StaticResource LCARS_SimpleButtonStyle}"
+                                Click="OkButton_Click">
+                            <AccessText Text="{s:StringResource Key=MESSAGE_DIALOG_STARTGAME, Case=Upper}" />
+                        </Button>
+
+                    </StackPanel>
+                </DockPanel>
+            </DockPanel>
+
+
+            <Path x:Name="LowerUpperLeftCorner"
             Grid.Column="0"
-            Grid.Row="2" 
-            Margin="5,6,0,0"
-            Foreground="White"
+            Grid.ColumnSpan="2"
+            Grid.Row="2"
+            Width="288"
+            Height="40"
+            Fill="{StaticResource LCARS_PurpleGradient_Right_Left}"
+            Margin="0,2,0,0"
+            Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 288,40L 288,27.0263L 268,27.0263C 263.582,27.0263 260,23.4446 260,19.0263L 260,0L 0,0 Z" />
 
-            TextAlignment="Center"
-            Text="{s:StringResource FED_PLAYABLE}"  
-            Background="Blue"
-            Height="24"
-            Width="119"
-            FontSize="14pt"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
+            <!--border top and bottom-->
+            <Rectangle Grid.Column="2"
+                       Grid.ColumnSpan="2"
+                 Grid.Row="0"
+                 Margin="2,0,2,0"
+                 Height="13"
+                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 VerticalAlignment="Top" />
+            <Rectangle Grid.Column="2"
+                       Grid.ColumnSpan="2"
+                 Grid.Row="2"
+                 Margin="2,0,2,0"
+                 Height="13"
+                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 VerticalAlignment="Bottom" />
 
+            <Path x:Name="UpperRightCorner"
+            Grid.Column="4"
+            Grid.Row="0"
+            Margin="0,0,0,2"
+            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Data="F1 M -2.86102e-006,0L 3.8147e-006,9.33337C 3.8147e-006,15.5555 3.8147e-006,21.7777 3.11111,24.8888C 6.22223,28 12.4444,28 18.6667,28L 28,28L 28,18.6666L 18.6667,18.6666C 15.5556,18.6666 12.4444,18.6666 10.8889,17.1112C 9.33334,15.5555 9.33334,12.4445 9.33334,9.33337L 9.33334,0L -2.86102e-006,0 Z ">
+                <Path.LayoutTransform>
+                    <ScaleTransform ScaleX="-1.25"
+                          CenterX="16"
+                          ScaleY="-1.42" />
+                </Path.LayoutTransform>
+            </Path>
 
-        <TextBlock Grid.Column="0"
-            Grid.Row="3"
-            Margin="5,6,0,0"
-            Foreground="Black"      
-            FontSize="14pt"
-                       
-            Text="{s:StringResource TERRAN_PLAYABLE}"
-            Background="Gold"
-            TextAlignment="Center"
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
+            <!--right side border-->
+            <Rectangle Grid.Column="4"
+                 Grid.Row="1"
+                 Width="12"
+                 HorizontalAlignment="Right"
+                 Fill="{StaticResource LCARS_BlueGradient_Left_Right}" />
 
-        <TextBlock Grid.Column="0"
-            Grid.Row="4"
-            Margin="5,6,0,0"
-            Text="{s:StringResource ROM_PLAYABLE}"
-            Background="DarkGreen"
-            TextAlignment="Center"
-            FontSize="14pt"
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
+            <Path x:Name="LowerRightCorner"
+            Grid.Column="4"
+            Grid.Row="2"
+            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Margin="0,2,0,0"
+            Data="F1 M -2.86102e-006,0L 3.8147e-006,9.33337C 3.8147e-006,15.5555 3.8147e-006,21.7777 3.11111,24.8888C 6.22223,28 12.4444,28 18.6667,28L 28,28L 28,18.6666L 18.6667,18.6666C 15.5556,18.6666 12.4444,18.6666 10.8889,17.1112C 9.33334,15.5555 9.33334,12.4445 9.33334,9.33337L 9.33334,0L -2.86102e-006,0 Z ">
+                <Path.LayoutTransform>
+                    <ScaleTransform ScaleX="-1.25"
+                          CenterX="16"
+                          ScaleY="1.42" />
+                </Path.LayoutTransform>
+            </Path>
 
-
-        <TextBlock Grid.Column="0"
-            Grid.Row="5"
-            Margin="5,6,0,0"
-            Text="{s:StringResource KLING_PLAYABLE}"
-            Background="DarkRed"
-            TextAlignment="Center"
-            FontSize="14pt"
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
-
-
-        <TextBlock Grid.Column="0"
-            Grid.Row="6"
-            Margin="5,6,0,0"
-            Foreground="Black"
-            Text="{s:StringResource CARD_PLAYABLE}"
-            Background="DarkGoldenrod"
-            TextAlignment="Center"
-            FontSize="14pt"
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
-
-
-        <TextBlock Grid.Column="0"
-            Grid.Row="7"
-            Margin="5,6,0,0"
-            Text="{s:StringResource DOM_PLAYABLE}"
-            Background="DarkViolet"
-            TextAlignment="Center"
-            FontSize="14pt"
-            Height="24"
-                Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
-
-
-        <TextBlock Grid.Column="0"
-            Grid.Row="8"
-            Margin="5,6,0,0"
-            Text="{s:StringResource BORG_PLAYABLE}"
-            Foreground="Black"
-            TextAlignment="Center"
-            FontSize="14pt"
-            Height="24"
-                    Width="119"
-            HorizontalAlignment="Right"
-            Background="YellowGreen"
-            VerticalAlignment="Center" />
-
-
-        <!--<TextBlock Grid.Column="0"
-            Grid.Row="8"
-            Margin="5,6,0,0"
-            Text="Playable=NO -> Federation will be started"
-            Foreground="Red"
-            VerticalAlignment="Center" />-->
-
-        <!--Row 8 is GalaxyImage (Preview Image)"-->
-        <Border Grid.Column="1"
-            Grid.Row="9"
-            HorizontalAlignment="Center"
-            Margin="0,10,0,0"
-            BorderBrush="White"
-            BorderThickness="2"
-            Width="80"
-            Height="70">
-            <Image x:Name="GalaxyImage"
-            Width="80"
-            Height="65"
-            Stretch="Uniform"  
-            StretchDirection="Both"
-            />
-        </Border>
-
-        <TextBlock Grid.Column="0"
-            Grid.Row="10"
-            Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
-            Text="{s:StringResource GALAXY_SHAPE}"
-            Background="DodgerBlue"
-
-            TextAlignment="Right"
-                FontSize="14pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="0"
-            Grid.Row="11"
-            Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
-            Text="{s:StringResource GALAXY_SIZE}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-                FontSize="14pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="0"
-            Grid.Row="12"
-            Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
-            Text="{s:StringResource PLANET_DENSITY}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-                FontSize="14pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="0"
-            Grid.Row="13"
-            Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
-            Text="{s:StringResource STAR_DENSITY}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-                FontSize="14pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="0"
-            Grid.Row="14"
-            Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
-            Text="{s:StringResource MINOR_RACES}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-            FontSize="14pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
-        <TextBlock Grid.Column="0"
-            Grid.Row="15"
-            Margin="5,7,0,0"
-
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
-            Text="{s:StringResource GALAXY_CANON}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-                FontSize="14pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="0"
-            Grid.Row="16"
-            Margin="5,7,0,0"
-            Foreground="{StaticResource LCARS_ParagraphBrush}"
-
-            Text="{s:StringResource TECH_LEVEL}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-            FontSize="14pt"                  
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />
-
-        <!--<TextBlock Grid.Column="0"
-            Grid.Row="16"
-            Margin="5,7,0,0"
-            Foreground="Black"
-            Text="{s:StringResource MP_SETUP_PLAYER_NAME}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-            FontSize="14pt"
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />-->
-
-        <!--ComboBoxes-->
-        <ComboBox x:Name="lstFederationPlayable"
-              Grid.Column="1"
-              Grid.Row="2"
-              SelectedItem="{Binding Path=FederationPlayable, Mode=TwoWay}"
-              Margin="7,2,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-        <ComboBox x:Name="lstTerranEmpirePlayable"
-              Grid.Column="1"
-              Grid.Row="3"
-              SelectedItem="{Binding Path=TerranEmpirePlayable, Mode=TwoWay}"
-              Margin="7,2,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-        <ComboBox x:Name="lstRomulanPlayable"
-              Grid.Column="1"
-              Grid.Row="4"
-              SelectedItem="{Binding Path=RomulanPlayable, Mode=TwoWay}"
-              Margin="7,2,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-        <ComboBox x:Name="lstKlingonPlayable"
-              Grid.Column="1"
-              Grid.Row="5"
-              SelectedItem="{Binding Path=KlingonPlayable, Mode=TwoWay}"
-              Margin="7,2,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-        <ComboBox x:Name="lstCardassianPlayable"
-              Grid.Column="1"
-              Grid.Row="6"
-              SelectedItem="{Binding Path=CardassianPlayable, Mode=TwoWay}"
-              Margin="7,2,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-        <ComboBox x:Name="lstDominionPlayable"
-              Grid.Column="1"
-              Grid.Row="7"
-              SelectedItem="{Binding Path=DominionPlayable, Mode=TwoWay}"
-              Margin="7,2,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-        <ComboBox x:Name="lstBorgPlayable"
-              Grid.Column="1"
-              Grid.Row="8"
-              SelectedItem="{Binding Path=BorgPlayable, Mode=TwoWay}"
-              Margin="7,2,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-
-
-        <!--Row 8 is GalaxyImage (Preview Image)"-->
-        <ComboBox x:Name="lstGalaxyShape"
-              Grid.Column="1"
-              Grid.Row="10"
-              SelectedItem="{Binding Path=GalaxyShape, Mode=TwoWay}"
-              Margin="7,7,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center"/>
-        <ComboBox x:Name="lstGalaxySize"
-              Grid.Column="1"
-              Grid.Row="11"
-              SelectedItem="{Binding Path=GalaxySize, Mode=TwoWay}"
-              Margin="7,7,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center"/>
-        <ComboBox x:Name="lstPlanetDensity"
-              Grid.Column="1"
-              Grid.Row="12"
-              SelectedItem="{Binding Path=PlanetDensity, Mode=TwoWay}"
-              Margin="7,7,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center"/>
-        <ComboBox x:Name="lstStarDensity"
-              Grid.Column="1"
-              Grid.Row="13"
-              SelectedItem="{Binding Path=StarDensity, Mode=TwoWay}"
-              Margin="7,7,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center"/>
-        <ComboBox x:Name="lstMinorRaces"
-              Grid.Column="1"
-              Grid.Row="14"
-              SelectedItem="{Binding Path=MinorRaceFrequency, Mode=TwoWay}"
-              Margin="7,7,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-        <ComboBox x:Name="lstGalaxyCanon"
-              Grid.Column="1"
-              Grid.Row="15"
-              SelectedItem="{Binding Path=GalaxyCanon, Mode=TwoWay}"
-              Margin="7,7,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center"/>
-        <ComboBox x:Name="lstTechLevel"
-              Grid.Column="1"
-              Grid.Row="16"
-              SelectedItem="{Binding Path=StartingTechLevel, Mode=TwoWay}"
-              Margin="7,7,0,0"
-              IsEditable="False"
-              IsReadOnly="True"
-              VerticalAlignment="Center" />
-
-        <!--<Label x:Name="PlayerNameSP"
-            Grid.Column="1"
-            Grid.Row="16"
-            Target="{Binding ElementName=PlayerNameSPInput}"
-            Background="Black"
-            Margin="7,7,0,0"
-            VerticalAlignment="Center" >
-        <TextBox Name="PlayerNameSPInput" 
-            />
-        </Label>-->
-
-    </Grid>
-</UserControl>
+        </Grid>
+    </Border>
+</scc:Dialog>
