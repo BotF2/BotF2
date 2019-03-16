@@ -22,6 +22,16 @@ namespace Supremacy.Combat
 
     public abstract class CombatEngine
     {
+       
+        private List<Civilization> _civilization;
+        private bool _battleInOwnTerritory;
+        private Civilization _targetOfACivilzation;
+        private int _totalFirepower;
+        private double _favorTheBoldMalus;
+        private int _fleetAsCommandshipBonus;
+        private bool _has20PlusPercentFastAttack;
+        private Dictionary<Civilization, CombatOrder> _combatOrderByCiv;
+
         public readonly object SyncLock;
         protected const double BaseChanceToRetreat = 0.50;
         protected const double BaseChanceToAssimilate = 0.05;
@@ -40,6 +50,58 @@ namespace Supremacy.Combat
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders;
         protected Dictionary<string, int> _empireStrengths;
+
+
+
+        public List<Civilization> Civilization
+        {
+            get { return _civilization; }
+            set { _civilization = value; }
+        }
+
+        public bool BattelInOwnTerritory
+        {
+            get { return _battleInOwnTerritory; }
+            set { _battleInOwnTerritory = value; }
+        }
+
+        public Civilization TargetOfACivilization
+        {
+            get { return _targetOfACivilzation; }
+            set { _targetOfACivilzation = value; }
+        }
+
+        public int TotalFirepower
+        {
+            get { return _totalFirepower; }
+            set { _totalFirepower = value; }
+        }
+
+        public double FavorTheBoldMalus
+        {
+            get { return _favorTheBoldMalus; }
+            set { _favorTheBoldMalus = value; }
+        }
+
+
+        public int FleetAsCommandshipBonus
+        {
+            get { return _fleetAsCommandshipBonus; }
+            set { _fleetAsCommandshipBonus = value; }
+        }
+
+        public bool Has20PlusPercentFastAttack
+        {
+            get { return _has20PlusPercentFastAttack; }
+            set { _has20PlusPercentFastAttack = value; }
+        }
+
+        public Dictionary<Civilization, CombatOrder> CombatOrderByCiv
+        {
+            get { return _combatOrderByCiv; }
+            set { _combatOrderByCiv = value; }
+        }
+
 
         protected int CombatID
         {
@@ -91,32 +153,93 @@ namespace Supremacy.Combat
             }
         }
 
-        protected CombatEngine(
-            List<CombatAssets> assets,
-            SendCombatUpdateCallback updateCallback,
-            NotifyCombatEndedCallback combatEndedCallback)
+        //protected CombatEngine(
+        //    List<CombatAssets> assets,
+        //    SendCombatUpdateCallback updateCallback,
+        //    NotifyCombatEndedCallback combatEndedCallback)
+        //{
+        //    if (assets == null)
+        //    {
+        //        throw new ArgumentNullException("assets");
+        //    }
+        //    if (updateCallback == null)
+        //    {
+        //        throw new ArgumentNullException("updateCallback");
+        //    }
+        //    if (combatEndedCallback == null)
+        //    {
+        //        throw new ArgumentNullException("combatEndedCallback");
+        //    }
+
+        //    _running = false;
+        //    _allSidesStandDown = false;
+        //    _combatId = GameContext.Current.GenerateID();
+        //    _roundNumber = 1;
+        //    _assets = assets;
+        //    _updateCallback = updateCallback;
+        //    _combatEndedCallback = combatEndedCallback;
+        //    _orders = new Dictionary<int, CombatOrders>();
+
+        //    SyncLock = _orders;
+
+        //    _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+
+        //    foreach (CombatAssets civAssets in _assets.ToList())
+        //    {
+        //        if (civAssets.Station != null)
+        //        {
+        //            _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
+        //                civAssets.Station,
+        //                CombatWeapon.CreateWeapons(civAssets.Station.Source));
+        //        }
+        //        foreach (CombatUnit shipStats in civAssets.CombatShips)
+        //        {
+        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+        //                shipStats,
+        //                CombatWeapon.CreateWeapons(shipStats.Source)));
+        //        }
+        //        foreach (CombatUnit shipStats in civAssets.NonCombatShips)
+        //        {
+        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+        //                shipStats,
+        //                CombatWeapon.CreateWeapons(shipStats.Source)));
+        //        }
+        //    }
+        //}
+
+        protected CombatEngine(List<CombatAssets> assets,
+            Dictionary<Civilization, CombatOrder> _combatOrderByCiv, List<Civilization> _civilization,
+            bool _battleInOwnTerritory,
+            Civilization _targetOfACivilzation,
+            int _totalFirepower,
+            double _favorTheBoldMalus,
+            int _fleetAsCommandshipBonus,
+            bool _has20PlusPercentFastAttack)
+
         {
             if (assets == null)
             {
                 throw new ArgumentNullException("assets");
             }
-            if (updateCallback == null)
+
+            if (_combatOrderByCiv == null)
             {
-                throw new ArgumentNullException("updateCallback");
+                throw new ArgumentNullException("combatOrderByCiv");
             }
-            if (combatEndedCallback == null)
+
+            if (_civilization == null)
             {
-                throw new ArgumentNullException("combatEndedCallback");
+                throw new ArgumentNullException("civilization");
             }
 
             _running = false;
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
-            _roundNumber = 1;
             _assets = assets;
-            _updateCallback = updateCallback;
-            _combatEndedCallback = combatEndedCallback;
-            _orders = new Dictionary<int, CombatOrders>();
+            // _roundNumber = 1;
+            //_updateCallback = updateCallback;
+            //_combatEndedCallback = combatEndedCallback;
+            //_orders = new Dictionary<int, CombatOrders>();
 
             SyncLock = _orders;
 
@@ -502,7 +625,7 @@ namespace Supremacy.Combat
         }
 
         /// <summary>
-        /// Returns the <see cref="CombatAssets"/> that belong to the given <see cref="Civilization"/>
+        /// Returns the <see cref="CombatAssets"/> that belong to the given <see cref="Entities.Civilization"/>
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
