@@ -150,9 +150,9 @@
                        Margin="8"
                        Source="{Binding Converter={StaticResource CivInsigniaConverter}}"
                        Stretch="Uniform">
-		<UIElement.Effect>
-			<DropShadowEffect ShadowDepth="0" BlurRadius="10.0" Color="Black" Opacity="1.0" />
-		</UIElement.Effect>
+    <UIElement.Effect>
+      <DropShadowEffect ShadowDepth="0" BlurRadius="10.0" Color="Black" Opacity="1.0" />
+    </UIElement.Effect>
                 </Image>
               </Grid>
               <TextBlock DockPanel.Dock="Top"
