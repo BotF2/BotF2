@@ -5,7 +5,7 @@
                 xmlns:scc="clr-namespace:Supremacy.Client"
                 xmlns:dialogs="clr-namespace:Supremacy.Client.Dialogs"
                 IsModal="True"
-                Width="640"
+                Width="840"
                 MaxHeight="480">
   <dialogs:Dialog.Resources>
     <av:FormattedTextConverter x:Key="FormattedTextConverter" />
