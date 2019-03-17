@@ -26,6 +26,8 @@ using System.Media;
 using System.IO;
 using Supremacy.Utility;
 using System.Linq;
+using System.Collections.Generic;
+using Supremacy.Entities;
 
 namespace Supremacy.Client
 {
@@ -37,6 +39,11 @@ namespace Supremacy.Client
     {
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
+        private Civilization _primeTargetOftheCivilzation; // primary players selected civ to attack
+        private Civilization _secondTargetOftheCivilzation; // secondary players selected civ to attack
+        private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
+        private Dictionary<string, CombatUnit> _othersCombatUnits;
+        protected Dictionary<string, int> _empireStrengths;
         private IAppContext _appContext;
 
         public CombatWindow()
@@ -85,14 +92,14 @@ namespace Supremacy.Client
 
             if (update.IsCombatOver)
             {
-                if (update.RoundNumber == 6) // add fitting text, for when the battle is over Roundnumber must be 1 more then in the forced reatreat/combat ending.
-                {
-                    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-                        + String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
-                    SubHeaderText.Text = String.Format(
-                        ResourceManager.GetString("COMBAT_TEXT_LONG_BATTLE_OVER"),
-                        _update.Sector.Name);
-                } 
+                //if (update.RoundNumber == 6) // add fitting text, for when the battle is over Roundnumber must be 1 more then in the forced reatreat/combat ending.
+                //{
+                //    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
+                //        + String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
+                //    SubHeaderText.Text = String.Format(
+                //        ResourceManager.GetString("COMBAT_TEXT_LONG_BATTLE_OVER"),
+                //        _update.Sector.Name);
+                //} 
 
 
                 if (_update.IsStandoff)
@@ -103,7 +110,7 @@ namespace Supremacy.Client
                         ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
                         _update.Sector.Name);
                 }
-                else if (_playerAssets.HasSurvivingAssets)
+                else if (_playerAssets.HasSurvivingAssets) 
                 {
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
                         + String.Format(ResourceManager.GetString("COMBAT_VICTORY"));
@@ -122,8 +129,8 @@ namespace Supremacy.Client
             }
             else
             {
-                HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-                    + String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
+                HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER"); // + ": "
+                    //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
                 SubHeaderText.Text = String.Format(
                     ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
                     _update.Sector.Name);
@@ -147,8 +154,8 @@ namespace Supremacy.Client
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat
             RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0) || (fa.Station != null));
-            //Can only hail on the first round
-            HailButton.IsEnabled = (update.RoundNumber == 1);
+            //Can hail
+            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null)); //(update.RoundNumber == 1);
 
             UpperButtonsPanel.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             LowerButtonsPanel.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
@@ -180,7 +187,7 @@ namespace Supremacy.Client
         {
             ClearUnitTrees();
 
-            /* Friendly Assets */
+            /* our side Assets */
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
                 if (friendlyAssets.Station != null)
@@ -214,7 +221,7 @@ namespace Supremacy.Client
                 }
             }
 
-            /* Hostile Assets */
+            /* others Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
                 if (hostileAssets.Station != null)

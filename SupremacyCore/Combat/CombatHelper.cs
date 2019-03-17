@@ -165,22 +165,23 @@ namespace Supremacy.Combat
                 return false;
             }
 
-            //var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
+            var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             //if (diplomacyData == null)
             //{
             //    return false;
             //}
 
-            //switch (diplomacyData.Status)
-            //{
-            //    case ForeignPowerStatus.Affiliated:
-            //    case ForeignPowerStatus.Allied:
-            //    case ForeignPowerStatus.Friendly:
-            //    case ForeignPowerStatus.OwnerIsMember:
-            //    case ForeignPowerStatus.CounterpartyIsMember:
-            //    case ForeignPowerStatus.Peace:
-            //        return false;
-            //}
+            switch (diplomacyData.Status) // see WillFightAlongside below
+            {   
+                //case ForeignPowerStatus.Peace:
+                //case ForeignPowerStatus.Friendly:
+                case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+                case ForeignPowerStatus.Allied:
+                case ForeignPowerStatus.OwnerIsMember:
+                case ForeignPowerStatus.CounterpartyIsMember:
+                
+                    return false;
+            }
 
             return true;
         }
