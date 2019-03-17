@@ -165,22 +165,22 @@ namespace Supremacy.Combat
                 return false;
             }
 
-            var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
-            if (diplomacyData == null)
-            {
-                return false;
-            }
+            //var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
+            //if (diplomacyData == null)
+            //{
+            //    return false;
+            //}
 
-            switch (diplomacyData.Status)
-            {
-                case ForeignPowerStatus.Affiliated:
-                case ForeignPowerStatus.Allied:
-                case ForeignPowerStatus.Friendly:
-                case ForeignPowerStatus.OwnerIsMember:
-                case ForeignPowerStatus.CounterpartyIsMember:
-                case ForeignPowerStatus.Peace:
-                    return false;
-            }
+            //switch (diplomacyData.Status)
+            //{
+            //    case ForeignPowerStatus.Affiliated:
+            //    case ForeignPowerStatus.Allied:
+            //    case ForeignPowerStatus.Friendly:
+            //    case ForeignPowerStatus.OwnerIsMember:
+            //    case ForeignPowerStatus.CounterpartyIsMember:
+            //    case ForeignPowerStatus.Peace:
+            //        return false;
+            //}
 
             return true;
         }

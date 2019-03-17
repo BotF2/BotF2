@@ -25,12 +25,12 @@ namespace Supremacy.Combat
        
         private List<Civilization> _civilization;
         private bool _battleInOwnTerritory;
-        private Civilization _targetOfACivilzation;
-        private int _totalFirepower;
-        private double _favorTheBoldMalus;
+        private Civilization _targetOftheCivilzation; // players selected civ to attack
+        private int _totalFirepower; // looks like _empireStrenths dictionary below
+        private double _favorTheBoldMalus; 
         private int _fleetAsCommandshipBonus;
         private bool _has20PlusPercentFastAttack;
-        private Dictionary<Civilization, CombatOrder> _combatOrderByCiv;
+        private Dictionary<Civilization, CombatOrders> _combatOrderByCiv; // looks like _orders below
 
         public readonly object SyncLock;
         protected const double BaseChanceToRetreat = 0.50;
@@ -48,8 +48,8 @@ namespace Supremacy.Combat
         protected readonly List<CombatAssets> _assets;
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
-        private readonly Dictionary<int, CombatOrders> _orders;
-        protected Dictionary<string, int> _empireStrengths;
+        private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
+        protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
 
 
 
@@ -67,8 +67,8 @@ namespace Supremacy.Combat
 
         public Civilization TargetOfACivilization
         {
-            get { return _targetOfACivilzation; }
-            set { _targetOfACivilzation = value; }
+            get { return _targetOftheCivilzation; }
+            set { _targetOftheCivilzation = value; }
         }
 
         public int TotalFirepower
@@ -96,7 +96,7 @@ namespace Supremacy.Combat
             set { _has20PlusPercentFastAttack = value; }
         }
 
-        public Dictionary<Civilization, CombatOrder> CombatOrderByCiv
+        public Dictionary<Civilization, CombatOrders> CombatOrderByCiv
         {
             get { return _combatOrderByCiv; }
             set { _combatOrderByCiv = value; }
@@ -207,39 +207,33 @@ namespace Supremacy.Combat
             }
         }
 
-        //protected CombatEngine(List<CombatAssets> assets,
-        //    Dictionary<Civilization, CombatOrder> _combatOrderByCiv, List<Civilization> _civilization,
-        //    bool _battleInOwnTerritory,
-        //    Civilization _targetOfACivilzation,
-        //    int _totalFirepower,
-        //    double _favorTheBoldMalus,
-        //    int _fleetAsCommandshipBonus,
-        //    bool _has20PlusPercentFastAttack)
+        //protected CombatEngine(
+        //      List<CombatAssets> assets,
+        //      SendCombatUpdateCallback updateCallback,
+        //      NotifyCombatEndedCallback combatEndedCallback)
 
         //{
-        //    if (assets == null)
-        //    {
-        //        throw new ArgumentNullException("assets");
-        //    }
-
-        //    if (_combatOrderByCiv == null)
-        //    {
-        //        throw new ArgumentNullException("combatOrderByCiv");
-        //    }
-
-        //    if (_civilization == null)
-        //    {
-        //        throw new ArgumentNullException("civilization");
-        //    }
+//            if (assets == null)
+//            {
+//                throw new ArgumentNullException("assets");
+//            }
+//            if (updateCallback == null)
+//            {
+//                throw new ArgumentNullException("updateCallback");
+//            }
+//            if (combatEndedCallback == null)
+//            {
+//                throw new ArgumentNullException("combatEndedCallback");
+//            }
 
         //    _running = false;
         //    _allSidesStandDown = false;
         //    _combatId = GameContext.Current.GenerateID();
         //    _assets = assets;
         //    // _roundNumber = 1;
-        //    //_updateCallback = updateCallback;
-        //    //_combatEndedCallback = combatEndedCallback;
-        //    //_orders = new Dictionary<int, CombatOrders>();
+        //    _updateCallback = updateCallback;
+        //    _combatEndedCallback = combatEndedCallback;
+        //    _orders = new Dictionary<int, CombatOrders>();
 
         //    SyncLock = _orders;
 
@@ -270,7 +264,7 @@ namespace Supremacy.Combat
 
         public void SubmitOrders(CombatOrders orders)
         {
-            lock (SyncLock)
+            lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
             {
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
