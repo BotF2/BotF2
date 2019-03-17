@@ -444,7 +444,7 @@ namespace Supremacy.Combat
 
                                 var weapons = _combatShips[i].Item2.Where(w => w.CanFire);
                                 int amountOfWeapons = weapons.Count();
-                                var partlyFiring = 0;
+                                //var partlyFiring = 0;
 
 
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
