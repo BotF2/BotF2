@@ -150,11 +150,11 @@ namespace Supremacy.Client
             //Can only hail on the first round
             HailButton.IsEnabled = (update.RoundNumber == 1);
 
-            ButtonsPanel0.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
-            ButtonsPanel1.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+            UpperButtonsPanel.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+            LowerButtonsPanel.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             CloseButton.Visibility = update.IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
-            ButtonsPanel0.IsEnabled = true;
-            ButtonsPanel1.IsEnabled = true;
+            UpperButtonsPanel.IsEnabled = true;
+            LowerButtonsPanel.IsEnabled = true;
 
             if (!IsVisible)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
@@ -288,8 +288,8 @@ namespace Supremacy.Client
 
             GameLog.Client.General.DebugFormat("{0} button clicked by player", order);
 
-            ButtonsPanel0.IsEnabled = false;
-            ButtonsPanel1.IsEnabled = false;
+            UpperButtonsPanel.IsEnabled = false;
+            LowerButtonsPanel.IsEnabled = false;
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
         }
 

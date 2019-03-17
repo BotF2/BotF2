@@ -215,7 +215,7 @@
         <Grid Width="960"
           Height="720">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="260" />
+                <ColumnDefinition Width="390" />
                 <!--Game Option column-->
                 <ColumnDefinition Width="28" />
                 <!--empty space column, previously 28 -->
@@ -257,7 +257,7 @@
                    Fill="{StaticResource LCARS_GrayGradient_Right_Left}"/>-->
 
                 <DockPanel DockPanel.Dock="Top"
-                   MaxWidth="260">
+                   MaxWidth="390">
                     <!--GameOptionsPanel-->
 
                     <!-- "MAKE YOUR CHOICES"-->
