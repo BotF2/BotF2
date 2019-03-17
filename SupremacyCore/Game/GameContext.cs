@@ -618,6 +618,8 @@ namespace Supremacy.Game
                     DominionModifier = EmpireModifier.Standard,
                     BorgModifier = EmpireModifier.Standard,
                     TerranEmpireModifier = EmpireModifier.Standard,
+
+                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.False,
                 },
                 false);
 
