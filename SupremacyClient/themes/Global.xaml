@@ -5283,7 +5283,7 @@
          TargetType="{x:Type ComboBox}"
          BasedOn="{StaticResource BaseStyle}">
     <Setter Property="FontFamily"
-            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
     <Setter Property="FontSize"
             Value="16pt" />
     <Setter Property="Foreground"

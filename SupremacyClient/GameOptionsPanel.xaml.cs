@@ -42,7 +42,7 @@ namespace Supremacy.Client
             lstMinorRaces.ItemsSource = EnumHelper.GetValues<MinorRaceFrequency>();
             lstGalaxyCanon.ItemsSource = EnumHelper.GetValues<GalaxyCanon>();
             lstTechLevel.ItemsSource = EnumHelper.GetValues<StartingTechLevel>();
-            //lstIntroPlayable.ItemsSource = EnumHelper.GetValues<IntroPlayable>();
+
             lstFederationPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstRomulanPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstKlingonPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
@@ -50,6 +50,8 @@ namespace Supremacy.Client
             lstDominionPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstBorgPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstTerranEmpirePlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
+
+            lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
 
             lstFederationModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
             lstRomulanModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();

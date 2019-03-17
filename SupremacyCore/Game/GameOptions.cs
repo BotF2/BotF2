@@ -143,6 +143,12 @@ namespace Supremacy.Game
         Bonus_Biggest = 5
     }
 
+    public enum EmpireModifierRecurringBalancing : byte
+    {
+        True = 0,
+        False
+    }
+
 
     //public string PlayerNameSP
     //{
@@ -187,6 +193,8 @@ namespace Supremacy.Game
             DominionModifier = EmpireModifier.Standard;
             BorgModifier = EmpireModifier.Standard;
             TerranEmpireModifier = EmpireModifier.Standard;
+
+            EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.False;
         }
         #endregion
 
@@ -359,6 +367,12 @@ namespace Supremacy.Game
         public EmpireModifier TerranEmpireModifier { get; set; }
 
         /// <summary>
+        /// Gets or sets a boolean whether EmpireModifiers are recurring balanced the longer the game runs
+        /// </summary>
+        /// <value> TerranEmpire Modifier yes or no.</value>
+        public EmpireModifierRecurringBalancing EmpireModifierRecurringBalancing { get; set; }
+
+        /// <summary>
         /// Gets or sets the turn timer (multiplayer games only).
         /// </summary>
         /// <value>The turn timer.</value>
@@ -412,6 +426,7 @@ namespace Supremacy.Game
             writer.Write((int)DominionModifier);
             writer.Write((int)BorgModifier);
             writer.Write((int)TerranEmpireModifier);
+            writer.Write((byte)EmpireModifierRecurringBalancing);
             writer.Write(AITakeover);
             writer.Write(TurnTimer.Ticks);
             writer.Write(CombatTimer.Ticks);
@@ -474,13 +489,14 @@ namespace Supremacy.Game
             BorgPlayable = (EmpirePlayable)reader.ReadByte();
             TerranEmpirePlayable = (EmpirePlayable)reader.ReadByte();
 
-            FederationModifier = (EmpireModifier)reader.ReadInt64();
-            RomulanModifier = (EmpireModifier)reader.ReadInt64();
-            KlingonModifier = (EmpireModifier)reader.ReadInt64();
-            CardassianModifier = (EmpireModifier)reader.ReadInt64();
-            DominionModifier = (EmpireModifier)reader.ReadInt64();
-            BorgModifier = (EmpireModifier)reader.ReadInt64();
-            TerranEmpireModifier = (EmpireModifier)reader.ReadInt64();
+            FederationModifier = (EmpireModifier)reader.ReadInt16();
+            RomulanModifier = (EmpireModifier)reader.ReadInt16();
+            KlingonModifier = (EmpireModifier)reader.ReadInt16();
+            CardassianModifier = (EmpireModifier)reader.ReadInt16();
+            DominionModifier = (EmpireModifier)reader.ReadInt16();
+            BorgModifier = (EmpireModifier)reader.ReadInt16();
+            TerranEmpireModifier = (EmpireModifier)reader.ReadInt16();
+            EmpireModifierRecurringBalancing = (EmpireModifierRecurringBalancing)reader.ReadByte();
 
             AITakeover = reader.ReadBoolean();
             TurnTimer = TimeSpan.FromTicks(reader.ReadInt64());
