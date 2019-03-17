@@ -419,7 +419,7 @@ namespace Supremacy.Game
             writer.Write((byte)DominionPlayable);
             writer.Write((byte)BorgPlayable);
             writer.Write((byte)TerranEmpirePlayable);
-            writer.Write((int)FederationModifier);
+            writer.Write((int)FederationModifier);   //it is writing a int32 !!!
             writer.Write((int)RomulanModifier);
             writer.Write((int)KlingonModifier);
             writer.Write((int)CardassianModifier);
@@ -489,13 +489,13 @@ namespace Supremacy.Game
             BorgPlayable = (EmpirePlayable)reader.ReadByte();
             TerranEmpirePlayable = (EmpirePlayable)reader.ReadByte();
 
-            FederationModifier = (EmpireModifier)reader.ReadInt16();
-            RomulanModifier = (EmpireModifier)reader.ReadInt16();
-            KlingonModifier = (EmpireModifier)reader.ReadInt16();
-            CardassianModifier = (EmpireModifier)reader.ReadInt16();
-            DominionModifier = (EmpireModifier)reader.ReadInt16();
-            BorgModifier = (EmpireModifier)reader.ReadInt16();
-            TerranEmpireModifier = (EmpireModifier)reader.ReadInt16();
+            FederationModifier = (EmpireModifier)reader.ReadInt32();
+            RomulanModifier = (EmpireModifier)reader.ReadInt32();
+            KlingonModifier = (EmpireModifier)reader.ReadInt32();
+            CardassianModifier = (EmpireModifier)reader.ReadInt32();
+            DominionModifier = (EmpireModifier)reader.ReadInt32();
+            BorgModifier = (EmpireModifier)reader.ReadInt32();
+            TerranEmpireModifier = (EmpireModifier)reader.ReadInt32();
             EmpireModifierRecurringBalancing = (EmpireModifierRecurringBalancing)reader.ReadByte();
 
             AITakeover = reader.ReadBoolean();
