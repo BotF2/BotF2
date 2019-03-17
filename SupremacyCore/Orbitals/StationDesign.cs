@@ -189,7 +189,7 @@ namespace Supremacy.Orbitals
             if (sectorOwner != null &&
                 sectorOwner != owner)
             {
-                GameLog.Core.General.WarnFormat(
+                GameLog.Core.General.DebugFormat(
                     "{0} cannot spawn {1} at location {2} because that sector is owned by {3}.",
                     owner.Key,
                     Key ?? UnknownDesignKey,
