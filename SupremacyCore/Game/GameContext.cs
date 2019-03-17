@@ -610,25 +610,14 @@ namespace Supremacy.Game
                     BorgPlayable = EmpirePlayable.No,
                     TerranEmpirePlayable = EmpirePlayable.No,
 
-                    //IntroModifier = EmpireModifier.Balanced,
 
-                    //FederationModifier = EmpireModifier.Balanced,
-                    //RomulanModifier = EmpireModifier.Balanced,
-                    //KlingonModifier = EmpireModifier.Balanced,
-                    //CardassianModifier = EmpireModifier.Balanced,
-                    //DominionModifier = EmpireModifier.Balanced,
-                    //BorgModifier = EmpireModifier.Balanced,
-                    //TerranEmpireModifier = EmpireModifier.Balanced,
-
-
-
-                    FederationModifier = EmpireModifier.Default,
-                    RomulanModifier = EmpireModifier.Default,
-                    KlingonModifier = EmpireModifier.Default,
-                    CardassianModifier = EmpireModifier.Default,
-                    DominionModifier = EmpireModifier.Default,
-                    BorgModifier = EmpireModifier.Default,
-                    TerranEmpireModifier = EmpireModifier.Default,
+                    FederationModifier = EmpireModifier.Standard,
+                    RomulanModifier = EmpireModifier.Standard,
+                    KlingonModifier = EmpireModifier.Standard,
+                    CardassianModifier = EmpireModifier.Standard,
+                    DominionModifier = EmpireModifier.Standard,
+                    BorgModifier = EmpireModifier.Standard,
+                    TerranEmpireModifier = EmpireModifier.Standard,
                 },
                 false);
 

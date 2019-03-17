@@ -128,50 +128,20 @@ namespace Supremacy.Game
     /// </summary>
     /// 
 
-    public enum EmpireModifier : byte
+    public enum EmpireModifier : int
     {
-        //    Min = 0,
-        //    Big_Malus = -3,
-        //    Medium_Malus = -2,
-        //    Small_Malus = -1,
-        //    Default = 0,
-        //    //Balanced,  // 4
-        //    Small_Bonus = +1,
-        //    Medium_Bonus = +2 ,
-        //    Big_Bonus = + 3,
-        //    Max = +4      
-        //}
-
-
-        Big_Malus = 0,    // Update how you want 2019-03-19
-        Middle_Malus,
-        Small_Malus,
-        Default,  // 3
-        Small_Bonus,
-        Medium_Bonus,
-        Big_Bonus
+        Handicape_Biggest = -5,
+        Handicape_Big = -4,
+        Handicape_Medium = -3,
+        Handicape_Small = -2,
+        Handicape_Smallest = -1,
+        Standard = 0,
+        Bonus_Smallest = 1,
+        Bonus_Small = 2,
+        Bonus_Medium = 3,
+        Bonus_Big = 4,
+        Bonus_Biggest = 5
     }
-
-
-    //-6,
-    //-5,
-    //-4,
-    //-3,
-    //-2,
-    //-1,
-    //0,
-    //1,
-    //2,
-    //3,
-    //4,
-    //5,
-    //6,
-    //7,
-    //8,
-    //9
-
-    //}
-
 
 
     //public string PlayerNameSP
@@ -210,13 +180,13 @@ namespace Supremacy.Game
             BorgPlayable = EmpirePlayable.No;
             TerranEmpirePlayable = EmpirePlayable.No;
 
-            FederationModifier = EmpireModifier.Default;
-            RomulanModifier = EmpireModifier.Default;
-            KlingonModifier = EmpireModifier.Default;
-            CardassianModifier = EmpireModifier.Default;
-            DominionModifier = EmpireModifier.Default;
-            BorgModifier = EmpireModifier.Default;
-            TerranEmpireModifier = EmpireModifier.Default;
+            FederationModifier = EmpireModifier.Standard;
+            RomulanModifier = EmpireModifier.Standard;
+            KlingonModifier = EmpireModifier.Standard;
+            CardassianModifier = EmpireModifier.Standard;
+            DominionModifier = EmpireModifier.Standard;
+            BorgModifier = EmpireModifier.Standard;
+            TerranEmpireModifier = EmpireModifier.Standard;
         }
         #endregion
 
@@ -435,13 +405,13 @@ namespace Supremacy.Game
             writer.Write((byte)DominionPlayable);
             writer.Write((byte)BorgPlayable);
             writer.Write((byte)TerranEmpirePlayable);
-            writer.Write((byte)FederationModifier);
-            writer.Write((byte)RomulanModifier);
-            writer.Write((byte)KlingonModifier);
-            writer.Write((byte)CardassianModifier);
-            writer.Write((byte)DominionModifier);
-            writer.Write((byte)BorgModifier);
-            writer.Write((byte)TerranEmpireModifier);
+            writer.Write((int)FederationModifier);
+            writer.Write((int)RomulanModifier);
+            writer.Write((int)KlingonModifier);
+            writer.Write((int)CardassianModifier);
+            writer.Write((int)DominionModifier);
+            writer.Write((int)BorgModifier);
+            writer.Write((int)TerranEmpireModifier);
             writer.Write(AITakeover);
             writer.Write(TurnTimer.Ticks);
             writer.Write(CombatTimer.Ticks);
@@ -504,13 +474,13 @@ namespace Supremacy.Game
             BorgPlayable = (EmpirePlayable)reader.ReadByte();
             TerranEmpirePlayable = (EmpirePlayable)reader.ReadByte();
 
-            FederationModifier = (EmpireModifier)reader.ReadByte();
-            RomulanModifier = (EmpireModifier)reader.ReadByte();
-            KlingonModifier = (EmpireModifier)reader.ReadByte();
-            CardassianModifier = (EmpireModifier)reader.ReadByte();
-            DominionModifier = (EmpireModifier)reader.ReadByte();
-            BorgModifier = (EmpireModifier)reader.ReadByte();
-            TerranEmpireModifier = (EmpireModifier)reader.ReadByte();
+            FederationModifier = (EmpireModifier)reader.ReadInt64();
+            RomulanModifier = (EmpireModifier)reader.ReadInt64();
+            KlingonModifier = (EmpireModifier)reader.ReadInt64();
+            CardassianModifier = (EmpireModifier)reader.ReadInt64();
+            DominionModifier = (EmpireModifier)reader.ReadInt64();
+            BorgModifier = (EmpireModifier)reader.ReadInt64();
+            TerranEmpireModifier = (EmpireModifier)reader.ReadInt64();
 
             AITakeover = reader.ReadBoolean();
             TurnTimer = TimeSpan.FromTicks(reader.ReadInt64());
