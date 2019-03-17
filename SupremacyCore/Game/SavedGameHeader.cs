@@ -37,15 +37,21 @@ namespace Supremacy.Game
                     
                     return fallback;
                 }
-                catch
+                catch (Exception e)
                 {
+                    GameLog.Core.SaveLoad.DebugFormat("###### Problem with SavedGame" + Environment.NewLine + "{0}", e);
                     return fallback;
                 }
             });
 
         public string Title
         {
-            get { return IsAutoSave ? AutoSaveGameTitle.Value : FileName; }
+            get
+            {
+                if (FileName != null)
+                    GameLog.Core.SaveLoad.DebugFormat("FileName = {0}", FileName);
+                return IsAutoSave ? AutoSaveGameTitle.Value : FileName;
+            }
         }
 
         public bool IsAutoSave { get; set; }
@@ -182,7 +188,7 @@ namespace Supremacy.Game
 
             for (int i = 0; i < empireCount; i++)
             {
-                //GameLog.Print("Writing Empires: {0}, CivID={1}, empires in total={2}, SlotClaim={3}, Slotstatus={4}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
+                GameLog.Core.SaveLoad.DebugFormat("Writing Empires: {0}, CivID={1}, empires in total={2}, SlotClaim={3}, Slotstatus={4}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
                 writer.Write(EmpireIDs[i]);
                 writer.Write(EmpireNames[i]);
                 writer.Write((byte)SlotClaims[i]);
@@ -203,7 +209,7 @@ namespace Supremacy.Game
             var reader = new BinaryReader(input);
             var options = new GameOptions();
 
-            //GameLog.Print("Beginning reading a saved game...");
+            GameLog.Core.SaveLoad.DebugFormat("Beginning reading a saved game...");
 
             options.Read(reader);
 
@@ -218,11 +224,11 @@ namespace Supremacy.Game
                             };
 
             //doesn't work here
-            //GameLog.Print("Reading SavedGameHeader: Timestamp={0}, LocalPlayerName={1}, LocalPlayerEmpireID={2}, TurnNumber={3}, IsMultiplayerGame={4}",
+            //GameLog.Core.SaveLoad.DebugFormat("Reading SavedGameHeader: Timestamp={0}, LocalPlayerName={1}, LocalPlayerEmpireID={2}, TurnNumber={3}, IsMultiplayerGame={4}",
             //                            Timestamp, LocalPlayerName, LocalPlayerEmpireID, TurnNumber, IsMultiplayerGame, Options.ToString());
 
             var empireCount = reader.ReadByte();
-            //works     GameLog.Print("Read empireCount={0}", empireCount);
+            //works     GameLog.GameLog.Core.SaveLoad.DebugFormat("Read empireCount={0}", empireCount);
 
             header.EmpireIDs = new int[empireCount];
             header.EmpireNames = new string[empireCount];
@@ -237,8 +243,8 @@ namespace Supremacy.Game
                 header.SlotClaims[i] = (SlotClaim)reader.ReadByte();
                 header.SlotStatus[i] = (SlotStatus)reader.ReadByte();
 
-                //GameLog.Print("Reading Empires: {0}, CivID={1}, empires in total={2}, SlotClaim={3}, Slotstatus={4}", 
-                //                        header.EmpireNames[i], header.EmpireIDs[i], empireCount, header.SlotClaims[i], header.SlotStatus[i]);
+                GameLog.Core.SaveLoad.DebugFormat("Reading Empires: {0}, CivID={1}, empires in total={2}, SlotClaim={3}, Slotstatus={4}",
+                                        header.EmpireNames[i], header.EmpireIDs[i], empireCount, header.SlotClaims[i], header.SlotStatus[i]);
             }
 
             return header;

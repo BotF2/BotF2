@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         private readonly string _name;
         private int _cloakStrength = 0;
         private int _camouflagedStrength = 0;
-        private int _scanStrength;
+        private int _scanStrength = 0;
 
         protected CombatUnit(System.Collections.Generic.IEnumerable<Ship> ship) { }
 
