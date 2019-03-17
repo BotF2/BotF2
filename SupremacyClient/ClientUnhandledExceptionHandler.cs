@@ -9,6 +9,7 @@
 
 using Supremacy.Client.Services;
 using Supremacy.Types;
+using Supremacy.Utility;
 using System;
 using System.Collections.Specialized;
 using System.Net;
@@ -91,6 +92,7 @@ namespace Supremacy.Client
                 }
                 catch (Exception e)
                 {
+                    GameLog.Core.General.ErrorFormat(" #### ERROR" +Environment.NewLine + "{0}", e);
                     //Don't bother doing anything
                 }
 

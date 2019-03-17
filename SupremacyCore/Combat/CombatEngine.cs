@@ -613,7 +613,7 @@ namespace Supremacy.Combat
             }
             catch (Exception e)
             {
-                GameLog.Core.Combat.DebugFormat("##### Problem at PerformRetreat");
+                GameLog.Core.Combat.DebugFormat("##### Problem at PerformRetreat" + Environment.NewLine + "{0}", e);
                     //((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString(), e);
             }
         }

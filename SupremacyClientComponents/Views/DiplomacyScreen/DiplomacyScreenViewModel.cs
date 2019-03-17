@@ -167,6 +167,8 @@ namespace Supremacy.Client.Views
             foreignPower.OutgoingMessage = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
             foreignPower.OutgoingMessage.Edit();
 
+            GameLog.Core.Diplomacy.DebugFormat("OutgoingMessage from {0}", foreignPower.Owner);
+
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
             InvalidateCommands();
