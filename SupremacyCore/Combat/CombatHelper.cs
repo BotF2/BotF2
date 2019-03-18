@@ -229,7 +229,9 @@ namespace Supremacy.Combat
             bool _generateBlanketOrdersTracing = true;
 
             var owner = assets.Owner;
-            var orders = new CombatOrders(owner, assets.CombatID);
+            var primaryTargetCiv = assets.Owner;
+            var secondaryTargetCiv = assets.Owner;
+            var orders = new CombatOrders(owner, primaryTargetCiv, secondaryTargetCiv, assets.CombatID);
 
             foreach (var ship in assets.CombatShips)  // CombatShips
             {

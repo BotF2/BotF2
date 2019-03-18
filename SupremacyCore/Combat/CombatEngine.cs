@@ -25,7 +25,7 @@ namespace Supremacy.Combat
        
         private List<Civilization> _civilization;
         private bool _battleInOwnTerritory;
-        private Civilization _targetOftheCivilzation; // players selected civ to attack
+        private Civilization _targetOftheCivilzation; // player-selected civ to attack
         private int _totalFirepower; // looks like _empireStrenths dictionary below
         private double _favorTheBoldMalus; 
         private int _fleetAsCommandshipBonus;

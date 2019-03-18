@@ -39,8 +39,8 @@ namespace Supremacy.Client
     {
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
-        private Civilization _primeTargetOftheCivilzation; // primary players selected civ to attack
-        private Civilization _secondTargetOftheCivilzation; // secondary players selected civ to attack
+        private Civilization _primeTargetOftheCivilzation; // primary player-selected civ to attack
+        private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
         private Dictionary<string, CombatUnit> _othersCombatUnits;
         protected Dictionary<string, int> _empireStrengths;
