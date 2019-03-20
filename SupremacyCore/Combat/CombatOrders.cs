@@ -83,7 +83,10 @@ namespace Supremacy.Combat
             get { return GameContext.Current.Civilizations[_secondaryTargetCivId]; }
         }
 
-        public CombatOrders(Civilization owner, Civilization primaryTargetCiv, Civilization secondaryTargetCiv, int combatId, AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack, InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
+        public CombatOrders(Civilization owner, Civilization primaryTargetCiv,
+            Civilization secondaryTargetCiv, int combatId,
+            AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
+            InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");

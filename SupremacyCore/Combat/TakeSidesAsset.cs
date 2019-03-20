@@ -13,7 +13,7 @@ namespace Supremacy.Combat
 {
     public class TakeSidesAssets
     {
-        private List<Fleet> _oppositionFleets;
+        private List<Fleet> _oppositionFleets; // opposition is now others
 
         public List<Fleet> OppositionFleets
         {

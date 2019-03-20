@@ -165,17 +165,19 @@
 
   <Grid 
         Height="650"
-        Width="800">
+        Width="1600">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="0.5*"/>
-      <ColumnDefinition Width="0.5*"/>
+      <ColumnDefinition Width="auto"/>
+      <ColumnDefinition Width="auto"/>
+   
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
+
     </Grid.RowDefinitions>
 
     <StackPanel Grid.Column="0"
@@ -196,33 +198,55 @@
                  HorizontalAlignment="Center"/>
     </StackPanel>
 
-    <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
-              Grid.Column="0"
-              Grid.Row="1"
-              Margin="6">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+        <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
+                  Grid.Column="0"
+                  Grid.Row="1"
+                  Width="400"
+                  Margin="2">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto"
                     CanContentScroll="False">
-        <TreeView x:Name="FriendlyAssetsTree"
+                <TreeView x:Name="FriendlyAssetsTree"
                   BorderThickness="0"
                   FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                   FontSize="10pt"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TreeViewItem Name="FriendlyStationItem"/>
-            <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyNonCombatantItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyDestroyedItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
-        </TreeView>
-      </ScrollViewer>
-    </GroupBox>
+                    <StackPanel 
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                        <Border x:Name="ImageBorder1"
+                            DockPanel.Dock="Left"
+                            VerticalAlignment="Top"
+                            Width="60"
+                            Height="55"
+                            BorderBrush="White"
+                            BorderThickness="2"
+                            CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
+                                    Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
+                    </StackPanel>
+                    <TreeViewItem Name="FriendlyStationItem"/>
+                    <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
+                    <TreeViewItem Name="FriendlyNonCombatantItems" IsExpanded="True"/>
+                    <TreeViewItem Name="FriendlyDestroyedItems" IsExpanded="True"/>
+                    <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
+                    <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
+                </TreeView>
+          </ScrollViewer>
+        </GroupBox>
 
     <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}"
               Grid.Column="1"
               Grid.Row="1"
-              Margin="6">
+              Width="400"
+              Margin="2">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto"
                     CanContentScroll="False">
@@ -232,6 +256,26 @@
                   FontSize="10pt"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <StackPanel 
+                Grid.Column="0"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <Border x:Name="ImageBorder2"
+                    DockPanel.Dock="Left"
+                    VerticalAlignment="Top"
+                    Width="60"
+                    Height="55"
+                    BorderBrush="White"
+                    BorderThickness="2"
+                    CornerRadius="8">
+                    <Border.Background>
+                          <ImageBrush ImageSource="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
+                            Stretch="UniformToFill"/>
+                    </Border.Background>
+                </Border>
+            </StackPanel>
             <TreeViewItem Name="HostileStationItem"/>
             <TreeViewItem Name="HostileCombatantItems" IsExpanded="True"/>
             <TreeViewItem Name="HostileNonCombatantItems" IsExpanded="True"/>

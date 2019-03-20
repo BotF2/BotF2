@@ -37,20 +37,35 @@ namespace Supremacy.Client
     
     public partial class CombatWindow
     {
+        private int myVar;
+
+        public int MyProperty
+        {
+            get { return myVar; }
+            set { myVar = value; }
+        }
+
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
+        private Civilization _firstHostile;
         private Civilization _primeTargetOftheCivilzation; // primary player-selected civ to attack
         private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
         private Dictionary<string, CombatUnit> _othersCombatUnits;
         protected Dictionary<string, int> _empireStrengths;
         private IAppContext _appContext;
-
+         
+        public Civilization FirstHostile
+        {
+            get { return _firstHostile; }
+            set { _firstHostile = value; }
+        }
         public CombatWindow()
         {
             InitializeComponent();
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
+            //DataTemplate civTemplate = TryFindResource("InsigniaTreeItemTemplate") as DataTemplate;
             DataTemplate itemTemplate = TryFindResource("AssetTreeItemTemplate") as DataTemplate;
 
             FriendlyStationItem.HeaderTemplate = itemTemplate;
@@ -143,6 +158,10 @@ namespace Supremacy.Client
 
             PopulateUnitTrees();
 
+
+
+            //var path = civEmblem.Source.ToString();
+
             //We need combat assets to be able to engage
             EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null));
             //We need combat assets to be able to rush the opposition
@@ -166,9 +185,13 @@ namespace Supremacy.Client
             if (!IsVisible)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
         }
-
+        //private void ClearEmblem()
+        //{
+        //    //FriendlyEmblemItem.Header = null;
+        //}
         private void ClearUnitTrees()
         {
+            //FriendlyEmblemItem.Header = null;
             FriendlyStationItem.Header = null;
             FriendlyCombatantItems.Items.Clear();
             FriendlyNonCombatantItems.Items.Clear();
@@ -186,10 +209,12 @@ namespace Supremacy.Client
         private void PopulateUnitTrees()
         {
             ClearUnitTrees();
+            
 
-            /* our side Assets */
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
+                FirstHostile = friendlyAssets.Owner;
+
                 if (friendlyAssets.Station != null)
                 {
                     FriendlyStationItem.Header = friendlyAssets.Station;
@@ -244,7 +269,7 @@ namespace Supremacy.Client
                 {
                     HostileDestroyedItems.Items.Add(shipStats);
                 }
-                foreach(CombatUnit shipStats in hostileAssets.AssimilatedShips)
+                foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
                 {
                     HostileAssimilatedItems.Items.Add(shipStats);
                 }

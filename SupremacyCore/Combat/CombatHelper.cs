@@ -82,13 +82,7 @@ namespace Supremacy.Combat
                     //    ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
                     if ((ship.IsCamouflaged) && (unit.CamouflagedStrength >= maxOppostionScanStrength))
                     {
-                        // works    GameLog.Core.Combat.DebugFormat("ship at {3} is Camouflaged {4} = TRUE?, Cloaked {5} for ({2}) {0} {1} ",
-                        //    ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
-
-                        // seems to be no difference between ship and unit
-                        //GameLog.Core.Combat.DebugFormat("!unit! {0} {1} ({2}) at {3} is Camouflaged {4} = TRUE, Cloaked {5}",
-                        //    ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
-                        continue;
+                        continue; // skip over ships camaouflaged better than best scan strength
                     }
                     if (!assets.ContainsKey(ship.Owner))
                     {
@@ -175,7 +169,7 @@ namespace Supremacy.Combat
             {   
                 //case ForeignPowerStatus.Peace:
                 //case ForeignPowerStatus.Friendly:
-                case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+                //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
@@ -239,7 +233,8 @@ namespace Supremacy.Combat
                 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
+                        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order, primaryTargetCiv, secondaryTargetCiv);
                 }
             }
 
