@@ -24,6 +24,7 @@ namespace Supremacy.Combat
         private readonly int _ownerId;
         private int _hullStrength;
         private int _shieldStrength;
+        private int _firepower;
         private bool _isCloaked;
         private bool _isCamouflaged;
         private bool _isAssimilated;
@@ -53,6 +54,7 @@ namespace Supremacy.Combat
             _sourceId = source.ObjectID;
             _ownerId = source.OwnerID;
             _hullStrength = source.HullStrength.CurrentValue;
+            _firepower = 100; // ToDo
             _shieldStrength = source.ShieldStrength.CurrentValue;
             _name = source.Name;
         }
@@ -96,6 +98,17 @@ namespace Supremacy.Combat
         public int OwnerID
         {
             get { return _ownerId; }
+        }
+
+        public int FirePower
+        {
+            get
+            {
+                var _unit = Source.OrbitalDesign;
+                _firepower = (_unit.PrimaryWeapon.Damage * _unit.PrimaryWeapon.Count) + (_unit.SecondaryWeapon.Damage * _unit.SecondaryWeapon.Count);
+                GameLog.Core.CombatDetails.DebugFormat("{0} has FirePower = {1}", _unit.Key, _firepower);
+                return _firepower; 
+            }
         }
 
         public int HullStrength
