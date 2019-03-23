@@ -64,11 +64,11 @@ namespace Supremacy.Client
             set { _otherCivs = value; }
         }
          
-        public int FriendlyEmpireStrength
-        {
-            get { return _friendlyEmpireStrength; }
-            set { _friendlyEmpireStrength = value; }
-        }
+        //public int FriendlyEmpireStrength
+        //{
+        //    get { return _friendlyEmpireStrength; }
+        //    set { _friendlyEmpireStrength = value; }
+        //}
 
         public CombatWindow()
         {
