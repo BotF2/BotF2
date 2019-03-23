@@ -48,11 +48,8 @@ namespace Supremacy.Client
         protected Dictionary<string, int> _empireStrengths; // currently not used here but found in other combat files
         private IAppContext _appContext;
 
-        var Civis = new List<int>();
-        numbers.Add(2);
-        numbers.Add(3);
-        numbers.Add(5);
-        numbers.Add(7);
+
+
         public List<string> MyTestList
         {
             get { return _myTest; }
@@ -74,6 +71,11 @@ namespace Supremacy.Client
             Civilization civ1 = new Civilization();
             OtherCivs = _otherCivs;
 
+            var Civis = new List<string>();
+            Civis.Add("Cardassians");
+            Civis.Add("TerranEmpire");
+            Civis.Add("Klingons");
+            Civis.Add("Ronulans");
             //myVar = "Cardassia", 
 
             FriendlyStationItem.HeaderTemplate = itemTemplate;
