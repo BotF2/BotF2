@@ -37,36 +37,44 @@ namespace Supremacy.Client
     
     public partial class CombatWindow
     {
-        private int myVar;
-
-        public int MyProperty
-        {
-            get { return myVar; }
-            set { myVar = value; }
-        }
-
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
-        private Civilization _firstHostile;
+        private List<String> _otherCivs;
+        private List<string> _myTest;
         private Civilization _primeTargetOftheCivilzation; // primary player-selected civ to attack
         private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
         private Dictionary<string, CombatUnit> _othersCombatUnits;
-        protected Dictionary<string, int> _empireStrengths;
+        protected Dictionary<string, int> _empireStrengths; // currently not used here but found in other combat files
         private IAppContext _appContext;
-         
-        public Civilization FirstHostile
+
+        var Civis = new List<int>();
+        numbers.Add(2);
+        numbers.Add(3);
+        numbers.Add(5);
+        numbers.Add(7);
+        public List<string> MyTestList
         {
-            get { return _firstHostile; }
-            set { _firstHostile = value; }
+            get { return _myTest; }
+            set { _myTest = value; }
         }
+
+        public List<string> OtherCivs
+        {
+            get { return _otherCivs; }
+            set { _otherCivs = value; }
+        }
+
         public CombatWindow()
         {
             InitializeComponent();
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
-            //DataTemplate civTemplate = TryFindResource("InsigniaTreeItemTemplate") as DataTemplate;
             DataTemplate itemTemplate = TryFindResource("AssetTreeItemTemplate") as DataTemplate;
+            Civilization civ1 = new Civilization();
+            OtherCivs = _otherCivs;
+
+            //myVar = "Cardassia", 
 
             FriendlyStationItem.HeaderTemplate = itemTemplate;
             FriendlyCombatantItems.ItemTemplate = itemTemplate;
@@ -185,10 +193,7 @@ namespace Supremacy.Client
             if (!IsVisible)
                 Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
         }
-        //private void ClearEmblem()
-        //{
-        //    //FriendlyEmblemItem.Header = null;
-        //}
+
         private void ClearUnitTrees()
         {
             //FriendlyEmblemItem.Header = null;
@@ -213,8 +218,7 @@ namespace Supremacy.Client
 
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-                FirstHostile = friendlyAssets.Owner;
-
+               
                 if (friendlyAssets.Station != null)
                 {
                     FriendlyStationItem.Header = friendlyAssets.Station;
@@ -245,34 +249,43 @@ namespace Supremacy.Client
                     FriendlyEscapedItems.Items.Add(shipStats);
                 }
             }
-
+            
             /* others Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
+                var allcivs = new List<string>();    
                 if (hostileAssets.Station != null)
                 {
                     HostileStationItem.Header = hostileAssets.Station;
+                    allcivs.Add(hostileAssets.Station.Owner.Key);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.CombatShips)
                 {
                     HostileCombatantItems.Items.Add(shipStats);
+                    allcivs.Add(shipStats.Owner.Key);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.NonCombatShips)
                 {
                     HostileNonCombatantItems.Items.Add(shipStats);
+                    allcivs.Add(shipStats.Owner.Key);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.EscapedShips)
                 {
                     HostileEscapedItems.Items.Add(shipStats);
+                    allcivs.Add(shipStats.Owner.Key);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.DestroyedShips)
                 {
                     HostileDestroyedItems.Items.Add(shipStats);
+                    allcivs.Add(shipStats.Owner.Key);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
                 {
                     HostileAssimilatedItems.Items.Add(shipStats);
+                    allcivs.Add(shipStats.Owner.Key);
                 }
+                _otherCivs = allcivs.Distinct().ToList();
+
             }
 
             ShowHideUnitTrees();

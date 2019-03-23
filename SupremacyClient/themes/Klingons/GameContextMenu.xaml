@@ -81,8 +81,8 @@
                     <Border Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}">
-                        <Canvas Width="280"
-                    Height="245">
+                        <Canvas Width="629"
+                                Height="659">
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
@@ -90,8 +90,8 @@
                                 </Image.Source>
                             </Image>
                             <MenuItem x:Name="MenuItem_Main"
-                        Canvas.Left="16"
-                        Canvas.Top="23"
+                        Canvas.Left="0"
+                        Canvas.Top="256"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -117,8 +117,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Systems"
-                        Canvas.Left="100"
-                        Canvas.Top="23"
+                        Canvas.Left="192"
+                        Canvas.Top="4"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -144,8 +144,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Dip"
-                        Canvas.Left="184"
-                        Canvas.Top="23"
+                        Canvas.Left="382"
+                        Canvas.Top="185"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -171,8 +171,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Science"
-                        Canvas.Left="16"
-                        Canvas.Top="124"
+                        Canvas.Left="55"
+                        Canvas.Top="362"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -198,8 +198,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Intel"
-                        Canvas.Left="100"
-                        Canvas.Top="124"
+                        Canvas.Left="280"
+                        Canvas.Top="558"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.PersonnelScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -225,8 +225,8 @@
                                 </MenuItem.Template>
                             </MenuItem>
                             <MenuItem x:Name="MenuItem_Menu"
-                        Canvas.Left="184"
-                        Canvas.Top="124"
+                        Canvas.Left="293"
+                        Canvas.Top="361"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
