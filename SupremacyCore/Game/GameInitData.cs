@@ -149,15 +149,15 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - BorgPlayable;{0}", savedGameHeader.Options.BorgPlayable);
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - TerranEmpirePlayable;{0}", savedGameHeader.Options.TerranEmpirePlayable);
 
-            GameLog.Core.General.InfoFormat("Options: FederationModifier = {0}", GameContext.Current.Options.FederationModifier);
-            GameLog.Core.General.InfoFormat("Options: RomulanModifier = {0}", GameContext.Current.Options.RomulanModifier);
-            GameLog.Core.General.InfoFormat("Options: KlingonModifier = {0}", GameContext.Current.Options.KlingonModifier);
-            GameLog.Core.General.InfoFormat("Options: CardassianModifier = {0}", GameContext.Current.Options.CardassianModifier);
-            GameLog.Core.General.InfoFormat("Options: DominionModifier = {0}", GameContext.Current.Options.DominionModifier);
-            GameLog.Core.General.InfoFormat("Options: BorgModifier = {0}", GameContext.Current.Options.BorgModifier);
-            GameLog.Core.General.InfoFormat("Options: TerranEmpireModifier = {0}", GameContext.Current.Options.TerranEmpireModifier);
+            GameLog.Core.General.InfoFormat("Options: FederationModifier = {0}", savedGameHeader.Options.FederationModifier);
+            GameLog.Core.General.InfoFormat("Options: RomulanModifier = {0}", savedGameHeader.Options.RomulanModifier);
+            GameLog.Core.General.InfoFormat("Options: KlingonModifier = {0}", savedGameHeader.Options.KlingonModifier);
+            GameLog.Core.General.InfoFormat("Options: CardassianModifier = {0}", savedGameHeader.Options.CardassianModifier);
+            GameLog.Core.General.InfoFormat("Options: DominionModifier = {0}", savedGameHeader.Options.DominionModifier);
+            GameLog.Core.General.InfoFormat("Options: BorgModifier = {0}", savedGameHeader.Options.BorgModifier);
+            GameLog.Core.General.InfoFormat("Options: TerranEmpireModifier = {0}", savedGameHeader.Options.TerranEmpireModifier);
 
-            GameLog.Core.General.InfoFormat("Options: EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
+            GameLog.Core.General.InfoFormat("Options: EmpireModifierRecurringBalancing = {0}", savedGameHeader.Options.EmpireModifierRecurringBalancing);
 
 
 
