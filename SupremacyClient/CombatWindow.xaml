@@ -313,11 +313,13 @@
                  HorizontalAlignment="Center"/>
         </StackPanel>
         <!--s:StringResource COMBAT_FRIENDLY_UNITS +-->
-        <GroupBox Header="{Binding Path=FriendlyEmpireStrength}"
+        <GroupBox Header="{Binding Path=Owner}"
             Grid.Column="0"
             Grid.Row="1"
             Width="400"
+                  
             Margin="2">
+
             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Auto"
                         CanContentScroll="False">
@@ -331,7 +333,7 @@
                             Grid.Column="0"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-
+                    Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center">
                         <Border x:Name="ImageBorder1"
@@ -347,6 +349,19 @@
                                 Stretch="UniformToFill"/>
                             </Border.Background>
                         </Border>
+                        <!--<StackPanel Grid.Column="1"
+                        Orientation="Horizontal">-->
+                        <TextBlock 
+                            Foreground="White"
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    FontSize="16pt" Text="  FirePower: "/>
+                        <TextBlock Foreground="White" FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    FontSize="16pt" Text="{Binding Path=FriendlyEmpireStrength}"/>
+                        
+                        <TextBlock Foreground="White" FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    FontSize="16pt" Text="  X"/>
+
+                        <!--</StackPanel>-->
                     </StackPanel>
                     <TreeViewItem Name="FriendlyStationItem"/>
                     <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
@@ -382,7 +397,7 @@
                     <TreeViewItem Name="OtherCivilizationsItem" IsExpanded="True">
 
 
-                          <!--<StackPanel 
+                          <StackPanel 
                                 Orientation="Horizontal"
                                 Grid.Column="1"
                                 Grid.Row="1"
@@ -405,7 +420,7 @@
                                         <TreeViewItem Name="HostileEscapedItems" IsExpanded="True"/>
                                     </TreeView>
                                 </ScrollViewer>
-                          </StackPanel>-->
+                          </StackPanel>
                 
                     </TreeViewItem>
         </TreeView>

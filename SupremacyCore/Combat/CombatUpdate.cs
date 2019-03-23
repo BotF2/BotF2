@@ -23,12 +23,15 @@ namespace Supremacy.Combat
         private int _combatId;
         private int _roundNumber;
         private int _ownerId;
+        private int _friendlyAssetsFirePower;  // not needed if _empireStrengths works
+        protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
         private bool _standoff;
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
 
-        public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
+        //ombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets, int friendlyAssetsFirePower)
+        public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets, Dictionary<string, int> _empireStrengths)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner"); 
@@ -42,6 +45,8 @@ namespace Supremacy.Combat
             _ownerId = owner.CivID;
             _location = location;
             _friendlyAssets = friendlyAssets;
+            _empireStrengths = EmpireStrengths;
+            //_friendlyAssetsFirePower = friendlyAssetsFirePower;
             _hostileAssets = hostileAssets;
         }
 
@@ -73,6 +78,16 @@ namespace Supremacy.Combat
         public Civilization Owner
         {
             get { return GameContext.Current.Civilizations[_ownerId]; }
+        }
+
+        public int FriendlyAssetsFirePower
+        {
+            get { return _friendlyAssetsFirePower; }
+        }
+
+        public Dictionary<string, int> EmpireStrengths
+        {
+            get { return _empireStrengths; }
         }
 
         public IList<CombatAssets> FriendlyAssets

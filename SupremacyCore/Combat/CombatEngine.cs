@@ -29,6 +29,7 @@ namespace Supremacy.Combat
         private int _totalFirepower; // looks like _empireStrenths dictionary below
         private double _favorTheBoldMalus; 
         private int _fleetAsCommandshipBonus;
+        private int friendlyAssetsFirePower;
         private bool _has20PlusPercentFastAttack;
         private Dictionary<Civilization, CombatOrders> _combatOrderByCiv; // looks like _orders below
 
@@ -102,6 +103,11 @@ namespace Supremacy.Combat
             set { _combatOrderByCiv = value; }
         }
 
+        public Dictionary<string, int> EmpireStrengths
+        {
+            get { return _empireStrengths; }
+            set { _empireStrengths = value; }
+        }
 
         protected int CombatID
         {
@@ -403,6 +409,12 @@ namespace Supremacy.Combat
                     break;
                 }
 
+                //EmpireStrengths = _empireStrengths; //.All(e => e.Value);
+
+                friendlyAssetsFirePower = 1000;  // for minor's 
+                //if (playerAsset.Owner.IsEmpire)
+                //    friendlyAssetsFirePower = _empireStrengths[playerAsset.Owner.Key];
+
                 var update = new CombatUpdate(
                     _combatId,
                     _roundNumber,
@@ -410,7 +422,9 @@ namespace Supremacy.Combat
                     owner,
                     playerAsset.Location,
                     friendlyAssets,
-                    hostileAssets);
+                    hostileAssets,
+                    //friendlyAssetsFirePower,
+                    _empireStrengths);
 
                 AsyncHelper.Invoke(_updateCallback, this, update);
             }

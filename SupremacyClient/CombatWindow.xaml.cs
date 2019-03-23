@@ -45,6 +45,8 @@ namespace Supremacy.Client
         private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
         private Dictionary<string, CombatUnit> _othersCombatUnits;
+        private int FriendlyEmpireStrength = 0;
+        private string _headerFriendlyCombatWindow;
         protected int _friendlyEmpireStrength; 
         private IAppContext _appContext;
 
@@ -81,18 +83,23 @@ namespace Supremacy.Client
             FriendlyDestroyedItems.ItemTemplate = itemTemplate;
             FriendlyAssimilatedItems.ItemTemplate = itemTemplate;
             FriendlyEscapedItems.ItemTemplate = itemTemplate;
-            //HostileStationItem.HeaderTemplate = itemTemplate;
-            //HostileCombatantItems.ItemTemplate = itemTemplate;
-            //HostileNonCombatantItems.ItemTemplate = itemTemplate;
-            //HostileDestroyedItems.ItemTemplate = itemTemplate;
-            //HostileAssimilatedItems.ItemTemplate = itemTemplate;
-            //HostileEscapedItems.ItemTemplate = itemTemplate;
+            HostileStationItem.HeaderTemplate = itemTemplate;
+            HostileCombatantItems.ItemTemplate = itemTemplate;
+            HostileNonCombatantItems.ItemTemplate = itemTemplate;
+            HostileDestroyedItems.ItemTemplate = itemTemplate;
+            HostileAssimilatedItems.ItemTemplate = itemTemplate;
+            HostileEscapedItems.ItemTemplate = itemTemplate;
 
             DataTemplate civItemTemplate = TryFindResource("CivTreeItemTemplate") as DataTemplate;
 
             OtherCivilizationsItem.ItemTemplate = civItemTemplate;
 
             OtherCivs = _otherCivs;
+
+            FriendlyEmpireStrength = 100;
+            _headerFriendlyCombatWindow = FriendlyEmpireStrength.ToString();
+
+
 
             var Civis = new List<string>();
             Civis.Add("Trump");
@@ -116,6 +123,7 @@ namespace Supremacy.Client
                 {
                     _playerAssets = assets;
                     break;
+
                 }
             }
             if (_playerAssets == null)
@@ -215,12 +223,12 @@ namespace Supremacy.Client
             FriendlyDestroyedItems.Items.Clear();
             FriendlyAssimilatedItems.Items.Clear();
             FriendlyEscapedItems.Items.Clear();
-            //HostileStationItem.Header = null;
-            //HostileCombatantItems.Items.Clear();
-            //HostileNonCombatantItems.Items.Clear();
-            //HostileDestroyedItems.Items.Clear();
-            //HostileAssimilatedItems.Items.Clear();
-            //HostileEscapedItems.Items.Clear();
+            HostileStationItem.Header = null;
+            HostileCombatantItems.Items.Clear();
+            HostileNonCombatantItems.Items.Clear();
+            HostileDestroyedItems.Items.Clear();
+            HostileAssimilatedItems.Items.Clear();
+            HostileEscapedItems.Items.Clear();
 
             OtherCivilizationsItem.Items.Clear();
         }

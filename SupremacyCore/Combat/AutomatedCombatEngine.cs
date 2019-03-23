@@ -28,6 +28,7 @@ namespace Supremacy.Combat
         private bool friendlyOwner = true;
         // bool HeroShip = false; No longer needed
         private object firstOwner;
+        private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
@@ -52,6 +53,15 @@ namespace Supremacy.Combat
             set
             {
                 this._oppositionCombatShips = value;
+            }
+        }
+
+        public int FriendlyWeaponPower
+        {
+            get
+            {
+                return 123456;
+                //return friendlyWeaponPower;
             }
         }
 
@@ -82,6 +92,9 @@ namespace Supremacy.Combat
             newCycleReduction = 1;
 
             int maxScanStrengthOpposition = 0;
+
+            
+            int FriendlyAssetsFirePower = 0;
 
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
@@ -302,7 +315,8 @@ namespace Supremacy.Combat
                     friendlyOwner = true;
                 }
 
-                int friendlyWeaponPower = ownEmpires.Sum(e => _empireStrengths[e]) + friendlyEmpires.Sum(e => _empireStrengths[e]);
+                // int
+                friendlyWeaponPower = ownEmpires.Sum(e => _empireStrengths[e]) + friendlyEmpires.Sum(e => _empireStrengths[e]);
                 int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
