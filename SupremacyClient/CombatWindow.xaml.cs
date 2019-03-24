@@ -45,8 +45,6 @@ namespace Supremacy.Client
         private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
         private Dictionary<string, CombatUnit> _othersCombatUnits;
-        private int FriendlyEmpireStrength = 0;
-        private string _headerFriendlyCombatWindow;
         protected int _friendlyEmpireStrength; 
         private IAppContext _appContext;
 
@@ -64,11 +62,11 @@ namespace Supremacy.Client
             set { _otherCivs = value; }
         }
          
-        //public int FriendlyEmpireStrength
-        //{
-        //    get { return _friendlyEmpireStrength; }
-        //    set { _friendlyEmpireStrength = value; }
-        //}
+        public int FriendlyEmpireStrength
+        {
+            get { return _friendlyEmpireStrength; }
+            set { _friendlyEmpireStrength = value; }
+        }
 
         public CombatWindow()
         {
@@ -83,23 +81,18 @@ namespace Supremacy.Client
             FriendlyDestroyedItems.ItemTemplate = itemTemplate;
             FriendlyAssimilatedItems.ItemTemplate = itemTemplate;
             FriendlyEscapedItems.ItemTemplate = itemTemplate;
-            HostileStationItem.HeaderTemplate = itemTemplate;
-            HostileCombatantItems.ItemTemplate = itemTemplate;
-            HostileNonCombatantItems.ItemTemplate = itemTemplate;
-            HostileDestroyedItems.ItemTemplate = itemTemplate;
-            HostileAssimilatedItems.ItemTemplate = itemTemplate;
-            HostileEscapedItems.ItemTemplate = itemTemplate;
+            //HostileStationItem.HeaderTemplate = itemTemplate;
+            //HostileCombatantItems.ItemTemplate = itemTemplate;
+            //HostileNonCombatantItems.ItemTemplate = itemTemplate;
+            //HostileDestroyedItems.ItemTemplate = itemTemplate;
+            //HostileAssimilatedItems.ItemTemplate = itemTemplate;
+            //HostileEscapedItems.ItemTemplate = itemTemplate;
 
             DataTemplate civItemTemplate = TryFindResource("CivTreeItemTemplate") as DataTemplate;
 
             OtherCivilizationsItem.ItemTemplate = civItemTemplate;
 
             OtherCivs = _otherCivs;
-
-            FriendlyEmpireStrength = 100;
-            _headerFriendlyCombatWindow = FriendlyEmpireStrength.ToString();
-
-
 
             var Civis = new List<string>();
             Civis.Add("Trump");
@@ -123,7 +116,6 @@ namespace Supremacy.Client
                 {
                     _playerAssets = assets;
                     break;
-
                 }
             }
             if (_playerAssets == null)
@@ -184,14 +176,7 @@ namespace Supremacy.Client
                 }  
             }
 
-            
-            //F_update.EmpireStrengths[_appContext.LocalPlayer.Empire.Key]
-            _friendlyEmpireStrength = _update.EmpireStrengths[_appContext.LocalPlayer.Empire.Key];
-            GameLog.Client.General.DebugFormat("FriendlyEmpireStrength = {0} ", FriendlyEmpireStrength);
-
             PopulateUnitTrees();
-
-
 
 
 
@@ -230,12 +215,12 @@ namespace Supremacy.Client
             FriendlyDestroyedItems.Items.Clear();
             FriendlyAssimilatedItems.Items.Clear();
             FriendlyEscapedItems.Items.Clear();
-            HostileStationItem.Header = null;
-            HostileCombatantItems.Items.Clear();
-            HostileNonCombatantItems.Items.Clear();
-            HostileDestroyedItems.Items.Clear();
-            HostileAssimilatedItems.Items.Clear();
-            HostileEscapedItems.Items.Clear();
+            //HostileStationItem.Header = null;
+            //HostileCombatantItems.Items.Clear();
+            //HostileNonCombatantItems.Items.Clear();
+            //HostileDestroyedItems.Items.Clear();
+            //HostileAssimilatedItems.Items.Clear();
+            //HostileEscapedItems.Items.Clear();
 
             OtherCivilizationsItem.Items.Clear();
         }
@@ -378,7 +363,7 @@ namespace Supremacy.Client
             if (sender == HailButton)
                 order = CombatOrder.Hail;
 
-            GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);
+            GameLog.Client.General.DebugFormat("{0} button clicked by player", order);
 
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;
