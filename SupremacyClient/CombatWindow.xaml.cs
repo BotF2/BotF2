@@ -50,7 +50,6 @@ namespace Supremacy.Client
         private IAppContext _appContext;
 
 
-
         public List<string> MyTestList
         {
             get { return _myTest; }
@@ -124,7 +123,7 @@ namespace Supremacy.Client
             Civis.Add("Mike");
             Civis.Add("David");
             Civis.Add("Chris");
-            MyTestList = Civis;
+            _myTest = Civis;
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -257,7 +256,7 @@ namespace Supremacy.Client
             //HostileDestroyedItems.Items.Clear();
             //HostileAssimilatedItems.Items.Clear();
             //HostileEscapedItems.Items.Clear();
-
+            MyTestList.Clear();
             OtherCivilizationsItem.Items.Clear();
         }
 
@@ -342,11 +341,12 @@ namespace Supremacy.Client
                     //HostileAssimilatedItems.Items.Add(shipStats);
                     allcivs.Add(shipStats.Owner.Key);
                 }
-
+                allcivs.Add("TRUMP");
+                allcivs.Add("CLINTON");
                 _otherCivs = allcivs.Distinct().ToList();
 
                 foreach (string Other in _otherCivs)
-                {
+                { 
                     OtherCivilizationsItem.Items.Add(Other);
                 }
             }
@@ -382,6 +382,7 @@ namespace Supremacy.Client
             {
                 OtherCivilizationsItem.Header = OtherCivilizationsItem.HasItems ? civ : null;
                 OtherCivilizationsItem.Visibility = OtherCivilizationsItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
+                OtherCivilizationsItem.Visibility = OtherCivilizationsItem.HasHeader ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 

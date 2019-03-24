@@ -65,24 +65,24 @@
                     </ui:BlockBar.LayoutTransform>
                 </ui:BlockBar>
                 <Border x:Name="ImageBorder"
-                DockPanel.Dock="Left"
-                VerticalAlignment="Top"
-                Width="54"
-                Height="45"
-                BorderBrush="White"
-                BorderThickness="2"
-                CornerRadius="8">
+                        DockPanel.Dock="Left"
+                        VerticalAlignment="Top"
+                        Width="54"
+                        Height="45"
+                        BorderBrush="White"
+                        BorderThickness="2"
+                        CornerRadius="8">
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
-                        Stretch="UniformToFill"/>
+                                    Stretch="UniformToFill"/>
                     </Border.Background>
                     <Image Source="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
-                 HorizontalAlignment="Right"
-                 VerticalAlignment="Bottom"
-                 Margin="0,0,4,4"
-                 Width="16"
-                 Height="16"
-                 Stretch="Uniform">
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             Margin="0,0,4,4"
+                             Width="16"
+                             Height="16"
+                             Stretch="Uniform">
                         <!--<UIElement.Effect>
               <DropShadowEffect ShadowDepth="0"
                                 BlurRadius="10.0"
@@ -175,10 +175,10 @@
             <Setter Property="SnapsToDevicePixels"
               Value="True"/>
         </Style>-->
-        <DataTemplate x:Key="CivTreeItemTemplate">
+        <HierarchicalDataTemplate x:Key="whatever">
+            
             <DockPanel LastChildFill="True"
                  Margin="0,2,0,2">
-
                 <Border x:Name="ImageBorder"
                 DockPanel.Dock="Left"
                 VerticalAlignment="Top"
@@ -198,86 +198,13 @@
                  Width="55"
                  Height="55"
                  Stretch="Uniform">
-                        <!--<UIElement.Effect>
-              <DropShadowEffect ShadowDepth="0"
-                                BlurRadius="10.0"
-                                Color="Black"
-                                Opacity="1.0" />
-            </UIElement.Effect>-->
+
                     </Image>
+                    
                 </Border>
-                <!--<StackPanel Orientation="Vertical"
-                    Margin="6,0,0,0"
-                    TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                    TextBlock.FontSize="10pt"
-                    TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
-                    TextBlock.TextAlignment="Left">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
-                       Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>
-                        <TextBlock x:Name="DestroyedText"
-                       Foreground="Crimson"
-                       Margin="12,0,0,0"
-                       Visibility="Collapsed" 
-                       Text="{s:StringResource COMBAT_DESTROYED}"/>
-                        <TextBlock x:Name="AssimilatedText"
-                       Foreground="LimeGreen"
-                       Margin="12,0,0,0"
-                       Visibility="Collapsed" 
-                       Text="{s:StringResource COMBAT_ASSIMILATED}"/>
-                    </StackPanel>
-                    <TextBlock Text="{Binding Path=Description}"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition Width="0.5*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0"
-                        Orientation="Horizontal">
-                            <TextBlock Text="Shields: "/>
-                            <TextBlock Text="{Binding Path=ShieldStrength}"/>
-                            <TextBlock Text="/"/>
-                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.ShieldStrength}"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                        Orientation="Horizontal"
-                        Margin="12,0,0,0">
-                            <TextBlock Text="Hull: "/>
-                            <TextBlock Text="{Binding Path=HullStrength}"/>
-                            <TextBlock Text="/"/>
-                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.HullStrength}"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
+
             </DockPanel>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=IsCloaked}"
-                     Value="True">
-                    <Setter TargetName="ImageBorder"
-                  Property="Opacity"
-                  Value="0.55"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsCamouflaged}"
-                Value="True">
-                    <Setter TargetName="ImageBorder"
-                    Property="Opacity"
-                    Value="0.55"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsDestroyed}"
-                    Value="True">
-                    <Setter TargetName="DestroyedText"
-                    Property="Visibility"
-                    Value="Visible"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsAssimilated}"
-                    Value="True">
-                    <Setter TargetName="AssimilatedText"
-                    Property="Visibility"
-                    Value="Visible"/>
-                </DataTrigger>
-            </DataTemplate.Triggers>-->
-            </DockPanel>
-        </DataTemplate>
+        </HierarchicalDataTemplate>
         <!--Detail view of ONE item - End-->
 
         
@@ -338,7 +265,7 @@
                             Grid.Column="0"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                    Orientation="Horizontal"
+                            Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center">
                         <Border x:Name="ImageBorder1"
@@ -392,7 +319,7 @@
                 </TreeView>
             </ScrollViewer>
         </GroupBox>
-        <StackPanel Orientation="Horizontal"
+        <!--<StackPanel Orientation="Horizontal"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Grid.Row="1"
@@ -400,8 +327,8 @@
                     Margin="2">
             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                         VerticalScrollBarVisibility="Disabled"
-                        CanContentScroll="True">
-                <TreeView  ItemsSource="{Binding MyTestList}"  
+                        CanContentScroll="True">-->
+                <TreeView  ItemsSource="{Binding CombatWindow}"  
                    x:Name="OtherCivTree"
                     Grid.Column="1"
                    Grid.ColumnSpan="2"
@@ -416,13 +343,13 @@
                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <TreeViewItem Name="OtherCivilizationsItem" IsExpanded="True">
 
-
-                          <StackPanel 
+                <!--<TreeViewItem Name="OtherCivilizationsItem" IsExpanded="True">-->
+                    <!--<StackPanel 
                                 Orientation="Horizontal"
                                 Grid.Column="1"
                                 Grid.Row="1"
                                 Width="400"
-                                Margin="2">
+                                Margin="2">-->
                                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                             VerticalScrollBarVisibility="Auto"
                                             CanContentScroll="False">
@@ -440,12 +367,12 @@
                                         <TreeViewItem Name="HostileEscapedItems" IsExpanded="True"/>
                                     </TreeView>
                                 </ScrollViewer>
-                          </StackPanel>
+                          <!--</StackPanel>-->
                 
                     </TreeViewItem>
         </TreeView>
-            </ScrollViewer>
-        </StackPanel>
+            <!--</ScrollViewer>
+        </StackPanel>-->
         <StackPanel x:Name="UpperButtonsPanel"
                 Margin="6"
                 Grid.Column="0"
