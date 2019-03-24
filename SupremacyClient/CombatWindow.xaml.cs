@@ -184,7 +184,14 @@ namespace Supremacy.Client
                 }  
             }
 
+            
+            //F_update.EmpireStrengths[_appContext.LocalPlayer.Empire.Key]
+            _friendlyEmpireStrength = _update.EmpireStrengths[_appContext.LocalPlayer.Empire.Key];
+            GameLog.Client.General.DebugFormat("FriendlyEmpireStrength = {0} ", FriendlyEmpireStrength);
+
             PopulateUnitTrees();
+
+
 
 
 
@@ -371,7 +378,7 @@ namespace Supremacy.Client
             if (sender == HailButton)
                 order = CombatOrder.Hail;
 
-            GameLog.Client.General.DebugFormat("{0} button clicked by player", order);
+            GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);
 
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;

@@ -302,7 +302,7 @@
                 Orientation="Vertical">
             <TextBlock x:Name="HeaderText"
                  FontSize="20pt"
-                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                  Foreground="{DynamicResource HeaderTextBrush}"
                  HorizontalAlignment="Center"/>
             <TextBlock x:Name="SubHeaderText"
@@ -353,13 +353,18 @@
                         Orientation="Horizontal">-->
                         <TextBlock 
                             Foreground="White"
-                            FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    FontSize="16pt" Text="  FirePower: "/>
-                        <TextBlock Foreground="White" FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    FontSize="16pt" Text="{Binding Path=FriendlyEmpireStrength}"/>
+                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    FontSize="16pt" 
+                                    Text="  FirePower: "/>
+                        <TextBlock Foreground="White" 
+                                   FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="16pt" 
+                                   Text="{Binding Path=_friendlyEmpireStrength}"/>
                         
-                        <TextBlock Foreground="White" FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    FontSize="16pt" Text="  X"/>
+                        <TextBlock Foreground="White" 
+                                   FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="16pt" 
+                                   Text="  X"/>
 
                         <!--</StackPanel>-->
                     </StackPanel>
