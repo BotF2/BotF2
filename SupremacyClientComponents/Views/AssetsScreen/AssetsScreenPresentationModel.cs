@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Universe;
+using Supremacy.Orbitals;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
 using Supremacy.Types;
@@ -83,7 +84,58 @@ namespace Supremacy.Client.Views
             OnPropertyChanged("Colonies");
         }
 
-        #endregion
+        #endregion Colonies Property
+
+        #region ShipsList Property
+
+        [field: NonSerialized]
+        public event EventHandler ShipsListChanged;
+
+        //public event EventHandler TotalPopulationChanged;
+
+        private IEnumerable<Ship> _shipsList;
+
+        //private IEnumerable<Colony> _infiltratedColonies;
+
+        public IEnumerable<Ship> ShipsList
+        {
+            get { return _shipsList; }
+            set
+            {
+                if (Equals(value, _shipsList))
+                    return;
+
+                _shipsList = value;
+
+                OnShipsListChanged();
+
+                //OnTotalPopulationChanged();
+            }
+        }
+
+        //public IEnumerable<Colony> InfiltratedColonies
+        //{
+        //    get { return _infiltratedColonies; }
+        //    set
+        //    {
+        //        if (Equals(value, _infiltratedColonies))
+        //            return;
+
+        //        _infiltratedColonies = value;
+
+        //        OnColoniesChanged();
+
+        //        OnTotalPopulationChanged();
+        //    }
+        //}
+
+        protected virtual void OnShipsListChanged()
+        {
+            ShipsListChanged.Raise(this);
+            OnPropertyChanged("ShipsList");
+        }
+
+        #endregion ShipsList Property
 
         protected virtual void OnTotalPopulationChanged()
         {
@@ -110,6 +162,51 @@ namespace Supremacy.Client.Views
             }
         }
         #endregion
+
+        #region Credits Empire
+
+        public Meter CreditsEmpire
+        {
+            get
+            {
+                //try    // maybe slows down the game very much
+                //{
+                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                return civManager.Credits;
+
+                
+                //}
+                //catch (Exception e)
+                //{
+                //    GameLog.Print("Problem occured at TotalPopulation");
+                //    return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
+                //}
+            }
+        }
+        #endregion Credits Empire
+
+        #region TotalIntelligence Empire
+
+        public int TotalIntelligence
+        {
+            get
+            {
+                //try    // maybe slows down the game very much
+                //{
+                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                return civManager.TotalIntelligence;
+
+
+                //}
+                //catch (Exception e)
+                //{
+                //    GameLog.Print("Problem occured at TotalPopulation");
+                //    return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
+                //}
+            }
+        }
+        #endregion TotalIntelligence Empire
+
 
         #region Implementation of INotifyPropertyChanged
 
