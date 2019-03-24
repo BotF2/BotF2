@@ -160,11 +160,13 @@ namespace Supremacy.Combat
             }
 
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
-            //if (diplomacyData == null)
-            //{
-            //    return false;
-            //}
+            if (diplomacyData == null)
+            {
+                GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
+                return false;
+            }
 
+            //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - diplomacyData.Status = {2}", firstCiv, secondCiv, diplomacyData.Status.ToString());
             switch (diplomacyData.Status) // see WillFightAlongside below
             {   
                 //case ForeignPowerStatus.Peace:
@@ -173,10 +175,11 @@ namespace Supremacy.Combat
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
-                
+
+                    GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = FALSE", firstCiv, secondCiv);
                     return false;
             }
-
+            //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = TRUE", firstCiv, secondCiv);
             return true;
         }
 
@@ -233,7 +236,7 @@ namespace Supremacy.Combat
                 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
+                    GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
                         ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order, primaryTargetCiv, secondaryTargetCiv);
                 }
             }

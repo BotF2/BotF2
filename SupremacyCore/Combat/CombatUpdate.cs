@@ -23,15 +23,16 @@ namespace Supremacy.Combat
         private int _combatId;
         private int _roundNumber;
         private int _ownerId;
-        private int _friendlyAssetsFirePower;  // not needed if _empireStrengths works
-        protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
+        protected Dictionary<string, int> _combatPartyStrengths; // string in key of civ and int is total fire power of civ
         private bool _standoff;
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
 
-        //ombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets, int friendlyAssetsFirePower)
-        public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets, Dictionary<string, int> _empireStrengths)
+        private int _friendlyEmpireStrength;
+        private int _hostileEmpireStrength;
+
+        public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner"); 
@@ -45,9 +46,40 @@ namespace Supremacy.Combat
             _ownerId = owner.CivID;
             _location = location;
             _friendlyAssets = friendlyAssets;
-            _empireStrengths = EmpireStrengths;
-            //_friendlyAssetsFirePower = friendlyAssetsFirePower;
             _hostileAssets = hostileAssets;
+        }
+
+        public int FriendlyEmpireStrength
+        {
+            get
+            {
+                _friendlyEmpireStrength = _combatPartyStrengths[Owner.Key.ToString()];
+                GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
+                _friendlyEmpireStrength = _combatPartyStrengths[Owner.Key];
+                GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
+                return _friendlyEmpireStrength + 1;
+                //return _friendlyEmpireStrength;
+            }
+            set
+            {
+                _friendlyEmpireStrength = 123;
+                //_friendlyEmpireStrength = value;
+            }
+        }
+
+        public int HostileEmpireStrength
+        {
+            get
+            {
+                GameLog.Core.General.DebugFormat("_hostileEmpireStrength = {0}", _hostileEmpireStrength);
+                return _hostileEmpireStrength + 2;
+                //return _hostileEmpireStrength;
+            }
+            set
+            {
+                _hostileEmpireStrength = 123;
+                //_hostileEmpireStrength = value;
+            }
         }
 
         public int CombatID
@@ -80,14 +112,17 @@ namespace Supremacy.Combat
             get { return GameContext.Current.Civilizations[_ownerId]; }
         }
 
-        public int FriendlyAssetsFirePower
+        public Dictionary<string, int> CombatPartyStrengths
         {
-            get { return _friendlyAssetsFirePower; }
-        }
+            get
+            {
+                foreach (var empire in _combatPartyStrengths)
+                {
+                    GameLog.Core.General.DebugFormat("EmpireStrength {1} for {0}", empire.Key, empire.Value);
+                }
 
-        public Dictionary<string, int> EmpireStrengths
-        {
-            get { return _empireStrengths; }
+                return _combatPartyStrengths;
+            }
         }
 
         public IList<CombatAssets> FriendlyAssets

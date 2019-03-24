@@ -12,6 +12,7 @@ using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Entities;
+using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -40,6 +41,7 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
+        private readonly UniverseObjectList<Ship> _shipsList;
         private readonly UniverseObjectList<Colony> _infiltratedColonies;
 
         private int _homeColonyId;
@@ -182,6 +184,16 @@ namespace Supremacy.Game
         public UniverseObjectList<Colony> Colonies
         {
             get { return _colonies; }
+        }
+
+        /// <summary>
+        /// Gets a list of the civilization's colonies.
+        /// </summary>
+        /// <value>The colonies.</value>
+        [NotNull]
+        public UniverseObjectList<Ship> ShipsList
+        {
+            get { return _shipsList; }
         }
 
         /// <summary>

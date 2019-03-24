@@ -126,15 +126,19 @@ namespace Supremacy.Game
 
                 using (var fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    //GameLog.Print("beginning loading {0} ...", fileName);
+                    GameLog.Core.SaveLoad.DebugFormat("beginning loading {0} ...", fileName);
                     header = SavedGameHeader.Read(fileStream);
-                    //GameLog.Print("loading SavedGameHeader of {0}", fileName);
+                    GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fileName);
                     using (var memoryStream = new MemoryStream())
                     {
                         int value;
                         while (fileStream.CanRead && ((value = fileStream.ReadByte()) != -1))
+                        {
+                            // give a lot of lines ....   GameLog.Core.SaveLoad.DebugFormat("{0}",value.ToString());
                             memoryStream.WriteByte((byte)value);
-                        //GameLog.Print("loading {0}, Stream was read...", fileStream.ToString());
+                        }
+                        GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileStream.ToString());
+                        //GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileStream.ToString());
                         memoryStream.Seek(0, SeekOrigin.Begin);
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }

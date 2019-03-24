@@ -22,6 +22,8 @@
             IsModal="True"
             Cursor="{StaticResource DefaultCursor}"
             ForceCursor="True">
+    
+    <!--Detail view of ONE item - Begin-->
     <FrameworkElement.Resources>
         <Style TargetType="{x:Type TreeViewItem}">
             <Setter Property="Foreground"
@@ -276,7 +278,10 @@
             </DataTemplate.Triggers>-->
             </DockPanel>
         </DataTemplate>
+        <!--Detail view of ONE item - End-->
 
+        
+        <!--Main Combat Window - Begin-->
     </FrameworkElement.Resources>
     <Grid 
         Height="650"
@@ -351,20 +356,30 @@
                         </Border>
                         <!--<StackPanel Grid.Column="1"
                         Orientation="Horizontal">-->
-                        <TextBlock 
-                            Foreground="White"
+                        <TextBlock  Foreground="White"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt" 
-                                    Text="  FirePower: "/>
+                                    Text="  FirePower: OWN = "/>
                         <TextBlock Foreground="White" 
                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                    FontSize="16pt" 
-                                   Text="{Binding Path=_friendlyEmpireStrength}"/>
-                        
-                        <TextBlock Foreground="White" 
+                                   Text="{Binding Path=FriendlyEmpireStrength}"/>  
+                                    <!--Text="{Binding Path=FriendlyEmpireStrengthString}"/>-->
+                     
+                                   <!--Text="Hello"/>-->
+                        <TextBlock Foreground="RED"
+                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    FontSize="16pt" 
+                                    Text="  FOE = "/>
+                        <TextBlock Foreground="Red" 
                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                    FontSize="16pt" 
-                                   Text="  X"/>
+                                    Text="{Binding Path=HostileEmpireStrength}"/>
+
+                        <!--<TextBlock Foreground="White" 
+                                   FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="16pt" 
+                                   Text="  X"/>-->
 
                         <!--</StackPanel>-->
                     </StackPanel>
@@ -554,3 +569,4 @@
             Click="OnCloseButtonClicked"/>
     </Grid>
 </scc:Dialog>
+<!--Main Combat Window -END-->

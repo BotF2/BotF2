@@ -34,7 +34,7 @@ namespace Supremacy.Client
     /// <summary>
     /// Interaction logic for CombatWindow.xaml
     /// </summary>
-    
+
     public partial class CombatWindow
     {
         private CombatUpdate _update;
@@ -45,7 +45,8 @@ namespace Supremacy.Client
         private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
         private Dictionary<string, CombatUnit> _othersCombatUnits;
-        protected int _friendlyEmpireStrength; 
+        //protected int _friendlyEmpireStrength;
+        //public string _friendlyEmpireStrengthString = "444";
         private IAppContext _appContext;
 
 
@@ -61,12 +62,34 @@ namespace Supremacy.Client
             get { return _otherCivs; }
             set { _otherCivs = value; }
         }
-         
-        public int FriendlyEmpireStrength
-        {
-            get { return _friendlyEmpireStrength; }
-            set { _friendlyEmpireStrength = value; }
-        }
+
+        //public string FriendlyEmpireStrengthString
+        //{
+        //    get
+        //    {
+        //        GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
+
+        //        return "100";
+        //        //return _friendlyEmpireStrengthString;
+        //        //return _friendlyEmpireStrength;
+        //    }
+
+        //}
+
+        //public int FriendlyEmpireStrength
+        //{
+        //    get
+        //    {
+        //        GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
+        //        return 100;
+        //        //return _friendlyEmpireStrength;
+        //    }
+        //    set
+        //    {
+        //        _friendlyEmpireStrength = 123;
+        //        //_friendlyEmpireStrength = value;
+        //    }
+        //}
 
         public CombatWindow()
         {
@@ -93,6 +116,8 @@ namespace Supremacy.Client
             OtherCivilizationsItem.ItemTemplate = civItemTemplate;
 
             OtherCivs = _otherCivs;
+
+            //FriendlyEmpireStrength = _friendlyEmpireStrength;
 
             var Civis = new List<string>();
             Civis.Add("Trump");
@@ -145,7 +170,7 @@ namespace Supremacy.Client
                         ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
                         _update.Sector.Name);
                 }
-                else if (_playerAssets.HasSurvivingAssets) 
+                else if (_playerAssets.HasSurvivingAssets)
                 {
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
                         + String.Format(ResourceManager.GetString("COMBAT_VICTORY"));
@@ -165,18 +190,29 @@ namespace Supremacy.Client
             else
             {
                 HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER"); // + ": "
-                    //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
+                                                                              //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
                 SubHeaderText.Text = String.Format(
                     ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
                     _update.Sector.Name);
                 var soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
                 {
                     if (File.Exists("Resources/SoundFX/REDALERT.wav"))
-                    soundPlayer.Play();
-                }  
+                        soundPlayer.Play();
+                }
             }
 
+            //_friendlyEmpireStrength = 100;
+
+            //if (_playerAssets.Owner.IsEmpire && _playerAssets.Owner.Key == "Mike")
+            //{
+            //    _friendlyEmpireStrength = _update.EmpireStrengths[_appContext.LocalPlayer.Empire.Key.ToString()];
+            //    GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
+            //}
+
+            //string FriendlyEmpireStrengthString = _friendlyEmpireStrength.ToString();
+
             PopulateUnitTrees();
+
 
 
 
@@ -188,7 +224,7 @@ namespace Supremacy.Client
             RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
             //There needs to be transports in the opposition to be able to target them
             TransportsButton.IsEnabled = (_update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))) ||
-                ( _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))); // klingon transports are combat ships
+                (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))); // klingon transports are combat ships
             //We need at least 3 ships to create a formation
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat
@@ -228,12 +264,12 @@ namespace Supremacy.Client
         private void PopulateUnitTrees()
         {
             ClearUnitTrees();
-            
+
 
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-                int friendlyAssetsFirepower =0;
-               // string friendCiv; 
+                int friendlyAssetsFirepower = 0;
+                // string friendCiv; 
                 if (friendlyAssets.Station != null)
                 {
                     FriendlyStationItem.Header = friendlyAssets.Station;
@@ -269,7 +305,7 @@ namespace Supremacy.Client
                 {
                     FriendlyEscapedItems.Items.Add(shipStats);
                 }
-                _friendlyEmpireStrength = friendlyAssetsFirepower;
+                //_friendlyEmpireStrength = friendlyAssetsFirepower;
             }
 
             /* others Assets */
@@ -342,7 +378,7 @@ namespace Supremacy.Client
             //HostileAssimilatedItems.Visibility = HostileAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
             //HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
             //HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            foreach(string civ in MyTestList)
+            foreach (string civ in MyTestList)
             {
                 OtherCivilizationsItem.Header = OtherCivilizationsItem.HasItems ? civ : null;
                 OtherCivilizationsItem.Visibility = OtherCivilizationsItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
@@ -377,3 +413,4 @@ namespace Supremacy.Client
         }
     }
 }
+

@@ -29,7 +29,6 @@ namespace Supremacy.Combat
         private int _totalFirepower; // looks like _empireStrenths dictionary below
         private double _favorTheBoldMalus; 
         private int _fleetAsCommandshipBonus;
-        private int friendlyAssetsFirePower;
         private bool _has20PlusPercentFastAttack;
         private Dictionary<Civilization, CombatOrders> _combatOrderByCiv; // looks like _orders below
 
@@ -51,7 +50,6 @@ namespace Supremacy.Combat
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
-
 
 
         public List<Civilization> Civilization
@@ -105,8 +103,16 @@ namespace Supremacy.Combat
 
         public Dictionary<string, int> EmpireStrengths
         {
-            get { return _empireStrengths; }
-            set { _empireStrengths = value; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("GET EmpireStrengths = {0}", _empireStrengths.ToString());
+                return _empireStrengths;
+            }
+            set
+            {
+                GameLog.Core.Combat.DebugFormat("SET EmpireStrengths = {0}", value.ToString());
+                _empireStrengths = value;
+            }
         }
 
         protected int CombatID
@@ -301,6 +307,7 @@ namespace Supremacy.Combat
                 GameLog.Core.Combat.DebugFormat("ResolveCombatRound");
                 Running = true;
 
+
                 _assets.ForEach(a => a.CombatID = _combatId);
                 CalculateEmpireStrengths();
 
@@ -313,10 +320,10 @@ namespace Supremacy.Combat
                 {
                     PerformAssimilation();
                 }
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before PerformRetreat");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before PerformRetreat");
                 PerformRetreat();
 
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
                 UpdateOrbitals();
 
                 if (!IsCombatOver)
@@ -329,14 +336,14 @@ namespace Supremacy.Combat
 
             SendUpdates();
 
-            GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
+            GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
             RemoveDefeatedPlayers();
 
             Running = false;
 
             if (IsCombatOver)
             {
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - IsCombatOver = TRUE");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - IsCombatOver = TRUE");
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
         }
@@ -386,6 +393,7 @@ namespace Supremacy.Combat
                 var owner = playerAsset.Owner;
                 var friendlyAssets = new List<CombatAssets>();
                 var hostileAssets = new List<CombatAssets>();
+                var empireStrengths = new Dictionary<string, int>();
 
                 friendlyAssets.Add(playerAsset);
 
@@ -409,11 +417,6 @@ namespace Supremacy.Combat
                     break;
                 }
 
-                //EmpireStrengths = _empireStrengths; //.All(e => e.Value);
-
-                friendlyAssetsFirePower = 1000;  // for minor's 
-                //if (playerAsset.Owner.IsEmpire)
-                //    friendlyAssetsFirePower = _empireStrengths[playerAsset.Owner.Key];
 
                 var update = new CombatUpdate(
                     _combatId,
@@ -422,9 +425,8 @@ namespace Supremacy.Combat
                     owner,
                     playerAsset.Location,
                     friendlyAssets,
-                    hostileAssets,
-                    //friendlyAssetsFirePower,
-                    _empireStrengths);
+                    hostileAssets
+                    );
 
                 AsyncHelper.Invoke(_updateCallback, this, update);
             }
@@ -494,9 +496,10 @@ namespace Supremacy.Combat
                 _empireStrengths[_combatStation.Item1.Owner.Key] += _combatStation.Item1.Source.Firepower();
             }
 
-            foreach (var empires in _empireStrengths)
+            foreach (var empire in _empireStrengths)
             {
-                GameLog.Core.Combat.DebugFormat("Strength for {0} = {1}", empires.Key, empires.Value);
+                GameLog.Core.Combat.DebugFormat("Strength for {0} = {1}", empire.Key, empire.Value);
+                //makes crash !!   _empireStrengths.Add(empire.Key, empire.Value);
             }
         }
 
