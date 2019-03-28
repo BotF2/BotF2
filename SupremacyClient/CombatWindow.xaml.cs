@@ -39,8 +39,8 @@ namespace Supremacy.Client
     {
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
-        private List<String> _otherCivs;
-        private List<string> _myTest;
+        private List<String> _otherCivsKeys;
+        private List<Civilization> _otherCivs;
         private Civilization _primeTargetOftheCivilzation; // primary player-selected civ to attack
         private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
@@ -49,17 +49,16 @@ namespace Supremacy.Client
         //public string _friendlyEmpireStrengthString = "444";
         private IAppContext _appContext;
 
-
-        public List<string> MyTestList
-        {
-            get { return _myTest; }
-            set { _myTest = value; }
-        }
-
-        public List<string> OtherCivs
+        public List<Civilization> OtherCivs
         {
             get { return _otherCivs; }
             set { _otherCivs = value; }
+        }
+
+        public List<string> OtherCivsKeys
+        {
+            get { return _otherCivsKeys; }
+            set { _otherCivsKeys = value; }
         }
 
         //public string FriendlyEmpireStrengthString
@@ -93,37 +92,44 @@ namespace Supremacy.Client
         public CombatWindow()
         {
             InitializeComponent();
+            DataContext = this;
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
-            DataTemplate itemTemplate = TryFindResource("AssetTreeItemTemplate") as DataTemplate;
-           
+            DataTemplate itemTemplate = TryFindResource("FriendTreeItemTemplate") as DataTemplate;
+
             FriendlyStationItem.HeaderTemplate = itemTemplate;
             FriendlyCombatantItems.ItemTemplate = itemTemplate;
             FriendlyNonCombatantItems.ItemTemplate = itemTemplate;
             FriendlyDestroyedItems.ItemTemplate = itemTemplate;
             FriendlyAssimilatedItems.ItemTemplate = itemTemplate;
             FriendlyEscapedItems.ItemTemplate = itemTemplate;
-            //HostileStationItem.HeaderTemplate = itemTemplate;
-            //HostileCombatantItems.ItemTemplate = itemTemplate;
-            //HostileNonCombatantItems.ItemTemplate = itemTemplate;
-            //HostileDestroyedItems.ItemTemplate = itemTemplate;
-            //HostileAssimilatedItems.ItemTemplate = itemTemplate;
-            //HostileEscapedItems.ItemTemplate = itemTemplate;
 
-            DataTemplate civItemTemplate = TryFindResource("CivTreeItemTemplate") as DataTemplate;
+            DataTemplate civHeaderTemplate = TryFindResource("OthersTreeSummaryTemplate") as DataTemplate;
+            // the other civilizations summary
+       
+            OtherCivilizationsSummaryItem.ItemTemplate = civHeaderTemplate;
 
-            OtherCivilizationsItem.ItemTemplate = civItemTemplate;
+            DataTemplate civItemTemplate = TryFindResource("OthersTreeItemTemplate") as DataTemplate;
+            // the items in each civilization of the others
 
-            OtherCivs = _otherCivs;
+            HostileStationItem.HeaderTemplate = civItemTemplate;
+            HostileCombatantItems.ItemTemplate = civItemTemplate;
+            HostileNonCombatantItems.ItemTemplate = civItemTemplate;
+            HostileDestroyedItems.ItemTemplate = civItemTemplate;
+            HostileAssimilatedItems.ItemTemplate = civItemTemplate;
+            HostileEscapedItems.ItemTemplate = civItemTemplate;
 
+            //DataTemplate civDropDownTemplate = TryFindResource("CivDropDownTemplate") as DataTemplate;
+
+            // OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
+            //OtherCivilizationsDropDown.ItemTemplate = civDropDownTemplate;
+            //ComboBoxItem civDropDownTemplate = TryFindResource("CivTreeDropDownTemplate") as ComboBoxItem;
+            //OtherCivilizationsDropDown = civDropDownTemplate;
+
+            OtherCivsKeys = _otherCivsKeys;
+            
             //FriendlyEmpireStrength = _friendlyEmpireStrength;
 
-            var Civis = new List<string>();
-            Civis.Add("Trump");
-            Civis.Add("Mike");
-            Civis.Add("David");
-            Civis.Add("Chris");
-            _myTest = Civis;
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -212,9 +218,6 @@ namespace Supremacy.Client
 
             PopulateUnitTrees();
 
-
-
-
             //var path = civEmblem.Source.ToString();
 
             //We need combat assets to be able to engage
@@ -243,21 +246,23 @@ namespace Supremacy.Client
 
         private void ClearUnitTrees()
         {
-            //FriendlyEmblemItem.Header = null;
+            
             FriendlyStationItem.Header = null;
             FriendlyCombatantItems.Items.Clear();
             FriendlyNonCombatantItems.Items.Clear();
             FriendlyDestroyedItems.Items.Clear();
             FriendlyAssimilatedItems.Items.Clear();
             FriendlyEscapedItems.Items.Clear();
-            //HostileStationItem.Header = null;
-            //HostileCombatantItems.Items.Clear();
-            //HostileNonCombatantItems.Items.Clear();
-            //HostileDestroyedItems.Items.Clear();
-            //HostileAssimilatedItems.Items.Clear();
-            //HostileEscapedItems.Items.Clear();
-            MyTestList.Clear();
-            OtherCivilizationsItem.Items.Clear();
+            HostileStationItem.Header = null;
+            HostileCombatantItems.Items.Clear();
+            HostileNonCombatantItems.Items.Clear();
+            HostileDestroyedItems.Items.Clear();
+            HostileAssimilatedItems.Items.Clear();
+            HostileEscapedItems.Items.Clear();
+           //OtherCivilizationsHeaderDropDown.Header = null;
+            //OtherCivilizationsDropDown.Items.Clear();
+           OtherCivilizationsSummaryItem.Items.Clear();
+
         }
 
         private void PopulateUnitTrees()
@@ -307,47 +312,59 @@ namespace Supremacy.Client
                 //_friendlyEmpireStrength = friendlyAssetsFirepower;
             }
 
-            /* others Assets */
+            /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
-                var allcivs = new List<string>();
+                var otherCivs = new List<Civilization>();
+                var otherCivKeys = new List<string>();
                 if (hostileAssets.Station != null)
                 {
-                    //HostileStationItem.Header = hostileAssets.Station;
-                    allcivs.Add(hostileAssets.Station.Owner.Key);
+                    HostileStationItem.Header = hostileAssets.Station;
+                    otherCivs.Add(hostileAssets.Station.Owner);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.CombatShips)
                 {
-                    //HostileCombatantItems.Items.Add(shipStats);
-                    allcivs.Add(shipStats.Owner.Key);
+                    HostileCombatantItems.Items.Add(shipStats);
+                    otherCivs.Add(shipStats.Owner);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.NonCombatShips)
                 {
-                    //HostileNonCombatantItems.Items.Add(shipStats);
-                    allcivs.Add(shipStats.Owner.Key);
+                    HostileNonCombatantItems.Items.Add(shipStats);
+                    otherCivs.Add(shipStats.Owner);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.EscapedShips)
                 {
-                    //HostileEscapedItems.Items.Add(shipStats);
-                    allcivs.Add(shipStats.Owner.Key);
+                    HostileEscapedItems.Items.Add(shipStats);
+                    otherCivs.Add(shipStats.Owner);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.DestroyedShips)
                 {
-                    //HostileDestroyedItems.Items.Add(shipStats);
-                    allcivs.Add(shipStats.Owner.Key);
+                    HostileDestroyedItems.Items.Add(shipStats);
+                    otherCivs.Add(shipStats.Owner);
                 }
                 foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
                 {
-                    //HostileAssimilatedItems.Items.Add(shipStats);
-                    allcivs.Add(shipStats.Owner.Key);
+                    HostileAssimilatedItems.Items.Add(shipStats);
+                    otherCivs.Add(shipStats.Owner);
                 }
-                allcivs.Add("TRUMP");
-                allcivs.Add("CLINTON");
-                _otherCivs = allcivs.Distinct().ToList();
+                foreach (Civilization civ in otherCivs)
+                {
+                    otherCivKeys.Add("TRUMPS");
+                    otherCivKeys.Add(civ.Key);
+                    otherCivKeys.Add("CLINTONS");
+                }
 
-                foreach (string Other in _otherCivs)
-                { 
-                    OtherCivilizationsItem.Items.Add(Other);
+                _otherCivsKeys = otherCivKeys.Distinct().ToList();
+                OtherCivsKeys = _otherCivsKeys;
+                _otherCivs = otherCivs;
+                OtherCivs = _otherCivs;
+
+                foreach (string Other in _otherCivsKeys)
+                {
+                    OtherCivilizationsSummaryItem.Items.Add(Other);
+ 
+                    //OtherCivilizationsDropDown.Items.Add(Other);
+                    //OtherCivilizationsHeaderDropDown.Header.Add(Other);
                 }
             }
 
@@ -367,23 +384,23 @@ namespace Supremacy.Client
             FriendlyAssimilatedItems.Visibility = FriendlyAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendlyEscapedItems.Header = FriendlyEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
             FriendlyEscapedItems.Visibility = FriendlyEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            //HostileStationItem.Visibility = HostileStationItem.HasHeader ? Visibility.Visible : Visibility.Collapsed;
-            //HostileCombatantItems.Header = HostileCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_COMBATANT_UNITS") : null;
-            //HostileCombatantItems.Visibility = HostileCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            //HostileNonCombatantItems.Header = HostileNonCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS") : null;
-            //HostileNonCombatantItems.Visibility = HostileNonCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            //HostileDestroyedItems.Header = HostileDestroyedItems.HasItems ? ResourceManager.GetString("COMBAT_DESTROYED_UNITS") : null;
-            //HostileDestroyedItems.Visibility = HostileDestroyedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            //HostileAssimilatedItems.Header = HostileAssimilatedItems.HasItems ? ResourceManager.GetString("COMBAT_ASSIMILATED_UNITS") : null;
-            //HostileAssimilatedItems.Visibility = HostileAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            //HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
-            //HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            foreach (string civ in MyTestList)
-            {
-                OtherCivilizationsItem.Header = OtherCivilizationsItem.HasItems ? civ : null;
-                OtherCivilizationsItem.Visibility = OtherCivilizationsItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
-                OtherCivilizationsItem.Visibility = OtherCivilizationsItem.HasHeader ? Visibility.Visible : Visibility.Collapsed;
-            }
+            HostileStationItem.Visibility = HostileStationItem.HasHeader ? Visibility.Visible : Visibility.Collapsed;
+            HostileCombatantItems.Header = HostileCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_COMBATANT_UNITS") : null;
+            HostileCombatantItems.Visibility = HostileCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileNonCombatantItems.Header = HostileNonCombatantItems.HasItems ? ResourceManager.GetString("COMBAT_NON-COMBATANT_UNITS") : null;
+            HostileNonCombatantItems.Visibility = HostileNonCombatantItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileDestroyedItems.Header = HostileDestroyedItems.HasItems ? ResourceManager.GetString("COMBAT_DESTROYED_UNITS") : null;
+            HostileDestroyedItems.Visibility = HostileDestroyedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileAssimilatedItems.Header = HostileAssimilatedItems.HasItems ? ResourceManager.GetString("COMBAT_ASSIMILATED_UNITS") : null;
+            HostileAssimilatedItems.Visibility = HostileAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
+            HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+  
+           OtherCivilizationsSummaryItem.Visibility = OtherCivilizationsSummaryItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
+               //OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
+                //OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
+                //OtherCivilizationsDropDown.Visibility = OtherCivilizationsDropDown.HasItems ? Visibility.Visible : Visibility.Collapsed;
+         
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)

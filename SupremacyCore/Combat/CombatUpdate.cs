@@ -53,10 +53,10 @@ namespace Supremacy.Combat
         {
             get
             {
-                _friendlyEmpireStrength = _combatPartyStrengths[Owner.Key.ToString()];
-                GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
-                _friendlyEmpireStrength = _combatPartyStrengths[Owner.Key];
-                GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
+                //_friendlyEmpireStrength = _combatPartyStrengths[Owner.Key.ToString()];
+                //GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
+                //_friendlyEmpireStrength = _combatPartyStrengths[Owner.Key];
+                //GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
                 return _friendlyEmpireStrength + 1;
                 //return _friendlyEmpireStrength;
             }
@@ -116,10 +116,10 @@ namespace Supremacy.Combat
         {
             get
             {
-                foreach (var empire in _combatPartyStrengths)
-                {
-                    GameLog.Core.General.DebugFormat("EmpireStrength {1} for {0}", empire.Key, empire.Value);
-                }
+                //foreach (var empire in _combatPartyStrengths)
+                //{
+                //    GameLog.Core.General.DebugFormat("EmpireStrength {1} for {0}", empire.Key, empire.Value);
+                //}
 
                 return _combatPartyStrengths;
             }
