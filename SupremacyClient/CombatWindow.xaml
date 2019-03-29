@@ -358,7 +358,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0"
-                Grid.ColumnSpan="1"
+                Grid.ColumnSpan="2"
                 Grid.Row="0"
                 Margin="6,6,5,6"
                 Orientation="Vertical">
@@ -366,20 +366,19 @@
                  FontSize="20pt"
                  FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                  Foreground="{DynamicResource HeaderTextBrush}"
-                 HorizontalAlignment="Center"/>
+                 HorizontalAlignment="Left"/>
             <TextBlock x:Name="SubHeaderText"
                  FontSize="12pt"
                  FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                  Foreground="{DynamicResource DefaultTextBrush}"
-                 TextAlignment="Center"
-                 HorizontalAlignment="Center"/>
+                 TextAlignment="Left"
+                 HorizontalAlignment="Left"/>
         </StackPanel>
 
         <!--COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
         <GroupBox Header="{Binding Path=Owner}"
                     Grid.Column="0"
                     Grid.Row="1"
-                  Grid.RowSpan="2"
                     Width="Auto"            
                     Margin="2">
 
@@ -466,26 +465,23 @@
 
         <!-- COMBAT_Hostile(OTHER)_UNITS source path & items name to 'Hierarchal'DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}"                   
-                    Grid.Column="1"
-                    Grid.Row="2"
-                  Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Grid.Row="1"
                     Width="Auto"            
                     Margin="2">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Visible"
                     CanContentScroll="False">
                 <TreeView x:Name="OtherCivsKey" 
                           ItemsSource="{Binding OtherCivsKeys}"
-                            Grid.Column="1"
-                            Grid.Row="2"     
+                            Grid.Column="2"
+                            Grid.Row="1"     
                             BorderThickness="0"                
                             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                            FontSize="10pt"
-                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                            ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            FontSize="10pt">
                     <StackPanel 
-                                Grid.Column="1"
-                                Grid.Row="2"
+                                Grid.Column="2"
+                                Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center"
@@ -550,17 +546,17 @@
         
         <!--content=s:StringResource COMBAT_BUTTONS +-->
         <StackPanel Grid.Column="1"
-                Grid.ColumnSpan="1"
+                Grid.ColumnSpan="3"
                 Grid.Row="0"
                 Margin="8,6,3,6"
                 Orientation="Vertical">
             <StackPanel x:Name="UpperButtonsPanel"
                 Margin="6"
                 Grid.Column="1"
-                Grid.ColumnSpan="2"
+                Grid.ColumnSpan="3"
                 Grid.Row="0"
                 Orientation="Horizontal"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Right">
                 <Button x:Name="EngageButton"
                   Style="{DynamicResource StandardButtonStyle}"
                   Content="{s:StringResource COMBAT_ENGAGE}"
@@ -612,10 +608,10 @@
             <StackPanel x:Name="LowerButtonsPanel"
                 Margin="6"
                 Grid.Column="1"
-                Grid.ColumnSpan="2"
+                Grid.ColumnSpan="3"
                 Grid.Row="0"
                 Orientation="Horizontal"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Right">
                 <Button x:Name="FormationButton"
                 Style="{DynamicResource StandardButtonStyle}"
                 Margin="6,0,0,0"
