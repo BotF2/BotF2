@@ -72,8 +72,14 @@ namespace Supremacy.Combat
 
         public int TotalFirepower
         {
-            get { return _totalFirepower; }
-            set { _totalFirepower = value; }
+            get
+            {
+                return _totalFirepower;
+            }
+            set
+            {
+                _totalFirepower = value;
+            }
         }
 
         public double FavorTheBoldMalus

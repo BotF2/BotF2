@@ -53,34 +53,46 @@ namespace Supremacy.Combat
         {
             get
             {
+                foreach (var fa in FriendlyAssets)
+                {
+
+                    foreach (var cs in fa.CombatShips)   // only combat ships 
+                    {
+                        _friendlyEmpireStrength += cs.FirePower;
+                        //  (cs.Source.OrbitalDesign.PrimaryWeapon.Damage * cs.Source.OrbitalDesign.PrimaryWeapon.Count)
+                        //+ (cs.Source.OrbitalDesign.SecondaryWeapon.Damage * cs.Source.OrbitalDesign.SecondaryWeapon.Count);
+                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+                            cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _friendlyEmpireStrength);
+                    }
+
+                    try
+                    {
+                        _friendlyEmpireStrength += fa.Station.FirePower;
+                        //  (fa.Station.FirePower  fa.Source.OrbitalDesign.PrimaryWeapon.Damage * cs.Source.OrbitalDesign.PrimaryWeapon.Count)
+                        //+ (cs.Source.OrbitalDesign.SecondaryWeapon.Damage * cs.Source.OrbitalDesign.SecondaryWeapon.Count);
+                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
+                            fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
+                    }
+                    catch
+                    {
+                        //GameLog.Core.CombatDetails.DebugFormat("NO station for adding _friendlyEmpireStrength");
+                    }
+                }
+                //foreach (var cs in FriendlyAssets)
+                //    _friendlyEmpireStrength += cs.CombatShips.;
                 //_friendlyEmpireStrength = _combatPartyStrengths[Owner.Key.ToString()];
                 //GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
                 //_friendlyEmpireStrength = _combatPartyStrengths[Owner.Key];
                 //GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
-                return _friendlyEmpireStrength + 1;
-                //return _friendlyEmpireStrength;
-            }
-            set
-            {
-                _friendlyEmpireStrength = 123;
-                //_friendlyEmpireStrength = value;
+                //return _friendlyEmpireStrength + 1;
+                return _friendlyEmpireStrength;
             }
         }
 
-        public int HostileEmpireStrength
-        {
-            get
-            {
-                GameLog.Core.General.DebugFormat("_hostileEmpireStrength = {0}", _hostileEmpireStrength);
-                return _hostileEmpireStrength + 2;
-                //return _hostileEmpireStrength;
-            }
-            set
-            {
-                _hostileEmpireStrength = 123;
-                //_hostileEmpireStrength = value;
-            }
-        }
+        //public void HostileEmpireStrength (Civilization hostileEmpire)
+        //{
+        //    return _hostileEmpireStrength = 0; 
+        //}
 
         public int CombatID
         {
@@ -116,10 +128,10 @@ namespace Supremacy.Combat
         {
             get
             {
-                //foreach (var empire in _combatPartyStrengths)
-                //{
-                //    GameLog.Core.General.DebugFormat("EmpireStrength {1} for {0}", empire.Key, empire.Value);
-                //}
+                foreach (var empire in _combatPartyStrengths)
+                {
+                    GameLog.Core.General.DebugFormat("EmpireStrength {1} for {0}", empire.Key, empire.Value);
+                }
 
                 return _combatPartyStrengths;
             }
@@ -127,7 +139,11 @@ namespace Supremacy.Combat
 
         public IList<CombatAssets> FriendlyAssets
         {
-            get { return _friendlyAssets; }
+            get
+            {
+                
+                return _friendlyAssets;
+            }
         }
 
         public IList<CombatAssets> HostileAssets
