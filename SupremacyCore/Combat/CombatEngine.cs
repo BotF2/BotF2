@@ -310,7 +310,7 @@ namespace Supremacy.Combat
         {
             lock (_orders)
             {
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound");
                 Running = true;
 
 
@@ -399,9 +399,48 @@ namespace Supremacy.Combat
                 var owner = playerAsset.Owner;
                 var friendlyAssets = new List<CombatAssets>();
                 var hostileAssets = new List<CombatAssets>();
-                var empireStrengths = new Dictionary<string, int>();
+                var empireStrengths = new Dictionary<Civilization, int>();
 
                 friendlyAssets.Add(playerAsset);
+
+                var CivForEmpireStrength = _assets.Distinct().ToList();
+                foreach (var civ in CivForEmpireStrength)
+                {
+                    //GameLog.Core.Combat.DebugFormat("beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
+
+                    int currentEmpireStrength = 0;
+
+                    foreach (var cs in _assets)  // only combat ships
+                    {
+                        //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
+                        if (cs.Owner.Key == civ.Owner.Key)
+                        {
+                            //GameLog.Core.Combat.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire {1}", cs.Owner.Key, civ.Owner.ToString());
+
+                            foreach (var ship in cs.CombatShips)
+                            {
+                                currentEmpireStrength += ship.FirePower;
+                                //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
+                                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                            }
+
+                            if (cs.Station != null)
+                                currentEmpireStrength += cs.Station.FirePower;
+
+                        }
+                    }
+
+                    //GameLog.Core.Combat.DebugFormat("at the end try to add value for Empire {0}", civ.Owner.Key, currentEmpireStrength);
+
+                    empireStrengths.Add(civ.Owner, currentEmpireStrength);
+                }
+
+                // just for controlling
+                foreach (var civ in empireStrengths)   // the dictionary contains the values
+                {
+                    GameLog.Core.CombatDetails.DebugFormat("CombatID: {0} - CivForEmpireStrength for Empire {1} = {2}", _combatId, civ.Key, civ.Value);
+                }
+
 
                 foreach (var otherAsset in _assets)
                 {

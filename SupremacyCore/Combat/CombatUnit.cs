@@ -106,7 +106,7 @@ namespace Supremacy.Combat
             {
                 var _unit = Source.OrbitalDesign;
                 _firepower = (_unit.PrimaryWeapon.Damage * _unit.PrimaryWeapon.Count) + (_unit.SecondaryWeapon.Damage * _unit.SecondaryWeapon.Count);
-                GameLog.Core.CombatDetails.DebugFormat("{0} has FirePower = {1}", _unit.Key, _firepower);
+                //GameLog.Core.CombatDetails.DebugFormat("{0} has FirePower = {1}", _unit.Key, _firepower);
                 return _firepower; 
             }
         }
