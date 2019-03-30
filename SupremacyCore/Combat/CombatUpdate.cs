@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         private IList<CombatAssets> _hostileAssets;
 
         private int _friendlyEmpireStrength;
-        private int _hostileEmpireStrength;
+        private int _allHostileEmpireStrength;
 
         public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
@@ -65,17 +65,13 @@ namespace Supremacy.Combat
                             cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _friendlyEmpireStrength);
                     }
 
-                    try
+                    if (fa.Station != null)
                     {
                         _friendlyEmpireStrength += fa.Station.FirePower;
                         //  (fa.Station.FirePower  fa.Source.OrbitalDesign.PrimaryWeapon.Damage * cs.Source.OrbitalDesign.PrimaryWeapon.Count)
                         //+ (cs.Source.OrbitalDesign.SecondaryWeapon.Damage * cs.Source.OrbitalDesign.SecondaryWeapon.Count);
                         GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
                             fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
-                    }
-                    catch
-                    {
-                        //GameLog.Core.CombatDetails.DebugFormat("NO station for adding _friendlyEmpireStrength");
                     }
                 }
                 //foreach (var cs in FriendlyAssets)
@@ -89,10 +85,39 @@ namespace Supremacy.Combat
             }
         }
 
-        //public void HostileEmpireStrength (Civilization hostileEmpire)
-        //{
-        //    return _hostileEmpireStrength = 0; 
-        //}
+        public int AllHostileEmpireStrength
+        {
+            get
+            {
+                foreach (var ha in HostileAssets)
+                {
+
+                    foreach (var cs in ha.CombatShips)   // only combat ships 
+                    {
+                        _allHostileEmpireStrength += cs.FirePower;
+                        //  (cs.Source.OrbitalDesign.PrimaryWeapon.Damage * cs.Source.OrbitalDesign.PrimaryWeapon.Count)
+                        //+ (cs.Source.OrbitalDesign.SecondaryWeapon.Damage * cs.Source.OrbitalDesign.SecondaryWeapon.Count);
+
+
+                        // works well
+                        //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+                        //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
+                    }
+
+                    if (ha.Station != null)
+                    {
+                        _allHostileEmpireStrength += ha.Station.FirePower;
+                        //  (fa.Station.FirePower  fa.Source.OrbitalDesign.PrimaryWeapon.Damage * cs.Source.OrbitalDesign.PrimaryWeapon.Count)
+                        //+ (cs.Source.OrbitalDesign.SecondaryWeapon.Damage * cs.Source.OrbitalDesign.SecondaryWeapon.Count);
+
+                    // works well
+                        //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0}  - in total now {1}",
+                        //    ha.Station.Name, _hostileEmpireStrength); 
+                    }
+                }
+                return _allHostileEmpireStrength;
+            }
+        }
 
         public int CombatID
         {
