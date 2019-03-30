@@ -337,7 +337,7 @@
         <!--Main Combat Window - Begin-->
     </FrameworkElement.Resources>
     <Grid 
-        Height="650"
+        Height="700"
         Width="1500">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -382,15 +382,13 @@
                     Width="Auto"            
                     Margin="2">
 
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto"
-                        CanContentScroll="False">
                 <TreeView x:Name="FriendlyAssetsTree"
                         BorderThickness="0"
+                        MaxHeight="600"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="10pt"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        ScrollViewer.VerticalScrollBarVisibility="Visible">
                  
                     <StackPanel 
                             Grid.Column="0"
@@ -412,8 +410,7 @@
                                 Stretch="UniformToFill"/>
                             </Border.Background>
                         </Border>
-                        <!--<StackPanel Grid.Column="1"
-                        Orientation="Horizontal">-->
+
                         <TextBlock  Foreground="White"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt" 
@@ -441,44 +438,93 @@
                     <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
                     <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
                 </TreeView>
-            </ScrollViewer>
+       
         </GroupBox>
 
-            <!-- COMBAT_Hostile(OTHER) SUMMARY +-->
+        <!-- COMBAT_COMBOBOX_DropDown PICK_LISTs +-->
+        <StackPanel
+            Orientation="Vertical"
+            Grid.Column="1"
+                Grid.ColumnSpan="1"
+            Grid.RowSpan="2"
+                Grid.Row="1">
+        <StackPanel Grid.Column="1"
+                Grid.ColumnSpan="1"
+                Grid.Row="1"
+                Margin="7,6,4,6"
+                Orientation="Horizontal">
+            <ComboBox x:Name="DropDown1" 
+                  ItemsSource="{Binding CombatWindow}"
+                  Grid.Column="1"
+                    Grid.Row="1"
+                    Width="Auto"
+                      Height="Auto"
+                      Margin="7,6,4,6"
+                    BorderThickness="0"
+                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    FontSize="10pt">
 
+                <ComboBoxItem Name="PrimaryTargetDropDown"/>
+                <!--<TreeViewItem Name="OtherCivilizationsHeaderDropDown"/>
+
+                <TreeViewItem Name="OtherCivilizationsDropDown" IsExpanded="True"/>-->
+
+            </ComboBox>
+
+            <ComboBox x:Name="DropDown2" 
+                  ItemsSource="{Binding CombatWindow}"
+                  Grid.Column="1"
+                    Grid.Row="1"
+                    Width="Auto"
+                      Height="Auto"
+                      Margin="7,6,4,6"
+                    BorderThickness="0"
+                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    FontSize="10pt">
+                <ComboBoxItem Name="SecondaryTargetDropDown"/>
+                <!--<TreeViewItem Name="OtherCivilizationsHeaderDropDown"/>
+
+                <TreeViewItem Name="OtherCivilizationsDropDown2" IsExpanded="True"/>-->
+
+            </ComboBox>
+        </StackPanel>
+        
+        <!--COMBAT_Hostile(OTHER) SUMMARY +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}"                   
                     Grid.Column="1"
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Width="Auto"            
                     Margin="2">
             <TreeView x:Name="OtherCivilizationsSummaryItem" 
                               ItemsSource="{Binding OtherCivilizationsHeaderItem}"
                                 Grid.Column="1"
                                 Grid.Row="1"     
-                                BorderThickness="0"                
+                                BorderThickness="0" 
+                                MaxHeight="600"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="10pt"
-                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto">
             </TreeView>
         </GroupBox>
-
-        <!-- COMBAT_Hostile(OTHER)_UNITS source path & items name to 'Hierarchal'DataTemple in .cs +-->
+        </StackPanel>
+        <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to 'Hierarchal'DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}"                   
                     Grid.Column="2"
                     Grid.Row="1"
                     Width="Auto"            
                     Margin="2">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Visible"
-                    CanContentScroll="False">
+            
                 <TreeView x:Name="OtherCivsKey" 
                           ItemsSource="{Binding OtherCivsKeys}"
                             Grid.Column="2"
                             Grid.Row="1"     
-                            BorderThickness="0"                
+                            BorderThickness="0" 
+                          MaxHeight="600"
                             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                            FontSize="10pt">
+                            FontSize="10pt"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <StackPanel 
                                 Grid.Column="2"
                                 Grid.Row="1"
@@ -507,7 +553,7 @@
                     <TreeViewItem Name="HostileAssimilatedItems" IsExpanded="True"/>
                     <TreeViewItem Name="HostileEscapedItems" IsExpanded="True"/>
                 </TreeView>
-            </ScrollViewer>
+         
         </GroupBox>
 
         <!-- COMBAT_COMBOBOX_PICK_LIST_DROPDOWN +-->

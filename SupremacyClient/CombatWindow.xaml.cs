@@ -121,10 +121,11 @@ namespace Supremacy.Client
 
             //DataTemplate civDropDownTemplate = TryFindResource("CivDropDownTemplate") as DataTemplate;
 
-            // OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
+            //OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
             //OtherCivilizationsDropDown.ItemTemplate = civDropDownTemplate;
-            //ComboBoxItem civDropDownTemplate = TryFindResource("CivTreeDropDownTemplate") as ComboBoxItem;
-            //OtherCivilizationsDropDown = civDropDownTemplate;
+            ComboBoxItem civDropDownTemplate = TryFindResource("CivTreeDropDownTemplate") as ComboBoxItem;
+            PrimaryTargetDropDown = civDropDownTemplate;
+            SecondaryTargetDropDown = civDropDownTemplate;
 
             OtherCivsKeys = _otherCivsKeys;
             
@@ -259,9 +260,9 @@ namespace Supremacy.Client
             HostileDestroyedItems.Items.Clear();
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
-           //OtherCivilizationsHeaderDropDown.Header = null;
-            //OtherCivilizationsDropDown.Items.Clear();
-           OtherCivilizationsSummaryItem.Items.Clear();
+            //OtherCivilizationsHeaderDropDown.Header = null;
+            //OtherCivilizationsDropDown.Clear();
+            OtherCivilizationsSummaryItem.Items.Clear();
 
         }
 
@@ -362,8 +363,8 @@ namespace Supremacy.Client
                 foreach (string Other in _otherCivsKeys)
                 {
                     OtherCivilizationsSummaryItem.Items.Add(Other);
- 
-                    //OtherCivilizationsDropDown.Items.Add(Other);
+
+                    //OtherCivilizationsDropDown.Add(Other);
                     //OtherCivilizationsHeaderDropDown.Header.Add(Other);
                 }
             }
