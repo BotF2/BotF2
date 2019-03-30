@@ -41,8 +41,8 @@ namespace Supremacy.Client
         private CombatAssets _playerAssets;
         private List<String> _otherCivsKeys;
         private List<Civilization> _otherCivs;
-        private Civilization _primeTargetOftheCivilzation; // primary player-selected civ to attack
-        private Civilization _secondTargetOftheCivilzation; // secondary player-selected civ to attack
+        private Civilization _primeTargetCivilzation; // primary player-selected civ to attack
+        private Civilization _secondTargetCivilzation; // secondary player-selected civ to attack
         private Dictionary<string, CombatUnit> _ourFiendlyCombatUnits; // do I need combat unit or combat assets here?
         private Dictionary<string, CombatUnit> _othersCombatUnits;
         //protected int _friendlyEmpireStrength;
@@ -60,6 +60,18 @@ namespace Supremacy.Client
             get { return _otherCivsKeys; }
             set { _otherCivsKeys = value; }
         }
+
+        public Civilization PrimaryTargetCivilization
+        {
+            get { return _primeTargetCivilzation; }
+            set { _primeTargetCivilzation = value; }
+        }
+        public Civilization SecondaryTargetCivilization
+        {
+            get { return _secondTargetCivilzation; }
+            set { _secondTargetCivilzation = value; }
+        }
+
 
         //public string FriendlyEmpireStrengthString
         //{
@@ -119,13 +131,20 @@ namespace Supremacy.Client
             HostileAssimilatedItems.ItemTemplate = civItemTemplate;
             HostileEscapedItems.ItemTemplate = civItemTemplate;
 
-            //DataTemplate civDropDownTemplate = TryFindResource("CivDropDownTemplate") as DataTemplate;
+            DataTemplate civDropDownTemplate = TryFindResource("CivDropDownTemplate") as DataTemplate;
 
             //OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
-            //OtherCivilizationsDropDown.ItemTemplate = civDropDownTemplate;
-            ComboBoxItem civDropDownTemplate = TryFindResource("CivTreeDropDownTemplate") as ComboBoxItem;
-            PrimaryTargetDropDown = civDropDownTemplate;
-            SecondaryTargetDropDown = civDropDownTemplate;
+            //OtherCivilizationsDropDown1.ItemTemplate = civDropDownTemplate;
+            OtherCivilizationsDropDown2.ItemTemplate = civDropDownTemplate;
+
+            //DataTemplate civDropDownTemplate2 = TryFindResource("CivDropDownTemplate") as DataTemplate;
+
+            ////OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
+            //OtherCivilizationsDropDown2.ItemTemplate = civDropDownTemplate2;
+
+            //ComboBoxItem civDropDownTemplate = TryFindResource("CivTreeDropDownTemplate") as ComboBoxItem;
+            //PrimaryTargetCivilizationItem.ItemTemplate = civDropDownTemplate;
+            //SecondaryTargetListItem = civDropDownTemplate;
 
             OtherCivsKeys = _otherCivsKeys;
             
@@ -322,6 +341,7 @@ namespace Supremacy.Client
                 {
                     HostileStationItem.Header = hostileAssets.Station;
                     otherCivs.Add(hostileAssets.Station.Owner);
+                   
                 }
                 foreach (CombatUnit shipStats in hostileAssets.CombatShips)
                 {
@@ -348,6 +368,8 @@ namespace Supremacy.Client
                     HostileAssimilatedItems.Items.Add(shipStats);
                     otherCivs.Add(shipStats.Owner);
                 }
+
+                // Add each Civilization key from otherCivs and creating foo civilizations for testing
                 foreach (Civilization civ in otherCivs)
                 {
                     otherCivKeys.Add("TRUMPS");
@@ -358,14 +380,16 @@ namespace Supremacy.Client
                 _otherCivsKeys = otherCivKeys.Distinct().ToList();
                 OtherCivsKeys = _otherCivsKeys;
                 _otherCivs = otherCivs;
-                OtherCivs = _otherCivs;
+                 OtherCivs = _otherCivs;
 
                 foreach (string Other in _otherCivsKeys)
                 {
                     OtherCivilizationsSummaryItem.Items.Add(Other);
-
-                    //OtherCivilizationsDropDown.Add(Other);
+                    
+                    //PrimaryTargetDropDown.Add(Other);
                     //OtherCivilizationsHeaderDropDown.Header.Add(Other);
+                    //OtherCivilizationsDropDown1.Items.Add(Other);
+                    OtherCivilizationsDropDown2.Items.Add(Other);
                 }
             }
 
@@ -398,10 +422,11 @@ namespace Supremacy.Client
             HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
   
            OtherCivilizationsSummaryItem.Visibility = OtherCivilizationsSummaryItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
-               //OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
-                //OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
-                //OtherCivilizationsDropDown.Visibility = OtherCivilizationsDropDown.HasItems ? Visibility.Visible : Visibility.Collapsed;
-         
+           // OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
+           // OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
+           // OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
+
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -429,6 +454,16 @@ namespace Supremacy.Client
         {
             //base.DialogResult = true;
             DialogResult = true;
+        }
+
+        private void OtherCivilizationsDropDown2_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+
+        }
+
+        private void OtherCivilizationsDropDown1_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+
         }
     }
 }
