@@ -55,27 +55,61 @@ namespace Supremacy.Client
 
         public List<Civilization> OtherCivs
         {
-            get { return _otherCivs; }
-            set { _otherCivs = value; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
+                return _otherCivs;
+            }
+            set
+            {
+                GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
+                _otherCivs = value;
+            }
         }
 
         public List<string> OtherCivsKeys
         {
-            get { return _otherCivsKeys; }
-            set { _otherCivsKeys = value; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("OtherCivsKeys - GET: _otherCivsKeys = {0}", _otherCivsKeys.ToString());
+                return _otherCivsKeys;
+            }
+            set
+            {
+                GameLog.Core.Combat.DebugFormat("OtherCivsKeys - SET: _otherCivsKeys = {0}", value.ToString());
+                _otherCivsKeys = value;
+            }
            
         }
         //List<string> ListOtherCivsKeys = OtherCivsKeys;
 
         public Civilization PrimaryTargetCivilization
         {
-            get { return _primeTargetCivilzation; }
-            set { _primeTargetCivilzation = value; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("PrimaryTargetCivilization - GET: _otherCivsKeys = {0}", _primeTargetCivilzation.ToString());
+                return _primeTargetCivilzation;
+            }
+            set
+            {
+
+                _primeTargetCivilzation = value;
+                GameLog.Core.Combat.DebugFormat("PrimaryTargetCivilization - SET: _otherCivsKeys = {0}", _primeTargetCivilzation.ToString());
+            }
         }
+
         public Civilization SecondaryTargetCivilization
         {
-            get { return _secondTargetCivilzation; }
-            set { _secondTargetCivilzation = value; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
+                return _secondTargetCivilzation;
+            }
+            set
+            {
+                _secondTargetCivilzation = value;
+                GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
+            }
         }
 
       
@@ -126,7 +160,7 @@ namespace Supremacy.Client
 
             //OtherCivsKeys = _otherCivsKeys;
             
-            //FriendlyEmpireStrength = _friendlyEmpireStrength;
+
 
         }
 
@@ -206,15 +240,12 @@ namespace Supremacy.Client
                 }
             }
 
-            //_friendlyEmpireStrength = 100;
-
             //if (_playerAssets.Owner.IsEmpire && _playerAssets.Owner.Key == "Mike")
             //{
             //    _friendlyEmpireStrength = _update.EmpireStrengths[_appContext.LocalPlayer.Empire.Key.ToString()];
             //    GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
             //}
 
-            //string FriendlyEmpireStrengthString = _friendlyEmpireStrength.ToString();
 
             PopulateUnitTrees();
 
@@ -262,6 +293,8 @@ namespace Supremacy.Client
             //OtherCivilizationsHeaderDropDown.Header = null;
             //OtherCivilizationsDropDown.Clear();
             OtherCivilizationsSummaryItem.Items.Clear();
+            GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
+
 
         }
 
@@ -355,22 +388,27 @@ namespace Supremacy.Client
                     //otherCivKeys.Add("TRUMPS");
                     otherCivKeys.Add(civ.Key);
                     otherCivKeys.Add("CLINTONS");
+                    // works but not neccessary   GameLog.Core.Combat.DebugFormat("adding into otherCivs: civ.key = {0}", civ.Key);
                 }
 
                 _otherCivsKeys = otherCivKeys.Distinct().ToList();
-                //OtherCivsKeys = _otherCivsKeys;
+                OtherCivsKeys = _otherCivsKeys;
                 _otherCivs = otherCivs;
-                 OtherCivs = _otherCivs;
+                 //OtherCivs = _otherCivs;
                 var _OtherCivsKeys = _otherCivsKeys;
 
                 foreach (string Other in _otherCivsKeys)
                 {
                     OtherCivilizationsSummaryItem.Items.Add(Other);
-                    
+                    GameLog.Core.Combat.DebugFormat("_otherCivsKeys containing = {0}", Other.ToString());
+
                     //PrimaryTargetDropDown.Add(Other);
                     //OtherCivilizationsHeaderDropDown.Header.Add(Other);
+
                     //OtherCivilizationsDropDown1.Items.Add(Other);
+
                     OtherCivilizationsDropDown2.Items.Add(Other);
+                    GameLog.Core.Combat.DebugFormat("_otherCivsKeys: Added to OtherCivilizationsDropDown2.Items: Other = {0}", Other.ToString());
                 }
             }
 
@@ -453,8 +491,10 @@ namespace Supremacy.Client
                 {
                     _designInstance = new OtherCivsKey(DesignTimeAppContext.Instance)
                     {
+
                         //SelectedOtherCivsKey = DesignTimeObjects.OtherCivsKey
                     };
+                    GameLog.Core.Combat.DebugFormat("OtherCivsKey DesignInstance - GET: _designInstance = {0}", _designInstance.ToString());
                 }
                 return _designInstance;
             }
@@ -473,16 +513,24 @@ namespace Supremacy.Client
             var handler = SelectedOtherCivsKeyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedRoutedEventArgs<OtherCivsKey>(oldValue, newValue));
+
+            GameLog.Core.Combat.DebugFormat("SelectedOtherCivsKeyChanged...");
+
             OnPropertyChanged("SelectedOtherCivsKey");
         }
 
         public OtherCivsKey SelectedOtherCivsKey
         {
-            get { return _selectedOtherCivsKey; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("SelectedOtherCivsKey - GET: _selectedOtherCivsKey = {0}", _selectedOtherCivsKey.ToString());
+                return _selectedOtherCivsKey;
+            }
             set
             {
                 var oldValue = _selectedOtherCivsKey;
                 _selectedOtherCivsKey = value;
+                GameLog.Core.Combat.DebugFormat("SelectedOtherCivsKey - SET: oldvalue = {0}, _selectedOtherCivsKey NEW = {1}", oldValue.ToString(), _selectedOtherCivsKey.ToString());
                 OnSelectedOtherCivsKeyChanged(oldValue, value);
             }
         }
@@ -498,17 +546,25 @@ namespace Supremacy.Client
             var handler = OtherCivsKeysChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
+
+            GameLog.Core.Combat.DebugFormat("OnOtherCivsKeysChanged...");
+
             OnPropertyChanged("OtherCivsKeys");
         }
 
         public IEnumerable<OtherCivsKey> ListOtherCivsKeys
         {
-            get { return _OtherCivsKeys; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("ListOtherCivsKeys: GET _OtherCivsKeys = {0}", _OtherCivsKeys);
+                return _OtherCivsKeys;
+            }
             set
             {
                 if (Equals(_otherCivsKeys, value))
                     return;
                 _OtherCivsKeys = value;
+                GameLog.Core.Combat.DebugFormat("ListOtherCivsKeys: SET _OtherCivsKeys = {0}", _OtherCivsKeys);
                 OnOtherCivsKeysChanged();
             }
         }
@@ -521,15 +577,21 @@ namespace Supremacy.Client
 
         public string Name
         {
-            get { return _otherCivKey; }
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("GET  Name for Combat = {0}", _otherCivKey);
+                return _otherCivKey;
+            }
             set
             {
+                GameLog.Core.Combat.DebugFormat("SET  Name for Combat = {0}", _otherCivKey);
                 _otherCivKey = value;
             }
         }
 
         public OtherCivsKey(DesignTimeAppContext instance)
         {
+            GameLog.Core.Combat.DebugFormat("OtherCivsKey(DesignTimeAppContext instance)....");
             this.instance = instance;
         }
 
@@ -544,6 +606,7 @@ namespace Supremacy.Client
                     var oldHandler = _propertyChanged;
                     var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
+                    GameLog.Core.Combat.DebugFormat("PropertyChangedEventHandler -ADD");
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
                 }
@@ -555,6 +618,7 @@ namespace Supremacy.Client
                     var oldHandler = _propertyChanged;
                     var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
+                    GameLog.Core.Combat.DebugFormat("PropertyChangedEventHandler -REMOVE");
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
                 }
@@ -562,6 +626,7 @@ namespace Supremacy.Client
         }
         protected virtual void OnPropertyChanged(string propertyName)
         {
+            GameLog.Core.Combat.DebugFormat("OnPropertyChanged");
             _propertyChanged.Raise(this, propertyName);
         }
     }
