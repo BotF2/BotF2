@@ -28,6 +28,10 @@ using Supremacy.Utility;
 using System.Linq;
 using System.Collections.Generic;
 using Supremacy.Entities;
+using Supremacy.Universe;
+using System.ComponentModel;
+using System.Threading;
+using Supremacy.Game;
 
 namespace Supremacy.Client
 {
@@ -59,7 +63,9 @@ namespace Supremacy.Client
         {
             get { return _otherCivsKeys; }
             set { _otherCivsKeys = value; }
+           
         }
+        //List<string> ListOtherCivsKeys = OtherCivsKeys;
 
         public Civilization PrimaryTargetCivilization
         {
@@ -72,39 +78,11 @@ namespace Supremacy.Client
             set { _secondTargetCivilzation = value; }
         }
 
-
-        //public string FriendlyEmpireStrengthString
-        //{
-        //    get
-        //    {
-        //        GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
-
-        //        return "100";
-        //        //return _friendlyEmpireStrengthString;
-        //        //return _friendlyEmpireStrength;
-        //    }
-
-        //}
-
-        //public int FriendlyEmpireStrength
-        //{
-        //    get
-        //    {
-        //        GameLog.Core.General.DebugFormat("_friendlyEmpireStrength = {0}", _friendlyEmpireStrength);
-        //        return 100;
-        //        //return _friendlyEmpireStrength;
-        //    }
-        //    set
-        //    {
-        //        _friendlyEmpireStrength = 123;
-        //        //_friendlyEmpireStrength = value;
-        //    }
-        //}
-
+      
         public CombatWindow()
         {
             InitializeComponent();
-           // DataContext = this;
+          
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
             DataTemplate itemTemplate = TryFindResource("FriendTreeItemTemplate") as DataTemplate;
@@ -134,7 +112,7 @@ namespace Supremacy.Client
             DataTemplate civDropDownTemplate = TryFindResource("CivDropDownTemplate") as DataTemplate;
 
             //OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
-            OtherCivilizationsDropDown1.ItemTemplate = civDropDownTemplate;
+            //OtherCivilizationsDropDown1.ItemTemplate = civDropDownTemplate;
             OtherCivilizationsDropDown2.ItemTemplate = civDropDownTemplate;
 
             //DataTemplate civDropDownTemplate2 = TryFindResource("CivDropDownTemplate") as DataTemplate;
@@ -146,11 +124,13 @@ namespace Supremacy.Client
             //PrimaryTargetCivilizationItem.ItemTemplate = civDropDownTemplate;
             //SecondaryTargetListItem = civDropDownTemplate;
 
-            OtherCivsKeys = _otherCivsKeys;
+            //OtherCivsKeys = _otherCivsKeys;
             
             //FriendlyEmpireStrength = _friendlyEmpireStrength;
 
         }
+
+
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
         {
@@ -378,9 +358,10 @@ namespace Supremacy.Client
                 }
 
                 _otherCivsKeys = otherCivKeys.Distinct().ToList();
-                OtherCivsKeys = _otherCivsKeys;
+                //OtherCivsKeys = _otherCivsKeys;
                 _otherCivs = otherCivs;
                  OtherCivs = _otherCivs;
+                var _OtherCivsKeys = _otherCivsKeys;
 
                 foreach (string Other in _otherCivsKeys)
                 {
@@ -388,7 +369,7 @@ namespace Supremacy.Client
                     
                     //PrimaryTargetDropDown.Add(Other);
                     //OtherCivilizationsHeaderDropDown.Header.Add(Other);
-                    OtherCivilizationsDropDown1.Items.Add(Other);
+                    //OtherCivilizationsDropDown1.Items.Add(Other);
                     OtherCivilizationsDropDown2.Items.Add(Other);
                 }
             }
@@ -424,7 +405,7 @@ namespace Supremacy.Client
            OtherCivilizationsSummaryItem.Visibility = OtherCivilizationsSummaryItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
            // OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
            // OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
-           OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
+           //OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
         }
@@ -456,6 +437,133 @@ namespace Supremacy.Client
             DialogResult = true;
         }
 
+    }
+     
+    public class OtherCivsKey : INotifyPropertyChanged
+    {
+        private string _otherCivKey = "Reg";
+        private List<String> _otherCivsKeys;
+        private static OtherCivsKey _designInstance;
+
+        public static OtherCivsKey DesignInstance
+        {
+            get
+            {
+                if (_designInstance == null)
+                {
+                    _designInstance = new OtherCivsKey(DesignTimeAppContext.Instance)
+                    {
+                        //SelectedOtherCivsKey = DesignTimeObjects.OtherCivsKey
+                    };
+                }
+                return _designInstance;
+            }
+        }
+        //public Civilization Civilization
+        //{
+        //    get { return GameContext.Current.Universe.Get<Civilization>(_otherCiv.CivID); }
+        //}
+        #region OtherCivsKey Property
+        public event EventHandler SelectedOtherCivsKeyChanged;
+
+        private OtherCivsKey _selectedOtherCivsKey;
+
+        private void OnSelectedOtherCivsKeyChanged(OtherCivsKey oldValue, OtherCivsKey newValue)
+        {
+            var handler = SelectedOtherCivsKeyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedRoutedEventArgs<OtherCivsKey>(oldValue, newValue));
+            OnPropertyChanged("SelectedOtherCivsKey");
+        }
+
+        public OtherCivsKey SelectedOtherCivsKey
+        {
+            get { return _selectedOtherCivsKey; }
+            set
+            {
+                var oldValue = _selectedOtherCivsKey;
+                _selectedOtherCivsKey = value;
+                OnSelectedOtherCivsKeyChanged(oldValue, value);
+            }
+        }
+        #endregion
+        #region OtherCivsKeys Property
+        public event EventHandler OtherCivsKeysChanged;
+
+        private IEnumerable<OtherCivsKey> _OtherCivsKeys;
+        private DesignTimeAppContext instance;
+
+        private void OnOtherCivsKeysChanged()
+        {
+            var handler = OtherCivsKeysChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+            OnPropertyChanged("OtherCivsKeys");
+        }
+
+        public IEnumerable<OtherCivsKey> ListOtherCivsKeys
+        {
+            get { return _OtherCivsKeys; }
+            set
+            {
+                if (Equals(_otherCivsKeys, value))
+                    return;
+                _OtherCivsKeys = value;
+                OnOtherCivsKeysChanged();
+            }
+        }
+        #endregion
+
+        //public override sealed Entities
+        //{
+        //    get { return Universe.Entities; }
+        //}
+
+        public string Name
+        {
+            get { return _otherCivKey; }
+            set
+            {
+                _otherCivKey = value;
+            }
+        }
+
+        public OtherCivsKey(DesignTimeAppContext instance)
+        {
+            this.instance = instance;
+        }
+
+        [NonSerialized] private PropertyChangedEventHandler _propertyChanged;
+
+        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        {
+            add
+            {
+                while (true)
+                {
+                    var oldHandler = _propertyChanged;
+                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+
+                    if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                        return;
+                }
+            }
+            remove
+            {
+                while (true)
+                {
+                    var oldHandler = _propertyChanged;
+                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+
+                    if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                        return;
+                }
+            }
+        }
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            _propertyChanged.Raise(this, propertyName);
+        }
     }
 }
 

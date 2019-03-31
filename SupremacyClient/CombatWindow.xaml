@@ -514,20 +514,20 @@
                         Width="21"
                         Margin="3,0,0,0" />
                     <ComboBox 
-                        x:Name="OtherCivilizationsDropDown1" 
+                  
                         Grid.Column="1"
                           Grid.Row="1"
                           Margin="3,0,0,0"
                           IsEditable="False"
                           IsReadOnly="True"
                           MinWidth="150"
-                          ItemsSource="{Binding Path=Colonies, Mode=OneWay}"
-                          SelectedItem="{Binding Path=SelectedColony, Mode=TwoWay}">
-                        <!--<ComboBox.ItemTemplate>
+                          ItemsSource="{Binding Path=OtherCivsKey, Mode=OneWay}"
+                          SelectedItem="{Binding Path=SelectedOtherCivsKey, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Path=Name, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}" />
                             </DataTemplate>
-                        </ComboBox.ItemTemplate>-->
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Rectangle Grid.Column="2"
                            Grid.Row="0"
@@ -573,7 +573,7 @@
                     <!--<ComboBoxItem Name="OtherCivsKeys1"/>-->
 
                     <TreeViewItem Name="OtherCivilizationsDropDown2" IsExpanded="True"/>
-                    <TreeViewItem Name="OtherCivilizationsDropDown" IsExpanded="True"/>
+                    <!--<TreeViewItem Name="OtherCivilizationsDropDown" IsExpanded="True"/>-->
                 </ComboBox>
             </StackPanel>
         
