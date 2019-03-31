@@ -347,7 +347,7 @@
                 <TextBlock Foreground="Red"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt" 
-                                    Text="- Name of Civ Here" />
+                                    Text="{Binding Path=OtherCivsKeys}"/>
                 <!--{Binding Path=Source.Civilization.Key}"/>-->
 
 
@@ -497,7 +497,7 @@
                 Orientation="Horizontal"
                     Background="DarkRed"
                     HorizontalAlignment="Center">
-            
+
                 <Grid Grid.Column="1"
                     Grid.Row="0"
                     Grid.IsSharedSizeScope="False">
@@ -513,20 +513,21 @@
                         CornerRadius="14,0,0,14"
                         Width="21"
                         Margin="3,0,0,0" />
-                    <ComboBox Grid.Column="1"
-                          Grid.Row="0"
+                    <ComboBox 
+                        x:Name="OtherCivilizationsDropDown1" 
+                        Grid.Column="1"
+                          Grid.Row="1"
                           Margin="3,0,0,0"
                           IsEditable="False"
                           IsReadOnly="True"
-                          MinWidth="200"
-                      
-                          ItemsSource="{Binding Path=OtherCivs, Mode=OneWay}"
-                          SelectedItem="{Binding Path=PrimaryTargetCivilization, Mode=TwoWay}">
-                        <ComboBox.ItemTemplate>
+                          MinWidth="150"
+                          ItemsSource="{Binding Path=Colonies, Mode=OneWay}"
+                          SelectedItem="{Binding Path=SelectedColony, Mode=TwoWay}">
+                        <!--<ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=Key, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}" />
+                                <TextBlock Text="{Binding Path=Name, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}" />
                             </DataTemplate>
-                        </ComboBox.ItemTemplate>
+                        </ComboBox.ItemTemplate>-->
                     </ComboBox>
                     <Rectangle Grid.Column="2"
                            Grid.Row="0"
@@ -547,32 +548,32 @@
                       Height="Auto"
                       Margin="7,6,40,6"
                     BorderThickness="3"
-                      MouseWheel="OtherCivilizationsDropDown1_MouseWheel"
+
                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     FontSize="10pt">
 
-                    --><!--<ComboBoxItem Name="OtherCivsKeys1"/>--><!--
+                    --><!--ComboBoxItem Name="OtherCivsKeys1"/>--><!--
 
                 <TreeViewItem Name="OtherCivilizationsDropDownX" IsExpanded="True"/>
                     
             </ComboBox>-->
 
-                <ComboBox x:Name="OtherCivilizationsDropDown2" 
-                  ItemsSource="{Binding OtherCivilizationsDropDown}"
+                <ComboBox  
+     
                   Grid.Column="1"
                     Grid.Row="1"
                     Width="Auto"
                       Height="Auto"
                       Margin="7,6,40,6"
                     BorderThickness="3"
-                          MouseWheel="OtherCivilizationsDropDown2_MouseWheel"
+
                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     FontSize="10pt">
 
                     <!--<ComboBoxItem Name="OtherCivsKeys1"/>-->
 
-                    <TreeViewItem Name="OtherCivilizationsDropDownY" IsExpanded="True"/>
-
+                    <TreeViewItem Name="OtherCivilizationsDropDown2" IsExpanded="True"/>
+                    <TreeViewItem Name="OtherCivilizationsDropDown" IsExpanded="True"/>
                 </ComboBox>
             </StackPanel>
         

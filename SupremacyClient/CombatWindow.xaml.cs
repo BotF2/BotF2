@@ -104,7 +104,7 @@ namespace Supremacy.Client
         public CombatWindow()
         {
             InitializeComponent();
-            DataContext = this;
+           // DataContext = this;
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
             DataTemplate itemTemplate = TryFindResource("FriendTreeItemTemplate") as DataTemplate;
@@ -134,7 +134,7 @@ namespace Supremacy.Client
             DataTemplate civDropDownTemplate = TryFindResource("CivDropDownTemplate") as DataTemplate;
 
             //OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
-            //OtherCivilizationsDropDown1.ItemTemplate = civDropDownTemplate;
+            OtherCivilizationsDropDown1.ItemTemplate = civDropDownTemplate;
             OtherCivilizationsDropDown2.ItemTemplate = civDropDownTemplate;
 
             //DataTemplate civDropDownTemplate2 = TryFindResource("CivDropDownTemplate") as DataTemplate;
@@ -372,7 +372,7 @@ namespace Supremacy.Client
                 // Add each Civilization key from otherCivs and creating foo civilizations for testing
                 foreach (Civilization civ in otherCivs)
                 {
-                    otherCivKeys.Add("TRUMPS");
+                    //otherCivKeys.Add("TRUMPS");
                     otherCivKeys.Add(civ.Key);
                     otherCivKeys.Add("CLINTONS");
                 }
@@ -388,7 +388,7 @@ namespace Supremacy.Client
                     
                     //PrimaryTargetDropDown.Add(Other);
                     //OtherCivilizationsHeaderDropDown.Header.Add(Other);
-                    //OtherCivilizationsDropDown1.Items.Add(Other);
+                    OtherCivilizationsDropDown1.Items.Add(Other);
                     OtherCivilizationsDropDown2.Items.Add(Other);
                 }
             }
@@ -424,7 +424,7 @@ namespace Supremacy.Client
            OtherCivilizationsSummaryItem.Visibility = OtherCivilizationsSummaryItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
            // OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
            // OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
-           // OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
+           OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
             OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
         }
@@ -456,15 +456,6 @@ namespace Supremacy.Client
             DialogResult = true;
         }
 
-        private void OtherCivilizationsDropDown2_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-
-        }
-
-        private void OtherCivilizationsDropDown1_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-
-        }
     }
 }
 
