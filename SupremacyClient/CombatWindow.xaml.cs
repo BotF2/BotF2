@@ -130,8 +130,8 @@ namespace Supremacy.Client
 
             DataTemplate civHeaderTemplate = TryFindResource("OthersTreeSummaryTemplate") as DataTemplate;
             // the other civilizations summary
-       
-            OtherCivilizationsSummaryItem.ItemTemplate = civHeaderTemplate;
+            OtherCivilizationsSummaryItem1.ItemTemplate = civHeaderTemplate;
+            OtherCivilizationsSummaryItem2.ItemTemplate = civHeaderTemplate;
 
             DataTemplate civItemTemplate = TryFindResource("OthersTreeItemTemplate") as DataTemplate;
             // the items in each civilization of the others
@@ -292,7 +292,8 @@ namespace Supremacy.Client
             HostileEscapedItems.Items.Clear();
             //OtherCivilizationsHeaderDropDown.Header = null;
             //OtherCivilizationsDropDown2.Clear();
-            OtherCivilizationsSummaryItem.Items.Clear();
+            OtherCivilizationsSummaryItem1.Items.Clear();
+            OtherCivilizationsSummaryItem2.Items.Clear();
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
 
@@ -399,7 +400,8 @@ namespace Supremacy.Client
 
                 foreach (string Other in _otherCivsKeys)
                 {
-                    OtherCivilizationsSummaryItem.Items.Add(Other);
+                    OtherCivilizationsSummaryItem1.Items.Add(Other);
+                    OtherCivilizationsSummaryItem2.Items.Add(Other);
                     GameLog.Core.Combat.DebugFormat("_otherCivsKeys containing = {0}", Other.ToString());
 
                     //PrimaryTargetDropDown.Add(Other);
@@ -441,11 +443,12 @@ namespace Supremacy.Client
             HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
             HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
   
-           OtherCivilizationsSummaryItem.Visibility = OtherCivilizationsSummaryItem.HasItems ? Visibility.Visible : Visibility.Collapsed;
-           // OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
-           // OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
-           //OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown1.HasItems ? Visibility.Visible : Visibility.Collapsed;
-           // OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
+           OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            // OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
+            // OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
+            //OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown1.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            // OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
         }
 
