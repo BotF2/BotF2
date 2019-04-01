@@ -71,12 +71,12 @@ namespace Supremacy.Client
         {
             get
             {
-                GameLog.Core.Combat.DebugFormat("OtherCivsKeys - GET: _otherCivsKeys = {0}", _otherCivsKeys.ToString());
+                //GameLog.Core.Combat.DebugFormat("OtherCivsKeys - GET: _otherCivsKeys = {0}", _otherCivsKeys.ToString());
                 return _otherCivsKeys;
             }
             set
             {
-                GameLog.Core.Combat.DebugFormat("OtherCivsKeys - SET: _otherCivsKeys = {0}", value.ToString());
+                //GameLog.Core.Combat.DebugFormat("OtherCivsKeys - SET: _otherCivsKeys = {0}", value.ToString());
                 _otherCivsKeys = value;
             }
            
@@ -146,8 +146,8 @@ namespace Supremacy.Client
             DataTemplate civDropDownTemplate = TryFindResource("CivDropDownTemplate") as DataTemplate;
 
             //OtherCivilizationsHeaderDropDown.HeaderTemplate = civDropDownTemplate;
-            //OtherCivilizationsDropDown1.ItemTemplate = civDropDownTemplate;
-            OtherCivilizationsDropDown2.ItemTemplate = civDropDownTemplate;
+           // OtherCivilizationsDropDown1.ItemTemplate = civDropDownTemplate;
+            //OtherCivilizationsDropDown2.ItemTemplate = civDropDownTemplate;
 
             //DataTemplate civDropDownTemplate2 = TryFindResource("CivDropDownTemplate") as DataTemplate;
 
@@ -291,7 +291,7 @@ namespace Supremacy.Client
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
             //OtherCivilizationsHeaderDropDown.Header = null;
-            //OtherCivilizationsDropDown.Clear();
+            //OtherCivilizationsDropDown2.Clear();
             OtherCivilizationsSummaryItem.Items.Clear();
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
@@ -407,9 +407,10 @@ namespace Supremacy.Client
 
                     //OtherCivilizationsDropDown1.Items.Add(Other);
 
-                    OtherCivilizationsDropDown2.Items.Add(Other);
+                   // OtherCivilizationsDropDown2.Items.Add(Other);
                     GameLog.Core.Combat.DebugFormat("_otherCivsKeys: Added to OtherCivilizationsDropDown2.Items: Other = {0}", Other.ToString());
                 }
+                
             }
 
             ShowHideUnitTrees();
@@ -444,7 +445,7 @@ namespace Supremacy.Client
            // OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
            // OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
            //OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown1.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
+           // OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
         }
 
@@ -476,33 +477,32 @@ namespace Supremacy.Client
         }
 
     }
-     
+
     public class OtherCivsKey : INotifyPropertyChanged
     {
         private string _otherCivKey = "Reg";
-        private List<String> _otherCivsKeys;
-        private static OtherCivsKey _designInstance;
+        private IAppContext _appContext;
 
-        public static OtherCivsKey DesignInstance
-        {
-            get
-            {
-                if (_designInstance == null)
-                {
-                    _designInstance = new OtherCivsKey(DesignTimeAppContext.Instance)
-                    {
+        //private List<String> _otherCivsKeys;
+        //private static OtherCivsKey _designInstance;
 
-                        //SelectedOtherCivsKey = DesignTimeObjects.OtherCivsKey
-                    };
-                    GameLog.Core.Combat.DebugFormat("OtherCivsKey DesignInstance - GET: _designInstance = {0}", _designInstance.ToString());
-                }
-                return _designInstance;
-            }
-        }
-        //public Civilization Civilization
+        //public static OtherCivsKey DesignInstance
         //{
-        //    get { return GameContext.Current.Universe.Get<Civilization>(_otherCiv.CivID); }
+        //    get
+        //    {
+        //        if (_designInstance == null)
+        //        {
+        //            _designInstance = new OtherCivsKey(DesignTimeAppContext.Instance)
+        //            {
+
+        //                //SelectedOtherCivsKey = DesignTimeObjects.OtherCivsKey
+        //            };
+        //            GameLog.Core.Combat.DebugFormat("OtherCivsKey DesignInstance - GET: _designInstance = {0}", _designInstance.ToString());
+        //        }
+        //        return _designInstance;
+        //    }
         //}
+
         #region OtherCivsKey Property
         public event EventHandler SelectedOtherCivsKeyChanged;
 
@@ -534,11 +534,12 @@ namespace Supremacy.Client
                 OnSelectedOtherCivsKeyChanged(oldValue, value);
             }
         }
+
         #endregion
         #region OtherCivsKeys Property
         public event EventHandler OtherCivsKeysChanged;
 
-        private IEnumerable<OtherCivsKey> _OtherCivsKeys;
+        private IEnumerable<OtherCivsKey> _otherCivsKeys;
         private DesignTimeAppContext instance;
 
         private void OnOtherCivsKeysChanged()
@@ -552,19 +553,19 @@ namespace Supremacy.Client
             OnPropertyChanged("OtherCivsKeys");
         }
 
-        public IEnumerable<OtherCivsKey> ListOtherCivsKeys
+        public IEnumerable<OtherCivsKey> OtherCivsKeys
         {
             get
             {
-                GameLog.Core.Combat.DebugFormat("ListOtherCivsKeys: GET _OtherCivsKeys = {0}", _OtherCivsKeys);
-                return _OtherCivsKeys;
+                GameLog.Core.Combat.DebugFormat("OtherCivsKeys: GET _OtherCivsKeys = {0}", _otherCivsKeys);
+                return _otherCivsKeys;
             }
             set
             {
                 if (Equals(_otherCivsKeys, value))
                     return;
-                _OtherCivsKeys = value;
-                GameLog.Core.Combat.DebugFormat("ListOtherCivsKeys: SET _OtherCivsKeys = {0}", _OtherCivsKeys);
+                _otherCivsKeys = value;
+                GameLog.Core.Combat.DebugFormat("OtherCivsKeys: SET _OtherCivsKeys = {0}", _otherCivsKeys);
                 OnOtherCivsKeysChanged();
             }
         }

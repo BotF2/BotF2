@@ -180,14 +180,11 @@
                         <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
                                     Stretch="UniformToFill"/>
                     </Border.Background>
-                    <Image Source="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
-                             HorizontalAlignment="Right"
-                             VerticalAlignment="Bottom"
-                             Margin="0,0,4,4"
-                             Width="16"
-                             Height="16"
-                             Stretch="Uniform">
-                    </Image>
+          
+
+                        <Image x:Name="ImageContent" Source="vfs:///Resources/Images/GeneralEvents/Red_Alert_Logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+
+        
                 </Border>
 
                 <TextBlock  Foreground="White"
@@ -484,13 +481,13 @@
         </GroupBox>
 
         <!-- COMBAT_COMBOBOX_DropDown PICK_LISTs +-->
-        <StackPanel
+        <!--<StackPanel
             Orientation="Vertical"
             Grid.Column="1"
                 Grid.ColumnSpan="1"
             Grid.RowSpan="2"
-                Grid.Row="1">
-        <StackPanel Grid.Column="1"
+                Grid.Row="1">-->
+        <!--<StackPanel Grid.Column="1"
                 Grid.ColumnSpan="1"
                 Grid.Row="1"
                 Margin="0,6,24,6"
@@ -514,15 +511,14 @@
                         Width="21"
                         Margin="3,0,0,0" />
                     <ComboBox 
-                  
+                  x:Name="OtherCivilizationsDropDown1"
                         Grid.Column="1"
                           Grid.Row="1"
                           Margin="3,0,0,0"
                           IsEditable="False"
                           IsReadOnly="True"
-                          MinWidth="150"
-                          ItemsSource="{Binding Path=OtherCivsKey, Mode=OneWay}"
-                          SelectedItem="{Binding Path=SelectedOtherCivsKey, Mode=TwoWay}">
+                          MinWidth="150">
+                 
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Path=Name, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}" />
@@ -539,7 +535,7 @@
                         CornerRadius="0,14,14,0"
                         Width="21"
                         Margin="3,0,0,0" />
-                </Grid>
+                </Grid>-->
                 <!--<ComboBox x:Name="OtherCivilizationsDropDown1" 
                   ItemsSource="{Binding OtherCivilizationsDropDown}"
                   Grid.Column="1"
@@ -558,7 +554,7 @@
                     
             </ComboBox>-->
 
-                <ComboBox  
+                <!--<ComboBox  
      
                   Grid.Column="1"
                     Grid.Row="1"
@@ -570,32 +566,47 @@
                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     FontSize="10pt">
 
-                    <!--<ComboBoxItem Name="OtherCivsKeys1"/>-->
+                    --><!--<ComboBoxItem Name="OtherCivsKeys1"/>--><!--
 
                     <TreeViewItem Name="OtherCivilizationsDropDown2" IsExpanded="True"/>
-                    <!--<TreeViewItem Name="OtherCivilizationsDropDown" IsExpanded="True"/>-->
+                    --><!--<TreeViewItem Name="OtherCivilizationsDropDown" IsExpanded="True"/>--><!--
                 </ComboBox>
-            </StackPanel>
+            </StackPanel>-->
         
         <!--COMBAT_Hostile(OTHER) SUMMARY +-->
-        <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}"                   
-                    Grid.Column="1"
-                    Grid.Row="2"
-                    Width="Auto"            
-                    Margin="2">
-            <TreeView x:Name="OtherCivilizationsSummaryItem" 
-                              ItemsSource="{Binding OtherCivilizationsHeaderItem}"
-                                Grid.Column="1"
-                                Grid.Row="1"     
-                                BorderThickness="0" 
-                                MaxHeight="600"
-                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                FontSize="10pt"
-                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto">
-            </TreeView>
-        </GroupBox>
-        </StackPanel>
+        <Grid>
+            <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}"                   
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Width="Auto"            
+                        Margin="2">
+                <TabControl>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="Primary Target" Foreground="Red"/>
+                        </TabItem.Header>
+                        <StackPanel>
+                            <TreeView x:Name="OtherCivilizationsSummaryItem" 
+                                                  ItemsSource="{Binding OtherCivilizationsHeaderItem}"
+                                                    Grid.Column="1"
+                                                    Grid.Row="1"     
+                                                    BorderThickness="0" 
+                                                    MaxHeight="600"
+                                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                    FontSize="10pt"
+                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                            </TreeView>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem>
+                       
+                    </TabItem>
+                </TabControl>
+            </GroupBox>
+        </Grid>
+        <!--</StackPanel>-->
         <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to 'Hierarchal'DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}"                   
                     Grid.Column="2"
@@ -675,8 +686,8 @@
                 <!--<TreeViewItem Name="OtherCivilizationsHeaderDropDown"/>--><!--
                 <TreeViewItem Name="OtherCivilizationsDropDown2" IsExpanded="True"/>
 
-            </ComboBox>--><!--
-        </StackPanel>-->
+            </ComboBox>-->
+        <!--</StackPanel>-->
         
         <!--content=s:StringResource COMBAT_BUTTONS +-->
         <StackPanel Grid.Column="1"
@@ -799,7 +810,7 @@
         <Button x:Name="CloseButton"
             Style="{DynamicResource StandardButtonStyle}"
             Margin="300,16,104,16"
-            Grid.Column="2"
+            Grid.Column="1"
             Grid.Row="0"
             HorizontalAlignment="Center"
             Content="{s:StringResource COMBAT_CLOSE}"
