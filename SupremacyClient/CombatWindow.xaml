@@ -574,7 +574,9 @@
             </StackPanel>-->
         
         <!--COMBAT_Hostile(OTHER) SUMMARY +-->
-        <Grid>
+        <StackPanel
+               Grid.Column="1"
+               Grid.Row="1">
             <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}"                   
                         Grid.Column="1"
                         Grid.Row="1"
@@ -585,7 +587,10 @@
                         <TabItem.Header>
                             <TextBlock Text="Primary Target" Foreground="Red"/>
                         </TabItem.Header>
-                        <StackPanel>
+                        <StackPanel
+                            Grid.Column="1"
+                            Grid.ColumnSpan="1"
+                            Grid.Row="1">
                             <TreeView x:Name="OtherCivilizationsSummaryItem" 
                                                   ItemsSource="{Binding OtherCivilizationsHeaderItem}"
                                                     Grid.Column="1"
@@ -605,8 +610,9 @@
                     </TabItem>
                 </TabControl>
             </GroupBox>
-        </Grid>
+        </StackPanel>
         <!--</StackPanel>-->
+        
         <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to 'Hierarchal'DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}"                   
                     Grid.Column="2"
