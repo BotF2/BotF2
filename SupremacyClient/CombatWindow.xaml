@@ -577,57 +577,76 @@
                 </ComboBox>
             </StackPanel>-->
         
-        <!--COMBAT_Hostile(OTHER) SUMMARY +-->
+        <!--SUMMARY OF COMBAT_Hostile(OTHER) +-->
         
-        <StackPanel Orientation="Horizontal"
+        <!--<StackPanel Orientation="Horizontal"
                Grid.Column="1"
-               Grid.Row="1">
-            <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}"                   
+               Grid.Row="1">-->
+        <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}" 
+                  Foreground="PaleVioletRed"
                         Grid.Column="1"
                         Grid.Row="1"
                         Width="Auto"            
                         Margin="2"> 
                 
-                <StackPanel
-                    Orientation="Vertical">
-            
-                <TabControl>
-
-                    
-
-                        <TabItem>
+        <StackPanel
+                       Grid.Column="1"
+                       Grid.Row="1"
+                       Orientation="Vertical">
+                    <!--<Grid>-->
+            <!--<TabControl TabStripPlacement="Bottom" Margin="0,0,0,0" Background="Black">
+                --><!--<TabControl.Resources>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <ContentPresenter Content="{TemplateBinding Content}">
+                                        <ContentPresenter.LayoutTransform>
+                                            <RotateTransform Angle="270" />
+                                        </ContentPresenter.LayoutTransform>
+                                    </ContentPresenter>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Padding" Value="3" />
+                    </Style>
+                </TabControl.Resources>--><!--
+                <TabItem>
                         <TabItem.Header>
                             <TextBlock Text="Primary Target" Foreground="Red" Background="Black"/>
-                        </TabItem.Header>
-                            
-                                <StackPanel
-                                Grid.Column="1"
-                                Grid.ColumnSpan="1"
-                                Grid.Row="1">
+                        </TabItem.Header>-->
+
+                        <StackPanel
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="1"
+                                        Grid.Row="1">
                             <TreeView x:Name="OtherCivilizationsSummaryItem1" 
-                                    ItemsSource="{Binding OtherCivilizationsHeaderItem}"
-                                    Grid.Column="1"
-                                    Grid.Row="1"     
-                                    BorderThickness="0" 
-                                    MaxHeight="600"
-                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                    FontSize="10pt"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                     
+                                      
+                                            ItemsSource="{Binding OtherCivilizationsHeaderItem}"
+                                            Grid.Column="1"
+                                            Grid.Row="1"     
+                                            BorderThickness="0" 
+                                            MaxHeight="600"
+                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                            FontSize="10pt"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto">
                             </TreeView>
+
                         </StackPanel>
-                                
-                    </TabItem>
-                     
-                        <TabItem>
+                    <!--</TabItem>-->
+                    <!--<TabItem>
                         <TabItem.Header>
                             <TextBlock Text="Secondary Target" Foreground="Orange" Background="Black"/>
-                        </TabItem.Header>
-                        <StackPanel
+                        </TabItem.Header>-->
+                        <!--<StackPanel
                             Grid.Column="1"
                             Grid.ColumnSpan="1"
                             Grid.Row="1">
                             <TreeView x:Name="OtherCivilizationsSummaryItem2" 
+                                     
+                                      
                                 ItemsSource="{Binding OtherCivilizationsHeaderItem}"
                                 Grid.Column="1"
                                 Grid.Row="1"     
@@ -638,18 +657,20 @@
                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto">
                             </TreeView>
-                        </StackPanel>
-                    </TabItem>
-                </TabControl>
-                    
+                        
+                        </StackPanel>-->
+                    <!--</TabItem>
+                      
+            </TabControl>-->
+                    <!--</Grid>-->
                     <Border x:Name="ImageBorder1"
-                            DockPanel.Dock="Left"
-                            VerticalAlignment="Top"
-                                Margin="2,4,2,4"
-                            Width="340"
-                            Height="330"
+                            DockPanel.Dock="Top"
+                            VerticalAlignment="Center"
+                            Margin="4,4,4,4"
+                            Width="300"
+                            Height="248"
                             BorderBrush="White"
-                            BorderThickness="2"
+                            BorderThickness="4"
                             CornerRadius="8">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
@@ -658,11 +679,11 @@
                         <Image x:Name="ImageContent" Source="vfs:///Resources/Images/GeneralEvents/Red_Alert_Logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
                     </Border>
                     
-                </StackPanel>
-              
-            </GroupBox>
-           
         </StackPanel>
+              
+        </GroupBox>
+           
+        <!--</StackPanel>-->
         <!--</StackPanel>-->
         
         <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to 'Hierarchal'DataTemple in .cs +-->

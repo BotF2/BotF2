@@ -81,7 +81,8 @@ namespace Supremacy.Client
             }
            
         }
-        //List<string> ListOtherCivsKeys = OtherCivsKeys;
+
+        public new bool OverridesDefaultStyle { get; set; }
 
         public Civilization PrimaryTargetCivilization
         {
@@ -131,7 +132,7 @@ namespace Supremacy.Client
             DataTemplate civHeaderTemplate = TryFindResource("OthersTreeSummaryTemplate") as DataTemplate;
             // the other civilizations summary
             OtherCivilizationsSummaryItem1.ItemTemplate = civHeaderTemplate;
-            OtherCivilizationsSummaryItem2.ItemTemplate = civHeaderTemplate;
+            //OtherCivilizationsSummaryItem2.ItemTemplate = civHeaderTemplate;
 
             DataTemplate civItemTemplate = TryFindResource("OthersTreeItemTemplate") as DataTemplate;
             // the items in each civilization of the others
@@ -293,7 +294,7 @@ namespace Supremacy.Client
             //OtherCivilizationsHeaderDropDown.Header = null;
             //OtherCivilizationsDropDown2.Clear();
             OtherCivilizationsSummaryItem1.Items.Clear();
-            OtherCivilizationsSummaryItem2.Items.Clear();
+           // OtherCivilizationsSummaryItem2.Items.Clear();
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
 
@@ -386,7 +387,7 @@ namespace Supremacy.Client
                 // Add each Civilization key from otherCivs and creating foo civilizations for testing
                 foreach (Civilization civ in otherCivs)
                 {
-                    //otherCivKeys.Add("TRUMPS");
+                    otherCivKeys.Add("TRUMPS");
                     otherCivKeys.Add(civ.Key);
                     otherCivKeys.Add("CLINTONS");
                     // works but not neccessary   GameLog.Core.Combat.DebugFormat("adding into otherCivs: civ.key = {0}", civ.Key);
@@ -401,7 +402,7 @@ namespace Supremacy.Client
                 foreach (string Other in _otherCivsKeys)
                 {
                     OtherCivilizationsSummaryItem1.Items.Add(Other);
-                    OtherCivilizationsSummaryItem2.Items.Add(Other);
+                    //OtherCivilizationsSummaryItem2.Items.Add(Other);
                     GameLog.Core.Combat.DebugFormat("_otherCivsKeys containing = {0}", Other.ToString());
 
                     //PrimaryTargetDropDown.Add(Other);
