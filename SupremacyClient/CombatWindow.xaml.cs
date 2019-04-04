@@ -47,7 +47,7 @@ namespace Supremacy.Client
         private List<Civilization> _otherCivs;
         private bool _playerIsShooting = true;
         private Civilization _shooterCivilization;
-        private Civilization _targetCivilzation; // player-selected civ to attack
+        private Civilization _targetCivilzation; // player-selected civ to attack 
      // private Civilization _secondTargetCivilzation; // secondary player-selected civ to attack
         private Dictionary<Civilization, Civilization> _whoIsShootingWho;
 
@@ -56,10 +56,12 @@ namespace Supremacy.Client
 
         private IAppContext _appContext;
 
-        public Dictionary<Civilization, Civilization> WhoIsShootingWho
+        public Dictionary<Civilization, Civilization> WhoIsShootingWho // WhoIsShootingWho[Civilization] returns the target Civilization try catch(KeyNotFoundException)
         {
+            
             get
             {   //Set current players civ to _shooterCivilization
+                //_shooterCivilization = Owner;
                 //if(Owner == _shooterCivilization)
                 //{
 
@@ -86,9 +88,8 @@ namespace Supremacy.Client
         }
 
         public DeferrableObservableCollection<Civilization> Civilizations;
-        // public new bool OverridesDefaultStyle { get; set; }
 
-        public Civilization TargetCivilization
+        public Civilization TargetCivilization  
         {
             get
             {
@@ -132,22 +133,18 @@ namespace Supremacy.Client
             FriendlyDestroyedItems.ItemTemplate = itemTemplate;
             FriendlyAssimilatedItems.ItemTemplate = itemTemplate;
             FriendlyEscapedItems.ItemTemplate = itemTemplate;
+            HostileStationItem.HeaderTemplate = itemTemplate;
+            HostileCombatantItems.ItemTemplate = itemTemplate;
+            HostileNonCombatantItems.ItemTemplate = itemTemplate;
+            HostileDestroyedItems.ItemTemplate = itemTemplate;
+            HostileAssimilatedItems.ItemTemplate = itemTemplate;
+            HostileEscapedItems.ItemTemplate = itemTemplate;
 
             DataTemplate civHeaderTemplate = TryFindResource("OthersTreeSummaryTemplate") as DataTemplate;
             // the other civilizations summary
             OtherCivilizationsSummaryItem1.ItemTemplate = civHeaderTemplate;
             //OtherCivilizationsSummaryItem2.ItemTemplate = civHeaderTemplate;
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs;
-
-            DataTemplate civItemTemplate = TryFindResource("OthersTreeItemTemplate") as DataTemplate;
-            // the items in each civilization of the others
-
-            HostileStationItem.HeaderTemplate = civItemTemplate;
-            HostileCombatantItems.ItemTemplate = civItemTemplate;
-            HostileNonCombatantItems.ItemTemplate = civItemTemplate;
-            HostileDestroyedItems.ItemTemplate = civItemTemplate;
-            HostileAssimilatedItems.ItemTemplate = civItemTemplate;
-            HostileEscapedItems.ItemTemplate = civItemTemplate;
 
         }
 
@@ -263,7 +260,6 @@ namespace Supremacy.Client
             // OtherCivilizationsSummaryItem2.Items.Clear();
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
-
         }
 
         private void PopulateUnitTrees()
@@ -317,7 +313,7 @@ namespace Supremacy.Client
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
                 var otherCivs = new List<Civilization>();
-                //var otherCivKeys = new List<string>();
+           
                 if (hostileAssets.Station != null)
                 {
                     HostileStationItem.Header = hostileAssets.Station;
@@ -392,10 +388,6 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             // OtherCivilizationsSummaryItem2.Visibility = OtherCivilizationsSummaryItem2.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            // OtherCivilizationsHeaderDropDown.Visibility = OtherCivilizationsHeaderDropDown.HasHeader ? Visibility.Visible : Visibility.Collapsed;
-            // OtherCivilizationsDropDown.Header = OtherCivilizationsDropDown.HasItems ? ResourceManager.GetString("COMBAT_CIVILIZATIONS") : null;
-            //OtherCivilizationsDropDown1.Visibility = OtherCivilizationsDropDown1.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            // OtherCivilizationsDropDown2.Visibility = OtherCivilizationsDropDown2.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
         }
         private void TargetButton_Click(object sender, RoutedEventArgs e)
@@ -406,6 +398,7 @@ namespace Supremacy.Client
                 Civilization deleteCiv = (Civilization)cmd.DataContext;
                 Civilizations.Remove(deleteCiv);
                 _targetCivilzation = (Civilization)cmd.DataContext;
+                WhoIsShootingWho.Add(_shooterCivilization, _targetCivilzation);
             }
         }
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -440,159 +433,3 @@ namespace Supremacy.Client
        
     }
 }
-
-    //public class OtherCivsKey : INotifyPropertyChanged
-    //{
-    //    private string _otherCivKey = "Reg";
-    //    private IAppContext _appContext;
-
-    //    //private List<String> _otherCivsKeys;
-    //    //private static OtherCivsKey _designInstance;
-
-    //    //public static OtherCivsKey DesignInstance
-    //    //{
-    //    //    get
-    //    //    {
-    //    //        if (_designInstance == null)
-    //    //        {
-    //    //            _designInstance = new OtherCivsKey(DesignTimeAppContext.Instance)
-    //    //            {
-
-    //    //                //SelectedOtherCivsKey = DesignTimeObjects.OtherCivsKey
-    //    //            };
-    //    //            GameLog.Core.Combat.DebugFormat("OtherCivsKey DesignInstance - GET: _designInstance = {0}", _designInstance.ToString());
-    //    //        }
-    //    //        return _designInstance;
-    //    //    }
-    //    //}
-
-    //    #region OtherCivsKey Property
-    //    public event EventHandler SelectedOtherCivsKeyChanged;
-
-    //    private OtherCivsKey _selectedOtherCivsKey;
-
-    //    private void OnSelectedOtherCivsKeyChanged(OtherCivsKey oldValue, OtherCivsKey newValue)
-    //    {
-    //        var handler = SelectedOtherCivsKeyChanged;
-    //        if (handler != null)
-    //            handler(this, new PropertyChangedRoutedEventArgs<OtherCivsKey>(oldValue, newValue));
-
-    //        GameLog.Core.Combat.DebugFormat("SelectedOtherCivsKeyChanged...");
-
-    //        OnPropertyChanged("SelectedOtherCivsKey");
-    //    }
-
-    //    public OtherCivsKey SelectedOtherCivsKey
-    //    {
-    //        get
-    //        {
-    //            GameLog.Core.Combat.DebugFormat("SelectedOtherCivsKey - GET: _selectedOtherCivsKey = {0}", _selectedOtherCivsKey.ToString());
-    //            return _selectedOtherCivsKey;
-    //        }
-    //        set
-    //        {
-    //            var oldValue = _selectedOtherCivsKey;
-    //            _selectedOtherCivsKey = value;
-    //            GameLog.Core.Combat.DebugFormat("SelectedOtherCivsKey - SET: oldvalue = {0}, _selectedOtherCivsKey NEW = {1}", oldValue.ToString(), _selectedOtherCivsKey.ToString());
-    //            OnSelectedOtherCivsKeyChanged(oldValue, value);
-    //        }
-    //    }
-
-    //    #endregion
-    //    #region OtherCivsKeys Property
-    //    public event EventHandler OtherCivsKeysChanged;
-
-    //    private IEnumerable<OtherCivsKey> _otherCivsKeys;
-    //    private DesignTimeAppContext instance;
-
-    //    private void OnOtherCivsKeysChanged()
-    //    {
-    //        var handler = OtherCivsKeysChanged;
-    //        if (handler != null)
-    //            handler(this, EventArgs.Empty);
-
-    //        GameLog.Core.Combat.DebugFormat("OnOtherCivsKeysChanged...");
-
-    //        OnPropertyChanged("OtherCivsKeys");
-    //    }
-
-    //    public IEnumerable<OtherCivsKey> OtherCivsKeys
-    //    {
-    //        get
-    //        {
-    //            GameLog.Core.Combat.DebugFormat("OtherCivsKeys: GET _OtherCivsKeys = {0}", _otherCivsKeys);
-    //            return _otherCivsKeys;
-    //        }
-    //        set
-    //        {
-    //            if (Equals(_otherCivsKeys, value))
-    //                return;
-    //            _otherCivsKeys = value;
-    //            GameLog.Core.Combat.DebugFormat("OtherCivsKeys: SET _OtherCivsKeys = {0}", _otherCivsKeys);
-    //            OnOtherCivsKeysChanged();
-    //        }
-    //    }
-    //    #endregion
-
-    //    //public override sealed Entities
-    //    //{
-    //    //    get { return Universe.Entities; }
-    //    //}
-
-    //    public string Name
-    //    {
-    //        get
-    //        {
-    //            GameLog.Core.Combat.DebugFormat("GET  Name for Combat = {0}", _otherCivKey);
-    //            return _otherCivKey;
-    //        }
-    //        set
-    //        {
-    //            GameLog.Core.Combat.DebugFormat("SET  Name for Combat = {0}", _otherCivKey);
-    //            _otherCivKey = value;
-    //        }
-    //    }
-
-    //    public OtherCivsKey(DesignTimeAppContext instance)
-    //    {
-    //        GameLog.Core.Combat.DebugFormat("OtherCivsKey(DesignTimeAppContext instance)....");
-    //        this.instance = instance;
-    //    }
-
-        //[NonSerialized] private PropertyChangedEventHandler _propertyChanged;
-
-        //event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-        //{
-        //    add
-        //    {
-        //        while (true)
-        //        {
-        //            var oldHandler = _propertyChanged;
-        //            var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
-
-        //            GameLog.Core.Combat.DebugFormat("PropertyChangedEventHandler -ADD");
-        //            if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
-        //                return;
-        //        }
-        //    }
-        //    remove
-        //    {
-        //        while (true)
-        //        {
-        //            var oldHandler = _propertyChanged;
-        //            var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
-
-        //            GameLog.Core.Combat.DebugFormat("PropertyChangedEventHandler -REMOVE");
-        //            if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
-        //                return;
-        //        }
-        //    }
-        //}
-        //protected virtual void OnPropertyChanged(string propertyName)
-        //{
-        //    GameLog.Core.Combat.DebugFormat("OnPropertyChanged");
-        //    _propertyChanged.Raise(this, propertyName);
-        //}
-//    }
-//}
-
