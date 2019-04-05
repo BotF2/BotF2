@@ -34,9 +34,9 @@
               Value="True"/>
         </Style>
 
-        <!--Friendly Data Template Detail view  of ONE item - Friendly Begin-->
+        <!--Friendly and Hostile Data Template Detail view  of ONE item - Begin-->
 
-        <DataTemplate x:Key="FriendTreeItemTemplate">
+        <DataTemplate x:Key="AssetsTreeItemTemplate">
             <DockPanel LastChildFill="True"
                  Margin="0,2,0,2">
                 <ui:BlockBar DockPanel.Dock="Left"
@@ -164,45 +164,59 @@
 
         <!-- Targeting with 'other' civs Summary Data Template for one item view  -->
         <DataTemplate x:Key="OthersTreeSummaryTemplate">
-            <StackPanel Margin="2,2,2,8"
+            <StackPanel Margin="0,2,0,0"
                         Orientation="Horizontal"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left">
-                <Grid Margin="12,0,12,0">
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="1"
-                            Content="Select"
-                            Foreground="Black"    
-                            Height="10"
-                            Click="TargetButton_Click"/>
-                </Grid>
-                <StackPanel
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    Orientation="Vertical">
                     <TextBlock Foreground="Yellow"
                                HorizontalAlignment="Left"
-                               FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                               FontSize="16pt" 
-                               Text="{Binding Path=ShortName}" />
+                               VerticalAlignment="Top"
+                                Margin="0,0,10,0"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontSize="22pt" 
+                                Text="{Binding Path=ShortName}" />
                     <StackPanel
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        Orientation="Horizontal">
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Orientation="Vertical">
                         <TextBlock  Foreground="White"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    FontSize="16pt"
+                                    FontSize="14pt"
+                                    VerticalAlignment="Top"
+                                    Margin="0"
                                     HorizontalAlignment="Left"
                                     Text="FirePower: "/>
                         <TextBlock  Foreground="White"
+                                    VerticalAlignment="Top"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt" 
                                     Text="{Binding Path=AllHostileEmpireStrength}"/>
                     </StackPanel>
-                </StackPanel>
+                    <Button Grid.Column="1"
+                            Grid.Row="0"
+                            Margin="0,5,0,5"
+                            Content="Primary Target"
+                            Foreground="Black"    
+                            Height="10"
+                            Click="TargetButton1_Click"/>
+                    <Button Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="0,5,0,0"
+                            Content="Secondary Target"
+                            Foreground="DarkRed"    
+                            Height="10"
+                            Click="TargetButton2_Click"/>
+
+                </Grid>
             </StackPanel>
         </DataTemplate>
 
@@ -216,17 +230,14 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0"
@@ -256,7 +267,6 @@
                     Grid.Row="1"
                     Width="Auto"            
                     Margin="2">
-
             <TreeView x:Name="FriendlyAssetsTree"
                         BorderThickness="0"
                         MaxHeight="600"
@@ -356,7 +366,17 @@
                             Grid.Column="1"
                             Grid.ColumnSpan="1"
                             Grid.Row="1">
-                    <ListBox x:Name="OtherCivilizationsSummaryItem1"  
+                    <Border x:Name="SummaryBorder"
+                                DockPanel.Dock="Top"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="4,4,4,4"
+                                Width="340"
+                                Height="95"
+                                BorderBrush="Gray"
+                                BorderThickness="4"
+                                CornerRadius="8">
+                        <ListBox x:Name="OtherCivilizationsSummaryItem1"  
                              IsSynchronizedWithCurrentItem="True"
                             ItemsSource="{Binding}"
                             ItemTemplate="{StaticResource OthersTreeSummaryTemplate}"
@@ -368,25 +388,22 @@
                             FontSize="10pt"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    </ListBox>
-
+                        </ListBox>
+                    </Border>
                 </StackPanel>
 
                 <Border x:Name="ImageBorder1"
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Margin="4,4,4,4"
-                                Width="300"
-                                Height="248"
+                                Margin="4,8,4,4"
+                                Width="340"
+                                Height="230"
                                 BorderBrush="White"
                                 BorderThickness="4"
                                 CornerRadius="8">
-                    <Border.Background>
-                        <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
-                                        Stretch="UniformToFill"/>
-                    </Border.Background>
-                    <Image x:Name="ImageContent" Source="vfs:///Resources/Images/GeneralEvents/Red_Alert_Logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+
+                    <Image x:Name="ImageContent" Source="vfs:///Resources/Images/GeneralEvents/Red_Alert_Logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
 
             </StackPanel>
@@ -402,8 +419,8 @@
                     Width="Auto"            
                     Margin="2">
             
-                <TreeView x:Name="OtherCivsKey" 
-                          ItemsSource="{Binding OtherCivsKeys}"
+                <TreeView x:Name="OtherCivsView" 
+                          ItemsSource="{Binding OtherCivs}"
                             Grid.Column="2"
                             Grid.Row="1"     
                             BorderThickness="0" 
@@ -419,7 +436,13 @@
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center">
-                        <Border x:Name="ImageBorderOthers"
+                        
+                        <!--<TextBlock Foreground="Yellow"
+                                   HorizontalAlignment="Left"
+                                   FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="16pt" 
+                                   Text="{Binding Path=ShortName}" />-->
+                    <!--<Border x:Name="ImageBorderOthers"
                                         DockPanel.Dock="Left"
                                         VerticalAlignment="Top"
                                         Width="45"
@@ -431,7 +454,7 @@
                                 <ImageBrush ImageSource="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
                                                 Stretch="UniformToFill"/>
                             </Border.Background>
-                        </Border>
+                        </Border>-->
                     </StackPanel>
                     <TreeViewItem Name="HostileStationItem"/>
                     <TreeViewItem Name="HostileCombatantItems" IsExpanded="True"/>
@@ -562,12 +585,13 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <Button x:Name="CloseButton"
+
+            <Button x:Name="CloseButton"
             Style="{DynamicResource StandardButtonStyle}"
-            Margin="300,16,104,16"
+            Margin="100,16,104,16"
             Grid.Column="1"
             Grid.Row="0"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             Content="{s:StringResource COMBAT_CLOSE}"
             Visibility="Collapsed"
             Click="OnCloseButtonClicked" Grid.RowSpan="1"/>
