@@ -32,6 +32,7 @@ using Supremacy.Universe;
 using System.ComponentModel;
 using System.Threading;
 using Supremacy.Game;
+using System.Collections.ObjectModel;
 
 namespace Supremacy.Client
 {
@@ -44,7 +45,8 @@ namespace Supremacy.Client
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
-        private bool _playerIsShooting = true;
+        private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?
+        //private bool _playerIsShooting = true; // do we need this? figure this out from whoIsShootingWhom...
         private List<Civilization> _shooterCivilizations1; // players civ and fight along side civs for Prime targets
         private List<Civilization> _shooterCivilizations2; // players civ and fight along side civs for Secondary targets
         private Civilization _targetCivilzation1; // player-selected civ to attack 
@@ -53,15 +55,24 @@ namespace Supremacy.Client
         private Dictionary<Civilization, Civilization> _whoIsShootingWhomSecond;
         //protected int _friendlyEmpireStrength;
         //public string _friendlyEmpireStrengthString = "444";
-
         private IAppContext _appContext;
+        //private readonly object choiceTextBlock;
 
+        //private object choiceTextBloack;
+
+        #region Constructors
+        //public CombatWindow(bool playerIsShooting)
+        //{
+        //    _playerIsShooting = playerIsShooting;
+        //}
+        // how to do a constuctor for a field that is a collection like _whoIsShootingWhomFirst
+        #endregion
+
+        #region Properties
         public Dictionary<Civilization, Civilization> WhoIsShootingWhomFirst // WhoIsShootingWhom[Civilization] returns the target Civilization try catch(KeyNotFoundException)
         {
-
             get
             {
-
                 return _whoIsShootingWhomFirst;
             }
             set
@@ -88,19 +99,33 @@ namespace Supremacy.Client
         {
             get
             {
-                //GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
+                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
                 return _otherCivs;
             }
             set
             {
-                //GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
+                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
                 _otherCivs = value;
             }
         }
 
-        //public DeferrableObservableCollection<Civilization> Civilizations;
+        public List<Civilization> FriendlyCivs // Do we really need this as a Property?
+        {
+            get
+            {
+                Civilization dummy = new Civilization();
+                dummy.Race = DUMMIES;
+                dummy.ShortName = "Dummy";
+                _friendlyCivs.Add(dummy);
+                return _friendlyCivs;
+            }
+            set
+            {
+                _friendlyCivs = value;
+            }
+        }
 
-        public Civilization TargetCivilization  
+        public Civilization TargetCivilization1  // does this need to be a public property? keep it private as the field?
         {
             get
             {
@@ -115,20 +140,23 @@ namespace Supremacy.Client
             }
         }
 
-        //public Civilization SecondaryTargetCivilization
-        //{
-        //    get
-        //    {
-        //        //GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
-        //        return _secondTargetCivilzation;
-        //    }
-        //    set
-        //    {
-        //        _secondTargetCivilzation = value;
-        //        //GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
-        //    }
-        //}
+        public Civilization TargetCivilization2 // does this need to be a public property? keep it private as the field?
+        {
+            get
+            {
+                //null ref crash GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
+                return _targetCivilzation2;
+            }
+            set
+            {
+                _targetCivilzation2 = value;
+                //null ref crash GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
+            }
+        }
 
+        public Race ROMULANS { get; private set; }
+        public Race DUMMIES { get; private set; }
+        #endregion
 
         public CombatWindow()
         {
@@ -151,16 +179,17 @@ namespace Supremacy.Client
             HostileAssimilatedItems.ItemTemplate = itemTemplate;
             HostileEscapedItems.ItemTemplate = itemTemplate;
 
-            //DataTemplate HeaderTemplate = TryFindResource("CivHeaderTemplate") as DataTemplate;
- 
-            //CivHeaderItem.ItemTemplate = HeaderTemplate;
+            DataTemplate civFriendTemplate = TryFindResource("FriendTreeTemplate") as DataTemplate;
+            // the other civilizations summary
+            FriendCivilizationsItems.ItemTemplate = civFriendTemplate;
+
+            FriendCivilizationsItems.DataContext = _friendlyCivs;
 
             DataTemplate civTemplate = TryFindResource("OthersTreeSummaryTemplate") as DataTemplate;
             // the other civilizations summary
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
-            //OtherCivilizationsSummaryItem2.ItemTemplate = civHeaderTemplate;
 
-            OtherCivilizationsSummaryItem1.DataContext = _otherCivs;
+            OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs, or so I hope
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -272,7 +301,8 @@ namespace Supremacy.Client
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
             OtherCivilizationsSummaryItem1.Items.Clear();
-            // OtherCivilizationsSummaryItem2.Items.Clear();
+            FriendCivilizationsItems.Items.Clear();
+
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
         }
@@ -281,17 +311,24 @@ namespace Supremacy.Client
         {
             ClearUnitTrees();
 
+            // turn off the dummy civilization when testing is over
+            Civilization rom = new Civilization();
+            rom.Race = ROMULANS;
+            rom.ShortName = "Romulans";
+            Civilization dummy = new Civilization();
+            dummy.Race = DUMMIES;
+            dummy.ShortName = "Dummy";
 
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-                int friendlyAssetsFirepower = 0;
+               // int friendlyAssetsFirepower = 0;
                 var shootingPlayerCivs = new List<Civilization>();
 
                 if (friendlyAssets.Station != null)
                 {
                     FriendlyStationItem.Header = friendlyAssets.Station;
                     shootingPlayerCivs.Add(friendlyAssets.Station.Owner);
-                    friendlyAssetsFirepower += friendlyAssets.Station.FirePower;
+                    //friendlyAssetsFirepower += friendlyAssets.Station.FirePower;
                 }
                 if (friendlyAssets.CombatShips != null)
                 {
@@ -299,7 +336,7 @@ namespace Supremacy.Client
                     {
                         FriendlyCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
-                        friendlyAssetsFirepower += shipStats.FirePower;
+                        //friendlyAssetsFirepower += shipStats.FirePower;
                     }
                 }
                 if (friendlyAssets.NonCombatShips != null)
@@ -308,13 +345,13 @@ namespace Supremacy.Client
                     {
                         FriendlyNonCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
-                        friendlyAssetsFirepower += shipStats.FirePower;
+                       // friendlyAssetsFirepower += shipStats.FirePower;
                     }
                 }
                 foreach (CombatUnit shipStats in friendlyAssets.DestroyedShips)
                 {
                     FriendlyDestroyedItems.Items.Add(shipStats);
-                    shootingPlayerCivs.Add(shipStats.Owner);
+                    //shootingPlayerCivs.Add(shipStats.Owner);
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
@@ -325,16 +362,26 @@ namespace Supremacy.Client
                 foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
                 {
                     FriendlyEscapedItems.Items.Add(shipStats);
-                    shootingPlayerCivs.Add(shipStats.Owner);
-                }               
-                _shooterCivilizations1 = shootingPlayerCivs.Distinct().ToList();
-                _shooterCivilizations2 = shootingPlayerCivs.Distinct().ToList();
+                  //  shootingPlayerCivs.Add(shipStats.Owner);
+                }
+                shootingPlayerCivs.Add(dummy);
+                shootingPlayerCivs =shootingPlayerCivs.Distinct().ToList();
+                _friendlyCivs = shootingPlayerCivs;
+                _shooterCivilizations1 = shootingPlayerCivs;
+                _shooterCivilizations2 = shootingPlayerCivs;
+                foreach (Civilization Friend in _friendlyCivs)
+                {
+                    FriendCivilizationsItems.Items.Add(Friend); // a template for rach other civ
+                    GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Friend.ShortName);
+                }
                 //_friendlyEmpireStrength = friendlyAssetsFirepower;
             }
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
+
+
                 var otherCivs = new List<Civilization>();
            
                 if (hostileAssets.Station != null)
@@ -367,15 +414,15 @@ namespace Supremacy.Client
                 {
                     HostileAssimilatedItems.Items.Add(shipStats);
                 }
-
+                otherCivs.Add(rom);
+               // otherCivs.Add(dummy);
                 _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field _otherCivs
-
-
+              
                 foreach (Civilization Other in _otherCivs)
                 {
                     OtherCivilizationsSummaryItem1.Items.Add(Other); // a template for rach other civ
                     GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Other.ShortName);
-                    //Civilizations.Add(Other);
+                    
                 }
 
             }
@@ -409,24 +456,30 @@ namespace Supremacy.Client
             HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            // OtherCivilizationsSummaryItem2.Visibility = OtherCivilizationsSummaryItem2.HasItems ? Visibility.Visible : Visibility.Collapsed;
-
+            FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+        }
+        private void SelectControl()
+        {
+            
         }
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
            
-             Button cmd = (Button)sender;
+             RadioButton cmd = sender as RadioButton;
+            //choiceTextBlock.Text = "Seleected" + cmd.GroupName + ": " + cmd.Name;
             if (cmd.DataContext is Civilization) // && Civilizations != null)
             {
+               // Civilization dummy = new Civilization();
                 Civilization theTargetedCiv = (Civilization)cmd.DataContext;
                 _targetCivilzation1 = theTargetedCiv;
                 Dictionary<Civilization, Civilization> myShooters = new Dictionary<Civilization, Civilization>();
+              //  myShooters.Add(dummy, dummy);
                 {
                     var shootist = _shooterCivilizations1.FirstOrDefault();
 
                     myShooters.Add(shootist, theTargetedCiv);
                     _whoIsShootingWhomFirst = myShooters;
-                    _shooterCivilizations1.Remove(shootist);
+                    if (myShooters.Count > 1) { _shooterCivilizations1.Remove(shootist); }
                     if(_shooterCivilizations1 != null)
                     {
                         foreach (Civilization shooter in _shooterCivilizations1)
@@ -450,18 +503,20 @@ namespace Supremacy.Client
         private void TargetButton2_Click(object sender, RoutedEventArgs e)
         {
 
-            Button cmd = (Button)sender;
+            RadioButton cmd = (RadioButton)sender;
             if (cmd.DataContext is Civilization) // && Civilizations != null)
             {
+               // Civilization dummy = new Civilization();
                 Civilization theTargetedCiv = (Civilization)cmd.DataContext;
                 _targetCivilzation2 = theTargetedCiv;
                 Dictionary<Civilization, Civilization> myShooters = new Dictionary<Civilization, Civilization>();
+               // myShooters.Add(dummy, dummy);
                 {
                     var shootist = _shooterCivilizations2.FirstOrDefault();
 
                     myShooters.Add(shootist, theTargetedCiv);
                     _whoIsShootingWhomSecond = myShooters;
-                    _shooterCivilizations2.Remove(shootist);
+                    if (myShooters.Count > 1) { _shooterCivilizations1.Remove(shootist); }
                     if (_shooterCivilizations2 != null)
                     {
                         foreach (Civilization shooter in _shooterCivilizations2)
@@ -497,7 +552,7 @@ namespace Supremacy.Client
             if (sender == HailButton)
             {
                 order = CombatOrder.Hail;
-                _playerIsShooting = false;
+                //_playerIsShooting = false;
             }
 
             GameLog.Client.General.DebugFormat("{0} button clicked by player", order);
