@@ -237,7 +237,7 @@
                                     VerticalAlignment="Top"
                                     Margin="0,0,0,0"
                                     HorizontalAlignment="Left"
-                                    Text="FirePower: "/>
+                                    Text="{s:StringResource COMBAT_FIRE_POWER}"/>
                         <TextBlock  Foreground="White"
                                     VerticalAlignment="Top"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
@@ -279,7 +279,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <!--<ColumnDefinition Width="Auto"/>-->
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -321,7 +321,7 @@
             <TreeView x:Name="FriendlyAssetsTree"
                      ItemsSource="{Binding FriendlyCivs}"
                     BorderThickness="0"
-              
+                      MaxHeight="1000"
                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     FontSize="10pt"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -388,7 +388,7 @@
                             <TextBlock  Foreground="White"
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
-                                        Text="Your Total FirePower: "/>
+                                        Text="{s:StringResource COMBAT_FRIENDLY_FIREPOWER}"/>
                             <TextBlock Foreground="White" 
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
@@ -405,7 +405,7 @@
                             <TextBlock Foreground="DarkOrange"
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
-                                        Text="Others Total FirePower: "/>
+                                        Text="{s:StringResource COMBAT_OTHERS_FIREPOWER}"/>
                             <TextBlock Foreground="Red" 
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
@@ -434,7 +434,7 @@
                     Margin="2">
             <TreeView x:Name="TargetingAndSummary"
                         BorderThickness="0"
-                        MaxHeight="600"
+                        MaxHeight="1000"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="10pt"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -488,7 +488,7 @@
             </TreeView>
         </GroupBox>
 
-        <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to 'Hierarchal'DataTemple in .cs +-->
+        <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}" 
                   Foreground="LightGoldenrodYellow"
                   Background="Black"
@@ -502,7 +502,7 @@
                             Grid.Column="2"
                             Grid.Row="1"     
                             BorderThickness="0" 
-                          MaxHeight="600"
+                            MaxHeight="1000"
                             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="10pt"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
