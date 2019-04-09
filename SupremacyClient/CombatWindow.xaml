@@ -184,23 +184,23 @@
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                 FontSize="20pt" 
                                 Text="{Binding Path=ShortName}" />
-                    <!--<StackPanel
+                    <StackPanel
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 Orientation="Vertical">
-                        <TextBlock  Foreground="Red"
+                        <!--<TextBlock  Foreground="Red"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="14pt"
                                     VerticalAlignment="Top"
                                     Margin="0,0,0,0"
                                     HorizontalAlignment="Left"
-                                    Text="FirePower: "/>
+                                    Text="{s:StringResource COMBAT_FIRE_POWER}"/>
                         <TextBlock  Foreground="White"
                                     VerticalAlignment="Top"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt" 
                                     Text="{Binding Path=AllHostileEmpireStrength}"/>-->
-
+                    </StackPanel>
                 </Grid>
             </StackPanel>
         </DataTemplate>
@@ -231,7 +231,7 @@
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 Orientation="Vertical">
-                        <TextBlock  Foreground="DarkOrange"
+                        <!--<TextBlock  Foreground="DarkOrange"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt"
                                     VerticalAlignment="Top"
@@ -242,7 +242,7 @@
                                     VerticalAlignment="Top"
                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt" 
-                                    Text="{Binding Path=AllHostileEmpireStrength}"/>
+                                    Text="{Binding Path=AllHostileEmpireStrength}"/>-->
                     </StackPanel>
                     <RadioButton 
                             Grid.Column="1"
@@ -317,7 +317,6 @@
                     Grid.Row="1"
                     Width="Auto"            
                     Margin="2">
-            
             <TreeView x:Name="FriendlyAssetsTree"
                      ItemsSource="{Binding FriendlyCivs}"
                     BorderThickness="0"
@@ -514,12 +513,7 @@
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center">
-                        
-                        <!--<TextBlock Foreground="Yellow"
-                                   HorizontalAlignment="Left"
-                                   FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                   FontSize="16pt" 
-                                   Text="{Binding Path=ShortName}" />-->
+                       
                     <!--<Border x:Name="ImageBorderOthers"
                                         DockPanel.Dock="Left"
                                         VerticalAlignment="Top"
@@ -529,11 +523,19 @@
                                         BorderThickness="2"
                                         CornerRadius="8">
                             <Border.Background>
-                                <ImageBrush ImageSource="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
+                                <ImageBrush ImageSource="{Binding Path=CombatUnit.Owner, Converter={StaticResource CivInsigniaConverter}}"
                                                 Stretch="UniformToFill"/>
                             </Border.Background>
-                        </Border>-->
-                    </StackPanel>
+                        </Border>
+                    <TextBlock Foreground="Yellow"
+                               Margin="5,0,0,0"
+                                   Grid.Column="2"
+                                   Grid.Row="1"
+                                   HorizontalAlignment="Left"
+                                   FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="16pt" 
+                                   Text="{Binding Path=Owner}"/>--> 
+                </StackPanel>
                     <TreeViewItem Name="HostileStationItem"/>
                     <TreeViewItem Name="HostileCombatantItems" IsExpanded="True"/>
                     <TreeViewItem Name="HostileNonCombatantItems" IsExpanded="True"/>
