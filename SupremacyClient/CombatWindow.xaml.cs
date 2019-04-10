@@ -44,8 +44,10 @@ namespace Supremacy.Client
     {
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
+        private string _civsAndPowers;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?
+    
         //private bool _playerIsShooting = true; // do we need this? figure this out from whoIsShootingWhom...
         private List<Civilization> _shooterCivilizations1; // players civ and fight along side civs for Prime targets
         private List<Civilization> _shooterCivilizations2; // players civ and fight along side civs for Secondary targets
@@ -125,6 +127,11 @@ namespace Supremacy.Client
             }
         }
 
+        public string CivsAndPowers
+        {
+            get { return _civsAndPowers; }
+        }
+
         public Civilization TargetCivilization1  // does this need to be a public property? keep it private as the field?
         {
             get
@@ -154,8 +161,53 @@ namespace Supremacy.Client
             }
         }
 
+        //public List<string> CivAndFirePower
+        //{
+            
+        //    get
+        //    {
+        //        List<string> ownerList = new List<string>();
+        //        string civAndFirePower;
+
+        //        foreach (var ha in HostileAssets)
+        //        {
+        //            civAndFirePower = ha.Owner.ShortName;
+        //            ownerList.Add(ha.Owner.ShortName);
+        //            foreach (var owner in ownerList)
+        //            {
+
+        //                foreach (var cs in ha.CombatShips)   // only combat ships 
+        //                {
+        //                    if (owner == cs.Owner.ShortName)
+        //                    {
+        //                        _otherCivStrength += cs.FirePower;
+        //                    }
+        //                }
+        //                foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+        //                {
+        //                    if (owner == ncs.Owner.ShortName)
+        //                    {
+        //                        _otherCivStrength += ncs.FirePower;
+        //                    }
+        //                }
+
+        //                if (ha.Station != null)  //  station
+        //                {
+        //                    _otherCivStrength += ha.Station.FirePower;
+        //                }
+
+        //                civAndFirePower = civAndFirePower + " " + _otherCivStrength.ToString();
+        //                ownerList.Add(civAndFirePower);
+        //            }
+        //            ownerList = ownerList.Distinct().ToList();
+        //            GameLog.Core.CombatDetails.DebugFormat("ownerList of civs with firepower {0}", ownerList);
+        //        }
+        //        return ownerList;
+        //    }
+        //}
         public Race ROMULANS { get; private set; }
         public Race DUMMIES { get; private set; }
+  
         #endregion
 
         public CombatWindow()
@@ -179,17 +231,28 @@ namespace Supremacy.Client
             HostileAssimilatedItems.ItemTemplate = itemTemplate;
             HostileEscapedItems.ItemTemplate = itemTemplate;
 
+            DataTemplate civOtherPowerTemplate = TryFindResource("OtherCivPowerTreeTemplate") as DataTemplate;
+            // other civs and firepower summary
+            OtherCivPowerItems.ItemTemplate = civOtherPowerTemplate;
+
+         //   OtherCivPowerItems.DataContext = _civsAndPowers;
+
             DataTemplate civFriendTemplate = TryFindResource("FriendTreeTemplate") as DataTemplate;
-            // the other civilizations summary
+            // friend civilizations summary
             FriendCivilizationsItems.ItemTemplate = civFriendTemplate;
 
             FriendCivilizationsItems.DataContext = _friendlyCivs;
 
             DataTemplate civTemplate = TryFindResource("OthersTreeSummaryTemplate") as DataTemplate;
-            // the other civilizations summary
+            // other civilizations summary for targeting
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
 
-            OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs, or so I hope
+            OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
+
+
+          
+           
+            //  OtherCivPowerItems.DataContext = ;
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -200,6 +263,12 @@ namespace Supremacy.Client
         private void HandleCombatUpdate(CombatUpdate update)
         {
             _update = update;
+
+            //if (_civsAndPowers == null)
+            //{
+            //    _civsAndPowers = update.CivsAndFirePowers;
+            //}
+
             foreach (CombatAssets assets in update.FriendlyAssets)
             {
                 if (assets.Owner == _appContext.LocalPlayer.Empire)
@@ -300,6 +369,7 @@ namespace Supremacy.Client
             HostileDestroyedItems.Items.Clear();
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
+            OtherCivPowerItems.Items.Clear();
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
@@ -454,7 +524,7 @@ namespace Supremacy.Client
             HostileAssimilatedItems.Visibility = HostileAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
             HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
             HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-
+            OtherCivPowerItems.Visibility = OtherCivPowerItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
         }

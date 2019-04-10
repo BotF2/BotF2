@@ -23,17 +23,16 @@ namespace Supremacy.Combat
         private int _combatId;
         private int _roundNumber;
         private int _ownerId;
-        protected Dictionary<string, int> _combatPartyStrengths; // string in key of civ and int is total fire power of civ
+       // protected Dictionary<string, int> _combatPartyStrengths; // string in key of civ and int is total fire power of civ
         private bool _standoff;
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
-        private List<string> _civAndFirepower;
-
+        private List<string> _civsAndFirePowers;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
         private int _otherCivStrength;
-        private Dictionary<Civilization, int> _dictionaryOtherCivStrengths;
+        //private Dictionary<Civilization, int> _dictionaryOtherCivStrengths;
 
 
         public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
@@ -130,91 +129,91 @@ namespace Supremacy.Combat
                 return _allHostileEmpireStrength;
             }
         }
-        public List<string> CivAndFirePower
+        public List<string> CivsAndFirePowers
         {
             get
             {
-                List<string> ownerList = new List<string>();
+              
                 string civAndFirePower;
-            
+
                 foreach (var ha in HostileAssets)
                 {
-                   civAndFirePower = ha.Owner.ShortName;
-                   ownerList.Add(ha.Owner.ShortName);
-                    foreach (var owner in ownerList)
+                    civAndFirePower = ha.Owner.ShortName;
+                   
+                    foreach (var cs in ha.CombatShips)   // only combat ships 
                     {
-
-                        foreach (var cs in ha.CombatShips)   // only combat ships 
+                        if (civAndFirePower == cs.Owner.ShortName)
                         {
-                            if (owner == cs.Owner.ShortName)
-                            {
-                                _otherCivStrength += cs.FirePower;
-                            }
+                            _otherCivStrength += cs.FirePower;
                         }
-                        foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
-                        {
-                            if (owner == ncs.Owner.ShortName)
-                            {
-                                _otherCivStrength += ncs.FirePower;
-                            }
-                        }
-
-                        if (ha.Station != null)  //  station
-                        {
-                            _otherCivStrength += ha.Station.FirePower;
-                        }
-
-                        civAndFirePower = civAndFirePower + _otherCivStrength.ToString();
-                        ownerList.Add(civAndFirePower);
-                    }                  
-                    ownerList = ownerList.Distinct().ToList();
-                }
-                return ownerList;
-            }
-        }
-        public Dictionary<Civilization, int> DictionaryOtherCivStrengths // OtherCivStrength[Civilization] returns strenght int for Civilization, try catch(KeyNotFoundException)
-        {
-            get
-            {
-                Dictionary<Civilization, int> localDictionary = new Dictionary<Civilization, int>();
-                List<Civilization> ownerList = new List<Civilization>();
-                foreach (var ha in HostileAssets)
-                {
-                    ownerList.Add(ha.Owner);
-
-                    ownerList = ownerList.Distinct().ToList();
-
-                    foreach (var owner in ownerList)
-                    {
-
-                        foreach (var cs in ha.CombatShips)   // only combat ships 
-                        {
-                            if (owner == cs.Owner)
-                            {
-                                _otherCivStrength += cs.FirePower;
-                            }
-                        }
-                        foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
-                        {
-                            if (owner == ncs.Owner)
-                            {
-                                _otherCivStrength += ncs.FirePower;
-                            }
-                        }
-
-                        if (ha.Station != null)  //  station
-                        {
-                            _otherCivStrength += ha.Station.FirePower;
-                        }
-
-                        localDictionary.Add(owner, _otherCivStrength);
                     }
+                    foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+                    {
+                        if (civAndFirePower == ncs.Owner.ShortName)
+                        {
+                            _otherCivStrength += ncs.FirePower;
+                        }
+                    }
+
+                    if (ha.Station != null)  //  station
+                    {
+                        _otherCivStrength += ha.Station.FirePower;
+                    }
+                    List<string> localList = new List<string>();
+                    localList.Add(" ");
+                     civAndFirePower = civAndFirePower + " " + _otherCivStrength.ToString();
+                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
+                    _civsAndFirePowers  = localList.Add(civAndFirePower);
+
                 }
-
-                return _dictionaryOtherCivStrengths = localDictionary;
+                
+              
+                return _civsAndFirePowers;
             }
-
         }
+        //public Dictionary<Civilization, int> DictionaryOtherCivStrengths // OtherCivStrength[Civilization] returns strenght int for Civilization, try catch(KeyNotFoundException)
+        //{
+        //    get
+        //    {
+        //        Dictionary<Civilization, int> localDictionary = new Dictionary<Civilization, int>();
+        //        List<Civilization> ownerList = new List<Civilization>();
+        //        foreach (var ha in HostileAssets)
+        //        {
+        //            ownerList.Add(ha.Owner);
+
+        //            ownerList = ownerList.Distinct().ToList();
+
+        //            foreach (var owner in ownerList)
+        //            {
+
+        //                foreach (var cs in ha.CombatShips)   // only combat ships 
+        //                {
+        //                    if (owner == cs.Owner)
+        //                    {
+        //                        _otherCivStrength += cs.FirePower;
+        //                    }
+        //                }
+        //                foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+        //                {
+        //                    if (owner == ncs.Owner)
+        //                    {
+        //                        _otherCivStrength += ncs.FirePower;
+        //                    }
+        //                }
+
+        //                if (ha.Station != null)  //  station
+        //                {
+        //                    _otherCivStrength += ha.Station.FirePower;
+        //                }
+
+        //                localDictionary.Add(owner, _otherCivStrength);
+        //            }
+        //        }
+
+        //        return _dictionaryOtherCivStrengths = localDictionary;
+        //    }
+
+        //}
         public int CombatID
         {
             get { return _combatId; }
@@ -245,18 +244,18 @@ namespace Supremacy.Combat
             get { return GameContext.Current.Civilizations[_ownerId]; }
         }
 
-        public Dictionary<string, int> CombatPartyStrengths
-        {
-            get
-            {
-                foreach (var empire in _combatPartyStrengths)
-                {
-                    GameLog.Core.General.DebugFormat("EmpireStrength {1} for {0}", empire.Key, empire.Value);
-                }
+        //public Dictionary<string, int> CombatPartyStrengths
+        //{
+        //    get
+        //    {
+        //        foreach (var empire in _combatPartyStrengths)
+        //        {
+        //            GameLog.Core.General.DebugFormat("EmpireStrength {1} for {0}", empire.Key, empire.Value);
+        //        }
 
-                return _combatPartyStrengths;
-            }
-        }
+        //        return _combatPartyStrengths;
+        //    }
+        //}
 
         public IList<CombatAssets> FriendlyAssets
         {
