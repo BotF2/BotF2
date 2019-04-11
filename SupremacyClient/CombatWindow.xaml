@@ -272,7 +272,7 @@
         
         <!-- Others Top list of Civs and Power - Data Template for one item view  -->
         <DataTemplate x:Key="OtherCivPowerTreeTemplate">
-            <StackPanel Margin="0,2,0,0"
+            <!--<StackPanel Margin="0,2,0,0"
                         Orientation="Horizontal"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left">
@@ -284,14 +284,14 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Foreground="BlanchedAlmond"
+                    </Grid.RowDefinitions>-->
+                    <!--<TextBlock Foreground="BlanchedAlmond"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                 Margin="5,0,10,0"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                 FontSize="20pt" 
-                                Text="{Binding Path=CivsAndFirePowers}" />
+                                Text="{Binding Path=CivsAndFirePowers}" />-->
                     <!--<StackPanel
                                 Grid.Column="0"
                                 Grid.Row="1"
@@ -309,8 +309,8 @@
                                     FontSize="16pt" 
                                     Text="{Binding Path=AllHostileEmpireStrength}"/>--><!--
                     </StackPanel>-->
-                </Grid>
-            </StackPanel>
+                <!--</Grid>
+            </StackPanel>-->
         </DataTemplate>
         
         <!--Main Combat Window - Begin-->
@@ -555,7 +555,7 @@
                             FontSize="10pt"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <Border x:Name="OtherPowerBorder"
+                    <!--<Border x:Name="OtherPowerBorder"
                             Grid.Column="0"
                             Grid.Row="1"
                             DockPanel.Dock="Top"
@@ -578,28 +578,33 @@
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="14pt">
                         </ListBox>
-                    </Border>
+                    </Border>-->
 
                     <StackPanel 
                                     Grid.Column="2"
                                     Grid.Row="1"
                                     Grid.ColumnSpan="2"
-                                    Margin="4,0,0,0"
-                                    Orientation="Horizontal"
+                                    Margin="0,2,0,2"
+                                    Orientation="Vertical"
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left">
-                        <TextBlock  Foreground="White"
-                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                        FontSize="16pt" 
-                                        Text="{s:StringResource COMBAT_FRIENDLY_FIREPOWER}"/>
+                        
                         <TextBlock Foreground="White" 
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                        FontSize="16pt" 
-                                        Text="{Binding Path=FriendlyEmpireStrength}"/>
+                                        FontSize="14pt" 
+                                        Text="{Binding Path=CivsAndFirePowers1}"/>
                         <TextBlock Foreground="White" 
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                        FontSize="16pt" 
-                                        Text="{Binding Path=CivAndFirePower}"/>
+                                        FontSize="14pt" 
+                                        Text="{Binding Path=CivsAndFirePowers2}"/>
+                        <TextBlock Foreground="White" 
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="14pt" 
+                                        Text="{Binding Path=CivsAndFirePowers3}"/>
+                        <!--<TextBlock Foreground="White" 
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="14pt" 
+                                        Text="{Binding Path=CivsAndFirePowers4}"/>-->
                     </StackPanel>
 
                     <TreeViewItem Name="HostileStationItem"/>

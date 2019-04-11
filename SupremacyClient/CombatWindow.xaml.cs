@@ -44,7 +44,7 @@ namespace Supremacy.Client
     {
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
-        private string _civsAndPowers;
+        //private string _civsAndPowers;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?
     
@@ -127,23 +127,23 @@ namespace Supremacy.Client
             }
         }
 
-        public string CivsAndPowers
-        {
-            get { return _civsAndPowers; }
-        }
+        //public string CivsAndPowers
+        //{
+        //    get { return _civsAndPowers; }
+        //}
 
         public Civilization TargetCivilization1  // does this need to be a public property? keep it private as the field?
         {
             get
             {
-                GameLog.Core.Combat.DebugFormat("TargetCivilization - GET: _otherCivsKeys = {0}", _targetCivilzation1.ToString());
+                //GameLog.Core.Combat.DebugFormat("TargetCivilization - GET: _otherCivsKeys = {0}", _targetCivilzation1.ToString());
                 return _targetCivilzation1;
             }
             set
             {
 
                 _targetCivilzation1 = value;
-                GameLog.Core.Combat.DebugFormat("TargetCivilization - SET: _otherCivsKeys = {0}", _targetCivilzation1.ToString());
+                //GameLog.Core.Combat.DebugFormat("TargetCivilization - SET: _otherCivsKeys = {0}", _targetCivilzation1.ToString());
             }
         }
 
@@ -231,9 +231,9 @@ namespace Supremacy.Client
             HostileAssimilatedItems.ItemTemplate = itemTemplate;
             HostileEscapedItems.ItemTemplate = itemTemplate;
 
-            DataTemplate civOtherPowerTemplate = TryFindResource("OtherCivPowerTreeTemplate") as DataTemplate;
-            // other civs and firepower summary
-            OtherCivPowerItems.ItemTemplate = civOtherPowerTemplate;
+            //DataTemplate civOtherPowerTemplate = TryFindResource("OtherCivPowerTreeTemplate") as DataTemplate;
+            //// other civs and firepower summary
+            //OtherCivPowerItems.ItemTemplate = civOtherPowerTemplate;
 
          //   OtherCivPowerItems.DataContext = _civsAndPowers;
 
@@ -369,7 +369,7 @@ namespace Supremacy.Client
             HostileDestroyedItems.Items.Clear();
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
-            OtherCivPowerItems.Items.Clear();
+            //OtherCivPowerItems.Items.Clear();
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
@@ -524,7 +524,7 @@ namespace Supremacy.Client
             HostileAssimilatedItems.Visibility = HostileAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
             HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
             HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            OtherCivPowerItems.Visibility = OtherCivPowerItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            //OtherCivPowerItems.Visibility = OtherCivPowerItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
         }
