@@ -124,29 +124,63 @@ namespace Supremacy.Combat
         {
             get
             {
-                string Civ;
-                List<string> CivKeyList = new List<string>() {"Constructor"};
-                _otherAssetsDinamic = HostileAssets.ToList();
-
-                foreach (var ha in HostileAssets)
-                {
-                    Civ = ha.Owner.Key;
-                    CivKeyList.Add(Civ);
-                    CivKeyList.Remove("Constructor");
-
-                }
-
-                CivKeyList.Distinct().ToList();
-                Civ = CivKeyList.FirstOrDefault();
-                return Civ;
+                string OtherCivKey1 = GetOtherCivKey();
+                return OtherCivKey1;
             }
         }
 
-        public string CivsAndFirePowers1
+        public string OtherCivKey2
         {
             get
             {
+                string OtherCivKey2 = GetOtherCivKey();
+                return OtherCivKey2;
+            }
+        }
 
+        public string OtherCivKey3
+        {
+            get
+            {
+                string OtherCivKey3 = GetOtherCivKey();
+                return OtherCivKey3;
+            }
+        }
+
+        public string OtherCivKey4
+        {
+            get
+            {
+                string OtherCivKey4 = GetOtherCivKey();
+                return OtherCivKey4;
+            }
+        }
+        public string GetOtherCivKey()
+        {
+            string Civ;
+            List<string> CivKeyList = new List<string>() { "Constructor" };
+            _otherAssetsDinamic = HostileAssets.ToList();
+
+            foreach (var ha in HostileAssets)
+            {
+                Civ = ha.Owner.Key;
+                CivKeyList.Add(Civ);
+                CivKeyList.Remove("Constructor");
+            }
+            CivKeyList.Distinct().ToList();
+            Civ = CivKeyList.FirstOrDefault();
+            return Civ;
+        }
+        //public string GetOtherCivAndFirePower(); 
+        //{
+        // List<CombatAssets> otherAssetsFor = new List<CombatAssets>();
+        //otherAssetsFor = HostileAssets.ToList();
+        
+        //}
+        public string CivsAndFirePowers1
+        {
+            get
+            {  
                 string civAndFirePower = " ";
                 string civ;
                 int otherCivStrength = 0;
@@ -180,7 +214,6 @@ namespace Supremacy.Combat
                     civAndFirePower = civ + " Firepower " + otherCivStrength.ToString();
                     GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
                 }
-
                 return civAndFirePower;
             }
         }
@@ -189,11 +222,10 @@ namespace Supremacy.Combat
         {
             get
             {
-
                 string civAndFirePower = " ";
                 string civ;
                 int otherCivStrength = 0;
-                var _otherAssetsLocal = _otherAssetsDinamic;
+                var _otherAssetsLocal = _otherAssetsDinamic.ToList();
 
                 foreach (var ha in _otherAssetsDinamic)
                 {
@@ -236,7 +268,7 @@ namespace Supremacy.Combat
                 string civAndFirePower = " ";
                 string civ;
                 int otherCivStrength = 0;
-                var _otherAssetsLocal = _otherAssetsDinamic;
+                var _otherAssetsLocal = _otherAssetsDinamic.ToList();
 
                 foreach (var ha in _otherAssetsDinamic)
                 {
