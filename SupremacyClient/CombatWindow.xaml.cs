@@ -105,10 +105,10 @@ namespace Supremacy.Client
         {
             get
             {
-                Civilization dummy = new Civilization();
-                dummy.Race = DUMMIES;
-                dummy.ShortName = "Dummy";
-                _friendlyCivs.Add(dummy);
+                //Civilization dummy = new Civilization();
+                //dummy.Race = DUMMIES;
+                //dummy.ShortName = "Akaali";
+                //_friendlyCivs.Add(dummy);
                 return _friendlyCivs;
             }
             set
@@ -184,9 +184,6 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
 
-            //DataTemplate otherInsigniaTemplate = TryFindResource("OtherInsigniaTreeTemplate") as DataTemplate;
-            //// other insignias
-            //OthersInsigniaItems.ItemTemplate = otherInsigniaTemplate;
 
         }
 
@@ -313,12 +310,12 @@ namespace Supremacy.Client
             ClearUnitTrees();
 
             // turn off the dummy civilization when testing is over
-            Civilization rom = new Civilization();
-            rom.Race = ROMULANS;
-            rom.ShortName = "Romulans";
-            Civilization dummy = new Civilization();
-            dummy.Race = DUMMIES;
-            dummy.ShortName = "Dummy";
+            //Civilization rom = new Civilization();
+            //rom.Race = ROMULANS;
+            //rom.ShortName = "Romulans";
+            //Civilization dummy = new Civilization();
+            //dummy.Race = DUMMIES;
+            //dummy.ShortName = "Akaali";
 
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
@@ -365,8 +362,8 @@ namespace Supremacy.Client
                     FriendlyEscapedItems.Items.Add(shipStats);
                   //  shootingPlayerCivs.Add(shipStats.Owner);
                 }
-                shootingPlayerCivs.Add(dummy);
-                shootingPlayerCivs =shootingPlayerCivs.Distinct().ToList();
+                //shootingPlayerCivs.Add(dummy);
+                shootingPlayerCivs = shootingPlayerCivs.Distinct().ToList();
                 _friendlyCivs = shootingPlayerCivs;
                 _shooterCivilizations1 = shootingPlayerCivs;
                 _shooterCivilizations2 = shootingPlayerCivs;
@@ -415,7 +412,7 @@ namespace Supremacy.Client
                 {
                     HostileAssimilatedItems.Items.Add(shipStats);
                 }
-                otherCivs.Add(rom);
+                //otherCivs.Add(rom);
                // otherCivs.Add(dummy);
                 _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field _otherCivs
               
