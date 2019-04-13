@@ -564,28 +564,29 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="45"/>
-                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="22"/>
+                                <RowDefinition Height="22"/>
+                                <RowDefinition Height="22"/>
+                                <RowDefinition Height="22"/>
                                 <RowDefinition Height="Auto"/>
-
                             </Grid.RowDefinitions>
 
                             
                             <!--Headline-->
                         <TextBlock Grid.Column="0"
-                                   Grid.ColumnSpan="3"
+                                   Grid.ColumnSpan="2"
                                                 Grid.Row ="0"
-                                               Margin="4,0,0,0"
-                                               Foreground="Black" 
-                                   Background="LightBlue"
-                                   HorizontalAlignment="Center"
+                                               Margin="4,0,0,4"
+                                               Foreground="White" 
+                                               Background="Black"
+                                               HorizontalAlignment="Left"
                                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                FontSize="16pt" 
+                                                FontSize="13pt" 
                                                 Text="Fire Powers"/>
                                    
                             
@@ -594,10 +595,11 @@
                                             DockPanel.Dock="Left"
                                             Grid.Column="0"
                                             Grid.Row="1"
+                                            Grid.RowSpan="2"
                                             VerticalAlignment="Top"
                                             Width="40"
                                             Height="35"
-                                            BorderBrush="White"
+                                            BorderBrush="Black"
                                             BorderThickness="2"
                                             CornerRadius="8">
                             <Border.Background>
@@ -608,25 +610,35 @@
 
 
                          <TextBlock Grid.Column="1"
-                                                Grid.Row ="1"
+                                               Grid.Row ="1"
                                                Margin="4,0,0,0"
-                                    TextWrapping="Wrap"
+                                               TextWrapping="Wrap"
                                                Foreground="{DynamicResource DefaultTextBrush}" 
-                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                FontSize="12pt" 
-                                                Text="{Binding Path=CivsAndFirePowers1}"/>                           
-                            
-                            
-                            <!--CivsAndFirePowers 2-->
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                               FontSize="12pt" 
+                                               Text="CivName1"/>
+                                                <!--Text="{Binding Path=CivName1}"/>-->
+                        <TextBlock Grid.Column="1"
+                                               Grid.Row ="2"
+                                               Margin="4,0,0,0"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource DefaultTextBrush}" 
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                               FontSize="12pt" 
+                                               Text="{Binding Path=CivsAndFirePowers1}"/>
+
+
+                        <!--CivsAndFirePowers 2-->
 
                         <Border x:Name="ImageBorderOther2"
 
                                                 Grid.Column="0"
-                                                Grid.Row="2"
+                                                Grid.Row="3"
+                                                Grid.RowSpan="2"
                                                 VerticalAlignment="Top"
                                                 Width="40"
                                                 Height="35"
-                                                BorderBrush="White"
+                                                BorderBrush="Black"
                                                 BorderThickness="2"
                                                 CornerRadius="8">
                             <Border.Background>
@@ -635,10 +647,19 @@
                             </Border.Background>
                         </Border>
 
+                        <TextBlock Grid.Column="1"
+                                               Grid.Row ="3"
+                                               Margin="4,0,0,0"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource DefaultTextBrush}" 
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                               FontSize="12pt" 
+                                               Text="CivName2"/>
+                        <!--Text="{Binding Path=CivName2}"/>-->
 
                         <TextBlock Foreground="{DynamicResource DefaultTextBrush}"
                                                    Grid.Column="1"
-                                                   Grid.Row ="2"
+                                                   Grid.Row ="4"
                                    TextWrapping="Wrap"
                                                 Margin="4,0,0,0"
                                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -650,10 +671,11 @@
                                                     DockPanel.Dock="Left"
                                                     Grid.Column="2"
                                                     Grid.Row="1"
+                                                    Grid.RowSpan="2"
                                                     VerticalAlignment="Top"
                                                     Width="40"
                                                     Height="35"
-                                                    BorderBrush="White"
+                                                    BorderBrush="Black"
                                                     BorderThickness="2"
                                                     CornerRadius="8">
                             <Border.Background>
@@ -661,9 +683,20 @@
                                                     Stretch="UniformToFill"/>
                             </Border.Background>
                         </Border>
+
+                        <TextBlock Grid.Column="3"
+                                               Grid.Row ="1"
+                                               Margin="4,0,0,0"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource DefaultTextBrush}" 
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                               FontSize="12pt" 
+                                               Text="CivName3"/>
+                        <!--Text="{Binding Path=CivName3}"/>-->
+
                         <TextBlock Foreground="{DynamicResource DefaultTextBrush}" 
                                                    Grid.Column="3"
-                                                   Grid.Row ="1"
+                                                   Grid.Row ="2"
                                    TextWrapping="Wrap"
                                                 Margin="4,0,0,0"
                                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -674,11 +707,12 @@
                             <Border x:Name="ImageBorderOther4"
                                                 DockPanel.Dock="Left"
                                                 Grid.Column="2"
-                                                Grid.Row="2"
+                                                Grid.Row="3"
+                                                Grid.RowSpan="2"
                                                 VerticalAlignment="Top"
                                                 Width="40"
                                                 Height="35"
-                                                BorderBrush="White"
+                                                BorderBrush="Black"
                                                 BorderThickness="2"
                                                 CornerRadius="8">
                                 <Border.Background>
@@ -686,11 +720,19 @@
                                                 Stretch="UniformToFill"/>
                                 </Border.Background>
                             </Border>
-
+                        <TextBlock Grid.Column="3"
+                                               Grid.Row ="3"
+                                               Margin="4,0,0,0"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource DefaultTextBrush}" 
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                               FontSize="12pt" 
+                                               Text="CivName4"/>
+                        <!--Text="{Binding Path=CivName4}"/>-->
 
                         <TextBlock Foreground="{DynamicResource DefaultTextBrush}" 
                                                    Grid.Column="3"
-                                                   Grid.Row ="2"
+                                                   Grid.Row ="4"
                                    TextWrapping="Wrap"
                                                 Margin="4,0,0,0"
                                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
