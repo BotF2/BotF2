@@ -519,36 +519,7 @@
                             FontSize="10pt"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    
-                    
-                    <!--outcomment here-->
-                    
-                    <Border x:Name="OthersInsigniaBorder"
-                            Grid.Column="0"
-                            Grid.Row="1"
-                            DockPanel.Dock="Top"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Left"
-                            Margin="0,4,4,10"
-                            Width="200"
-                            Height="auto"
-                            BorderBrush="Gray"
-                            BorderThickness="4"
-                            CornerRadius="8">
-                        <ListBox x:Name="OthersNameAndFirePowerItems"  
-                                IsSynchronizedWithCurrentItem="True"
-                                ItemsSource="{Binding}"
-                                ItemTemplate="{StaticResource OtherNameAndFirePowerTemplate}"
-                                Grid.Column="0"
-                                Grid.Row="1"     
-                                BorderThickness="0" 
-                                VerticalAlignment="Top"
-                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                FontSize="14pt">
-                        </ListBox>
-                    </Border>
-
-                    
+   
                     
                     <StackPanel 
                             Grid.Column="2"
@@ -603,7 +574,7 @@
                                             BorderThickness="2"
                                             CornerRadius="8">
                             <Border.Background>
-                                <ImageBrush ImageSource="{Binding Path=OtherCivKey1, Converter={StaticResource CivInsigniaConverter}}"
+                                <ImageBrush ImageSource="{Binding Path=OtherCivInsignia1, Converter={StaticResource CivInsigniaConverter}}"
                                             Stretch="UniformToFill"/>
                             </Border.Background>
                         </Border>
@@ -616,8 +587,8 @@
                                                Foreground="{DynamicResource DefaultTextBrush}" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
-                                               Text="CivName1"/>
-                                                <!--Text="{Binding Path=CivName1}"/>-->
+                                              
+                                                Text="{Binding Path=CivName1}"/>
                         <TextBlock Grid.Column="1"
                                                Grid.Row ="2"
                                                Margin="4,0,0,0"
@@ -625,7 +596,7 @@
                                                Foreground="{DynamicResource DefaultTextBrush}" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
-                                               Text="{Binding Path=CivsAndFirePowers1}"/>
+                                               Text="{Binding Path=CivFirePowers1}"/>
 
 
                         <!--CivsAndFirePowers 2-->
@@ -642,7 +613,7 @@
                                                 BorderThickness="2"
                                                 CornerRadius="8">
                             <Border.Background>
-                                <ImageBrush ImageSource="{Binding Path=OtherCivKey2, Converter={StaticResource CivInsigniaConverter}}"
+                                <ImageBrush ImageSource="{Binding Path=OtherCivIngisnia2, Converter={StaticResource CivInsigniaConverter}}"
                                                 Stretch="UniformToFill"/>
                             </Border.Background>
                         </Border>
@@ -654,8 +625,8 @@
                                                Foreground="{DynamicResource DefaultTextBrush}" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
-                                               Text="CivName2"/>
-                        <!--Text="{Binding Path=CivName2}"/>-->
+                                               
+                        Text="{Binding Path=CivName2}"/>
 
                         <TextBlock Foreground="{DynamicResource DefaultTextBrush}"
                                                    Grid.Column="1"
@@ -664,7 +635,7 @@
                                                 Margin="4,0,0,0"
                                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                     FontSize="12pt" 
-                                                    Text="{Binding Path=CivsAndFirePowers2}"/>        
+                                                    Text="{Binding Path=CivFirePowers2}"/>        
                             
                             <!--CivsAndFirePowers 3-->
                         <Border x:Name="ImageBorderOther3"
@@ -679,7 +650,7 @@
                                                     BorderThickness="2"
                                                     CornerRadius="8">
                             <Border.Background>
-                                <ImageBrush ImageSource="{Binding Path=OtherCivKey3, Converter={StaticResource CivInsigniaConverter}}"
+                                <ImageBrush ImageSource="{Binding Path=OtherCivIngisnia3, Converter={StaticResource CivInsigniaConverter}}"
                                                     Stretch="UniformToFill"/>
                             </Border.Background>
                         </Border>
@@ -691,8 +662,8 @@
                                                Foreground="{DynamicResource DefaultTextBrush}" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
-                                               Text="CivName3"/>
-                        <!--Text="{Binding Path=CivName3}"/>-->
+                                              
+                        Text="{Binding Path=CivName3}"/>
 
                         <TextBlock Foreground="{DynamicResource DefaultTextBrush}" 
                                                    Grid.Column="3"
@@ -701,7 +672,7 @@
                                                 Margin="4,0,0,0"
                                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                     FontSize="12pt" 
-                                                    Text="{Binding Path=CivsAndFirePowers3}"/>
+                                                    Text="{Binding Path=CivFirePowers3}"/>
                             
                             <!--CivsAndFirePowers 4-->                            
                             <Border x:Name="ImageBorderOther4"
@@ -716,7 +687,7 @@
                                                 BorderThickness="2"
                                                 CornerRadius="8">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Path=OtherCivKey4, Converter={StaticResource CivInsigniaConverter}}"
+                                <ImageBrush ImageSource="{Binding Path=OtherCivIngisnia4, Converter={StaticResource CivInsigniaConverter}}"
                                                 Stretch="UniformToFill"/>
                                 </Border.Background>
                             </Border>
@@ -727,8 +698,8 @@
                                                Foreground="{DynamicResource DefaultTextBrush}" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
-                                               Text="CivName4"/>
-                        <!--Text="{Binding Path=CivName4}"/>-->
+                                               
+                        Text="{Binding Path=CivName4}"/>
 
                         <TextBlock Foreground="{DynamicResource DefaultTextBrush}" 
                                                    Grid.Column="3"
@@ -737,7 +708,7 @@
                                                 Margin="4,0,0,0"
                                                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                     FontSize="12pt" 
-                                                    Text="{Binding Path=CivsAndFirePowers4}"/>
+                                                    Text="{Binding Path=CivFirePowers4}"/>
                         </Grid>
                     </StackPanel>
 

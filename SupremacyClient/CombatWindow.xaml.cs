@@ -46,8 +46,7 @@ namespace Supremacy.Client
         private CombatAssets _playerAssets;
 
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
-        private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?
-           
+        private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?           
         private List<Civilization> _otherNameAndFirePower; // this collection populates insignia, name and firepower of other civs
 
         private List<Civilization> _shooterCivilizations1; // players civ and fight along side civs for Prime targets
@@ -99,6 +98,10 @@ namespace Supremacy.Client
             set
             {
                 //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
+                //Civilization dummy = new Civilization();
+                //dummy.Race = DUMMIES;
+                //dummy.ShortName = "Akaali";
+                //_otherCivs.Add(dummy);
                 _otherCivs = value;
             }
         }
@@ -188,6 +191,10 @@ namespace Supremacy.Client
             HostileAssimilatedItems.ItemTemplate = itemTemplate;
             HostileEscapedItems.ItemTemplate = itemTemplate;
 
+            //DataTemplate otherNameAndFirePowerTemplate2 = TryFindResource("OtherNameAndFirePowerTemplate2") as DataTemplate;
+            //// other civilizations insignia, name and firepower
+            //OthersNameAndFirePowerItems2.ItemTemplate = otherNameAndFirePowerTemplate2;
+
             DataTemplate civFriendTemplate = TryFindResource("FriendTreeTemplate") as DataTemplate;
             // friend civilizations summary
             FriendCivilizationsItems.ItemTemplate = civFriendTemplate;
@@ -200,11 +207,18 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
 
-            DataTemplate otherNameAndFirePowerTemplate = TryFindResource("OtherNameAndFirePowerTemplate") as DataTemplate;
-            // other civilizations insignia, name and firepower
-            OthersNameAndFirePowerItems.ItemTemplate = otherNameAndFirePowerTemplate;
+            //DataTemplate otherNameAndFirePowerTemplate = TryFindResource("OtherNameAndFirePowerTemplate1") as DataTemplate;
+            //// other civilizations insignia, name and firepower
+            //OthersNameAndFirePowerItems1.ItemTemplate = otherNameAndFirePowerTemplate;
+            //OthersNameAndFirePowerItems1.DataContext = _otherNameAndFirePower;  // ListBox data context set to OtherNameAndFirePower
 
-            OthersNameAndFirePowerItems.DataContext = _otherNameAndFirePower; // ListBox data context set to OtherNameAndFirePower
+            //_appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            //ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
+            //DataTemplate otherNameAndFirePowerTemplate2 = TryFindResource("OtherNameAndFirePowerTemplate2") as DataTemplate;
+            //// other civilizations insignia, name and firepower
+            //OthersNameAndFirePowerItems2.ItemTemplate = otherNameAndFirePowerTemplate2;
+
+        /*    OthersNameAndFirePowerItems.DataContext = _otherNameAndFirePower;*/ // ListBox data context set to OtherNameAndFirePower
 
             
         }
@@ -322,7 +336,8 @@ namespace Supremacy.Client
             
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
-            OthersNameAndFirePowerItems.Items.Clear();
+           // OthersNameAndFirePowerItems1.Items.Clear();
+          //  OthersNameAndFirePowerItems2.Items.Clear();
 
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
@@ -438,12 +453,13 @@ namespace Supremacy.Client
                 //otherCivs.Add(rom);
                // otherCivs.Add(dummy);
                 _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field _otherCivs
-              
+               
                 foreach (Civilization Other in _otherCivs)
                 {
                     OtherCivilizationsSummaryItem1.Items.Add(Other); // a template for rach other civ
                     GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Other.ShortName);
-                    
+                    //OthersNameAndFirePowerItems1.Items.Add(Other);
+                    //OthersNameAndFirePowerItems2.Items.Add(Other);
                 }
             }
 
@@ -477,7 +493,8 @@ namespace Supremacy.Client
           
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-            OthersNameAndFirePowerItems.Visibility = OthersNameAndFirePowerItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+          //  OthersNameAndFirePowerItems1.Visibility = OthersNameAndFirePowerItems1.HasItems ? Visibility.Visible : Visibility.Collapsed;
+         //   OthersNameAndFirePowerItems2.Visibility = OthersNameAndFirePowerItems2.HasItems ? Visibility.Visible : Visibility.Collapsed;
         }
         private void SelectControl()
         {
