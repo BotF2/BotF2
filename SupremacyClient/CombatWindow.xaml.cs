@@ -98,10 +98,7 @@ namespace Supremacy.Client
             set
             {
                 //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
-                //Civilization dummy = new Civilization();
-                //dummy.Race = DUMMIES;
-                //dummy.ShortName = "Akaali";
-                //_otherCivs.Add(dummy);
+
                 _otherCivs = value;
             }
         }
@@ -110,10 +107,6 @@ namespace Supremacy.Client
         {
             get
             {
-                //Civilization dummy = new Civilization();
-                //dummy.Race = DUMMIES;
-                //dummy.ShortName = "Akaali";
-                //_friendlyCivs.Add(dummy);
                 return _friendlyCivs;
             }
             set
@@ -191,10 +184,6 @@ namespace Supremacy.Client
             HostileAssimilatedItems.ItemTemplate = itemTemplate;
             HostileEscapedItems.ItemTemplate = itemTemplate;
 
-            //DataTemplate otherNameAndFirePowerTemplate2 = TryFindResource("OtherNameAndFirePowerTemplate2") as DataTemplate;
-            //// other civilizations insignia, name and firepower
-            //OthersNameAndFirePowerItems2.ItemTemplate = otherNameAndFirePowerTemplate2;
-
             DataTemplate civFriendTemplate = TryFindResource("FriendTreeTemplate") as DataTemplate;
             // friend civilizations summary
             FriendCivilizationsItems.ItemTemplate = civFriendTemplate;
@@ -206,21 +195,7 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
-
-            //DataTemplate otherNameAndFirePowerTemplate = TryFindResource("OtherNameAndFirePowerTemplate1") as DataTemplate;
-            //// other civilizations insignia, name and firepower
-            //OthersNameAndFirePowerItems1.ItemTemplate = otherNameAndFirePowerTemplate;
-            //OthersNameAndFirePowerItems1.DataContext = _otherNameAndFirePower;  // ListBox data context set to OtherNameAndFirePower
-
-            //_appContext = ServiceLocator.Current.GetInstance<IAppContext>();
-            //ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
-            //DataTemplate otherNameAndFirePowerTemplate2 = TryFindResource("OtherNameAndFirePowerTemplate2") as DataTemplate;
-            //// other civilizations insignia, name and firepower
-            //OthersNameAndFirePowerItems2.ItemTemplate = otherNameAndFirePowerTemplate2;
-
-        /*    OthersNameAndFirePowerItems.DataContext = _otherNameAndFirePower;*/ // ListBox data context set to OtherNameAndFirePower
-
-            
+   
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -336,8 +311,6 @@ namespace Supremacy.Client
             
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
-           // OthersNameAndFirePowerItems1.Items.Clear();
-          //  OthersNameAndFirePowerItems2.Items.Clear();
 
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
@@ -347,24 +320,16 @@ namespace Supremacy.Client
         {
             ClearUnitTrees();
 
-            // turn off the dummy civilization when testing is over
-            //Civilization rom = new Civilization();
-            //rom.Race = ROMULANS;
-            //rom.ShortName = "Romulans";
-            //Civilization dummy = new Civilization();
-            //dummy.Race = DUMMIES;
-            //dummy.ShortName = "Akaali";
-
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-               // int friendlyAssetsFirepower = 0;
+      
                 var shootingPlayerCivs = new List<Civilization>();
 
                 if (friendlyAssets.Station != null)
                 {
                     FriendlyStationItem.Header = friendlyAssets.Station;
                     shootingPlayerCivs.Add(friendlyAssets.Station.Owner);
-                    //friendlyAssetsFirepower += friendlyAssets.Station.FirePower;
+                   
                 }
                 if (friendlyAssets.CombatShips != null)
                 {
@@ -372,7 +337,7 @@ namespace Supremacy.Client
                     {
                         FriendlyCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
-                        //friendlyAssetsFirepower += shipStats.FirePower;
+                      
                     }
                 }
                 if (friendlyAssets.NonCombatShips != null)
@@ -381,13 +346,13 @@ namespace Supremacy.Client
                     {
                         FriendlyNonCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
-                       // friendlyAssetsFirepower += shipStats.FirePower;
+                  
                     }
                 }
                 foreach (CombatUnit shipStats in friendlyAssets.DestroyedShips)
                 {
                     FriendlyDestroyedItems.Items.Add(shipStats);
-                    //shootingPlayerCivs.Add(shipStats.Owner);
+                
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
@@ -398,9 +363,9 @@ namespace Supremacy.Client
                 foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
                 {
                     FriendlyEscapedItems.Items.Add(shipStats);
-                  //  shootingPlayerCivs.Add(shipStats.Owner);
+                 
                 }
-                //shootingPlayerCivs.Add(dummy);
+                
                 shootingPlayerCivs = shootingPlayerCivs.Distinct().ToList();
                 _friendlyCivs = shootingPlayerCivs;
                 _shooterCivilizations1 = shootingPlayerCivs;
@@ -450,16 +415,14 @@ namespace Supremacy.Client
                 {
                     HostileAssimilatedItems.Items.Add(shipStats);
                 }
-                //otherCivs.Add(rom);
-               // otherCivs.Add(dummy);
+
                 _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field _otherCivs
                
                 foreach (Civilization Other in _otherCivs)
                 {
                     OtherCivilizationsSummaryItem1.Items.Add(Other); // a template for rach other civ
                     GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Other.ShortName);
-                    //OthersNameAndFirePowerItems1.Items.Add(Other);
-                    //OthersNameAndFirePowerItems2.Items.Add(Other);
+
                 }
             }
 
@@ -493,8 +456,7 @@ namespace Supremacy.Client
           
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-          //  OthersNameAndFirePowerItems1.Visibility = OthersNameAndFirePowerItems1.HasItems ? Visibility.Visible : Visibility.Collapsed;
-         //   OthersNameAndFirePowerItems2.Visibility = OthersNameAndFirePowerItems2.HasItems ? Visibility.Visible : Visibility.Collapsed;
+
         }
         private void SelectControl()
         {
@@ -504,14 +466,14 @@ namespace Supremacy.Client
         {
            
              RadioButton cmd = sender as RadioButton;
-            //choiceTextBlock.Text = "Seleected" + cmd.GroupName + ": " + cmd.Name;
+         
             if (cmd.DataContext is Civilization) // && Civilizations != null)
             {
-               // Civilization dummy = new Civilization();
+           
                 Civilization theTargetedCiv = (Civilization)cmd.DataContext;
                 _targetCivilzation1 = theTargetedCiv;
                 Dictionary<Civilization, Civilization> myShooters = new Dictionary<Civilization, Civilization>();
-              //  myShooters.Add(dummy, dummy);
+         
                 {
                     var shootist = _shooterCivilizations1.FirstOrDefault();
 
