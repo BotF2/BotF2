@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         private IList<CombatAssets> _hostileAssets;
         private List<CombatAssets> _otherAssetsDinamic;
         private List<Object> _civList;
-        private List<Object> _civShortNameList;
+        private List<string> _civShortNameList;
         private string civAndFirePower = " ";
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
@@ -57,7 +57,7 @@ namespace Supremacy.Combat
             _otherAssetsDinamic = HostileAssets.ToList();
             
         }
-
+        #region Properties for total fire power of the friends and Others (hostiles)
         public int FriendlyEmpireStrength
         {
 
@@ -125,7 +125,9 @@ namespace Supremacy.Combat
                 return _allHostileEmpireStrength;
             }
         }
+        #endregion
 
+        #region Properties for other civilization insignias
         public string OtherCivKey1
         {
             get
@@ -199,27 +201,26 @@ namespace Supremacy.Combat
                 //return civi;
             }
         }
+        #endregion
 
+        #region Properties for name of civilization and thier firepowers
         public string CivsAndFirePowers1
         {
             get
             {
                 var asset = _otherAssetsDinamic.FirstOrDefault();
-                var civOwner = asset.Owner;
-   
-                List<Object> civList = new List<Object>();
+                var civShortName = asset.Owner.ShortName;
+                List<string> civNameList = new List<string>();
                 foreach (var ha in _otherAssetsDinamic)
                 {
-                    civList.Add(ha.Owner);
-                    civList.Distinct().ToList();
+                    civNameList.Add(ha.Owner.ShortName);
+                    civNameList.Distinct().ToList();
                 }
-                civList.Remove(civOwner);
-                _civShortNameList = civList.ToList();
-                string civShortName;
+                civNameList.Remove(civShortName);
+                _civShortNameList = civNameList.ToList();
+
                 int otherCivStrength = 0;
                 var _otherAssetsLocal = _otherAssetsDinamic.ToList();
-            
-                civShortName = asset.Owner.ShortName;
 
                 foreach (var ha in _otherAssetsDinamic)
                 {
@@ -248,6 +249,7 @@ namespace Supremacy.Combat
                     }
                 }
                 civAndFirePower = civShortName + " Firepower " + otherCivStrength.ToString();
+
                 GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
                 return civAndFirePower;
             }
@@ -259,10 +261,49 @@ namespace Supremacy.Combat
             {
                 if (_civShortNameList.FirstOrDefault() != null)
                 {
-                    var civ = _civShortNameList.FirstOrDefault();
-                    _civShortNameList.Remove(civ);
-                    var civKey = civ.ToString();
-                    return civKey;
+                    var civShortName = _civShortNameList.FirstOrDefault(); 
+                    List<string> civNameList = new List<string>();
+                    foreach (var ha in _otherAssetsDinamic)
+                    {
+                        civNameList.Add(ha.Owner.ShortName);
+                        civNameList.Distinct().ToList();
+                    }
+                    civNameList.Remove(civShortName);
+                    _civShortNameList = civNameList.ToList();
+
+                    int otherCivStrength = 0;
+                    var _otherAssetsLocal = _otherAssetsDinamic.ToList();
+
+                    foreach (var ha in _otherAssetsDinamic)
+                    {
+
+                        foreach (var cs in ha.CombatShips)   // only combat ships 
+                        {
+                            if (civShortName == cs.Owner.ShortName)
+                            {
+                                otherCivStrength += cs.FirePower;
+                                _otherAssetsLocal.Remove(ha);
+                            }
+                        }
+                        foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+                        {
+                            if (civShortName == ncs.Owner.ShortName)
+                            {
+                                otherCivStrength += ncs.FirePower;
+                                _otherAssetsLocal.Remove(ha);
+                            }
+                        }
+
+                        if (ha.Station != null)  //  station
+                        {
+                            otherCivStrength += ha.Station.FirePower;
+                            _otherAssetsLocal.Remove(ha);
+                        }
+                    }
+                    civAndFirePower = civShortName + " Firepower " + otherCivStrength.ToString();
+
+                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
+                    return civAndFirePower;
 
                 }
                 else { return null; }
@@ -278,10 +319,49 @@ namespace Supremacy.Combat
             {
                 if (_civShortNameList.FirstOrDefault() != null)
                 {
-                    var civ = _civShortNameList.FirstOrDefault();
-                    _civShortNameList.Remove(civ);
-                    var civKey = civ.ToString();
-                    return civKey;
+                    var civShortName = _civShortNameList.FirstOrDefault();
+                    List<string> civNameList = new List<string>();
+                    foreach (var ha in _otherAssetsDinamic)
+                    {
+                        civNameList.Add(ha.Owner.ShortName);
+                        civNameList.Distinct().ToList();
+                    }
+                    civNameList.Remove(civShortName);
+                    _civShortNameList = civNameList.ToList();
+
+                    int otherCivStrength = 0;
+                    var _otherAssetsLocal = _otherAssetsDinamic.ToList();
+
+                    foreach (var ha in _otherAssetsDinamic)
+                    {
+
+                        foreach (var cs in ha.CombatShips)   // only combat ships 
+                        {
+                            if (civShortName == cs.Owner.ShortName)
+                            {
+                                otherCivStrength += cs.FirePower;
+                                _otherAssetsLocal.Remove(ha);
+                            }
+                        }
+                        foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+                        {
+                            if (civShortName == ncs.Owner.ShortName)
+                            {
+                                otherCivStrength += ncs.FirePower;
+                                _otherAssetsLocal.Remove(ha);
+                            }
+                        }
+
+                        if (ha.Station != null)  //  station
+                        {
+                            otherCivStrength += ha.Station.FirePower;
+                            _otherAssetsLocal.Remove(ha);
+                        }
+                    }
+                    civAndFirePower = civShortName + " Firepower " + otherCivStrength.ToString();
+
+                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
+                    return civAndFirePower;
                 }
                 else { return null; }
                 //string civi = "Klingon FirePower 1234";
@@ -296,60 +376,103 @@ namespace Supremacy.Combat
             {
                 if (_civShortNameList.FirstOrDefault() != null)
                 {
-                    var civ = _civShortNameList.FirstOrDefault();
-                    _civShortNameList.Remove(civ);
-                    var civKey = civ.ToString();
-                    return civKey;
+                    var civShortName = _civShortNameList.FirstOrDefault();
+                    List<string> civNameList = new List<string>();
+                    foreach (var ha in _otherAssetsDinamic)
+                    {
+                        civNameList.Add(ha.Owner.ShortName);
+                        civNameList.Distinct().ToList();
+                    }
+                    civNameList.Remove(civShortName);
+                    _civShortNameList = civNameList.ToList();
+
+                    int otherCivStrength = 0;
+                    var _otherAssetsLocal = _otherAssetsDinamic.ToList();
+
+                    foreach (var ha in _otherAssetsDinamic)
+                    {
+
+                        foreach (var cs in ha.CombatShips)   // only combat ships 
+                        {
+                            if (civShortName == cs.Owner.ShortName)
+                            {
+                                otherCivStrength += cs.FirePower;
+                                _otherAssetsLocal.Remove(ha);
+                            }
+                        }
+                        foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+                        {
+                            if (civShortName == ncs.Owner.ShortName)
+                            {
+                                otherCivStrength += ncs.FirePower;
+                                _otherAssetsLocal.Remove(ha);
+                            }
+                        }
+
+                        if (ha.Station != null)  //  station
+                        {
+                            otherCivStrength += ha.Station.FirePower;
+                            _otherAssetsLocal.Remove(ha);
+                        }
+                    }
+                    civAndFirePower = civShortName + " Firepower " + otherCivStrength.ToString();
+
+                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
+                    return civAndFirePower;
                 }
                 else { return null; }
                 //string civi = "Cardassian FirePower 1234";
                 //return civi;
             }
         }
+        #endregion of proerties for civilizations name and firepowers
 
-        public string GetOtherCivAndFirePower()
-        {
-            if (_civShortNameList != null && _otherAssetsDinamic != null)
-            {
-                string civ;
-                int otherCivStrength = 0;
-                var _otherAssetsLocal = _otherAssetsDinamic.ToList();
-                var asset = _otherAssetsLocal.Distinct().FirstOrDefault();
-                civ = asset.Owner.ShortName;
+        //Method to help name of civilizations and thier firepowers
 
-                foreach (var ha in _otherAssetsDinamic)
-                {
-                    _civShortNameList.Remove(civ);
-                    foreach (var cs in ha.CombatShips)   // only combat ships 
-                    {
-                        if (civ == cs.Owner.ShortName)
-                        {
-                            otherCivStrength += cs.FirePower;
-                            _otherAssetsLocal.Remove(ha);
-                        }
-                    }
-                    foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
-                    {
-                        if (civ == ncs.Owner.ShortName)
-                        {
-                            otherCivStrength += ncs.FirePower;
-                            _otherAssetsLocal.Remove(ha);
-                        }
-                    }
+        //public string GetOtherCivAndFirePower()
+        //{
+        //    if (_civShortNameList != null && _otherAssetsDinamic != null)
+        //    {
+        //        string civ;
+        //        int otherCivStrength = 0;
+        //        var _otherAssetsLocal = _otherAssetsDinamic.ToList();
+        //        var asset = _otherAssetsLocal.Distinct().FirstOrDefault();
+        //        civ = asset.Owner.ShortName;
 
-                    if (ha.Station != null)  //  station
-                    {
-                        otherCivStrength += ha.Station.FirePower;
-                        _otherAssetsLocal.Remove(ha);
-                    }
+        //        foreach (var ha in _otherAssetsDinamic)
+        //        {
+        //            _civShortNameList.Remove(civ);
+        //            foreach (var cs in ha.CombatShips)   // only combat ships 
+        //            {
+        //                if (civ == cs.Owner.ShortName)
+        //                {
+        //                    otherCivStrength += cs.FirePower;
+        //                    _otherAssetsLocal.Remove(ha);
+        //                }
+        //            }
+        //            foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+        //            {
+        //                if (civ == ncs.Owner.ShortName)
+        //                {
+        //                    otherCivStrength += ncs.FirePower;
+        //                    _otherAssetsLocal.Remove(ha);
+        //                }
+        //            }
 
-                    civAndFirePower = civ + " Firepower " + otherCivStrength.ToString();
-                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
-                }
-                return civAndFirePower;
-            }
-            else { return null; }
-        }
+        //            if (ha.Station != null)  //  station
+        //            {
+        //                otherCivStrength += ha.Station.FirePower;
+        //                _otherAssetsLocal.Remove(ha);
+        //            }
+
+        //            civAndFirePower = civ + " Firepower " + otherCivStrength.ToString();
+        //            GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civAndFirePower);
+        //        }
+        //        return civAndFirePower;
+        //    }
+        //    else { return null; }
+        //}
+
 
         public int CombatID
         {

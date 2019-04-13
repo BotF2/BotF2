@@ -47,7 +47,9 @@ namespace Supremacy.Client
 
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?
-    
+           
+        private List<Civilization> _otherNameAndFirePower; // this collection populates insignia, name and firepower of other civs
+
         private List<Civilization> _shooterCivilizations1; // players civ and fight along side civs for Prime targets
         private List<Civilization> _shooterCivilizations2; // players civ and fight along side civs for Secondary targets
         private Civilization _targetCivilzation1; // player-selected civ to attack 
@@ -114,6 +116,20 @@ namespace Supremacy.Client
             set
             {
                 _friendlyCivs = value;
+            }
+        }
+
+        public List<Civilization> OtherNameAndFirePower
+        {
+            get
+            {
+                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
+                return _otherNameAndFirePower;
+            }
+            set
+            {
+                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
+                _otherNameAndFirePower = value;
             }
         }
 
@@ -184,7 +200,13 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
 
+            DataTemplate otherNameAndFirePowerTemplate = TryFindResource("OtherNameAndFirePowerTemplate") as DataTemplate;
+            // other civilizations insignia, name and firepower
+            OthersNameAndFirePowerItems.ItemTemplate = otherNameAndFirePowerTemplate;
 
+            OthersNameAndFirePowerItems.DataContext = _otherNameAndFirePower; // ListBox data context set to OtherNameAndFirePower
+
+            
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -300,6 +322,7 @@ namespace Supremacy.Client
             
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
+            OthersNameAndFirePowerItems.Items.Clear();
 
             GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
@@ -454,6 +477,7 @@ namespace Supremacy.Client
           
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+            OthersNameAndFirePowerItems.Visibility = OthersNameAndFirePowerItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
         }
         private void SelectControl()
         {
