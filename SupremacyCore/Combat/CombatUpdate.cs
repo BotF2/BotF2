@@ -9,6 +9,7 @@
 
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -31,6 +32,7 @@ namespace Supremacy.Combat
         private List<CombatAssets> _otherAssetsDinamic;
         private List<Object> _civList;
         private List<string> _civShortNameList;
+        private List<string> _civFirePowerList;
         private string civName;
         private string civFirePower = " ";
         private int _friendlyEmpireStrength;
@@ -219,7 +221,7 @@ namespace Supremacy.Combat
                     civNameList.Distinct().ToList();
                 }
                 civNameList.Remove(civShortName);
-                _civShortNameList = civNameList.ToList();
+                _civFirePowerList = civNameList.ToList();
                 return civShortName;
             }
             
@@ -229,17 +231,17 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (_civShortNameList.FirstOrDefault() != null)
+                if (_civFirePowerList.FirstOrDefault() != null)
                 {
-                    var civShortName = _civShortNameList.FirstOrDefault();
+                    var civShortName = _civFirePowerList.FirstOrDefault();
                     List<string> civNameList = new List<string>();
-                    foreach (var name in _civShortNameList)
+                    foreach (var name in _civFirePowerList)
                     {
                         civNameList.Add(name);
                         civNameList.Distinct().ToList();
                     }
                     civNameList.Remove(civShortName);
-                    _civShortNameList = civNameList.ToList();
+                    _civFirePowerList = civNameList.ToList();
                     return civShortName;
                 }
                 else { return null; }
@@ -251,17 +253,17 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (_civShortNameList.FirstOrDefault() != null)
+                if (_civFirePowerList.FirstOrDefault() != null)
                 {
-                    var civShortName = _civShortNameList.FirstOrDefault();
+                    var civShortName = _civFirePowerList.FirstOrDefault();
                     List<string> civNameList = new List<string>();
-                    foreach (var name in _civShortNameList)
+                    foreach (var name in _civFirePowerList)
                     {
                         civNameList.Add(name);
                         civNameList.Distinct().ToList();
                     }
                     civNameList.Remove(civShortName);
-                    _civShortNameList = civNameList.ToList();
+                    _civFirePowerList = civNameList.ToList();
                     return civShortName;
                 }
                 else { return null; }
@@ -273,17 +275,17 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (_civShortNameList.FirstOrDefault() != null)
+                if (_civFirePowerList.FirstOrDefault() != null)
                 {
-                    var civShortName = _civShortNameList.FirstOrDefault();
+                    var civShortName = _civFirePowerList.FirstOrDefault();
                     List<string> civNameList = new List<string>();
-                    foreach (var name in _civShortNameList)
+                    foreach (var name in _civFirePowerList)
                     {
                         civNameList.Add(name);
                         civNameList.Distinct().ToList();
                     }
                     civNameList.Remove(civShortName);
-                    _civShortNameList = civNameList.ToList();
+                    _civFirePowerList = civNameList.ToList();
                     return civShortName;
                 }
                 else { return null; }
@@ -338,10 +340,8 @@ namespace Supremacy.Combat
                         _otherAssetsLocal.Remove(ha);
                     }
                 }
-                //civFirePower = otherCivStrength.ToString() + " for " + civShortName;/*Firepower */
-
-                GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civFirePower);
-                return otherCivStrength.ToString();
+                GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
+                return otherCivStrength.ToString() + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
             }
         }
 
@@ -390,16 +390,10 @@ namespace Supremacy.Combat
                             _otherAssetsLocal.Remove(ha);
                         }
                     }
-                    //civFirePower = otherCivStrength.ToString() + " for " + civShortName;/*Firepower */
-
-                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength.ToString());
-                    return otherCivStrength.ToString();
-
+                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
+                    return otherCivStrength.ToString() + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
                 }
                 else { return null; }
-                
-                //string civi = "Romulan FirePower 1234";
-                //return civi; 
 
             }
         }
@@ -448,14 +442,10 @@ namespace Supremacy.Combat
                             _otherAssetsLocal.Remove(ha);
                         }
                     }
-                   // civFirePower = otherCivStrength.ToString() + " for " + civShortName;/*Firepower */
-
-                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civFirePower);
-                    return otherCivStrength.ToString();
+                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
+                    return otherCivStrength.ToString() + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
                 }
                 else { return null; }
-                //string civi = "Klingon FirePower 1234";
-                //return civi;
 
             }
         }
@@ -505,10 +495,8 @@ namespace Supremacy.Combat
                             _otherAssetsLocal.Remove(ha);
                         }
                     }
-                   // civFirePower = civShortName + " Firepower " + otherCivStrength.ToString();
-
-                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", civFirePower);
-                    return otherCivStrength.ToString();
+                    GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
+                    return otherCivStrength.ToString() + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
                 }
                 else { return null; }
                 //string civi = "Cardassian FirePower 1234";

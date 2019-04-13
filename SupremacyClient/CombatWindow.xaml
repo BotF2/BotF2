@@ -281,11 +281,11 @@
     </FrameworkElement.Resources>
     <Grid 
         Height="700"
-        Width="1200">
+        Width="1150">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="400"/>
             <!--<ColumnDefinition Width="Auto"/>-->
 
         </Grid.ColumnDefinitions>
@@ -323,7 +323,7 @@
                     Grid.Column="0"
                     Grid.Row="1"
                   VerticalAlignment="Top"
-                  MaxHeight="580"
+                  MaxHeight="700"
                     Width="Auto"            
                     Margin="2">
             <TreeView x:Name="FriendlyAssetsTree"
@@ -397,7 +397,8 @@
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
                                         Text="{s:StringResource COMBAT_FRIENDLY_FIREPOWER}"/>
-                            <TextBlock Foreground="White" 
+                            <TextBlock Foreground="White"
+                                       Margin="4,0,0,0"
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
                                         Text="{Binding Path=FriendlyEmpireStrength}"/>
@@ -415,6 +416,7 @@
                                         FontSize="16pt" 
                                         Text="{s:StringResource COMBAT_OTHERS_FIREPOWER}"/>
                             <TextBlock Foreground="Red" 
+                                        Margin="4,0,0,0"
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
                                         Text="{Binding Path=AllHostileEmpireStrength}"/>
@@ -444,6 +446,7 @@
             <TreeView x:Name="TargetingAndSummary"
                         BorderThickness="0"
                         VerticalAlignment="Top"
+                      HorizontalAlignment="Left"
                         MaxHeight="580"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="10pt"
@@ -453,17 +456,19 @@
                     Grid.Column="1"
                     Grid.Row="1"
                     VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
                     Orientation="Vertical">
                     <StackPanel
                             Grid.Column="1"
                             Grid.ColumnSpan="1"
-                            Grid.Row="1">
+                            Grid.Row="1"
+                            HorizontalAlignment="Left">
                         <Border x:Name="SummaryBorder"
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Left"
-                                Margin="0,4,4,4"
-                                Width="340"
+                                Margin="-17,4,4,4"
+                                Width="310"
                                 Height="auto"
                                 BorderBrush="Gray"
                                 BorderThickness="4"
@@ -484,9 +489,9 @@
                     <Border x:Name="ImageBorder1"
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Margin="0,8,4,4"
-                                Width="340"
+                                HorizontalAlignment="Center"
+                                Margin="-15,8,4,4"
+                                Width="300"
                                 Height="230"
                                 BorderBrush="LightGray"
                                 BorderThickness="4"
@@ -534,9 +539,9 @@
                                 Width="290">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="130"/>
                         </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -546,10 +551,9 @@
                                 <RowDefinition Height="22"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-
-                            
+                         
                             <!--Headline-->
-                        <TextBlock Grid.Column="0"
+                        <!--<TextBlock Grid.Column="0"
                                    Grid.ColumnSpan="2"
                                                 Grid.Row ="0"
                                                Margin="4,0,0,4"
@@ -558,9 +562,8 @@
                                                HorizontalAlignment="Left"
                                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                 FontSize="13pt" 
-                                                Text="Fire Powers"/>
-                                   
-                            
+                                                Text="Fire Powers"/>-->
+                        
                              <!--CivsAndFirePowers 1-->
                         <Border x:Name="ImageBorderOther1"
                                             DockPanel.Dock="Left"
@@ -593,7 +596,7 @@
                                                Grid.Row ="2"
                                                Margin="4,0,0,0"
                                                TextWrapping="Wrap"
-                                               Foreground="{DynamicResource DefaultTextBrush}" 
+                                               Foreground="Red" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
                                                Text="{Binding Path=CivFirePowers1}"/>
@@ -625,17 +628,16 @@
                                                Foreground="{DynamicResource DefaultTextBrush}" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
-                                               
-                        Text="{Binding Path=CivName2}"/>
+                                                Text="{Binding Path=CivName2}"/>
 
-                        <TextBlock Foreground="{DynamicResource DefaultTextBrush}"
-                                                   Grid.Column="1"
-                                                   Grid.Row ="4"
-                                   TextWrapping="Wrap"
+                        <TextBlock Foreground="Red"
+                                                Grid.Column="1"
+                                                Grid.Row ="4"
+                                                TextWrapping="Wrap"
                                                 Margin="4,0,0,0"
-                                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                    FontSize="12pt" 
-                                                    Text="{Binding Path=CivFirePowers2}"/>        
+                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                FontSize="12pt" 
+                                                Text="{Binding Path=CivFirePowers2}"/>        
                             
                             <!--CivsAndFirePowers 3-->
                         <Border x:Name="ImageBorderOther3"
@@ -662,35 +664,34 @@
                                                Foreground="{DynamicResource DefaultTextBrush}" 
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="12pt" 
-                                              
-                        Text="{Binding Path=CivName3}"/>
+                                                Text="{Binding Path=CivName3}"/>
 
-                        <TextBlock Foreground="{DynamicResource DefaultTextBrush}" 
-                                                   Grid.Column="3"
-                                                   Grid.Row ="2"
-                                   TextWrapping="Wrap"
-                                                Margin="4,0,0,0"
-                                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                    FontSize="12pt" 
-                                                    Text="{Binding Path=CivFirePowers3}"/>
+                        <TextBlock Foreground="Red" 
+                                                Grid.Column="3"
+                                                Grid.Row ="2"
+                                                TextWrapping="Wrap"
+                                                    Margin="4,0,0,0"
+                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                FontSize="12pt" 
+                                                Text="{Binding Path=CivFirePowers3}"/>
                             
                             <!--CivsAndFirePowers 4-->                            
-                            <Border x:Name="ImageBorderOther4"
-                                                DockPanel.Dock="Left"
-                                                Grid.Column="2"
-                                                Grid.Row="3"
-                                                Grid.RowSpan="2"
-                                                VerticalAlignment="Top"
-                                                Width="40"
-                                                Height="35"
-                                                BorderBrush="Black"
-                                                BorderThickness="2"
-                                                CornerRadius="8">
-                                <Border.Background>
-                                <ImageBrush ImageSource="{Binding Path=OtherCivIngisnia4, Converter={StaticResource CivInsigniaConverter}}"
-                                                Stretch="UniformToFill"/>
-                                </Border.Background>
-                            </Border>
+                        <Border x:Name="ImageBorderOther4"
+                                            DockPanel.Dock="Left"
+                                            Grid.Column="2"
+                                            Grid.Row="3"
+                                            Grid.RowSpan="2"
+                                            VerticalAlignment="Top"
+                                            Width="40"
+                                            Height="35"
+                                            BorderBrush="Black"
+                                            BorderThickness="2"
+                                            CornerRadius="8">
+                            <Border.Background>
+                            <ImageBrush ImageSource="{Binding Path=OtherCivIngisnia4, Converter={StaticResource CivInsigniaConverter}}"
+                                            Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
                         <TextBlock Grid.Column="3"
                                                Grid.Row ="3"
                                                Margin="4,0,0,0"
@@ -701,14 +702,14 @@
                                                
                         Text="{Binding Path=CivName4}"/>
 
-                        <TextBlock Foreground="{DynamicResource DefaultTextBrush}" 
-                                                   Grid.Column="3"
-                                                   Grid.Row ="4"
-                                   TextWrapping="Wrap"
-                                                Margin="4,0,0,0"
-                                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                    FontSize="12pt" 
-                                                    Text="{Binding Path=CivFirePowers4}"/>
+                        <TextBlock Foreground="Red" 
+                                        Grid.Column="3"
+                                        Grid.Row ="4"
+                                        TextWrapping="Wrap"
+                                        Margin="4,0,0,0"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        FontSize="12pt" 
+                                        Text="{Binding Path=CivFirePowers4}"/>
                         </Grid>
                     </StackPanel>
 
@@ -727,7 +728,7 @@
         <StackPanel Grid.Column="1"
                 Grid.ColumnSpan="3"
                 Grid.Row="0"
-                Margin="8,6,3,6"
+                Margin="8,6,3,0"
                 Orientation="Vertical">
             <StackPanel x:Name="UpperButtonsPanel"
                 Margin="6"
