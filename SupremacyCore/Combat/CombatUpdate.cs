@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Resources;
@@ -32,7 +33,7 @@ namespace Supremacy.Combat
         private List<Object> _civList;
         private List<string> _civShortNameList;
         private List<string> _civFirePowerList;
-        private List<string> _statusToOthersList;
+        private List<Civilization> _civStatusList;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
 
@@ -253,32 +254,24 @@ namespace Supremacy.Combat
             get
             {
                 var asset = _hostileAssets.FirstOrDefault();
-
+                var currentOwner = asset.Owner;
+                List<Civilization> civOwner = new List<Civilization>();
+              
                 var _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, asset.Owner].Status.ToString();
-                GameLog.Core.Combat.DebugFormat("Status Target 1: Status = {2} for Owner = {0} vs others = {1}", 
-                    Owner, asset.Owner, _targetCiv1Status);
+                //GameLog.Core.Combat.DebugFormat("Status Target 1: Status = {2} for Owner = {0} vs others = {1}", 
+                    //Owner, asset.Owner, _targetCiv1Status);
 
                 List<string> civStatusList = new List<string>();  // list of Status
                 foreach (var ha in _hostileAssets)
-
                 {
-                    var status = GameContext.Current.DiplomacyData[Owner, ha.Owner].Status.ToString();
+                    civOwner.Add(ha.Owner);
+                    civOwner.Distinct().ToList();
 
-
-                    civStatusList.Add(status);
-                    civStatusList.Distinct().ToList();
                 }
-                civStatusList.Remove(_targetCiv1Status);
+                civOwner.Remove(currentOwner);
 
-                int i = 0;
-                foreach (var status in civStatusList)
-                {
-                    i += 1;
-                    GameLog.Core.Combat.DebugFormat("status {0} = {1}", i, status);
-                }
-
-                _statusToOthersList = civStatusList.ToList();
-                return "Status: " + _targetCiv1Status;
+                _civStatusList = civOwner.ToList();
+                return String.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
             }
 
         }
@@ -313,21 +306,52 @@ namespace Supremacy.Combat
 
         public string GetStatusToOthers()
         {
-            if (_statusToOthersList.FirstOrDefault() != null)
+            if (_civStatusList.FirstOrDefault() != null)
             {
-                var _targetCiv1Status = _statusToOthersList.FirstOrDefault();
-                List<string> civStatusList = new List<string>();
-                foreach (var name in _statusToOthersList)
+                var currentCiv = _civStatusList.FirstOrDefault();
+                var _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, currentCiv].Status.ToString();
+                List<Civilization> civStatusList = new List<Civilization>();
+                foreach (var civilization in _civStatusList)
                 {
-                    civStatusList.Add(name);
+                    civStatusList.Add(civilization);
                     civStatusList.Distinct().ToList();
                 }
                 GameLog.Core.Combat.DebugFormat("_targetCiv1Status = {0}", _targetCiv1Status);
-                civStatusList.Remove(_targetCiv1Status);
-                _statusToOthersList = civStatusList.ToList();
-                return _targetCiv1Status;
+                civStatusList.Remove(currentCiv);
+                _civStatusList = civStatusList.ToList();
+                return String.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
             }
             else { return null; }
+        }
+
+
+        private string ReturnTextOfStatus(string status)
+
+        {
+            var enumStatus = (ForeignPowerStatus)Enum.Parse(typeof(ForeignPowerStatus), status);
+
+            string returnStatus = " ";
+
+                switch (enumStatus)
+                {
+                case ForeignPowerStatus.NoContact:
+                    returnStatus = "First Contact";
+                    break;
+                case ForeignPowerStatus.CounterpartyIsSubjugated:
+                    returnStatus = "Subjugated";
+                    break;
+                case ForeignPowerStatus.AtWar:
+                    returnStatus = "War";
+                    break;
+                case ForeignPowerStatus.CounterpartyIsUnreachable:
+                    returnStatus = "Undefined";
+                    break;
+                default:
+                    returnStatus = status;
+                        break;
+                }
+
+            return returnStatus;
         }
 
         #region Properties for civ firepowers
