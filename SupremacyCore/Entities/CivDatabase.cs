@@ -270,6 +270,9 @@ namespace Supremacy.Entities
                 {
                     try
                     {
+                        // for problems with Civilizations.xml active ...
+                        // GameLog.Core.GameData.DebugFormat(string.Format("adding civilization {0} to CivDatabase", civElement.ToString()));
+
                         civDatabase.Add(new Civilization(civElement));
                     }
                     catch (Exception e)

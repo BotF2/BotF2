@@ -299,7 +299,8 @@ namespace Supremacy.Orbitals
             }
             else
             {
-                GameLog.Core.GameData.DebugFormat("ShipNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
+                // for problems with ships activate ...
+                //GameLog.Core.GameData.DebugFormat("ShipNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
 
                 foreach (XmlElement name in element["ShipNames"])
                 {
