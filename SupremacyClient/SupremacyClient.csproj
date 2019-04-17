@@ -484,19 +484,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SitRepListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="StatusWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="themes\Borg\NewDiplomacyScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1098,10 +1088,6 @@
     </Compile>
     <Compile Include="SinglePlayerStartScreen.xaml.cs">
       <DependentUpon>SinglePlayerStartScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SitRepListView.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>SitRepListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StatusWindow.xaml.cs">
       <SubType>Code</SubType>

@@ -22,6 +22,16 @@ namespace Supremacy.Combat
 
     public abstract class CombatEngine
     {
+       
+        private List<Civilization> _civilization;
+        private bool _battleInOwnTerritory;
+        private Civilization _targetOftheCivilzation; // player-selected civ to attack
+        private int _totalFirepower; // looks like _empireStrenths dictionary below
+        private double _favorTheBoldMalus; 
+        private int _fleetAsCommandshipBonus;
+        private bool _has20PlusPercentFastAttack;
+        private Dictionary<Civilization, CombatOrders> _combatOrderByCiv; // looks like _orders below
+
         public readonly object SyncLock;
         protected const double BaseChanceToRetreat = 0.50;
         protected const double BaseChanceToAssimilate = 0.05;
@@ -38,8 +48,78 @@ namespace Supremacy.Combat
         protected readonly List<CombatAssets> _assets;
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
-        private readonly Dictionary<int, CombatOrders> _orders;
-        protected Dictionary<string, int> _empireStrengths;
+        private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
+        protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
+
+
+        public List<Civilization> Civilization
+        {
+            get { return _civilization; }
+            set { _civilization = value; }
+        }
+
+        public bool BattelInOwnTerritory
+        {
+            get { return _battleInOwnTerritory; }
+            set { _battleInOwnTerritory = value; }
+        }
+
+        public Civilization TargetOfACivilization
+        {
+            get { return _targetOftheCivilzation; }
+            set { _targetOftheCivilzation = value; }
+        }
+
+        public int TotalFirepower
+        {
+            get
+            {
+                return _totalFirepower;
+            }
+            set
+            {
+                _totalFirepower = value;
+            }
+        }
+
+        public double FavorTheBoldMalus
+        {
+            get { return _favorTheBoldMalus; }
+            set { _favorTheBoldMalus = value; }
+        }
+
+
+        public int FleetAsCommandshipBonus
+        {
+            get { return _fleetAsCommandshipBonus; }
+            set { _fleetAsCommandshipBonus = value; }
+        }
+
+        public bool Has20PlusPercentFastAttack
+        {
+            get { return _has20PlusPercentFastAttack; }
+            set { _has20PlusPercentFastAttack = value; }
+        }
+
+        public Dictionary<Civilization, CombatOrders> CombatOrderByCiv
+        {
+            get { return _combatOrderByCiv; }
+            set { _combatOrderByCiv = value; }
+        }
+
+        public Dictionary<string, int> EmpireStrengths
+        {
+            get
+            {
+                GameLog.Core.Combat.DebugFormat("GET EmpireStrengths = {0}", _empireStrengths.ToString());
+                return _empireStrengths;
+            }
+            set
+            {
+                GameLog.Core.Combat.DebugFormat("SET EmpireStrengths = {0}", value.ToString());
+                _empireStrengths = value;
+            }
+        }
 
         protected int CombatID
         {
@@ -145,9 +225,64 @@ namespace Supremacy.Combat
             }
         }
 
+        //protected CombatEngine(
+        //      List<CombatAssets> assets,
+        //      SendCombatUpdateCallback updateCallback,
+        //      NotifyCombatEndedCallback combatEndedCallback)
+
+        //{
+//            if (assets == null)
+//            {
+//                throw new ArgumentNullException("assets");
+//            }
+//            if (updateCallback == null)
+//            {
+//                throw new ArgumentNullException("updateCallback");
+//            }
+//            if (combatEndedCallback == null)
+//            {
+//                throw new ArgumentNullException("combatEndedCallback");
+//            }
+
+        //    _running = false;
+        //    _allSidesStandDown = false;
+        //    _combatId = GameContext.Current.GenerateID();
+        //    _assets = assets;
+        //    // _roundNumber = 1;
+        //    _updateCallback = updateCallback;
+        //    _combatEndedCallback = combatEndedCallback;
+        //    _orders = new Dictionary<int, CombatOrders>();
+
+        //    SyncLock = _orders;
+
+        //    _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+
+        //    foreach (CombatAssets civAssets in _assets.ToList())
+        //    {
+        //        if (civAssets.Station != null)
+        //        {
+        //            _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
+        //                civAssets.Station,
+        //                CombatWeapon.CreateWeapons(civAssets.Station.Source));
+        //        }
+        //        foreach (CombatUnit shipStats in civAssets.CombatShips)
+        //        {
+        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+        //                shipStats,
+        //                CombatWeapon.CreateWeapons(shipStats.Source)));
+        //        }
+        //        foreach (CombatUnit shipStats in civAssets.NonCombatShips)
+        //        {
+        //            _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
+        //                shipStats,
+        //                CombatWeapon.CreateWeapons(shipStats.Source)));
+        //        }
+        //    }
+        //}
+
         public void SubmitOrders(CombatOrders orders)
         {
-            lock (SyncLock)
+            lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
             {
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
@@ -175,8 +310,9 @@ namespace Supremacy.Combat
         {
             lock (_orders)
             {
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound");
                 Running = true;
+
 
                 _assets.ForEach(a => a.CombatID = _combatId);
                 CalculateEmpireStrengths();
@@ -190,10 +326,10 @@ namespace Supremacy.Combat
                 {
                     PerformAssimilation();
                 }
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before PerformRetreat");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before PerformRetreat");
                 PerformRetreat();
 
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
                 UpdateOrbitals();
 
                 if (!IsCombatOver)
@@ -206,14 +342,14 @@ namespace Supremacy.Combat
 
             SendUpdates();
 
-            GameLog.Core.Combat.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
+            GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
             RemoveDefeatedPlayers();
 
             Running = false;
 
             if (IsCombatOver)
             {
-                GameLog.Core.Combat.DebugFormat("ResolveCombatRound - IsCombatOver = TRUE");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - IsCombatOver = TRUE");
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
         }
@@ -263,8 +399,48 @@ namespace Supremacy.Combat
                 var owner = playerAsset.Owner;
                 var friendlyAssets = new List<CombatAssets>();
                 var hostileAssets = new List<CombatAssets>();
+                var empireStrengths = new Dictionary<Civilization, int>();
 
                 friendlyAssets.Add(playerAsset);
+
+                var CivForEmpireStrength = _assets.Distinct().ToList();
+                foreach (var civ in CivForEmpireStrength)
+                {
+                    //GameLog.Core.Combat.DebugFormat("beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
+
+                    int currentEmpireStrength = 0;
+
+                    foreach (var cs in _assets)  // only combat ships
+                    {
+                        //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
+                        if (cs.Owner.Key == civ.Owner.Key)
+                        {
+                            //GameLog.Core.Combat.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire {1}", cs.Owner.Key, civ.Owner.ToString());
+
+                            foreach (var ship in cs.CombatShips)
+                            {
+                                currentEmpireStrength += ship.FirePower;
+                                //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
+                                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+                            }
+
+                            if (cs.Station != null)
+                                currentEmpireStrength += cs.Station.FirePower;
+
+                        }
+                    }
+
+                    //GameLog.Core.Combat.DebugFormat("at the end try to add value for Empire {0}", civ.Owner.Key, currentEmpireStrength);
+
+                    empireStrengths.Add(civ.Owner, currentEmpireStrength);
+                }
+
+                // just for controlling
+                foreach (var civ in empireStrengths)   // the dictionary contains the values
+                {
+                    GameLog.Core.CombatDetails.DebugFormat("CombatID: {0} - CivForEmpireStrength for Empire {1} = {2}", _combatId, civ.Key, civ.Value);
+                }
+
 
                 foreach (var otherAsset in _assets)
                 {
@@ -286,6 +462,7 @@ namespace Supremacy.Combat
                     break;
                 }
 
+
                 var update = new CombatUpdate(
                     _combatId,
                     _roundNumber,
@@ -293,7 +470,8 @@ namespace Supremacy.Combat
                     owner,
                     playerAsset.Location,
                     friendlyAssets,
-                    hostileAssets);
+                    hostileAssets
+                    );
 
                 AsyncHelper.Invoke(_updateCallback, this, update);
             }
@@ -363,9 +541,10 @@ namespace Supremacy.Combat
                 _empireStrengths[_combatStation.Item1.Owner.Key] += _combatStation.Item1.Source.Firepower();
             }
 
-            foreach (var empires in _empireStrengths)
+            foreach (var empire in _empireStrengths)
             {
-                GameLog.Core.Combat.DebugFormat("Strength for {0} = {1}", empires.Key, empires.Value);
+                GameLog.Core.Combat.DebugFormat("Strength for {0} = {1}", empire.Key, empire.Value);
+                //makes crash !!   _empireStrengths.Add(empire.Key, empire.Value);
             }
         }
 
@@ -496,13 +675,13 @@ namespace Supremacy.Combat
             }
             catch (Exception e)
             {
-                GameLog.Core.Combat.DebugFormat("##### Problem at PerformRetreat");
+                GameLog.Core.Combat.DebugFormat("##### Problem at PerformRetreat" + Environment.NewLine + "{0}", e);
                     //((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString(), e);
             }
         }
 
         /// <summary>
-        /// Returns the <see cref="CombatAssets"/> that belong to the given <see cref="Civilization"/>
+        /// Returns the <see cref="CombatAssets"/> that belong to the given <see cref="Entities.Civilization"/>
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>

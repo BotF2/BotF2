@@ -22,6 +22,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="129"/>
             <ColumnDefinition Width="129"/>
+            <ColumnDefinition Width="129"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
            
@@ -422,6 +423,97 @@
               Grid.Row="16"
               SelectedItem="{Binding Path=StartingTechLevel, Mode=TwoWay}"
               Margin="7,7,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+
+        <TextBlock Grid.Column="3"
+            Grid.Row="1"
+            Margin="7,0,0,6"
+            Text="{s:StringResource MODIFIER_HEADER}"
+            Background="DarkBlue"
+            TextAlignment="Center"
+            FontSize="14pt"                  
+            Height="24"
+            Width="122"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" />
+        <!--ComboBoxes-->
+        <ComboBox x:Name="lstFederationModifier"
+              Grid.Column="2"
+              Grid.Row="2"
+              SelectedItem="{Binding Path=FederationModifier, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstTerranEmpireModifier"
+              Grid.Column="2"
+              Grid.Row="3"
+              SelectedItem="{Binding Path=TerranEmpireModifier, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstRomulanModifier"
+              Grid.Column="2"
+              Grid.Row="4"
+              SelectedItem="{Binding Path=RomulanModifier, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstKlingonModifier"
+              Grid.Column="2"
+              Grid.Row="5"
+              SelectedItem="{Binding Path=KlingonModifier, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstCardassianModifier"
+              Grid.Column="2"
+              Grid.Row="6"
+              SelectedItem="{Binding Path=CardassianModifier, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstDominionModifier"
+              Grid.Column="2"
+              Grid.Row="7"
+              SelectedItem="{Binding Path=DominionModifier, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+        <ComboBox x:Name="lstBorgModifier"
+              Grid.Column="2"
+              Grid.Row="8"
+              SelectedItem="{Binding Path=BorgModifier, Mode=TwoWay}"
+              Margin="7,2,0,0"
+              IsEditable="False"
+              IsReadOnly="True"
+              VerticalAlignment="Center" />
+
+        <TextBlock Grid.Column="2"
+            Grid.Row="10"
+            Margin="5,7,0,0"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Text="{s:StringResource EMPIRES_MODIFIER_RECURRING_BALANCING}"
+            Background="DarkBlue"
+            TextAlignment="Center"
+            FontSize="14pt"                  
+            Height="24"
+            Width="122"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" />
+
+        <ComboBox x:Name="lstModifierRecurringBalancing"
+              Grid.Column="2"
+              Grid.Row="11"
+              SelectedItem="{Binding Path=lstModifierRecurringBalancing, Mode=TwoWay}"
+              Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
               VerticalAlignment="Center" />

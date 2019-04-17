@@ -926,7 +926,7 @@ namespace Supremacy.Tech
             var civManager = GameContext.Current.CivilizationManagers[owner];
             if (civManager == null)
             {
-                GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because owner {2} is not active in this game.",
+                GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because owner {2} is not active in this game.",
                     Key, location, owner.Key);
 
                 return false;
@@ -937,7 +937,7 @@ namespace Supremacy.Tech
             if (requireSectorOwned &&
                 !Equals(sector.Owner, owner))
             {
-                GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because the sector is not owned by {2}.",
+                GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because the sector is not owned by {2}.",
                     Key, location, owner.Key);
 
                 return false;
@@ -948,7 +948,7 @@ namespace Supremacy.Tech
                 var system = sector.System;
                 if (system == null)
                 {
-                    GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because there is no star system at that location.",
+                    GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because there is no star system at that location.",
                         Key, location);
 
                     return false;
@@ -956,7 +956,7 @@ namespace Supremacy.Tech
 
                 if (requireColony && !system.HasColony)
                 {
-                    GameLog.Core.General.ErrorFormat("Cannot spawn {0} at location {1} because there is no colony at that location.",
+                    GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because there is no colony at that location.",
                         Key, location);
 
                     return false;

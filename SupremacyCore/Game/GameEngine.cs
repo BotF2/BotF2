@@ -417,6 +417,7 @@ namespace Supremacy.Game
             DoMapUpdates(game);
 
             //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
+            GameLog.Core.General.InfoFormat("Options: ---------------------------");
             GameLog.Core.General.InfoFormat("Options: GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
             GameLog.Core.General.InfoFormat("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
             GameLog.Core.General.InfoFormat("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
@@ -424,6 +425,7 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Options: StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
             GameLog.Core.General.InfoFormat("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
             GameLog.Core.General.InfoFormat("Options: GalaxyCanon = {0}", GameContext.Current.Options.GalaxyCanon);
+            GameLog.Core.General.InfoFormat("Options: ---------------------------");
             GameLog.Core.General.InfoFormat("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
             GameLog.Core.General.InfoFormat("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
             GameLog.Core.General.InfoFormat("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
@@ -431,6 +433,16 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Options: DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
             GameLog.Core.General.InfoFormat("Options: BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
             GameLog.Core.General.InfoFormat("Options: TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
+            GameLog.Core.General.InfoFormat("Options: ---------------------------");
+            GameLog.Core.General.InfoFormat("Options: FederationModifier = {0}", GameContext.Current.Options.FederationModifier);
+            GameLog.Core.General.InfoFormat("Options: RomulanModifier = {0}", GameContext.Current.Options.RomulanModifier);
+            GameLog.Core.General.InfoFormat("Options: KlingonModifier = {0}", GameContext.Current.Options.KlingonModifier);
+            GameLog.Core.General.InfoFormat("Options: CardassianModifier = {0}", GameContext.Current.Options.CardassianModifier);
+            GameLog.Core.General.InfoFormat("Options: DominionModifier = {0}", GameContext.Current.Options.DominionModifier);
+            GameLog.Core.General.InfoFormat("Options: BorgModifier = {0}", GameContext.Current.Options.BorgModifier);
+            GameLog.Core.General.InfoFormat("Options: TerranEmpireModifier = {0}", GameContext.Current.Options.TerranEmpireModifier);
+
+            GameLog.Core.General.InfoFormat("Options: EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
 
             game.TurnNumber = 1;
         }

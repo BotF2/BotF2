@@ -29,16 +29,24 @@ namespace Supremacy.Client.Views
             _activeAgreements = new ObservableCollection<ActiveAgreementViewModel>();
             _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
+            GameLog.Core.Diplomacy.DebugFormat("foreignPower = {0}", foreignPower.Owner);
+
             UpdateIncomingMessage();
             UpdateActiveAgreements();
         }
 
         private void UpdateIncomingMessage()
         {
+            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ...beginning");
             if (_foreignPower.ResponseReceived == null)
+            {
+                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = null");
                 return;
+            }
+
 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
+            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage from {1} from {0}", _foreignPower.Owner, IncomingMessage);
         }
 
         private void UpdateActiveAgreements()
@@ -53,12 +61,20 @@ namespace Supremacy.Client.Views
 
         public Civilization Counterparty
         {
-            get { return _foreignPower.Counterparty; }
+            get
+            {
+                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.Counterparty = {0}", _foreignPower.Counterparty);
+                return _foreignPower.Counterparty;
+            }
         }
 
         public string CounterpartyDiplomacyReport
         {
-            get { return _foreignPower.Counterparty.DiplomacyReport; }
+            get
+            {
+                // just "We are the Borg"     GameLog.Core.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
+                return _foreignPower.Counterparty.DiplomacyReport;
+            }
         }
 
         public Civilization Owner
@@ -122,6 +138,7 @@ namespace Supremacy.Client.Views
                     return;
 
                 _incomingMessage = value;
+                GameLog.Core.Diplomacy.DebugFormat("_incomingMessage = {0}", _incomingMessage);
 
                 OnIncomingMessageChanged();
             }
@@ -129,6 +146,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnIncomingMessageChanged()
         {
+            GameLog.Core.Diplomacy.DebugFormat("OnIncomingMessageChanged = TRUE");
             IncomingMessageChanged.Raise(this);
             OnPropertyChanged("IncomingMessage");
             OnIncomingMessageCategoryChanged();

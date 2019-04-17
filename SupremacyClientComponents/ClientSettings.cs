@@ -411,6 +411,7 @@ namespace Supremacy.Client
             {
                 SetValue(TracesClearAllProperty, value);
 
+                GameLog.Client.General.InfoFormat("Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {

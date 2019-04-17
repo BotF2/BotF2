@@ -22,19 +22,24 @@
             IsModal="True"
             Cursor="{StaticResource DefaultCursor}"
             ForceCursor="True">
-  <FrameworkElement.Resources>
-    <Style TargetType="{x:Type TreeViewItem}">
-      <Setter Property="Foreground"
+<!-- The DataTemplates used in the .cs file are up top here and the window start below these -->
+
+    <FrameworkElement.Resources>
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Foreground"
               Value="{DynamicResource HeaderTextBrush}"/>
-      <Setter Property="FontSize"
+            <Setter Property="FontSize"
               Value="12pt"/>
-      <Setter Property="SnapsToDevicePixels"
+            <Setter Property="SnapsToDevicePixels"
               Value="True"/>
-    </Style>
-    <DataTemplate x:Key="AssetTreeItemTemplate">
-      <DockPanel LastChildFill="True"
+        </Style>
+
+        <!--Friendly and Hostile Data Template Detail view  of ONE item - Begin-->
+
+        <DataTemplate x:Key="AssetsTreeItemTemplate">
+            <DockPanel LastChildFill="True"
                  Margin="0,2,0,2">
-        <ui:BlockBar DockPanel.Dock="Left"
+                <ui:BlockBar DockPanel.Dock="Left"
                      ui:BlockBar.IsReadOnly="True"
                      BlockCount="12"
                      BlockMargin="3"
@@ -44,11 +49,11 @@
                      Margin="0,0,4,0"
                      Width="45"
                      VerticalAlignment="Top">
-          <ui:BlockBar.LayoutTransform>
-            <RotateTransform Angle="270"/>
-          </ui:BlockBar.LayoutTransform>
-        </ui:BlockBar>
-        <ui:BlockBar DockPanel.Dock="Left"
+                    <ui:BlockBar.LayoutTransform>
+                        <RotateTransform Angle="270"/>
+                    </ui:BlockBar.LayoutTransform>
+                </ui:BlockBar>
+                <ui:BlockBar DockPanel.Dock="Left"
                      ui:BlockBar.IsReadOnly="True"
                      BlockCount="12"
                      BlockMargin="3"
@@ -58,310 +63,868 @@
                      Margin="0,0,4,0"
                      Width="45"
                      VerticalAlignment="Top">
-          <ui:BlockBar.LayoutTransform>
-            <RotateTransform Angle="270"/>
-          </ui:BlockBar.LayoutTransform>
-        </ui:BlockBar>
-        <Border x:Name="ImageBorder"
-                DockPanel.Dock="Left"
-                VerticalAlignment="Top"
-                Width="54"
-                Height="45"
-                BorderBrush="White"
-                BorderThickness="2"
-                CornerRadius="8">
-          <Border.Background>
-            <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
-                        Stretch="UniformToFill"/>
-          </Border.Background>
-          <Image Source="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
-                 HorizontalAlignment="Right"
-                 VerticalAlignment="Bottom"
-                 Margin="0,0,4,4"
-                 Width="16"
-                 Height="16"
-                 Stretch="Uniform">
-            <!--<UIElement.Effect>
-              <DropShadowEffect ShadowDepth="0"
-                                BlurRadius="10.0"
-                                Color="Black"
-                                Opacity="1.0" />
-            </UIElement.Effect>-->
-          </Image>
-        </Border>
-        <StackPanel Orientation="Vertical"
+                    <ui:BlockBar.LayoutTransform>
+                        <RotateTransform Angle="270"/>
+                    </ui:BlockBar.LayoutTransform>
+                </ui:BlockBar>
+                <Border x:Name="ImageBorder"
+                        DockPanel.Dock="Left"
+                        VerticalAlignment="Top"
+                        Width="54"
+                        Height="45"
+                        BorderBrush="White"
+                        BorderThickness="2"
+                        CornerRadius="8">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Path=Source.Design, Converter={StaticResource TechObjectImageConverter}}"
+                                    Stretch="UniformToFill"/>
+                    </Border.Background>
+                    <Image Source="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             Margin="0,0,4,4"
+                             Width="16"
+                             Height="16"
+                             Stretch="Uniform">
+                    </Image>
+                </Border>
+                <StackPanel Orientation="Vertical"
                     Margin="6,0,0,0"
                     TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     TextBlock.FontSize="10pt"
                     TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
                     TextBlock.TextAlignment="Left">
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                        Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>
-            <TextBlock x:Name="DestroyedText"
+                        <TextBlock Text=" - FirePower: "/>
+                        <TextBlock Text="{Binding Path=FirePower}"/>
+                        <TextBlock x:Name="DestroyedText"
                        Foreground="Crimson"
                        Margin="12,0,0,0"
                        Visibility="Collapsed" 
                        Text="{s:StringResource COMBAT_DESTROYED}"/>
-            <TextBlock x:Name="AssimilatedText"
+                        <TextBlock x:Name="AssimilatedText"
                        Foreground="LimeGreen"
                        Margin="12,0,0,0"
                        Visibility="Collapsed" 
                        Text="{s:StringResource COMBAT_ASSIMILATED}"/>
-          </StackPanel>
-          <TextBlock Text="{Binding Path=Description}"/>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="0.5*"/>
-              <ColumnDefinition Width="0.5*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0"
+                    </StackPanel>
+                    <TextBlock Text="{Binding Path=Description}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
                         Orientation="Horizontal">
-              <TextBlock Text="Shields: "/>
-              <TextBlock Text="{Binding Path=ShieldStrength}"/>
-              <TextBlock Text="/"/>
-              <TextBlock Text="{Binding Path=Source.OrbitalDesign.ShieldStrength}"/>
-            </StackPanel>
-            <StackPanel Grid.Column="1"
+                            <TextBlock Text="Shields: "/>
+                            <TextBlock Text="{Binding Path=ShieldStrength}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.ShieldStrength}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         Margin="12,0,0,0">
-              <TextBlock Text="Hull: "/>
-              <TextBlock Text="{Binding Path=HullStrength}"/>
-              <TextBlock Text="/"/>
-              <TextBlock Text="{Binding Path=Source.OrbitalDesign.HullStrength}"/>
-            </StackPanel>
-          </Grid>
-        </StackPanel>
-      </DockPanel>
-      <DataTemplate.Triggers>
-        <DataTrigger Binding="{Binding Path=IsCloaked}"
+                            <TextBlock Text="Hull: "/>
+                            <TextBlock Text="{Binding Path=HullStrength}"/>
+                            <TextBlock Text="/"/>
+                            <TextBlock Text="{Binding Path=Source.OrbitalDesign.HullStrength}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </DockPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=IsCloaked}"
                      Value="True">
-          <Setter TargetName="ImageBorder"
+                    <Setter TargetName="ImageBorder"
                   Property="Opacity"
                   Value="0.55"/>
-        </DataTrigger>
-        <DataTrigger Binding="{Binding Path=IsCamouflaged}"
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsCamouflaged}"
                 Value="True">
-            <Setter TargetName="ImageBorder"
+                    <Setter TargetName="ImageBorder"
                     Property="Opacity"
                     Value="0.55"/>
-        </DataTrigger>
-         <DataTrigger Binding="{Binding Path=IsDestroyed}"
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsDestroyed}"
                     Value="True">
-            <Setter TargetName="DestroyedText"
+                    <Setter TargetName="DestroyedText"
                     Property="Visibility"
                     Value="Visible"/>
-        </DataTrigger>
-        <DataTrigger Binding="{Binding Path=IsAssimilated}"
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsAssimilated}"
                     Value="True">
-            <Setter TargetName="AssimilatedText"
+                    <Setter TargetName="AssimilatedText"
                     Property="Visibility"
                     Value="Visible"/>
-        </DataTrigger>
-      </DataTemplate.Triggers>
-    </DataTemplate>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
 
-  </FrameworkElement.Resources>
+        <!-- Friend Top list of Civs - Data Template for one item view  -->
+        <DataTemplate x:Key="FriendTreeTemplate">
+            <StackPanel Margin="0,2,0,0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left">
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <!--<ColumnDefinition Width="Auto"/>-->
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!--<RowDefinition Height="Auto"/>-->
+                    </Grid.RowDefinitions>
+                    <TextBlock Foreground="BlanchedAlmond"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                                Margin="5,0,10,0"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontSize="20pt" 
+                                Text="{Binding Path=ShortName}" />
 
-  <Grid 
-        Height="600"
-        Width="800">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="0.5*"/>
-      <ColumnDefinition Width="0.5*"/>
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-    </Grid.RowDefinitions>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
 
-    <StackPanel Grid.Column="0"
+        <!-- Targeting Center SUMMARY of 'other' civs Data Template for one item view  -->
+        <DataTemplate x:Key="OthersTreeSummaryTemplate">
+            <StackPanel Margin="0,2,0,0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left">
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Foreground="LightYellow"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                                Margin="5,0,10,0"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontSize="20pt" 
+                                Text="{Binding Path=ShortName}" />
+
+                    <TextBlock 
+                                Foreground="LightYellow"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Grid.Column="0"
+                                Grid.Row="1" 
+                                Margin="5,0,10,0"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontSize="20pt" 
+
+                                Text="{Binding Path=TargetCiv1Status}" />
+                                <!--Text="Hello" />-->
+                    <RadioButton 
+                            Grid.Column="1"
+                            Grid.Row="0"                            
+                            VerticalAlignment="Stretch"
+                            Margin="0,2,10,0"
+                            Content="{s:StringResource COMBAT_PRIME_TARGET}" 
+                            Foreground="LightCoral"                         
+                            Height="25"
+                            Checked="TargetButton1_Click"
+                            GroupName="Primary"/>
+                    
+
+                    <RadioButton 
+                            Grid.Column="1"
+                            Grid.Row="1"                                
+                            VerticalAlignment="Stretch"
+                            Margin="0,5,10,15"                                 
+                            Content="{s:StringResource COMBAT_SECONDARY_TARGET}"
+                            Foreground="LightYellow"    
+                            Height="25"
+                            Checked="TargetButton2_Click"
+                            GroupName="Secondary"/>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+        
+        <!-- Others insignia, name and firepower at Top list of others on left side - Data Template for one item view  -->
+        <DataTemplate x:Key="OtherNameAndFirePowerTemplate">
+            <StackPanel Margin="0,2,0,0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Width="300"
+                        HorizontalAlignment="Left">
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <!--<ColumnDefinition Width="Auto"/>-->
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!--<RowDefinition Height="Auto"/>-->
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="0,2,0,0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left">
+                    <TextBlock Foreground="BlanchedAlmond"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                                Margin="5,0,10,0"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontSize="20pt" 
+                                Text="{Binding Path=ShortName}" />
+                        <TextBlock Foreground="BlanchedAlmond"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                                Margin="5,0,10,0"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontSize="20pt" 
+                                Text="{Binding Path=LongName}" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <!--Main Combat Window - Begin-->
+    </FrameworkElement.Resources>
+    <Grid 
+        Height="700"
+        Width="1150">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="400"/>
+            <!--<ColumnDefinition Width="Auto"/>-->
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Grid.Row="0"
-                Margin="6"
+                Margin="6,6,5,6"
                 Orientation="Vertical">
-      <TextBlock x:Name="HeaderText"
+            <TextBlock x:Name="HeaderText"
                  FontSize="20pt"
-                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                 Foreground="{DynamicResource HeaderTextBrush}"
-                 HorizontalAlignment="Center"/>
-      <TextBlock x:Name="SubHeaderText"
-                 FontSize="12pt"
                  FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                  Foreground="{DynamicResource DefaultTextBrush}"
-                 TextAlignment="Center"
-                 HorizontalAlignment="Center"/>
-    </StackPanel>
+                 HorizontalAlignment="Left"/>
+            <!--Foreground="{DynamicResource HeaderTextBrush}"-->
+            <TextBlock x:Name="SubHeaderText"
+                 TextWrapping="Wrap"
+                 FontSize="12pt"
+                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                 Foreground="Red"
+                 TextAlignment="Left"
+                 HorizontalAlignment="Left"/>
+        </StackPanel>
 
-    <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
-              Grid.Column="0"
-              Grid.Row="1"
-              Margin="6">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
-                    CanContentScroll="False">
-        <TreeView x:Name="FriendlyAssetsTree"
-                  BorderThickness="0"
-                  FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                  FontSize="10pt"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TreeViewItem Name="FriendlyStationItem"/>
-            <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyNonCombatantItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyDestroyedItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
-            <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
-        </TreeView>
-      </ScrollViewer>
-    </GroupBox>
+        <!--COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
+        <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
+                  Foreground="Ivory"
+                  Background="Black"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                  VerticalAlignment="Top"
+                  MaxHeight="700"
+                    Width="Auto"            
+                    Margin="2">
+            <TreeView x:Name="FriendlyAssetsTree"
+                     ItemsSource="{Binding FriendlyCivs}"
+                    BorderThickness="0"
+                    VerticalAlignment="Top"
+                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    FontSize="10pt"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Border x:Name="FriendsBorder"
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        DockPanel.Dock="Top"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="0,4,4,10"
+                        Width="180"
+                        Height="auto"
+                        BorderBrush="Gray"
+                        BorderThickness="4"
+                        CornerRadius="8">
+                    <ListBox x:Name="FriendCivilizationsItems"  
+                            IsSynchronizedWithCurrentItem="True"
+                            ItemsSource="{Binding}"
+                            ItemTemplate="{StaticResource FriendTreeTemplate}"
+                            Grid.Column="0"
+                            Grid.Row="1"     
+                            BorderThickness="0" 
+                            VerticalAlignment="Top"
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                            FontSize="14pt">
+                    </ListBox>
+                </Border>
+                <StackPanel 
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
+                    <Border x:Name="ImageBorderFriend"
+                                DockPanel.Dock="Left"
+                                VerticalAlignment="Top"
+                                Width="55"
+                                Height="52"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                CornerRadius="8">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
+                                Stretch="UniformToFill"/>
+                        </Border.Background>
+                    </Border>
+                    <StackPanel 
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Orientation="Vertical"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left">
+                        <StackPanel 
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="4,0,0,0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left">
+                            <TextBlock  Foreground="White"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt" 
+                                        Text="{s:StringResource COMBAT_FRIENDLY_FIREPOWER}"/>
+                            <TextBlock Foreground="White"
+                                       Margin="4,0,0,0"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt" 
+                                        Text="{Binding Path=FriendlyEmpireStrength}"/>
+                        </StackPanel>
+                        <StackPanel 
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Margin="4,0,0,0"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left">
+                            <TextBlock Foreground="DarkOrange"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt" 
+                                        Text="{s:StringResource COMBAT_OTHERS_FIREPOWER}"/>
+                            <TextBlock Foreground="Red" 
+                                        Margin="4,0,0,0"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt" 
+                                        Text="{Binding Path=AllHostileEmpireStrength}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <TreeViewItem Name="FriendlyStationItem"/>
+                <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyNonCombatantItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyDestroyedItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
+            </TreeView>
+        </GroupBox>
 
-    <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}"
-              Grid.Column="1"
-              Grid.Row="1"
-              Margin="6">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
-                    CanContentScroll="False">
-        <TreeView x:Name="HostileAssetsTree"
-                  BorderThickness="0"
-                  FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                  FontSize="10pt"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TreeViewItem Name="HostileStationItem"/>
-            <TreeViewItem Name="HostileCombatantItems" IsExpanded="True"/>
-            <TreeViewItem Name="HostileNonCombatantItems" IsExpanded="True"/>
-            <TreeViewItem Name="HostileDestroyedItems" IsExpanded="True"/>
-            <TreeViewItem Name="HostileAssimilatedItems" IsExpanded="True"/>
-            <TreeViewItem Name="HostileEscapedItems" IsExpanded="True"/>
-        </TreeView>
-      </ScrollViewer>
-    </GroupBox>
+        
+        <!--Targeting and SUMMARY OF COMBAT_Hostile(OTHER) +-->
+        
+        <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}" 
+                  Foreground="Red"
+                  Background="Black"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                  VerticalAlignment="Top"
+                    Width="Auto"            
+                    Margin="2">
+            <TreeView x:Name="TargetingAndSummary"
+                        BorderThickness="0"
+                        VerticalAlignment="Top"
+                      HorizontalAlignment="Left"
+                        MaxHeight="580"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="10pt"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <StackPanel
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
+                    Orientation="Vertical">
+                    <StackPanel
+                            Grid.Column="1"
+                            Grid.ColumnSpan="1"
+                            Grid.Row="1"
+                            HorizontalAlignment="Left">
+                        <Border x:Name="SummaryBorder"
+                                DockPanel.Dock="Top"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left"
+                                Margin="-17,4,4,4"
+                                Width="310"
+                                Height="auto"
+                                BorderBrush="Gray"
+                                BorderThickness="4"
+                                CornerRadius="8">
+                            <ListBox x:Name="OtherCivilizationsSummaryItem1"  
+                                    IsSynchronizedWithCurrentItem="True"
+                                    ItemsSource="{Binding}"
+                                    ItemTemplate="{StaticResource OthersTreeSummaryTemplate}"
+                                    Grid.Column="1"
+                                    Grid.Row="1"     
+                                    BorderThickness="0" 
+                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                    FontSize="10pt">
+                            </ListBox>
+                        </Border>
+                    </StackPanel>
 
-        <StackPanel x:Name="ButtonsPanel0"
+                    <Border x:Name="ImageBorder1"
+                                DockPanel.Dock="Top"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="-15,8,4,4"
+                                Width="300"
+                                Height="230"
+                                BorderBrush="LightGray"
+                                BorderThickness="4"
+                                CornerRadius="8">
+                        <Image x:Name="ImageContent" Source="vfs:///Resources/Images/GeneralEvents/Red_Alert_Logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </StackPanel>
+            </TreeView>
+        </GroupBox>
+
+        <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to DataTemple in .cs +-->
+        <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}" 
+                  Foreground="LightGoldenrodYellow"
+                  Background="Black"
+                  VerticalAlignment="Top"
+                  Height="500"
+                  MaxHeight="580"
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    Width="Auto"            
+                    Margin="2">
+            
+                <TreeView x:Name="OtherCivsView" 
+                          ItemsSource="{Binding OtherCivs}"
+                            Grid.Column="2"
+                            Grid.Row="1"     
+                            Height="600"
+                            BorderThickness="0" 
+                            VerticalAlignment="Top"
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                            FontSize="10pt"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel 
+                            Grid.Column="2"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="-20,2,0,2"
+                            Orientation="Vertical"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left">
+                        <Grid 
+                                Height="Auto"
+                                Width="290">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="130"/>
+                        </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1"/>   <!--header "Fire Power" - not used anymore-->
+                                <RowDefinition Height="19"/>    
+                                <RowDefinition Height="19"/>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="19"/>
+                                <RowDefinition Height="19"/>
+                                <RowDefinition Height="19"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                         
+                            <!--Headline-->
+                        <!--<TextBlock Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                                Grid.Row ="0"
+                                               Margin="4,0,0,4"
+                                               Foreground="White" 
+                                               Background="Black"
+                                               HorizontalAlignment="Left"
+                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                FontSize="13pt" 
+                                                Text="Fire Powers"/>-->
+                        
+                             <!--CivsAndFirePowers 1-->
+                        <Border x:Name="ImageBorderOther1"
+                                            DockPanel.Dock="Left"
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            Grid.RowSpan="2"
+                                            VerticalAlignment="Top"
+                                            Width="40"
+                                            Height="35"
+                                            BorderBrush="Black"
+                                            BorderThickness="2"
+                                            CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding Path=OtherCivInsignia1, Converter={StaticResource CivInsigniaConverter}}"
+                                            Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
+
+                        <TextBlock Grid.Column="1"
+                                    Grid.Row ="1"
+                                    Margin="4,0,0,0"
+                                    TextWrapping="Wrap"
+                                    Foreground="{DynamicResource DefaultTextBrush}" 
+                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                    FontSize="12pt" 
+                                    Text="{Binding Path=CivName1}"/>
+                            
+                        <TextBlock Grid.Column="1"
+                                    Grid.Row ="2"
+                                    Margin="4,0,0,0"
+                                    TextWrapping="Wrap"
+                                    Foreground="Red" 
+                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                    FontSize="11pt" 
+                                    Text="{Binding Path=CivFirePowers1}"/>
+
+                        <TextBlock Grid.Column="1"
+                                    Grid.Row ="3"
+                                    Margin="4,0,0,0"
+                                    TextWrapping="Wrap"
+                                    Foreground="Orange" 
+                                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                    FontSize="11pt" 
+                                    Text="{Binding Path=CivStatus1}"/>
+
+
+                        <!--CivsAndFirePowers 2-->
+
+                        <Border x:Name="ImageBorderOther2"
+
+                                                Grid.Column="0"
+                                                Grid.Row="4"
+                                                Grid.RowSpan="2"
+                                                VerticalAlignment="Top"
+                                                Width="40"
+                                                Height="35"
+                                                BorderBrush="Black"
+                                                BorderThickness="2"
+                                                CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding Path=OtherCivInsignia2, Converter={StaticResource CivInsigniaConverter}}"
+                                                Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
+
+                        <TextBlock 
+                            Grid.Column="1"
+                            Grid.Row ="4"
+                            Margin="4,0,0,0"
+                            TextWrapping="Wrap"
+                            Foreground="{DynamicResource DefaultTextBrush}" 
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                            FontSize="12pt" 
+                            Text="{Binding Path=CivName2}"/>
+
+                        <TextBlock 
+                            Foreground="Red"
+                            Grid.Column="1"
+                            Grid.Row ="5"
+                            TextWrapping="Wrap"
+                            Margin="4,0,0,0"
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                            FontSize="11pt" 
+                            Text="{Binding Path=CivFirePowers2}"/>                                   
+                                   <!--Text="P 3"/>-->
+
+
+                        <TextBlock 
+                            Grid.Column="1"
+                            Grid.Row ="6"
+                            Margin="4,0,0,0"
+                            TextWrapping="Wrap"
+                            Foreground="Orange" 
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                            FontSize="11pt" 
+                            Text="{Binding Path=CivStatus2}"/>                                   
+                            <!--Text="S 2"/>-->
+
+
+                        <!--CivsAndFirePowers 3-->
+                        <Border x:Name="ImageBorderOther3"
+                                                    DockPanel.Dock="Left"
+                                                    Grid.Column="2"
+                                                    Grid.Row="1"
+                                                    Grid.RowSpan="2"
+                                                    VerticalAlignment="Top"
+                                                    Width="40"
+                                                    Height="35"
+                                                    BorderBrush="Black"
+                                                    BorderThickness="2"
+                                                    CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding Path=OtherCivInsignia3, Converter={StaticResource CivInsigniaConverter}}"
+                                                    Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
+
+                        <TextBlock 
+                                Grid.Column="3"
+                                Grid.Row ="1"
+                                Margin="4,0,0,0"
+                                TextWrapping="Wrap"
+                                Foreground="{DynamicResource DefaultTextBrush}" 
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                FontSize="12pt" 
+                                Text="{Binding Path=CivName3}"/>                            
+                            <!--Text="C 3"/>-->
+
+
+                        <TextBlock 
+                                Grid.Column="3"
+                                Grid.Row ="2"
+                                TextWrapping="Wrap"
+                                Margin="4,0,0,0"
+                                Foreground="Red"                             
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                FontSize="11pt" 
+                                Text="{Binding Path=CivFirePowers3}"/>                            
+                            <!--Text="P 3"/>-->
+
+
+                        <TextBlock 
+                                Grid.Column="3"
+                                Grid.Row ="3"
+                                Margin="4,0,0,0"
+                                TextWrapping="Wrap"
+                                Foreground="Orange" 
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                FontSize="11pt" 
+                                Text="{Binding Path=CivStatus3}"/>                            
+                            <!--Text="S 3"/>-->
+
+
+                        <!--CivsAndFirePowers 4-->                            
+                        <Border x:Name="ImageBorderOther4"
+                                            DockPanel.Dock="Left"
+                                            Grid.Column="2"
+                                            Grid.Row="4"
+                                            Grid.RowSpan="2"
+                                            VerticalAlignment="Top"
+                                            Width="40"
+                                            Height="35"
+                                            BorderBrush="Black"
+                                            BorderThickness="2"
+                                            CornerRadius="8">
+                            <Border.Background>
+                            <ImageBrush ImageSource="{Binding Path=OtherCivInsignia4, Converter={StaticResource CivInsigniaConverter}}"
+                                            Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
+                        <TextBlock Grid.Column="3"
+                                               Grid.Row ="4"
+                                               Margin="4,0,0,0"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource DefaultTextBrush}" 
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                               FontSize="12pt" 
+                                               Text="{Binding Path=CivName4}"/>                                                                                               
+                                   <!--Text="Civ 4"/>-->
+
+
+                        <TextBlock 
+                            Foreground="Red" 
+                                        Grid.Column="3"
+                                        Grid.Row ="5"
+                                        TextWrapping="Wrap"
+                                        Margin="4,0,0,0"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        FontSize="11pt" 
+                                        Text="{Binding Path=CivFirePowers4}"/>                                   
+                                                                                               <!--Text="Pow 4"/>-->
+
+
+                        <TextBlock 
+                                Grid.Column="3"
+                                Grid.Row ="6"
+                                Margin="4,0,0,0"
+                                TextWrapping="Wrap"
+                                Foreground="Orange" 
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                FontSize="11pt" 
+                                Text="{Binding Path=CivStatus4}"/>                            
+                                                            <!--Text="Stat 4"/>-->
+
+                    </Grid>
+                    </StackPanel>
+
+                    <TreeViewItem Name="HostileStationItem"/>
+                    <TreeViewItem Name="HostileCombatantItems" IsExpanded="True"/>
+                    <TreeViewItem Name="HostileNonCombatantItems" IsExpanded="True"/>
+                    <TreeViewItem Name="HostileDestroyedItems" IsExpanded="True"/>
+                    <TreeViewItem Name="HostileAssimilatedItems" IsExpanded="True"/>
+                    <TreeViewItem Name="HostileEscapedItems" IsExpanded="True"/>
+                </TreeView>
+         
+        </GroupBox>
+
+        
+        <!-- COMBAT_BUTTONS +-->
+        <StackPanel Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Grid.Row="0"
+                Margin="8,6,3,0"
+                Orientation="Vertical">
+            <StackPanel x:Name="UpperButtonsPanel"
                 Margin="6"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Grid.Row="0"
                 Orientation="Horizontal"
-                HorizontalAlignment="Center">
-            <Button x:Name="EngageButton"
+                HorizontalAlignment="Right">
+                <Button x:Name="EngageButton"
                   Style="{DynamicResource StandardButtonStyle}"
                   Content="{s:StringResource COMBAT_ENGAGE}"
                   Click="OnOrderButtonClicked">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt"
                                         Text="{s:StringResource COMBAT_ENGAGE_BUTTON_TOOLTIP}">
-                            </TextBlock>
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-            <Button x:Name="RushButton"
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button x:Name="RushButton"
                 Style="{DynamicResource StandardButtonStyle}"
                 Margin="6,0,0,0"
                 Content="{s:StringResource COMBAT_RUSH}"
                 Click="OnOrderButtonClicked">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                        FontSize="16pt"
                                        Text="{s:StringResource COMBAT_RUSH_BUTTON_TOOLTIP}">
-                            </TextBlock>
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-            <Button x:Name="TransportsButton"
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button x:Name="TransportsButton"
                 Style="{DynamicResource StandardButtonStyle}"
                 Margin="6,0,0,0"
                 Content="{s:StringResource COMBAT_TRANSPORTS}"
                 Click="OnOrderButtonClicked">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                        FontSize="16pt"
                                        Text="{s:StringResource COMBAT_TRANSPORTS_BUTTON_TOOLTIP}">
-                            </TextBlock>
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-        </StackPanel>
-        <StackPanel x:Name="ButtonsPanel1"
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
+            <StackPanel x:Name="LowerButtonsPanel"
                 Margin="6"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Grid.Row="3"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Grid.Row="0"
                 Orientation="Horizontal"
-                HorizontalAlignment="Center">
-            <Button x:Name="FormationButton"
+                HorizontalAlignment="Right">
+                <Button x:Name="FormationButton"
                 Style="{DynamicResource StandardButtonStyle}"
                 Margin="6,0,0,0"
                 Content="{s:StringResource COMBAT_FORMATION}"
                 Click="OnOrderButtonClicked">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                     FontSize="16pt"
                                     Text="{s:StringResource COMBAT_FORMATION_BUTTON_TOOLTIP}">
-                        </TextBlock>
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-            <Button x:Name="HailButton"
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button x:Name="HailButton"
                 Style="{DynamicResource StandardButtonStyle}"
                 Margin="6,0,0,0"
                 Content="{s:StringResource COMBAT_HAIL}"
                 Click="OnOrderButtonClicked">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                            FontSize="16pt"
                                            Text="{s:StringResource COMBAT_HAIL_BUTTON_TOOLTIP}">
-                            </TextBlock>
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-            <Button x:Name="RetreatButton"
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button x:Name="RetreatButton"
                     Style="{DynamicResource StandardButtonStyle}"
                     Margin="6,0,0,0"
                     Content="{s:StringResource COMBAT_RETREAT}"
                     Click="OnOrderButtonClicked">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                            FontSize="16pt"
                                            Text="{s:StringResource COMBAT_RETREAT_BUTTON_TOOLTIP}">
-                            </TextBlock>
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
         </StackPanel>
-    <Button x:Name="CloseButton"
-            Style="{DynamicResource StandardButtonStyle}"
-            Margin="6"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Grid.Row="3"
-            HorizontalAlignment="Center"
-            Content="{s:StringResource COMBAT_CLOSE}"
-            Visibility="Collapsed"
-            Click="OnCloseButtonClicked"/>
-  </Grid>
+
+        <Button x:Name="CloseButton"
+                Style="{DynamicResource StandardButtonStyle}"
+                Margin="100,16,104,16"
+                Grid.Column="1"
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                Content="{s:StringResource COMBAT_CLOSE}"
+                Visibility="Collapsed"
+                Click="OnCloseButtonClicked" Grid.RowSpan="1"/>
+    </Grid>
 </scc:Dialog>
+<!--Main Combat Window -END-->

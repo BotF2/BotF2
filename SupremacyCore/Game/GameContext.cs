@@ -241,7 +241,7 @@ namespace Supremacy.Game
                         continue;
 
                     diplomacyData.Add(civ1, civ2, diplomat.GetData(civ2));
-                }                
+                }
             }
 
             _diplomacyData = diplomacyData;
@@ -465,7 +465,7 @@ namespace Supremacy.Game
         /// <summary>
         /// Initializes a new instance of the <see cref="GameContext"/> class.
         /// </summary>
-        public GameContext() {}
+        public GameContext() { }
         #endregion
 
         #region Methods
@@ -601,7 +601,7 @@ namespace Supremacy.Game
                     GalaxyCanon = GalaxyCanon.Canon,
                     StartingTechLevel = StartingTechLevel.Developed,
 
-                    IntroPlayable = EmpirePlayable.No,
+                    //IntroPlayable = EmpirePlayable.No,
                     FederationPlayable = EmpirePlayable.Yes,
                     RomulanPlayable = EmpirePlayable.Yes,
                     KlingonPlayable = EmpirePlayable.Yes,
@@ -609,6 +609,17 @@ namespace Supremacy.Game
                     DominionPlayable = EmpirePlayable.Yes,
                     BorgPlayable = EmpirePlayable.No,
                     TerranEmpirePlayable = EmpirePlayable.No,
+
+
+                    FederationModifier = EmpireModifier.Standard,
+                    RomulanModifier = EmpireModifier.Standard,
+                    KlingonModifier = EmpireModifier.Standard,
+                    CardassianModifier = EmpireModifier.Standard,
+                    DominionModifier = EmpireModifier.Standard,
+                    BorgModifier = EmpireModifier.Standard,
+                    TerranEmpireModifier = EmpireModifier.Standard,
+
+                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.False,
                 },
                 false);
 
@@ -620,7 +631,7 @@ namespace Supremacy.Game
 
             var civManager = gameContext.CivilizationManagers[civ];
             var homeColony = civManager.HomeColony;
-            
+
             var shipyardDesign = TechTreeHelper.GetBuildProjects(homeColony).Select(o => o.BuildDesign).OfType<ShipyardDesign>().FirstOrDefault();
 
             if (shipyardDesign != null)
@@ -666,12 +677,12 @@ namespace Supremacy.Game
             }
 
             var buildProjects = TechTreeHelper.GetBuildProjects(homeColony).Take(3);
-            
+
             foreach (var buildProject in buildProjects)
                 homeColony.BuildQueue.Add(new BuildQueueItem(buildProject));
 
             homeColony.ProcessQueue();
-            
+
             gameContext._diplomacyData.GetValuesForOwner(civ).ForEach(
                 o =>
                 {
@@ -741,18 +752,18 @@ namespace Supremacy.Game
             {
                 _gameMod = GameModLoader.GetModFromCommandLine();
                 _races = RaceDatabase.Load();
-                    GameLog.Client.GameData.DebugFormat("Races loaded");
+                GameLog.Client.GameData.DebugFormat("Races loaded");
                 _civilizations = CivDatabase.Load();
-                    GameLog.Client.GameData.DebugFormat("Civilizations loaded");
+                GameLog.Client.GameData.DebugFormat("Civilizations loaded");
                 _civManagers = new CivilizationManagerMap();
                 _tables = GameTables.Load();
-                        GameLog.Client.GameData.DebugFormat("Tables loaded");
+                GameLog.Client.GameData.DebugFormat("Tables loaded");
                 _techDatabase = TechDatabase.Load();
-                        GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
+                GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
                 _researchMatrix = ResearchMatrix.Load();
-                        GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
+                GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
                 _techTrees = new TechTreeMap();
-                        GameLog.Client.GameData.DebugFormat("TechTree loaded");
+                GameLog.Client.GameData.DebugFormat("TechTree loaded");
                 _strategyDatabase = StrategyDatabase.Load();
                 _scriptedEvents = new List<ScriptedEvent>();
                 _diplomacyDatabase = DiplomacyDatabase.Load();
@@ -760,8 +771,12 @@ namespace Supremacy.Game
 
                 var scriptedEventDatabase = ScriptedEventDatabase.Load();
 
+                string _eventOptionsGameLogText = "";
+                string _scriptedEventGameLogText = "";
+
                 foreach (var eventDefinition in scriptedEventDatabase)
                 {
+
                     var eventId = eventDefinition.EventID;
                     var eventType = eventDefinition.EventType;
 
@@ -775,7 +790,22 @@ namespace Supremacy.Game
                         scriptedEvent.Initialize(eventId, eventDefinition.Options);
 
                         _scriptedEvents.Add(scriptedEvent);
-                        GameLog.Client.GameData.DebugFormat("Scripted Event {0} loaded", scriptedEvent.GetType());
+
+                        foreach (var _eventOption in eventDefinition.Options)
+                        {
+                            _eventOptionsGameLogText += _eventOption.Key + "=" + _eventOption.Value + ",";
+                        }
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("MinTurnsBetweenExecutions", "TurnDist.");
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("CivilizationRecurrencePeriod", "CivRecur.");
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("UnitRecurrencePeriod", "Unit-Recur.");
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("OccurrenceChance", "Occur.");
+
+                        _scriptedEventGameLogText = scriptedEvent.GetType().ToString();
+                        _scriptedEventGameLogText = _scriptedEventGameLogText.Replace("Supremacy.Scripting.Events.", "");
+
+                        GameLog.Client.Events.InfoFormat("Scripted Event loaded - Options from file: " + _eventOptionsGameLogText + " for {0}", _scriptedEventGameLogText);
+                        _eventOptionsGameLogText = "";
+                        _scriptedEventGameLogText = "";
                     }
                     catch (Exception e)
                     {
@@ -788,7 +818,7 @@ namespace Supremacy.Game
                 }
 
                 GalaxyGenerator.GenerateGalaxy(this);
-                    GameLog.Client.GameData.DebugFormat("Galaxy generated...");
+                GameLog.Client.GameData.DebugFormat("Galaxy generated...");
 
                 TechTree.LoadTechTrees(this);
 
@@ -1006,7 +1036,7 @@ namespace Supremacy.Game
 
                                 TechObject instance = null;
                                 Current.TechDatabase.BuildingDesigns[buildingDesign].TrySpawn(colony.Location, colony.Owner, out instance);
-                                        //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
+                                //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
                                 if (instance != null)
                                     colony.ActivateBuilding(instance as Building);
                             }
@@ -1021,7 +1051,7 @@ namespace Supremacy.Game
 
                                 TechObject instance = null;
                                 Current.TechDatabase.ShipyardDesigns[shipyardDesign].TrySpawn(colony.Location, colony.Owner, out instance);
-                                        //GameLog.Client.GameData.DebugFormat("Starting Shipyards: shipyardDesign={0}, {1}", shipyardDesign, shipyard);
+                                //GameLog.Client.GameData.DebugFormat("Starting Shipyards: shipyardDesign={0}, {1}", shipyardDesign, shipyard);
                                 if (instance != null)
                                 {
                                     Shipyard newShipyard = instance as Shipyard;

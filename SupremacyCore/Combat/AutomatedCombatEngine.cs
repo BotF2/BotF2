@@ -28,6 +28,7 @@ namespace Supremacy.Combat
         private bool friendlyOwner = true;
         // bool HeroShip = false; No longer needed
         private object firstOwner;
+        private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
@@ -54,6 +55,15 @@ namespace Supremacy.Combat
                 this._oppositionCombatShips = value;
             }
         }
+
+        //public int FriendlyWeaponPower
+        //{
+        //    get
+        //    {
+        //        return 123456;
+        //        //return friendlyWeaponPower;
+        //    }
+        //}
 
 
 
@@ -82,6 +92,9 @@ namespace Supremacy.Combat
             newCycleReduction = 1;
 
             int maxScanStrengthOpposition = 0;
+
+            
+            //int FriendlyAssetsFirePower = 0;    delete again
 
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
@@ -205,7 +218,7 @@ namespace Supremacy.Combat
             {
                 newCycleReduction = 1;
             }
-            GameLog.Core.Combat.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}", 
+            GameLog.Core.CombatDetails.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}", 
                 newCycleReduction,
                 excessShipsStartingAt,
                 ratioATemp,
@@ -239,8 +252,7 @@ namespace Supremacy.Combat
 
             for (int i = 0; i < _combatShips.Count; i++) // 
             {
-                GameLog.Core.Combat.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
-
+                GameLog.Core.CombatDetails.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
                     _combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, i);
             }
 
@@ -444,7 +456,7 @@ namespace Supremacy.Combat
 
                                 var weapons = _combatShips[i].Item2.Where(w => w.CanFire);
                                 int amountOfWeapons = weapons.Count();
-                                var partlyFiring = 0;
+                                //var partlyFiring = 0;
 
 
                                 foreach (var weapon in _combatShips[i].Item2.Where(w => w.CanFire))
@@ -736,7 +748,7 @@ namespace Supremacy.Combat
             var maneuverability = target.Source.GetManeuverablility(); // byte
             if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
             {
-                GameLog.Core.Combat.DebugFormat("sourceAccuracy {0} out of range, now reset to 0.5", sourceAccuracy);
+                GameLog.Core.CombatDetails.DebugFormat("sourceAccuracy {0} out of range, now reset to 0.5", sourceAccuracy);
                 sourceAccuracy = 0.5;
             }    
             var targetDamageControl = target.Source.GetDamageControlModifier();
@@ -819,14 +831,17 @@ namespace Supremacy.Combat
             if (sourceAccuracy == 1.7) // if heroship value, use it
                 sourceAccuracyTemp = 1.7;
 
-            GameLog.Core.Combat.DebugFormat("various values: sourceAccuracy = {0}, sourceAccuracyTemp = {1}, maneuverability = {2}, currentManeuverability = {3}, ManeuverabilityModifer = {4}, targetDamageControl = {5}",
-                sourceAccuracy,
-                sourceAccuracyTemp,
-                maneuverability,
-                currentManeuverability,
-                ManeuverabilityModifer,
-                targetDamageControl
-                );
+            //GameLog.Core.CombatDetails.DebugFormat("various values: {0} {1} {2} at {3} ({4}), OTHERS: friendlyOwner = {6}, firstOwner = {6}",
+                //source.Source.ObjectID, source.Source.Name, source.Source.Design, target.Source.Sector.Name, target.Source.Sector.Location, friendlyOwner.ToString(), firstOwner.ToString());
+
+            //GameLog.Core.CombatDetails.DebugFormat("various values: sourceAccuracy = {0}, sourceAccuracyTemp = {1}, maneuverability = {2}, currentManeuverability = {3}, ManeuverabilityModifer = {4}, targetDamageControl = {5}",
+                //sourceAccuracy,
+                //sourceAccuracyTemp,
+                //maneuverability,
+                //currentManeuverability,
+                //ManeuverabilityModifer,
+                //targetDamageControl
+                //);
 
             if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
             {

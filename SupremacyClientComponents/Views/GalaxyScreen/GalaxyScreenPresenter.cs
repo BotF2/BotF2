@@ -660,13 +660,13 @@ namespace Supremacy.Client.Views
                         ship => ship.OwnerID == AppContext.LocalPlayer.EmpireID);
 
                     foreach (var ownedShip in ownedShipsAtLocation)
-                        GameLog.Client.General.DebugFormat("ownedship.Name = {0}", ownedShip.Name);
+                        GameLog.Client.Combat.DebugFormat("ownedship.Name = {0}", ownedShip.Name);
 
                     availableShips = ownedShipsAtLocation.Where(
                         ship => !selectedTaskForce.View.Ships.Any(o => Equals(o.Source, ship)));
 
                     foreach (var availableShip in availableShips)
-                        GameLog.Client.General.DebugFormat("availableShip.Name = {0}", availableShip.Name);
+                        GameLog.Client.Combat.DebugFormat("availableShip.Name = {0}", availableShip.Name);
                 }
 
                 var selectedShip = Model.SelectedShip;
@@ -675,16 +675,16 @@ namespace Supremacy.Client.Views
                 {
                     selectedShipInTaskForce = selectedTaskForce.View.Ships.FirstOrDefault(o => o.Source == selectedShip);
 
-                    GameLog.Client.General.DebugFormat("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
+                    GameLog.Client.Combat.DebugFormat("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
                 }
                 else
                 {
                     selectedShipInTaskForce = Model.SelectedShipInTaskForce;
-                    GameLog.Client.General.DebugFormat("ELSE ... selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
+                    GameLog.Client.Combat.DebugFormat("ELSE ... selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
 
                     if (!selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce))
                     {
-                        GameLog.Client.General.DebugFormat("selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce) is FALSE - count = {0}", selectedTaskForce.View.Ships.Count);
+                        GameLog.Client.Combat.DebugFormat("selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce) is FALSE - count = {0}", selectedTaskForce.View.Ships.Count);
                         selectedShipInTaskForce = null;
                     }
                 }
@@ -698,7 +698,7 @@ namespace Supremacy.Client.Views
 
             if (selectedTaskForce != null)
             {
-                GameLog.Client.General.DebugFormat("selectedShipInTaskForceLISTVIEW = {0} (for own: only the first one is shown in detail view = System Panel because there is only one single ship in the fleet) ",
+                GameLog.Client.Combat.DebugFormat("selectedShipInTaskForceLISTVIEW = {0} (for own: only the first one is shown in detail view = System Panel because there is only one single ship in the fleet) ",
                         selectedTaskForce.View.Ships.Count);
             }
         }

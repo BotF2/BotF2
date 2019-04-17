@@ -112,7 +112,7 @@ namespace Supremacy.Game
         Advanced,
         Supreme
     }
-    
+
 
     /// <summary>
     /// Determines whether the civilization is an Empire or an Expanding Power
@@ -122,6 +122,33 @@ namespace Supremacy.Game
         No = 0,
         Yes
     }
+
+    /// <summary>
+    /// Gives an Empire a bonus or a malus
+    /// </summary>
+    /// 
+
+    public enum EmpireModifier : int
+    {
+        Handicape_Biggest = -5,
+        Handicape_Big = -4,
+        Handicape_Medium = -3,
+        Handicape_Small = -2,
+        Handicape_Smallest = -1,
+        Standard = 0,
+        Bonus_Smallest = 1,
+        Bonus_Small = 2,
+        Bonus_Medium = 3,
+        Bonus_Big = 4,
+        Bonus_Biggest = 5
+    }
+
+    public enum EmpireModifierRecurringBalancing : byte
+    {
+        True = 0,
+        False
+    }
+
 
     //public string PlayerNameSP
     //{
@@ -158,11 +185,21 @@ namespace Supremacy.Game
             DominionPlayable = EmpirePlayable.Yes;
             BorgPlayable = EmpirePlayable.No;
             TerranEmpirePlayable = EmpirePlayable.No;
+
+            FederationModifier = EmpireModifier.Standard;
+            RomulanModifier = EmpireModifier.Standard;
+            KlingonModifier = EmpireModifier.Standard;
+            CardassianModifier = EmpireModifier.Standard;
+            DominionModifier = EmpireModifier.Standard;
+            BorgModifier = EmpireModifier.Standard;
+            TerranEmpireModifier = EmpireModifier.Standard;
+
+            EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.False;
         }
         #endregion
 
         #region Properties
-        public bool IsFrozen{ get; private set; }
+        public bool IsFrozen { get; private set; }
 
         /// <summary>
         /// Gets or sets the mod ID.
@@ -286,6 +323,55 @@ namespace Supremacy.Game
         /// <value> TerranEmpire playable yes or no.</value>
         public EmpirePlayable TerranEmpirePlayable { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets FederationModifier.
+        /// </summary>
+        /// <value> Federation Modifier yes or no.</value>
+        public EmpireModifier FederationModifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets RomulanModifier.
+        /// </summary>
+        /// <value> Romulan Modifier yes or no.</value>
+        public EmpireModifier RomulanModifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets KlingonModifier.
+        /// </summary>
+        /// <value> Klingon Modifier yes or no.</value>
+        public EmpireModifier KlingonModifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets CardassianModifier.
+        /// </summary>
+        /// <value> Cardassian Modifier yes or no.</value>
+        public EmpireModifier CardassianModifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets DominionModifier.
+        /// </summary>
+        /// <value> Dominion Modifier yes or no.</value>
+        public EmpireModifier DominionModifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets BorgModifier.
+        /// </summary>
+        /// <value> borg Modifier yes or no.</value>
+        public EmpireModifier BorgModifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets TerranEmpireModifier.
+        /// </summary>
+        /// <value> TerranEmpire Modifier yes or no.</value>
+        public EmpireModifier TerranEmpireModifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets a boolean whether EmpireModifiers are recurring balanced the longer the game runs
+        /// </summary>
+        /// <value> TerranEmpire Modifier yes or no.</value>
+        public EmpireModifierRecurringBalancing EmpireModifierRecurringBalancing { get; set; }
+
         /// <summary>
         /// Gets or sets the turn timer (multiplayer games only).
         /// </summary>
@@ -333,6 +419,14 @@ namespace Supremacy.Game
             writer.Write((byte)DominionPlayable);
             writer.Write((byte)BorgPlayable);
             writer.Write((byte)TerranEmpirePlayable);
+            writer.Write((int)FederationModifier);   //it is writing a int32 !!!
+            writer.Write((int)RomulanModifier);
+            writer.Write((int)KlingonModifier);
+            writer.Write((int)CardassianModifier);
+            writer.Write((int)DominionModifier);
+            writer.Write((int)BorgModifier);
+            writer.Write((int)TerranEmpireModifier);
+            writer.Write((byte)EmpireModifierRecurringBalancing);
             writer.Write(AITakeover);
             writer.Write(TurnTimer.Ticks);
             writer.Write(CombatTimer.Ticks);
@@ -394,6 +488,15 @@ namespace Supremacy.Game
             DominionPlayable = (EmpirePlayable)reader.ReadByte();
             BorgPlayable = (EmpirePlayable)reader.ReadByte();
             TerranEmpirePlayable = (EmpirePlayable)reader.ReadByte();
+
+            FederationModifier = (EmpireModifier)reader.ReadInt32();
+            RomulanModifier = (EmpireModifier)reader.ReadInt32();
+            KlingonModifier = (EmpireModifier)reader.ReadInt32();
+            CardassianModifier = (EmpireModifier)reader.ReadInt32();
+            DominionModifier = (EmpireModifier)reader.ReadInt32();
+            BorgModifier = (EmpireModifier)reader.ReadInt32();
+            TerranEmpireModifier = (EmpireModifier)reader.ReadInt32();
+            EmpireModifierRecurringBalancing = (EmpireModifierRecurringBalancing)reader.ReadByte();
 
             AITakeover = reader.ReadBoolean();
             TurnTimer = TimeSpan.FromTicks(reader.ReadInt64());
