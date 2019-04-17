@@ -94,13 +94,13 @@ namespace Supremacy.Combat
             if (primaryTargetCiv == null)
                 throw new ArgumentNullException("primaryTargetCivID");
 
-            if (secondaryTargetCiv == null)
+            if (secondaryTargetCiv == null)  
                 throw new ArgumentNullException("primaryTargetCivID");
 
             _ownerId = owner.CivID;
             _orders = new Dictionary<int, CombatOrder>();
             _combatId = combatId;
-            _primeTargetCivId = primaryTargetCiv.CivID;
+            _primaryTargetCivId = primaryTargetCiv.CivID;
             _secondaryTargetCivId = secondaryTargetCiv.CivID;
             _assaultStrategy = assaultStrategy;
             _assaultTargetingStrategy = assaultTargetingStrategy;

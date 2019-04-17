@@ -23,9 +23,9 @@ namespace Supremacy.Combat
     public abstract class CombatEngine
     {
        
-        private List<Civilization> _civilization;
+        private List<Civilization> _civilization; // need friendly and other civs or not? (CombatUpdate -private IList<CombatAssets> _friendlyAssets; - private IList<CombatAssets> _hostileAssets;)
         private bool _battleInOwnTerritory;
-        private Civilization _targetOftheCivilzation; // player-selected civ to attack
+        private Civilization _targetOftheCivilzation; // Should we use dictionaries WhoIsShootingWhomFirst and Second from CombatWindow?
         private int _totalFirepower; // looks like _empireStrenths dictionary below
         private double _favorTheBoldMalus; 
         private int _fleetAsCommandshipBonus;
@@ -78,7 +78,7 @@ namespace Supremacy.Combat
             }
             set
             {
-                _totalFirepower = value;
+                _totalFirepower = value; 
             }
         }
 
