@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace Supremacy.Combat
 {
-    public static class CombatHelper
+    public static class CombatHelper 
     {
         /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
@@ -158,6 +158,7 @@ namespace Supremacy.Combat
             {
                 return false;
             }
+          
 
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
@@ -165,7 +166,7 @@ namespace Supremacy.Combat
                 GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
                 return false;
             }
-
+            
             //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - diplomacyData.Status = {2}", firstCiv, secondCiv, diplomacyData.Status.ToString());
             switch (diplomacyData.Status) // see WillFightAlongside below
             {   
@@ -180,6 +181,12 @@ namespace Supremacy.Combat
                     return false;
             }
             //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = TRUE", firstCiv, secondCiv);
+            
+            //if ()
+            //{
+            //WhoIsShootingWhomFirst
+            //}
+
             return true;
         }
 
@@ -209,7 +216,7 @@ namespace Supremacy.Combat
 
             switch (diplomacyData.Status)
             {
-                case ForeignPowerStatus.Affiliated:
+              //  case ForeignPowerStatus.Affiliated:
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
@@ -226,9 +233,9 @@ namespace Supremacy.Combat
             bool _generateBlanketOrdersTracing = true;
 
             var owner = assets.Owner;
-            var primaryTargetCiv = assets.Owner;
-            var secondaryTargetCiv = assets.Owner;
-            var orders = new CombatOrders(owner, primaryTargetCiv, secondaryTargetCiv, assets.CombatID);
+            //var primaryTargetCiv = assets.Owner;
+            //var secondaryTargetCiv = assets.Owner;
+            var orders = new CombatOrders(owner, assets.CombatID);
 
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
@@ -237,7 +244,7 @@ namespace Supremacy.Combat
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
                     GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
-                        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order, primaryTargetCiv, secondaryTargetCiv);
+                        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
 
@@ -263,6 +270,61 @@ namespace Supremacy.Combat
             }
 
             return orders;
+        }
+
+        public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, Civilization civs, CombatTargetOne target)
+        {
+            bool _generateTargetPrimariesTracing = true;
+
+            var owner = civs;
+            //var primaryTargetCiv = civs.CivID;
+            //var secondaryTargetCiv = civs.CivID;
+            var targets = new CombatTargetPrimaries(owner, assets.CombatID);
+
+            //foreach (var ship in civs.CombatShips)  // CombatShips
+            //{
+            //    orders.SetOrder(ship.Source, order);
+
+            //    if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
+            //    {
+            //        GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
+            //            ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order, primaryTargetCiv, secondaryTargetCiv);
+            //    }
+            //}
+
+            //foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            //{
+            //    orders.SetOrder(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
+            //    orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
+            //    orders.SetOrder(ship.Source, (order == CombatOrder.Transports) ? CombatOrder.Standby : order);
+            //    orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
+            //    if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail)  // reduces lines especially on starting (all ships starting with Hail)
+            //    {
+            //        GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
+            //    }
+            //}
+
+            //if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
+            //{
+            //    orders.SetOrder(assets.Station.Source, (order == CombatOrder.Retreat) ? CombatOrder.Engage : order);
+            //    if (_generateBlanketOrdersTracing == true)
+            //    {
+            //        GameLog.Core.Combat.DebugFormat("{0} is ordered to {1}", assets.Station.Source, order);
+            //    }
+            //}
+
+            return targets;
+        }
+
+        public static CombatTargetSecondaries GenerateTargetPrimary(CombatAssets assets, Civilization civs, CombatTargetTwo target)
+        {
+            bool _generateTargetSecondaryTracing = true;
+
+            var owner = civs;
+
+            var targets = new CombatTargetSecondaries(owner, assets.CombatID);
+            //targets.SetTarget(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
+            return targets;
         }
 
         public static double ComputeGroundDefenseMultiplier(Colony colony)

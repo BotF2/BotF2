@@ -40,10 +40,10 @@ namespace Supremacy.Combat
     public class CombatOrders : IEnumerable<CombatOrder>
     {
         private readonly int _combatId;
-        private readonly int _primeTargetCivId;
+       // private readonly int _primeTargetCivId;
         private readonly int _ownerId;
-        private readonly int _primaryTargetCivId;
-        private readonly int _secondaryTargetCivId;
+        //private readonly int _primaryTargetCivId;
+        //private readonly int _secondaryTargetCivId;
         private readonly AssaultStrategy _assaultStrategy;
         private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
         private readonly Dictionary<int, CombatOrder> _orders;
@@ -58,50 +58,49 @@ namespace Supremacy.Combat
         {
             get { return _ownerId; }
         }
-        public int PrimaryTargetCivID
-        {
-            get { return _primaryTargetCivId; }
-        }
+        //public int PrimaryTargetCivID
+        //{
+        //    get { return _primaryTargetCivId; }
+        //}
 
-        public int SecondaryTargetCivID
-        {
-            get { return _secondaryTargetCivId; }
-        }
+        //public int SecondaryTargetCivID
+        //{
+        //    get { return _secondaryTargetCivId; }
+        //}
 
         public Civilization Owner
         {
             get { return GameContext.Current.Civilizations[_ownerId]; }
         }
 
-        public Civilization PrimaryTargetCiv
-        {
-            get { return GameContext.Current.Civilizations[_primaryTargetCivId]; }
-        }
+        //public Civilization PrimaryTargetCiv
+        //{
+        //    get { return GameContext.Current.Civilizations[_primaryTargetCivId]; }
+        //}
 
-        public Civilization SecondaryTargetCiv
-        {
-            get { return GameContext.Current.Civilizations[_secondaryTargetCivId]; }
-        }
+        //public Civilization SecondaryTargetCiv
+        //{
+        //    get { return GameContext.Current.Civilizations[_secondaryTargetCivId]; }
+        //}
 
-        public CombatOrders(Civilization owner, Civilization primaryTargetCiv,
-            Civilization secondaryTargetCiv, int combatId,
+        public CombatOrders(Civilization owner, int combatId,
             AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
             InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
-            if (primaryTargetCiv == null)
-                throw new ArgumentNullException("primaryTargetCivID");
+            //if (primaryTargetCiv == null)
+            //    throw new ArgumentNullException("primaryTargetCivID");
 
-            if (secondaryTargetCiv == null)  
-                throw new ArgumentNullException("primaryTargetCivID");
+            //if (secondaryTargetCiv == null)  
+            //    throw new ArgumentNullException("primaryTargetCivID");
 
             _ownerId = owner.CivID;
             _orders = new Dictionary<int, CombatOrder>();
             _combatId = combatId;
-            _primaryTargetCivId = primaryTargetCiv.CivID;
-            _secondaryTargetCivId = secondaryTargetCiv.CivID;
+            //_primaryTargetCivId = primaryTargetCiv.CivID;
+            //_secondaryTargetCivId = secondaryTargetCiv.CivID;
             _assaultStrategy = assaultStrategy;
             _assaultTargetingStrategy = assaultTargetingStrategy;
         }

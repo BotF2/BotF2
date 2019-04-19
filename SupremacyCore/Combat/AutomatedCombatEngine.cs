@@ -26,7 +26,6 @@ namespace Supremacy.Combat
         private double excessShipsStartingAt;
         private double shipRatio = 1;
         private bool friendlyOwner = true;
-        // bool HeroShip = false; No longer needed
         private object firstOwner;
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
@@ -44,7 +43,7 @@ namespace Supremacy.Combat
                 this._friendlyCombatShips = value;
             }
         }
-        public List<Tuple<CombatUnit, CombatWeapon[]>> OppositionCombatShips
+        public List<Tuple<CombatUnit, CombatWeapon[]>>  OppositionCombatShips
         {
             get
             {
@@ -56,20 +55,10 @@ namespace Supremacy.Combat
             }
         }
 
-        //public int FriendlyWeaponPower
-        //{
-        //    get
-        //    {
-        //        return 123456;
-        //        //return friendlyWeaponPower;
-        //    }
-        //}
-
-
-
         //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
+           // List<Civilization> civilizations,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)
@@ -93,9 +82,6 @@ namespace Supremacy.Combat
 
             int maxScanStrengthOpposition = 0;
 
-            
-            //int FriendlyAssetsFirePower = 0;    delete again
-
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
             {
@@ -104,6 +90,8 @@ namespace Supremacy.Combat
                     .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.ShipType == "Frigate") || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => !s.Item1.IsDestroyed) //  Destroyed ships cannot retreat
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
+                    .Where(s => GetTargetOne(s.Item1.Source.Owner) == CombatTargetOne.Federation)
+                    .Where(s => GetTargetTwo(s.Item1.Source.Owner) == CombatTargetTwo.Borg)
                     .ToList();
 
                 foreach (var ship in easyRetreatShips)
@@ -147,14 +135,17 @@ namespace Supremacy.Combat
             //    //GameLog.Core.Combat.DebugFormat("unsorted combat ships {3} = {0} {1} ({2})",
             //        //_combatShips[i].Item1.Source.ObjectID, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.Design, i);
             //}
+            
             foreach (var combatent in _combatShips)
             {
+               // if(CombatUpdate.)
                 if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
                 {
                     OppositionCombatShips.Add(combatent);
                     OppositionCombatShips.Randomize();
                 }
                 else
+                //if (CombatHelper.WillFightAlongside(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner)) ??? conflict with target choices by friendly civ?
                 {
                     FriendlyCombatShips.Add(combatent);
                     FriendlyCombatShips.Randomize();

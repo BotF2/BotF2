@@ -42,6 +42,8 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand EndGame = new CompositeCommand(true);
         public static readonly CompositeCommand Exit = new CompositeCommand(false);
         public static readonly CompositeCommand SendCombatOrders = new CompositeCommand(true);
+        public static readonly CompositeCommand SendCombatTarget1 = new CompositeCommand(true);
+        public static readonly CompositeCommand SendCombatTarget2 = new CompositeCommand(true);
         public static readonly CompositeCommand SendInvasionOrders = new CompositeCommand(true);
         public static readonly CompositeCommand EndInvasion = new CompositeCommand(true);
         

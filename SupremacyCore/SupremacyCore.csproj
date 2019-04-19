@@ -175,6 +175,8 @@
     <Compile Include="Collections\InitOnlyKeyedCollection.cs" />
     <Compile Include="Collections\SafeEnumerator.cs" />
     <Compile Include="Collections\StackExtensions.cs" />
+    <Compile Include="Combat\CombatTargetSecondaries.cs" />
+    <Compile Include="Combat\CombatTargetPrimaries.cs" />
     <Compile Include="Combat\InvasionArena.cs" />
     <Compile Include="Combat\TakeSidesAsset.cs" />
     <Compile Include="Diplomacy\CreditsClauseData.cs" />

@@ -25,21 +25,18 @@ namespace Supremacy.Combat
         private int _combatId;
         private int _roundNumber;
         private int _ownerId;
-   
+
         private bool _standoff;
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
+        private Dictionary<Civilization, Civilization> _willTarget;
         private List<Object> _civList;
         private List<string> _civShortNameList;
         private List<string> _civFirePowerList;
         private List<Civilization> _civStatusList;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
-
-
-
-
 
         public CombatUpdate(int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
@@ -57,7 +54,7 @@ namespace Supremacy.Combat
             _location = location;
             _friendlyAssets = friendlyAssets;
             _hostileAssets = hostileAssets;
-            
+
         }
         #region Properties for total fire power of the friends and Others (hostiles)
         public int FriendlyEmpireStrength
@@ -130,7 +127,7 @@ namespace Supremacy.Combat
                 var civOwner = asset.Owner;
                 var civKey = asset.Owner.Key;
                 List<Object> civList = new List<Object>();
-                foreach(var ha in _hostileAssets)
+                foreach (var ha in _hostileAssets)
                 {
                     civList.Add(ha.Owner);
                     civList.Distinct().ToList();
@@ -198,7 +195,7 @@ namespace Supremacy.Combat
                 _civFirePowerList = civNameList.ToList();
                 return civShortName;
             }
-            
+
         }
 
         public string CivName2
@@ -256,10 +253,10 @@ namespace Supremacy.Combat
                 var asset = _hostileAssets.FirstOrDefault();
                 var currentOwner = asset.Owner;
                 List<Civilization> civOwner = new List<Civilization>();
-              
+
                 var _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, asset.Owner].Status.ToString();
                 //GameLog.Core.Combat.DebugFormat("Status Target 1: Status = {2} for Owner = {0} vs others = {1}", 
-                    //Owner, asset.Owner, _targetCiv1Status);
+                //Owner, asset.Owner, _targetCiv1Status);
 
                 List<string> civStatusList = new List<string>();  // list of Status
                 foreach (var ha in _hostileAssets)
@@ -332,8 +329,8 @@ namespace Supremacy.Combat
 
             string returnStatus = " ";
 
-                switch (enumStatus)
-                {
+            switch (enumStatus)
+            {
                 case ForeignPowerStatus.NoContact:
                     returnStatus = "First Contact";
                     break;
@@ -348,8 +345,8 @@ namespace Supremacy.Combat
                     break;
                 default:
                     returnStatus = status;
-                        break;
-                }
+                    break;
+            }
 
             return returnStatus;
         }
@@ -383,7 +380,7 @@ namespace Supremacy.Combat
                             otherCivStrength += cs.FirePower;
                             _otherAssetsLocal.Remove(ha);
                         }
-}
+                    }
                     foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
                     {
                         if (civShortName == ncs.Owner.ShortName)
