@@ -8,13 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Supremacy.Utility;
-
 namespace Supremacy.Client.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -188,10 +186,8 @@ namespace Supremacy.Client.Properties {
             get {
                 return ((bool)(this["ReportErrors"]));
             }
-            set
-            {
+            set {
                 this["ReportErrors"] = value;
-                GameLog.Client.General.DebugFormat("ReportErrors is set to {0}", value);
             }
         }
         
@@ -324,6 +320,138 @@ namespace Supremacy.Client.Properties {
             }
             set {
                 this["TracesShipProduction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesColonies {
+            get {
+                return ((string)(this["TracesColonies"]));
+            }
+            set {
+                this["TracesColonies"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesCombatDetails {
+            get {
+                return ((string)(this["TracesCombatDetails"]));
+            }
+            set {
+                this["TracesCombatDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesEnergy {
+            get {
+                return ((string)(this["TracesEnergy"]));
+            }
+            set {
+                this["TracesEnergy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesMultiplay {
+            get {
+                return ((string)(this["TracesMultiplay"]));
+            }
+            set {
+                this["TracesMultiplay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesResearch {
+            get {
+                return ((string)(this["TracesResearch"]));
+            }
+            set {
+                this["TracesResearch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSaveLoad {
+            get {
+                return ((string)(this["TracesSaveLoad"]));
+            }
+            set {
+                this["TracesSaveLoad"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesStructures {
+            get {
+                return ((string)(this["TracesStructures"]));
+            }
+            set {
+                this["TracesStructures"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSystemAssault {
+            get {
+                return ((string)(this["TracesSystemAssault"]));
+            }
+            set {
+                this["TracesSystemAssault"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSystemAssaultDetails {
+            get {
+                return ((string)(this["TracesSystemAssaultDetails"]));
+            }
+            set {
+                this["TracesSystemAssaultDetails"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesTradeRoutes {
+            get {
+                return ((string)(this["TracesTradeRoutes"]));
+            }
+            set {
+                this["TracesTradeRoutes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesUI {
+            get {
+                return ((string)(this["TracesUI"]));
+            }
+            set {
+                this["TracesUI"] = value;
             }
         }
     }
