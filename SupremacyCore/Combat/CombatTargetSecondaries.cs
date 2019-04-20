@@ -20,13 +20,13 @@ namespace Supremacy.Combat
 
     public enum CombatTargetTwo : byte
     {
-        Federation = 1,
-        Romulans,
-        Klingons,
-        Cardassians,
-        Dominion,
-        TerranEmpire,
-        Borg
+        FEDERATION = 0,
+        TERRANEMPIRE,
+        ROMULANS,
+        KLINGONS,
+        CARDASSIANS,
+        DOMINION,
+        BORG
     }
 
 
@@ -63,31 +63,31 @@ namespace Supremacy.Combat
             _combatId = combatId;
         }
 
-        //public void SetTarget(Civilization source, CombatTargetTwo targetTwo)
-        //{
-        //    if (source == null)
-        //        throw new ArgumentNullException("source");
-        //    _targetSecondaries[source.CivID] = targetTwo;
-        //}
+        public void SetTargetTwo(Civilization source, CombatTargetTwo targetTwo)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            _targetSecondaries[source.CivID] = targetTwo;
+        }
 
-        //public void ClearTarget(Civilization source)
-        //{
-        //    if (source == null)
-        //        return;
-        //    _targetSecondaries.Remove(source.CivID);
-        //}
+        public void ClearTargetTwo(Civilization source)
+        {
+            if (source == null)
+                return;
+            _targetSecondaries.Remove(source.CivID);
+        }
 
-        //public void Clear()
-        //{
-        //    _targetSecondaries.Clear();
-        //}
+        public void Clear()
+        {
+            _targetSecondaries.Clear();
+        }
 
-        //public bool IsTargetSet(Civilization source)
-        //{
-        //    if (source == null)
-        //        return false;
-        //    return _targetSecondaries.ContainsKey(source.CivID);
-        //}
+        public bool IsTargetTwoSet(Civilization source)
+        {
+            if (source == null)
+                return false;
+            return _targetSecondaries.ContainsKey(source.CivID);
+        }
 
         public CombatTargetTwo GetTargetTwo(Civilization source)
         {

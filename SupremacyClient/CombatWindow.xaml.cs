@@ -474,61 +474,35 @@ namespace Supremacy.Client
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
 
-            CombatTargetTwo target = CombatTargetTwo.Borg;
+           //mbatTargetOne target = CombatTargetOne.Borg;
 
             RadioButton cmd = (RadioButton)sender;
-            if (cmd.DataContext is Civilization) // && Civilizations != null)
-            {
-                Civilization theTargetedCiv = (Civilization)cmd.DataContext;
-                _playerCivilization = theTargetedCiv;
-
-                ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, _playerCivilization, target));
-            }
-
-            //Civilization theTargetedCiv = (Civilization)cmd.DataContext;
-            //_targetCivilzation1 = theTargetedCiv;
-            //Dictionary<Civilization, Civilization> myShooters = new Dictionary<Civilization, Civilization>();
-
+            //if (cmd.DataContext is Civilization) // && Civilizations != null)
             //{
-            //    var shootist = _shooterCivilizations1.FirstOrDefault();
-
-            //    myShooters.Add(shootist, theTargetedCiv);
-            //    _whoIsShootingWhomFirst = myShooters;
-            //    if (myShooters.Count > 1) { _shooterCivilizations1.Remove(shootist); }
-            //    if(_shooterCivilizations1 != null)
-            //    {
-            //        foreach (Civilization shooter in _shooterCivilizations1)
-            //        {
-            //            try
-            //            { 
-            //               _whoIsShootingWhomFirst.Add(shooter, theTargetedCiv);
-
-            //            }
-            //            catch (ArgumentException)
-            //            {
-            //                GameLog.Core.Combat.DebugFormat("Could not add civilization {0} to _whoIsShootingWhomFirst for target {1}", shooter.ShortName, theTargetedCiv.ShortName);
-            //            }
-            //        }
-            //    }                   
+            Civilization theTargetedCiv = (Civilization)cmd.DataContext;
+            string targetString = theTargetedCiv.Key.ToString();
+            var enumTargetOne = (CombatTargetOne)Enum.Parse(typeof(CombatTargetOne), targetString);
+            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, enumTargetOne));
             //}
-            //OtherCivs.Remove(theTargetedCiv);
-        
+            GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}",
+                _playerAssets, enumTargetOne, theTargetedCiv, targetString);
+
+
         }
 
         private void TargetButton2_Click(object sender, RoutedEventArgs e)
         {
-            
-            CombatTargetTwo target = CombatTargetTwo.Borg;
-         
+
             RadioButton cmd = (RadioButton)sender;
-            if (cmd.DataContext is Civilization) // && Civilizations != null)
-            {
-                Civilization theTargetedCiv = (Civilization)cmd.DataContext;
-                _playerCivilization = theTargetedCiv;
- 
-                ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, _playerCivilization, target));
-            }
- 
+            //if (cmd.DataContext is Civilization) // && Civilizations != null)
+            //{
+            Civilization theTargetedCiv = (Civilization)cmd.DataContext;
+            string targetString = theTargetedCiv.Key.ToString();
+            var enumTargetTwo = (CombatTargetTwo)Enum.Parse(typeof(CombatTargetTwo), targetString);
+            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateTargetSecondary(_playerAssets, enumTargetTwo));
+            //GameLog.Core.Combat.DebugFormat("_playerAssets={0}, The Target Civ ={1}, target ={2}", _playerAssets, enumTargetTwo);
+            //}
+
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)

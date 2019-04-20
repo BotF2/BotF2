@@ -47,20 +47,20 @@ namespace Supremacy.Combat
         private bool _allSidesStandDown;
         private bool _ready;
         protected readonly List<CombatAssets> _assets;
-        protected readonly List<Civilization> _civilizations; // not used at this time
+        //protected readonly List<Civilization> _civilizations; // not used at this time
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
-        private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // hope to set this up like _orders
-        private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; // hope to set this up like _orders
+        private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
+        private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; // like _orders
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
 
 
-        public List<Civilization> Civilizations // ?? use this
-        {
-            get { return _civilizations; }
-            //set { _civilizations = value; }
-        }
+        //public List<Civilization> Civilizations // ?? use this
+        //{
+        //    get { return _civilizations; }
+        //    //set { _civilizations = value; }
+        //}
 
         public bool BattelInOwnTerritory
         {
@@ -68,23 +68,6 @@ namespace Supremacy.Combat
             set { _battleInOwnTerritory = value; }
         }
 
-        //public Dictionary<int, CivilizationTargetOnes> TargetOneByCiv // do not have a property Orders here so do we need this?
-        //{
-        //    get
-        //    {
-        //        return _targetOneByCiv;
-        //    }
-        //  // set { _targetOneByCiv = value; }
-        //}
-
-        //public Dictionary<int, CivilizationTargetTwos> TargetTwoByCiv
-        //{
-        //    get
-        //    {
-        //        return _targetTwoByCiv;
-        //    }
-        //   // set { _targetTwoByCiv = value; }
-        //}
 
         public int TotalFirepower
         {
@@ -117,23 +100,6 @@ namespace Supremacy.Combat
             set { _has20PlusPercentFastAttack = value; }
         }
 
-        //public Dictionary<Civilization, CombatOrders> CombatOrderByCiv
-        //{
-        //    get { return _combatOrderByCiv; }
-        //    set { _combatOrderByCiv = value; }
-        //}
-
-        //public Dictionary<Civilization, CivilizationTargetOnes> TargetOneByCiv
-        //{
-        //    get { return _targetOneByCiv; }
-        //    set { _targetOneByCiv = value; }
-        //}
-
-        //public Dictionary<Civilization, CivilizationTargetOnes> TargetTwoByCiv
-        //{
-        //    get { return _targetTwoByCiv; }
-        //    set { _targetTwoByCiv = value; }
-        //}
 
         public Dictionary<string, int> EmpireStrengths
         {
@@ -231,8 +197,10 @@ namespace Supremacy.Combat
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
 
             SyncLock = _orders;
-           
-            
+            //SyncLock = _targetOneByCiv;
+            //SyncLock = _targetTwoByCiv;
+
+
 
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
@@ -243,24 +211,24 @@ namespace Supremacy.Combat
                     _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
                         civAssets.Station,
                         CombatWeapon.CreateWeapons(civAssets.Station.Source));
-                    _civilizations = new List<Civilization>(civAssets.Station.OwnerID);                 
+                    //_civilizations = new List<Civilization>(civAssets.Station.OwnerID);                 
                 }
                 foreach (CombatUnit shipStats in civAssets.CombatShips)
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
-                    _civilizations = new List<Civilization>(shipStats.Source.OwnerID);
+                    //_civilizations = new List<Civilization>(shipStats.Source.OwnerID);
                 }
                 foreach (CombatUnit shipStats in civAssets.NonCombatShips)
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
-                    _civilizations = new List<Civilization>(shipStats.Source.OwnerID);
+                   // _civilizations = new List<Civilization>(shipStats.Source.OwnerID);
                     
                 }
-                _civilizations.Distinct().ToList();
+               // _civilizations.Distinct().ToList();
             }
         }
 
@@ -360,6 +328,7 @@ namespace Supremacy.Combat
                 {
                     return false;
                 }
+
             }
 
             return true;
@@ -700,6 +669,7 @@ namespace Supremacy.Combat
         {
             try
             {
+                GameLog.Core.Combat.DebugFormat("Setting Borg as target one for CivID = {0}, Name {1}, {2}", source.CivID, source.Name, source.ShortName);
                 return _targetOneByCiv[source.CivID].GetTargetOne(source);
             }
             catch //(Exception e)
@@ -708,15 +678,17 @@ namespace Supremacy.Combat
                 //GameLog.LogException(e);
             }
 
-            //GameLog.Core.Combat.DebugFormat("Setting Retreat as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            return CombatTargetOne.Borg;
+            //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target one for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+            return CombatTargetOne.BORG;
         }
 
         protected CombatTargetTwo GetTargetTwo(Civilization source)
         {
             try
             {
+                GameLog.Core.Combat.DebugFormat("Setting Borg as target two for CivID = {0}, Name {1}, {2}", source.CivID, source.Name, source.ShortName);
                 return _targetTwoByCiv[source.CivID].GetTargetTwo(source);
+                
             }
             catch //(Exception e)
             {
@@ -724,8 +696,8 @@ namespace Supremacy.Combat
                 //GameLog.LogException(e);
             }
 
-            //GameLog.Core.Combat.DebugFormat("Setting Retreat as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            return CombatTargetTwo.Borg;
+            //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target two for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+            return CombatTargetTwo.BORG;
         }
 
         protected abstract void ResolveCombatRoundCore();

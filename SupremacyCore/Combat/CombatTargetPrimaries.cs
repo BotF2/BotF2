@@ -14,18 +14,19 @@ using System.Collections.Generic;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
     public enum CombatTargetOne : byte
     {
-        Federation = 1,
-        Romulans,
-        Klingons,
-        Cardassians,  
-        Dominion,
-        TerranEmpire,
-        Borg
+        FEDERATION = 0,
+        TERRANEMPIRE,
+        ROMULANS,
+        KLINGONS,
+        CARDASSIANS,  
+        DOMINION,
+        BORG
        
     }
 
@@ -51,41 +52,42 @@ namespace Supremacy.Combat
         }
 
         public CombatTargetPrimaries(Civilization owner, int combatId)
- 
         {
         if (owner == null)
                 throw new ArgumentNullException("owner");
-
+       
         _ownerId = owner.CivID;
         _targetPrimaries = new Dictionary<int, CombatTargetOne>();
         _combatId = combatId;
+        GameLog.Core.Combat.DebugFormat("CombatTargetPrimaries owner = {0}, _combatID = {1}", owner, _combatId);   
         }
 
-        //public void SetTarget(Civilization source, CombatTargetOne targetOne)
-        //{
-        //    if (source == null)
-        //        throw new ArgumentNullException("source");
-        //    _targetPrimaries[source.CivID] = targetOne;
-        //}
+        public void SetTargetOne(Civilization source, CombatTargetOne targetOne)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            _targetPrimaries[source.CivID] = targetOne;
+            GameLog.Core.Combat.DebugFormat("source short name ={0}, source ={1} CombatTargetOne = {2}", source.ShortName, source, targetOne);
+        }
 
-        //public void ClearTarget(Civilization source)
-        //{
-        //    if (source == null)
-        //        return;
-        //    _targetPrimaries.Remove(source.CivID);
-        //}
+        public void ClearTargetOne(Civilization source)
+        {
+            if (source == null)
+                return;
+            _targetPrimaries.Remove(source.CivID);
+        }
 
-        //public void Clear()
-        //{
-        //    _targetPrimaries.Clear();
-        //}
+        public void Clear()
+        {
+            _targetPrimaries.Clear();
+        }
 
-        //public bool IsTargetSet(Civilization source)
-        //{
-        //    if (source == null)
-        //        return false;
-        //    return _targetPrimaries.ContainsKey(source.CivID);
-        //}
+        public bool IsTargetOneSet(Civilization source)
+        {
+            if (source == null)
+                return false;
+            return _targetPrimaries.ContainsKey(source.CivID);
+        }
 
         public CombatTargetOne GetTargetOne(Civilization source)
         {

@@ -243,8 +243,8 @@ namespace Supremacy.Combat
                 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
-                        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
+                    //GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
+                        //ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
 
@@ -256,7 +256,7 @@ namespace Supremacy.Combat
                 orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail)  // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
+                    //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
 
@@ -265,65 +265,54 @@ namespace Supremacy.Combat
                 orders.SetOrder(assets.Station.Source, (order == CombatOrder.Retreat) ? CombatOrder.Engage : order);
                 if (_generateBlanketOrdersTracing == true)
                 {
-                    GameLog.Core.Combat.DebugFormat("{0} is ordered to {1}", assets.Station.Source, order);
+                    //GameLog.Core.Combat.DebugFormat("{0} is ordered to {1}", assets.Station.Source, order);
                 }
             }
 
             return orders;
         }
 
-        public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, Civilization civs, CombatTargetOne target)
+        public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, CombatTargetOne target)
         {
-            bool _generateTargetPrimariesTracing = true;
+            //bool _generateTargetPrimariesTracing = true;
 
-            var owner = civs;
-            //var primaryTargetCiv = civs.CivID;
-            //var secondaryTargetCiv = civs.CivID;
+            var owner = assets.Owner;
             var targets = new CombatTargetPrimaries(owner, assets.CombatID);
-
-            //foreach (var ship in civs.CombatShips)  // CombatShips
-            //{
-            //    orders.SetOrder(ship.Source, order);
-
-            //    if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
-            //    {
-            //        GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
-            //            ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order, primaryTargetCiv, secondaryTargetCiv);
-            //    }
-            //}
-
-            //foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
-            //{
-            //    orders.SetOrder(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
-            //    orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
-            //    orders.SetOrder(ship.Source, (order == CombatOrder.Transports) ? CombatOrder.Standby : order);
-            //    orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
-            //    if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail)  // reduces lines especially on starting (all ships starting with Hail)
-            //    {
-            //        GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
-            //    }
-            //}
-
-            //if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
-            //{
-            //    orders.SetOrder(assets.Station.Source, (order == CombatOrder.Retreat) ? CombatOrder.Engage : order);
-            //    if (_generateBlanketOrdersTracing == true)
-            //    {
-            //        GameLog.Core.Combat.DebugFormat("{0} is ordered to {1}", assets.Station.Source, order);
-            //    }
-            //}
-
+            foreach (var ship in assets.CombatShips)  // CombatShips
+            {
+                targets.SetTargetOne(ship.Source.Owner, target);
+            }
+            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            {
+                targets.SetTargetOne(ship.Source.Owner, target);
+            }
+            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
+            {
+                targets.SetTargetOne(assets.Station.Source.Owner, target);
+            }
+                //targets.SetTargetOne(assets.Owner, target);
+                GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {0}", targets.Owner, owner, target.ToString());
             return targets;
         }
 
-        public static CombatTargetSecondaries GenerateTargetPrimary(CombatAssets assets, Civilization civs, CombatTargetTwo target)
+        public static CombatTargetSecondaries GenerateTargetSecondary(CombatAssets assets, CombatTargetTwo target)
         {
-            bool _generateTargetSecondaryTracing = true;
-
-            var owner = civs;
+           // bool _generateTargetSecondaryTracing = true;
+            var owner = assets.Owner;
 
             var targets = new CombatTargetSecondaries(owner, assets.CombatID);
-            //targets.SetTarget(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
+            foreach (var ship in assets.CombatShips)  // CombatShips
+            {
+                targets.SetTargetTwo(ship.Source.Owner, target);
+            }
+            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            {
+                targets.SetTargetTwo(ship.Source.Owner, target);
+            }
+            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
+            {
+                targets.SetTargetTwo(assets.Station.Source.Owner, target);
+            }
             return targets;
         }
 

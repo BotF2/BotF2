@@ -90,8 +90,8 @@ namespace Supremacy.Combat
                     .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.ShipType == "Frigate") || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => !s.Item1.IsDestroyed) //  Destroyed ships cannot retreat
                     .Where(s => GetOrder(s.Item1.Source) == CombatOrder.Retreat)
-                    .Where(s => GetTargetOne(s.Item1.Source.Owner) == CombatTargetOne.Federation)
-                    .Where(s => GetTargetTwo(s.Item1.Source.Owner) == CombatTargetTwo.Borg)
+                    //.Where(s => GetTargetOne(s.Item1.Source.Owner) == CombatTargetOne.FEDERATION)
+                    //.Where(s => GetTargetTwo(s.Item1.Source.Owner) == CombatTargetTwo.BORG)
                     .ToList();
 
                 foreach (var ship in easyRetreatShips)
