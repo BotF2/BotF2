@@ -179,6 +179,7 @@
     <Compile Include="Combat\CombatTargetPrimaries.cs" />
     <Compile Include="Combat\InvasionArena.cs" />
     <Compile Include="Combat\TakeSidesAsset.cs" />
+    <Compile Include="Combat\UsingCombatArray.cs" />
     <Compile Include="Diplomacy\CreditsClauseData.cs" />
     <Compile Include="Diplomacy\DiplomacyDataInternal.cs" />
     <Compile Include="Diplomacy\DiplomacyProfile.cs" />

@@ -169,10 +169,10 @@ namespace Supremacy.Combat
             
             //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - diplomacyData.Status = {2}", firstCiv, secondCiv, diplomacyData.Status.ToString());
             switch (diplomacyData.Status) // see WillFightAlongside below
-            {   
+            {
                 //case ForeignPowerStatus.Peace:
                 //case ForeignPowerStatus.Friendly:
-                //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+               // case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
@@ -180,11 +180,11 @@ namespace Supremacy.Combat
                     GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = FALSE", firstCiv, secondCiv);
                     return false;
             }
-            //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = TRUE", firstCiv, secondCiv);
-            
-            //if ()
+            CombatTargetPrimaries primaries = new CombatTargetPrimaries(firstCiv, secondCiv.CivID);
+            //var primaryTarget = primaries.
+            //if ( != null || CombatTargetTwo != null)
             //{
-            //WhoIsShootingWhomFirst
+            //    return true;
             //}
 
             return true;
@@ -291,7 +291,7 @@ namespace Supremacy.Combat
                 targets.SetTargetOne(assets.Station.Source.Owner, target);
             }
                 //targets.SetTargetOne(assets.Owner, target);
-                GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {0}", targets.Owner, owner, target.ToString());
+                GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {2}", targets.Owner, owner, target.ToString());
             return targets;
         }
 

@@ -54,8 +54,8 @@ namespace Supremacy.Client
         //private List<Civilization> _shooterCivilizations2; // players civ and fight along side civs for Secondary targets
         //private Civilization _targetCivilzation1; // player-selected civ to attack 
         //private Civilization _targetCivilzation2; // secondary player-selected civ to attack
-        //private Dictionary<Civilization, Civilization> _whoIsShootingWhomFirst;
-        //private Dictionary<Civilization, Civilization> _whoIsShootingWhomSecond;
+        private Dictionary<Civilization, Civilization> _whoIsShootingWhomFirst;
+        private Dictionary<Civilization, Civilization> _whoIsShootingWhomSecond;
 
         private IAppContext _appContext;
  
@@ -484,8 +484,8 @@ namespace Supremacy.Client
             var enumTargetOne = (CombatTargetOne)Enum.Parse(typeof(CombatTargetOne), targetString);
             ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, enumTargetOne));
             //}
-            GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}",
-                _playerAssets, enumTargetOne, theTargetedCiv, targetString);
+            GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}, sender ={4}",
+                _playerAssets, enumTargetOne, theTargetedCiv, targetString, sender);
 
 
         }
@@ -521,7 +521,7 @@ namespace Supremacy.Client
                 order = CombatOrder.Hail;
             }
 
-            GameLog.Client.General.DebugFormat("{0} button clicked by player", order);
+            GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);
 
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;

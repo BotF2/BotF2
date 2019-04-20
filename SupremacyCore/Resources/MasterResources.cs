@@ -22,7 +22,7 @@ namespace Supremacy.Resources
 
                     #region traceCivilizationsXML_To_CSV
 
-                    bool _traceCivilizationsXML = true;  // file is writen while starting a game -> Federation -> Start
+                    bool _traceCivilizationsXML = false;  // file is writen while starting a game -> Federation -> Start
 
                     if (_traceCivilizationsXML == true)
                     {
