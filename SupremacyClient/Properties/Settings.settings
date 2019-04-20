@@ -44,71 +44,142 @@
     <Setting Name="ReportErrors" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
     <Setting Name="TracesAI" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
     <Setting Name="TracesAudio" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
+    <Setting Name="TracesCivsAndRaces" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
+    <Setting Name="TracesColonies" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    
     <Setting Name="TracesCombat" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="TracesCombatDetails" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
+    <Setting Name="TracesCredits" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
+    <Setting Name="TracesDeuterium" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
+    <Setting Name="TracesDilithium" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    
     <Setting Name="TracesDiplomacy" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
+    <Setting Name="TracesEnergy" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    
     <Setting Name="TracesEvents" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TracesIntel" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
+
     <Setting Name="TracesGalaxyGenerator" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
     <Setting Name="TracesGameData" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+
+    <Setting Name="TracesGameInitData" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    
     <Setting Name="TracesGeneral" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
+    <Setting Name="TracesIntel" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
+    <Setting Name="TracesMapData" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
+    <Setting Name="TracesMultiplay" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>    
+    
     <Setting Name="TracesProduction" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
+    <Setting Name="TracesReportErrorsToEmail" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>    
+    
+    <Setting Name="TracesResearch" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>  
+  
+    <Setting Name="TracesSaveLoad" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>    
+    
+    <Setting Name="TracesShips" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
     <Setting Name="TracesShipProduction" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TracesColonies" Type="System.String" Scope="User">
+
+    <Setting Name="TracesStations" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TracesCombatDetails" Type="System.String" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="TracesEnergy" Type="System.String" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="TracesMultiplay" Type="System.String" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="TracesResearch" Type="System.String" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="TracesSaveLoad" Type="System.String" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
+    
     <Setting Name="TracesStructures" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+        
     <Setting Name="TracesSystemAssault" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+        
     <Setting Name="TracesSystemAssaultDetails" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+
+    <Setting Name="TracesTest" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    
     <Setting Name="TracesTradeRoutes" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    
     <Setting Name="TracesUI" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+
+    <Setting Name="TracesXMLCheck" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+
+    <Setting Name="TracesXML2VSCOutput" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    
+    
   </Settings>
 </SettingsFile>

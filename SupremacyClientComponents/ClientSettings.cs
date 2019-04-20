@@ -415,23 +415,23 @@ namespace Supremacy.Client
 
                 if (value == true)
                 {
-                    SetValue(TracesAIProperty, value);
-                    OnTracesAIChanged(false, true);
-                    GameLog.SetRepositoryToDebug("AI");
+                    //SetValue(TracesAIProperty, value);
+                    //OnTracesAIChanged(false, true);
+                    //GameLog.SetRepositoryToDebug("AI");
 
 
-                    SetValue(TracesAudioProperty, value);
-                    GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value);
+                    //GameLog.SetRepositoryToDebug("Audio");
                 }
                 else
                 {
 
-                    SetValue(TracesAIProperty, false);
-                    OnTracesAIChanged(true, false);
-                    GameLog.SetRepositoryToErrorOnly("AI");
+                    //SetValue(TracesAIProperty, false);
+                    //OnTracesAIChanged(true, false);
+                    //GameLog.SetRepositoryToErrorOnly("AI");
 
-                    SetValue(TracesAudioProperty, value);
-                    GameLog.SetRepositoryToErrorOnly("Audio");
+                    //SetValue(TracesAudioProperty, value);
+                    //GameLog.SetRepositoryToErrorOnly("Audio");
                 }
 
 
@@ -502,6 +502,35 @@ namespace Supremacy.Client
         //    set { SetValue(EnableCombatScreenProperty, value); }
         //}
         #endregion
+
+        #region TracesCivsAndRaces Property
+        public static readonly DependencyProperty TracesCivsAndRacesProperty = DependencyProperty.Register(
+            "CivsAndRaces",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesCivsAndRaces
+        {
+            get { return (bool)GetValue(TracesCivsAndRacesProperty); }
+            set
+            {
+                SetValue(TracesCivsAndRacesProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("CivsAndRaces");
+                else
+                    GameLog.SetRepositoryToErrorOnly("CivsAndRaces");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesCivsAndRaces
 
         #region TracesColonies Property
         public static readonly DependencyProperty TracesColoniesProperty = DependencyProperty.Register(
@@ -589,6 +618,94 @@ namespace Supremacy.Client
         //    set { SetValue(EnableCombatScreenProperty, value); }
         //}
         #endregion
+            
+        #region TracesCredits Property
+        public static readonly DependencyProperty TracesCreditsProperty = DependencyProperty.Register(
+            "Credits",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesCredits
+        {
+            get { return (bool)GetValue(TracesCreditsProperty); }
+            set
+            {
+                SetValue(TracesCreditsProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("Credits");
+                else
+                    GameLog.SetRepositoryToErrorOnly("Credits");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesCredits
+            
+        #region TracesDeuterium Property
+
+        public static readonly DependencyProperty TracesDeuteriumProperty = DependencyProperty.Register(
+            "Deuterium",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesDeuterium
+        {
+            get { return (bool)GetValue(TracesDeuteriumProperty); }
+            set
+            {
+                SetValue(TracesDeuteriumProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("Deuterium");
+                else
+                    GameLog.SetRepositoryToErrorOnly("Deuterium");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesDeuterium
+
+        #region TracesDilithium Property
+        public static readonly DependencyProperty TracesDilithiumProperty = DependencyProperty.Register(
+            "Dilithium",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesDilithium
+        {
+            get { return (bool)GetValue(TracesDilithiumProperty); }
+            set
+            {
+                SetValue(TracesDilithiumProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("Dilithium");
+                else
+                    GameLog.SetRepositoryToErrorOnly("Dilithium");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesDilithium
 
         #region TracesDiplomacy Property
         public static readonly DependencyProperty TracesDiplomacyProperty = DependencyProperty.Register(
@@ -676,36 +793,7 @@ namespace Supremacy.Client
         //    set { SetValue(EnableCombatScreenProperty, value); }
         //}
         #endregion
-
-        #region TracesIntel Property
-        public static readonly DependencyProperty TracesIntelProperty = DependencyProperty.Register(
-            "Intel",
-            typeof(bool),
-            typeof(ClientSettings),
-            new FrameworkPropertyMetadata(
-                false,
-                FrameworkPropertyMetadataOptions.None));
-
-        public bool TracesIntel
-        {
-            get { return (bool)GetValue(TracesIntelProperty); }
-            set
-            {
-                SetValue(TracesIntelProperty, value);
-                //GameLog.Client.General.InfoFormat("TracesIntel = {0}", value);
-                if (value == true)
-                    GameLog.SetRepositoryToDebug("Intel");
-                else
-                    GameLog.SetRepositoryToErrorOnly("Intel");
-            }
-        }
-        //public bool EnableCombatScreen
-        //{
-        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
-        //    set { SetValue(EnableCombatScreenProperty, value); }
-        //}
-        #endregion
-
+            
         #region TracesGalaxyGenerator Property   
         // even used after retire and start a new game
         public static readonly DependencyProperty TracesGalaxyGeneratorProperty = DependencyProperty.Register(
@@ -776,6 +864,35 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesGameInitData Property
+        public static readonly DependencyProperty TracesGameInitDataProperty = DependencyProperty.Register(
+            "GameInitData",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesGameInitData
+        {
+            get { return (bool)GetValue(TracesGameInitDataProperty); }
+            set
+            {
+                SetValue(TracesGameInitDataProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesCredits= {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("GameInitData");
+                else
+                    GameLog.SetRepositoryToErrorOnly("GameInitData");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesGameInitData
+
         #region TracesGeneral Property
         public static readonly DependencyProperty TracesGeneralProperty = DependencyProperty.Register(
             "General",
@@ -796,6 +913,64 @@ namespace Supremacy.Client
                     GameLog.SetRepositoryToDebug("General");
                 else
                     GameLog.SetRepositoryToErrorOnly("General");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesIntel Property
+        public static readonly DependencyProperty TracesIntelProperty = DependencyProperty.Register(
+            "Intel",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesIntel
+        {
+            get { return (bool)GetValue(TracesIntelProperty); }
+            set
+            {
+                SetValue(TracesIntelProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesIntel = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("Intel");
+                else
+                    GameLog.SetRepositoryToErrorOnly("Intel");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion
+
+        #region TracesMapData Property
+        public static readonly DependencyProperty TracesMapDataProperty = DependencyProperty.Register(
+            "MapData",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesMapData
+        {
+            get { return (bool)GetValue(TracesMapDataProperty); }
+            set
+            {
+                SetValue(TracesMapDataProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesMapData = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("MapData");
+                else
+                    GameLog.SetRepositoryToErrorOnly("MapData");
             }
         }
         //public bool EnableCombatScreen
@@ -892,6 +1067,22 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesReportErrorsToEmail Property
+        public static readonly DependencyProperty ReportErrorsToEmailProperty = DependencyProperty.Register(
+            "ReportErrorsToEmail",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesReportErrorsToEmail
+        {
+            get { return (bool)GetValue(ReportErrorsToEmailProperty); }
+            set { SetValue(ReportErrorsToEmailProperty, value); }
+        }
+        #endregion TracesReportErrorsToEmail
+
         #region TracesSaveLoad Property
         public static readonly DependencyProperty TracesSaveLoadProperty = DependencyProperty.Register(
             "SaveLoad",
@@ -920,6 +1111,35 @@ namespace Supremacy.Client
         //    set { SetValue(EnableCombatScreenProperty, value); }
         //}
         #endregion
+
+        #region TracesShips Property
+        public static readonly DependencyProperty TracesShipsProperty = DependencyProperty.Register(
+            "Ships",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesShips
+        {
+            get { return (bool)GetValue(TracesShipsProperty); }
+            set
+            {
+                SetValue(TracesShipsProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesShips = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("Ships");
+                else
+                    GameLog.SetRepositoryToErrorOnly("Ships");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesShips
 
         #region TracesShipProduction Property
         public static readonly DependencyProperty TracesShipProductionProperty = DependencyProperty.Register(
@@ -950,6 +1170,35 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesStations Property
+        public static readonly DependencyProperty TracesStationsProperty = DependencyProperty.Register(
+            "Stations",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesStations
+        {
+            get { return (bool)GetValue(TracesStationsProperty); }
+            set
+            {
+                SetValue(TracesStationsProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesStations = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("Stations");
+                else
+                    GameLog.SetRepositoryToErrorOnly("Stations");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesShip
+            
         #region TracesStructures Property
         public static readonly DependencyProperty TracesStructuresProperty = DependencyProperty.Register(
             "Structures",
@@ -1036,6 +1285,36 @@ namespace Supremacy.Client
         //    set { SetValue(EnableCombatScreenProperty, value); }
         //}
         #endregion
+                    
+        // for Test Porpuse
+        #region TracesTest Property  
+        public static readonly DependencyProperty TracesTestProperty = DependencyProperty.Register(
+            "Test",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesTest
+        {
+            get { return (bool)GetValue(TracesTestProperty); }
+            set
+            {
+                SetValue(TracesTestProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesTest = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("Test");
+                else
+                    GameLog.SetRepositoryToErrorOnly("Test");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesTest
 
         #region TracesTradeRoutes Property
         public static readonly DependencyProperty TracesTradeRoutesProperty = DependencyProperty.Register(
@@ -1094,6 +1373,66 @@ namespace Supremacy.Client
         //    set { SetValue(EnableCombatScreenProperty, value); }
         //}
         #endregion
+
+        #region TracesXMLCheck Property  
+        public static readonly DependencyProperty TracesXMLCheckProperty = DependencyProperty.Register(
+            "XMLCheck",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesXMLCheck
+        {
+            get { return (bool)GetValue(TracesXMLCheckProperty); }
+            set
+            {
+                SetValue(TracesXMLCheckProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesXMLCheck = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("XMLCheck");
+                else
+                    GameLog.SetRepositoryToErrorOnly("XMLCheck");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesXMLCheck
+
+        #region TracesXML2CSVOutput Property  
+        public static readonly DependencyProperty TracesXML2CSVOutputProperty = DependencyProperty.Register(
+            "XML2CSVOutput",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesXML2CSVOutput
+        {
+            get { return (bool)GetValue(TracesXML2CSVOutputProperty); }
+            set
+            {
+                SetValue(TracesXML2CSVOutputProperty, value);
+                //GameLog.Client.General.InfoFormat("TracesXML2CSVOutput = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                else
+                    GameLog.SetRepositoryToErrorOnly("XML2CSVOutput");
+            }
+        }
+        //public bool EnableCombatScreen
+        //{
+        //    get { return (bool)GetValue(EnableCombatScreenProperty); }
+        //    set { SetValue(EnableCombatScreenProperty, value); }
+        //}
+        #endregion TracesXML2CSVOutput
+
+
 
         #region ReportErrors Property
         public static readonly DependencyProperty ReportErrorsProperty = DependencyProperty.Register(
