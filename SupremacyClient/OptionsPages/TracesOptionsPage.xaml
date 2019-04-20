@@ -45,7 +45,7 @@
 
 
         <TextBlock
-        Grid.ColumnSpan="4"
+        Grid.ColumnSpan="7"
         Grid.Column="0"
         Grid.Row="0"
         FontSize="14pt"
