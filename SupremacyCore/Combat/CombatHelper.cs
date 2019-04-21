@@ -146,6 +146,8 @@ namespace Supremacy.Combat
         /// <returns></returns>
         public static bool WillEngage(Civilization firstCiv, Civilization secondCiv)
         {
+            bool openCombatWindow = true;
+
             if (firstCiv == null)
             {
                 throw new ArgumentNullException("firstCiv");
@@ -156,10 +158,8 @@ namespace Supremacy.Combat
             }
             if (firstCiv == secondCiv)
             {
-                return false;
+                openCombatWindow = false;
             }
-
-            bool war = false;
 
             CombatTargetPrimaries primaries = new CombatTargetPrimaries(firstCiv, secondCiv.CivID);
             CombatTargetSecondaries secondaries = new CombatTargetSecondaries(firstCiv, secondCiv.CivID);
@@ -169,31 +169,39 @@ namespace Supremacy.Combat
             if (civTargetOne.ToString() == secondCiv.Key || civTargetTwo.ToString() == secondCiv.Key)
             {
                 GameLog.Core.Combat.DebugFormat("{0} against {1} - WillEngage = true", firstCiv, secondCiv);
-                war = true;
+                openCombatWindow = true;
             }
 
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
                 GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
-                war = false;
+                openCombatWindow = false;
             }
-            
+
             //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - diplomacyData.Status = {2}", firstCiv, secondCiv, diplomacyData.Status.ToString());
-            if (diplomacyData.Status == ForeignPowerStatus.AtWar) // see WillFightAlongside below
-            {   //Switch
-                //case ForeignPowerStatus.Peace:
-                //case ForeignPowerStatus.Friendly:
-                //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
-                //case ForeignPowerStatus.Allied:
-                //case ForeignPowerStatus.OwnerIsMember:
-                //case ForeignPowerStatus.CounterpartyIsMember:
+            if (diplomacyData != null)
+            {
 
-                GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = true", firstCiv, secondCiv);
-                return true;
+                switch (diplomacyData.Status) // see WillFightAlongside below
+                {
+                    //case ForeignPowerStatus.Peace:
+                    //case ForeignPowerStatus.Friendly:
+                    //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+                    case ForeignPowerStatus.Allied:
+                    case ForeignPowerStatus.OwnerIsMember:
+                    case ForeignPowerStatus.CounterpartyIsMember:
+                        {
+                            GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = true", firstCiv, secondCiv);
+                            openCombatWindow = false;
+                            break;
+                        }
+                    default:
+                        break;
+                }
             }
 
-            return war;
+            return openCombatWindow;
         }
 
         /// <summary>

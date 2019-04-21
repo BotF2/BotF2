@@ -250,7 +250,7 @@
             </StackPanel>
         </DataTemplate>
         
-        <!-- Others insignia, name and firepower at Top list of others on left side - Data Template for one item view  -->
+        <!-- Others insignia, name, firepower diplomatic status at Top list of others on left side - Data Template for one item view  -->
         <DataTemplate x:Key="OtherNameAndFirePowerTemplate">
             <StackPanel Margin="0,2,0,0"
                         Orientation="Horizontal"

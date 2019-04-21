@@ -68,7 +68,7 @@ namespace Supremacy.Combat
             if (source == null)
                 throw new ArgumentNullException("source");
             _targetPrimaries[source.CivID] = targetOne;
-            _targetPrimaries.Add(0, CombatTargetOne.BORG); // populate dictionary to avoid crash on first call for GetTargetOne. Federation will target Borg unless changed
+           // _targetPrimaries.Add(0, CombatTargetOne.BORG); // populate dictionary to avoid crash on first call for GetTargetOne. Federation will target Borg unless changed
             GameLog.Core.Combat.DebugFormat("source short name ={0}, source ={1} CombatTargetOne = {2}", source.ShortName, source, targetOne);
         }
 
