@@ -62,26 +62,38 @@ namespace Supremacy.Utility
         {
             public const string AI = "AI";
             public const string Audio = "Audio";
+            public const string CivsAndRaces = "CivsAndRaces";
             public const string Colonies = "Colonies";
             public const string Combat = "Combat";
             public const string CombatDetails = "CombatDetails";
+            public const string Credits = "Credits";
+            public const string Deuterium = "Deuterium";
+            public const string Dilithium = "Dilithium";
             public const string Diplomacy = "Diplomacy";
             public const string Energy = "Energy";
             public const string Events = "Events";
-            public const string Intel = "Intel";
             public const string GalaxyGenerator = "GalaxyGenerator";
             public const string GameData = "GameData";
+            public const string GameInitData = "GameInitData";
             public const string General = "General";
+            public const string Intel = "Intel";
+            public const string MapData = "MapData";
             public const string Multiplay = "Multiplay";
             public const string Production = "Production";
+            //public const string ReportErrorsToEmail = "ReportErrorsToEmail";  // that's no category
             public const string Research = "Research";
             public const string SaveLoad = "SaveLoad";
+            public const string Ships = "Ships";
             public const string ShipProduction = "ShipProduction";
+            public const string Stations = "Stations";
             public const string Structures = "Structures";
             public const string SystemAssault = "SystemAssault";
             public const string SystemAssaultDetails = "SystemAssaultDetails";
+            public const string Test = "Test";
             public const string TradeRoutes = "TradeRoutes";
             public const string UI = "UI";
+            public const string XMLCheck = "XMLCheck";
+            public const string XML2CSVOutput = "XML2CSVOutput";
         }
 
         public ILog AI
@@ -92,6 +104,11 @@ namespace Supremacy.Utility
         public ILog Audio
         {
             get { return LogManager.GetLogger(Repositories.Audio); }
+        }
+
+        public ILog CivsAndRaces
+        {
+            get { return LogManager.GetLogger(Repositories.CivsAndRaces); }
         }
 
         public ILog Colonies
@@ -109,6 +126,21 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.CombatDetails); }
         }
 
+        public ILog Credits
+        {
+            get { return LogManager.GetLogger(Repositories.Credits); }
+        }
+
+        public ILog Deuterium
+        {
+            get { return LogManager.GetLogger(Repositories.Deuterium); }
+        }
+
+        public ILog Dilithium
+        {
+            get { return LogManager.GetLogger(Repositories.Dilithium); }
+        }
+
         public ILog Diplomacy
         {
             get { return LogManager.GetLogger(Repositories.Diplomacy); }
@@ -124,10 +156,6 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.Events); }
         }
 
-        public ILog Intel
-        {
-            get { return LogManager.GetLogger(Repositories.Intel); }
-        }
 
         public ILog GalaxyGenerator
         {
@@ -139,9 +167,24 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.GameData); }
         }
 
+        public ILog GameInitData
+        {
+            get { return LogManager.GetLogger(Repositories.GameInitData); }
+        }
+
         public ILog General
         {
             get { return LogManager.GetLogger(Repositories.General); }
+        }
+
+        public ILog Intel
+        {
+            get { return LogManager.GetLogger(Repositories.Intel); }
+        }
+
+        public ILog MapData
+        {
+            get { return LogManager.GetLogger(Repositories.MapData); }
         }
 
         public ILog Multiplay
@@ -149,24 +192,47 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.Multiplay); }
         }
 
-        public ILog SaveLoad
-        {
-            get { return LogManager.GetLogger(Repositories.SaveLoad); }
-        }
+
 
         public ILog Production
         {
             get { return LogManager.GetLogger(Repositories.Production); }
         }
 
+        //public ILog ReportErrorsToEmail // that's no category
+        //{
+        //    get { return LogManager.GetLogger(Repositories.ReportErrorsToEmail); }
+        //}
+
         public ILog Research
         {
             get { return LogManager.GetLogger(Repositories.Research); }
         }
 
+        public ILog SaveLoad
+        {
+            get { return LogManager.GetLogger(Repositories.SaveLoad); }
+        }
+
+
+        public ILog Ships
+        {
+            get { return LogManager.GetLogger(Repositories.Ships); }
+        }
+
         public ILog ShipProduction
         {
             get { return LogManager.GetLogger(Repositories.ShipProduction); }
+        }
+
+        public ILog Stations
+        {
+            get { return LogManager.GetLogger(Repositories.Stations); }
+        }
+
+        public ILog Structures
+        {
+            get { return LogManager.GetLogger(Repositories.Structures); }
         }
 
         public ILog SystemAssault
@@ -179,6 +245,11 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.SystemAssaultDetails); }
         }
 
+        public ILog Test
+        {
+            get { return LogManager.GetLogger(Repositories.Test); }
+        }
+
         public ILog TradeRoutes
         {
             get { return LogManager.GetLogger(Repositories.TradeRoutes); }
@@ -187,6 +258,16 @@ namespace Supremacy.Utility
         public ILog UI
         {
             get { return LogManager.GetLogger(Repositories.UI); }
+        }
+
+        public ILog XMLCheck
+        {
+            get { return LogManager.GetLogger(Repositories.XMLCheck); }
+        }
+
+        public ILog XML2CSVOutput
+        {
+            get { return LogManager.GetLogger(Repositories.XML2CSVOutput); }
         }
 
         protected GameLog(Type type)
