@@ -58,7 +58,7 @@ namespace Supremacy.Combat
         //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
-           // List<Civilization> civilizations,
+           //List<Civilization> civilizations,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)

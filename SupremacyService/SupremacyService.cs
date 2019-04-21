@@ -1356,7 +1356,7 @@ namespace Supremacy.WCF
                 if (_combatEngine == null || targets == null)
                     return;
 
-                lock (_combatEngine.SyncLockOrders)
+                lock (_combatEngine.SyncLockTargetOnes)
                 {
                     _combatEngine.SubmitTargetOnes(targets);
 
@@ -1378,7 +1378,7 @@ namespace Supremacy.WCF
                 if (_combatEngine == null || targets == null)
                     return;
 
-                lock (_combatEngine.SyncLockOrders)
+                lock (_combatEngine.SyncLockTargetTwos)
                 {
                     _combatEngine.SubmitTargetTwos(targets);
 
@@ -1421,7 +1421,10 @@ namespace Supremacy.WCF
 
 
 
-                var blanketOrder = CombatOrder.Engage; // Standard Order in case no If catches the situation
+                var blanketOrder = CombatOrder.Engage;
+                var blanketTargetOne = CombatTargetOne.BORG;
+                var blanketTargetTwo = CombatTargetTwo.BORG;
+                    // Standard Order in case no If catches the situation
                 //bool IsMinor = false;
 
                 //switch (update.Owner.Key) // Set standard Order for each Empire
@@ -1536,6 +1539,8 @@ namespace Supremacy.WCF
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
                 SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder)); // Sending of the order
+                SendCombatTargetOnes(CombatHelper.GenerateTargetPrimary(ownerAssets, blanketTargetOne));
+                SendCombatTargetTwos(CombatHelper.GenerateTargetSecondary(ownerAssets, blanketTargetTwo));
             }
 
 

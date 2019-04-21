@@ -146,7 +146,6 @@ namespace Supremacy.Combat
         /// <returns></returns>
         public static bool WillEngage(Civilization firstCiv, Civilization secondCiv)
         {
-            bool openCombatWindow = true;
 
             if (firstCiv == null)
             {
@@ -158,50 +157,27 @@ namespace Supremacy.Combat
             }
             if (firstCiv == secondCiv)
             {
-                openCombatWindow = false;
+                return false;
             }
-
-            CombatTargetPrimaries primaries = new CombatTargetPrimaries(firstCiv, secondCiv.CivID);
-            CombatTargetSecondaries secondaries = new CombatTargetSecondaries(firstCiv, secondCiv.CivID);
-            var civTargetOne = primaries.GetTargetOne(firstCiv);
-            var civTargetTwo = secondaries.GetTargetTwo(firstCiv);
-
-            if (civTargetOne.ToString() == secondCiv.Key || civTargetTwo.ToString() == secondCiv.Key)
-            {
-                GameLog.Core.Combat.DebugFormat("{0} against {1} - WillEngage = true", firstCiv, secondCiv);
-                openCombatWindow = true;
-            }
-
+                // do not call GetTargetOne or Two here!, use in ChoseTarget
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
                 GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
-                openCombatWindow = false;
+                return false;
             }
 
-            //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - diplomacyData.Status = {2}", firstCiv, secondCiv, diplomacyData.Status.ToString());
-            if (diplomacyData != null)
-            {
-
-                switch (diplomacyData.Status) // see WillFightAlongside below
+            switch (diplomacyData.Status) // see WillFightAlongside below
                 {
                     //case ForeignPowerStatus.Peace:
                     //case ForeignPowerStatus.Friendly:
                     //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
-                    case ForeignPowerStatus.Allied:
-                    case ForeignPowerStatus.OwnerIsMember:
-                    case ForeignPowerStatus.CounterpartyIsMember:
-                        {
-                            GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = true", firstCiv, secondCiv);
-                            openCombatWindow = false;
-                            break;
-                        }
-                    default:
-                        break;
+                case ForeignPowerStatus.Allied:
+                case ForeignPowerStatus.OwnerIsMember:
+                case ForeignPowerStatus.CounterpartyIsMember:
+                    return false;
                 }
-            }
-
-            return openCombatWindow;
+            return true;
         }
 
         /// <summary>
@@ -287,25 +263,29 @@ namespace Supremacy.Combat
 
         public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, CombatTargetOne target)
         {
-            //bool _generateTargetPrimariesTracing = true;
+            //bool _generateTargetPrimariesTracing = true; 
 
             var owner = assets.Owner;
-            var targets = new CombatTargetPrimaries(owner, assets.CombatID);
+            var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
+
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
-                targets.SetTargetOne(ship.Source.Owner, target);
+                targetOne.SetTargetOne(ship.Source.Owner, target);
+                targetOne.Distinct().ToList();
             }
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                targets.SetTargetOne(ship.Source.Owner, target);
+                targetOne.SetTargetOne(ship.Source.Owner, target);
+                targetOne.Distinct().ToList();
             }
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                targets.SetTargetOne(assets.Station.Source.Owner, target);
+                targetOne.SetTargetOne(assets.Station.Source.Owner, target);
+                targetOne.Distinct().ToList();
             }
-                //targets.SetTargetOne(assets.Owner, target);
-                GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {2}", targets.Owner, owner, target.ToString());
-            return targets;
+
+            GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {2}", targetOne.Owner, owner, target.ToString());
+            return targetOne;
         }
 
         public static CombatTargetSecondaries GenerateTargetSecondary(CombatAssets assets, CombatTargetTwo target)
@@ -313,20 +293,23 @@ namespace Supremacy.Combat
            // bool _generateTargetSecondaryTracing = true;
             var owner = assets.Owner;
 
-            var targets = new CombatTargetSecondaries(owner, assets.CombatID);
+            var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
-                targets.SetTargetTwo(ship.Source.Owner, target);
+                targetTwo.SetTargetTwo(ship.Source.Owner, target);
+                targetTwo.Distinct().ToList();
             }
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                targets.SetTargetTwo(ship.Source.Owner, target);
+                targetTwo.SetTargetTwo(ship.Source.Owner, target);
+                targetTwo.Distinct().ToList();
             }
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                targets.SetTargetTwo(assets.Station.Source.Owner, target);
+                targetTwo.SetTargetTwo(assets.Station.Source.Owner, target);
+                targetTwo.Distinct().ToList();
             }
-            return targets;
+            return targetTwo;
         }
 
         public static double ComputeGroundDefenseMultiplier(Colony colony)

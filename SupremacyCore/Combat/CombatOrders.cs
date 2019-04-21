@@ -58,30 +58,11 @@ namespace Supremacy.Combat
         {
             get { return _ownerId; }
         }
-        //public int PrimaryTargetCivID
-        //{
-        //    get { return _primaryTargetCivId; }
-        //}
-
-        //public int SecondaryTargetCivID
-        //{
-        //    get { return _secondaryTargetCivId; }
-        //}
 
         public Civilization Owner
         {
             get { return GameContext.Current.Civilizations[_ownerId]; }
         }
-
-        //public Civilization PrimaryTargetCiv
-        //{
-        //    get { return GameContext.Current.Civilizations[_primaryTargetCivId]; }
-        //}
-
-        //public Civilization SecondaryTargetCiv
-        //{
-        //    get { return GameContext.Current.Civilizations[_secondaryTargetCivId]; }
-        //}
 
         public CombatOrders(Civilization owner, int combatId,
             AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
@@ -89,12 +70,6 @@ namespace Supremacy.Combat
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
-
-            //if (primaryTargetCiv == null)
-            //    throw new ArgumentNullException("primaryTargetCivID");
-
-            //if (secondaryTargetCiv == null)  
-            //    throw new ArgumentNullException("primaryTargetCivID");
 
             _ownerId = owner.CivID;
             _orders = new Dictionary<int, CombatOrder>();

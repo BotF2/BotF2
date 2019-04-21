@@ -461,35 +461,24 @@ namespace Supremacy.Client
         }
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
-
-           //mbatTargetOne target = CombatTargetOne.Borg;
-
-            RadioButton cmd = (RadioButton)sender;
-            //if (cmd.DataContext is Civilization) // && Civilizations != null)
-            //{
-            Civilization theTargetedCiv = (Civilization)cmd.DataContext;
+            RadioButton radioButton1 = (RadioButton)sender;
+            Civilization theTargetedCiv = (Civilization)radioButton1.DataContext;
             string targetString = theTargetedCiv.Key.ToString();
             var enumTargetOne = (CombatTargetOne)Enum.Parse(typeof(CombatTargetOne), targetString);
             ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, enumTargetOne));
-            //}
+
             GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}, sender ={4}",
                 _playerAssets, enumTargetOne, theTargetedCiv, targetString, sender);
-
 
         }
 
         private void TargetButton2_Click(object sender, RoutedEventArgs e)
         {
-
-            RadioButton cmd = (RadioButton)sender;
-            //if (cmd.DataContext is Civilization) // && Civilizations != null)
-            //{
-            Civilization theTargetedCiv = (Civilization)cmd.DataContext;
+            RadioButton radioButton2 = (RadioButton)sender;
+            Civilization theTargetedCiv = (Civilization)radioButton2.DataContext;
             string targetString = theTargetedCiv.Key.ToString();
             var enumTargetTwo = (CombatTargetTwo)Enum.Parse(typeof(CombatTargetTwo), targetString);
             ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateTargetSecondary(_playerAssets, enumTargetTwo));
-            //GameLog.Core.Combat.DebugFormat("_playerAssets={0}, The Target Civ ={1}, target ={2}", _playerAssets, enumTargetTwo);
-            //}
 
         }
 
@@ -514,7 +503,7 @@ namespace Supremacy.Client
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
-          
+         
         }
 
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)

@@ -20,7 +20,8 @@ namespace Supremacy.Combat
 
     public enum CombatTargetTwo : byte
     {
-        FEDERATION = 0,
+       
+        FEDERATION =0,
         TERRANEMPIRE,
         ROMULANS,
         KLINGONS,
@@ -91,17 +92,15 @@ namespace Supremacy.Combat
 
         public CombatTargetTwo GetTargetTwo(Civilization source)
         {
-            var civTargetTwo = CombatTargetTwo.BORG; ;
             if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
-            //if (!_targetSecondaries.ContainsKey(source.CivID))
-            //{
-            //    civTargetTwo = _targetSecondaries[6]; //the Borg
-            //    //    throw new ArgumentException("No targetOne has been set for the specified source");
-            //}
-            return civTargetTwo;
+            if (!_targetSecondaries.ContainsKey(source.CivID))
+            {
+                throw new ArgumentException("No target two has been set for the specified source");
+            }
+            return _targetSecondaries[source.CivID];
         }
 
         public IEnumerator<CombatTargetTwo> GetEnumerator()

@@ -20,6 +20,7 @@ namespace Supremacy.Combat
 {
     public enum CombatTargetOne : byte
     {
+        
         FEDERATION = 0,
         TERRANEMPIRE,
         ROMULANS,
@@ -53,23 +54,27 @@ namespace Supremacy.Combat
 
         public CombatTargetPrimaries(Civilization owner, int combatId)
         {
-        if (owner == null)
+            if (owner == null)
+            {
                 throw new ArgumentNullException("owner");
-       
-        _ownerId = owner.CivID;
-        _targetPrimaries = new Dictionary<int, CombatTargetOne>();
-        _combatId = combatId;
-        GameLog.Core.Combat.DebugFormat("CombatTargetPrimaries owner = {0}, _combatID = {1}", owner, _combatId);   
-        }
+            }
+            _ownerId = owner.CivID;
+            _targetPrimaries = new Dictionary<int, CombatTargetOne>();
+            _combatId = combatId;
 
+            GameLog.Core.Combat.DebugFormat("CombatTargetPrimaries owner = {0}, _combatID = {1}", owner, _combatId);
+
+        }
         public void SetTargetOne(Civilization source, CombatTargetOne targetOne)
         {
 
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
+            }
             _targetPrimaries[source.CivID] = targetOne;
-           // _targetPrimaries.Add(0, CombatTargetOne.BORG); // populate dictionary to avoid crash on first call for GetTargetOne. Federation will target Borg unless changed
-            GameLog.Core.Combat.DebugFormat("source short name ={0}, source ={1} CombatTargetOne = {2}", source.ShortName, source, targetOne);
+
+            GameLog.Core.Test.DebugFormat("source short name ={0}, source ={1} CombatTargetOne = {2}", source.ShortName, source, targetOne);
         }
 
         public void ClearTargetOne(Civilization source)
@@ -93,17 +98,18 @@ namespace Supremacy.Combat
 
         public CombatTargetOne GetTargetOne(Civilization source)
         {
-            var civTargetOne = CombatTargetOne.BORG; //the borg
+
             if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
-            //if (source.CivID != 6) //not the Borg
-            //{
-            //    civTargetOne = _targetPrimaries[source.CivID]; 
-            //    //    throw new ArgumentException("No targetOne has been set for the specified source");
-            //}
-            return civTargetOne;
+            if (!_targetPrimaries.ContainsKey(source.CivID))
+            {
+                GameLog.Core.Test.DebugFormat("No target One in _targetPrimaries. source short name ={0}, source ={1} CombatTargetOne = {2}",
+                    source.ShortName, source);
+                throw new ArgumentException("No target one has been set for the specified source");
+            }
+             return _targetPrimaries[source.CivID];
 
         }
 
