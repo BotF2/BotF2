@@ -33,7 +33,9 @@ namespace Supremacy.Combat
         private bool _has20PlusPercentFastAttack;
        // private Dictionary<Civilization, CombatOrders> _combatOrderByCiv; // looks like _orders below, do we need this?
 
-        public readonly object SyncLock;
+        public readonly object SyncLockOrders;
+        public readonly object SyncLockTargetOnes;
+        public readonly object SyncLockTargetTwos;
         protected const double BaseChanceToRetreat = 0.50;
         protected const double BaseChanceToAssimilate = 0.05;
         protected const double BaseChanceToRushFormation = 0.50;
@@ -124,14 +126,14 @@ namespace Supremacy.Combat
         {
             get
             {
-                lock (SyncLock)
+                lock (SyncLockOrders)
                 {
                     return _running;
                 }
             }
             private set
             {
-                lock (SyncLock)
+                lock (SyncLockOrders)
                 {
                     _running = value;
                     if (_running)
@@ -156,7 +158,7 @@ namespace Supremacy.Combat
         {
             get
             {
-                lock (SyncLock)
+                lock (SyncLockOrders)
                 {
                     if (Running || IsCombatOver)
                         return false;
@@ -196,11 +198,9 @@ namespace Supremacy.Combat
             _targetOneByCiv = new Dictionary<int, CombatTargetPrimaries>();
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
 
-            SyncLock = _orders;
-            //SyncLock = _targetOneByCiv;
-            //SyncLock = _targetTwoByCiv;
-
-
+            SyncLockOrders = _orders;
+            SyncLockTargetOnes = _targetOneByCiv; // do we need this?? Can we set SyncLock equal to all three at once?
+            SyncLockTargetTwos = _targetTwoByCiv;
 
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
@@ -235,7 +235,7 @@ namespace Supremacy.Combat
 
         public void SubmitOrders(CombatOrders orders)
         {
-            lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            lock (SyncLockOrders) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
             {
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
@@ -252,6 +252,58 @@ namespace Supremacy.Combat
                     }
 
                     if (outstandingOrders.Count == 0)
+                    {
+                        _ready = true;
+                    }
+                }
+            }
+        }
+
+        public void SubmitTargetOnes(CombatTargetPrimaries targets)
+        {
+            lock (SyncLockTargetOnes) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            {
+                if (!_targetOneByCiv.ContainsKey(targets.OwnerID))
+                {
+                    _targetOneByCiv[targets.OwnerID] = targets;
+                }
+
+                var outstandingTargets = _assets.Select(assets => assets.OwnerID).ToList();
+
+                lock (_targetOneByCiv)
+                {
+                    foreach (var civId in _orders.Keys)
+                    {
+                        outstandingTargets.Remove(civId);
+                    }
+
+                    if (outstandingTargets.Count == 0)
+                    {
+                        _ready = true;
+                    }
+                }
+            }
+        }
+
+        public void SubmitTargetTwos(CombatTargetSecondaries targets)
+        {
+            lock (SyncLockTargetTwos) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            {
+                if (!_targetTwoByCiv.ContainsKey(targets.OwnerID))
+                {
+                    _targetTwoByCiv[targets.OwnerID] = targets;
+                }
+
+                var outstandingTargets = _assets.Select(assets => assets.OwnerID).ToList();
+
+                lock (_targetTwoByCiv)
+                {
+                    foreach (var civId in _targetTwoByCiv.Keys)
+                    {
+                        outstandingTargets.Remove(civId);
+                    }
+
+                    if (outstandingTargets.Count == 0)
                     {
                         _ready = true;
                     }

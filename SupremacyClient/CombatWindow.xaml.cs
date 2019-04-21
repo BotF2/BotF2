@@ -54,8 +54,8 @@ namespace Supremacy.Client
         //private List<Civilization> _shooterCivilizations2; // players civ and fight along side civs for Secondary targets
         //private Civilization _targetCivilzation1; // player-selected civ to attack 
         //private Civilization _targetCivilzation2; // secondary player-selected civ to attack
-        private Dictionary<Civilization, Civilization> _whoIsShootingWhomFirst;
-        private Dictionary<Civilization, Civilization> _whoIsShootingWhomSecond;
+        //private Dictionary<Civilization, Civilization> _whoIsShootingWhomFirst;
+        //private Dictionary<Civilization, Civilization> _whoIsShootingWhomSecond;
 
         private IAppContext _appContext;
  
@@ -192,18 +192,6 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
    
         }
-
-        //public CombatWindowFirst(Civilization civTargetFist)
-        //{
-        //    this._targetCivilzation1 = civTargetFist;
-        //   // return whoIsShootingWhomFirst;
-        //}
-
-        //public CombatWindowSecond(Civilization civTargetSecond)
-        //{
-        //    this._targetCivilzation2 =civTargetSecond;
-        //   return _civTargetSecond;
-        //}
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
         {

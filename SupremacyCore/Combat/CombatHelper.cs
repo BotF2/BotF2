@@ -158,36 +158,42 @@ namespace Supremacy.Combat
             {
                 return false;
             }
-          
+
+            bool war = false;
+
+            CombatTargetPrimaries primaries = new CombatTargetPrimaries(firstCiv, secondCiv.CivID);
+            CombatTargetSecondaries secondaries = new CombatTargetSecondaries(firstCiv, secondCiv.CivID);
+            var civTargetOne = primaries.GetTargetOne(firstCiv);
+            var civTargetTwo = secondaries.GetTargetTwo(firstCiv);
+
+            if (civTargetOne.ToString() == secondCiv.Key || civTargetTwo.ToString() == secondCiv.Key)
+            {
+                GameLog.Core.Combat.DebugFormat("{0} against {1} - WillEngage = true", firstCiv, secondCiv);
+                war = true;
+            }
 
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
                 GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
-                return false;
+                war = false;
             }
             
             //GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - diplomacyData.Status = {2}", firstCiv, secondCiv, diplomacyData.Status.ToString());
-            switch (diplomacyData.Status) // see WillFightAlongside below
-            {
+            if (diplomacyData.Status == ForeignPowerStatus.AtWar) // see WillFightAlongside below
+            {   //Switch
                 //case ForeignPowerStatus.Peace:
                 //case ForeignPowerStatus.Friendly:
-               // case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
-                case ForeignPowerStatus.Allied:
-                case ForeignPowerStatus.OwnerIsMember:
-                case ForeignPowerStatus.CounterpartyIsMember:
+                //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+                //case ForeignPowerStatus.Allied:
+                //case ForeignPowerStatus.OwnerIsMember:
+                //case ForeignPowerStatus.CounterpartyIsMember:
 
-                    GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = FALSE", firstCiv, secondCiv);
-                    return false;
+                GameLog.Core.CombatDetails.DebugFormat("{0} against {1} - WillEngage = true", firstCiv, secondCiv);
+                return true;
             }
-            CombatTargetPrimaries primaries = new CombatTargetPrimaries(firstCiv, secondCiv.CivID);
-            //var primaryTarget = primaries.
-            //if ( != null || CombatTargetTwo != null)
-            //{
-            //    return true;
-            //}
 
-            return true;
+            return war;
         }
 
         /// <summary>
@@ -216,7 +222,7 @@ namespace Supremacy.Combat
 
             switch (diplomacyData.Status)
             {
-              //  case ForeignPowerStatus.Affiliated:
+                //case ForeignPowerStatus.Affiliated:
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
@@ -233,8 +239,7 @@ namespace Supremacy.Combat
             bool _generateBlanketOrdersTracing = true;
 
             var owner = assets.Owner;
-            //var primaryTargetCiv = assets.Owner;
-            //var secondaryTargetCiv = assets.Owner;
+
             var orders = new CombatOrders(owner, assets.CombatID);
 
             foreach (var ship in assets.CombatShips)  // CombatShips

@@ -91,11 +91,17 @@ namespace Supremacy.Combat
 
         public CombatTargetTwo GetTargetTwo(Civilization source)
         {
+            var civTargetTwo = CombatTargetTwo.BORG; ;
             if (source == null)
+            {
                 throw new ArgumentNullException("source");
-            if (!_targetSecondaries.ContainsKey(source.CivID))
-                throw new ArgumentException("No targetTwo has been set for the specified source");
-            return _targetSecondaries[source.CivID];
+            }
+            //if (!_targetSecondaries.ContainsKey(source.CivID))
+            //{
+            //    civTargetTwo = _targetSecondaries[6]; //the Borg
+            //    //    throw new ArgumentException("No targetOne has been set for the specified source");
+            //}
+            return civTargetTwo;
         }
 
         public IEnumerator<CombatTargetTwo> GetEnumerator()

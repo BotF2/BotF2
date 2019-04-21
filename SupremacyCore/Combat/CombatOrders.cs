@@ -99,8 +99,6 @@ namespace Supremacy.Combat
             _ownerId = owner.CivID;
             _orders = new Dictionary<int, CombatOrder>();
             _combatId = combatId;
-            //_primaryTargetCivId = primaryTargetCiv.CivID;
-            //_secondaryTargetCivId = secondaryTargetCiv.CivID;
             _assaultStrategy = assaultStrategy;
             _assaultTargetingStrategy = assaultTargetingStrategy;
         }

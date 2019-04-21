@@ -1334,7 +1334,7 @@ namespace Supremacy.WCF
                 if (_combatEngine == null || orders == null)
                     return;
 
-                lock (_combatEngine.SyncLock)
+                lock (_combatEngine.SyncLockOrders)
                 {
                     _combatEngine.SubmitOrders(orders);
 
@@ -1345,6 +1345,50 @@ namespace Supremacy.WCF
             catch (Exception e) 
             {
                 GameLog.Server.Combat.DebugFormat("SendCombatOrders null reference issue #164 {0}", orders.ToString());
+                GameLog.Server.Combat.Error(e);
+            }
+        }
+
+        public void SendCombatTargetOnes(CombatTargetPrimaries targets)
+        {
+            try
+            {
+                if (_combatEngine == null || targets == null)
+                    return;
+
+                lock (_combatEngine.SyncLockOrders)
+                {
+                    _combatEngine.SubmitTargetOnes(targets);
+
+                    if (_combatEngine.Ready)
+                        TryResumeCombat(_combatEngine);
+                }
+            }
+            catch (Exception e)
+            {
+                GameLog.Server.Combat.DebugFormat("SendCombatTargetOnes null reference issue #164 {0}", targets.ToString());
+                GameLog.Server.Combat.Error(e);
+            }
+        }
+
+        public void SendCombatTargetTwos(CombatTargetSecondaries targets)
+        {
+            try
+            {
+                if (_combatEngine == null || targets == null)
+                    return;
+
+                lock (_combatEngine.SyncLockOrders)
+                {
+                    _combatEngine.SubmitTargetTwos(targets);
+
+                    if (_combatEngine.Ready)
+                        TryResumeCombat(_combatEngine);
+                }
+            }
+            catch (Exception e)
+            {
+                GameLog.Server.Combat.DebugFormat("SendCombatTargetTwos null reference issue #164 {0}", targets.ToString());
                 GameLog.Server.Combat.Error(e);
             }
         }
@@ -1505,7 +1549,7 @@ namespace Supremacy.WCF
                 GameContext.PushThreadContext(_game);
                 try
                 {
-                    lock (engine.SyncLock)
+                    lock (engine.SyncLockOrders)
                     {
                         if (engine.Ready)
                             engine.ResolveCombatRound();
