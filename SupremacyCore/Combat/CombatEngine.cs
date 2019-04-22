@@ -199,7 +199,7 @@ namespace Supremacy.Combat
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
 
             SyncLockOrders = _orders;
-            SyncLockTargetOnes = _targetOneByCiv; // do we need this?? Can we set SyncLock equal to all three at once?
+            SyncLockTargetOnes = _targetOneByCiv; 
             SyncLockTargetTwos = _targetTwoByCiv;
 
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
@@ -721,17 +721,18 @@ namespace Supremacy.Combat
         {
             try
             {
-                GameLog.Core.Combat.DebugFormat("Setting Borg as target one for CivID = {0}, Name {1}, {2}", source.CivID, source.Name, source.ShortName);
+                GameLog.Core.Test.DebugFormat("Try Setting target one for CivID = {0}, Name {1}, {2}", source.CivID, source.Name, source.ShortName);
                 return _targetOneByCiv[source.CivID].GetTargetOne(source);
             }
             catch //(Exception e)
             {
-                //GameLog.Core.Combat.ErrorFormat("Unable to get order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                GameLog.Core.Test.ErrorFormat("Unable to get target one for {0} ({1})", source.ShortName, source.Name, source.Name);
                 //GameLog.LogException(e);
             }
 
             //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target one for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            return CombatTargetOne.BORG;
+            //return _targetOneByCiv[source.CivID].GetTargetOne(source);
+           return CombatTargetOne.BORG;
         }
 
         protected CombatTargetTwo GetTargetTwo(Civilization source)

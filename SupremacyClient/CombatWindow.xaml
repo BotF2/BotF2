@@ -203,6 +203,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Foreground="LightYellow"
                                HorizontalAlignment="Left"
@@ -246,6 +247,8 @@
                             Height="25"
                             Checked="TargetButton2_Click"
                             GroupName="Secondary"/>
+                    
+
                 </Grid>
             </StackPanel>
         </DataTemplate>

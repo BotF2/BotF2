@@ -50,41 +50,9 @@ namespace Supremacy.Client
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?           
         private List<Civilization> _otherNameAndFirePower; // this collection populates insignia, name and firepower of other civs
 
-        //private List<Civilization> _shooterCivilizations1; // players civ and fight along side civs for Prime targets
-        //private List<Civilization> _shooterCivilizations2; // players civ and fight along side civs for Secondary targets
-        //private Civilization _targetCivilzation1; // player-selected civ to attack 
-        //private Civilization _targetCivilzation2; // secondary player-selected civ to attack
-        //private Dictionary<Civilization, Civilization> _whoIsShootingWhomFirst;
-        //private Dictionary<Civilization, Civilization> _whoIsShootingWhomSecond;
-
         private IAppContext _appContext;
  
         #region Properties
-        //public Dictionary<Civilization, Civilization> WhoIsShootingWhomFirst // WhoIsShootingWhom[Civilization] returns the target Civilization try catch(KeyNotFoundException)
-        //{
-        //    get
-        //    {
-        //        return _whoIsShootingWhomFirst;
-        //    }
-        //    set
-        //    {
-        //        _whoIsShootingWhomFirst = value;
-        //    }
-        //}
-
-        //public Dictionary<Civilization, Civilization> WhoIsShootingWhomSecond // WhoIsShootingWhom[Civilization] returns the target Civilization try catch(KeyNotFoundException)
-        //{
-
-        //    get
-        //    {
-
-        //        return _whoIsShootingWhomSecond;
-        //    }
-        //    set
-        //    {
-        //        _whoIsShootingWhomSecond = value;
-        //    }
-        //}
 
         public List<Civilization> OtherCivs
         {
@@ -127,37 +95,8 @@ namespace Supremacy.Client
             }
         }
 
-        //public Civilization TargetCivilization1  // does this need to be a public property? keep it private as the field?
-        //{
-        //    get
-        //    {
-        //        //GameLog.Core.Combat.DebugFormat("TargetCivilization - GET: _otherCivsKeys = {0}", _targetCivilzation1.ToString());
-        //        return _targetCivilzation1;
-        //    }
-        //    set
-        //    {
-
-        //        _targetCivilzation1 = value;
-        //        //GameLog.Core.Combat.DebugFormat("TargetCivilization - SET: _otherCivsKeys = {0}", _targetCivilzation1.ToString());
-        //    }
-        //}
-
-        //public Civilization TargetCivilization2 // does this need to be a public property? keep it private as the field?
-        //{
-        //    get
-        //    {
-        //        //null ref crash GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
-        //        return _targetCivilzation2;
-        //    }
-        //    set
-        //    {
-        //        _targetCivilzation2 = value;
-        //        //null ref crash GameLog.Core.Combat.DebugFormat("SecondaryTargetCivilization - GET: _otherCivsKeys = {0}", _secondTargetCivilzation.ToString());
-        //    }
-        //}
-
         #endregion
-
+          
         public CombatWindow()
         {
             InitializeComponent();
@@ -365,8 +304,7 @@ namespace Supremacy.Client
                 
                 shootingPlayerCivs = shootingPlayerCivs.Distinct().ToList();
                 _friendlyCivs = shootingPlayerCivs;
-                //_shooterCivilizations1 = shootingPlayerCivs;
-                //_shooterCivilizations2 = shootingPlayerCivs;
+;
                 foreach (Civilization Friend in _friendlyCivs)
                 {
                     FriendCivilizationsItems.Items.Add(Friend); // a template for rach other civ
@@ -374,6 +312,10 @@ namespace Supremacy.Client
                 }
 
             }
+
+            Civilization onlyFireIfFiredAppone = new Civilization();
+            onlyFireIfFiredAppone.ShortName = "Only return fire";
+            onlyFireIfFiredAppone.Key = "HOLDYOURFIRE";
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
@@ -401,28 +343,29 @@ namespace Supremacy.Client
                 foreach (CombatUnit shipStats in hostileAssets.EscapedShips)
                 {
                     HostileEscapedItems.Items.Add(shipStats);
-                    otherCivs.Add(shipStats.Owner);
+     
                 }
                 foreach (CombatUnit shipStats in hostileAssets.DestroyedShips)
                 {
                     HostileDestroyedItems.Items.Add(shipStats);
-                    otherCivs.Add(shipStats.Owner);
+                 
                 }
                 foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
                 {
                     HostileAssimilatedItems.Items.Add(shipStats);
                 }
-
-                _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field _otherCivs
-               
+                _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field (a list) _otherCivs
+                
                 foreach (Civilization Other in _otherCivs)
-                {
+                { 
                     OtherCivilizationsSummaryItem1.Items.Add(Other); // a template for rach other civ
                     GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Other.ShortName);
 
                 }
+               
+                
             }
-
+            OtherCivilizationsSummaryItem1.Items.Add(onlyFireIfFiredAppone);
             ShowHideUnitTrees();
         }
 

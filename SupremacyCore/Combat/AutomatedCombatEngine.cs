@@ -138,7 +138,7 @@ namespace Supremacy.Combat
             
             foreach (var combatent in _combatShips)
             {
-               // if(CombatUpdate.)
+                // if(GetTargetOne(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.OwnerID.ToString() || GetTargetTwo(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.OwnerID.ToString())
                 if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
                 {
                     OppositionCombatShips.Add(combatent);
@@ -260,9 +260,9 @@ namespace Supremacy.Combat
 
                 //}
 
-                //var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
                 var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
-                  //  .Where(s => );
+               // var oppositionShips = _combatShips.Where(cs => (GetTargetOne(_combatShips[i].Item1.Owner).ToString() == cs.Item1.OwnerID.ToString()));
+                  //  .Where(s => );   
                 var friendlyShips = _combatShips.Where(cs => !CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
 
                 if (i + 1 > excessShipsStartingAt && excessShipsStartingAt != 0) // added: if ships equal = 0 = excessShips, then no cycle reduction
