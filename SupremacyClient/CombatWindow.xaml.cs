@@ -321,7 +321,6 @@ namespace Supremacy.Client
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
 
-
                 var otherCivs = new List<Civilization>();
            
                 if (hostileAssets.Station != null)
@@ -362,8 +361,7 @@ namespace Supremacy.Client
                     GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Other.ShortName);
 
                 }
-               
-                
+                             
             }
             OtherCivilizationsSummaryItem1.Items.Add(onlyFireIfFiredAppone);
             ShowHideUnitTrees();

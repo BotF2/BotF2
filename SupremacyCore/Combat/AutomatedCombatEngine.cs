@@ -58,7 +58,6 @@ namespace Supremacy.Combat
         //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
-           //List<Civilization> civilizations,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)
@@ -138,8 +137,8 @@ namespace Supremacy.Combat
             
             foreach (var combatent in _combatShips)
             {
-                // if(GetTargetOne(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.OwnerID.ToString() || GetTargetTwo(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.OwnerID.ToString())
-                if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
+                if (GetTargetOne(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.Owner.Key || GetTargetTwo(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.Owner.Key)
+                    //  if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
                 {
                     OppositionCombatShips.Add(combatent);
                     OppositionCombatShips.Randomize();
@@ -150,6 +149,8 @@ namespace Supremacy.Combat
                     FriendlyCombatShips.Add(combatent);
                     FriendlyCombatShips.Randomize();
                 }
+                GameLog.Core.Test.DebugFormat("Combatent = {0}, Combatent Owner = {1}, firstFriendlyUnit Owner ={2} and Key ={3} vs GetTargetOne...ToString()",
+                    combatent, combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner, GetTargetOne(combatent.Item1.Owner).ToString(), firstFriendlyUnit.Item1.Owner.Key);
             }
             double ratioATemp = 0.00; // used to transform ship.Count to double decimals
             double ratioBTemp = 0.00; // used to transform ship.Count to double decimals

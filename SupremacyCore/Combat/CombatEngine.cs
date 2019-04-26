@@ -45,7 +45,9 @@ namespace Supremacy.Combat
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         private readonly int _combatId;
         protected int _roundNumber;
-        private bool _running;
+        private bool _runningOrders;
+        private bool _runningTargetOne;
+        private bool _runningTargetTwo;
         private bool _allSidesStandDown;
         private bool _ready;
         protected readonly List<CombatAssets> _assets;
@@ -57,12 +59,6 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; // like _orders
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
 
-
-        //public List<Civilization> Civilizations // ?? use this
-        //{
-        //    get { return _civilizations; }
-        //    //set { _civilizations = value; }
-        //}
 
         public bool BattelInOwnTerritory
         {
@@ -122,21 +118,61 @@ namespace Supremacy.Combat
             get { return _combatId; }
         }
 
-        protected bool Running
+        protected bool RunningOrders
         {
             get
             {
                 lock (SyncLockOrders)
                 {
-                    return _running;
+                    return _runningOrders;
                 }
             }
             private set
             {
                 lock (SyncLockOrders)
                 {
-                    _running = value;
-                    if (_running)
+                    _runningOrders = value;
+                    if (_runningOrders)
+                        _ready = false;
+                }
+            }
+        }
+
+        protected bool RunningTargetOne
+        {
+            get
+            {
+                lock (SyncLockOrders)
+                {
+                    return _runningTargetOne;
+                }
+            }
+            private set
+            {
+                lock (SyncLockOrders)
+                {
+                    _runningTargetOne = value;
+                    if (_runningTargetOne)
+                        _ready = false;
+                }
+            }
+        }
+
+        protected bool RunningTargetTwo
+        {
+            get
+            {
+                lock (SyncLockOrders)
+                {
+                    return _runningTargetTwo;
+                }
+            }
+            private set
+            {
+                lock (SyncLockOrders)
+                {
+                    _runningTargetTwo = value;
+                    if (_runningTargetTwo)
                         _ready = false;
                 }
             }
@@ -160,16 +196,16 @@ namespace Supremacy.Combat
             {
                 lock (SyncLockOrders)
                 {
-                    if (Running || IsCombatOver)
+                    if (RunningOrders || RunningTargetOne || RunningTargetTwo || IsCombatOver)
                         return false;
                     return _ready;
                 }
             }
         }
 
+ 
         protected CombatEngine(
             List<CombatAssets> assets,
-            //List<Civilization> civilizations,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
         {
@@ -186,18 +222,18 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("combatEndedCallback");
             }
 
-            _running = false;
+            _runningOrders = false;
+            _runningTargetOne = false;
+            _runningTargetTwo = false;
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
             _roundNumber = 1;
             _assets = assets;
-           // _civilizations = civilizations;
             _updateCallback = updateCallback;
             _combatEndedCallback = combatEndedCallback;
             _orders = new Dictionary<int, CombatOrders>();
             _targetOneByCiv = new Dictionary<int, CombatTargetPrimaries>();
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
-
             SyncLockOrders = _orders;
             SyncLockTargetOnes = _targetOneByCiv; 
             SyncLockTargetTwos = _targetTwoByCiv;
@@ -211,24 +247,24 @@ namespace Supremacy.Combat
                     _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
                         civAssets.Station,
                         CombatWeapon.CreateWeapons(civAssets.Station.Source));
-                    //_civilizations = new List<Civilization>(civAssets.Station.OwnerID);                 
+                                   
                 }
                 foreach (CombatUnit shipStats in civAssets.CombatShips)
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
-                    //_civilizations = new List<Civilization>(shipStats.Source.OwnerID);
+                  
                 }
                 foreach (CombatUnit shipStats in civAssets.NonCombatShips)
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
-                   // _civilizations = new List<Civilization>(shipStats.Source.OwnerID);
+                  
                     
                 }
-               // _civilizations.Distinct().ToList();
+               
             }
         }
 
@@ -272,7 +308,7 @@ namespace Supremacy.Combat
 
                 lock (_targetOneByCiv)
                 {
-                    foreach (var civId in _orders.Keys)
+                    foreach (var civId in _targetOneByCiv.Keys)
                     {
                         outstandingTargets.Remove(civId);
                     }
@@ -315,42 +351,53 @@ namespace Supremacy.Combat
         {
             lock (_orders)
             {
-                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound");
-                Running = true;
-
-
-                _assets.ForEach(a => a.CombatID = _combatId);
-                CalculateEmpireStrengths();
-
-                if ((_roundNumber > 1) || !AllSidesStandDown())
+                RunningOrders = true;
+                lock (_targetOneByCiv)
                 {
-                    RechargeWeapons();
-                    ResolveCombatRoundCore();
-                }
-                if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
-                {
-                    PerformAssimilation();
-                }
-                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before PerformRetreat");
-                PerformRetreat();
+                    RunningTargetOne = true;
+                    lock (_targetTwoByCiv)
+                    {
+                        GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound");
 
-                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
-                UpdateOrbitals();
+                        RunningTargetTwo = true;
 
-                if (!IsCombatOver)
-                {
-                    _roundNumber++;
+
+                        _assets.ForEach(a => a.CombatID = _combatId);
+                        CalculateEmpireStrengths();
+
+                        if ((_roundNumber > 1) || !AllSidesStandDown())
+                        {
+                            RechargeWeapons();
+                            ResolveCombatRoundCore();
+                        }
+                        if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
+                        {
+                            PerformAssimilation();
+                        }
+                        GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before PerformRetreat");
+                        PerformRetreat();
+
+                        GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
+                        UpdateOrbitals();
+
+                        if (!IsCombatOver)
+                        {
+                            _roundNumber++;
+                        }
+                        _targetTwoByCiv.Clear();
+                    }
+                    _targetOneByCiv.Clear();
                 }
-
                 _orders.Clear();
             }
-
             SendUpdates();
 
             GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
             RemoveDefeatedPlayers();
 
-            Running = false;
+            RunningOrders = false;
+            RunningTargetOne = false;
+            RunningTargetTwo = false;
 
             if (IsCombatOver)
             {
