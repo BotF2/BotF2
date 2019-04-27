@@ -16,14 +16,14 @@ namespace Supremacy.Resources
             {
                 if (m_CivDatabase == null)
                 {
-                    GameLog.Core.GameData.Debug("Loading master copy of civilization database...");
+                    GameLog.Core.GameData.DebugFormat("Loading master copy of civilization database...");
                     m_CivDatabase = CivDatabase.Load();
-                    GameLog.Core.GameData.Debug("Master civilization database loaded");
+                    GameLog.Core.GameData.DebugFormat("Master civilization database loaded");
 
                     #region traceCivilizationsXML_To_CSV
 
                     bool _traceCivilizationsXML = false;  // file is writen while starting a game -> Federation -> Start
-
+                    GameLog.Core.XML2CSVOutput.DebugFormat("{0} for writing FromCivilizationsXML_(autoCreated).csv - may hang up a start of the game", _traceCivilizationsXML);
                     if (_traceCivilizationsXML == true)
                     {
                         var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
