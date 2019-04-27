@@ -20,7 +20,7 @@ namespace Supremacy.Combat
 {
     public enum CombatTargetOne : byte
     {
-        HOLDYOURFIRE = 0,
+        //HOLDYOURFIRE = 0,
         FEDERATION,
         TERRANEMPIRE,
         ROMULANS,
@@ -32,11 +32,11 @@ namespace Supremacy.Combat
     }
 
     [Serializable]
-    public class  CombatTargetPrimaries : IEnumerable<CombatTargetOne>
+    public class  CombatTargetPrimaries : IEnumerable<Civilization>
     {
         private readonly int _combatId; // will we use this? think so
         private readonly int _ownerId; // will we use this?
-        private readonly Dictionary<int, CombatTargetOne> _targetPrimaries;
+        private readonly Dictionary<int, Civilization> _targetPrimaries;
     
         public int CombatID
         {
@@ -59,13 +59,13 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("owner");
             }
             _ownerId = owner.CivID;
-            _targetPrimaries = new Dictionary<int, CombatTargetOne>();
+            _targetPrimaries = new Dictionary<int, Civilization>();
             _combatId = combatId;
 
             GameLog.Core.Combat.DebugFormat("CombatTargetPrimaries owner = {0}, _combatID = {1}", owner, _combatId);
 
         }
-        public void SetTargetOne(Civilization source, CombatTargetOne targetOne)
+        public void SetTargetOne(Civilization source, Civilization targetOne)
         {
 
             if (source == null)
@@ -96,7 +96,7 @@ namespace Supremacy.Combat
             return _targetPrimaries.ContainsKey(source.CivID);
         }
 
-        public CombatTargetOne GetTargetOne(Civilization source)
+        public Civilization GetTargetOne(Civilization source)
         {
 
             if (source == null)
@@ -113,7 +113,7 @@ namespace Supremacy.Combat
 
         }
 
-        public IEnumerator<CombatTargetOne> GetEnumerator()
+        public IEnumerator<Civilization> GetEnumerator()
         {
             return _targetPrimaries.Values.GetEnumerator();
         }

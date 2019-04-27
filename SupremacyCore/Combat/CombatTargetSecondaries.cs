@@ -20,7 +20,7 @@ namespace Supremacy.Combat
 
     public enum CombatTargetTwo : byte
     {
-        HOLDYOURFIRE = 0,
+        //HOLDYOURFIRE = 0,
         FEDERATION,
         TERRANEMPIRE,
         ROMULANS,

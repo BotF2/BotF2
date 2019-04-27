@@ -261,7 +261,7 @@ namespace Supremacy.Combat
             return orders;
         }
 
-        public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, CombatTargetOne target)
+        public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, Civilization target)
         {
             //bool _generateTargetPrimariesTracing = true; 
 
@@ -284,7 +284,8 @@ namespace Supremacy.Combat
                 targetOne.Distinct().ToList();
             }
 
-            GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {2}", targetOne.Owner, owner, target.ToString());
+            GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {2}",
+                targetOne.Owner, owner, target.ToString());
             return targetOne;
         }
 

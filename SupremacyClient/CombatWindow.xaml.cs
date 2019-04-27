@@ -404,12 +404,12 @@ namespace Supremacy.Client
         {
             RadioButton radioButton1 = (RadioButton)sender;
             Civilization theTargetedCiv = (Civilization)radioButton1.DataContext;
-            string targetString = theTargetedCiv.Key.ToString();
-            var enumTargetOne = (CombatTargetOne)Enum.Parse(typeof(CombatTargetOne), targetString);
-            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, enumTargetOne));
+            //string targetString = theTargetedCiv.Key.ToString();
+            //var civTargetOne = (Civilization)Enum.Parse(typeof(Civilization), targetString);
+            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, theTargetedCiv));
 
-            GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}, sender ={4}",
-                _playerAssets, enumTargetOne, theTargetedCiv, targetString, sender);
+            //GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}, sender ={4}",
+            //    _playerAssets, enumTargetOne, theTargetedCiv, targetString, sender);
 
         }
 

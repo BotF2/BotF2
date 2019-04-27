@@ -137,7 +137,7 @@ namespace Supremacy.Combat
             
             foreach (var combatent in _combatShips)
             {
-                if (GetTargetOne(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.Owner.Key || GetTargetTwo(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.Owner.Key)
+                if (GetTargetOne(combatent.Item1.Owner) == firstFriendlyUnit.Item1.Owner || GetTargetTwo(combatent.Item1.Owner).ToString() == firstFriendlyUnit.Item1.Owner.Key)
                     //  if (CombatHelper.WillEngage(combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner))
                 {
                     OppositionCombatShips.Add(combatent);
@@ -149,8 +149,17 @@ namespace Supremacy.Combat
                     FriendlyCombatShips.Add(combatent);
                     FriendlyCombatShips.Randomize();
                 }
-                GameLog.Core.Test.DebugFormat("Combatent = {0}, Combatent Owner = {1}, firstFriendlyUnit Owner ={2} and Key ={3} vs GetTargetOne...ToString()",
-                    combatent, combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner, GetTargetOne(combatent.Item1.Owner).ToString(), firstFriendlyUnit.Item1.Owner.Key);
+                //GameLog.Core.Test.DebugFormat("Combatent = {0}, Combatent Owner = {1}, ship to evaluation Owner ={2} and Key ={3} vs GetTargetOne civ = {4}",
+                //combatent, combatent.Item1.Owner, firstFriendlyUnit.Item1.Owner, GetTargetOne(combatent.Item1.Owner), firstFriendlyUnit.Item1.Owner);
+                GameLog.Core.Test.DebugFormat("Combatent = {0} O= {1} {2}, ... friendlyUnit: {3} {4} O= {5} Key = {6}, ... GetTargetOne = {7}",
+                                        combatent.Item1.Source.ObjectID,
+                                        combatent.Item1.Source.Design,
+                                        combatent.Item1.Owner,
+                                        firstFriendlyUnit.Item1.Source.ObjectID,
+                                        firstFriendlyUnit.Item1.Source.Design,
+                                        firstFriendlyUnit.Item1.Owner,
+                                        firstFriendlyUnit.Item1.Owner.Key,
+                                        GetTargetOne(combatent.Item1.Owner).ToString());
             }
             double ratioATemp = 0.00; // used to transform ship.Count to double decimals
             double ratioBTemp = 0.00; // used to transform ship.Count to double decimals

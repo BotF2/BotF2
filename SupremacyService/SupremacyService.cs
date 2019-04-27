@@ -1419,10 +1419,13 @@ namespace Supremacy.WCF
                     return;
                 }
 
-
+                Civilization borg = new Civilization();
+                borg.Key = "BORG";
+                borg.CivID = 6;
+                
 
                 var blanketOrder = CombatOrder.Engage;
-                var blanketTargetOne = CombatTargetOne.BORG;
+                var blanketTargetOne = borg;
                 var blanketTargetTwo = CombatTargetTwo.BORG;
                     // Standard Order in case no If catches the situation
                 //bool IsMinor = false;

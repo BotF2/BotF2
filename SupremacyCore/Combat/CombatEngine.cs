@@ -764,22 +764,26 @@ namespace Supremacy.Combat
             return CombatOrder.Retreat;
         }
 
-        protected CombatTargetOne GetTargetOne(Civilization source)
+        protected Civilization GetTargetOne(Civilization source)
         {
             try
             {
-                GameLog.Core.Test.DebugFormat("Try Setting target one for CivID = {0}, Name {1}, {2}", source.CivID, source.Name, source.ShortName);
-                return _targetOneByCiv[source.CivID].GetTargetOne(source);
+                GameLog.Core.Test.DebugFormat("Try Setting target one for CivID = {0}, Name {1}, {2} and return = {3}",
+                    source.CivID, source.Name, source.ShortName, _targetOneByCiv[source.CivID].Owner);
+                return _targetOneByCiv[source.CivID].Owner;//.GetTargetOne(source);
             }
-            catch //(Exception e)
+            catch (Exception e)
             {
-                GameLog.Core.Test.ErrorFormat("Unable to get target one for {0} ({1})", source.ShortName, source.Name, source.Name);
+                GameLog.Core.Test.ErrorFormat("Unable to get target one for {0} ({1}, exception = {2})", source.ShortName, source.Name, e);
                 //GameLog.LogException(e);
             }
-
+            Civilization borg = new Civilization();
+            borg.CivID = 6;
+            borg.Key = "BORG";
+           
             //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target one for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
             //return _targetOneByCiv[source.CivID].GetTargetOne(source);
-           return CombatTargetOne.BORG;
+           return borg;
         }
 
         protected CombatTargetTwo GetTargetTwo(Civilization source)
