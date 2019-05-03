@@ -14,29 +14,17 @@ using System.Collections.Generic;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
 
-    public enum CombatTargetTwo : byte
-    {
-        //HOLDYOURFIRE = 0,
-        FEDERATION,
-        TERRANEMPIRE,
-        ROMULANS,
-        KLINGONS,
-        CARDASSIANS,
-        DOMINION,
-        BORG
-    }
-
-
     [Serializable]
-    public class  CombatTargetSecondaries : IEnumerable<CombatTargetTwo>
+    public class  CombatTargetSecondaries //: IEnumerable<Civilization>
     {
         private readonly int _combatId;
         private readonly int _ownerId;
-        private readonly Dictionary<int, CombatTargetTwo> _targetSecondaries;
+        private readonly Dictionary<int, Civilization> _targetSecondaries;
 
         public int CombatID
         {
@@ -60,22 +48,22 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("owner");
 
             _ownerId = owner.CivID;
-            _targetSecondaries = new Dictionary<int, CombatTargetTwo>();
+            _targetSecondaries = new Dictionary<int, Civilization>();
             _combatId = combatId;
         }
 
-        public void SetTargetTwo(Civilization source, CombatTargetTwo targetTwo)
+        public void SetTargetTwo(Orbital source, Civilization targetTwo)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            _targetSecondaries[source.CivID] = targetTwo;
+            _targetSecondaries[source.ObjectID] = targetTwo;
         }
 
-        public void ClearTargetTwo(Civilization source)
+        public void ClearTargetTwo(Orbital source)
         {
             if (source == null)
                 return;
-            _targetSecondaries.Remove(source.CivID);
+            _targetSecondaries.Remove(source.ObjectID);
         }
 
         public void Clear()
@@ -83,34 +71,34 @@ namespace Supremacy.Combat
             _targetSecondaries.Clear();
         }
 
-        public bool IsTargetTwoSet(Civilization source)
+        public bool IsTargetTwoSet(Orbital source)
         {
             if (source == null)
                 return false;
-            return _targetSecondaries.ContainsKey(source.CivID);
+            return _targetSecondaries.ContainsKey(source.ObjectID);
         }
 
-        public CombatTargetTwo GetTargetTwo(Civilization source)
+        public Civilization GetTargetTwo(Orbital source)
         {
             if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
-            if (!_targetSecondaries.ContainsKey(source.CivID))
+            if (!_targetSecondaries.ContainsKey(source.ObjectID))
             {
                 throw new ArgumentException("No target two has been set for the specified source");
             }
-            return _targetSecondaries[source.CivID];
+            return _targetSecondaries[source.ObjectID];
         }
 
-        public IEnumerator<CombatTargetTwo> GetEnumerator()
-        {
-            return _targetSecondaries.Values.GetEnumerator();
-        }
+        //public IEnumerator<CombatTargetTwo> GetEnumerator()
+        //{
+        //    return _targetSecondaries.Values.GetEnumerator();
+        //}
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return GetEnumerator();
+        //}
     }
 }

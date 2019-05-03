@@ -331,6 +331,8 @@
     <Compile Include="Services\IApplicationSettingsService.cs" />
     <Compile Include="Services\IGameErrorService.cs" />
     <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\PlayerTarget2Service .cs" />
+    <Compile Include="Services\PlayerTarget1Service.cs" />
     <Compile Include="Services\PlayerOrderService.cs" />
     <Compile Include="SR.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -221,9 +221,7 @@ namespace Supremacy.Combat
         public static CombatOrders GenerateBlanketOrders(CombatAssets assets, CombatOrder order)
         {
             bool _generateBlanketOrdersTracing = true;
-
             var owner = assets.Owner;
-
             var orders = new CombatOrders(owner, assets.CombatID);
 
             foreach (var ship in assets.CombatShips)  // CombatShips
@@ -232,8 +230,8 @@ namespace Supremacy.Combat
                 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    //GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
-                        //ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
+                    GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
+                        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
 
@@ -262,34 +260,45 @@ namespace Supremacy.Combat
         }
 
         public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, Civilization target)
-        {
+        {  
+    
             //bool _generateTargetPrimariesTracing = true; 
-
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
+            //Civilization borg = new Civilization("BORG");
+            //Civilization cards = new Civilization("CARDASSIANS");
+            Civilization terrans = new Civilization("TERRANEMPIRE");
 
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
-                targetOne.SetTargetOne(ship.Source.Owner, target);
-                targetOne.Distinct().ToList();
-            }
-            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
-            {
-                targetOne.SetTargetOne(ship.Source.Owner, target);
-                targetOne.Distinct().ToList();
-            }
-            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
-            {
-                targetOne.SetTargetOne(assets.Station.Source.Owner, target);
-                targetOne.Distinct().ToList();
+                targetOne.SetTargetOne(ship.Source, target);
+               
+                //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Combat Ship {0} with target = {1}", ship.Name, ship.Owner, target.Name.ToString());
+                //targetOne.SetTargetOne(ship.Source, (target == cards) ? cards : target);
+                targetOne.SetTargetOne(ship.Source, (target == terrans) ? terrans : target);
+                GameLog.Core.Test.DebugFormat("Force Primary to Terran: Combat Ship {0} with target = {1}", ship.Name, ship.Owner, target.Name.ToString());
             }
 
-            GameLog.Client.Combat.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target enum = {2}",
-                targetOne.Owner, owner, target.ToString());
+            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            {
+                targetOne.SetTargetOne(ship.Source, target);
+              
+                //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Non Combat Ship {0} with target = {1}", ship, target.Name.ToString());
+                //targetOne.SetTargetOne(ship.Source, (target == cards) ? cards : target);
+                //targetOne.SetTargetOne(ship.Source, (target == terrans) ? terrans : target);
+            }
+
+            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
+            {
+                targetOne.SetTargetOne(assets.Station.Source, target);
+            }
+
+            //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target civ = {2}",
+            //    targetOne.Owner, owner, target);
             return targetOne;
         }
 
-        public static CombatTargetSecondaries GenerateTargetSecondary(CombatAssets assets, CombatTargetTwo target)
+        public static CombatTargetSecondaries GenerateTargetSecondary(CombatAssets assets, Civilization target)
         {
            // bool _generateTargetSecondaryTracing = true;
             var owner = assets.Owner;
@@ -297,18 +306,20 @@ namespace Supremacy.Combat
             var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
-                targetTwo.SetTargetTwo(ship.Source.Owner, target);
-                targetTwo.Distinct().ToList();
+                targetTwo.SetTargetTwo(ship.Source, target);
+                //targetTwo.Distinct().ToList();
             }
+
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                targetTwo.SetTargetTwo(ship.Source.Owner, target);
-                targetTwo.Distinct().ToList();
+                targetTwo.SetTargetTwo(ship.Source, target);
+                //targetTwo.Distinct().ToList();
             }
+
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                targetTwo.SetTargetTwo(assets.Station.Source.Owner, target);
-                targetTwo.Distinct().ToList();
+                targetTwo.SetTargetTwo(assets.Station.Source, target);
+                //targetTwo.Distinct().ToList();
             }
             return targetTwo;
         }
@@ -364,6 +375,11 @@ namespace Supremacy.Combat
             GameLog.Core.Combat.DebugFormat("Colony = {5}: raceMod = {0}, weaponTechMod = {1}, localGroundCombatMod = {2}, population = {3}, result of GroundCombatStrength (in total) = {4} ", raceMod, weaponTechMod, localGroundCombatMod, population, result, colony.Name);
 
             return (int)result;
+        }
+
+        internal static object GenerateTargetSecondary(CombatAssets playerAssets, object theTargetCiv)
+        {
+            throw new NotImplementedException();
         }
     }
 }

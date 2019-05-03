@@ -15,6 +15,10 @@ namespace Supremacy.Client
 
     internal delegate void SendCombatOrdersDelegate(CombatOrders orders);
 
+    internal delegate void SendCombatTarget1Delegate(CombatTargetPrimaries target1);
+
+    internal delegate void SendCombatTarget2Delegate(CombatTargetSecondaries target2);
+
     internal delegate void FinishTurnDelegate();
 
 }

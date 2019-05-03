@@ -23,15 +23,11 @@ namespace Supremacy.Combat
     public abstract class CombatEngine
     {
        
-       // private List<Civilization> _civilization; // need friendly and other civs or not? (CombatUpdate -private IList<CombatAssets> _friendlyAssets; - private IList<CombatAssets> _hostileAssets;)
         private bool _battleInOwnTerritory;
-       // private Dictionary<Civilization, Civilization> _civilizationTargetOneByCiv; // Should we use dictionaries WhoIsShootingWhomFirst and Second from CombatWindow?
-      //  private Dictionary<Civilization, Civilization> _civilizationTargetTwoByCiv;
         private int _totalFirepower; // looks like _empireStrenths dictionary below
         private double _favorTheBoldMalus; 
         private int _fleetAsCommandshipBonus;
         private bool _has20PlusPercentFastAttack;
-       // private Dictionary<Civilization, CombatOrders> _combatOrderByCiv; // looks like _orders below, do we need this?
 
         public readonly object SyncLockOrders;
         public readonly object SyncLockTargetOnes;
@@ -51,7 +47,6 @@ namespace Supremacy.Combat
         private bool _allSidesStandDown;
         private bool _ready;
         protected readonly List<CombatAssets> _assets;
-        //protected readonly List<Civilization> _civilizations; // not used at this time
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
@@ -196,7 +191,7 @@ namespace Supremacy.Combat
             {
                 lock (SyncLockOrders)
                 {
-                    if (RunningOrders || RunningTargetOne || RunningTargetTwo || IsCombatOver)
+                    if (RunningOrders || IsCombatOver) // RunningTargetOne || RunningTargetTwo)
                         return false;
                     return _ready;
                 }
@@ -235,7 +230,7 @@ namespace Supremacy.Combat
             _targetOneByCiv = new Dictionary<int, CombatTargetPrimaries>();
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
             SyncLockOrders = _orders;
-            SyncLockTargetOnes = _targetOneByCiv; 
+            SyncLockTargetOnes = _targetOneByCiv;
             SyncLockTargetTwos = _targetTwoByCiv;
 
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
@@ -482,8 +477,6 @@ namespace Supremacy.Combat
 
                         }
                     }
-
-                    //GameLog.Core.Combat.DebugFormat("at the end try to add value for Empire {0}", civ.Owner.Key, currentEmpireStrength);
 
                     empireStrengths.Add(civ.Owner, currentEmpireStrength);
                 }
@@ -752,6 +745,7 @@ namespace Supremacy.Combat
         {
             try
             {
+                GameLog.Core.Test.DebugFormat("Get Order for {0} owner {1} order {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
                 return _orders[source.OwnerID].GetOrder(source);
             }
             catch //(Exception e)
@@ -764,35 +758,35 @@ namespace Supremacy.Combat
             return CombatOrder.Retreat;
         }
 
-        protected Civilization GetTargetOne(Civilization source)
+        Civilization borg = new Civilization("BORG");
+        protected Civilization GetTargetOne(Orbital source)
         {
             try
             {
-                GameLog.Core.Test.DebugFormat("Try Setting target one for CivID = {0}, Name {1}, {2} and return = {3}",
-                    source.CivID, source.Name, source.ShortName, _targetOneByCiv[source.CivID].Owner);
-                return _targetOneByCiv[source.CivID].Owner;//.GetTargetOne(source);
+                GameLog.Core.Test.DebugFormat("GetTargetOne for source = {0}, Owner {1}, Targetting {2}",
+                    source, source.Owner, _targetOneByCiv[source.OwnerID].GetTargetOne(source));
+                return _targetOneByCiv[source.OwnerID].GetTargetOne(source); 
             }
             catch (Exception e)
             {
-                GameLog.Core.Test.ErrorFormat("Unable to get target one for {0} ({1}, exception = {2})", source.ShortName, source.Name, e);
+                GameLog.Core.Test.ErrorFormat("Unable to get target one for source {0} owner ({1}, exception = {2})", source, source.Owner, e);
                 //GameLog.LogException(e);
             }
-            Civilization borg = new Civilization();
-            borg.CivID = 6;
-            borg.Key = "BORG";
+
            
+
             //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target one for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
             //return _targetOneByCiv[source.CivID].GetTargetOne(source);
-           return borg;
+            return borg;
         }
 
-        protected CombatTargetTwo GetTargetTwo(Civilization source)
+        protected Civilization GetTargetTwo(Orbital source)
         {
             try
             {
-                GameLog.Core.Combat.DebugFormat("Setting Borg as target two for CivID = {0}, Name {1}, {2}", source.CivID, source.Name, source.ShortName);
-                return _targetTwoByCiv[source.CivID].GetTargetTwo(source);
-                
+                GameLog.Core.Combat.DebugFormat("Setting Borg as target two for CivID = {0}, Name {1}, {2}", source, source.Name, source);
+                return _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
+
             }
             catch //(Exception e)
             {
@@ -801,7 +795,7 @@ namespace Supremacy.Combat
             }
 
             //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target two for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            return CombatTargetTwo.BORG;
+            return borg;
         }
 
         protected abstract void ResolveCombatRoundCore();

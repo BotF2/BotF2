@@ -171,6 +171,8 @@
     <Compile Include="AI\ColonyAI.cs" />
     <Compile Include="AI\AIColonyHelper.cs" />
     <Compile Include="AI\DiplomatAI.cs" />
+    <Compile Include="Client\IPlayerTarget2Service.cs" />
+    <Compile Include="Client\IPlayerTarget1Service.cs" />
     <Compile Include="Collections\EnumValueCollection.cs" />
     <Compile Include="Collections\InitOnlyKeyedCollection.cs" />
     <Compile Include="Collections\SafeEnumerator.cs" />

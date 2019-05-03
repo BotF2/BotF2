@@ -16,26 +16,26 @@ using Supremacy.IO;
 
 namespace Supremacy.WCF
 {
-    [DataContract]
-    public class PlayerTarget2Message
-    {
-        [DataMember]
-        private string _buffer;
+    //[DataContract]
+    //public class PlayerTarget2Message
+    //{
+    //    [DataMember]
+    //    private string _buffer;
 
-        public IList<Order> Target2
-        {
-            get { return StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer)); }
-        }
+    //    public IList<Order> Target2
+    //    {
+    //        get { return StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer)); }
+    //    }
 
-        [DataMember]
-        public bool AutoTurnTarget2 { get; set; }
+    //    [DataMember]
+    //    public bool AutoTurnTarget2 { get; set; }
 
-        public PlayerTarget2Message(IList<Order> orders, bool autoTurn)
-        {
-            if (orders == null)
-                throw new ArgumentNullException("data");
-            _buffer = Convert.ToBase64String(StreamUtility.Write(orders));
-            AutoTurnTarget2 = autoTurn;
-        }
-    }
+    //    public PlayerTarget2Message(IList<Order> orders, bool autoTurn)
+    //    {
+    //        if (orders == null)
+    //            throw new ArgumentNullException("data");
+    //        _buffer = Convert.ToBase64String(StreamUtility.Write(orders));
+    //        AutoTurnTarget2 = autoTurn;
+    //    }
+    //}
 }

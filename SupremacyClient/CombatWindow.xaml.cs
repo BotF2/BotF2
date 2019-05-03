@@ -403,10 +403,13 @@ namespace Supremacy.Client
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
-            Civilization theTargetedCiv = (Civilization)radioButton1.DataContext;
+            Civilization theTargeted1Civ = (Civilization)radioButton1.DataContext;
             //string targetString = theTargetedCiv.Key.ToString();
             //var civTargetOne = (Civilization)Enum.Parse(typeof(Civilization), targetString);
-            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, theTargetedCiv));
+            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateTargetPrimary(_playerAssets, theTargeted1Civ));
+
+            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}",
+                theTargeted1Civ);
 
             //GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}, sender ={4}",
             //    _playerAssets, enumTargetOne, theTargetedCiv, targetString, sender);
@@ -416,10 +419,10 @@ namespace Supremacy.Client
         private void TargetButton2_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton2 = (RadioButton)sender;
-            Civilization theTargetedCiv = (Civilization)radioButton2.DataContext;
-            string targetString = theTargetedCiv.Key.ToString();
-            var enumTargetTwo = (CombatTargetTwo)Enum.Parse(typeof(CombatTargetTwo), targetString);
-            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateTargetSecondary(_playerAssets, enumTargetTwo));
+            Civilization theTargeted2Civ = (Civilization)radioButton2.DataContext;
+            //string targetString = theTargetedCiv.Key.ToString();
+            //var enumTargetTwo = (CombatTargetTwo)Enum.Parse(typeof(CombatTargetTwo), targetString);
+            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateTargetSecondary(_playerAssets, theTargeted2Civ));
 
         }
 

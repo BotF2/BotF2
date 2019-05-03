@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 using Supremacy.Game;
+using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -130,6 +131,17 @@ namespace Supremacy.Entities
             _key = key;
             _raceId = race.Key;
             _civType = CivilizationType.MinorPower;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Civilization"/> class.
+        /// </summary>
+        /// <param name="key">The unique key.</param>
+        
+        public Civilization(string key)
+        {
+            _key = key;
+
         }
 
         /// <summary>

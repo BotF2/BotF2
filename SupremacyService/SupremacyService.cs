@@ -55,6 +55,8 @@ namespace Supremacy.WCF
         private readonly object _aiAsyncLock;
         private readonly LobbyData _lobbyData;
         private readonly Dictionary<Player, PlayerOrdersMessage> _playerOrders;
+        //private readonly Dictionary<Player, PlayerTarget1Message> _playerTarget1;
+        //private readonly Dictionary<Player, PlayerTarget2Message> _playerTarget2;
         private readonly ServerPlayerInfoCollection _playerInfo;
         private readonly IGameErrorService _errorService;
         private readonly IScheduler _scheduler;
@@ -78,6 +80,8 @@ namespace Supremacy.WCF
             _errorService = ServiceLocator.Current.GetInstance<IGameErrorService>();
             _playerInfo = new ServerPlayerInfoCollection();
             _playerOrders = new Dictionary<Player, PlayerOrdersMessage>();
+            //_playerTarget1 = new Dictionary<Player, PlayerTarget1Message>();
+            //_playerTarget2 = new Dictionary<Player, PlayerTarget2Message>();
             _lobbyData = new LobbyData
             {
                 Players = _playerInfo.Select(o => o.Player).ToArray()
@@ -454,7 +458,11 @@ namespace Supremacy.WCF
 
                 Player gameHost = GetPlayerById(0);
                 List<Order> orders;
+                //List<Order> target1;
+                //List<Order> target2;
                 List<Civilization> autoTurnCivs;
+                //List<Civilization> autoTurnCivsTarget1;
+                //List<Civilization> autoTurnCivsTarget2;
 
                 lock (_playerOrders)
                 {
@@ -467,6 +475,30 @@ namespace Supremacy.WCF
                 {
                     order.Execute(_game);
                 }
+
+                //lock (_playerTarget1)
+                //{
+                //    target1 = _playerTarget1.Values.SelectMany(v => v.Target1).ToList();
+                //    autoTurnCivsTarget1 = _playerTarget1.Where(po => po.Value.AutoTurnTarget1).Select(po => _game.Civilizations[po.Key.EmpireID]).ToList();
+                //    _playerTarget1.Clear();
+                //}
+
+                //foreach (var targetOne in target1)
+                //{
+                //    targetOne.Execute(_game);
+                //}
+
+                //lock (_playerTarget2)
+                //{
+                //    target2 = _playerTarget2.Values.SelectMany(v => v.Target2).ToList();
+                //    autoTurnCivsTarget2 = _playerTarget2.Where(po => po.Value.AutoTurnTarget2).Select(po => _game.Civilizations[po.Key.EmpireID]).ToList();
+                //    _playerTarget2.Clear();
+                //}
+
+                //foreach (var targetTwo in target2)
+                //{
+                //    targetTwo.Execute(_game);
+                //}
 
                 var stopwatch = Stopwatch.StartNew();
 
@@ -493,6 +525,46 @@ namespace Supremacy.WCF
                             }
                         },
                         null);
+
+                    //var doAiPlayersTarget1 = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
+                    //_aiAsyncResult = doAiPlayers.BeginInvoke(
+                    //    _game, autoTurnCivsTarget1,
+                    //    delegate (IAsyncResult result)
+                    //    {
+                    //        lock (_aiAsyncLock)
+                    //        {
+                    //            Interlocked.Exchange(ref _aiAsyncResult, null);
+                    //        }
+                    //        try
+                    //        {
+                    //            doAiPlayersTarget1.EndInvoke(result);
+                    //        }
+                    //        catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    //        {
+                    //            GameLog.Server.General.Error(e);
+                    //        }
+                    //    },
+                    //    null);
+
+                    //var doAiPlayersTarget2 = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
+                    //_aiAsyncResult = doAiPlayers.BeginInvoke(
+                    //    _game, autoTurnCivsTarget2,
+                    //    delegate (IAsyncResult result)
+                    //    {
+                    //        lock (_aiAsyncLock)
+                    //        {
+                    //            Interlocked.Exchange(ref _aiAsyncResult, null);
+                    //        }
+                    //        try
+                    //        {
+                    //            doAiPlayersTarget2.EndInvoke(result);
+                    //        }
+                    //        catch (Exception e) //ToDo: Just log or additional handling necessary?
+                    //        {
+                    //            GameLog.Server.General.Error(e);
+                    //        }
+                    //    },
+                    //    null);
                 }
 
                 GameLog.Server.General.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
@@ -717,6 +789,42 @@ namespace Supremacy.WCF
                     Interlocked.Exchange(ref _isProcessingTurn, 0);
                     return false;
                 }
+
+                //try
+                //{
+                //    var anyOutstandingTarget1 = _playerInfo
+                //        .Select(playerInfo => playerInfo.Player)
+                //        .Any(player => !_playerTarget1.ContainsKey(player) || _playerTarget1[player] == null);
+
+                //    if (anyOutstandingTarget1)
+                //    {
+                //        Interlocked.Exchange(ref _isProcessingTurn, 0);
+                //        return false;
+                //    }
+                //}
+                //catch
+                //{
+                //    Interlocked.Exchange(ref _isProcessingTurn, 0);
+                //    return false;
+                //}
+
+                //try
+                //{
+                //    var anyOutstandingTarget2= _playerInfo
+                //        .Select(playerInfo => playerInfo.Player)
+                //        .Any(player => !_playerTarget2.ContainsKey(player) || _playerTarget2[player] == null);
+
+                //    if (anyOutstandingTarget2)
+                //    {
+                //        Interlocked.Exchange(ref _isProcessingTurn, 0);
+                //        return false;
+                //    }
+                //}
+                //catch
+                //{
+                //    Interlocked.Exchange(ref _isProcessingTurn, 0);
+                //    return false;
+                //}
             }
 
             _threadPoolScheduler.Schedule(ProcessTurn);
@@ -1184,13 +1292,14 @@ namespace Supremacy.WCF
                 recipientId);
         }
 
-        public void EndTurn(PlayerOrdersMessage orders)
+        public void EndTurn(PlayerOrdersMessage orders) 
         {
             EnsurePlayer();
 
             var currentPlayer = CurrentPlayer;
 
             _playerOrders[currentPlayer] = orders;
+
 
             lock (_playerInfo.SyncRoot)
             {
@@ -1212,6 +1321,64 @@ namespace Supremacy.WCF
 
             TryProcessTurn();
         }
+
+        //public void EndTurn(PlayerTarget1Message target1)
+        //{
+        //    EnsurePlayer();
+
+        //    var currentPlayer = CurrentPlayer;
+
+        //    _playerTarget1[currentPlayer] = target1;
+
+        //    lock (_playerInfo.SyncRoot)
+        //    {
+        //        foreach (var playerInfo in _playerInfo)
+        //        {
+        //            var callback = playerInfo.Callback;
+        //            if (callback == null)
+        //                continue;
+
+        //            var playerInfoCopy = playerInfo;
+
+        //            ((Action<int>)callback.NotifyPlayerFinishedTurn)
+        //                .ToAsync(_scheduler)(currentPlayer.EmpireID)
+        //                .Subscribe(
+        //                    _ => { },
+        //                    e => DropPlayer(playerInfoCopy.Player));
+        //        }
+        //    }
+
+        //    TryProcessTurn();
+        //}
+
+        //public void EndTurn(PlayerTarget2Message target2)
+        //{
+        //    EnsurePlayer();
+
+        //    var currentPlayer = CurrentPlayer;
+
+        //    _playerTarget2[currentPlayer] = target2;
+
+        //    lock (_playerInfo.SyncRoot)
+        //    {
+        //        foreach (var playerInfo in _playerInfo)
+        //        {
+        //            var callback = playerInfo.Callback;
+        //            if (callback == null)
+        //                continue;
+
+        //            var playerInfoCopy = playerInfo;
+
+        //            ((Action<int>)callback.NotifyPlayerFinishedTurn)
+        //                .ToAsync(_scheduler)(currentPlayer.EmpireID)
+        //                .Subscribe(
+        //                    _ => { },
+        //                    e => DropPlayer(playerInfoCopy.Player));
+        //        }
+        //    }
+
+        //    TryProcessTurn();
+        //}
 
         public void UpdateGameOptions(GameOptions options)
         {
@@ -1349,16 +1516,18 @@ namespace Supremacy.WCF
             }
         }
 
-        public void SendCombatTargetOnes(CombatTargetPrimaries targets)
+
+
+        public void SendCombatTarget1(CombatTargetPrimaries target1)
         {
             try
             {
-                if (_combatEngine == null || targets == null)
+                if (_combatEngine == null || target1 == null)
                     return;
 
                 lock (_combatEngine.SyncLockTargetOnes)
                 {
-                    _combatEngine.SubmitTargetOnes(targets);
+                    _combatEngine.SubmitTargetOnes(target1);
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
@@ -1366,21 +1535,21 @@ namespace Supremacy.WCF
             }
             catch (Exception e)
             {
-                GameLog.Server.Combat.DebugFormat("SendCombatTargetOnes null reference issue #164 {0}", targets.ToString());
+                GameLog.Server.Combat.DebugFormat("SendCombatTargetOnes null reference issue #164 {0}", target1.ToString());
                 GameLog.Server.Combat.Error(e);
             }
         }
 
-        public void SendCombatTargetTwos(CombatTargetSecondaries targets)
+        public void SendCombatTarget2(CombatTargetSecondaries target2)
         {
             try
             {
-                if (_combatEngine == null || targets == null)
+                if (_combatEngine == null || target2 == null)
                     return;
 
                 lock (_combatEngine.SyncLockTargetTwos)
                 {
-                    _combatEngine.SubmitTargetTwos(targets);
+                    _combatEngine.SubmitTargetTwos(target2);
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
@@ -1388,7 +1557,7 @@ namespace Supremacy.WCF
             }
             catch (Exception e)
             {
-                GameLog.Server.Combat.DebugFormat("SendCombatTargetTwos null reference issue #164 {0}", targets.ToString());
+                GameLog.Server.Combat.DebugFormat("SendCombatTargetTwos null reference issue #164 {0}", target2.ToString());
                 GameLog.Server.Combat.Error(e);
             }
         }
@@ -1419,14 +1588,14 @@ namespace Supremacy.WCF
                     return;
                 }
 
-                Civilization borg = new Civilization();
-                borg.Key = "BORG";
-                borg.CivID = 6;
+                Civilization borg = new Civilization("BORG");
+                //borg.Key = "BORG";
+                //borg.CivID = 6;
                 
 
                 var blanketOrder = CombatOrder.Engage;
                 var blanketTargetOne = borg;
-                var blanketTargetTwo = CombatTargetTwo.BORG;
+                var blanketTargetTwo = borg;
                     // Standard Order in case no If catches the situation
                 //bool IsMinor = false;
 
@@ -1542,8 +1711,8 @@ namespace Supremacy.WCF
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
                 SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder)); // Sending of the order
-                SendCombatTargetOnes(CombatHelper.GenerateTargetPrimary(ownerAssets, blanketTargetOne));
-                SendCombatTargetTwos(CombatHelper.GenerateTargetSecondary(ownerAssets, blanketTargetTwo));
+                SendCombatTarget1(CombatHelper.GenerateTargetPrimary(ownerAssets, blanketTargetOne));
+                SendCombatTarget2(CombatHelper.GenerateTargetSecondary(ownerAssets, blanketTargetTwo));
             }
 
 
@@ -1562,11 +1731,22 @@ namespace Supremacy.WCF
                         if (engine.Ready)
                             engine.ResolveCombatRound();
                     }
+                    lock (engine.SyncLockTargetOnes)
+                    {
+                        if (engine.Ready)
+                            engine.ResolveCombatRound();
+                    }
+                    lock (engine.SyncLockTargetTwos)
+                    {
+                        if (engine.Ready)
+                            engine.ResolveCombatRound();
+                    }
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {
                     GameLog.Server.Combat.Error(e);
                 }
+
                 finally
                 {
                     GameContext.PopThreadContext();

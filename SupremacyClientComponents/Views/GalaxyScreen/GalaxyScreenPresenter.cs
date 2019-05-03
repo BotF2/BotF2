@@ -767,6 +767,14 @@ namespace Supremacy.Client.Views
             {
                 ClientCommands.EndTurn.Execute(null);
             }
+            //if (PlayerTarget1Service.AutoTurnTarget1)
+            //{
+            //    ClientCommands.EndTurnTarget1.Execute(null);
+            //}
+            //if (PlayerTarget2Service.AutoTurnTarget2)
+            //{
+            //    ClientCommands.EndTurn.Execute(null);
+            //}
         }
 
         private void OnLobbyUpdated(ClientDataEventArgs<ILobbyData> args)
