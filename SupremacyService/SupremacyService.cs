@@ -526,45 +526,6 @@ namespace Supremacy.WCF
                         },
                         null);
 
-                    //var doAiPlayersTarget1 = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
-                    //_aiAsyncResult = doAiPlayers.BeginInvoke(
-                    //    _game, autoTurnCivsTarget1,
-                    //    delegate (IAsyncResult result)
-                    //    {
-                    //        lock (_aiAsyncLock)
-                    //        {
-                    //            Interlocked.Exchange(ref _aiAsyncResult, null);
-                    //        }
-                    //        try
-                    //        {
-                    //            doAiPlayersTarget1.EndInvoke(result);
-                    //        }
-                    //        catch (Exception e) //ToDo: Just log or additional handling necessary?
-                    //        {
-                    //            GameLog.Server.General.Error(e);
-                    //        }
-                    //    },
-                    //    null);
-
-                    //var doAiPlayersTarget2 = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
-                    //_aiAsyncResult = doAiPlayers.BeginInvoke(
-                    //    _game, autoTurnCivsTarget2,
-                    //    delegate (IAsyncResult result)
-                    //    {
-                    //        lock (_aiAsyncLock)
-                    //        {
-                    //            Interlocked.Exchange(ref _aiAsyncResult, null);
-                    //        }
-                    //        try
-                    //        {
-                    //            doAiPlayersTarget2.EndInvoke(result);
-                    //        }
-                    //        catch (Exception e) //ToDo: Just log or additional handling necessary?
-                    //        {
-                    //            GameLog.Server.General.Error(e);
-                    //        }
-                    //    },
-                    //    null);
                 }
 
                 GameLog.Server.General.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
@@ -1321,64 +1282,7 @@ namespace Supremacy.WCF
 
             TryProcessTurn();
         }
-        //public void EndTurn(PlayerTarget1Message target1)
-        //{
-        //    EnsurePlayer();
-
-        //    var currentPlayer = CurrentPlayer;
-
-        //    _playerTarget1[currentPlayer] = target1;
-
-        //    lock (_playerInfo.SyncRoot)
-        //    {
-        //        foreach (var playerInfo in _playerInfo)
-        //        {
-        //            var callback = playerInfo.Callback;
-        //            if (callback == null)
-        //                continue;
-
-        //            var playerInfoCopy = playerInfo;
-
-        //            ((Action<int>)callback.NotifyPlayerFinishedTurn)
-        //                .ToAsync(_scheduler)(currentPlayer.EmpireID)
-        //                .Subscribe(
-        //                    _ => { },
-        //                    e => DropPlayer(playerInfoCopy.Player));
-        //        }
-        //    }
-
-        //    TryProcessTurn();
-        //}
-
-        //public void EndTurn(PlayerTarget2Message target2)
-        //{
-        //    EnsurePlayer();
-
-        //    var currentPlayer = CurrentPlayer;
-
-        //    _playerTarget2[currentPlayer] = target2;
-
-        //    lock (_playerInfo.SyncRoot)
-        //    {
-        //        foreach (var playerInfo in _playerInfo)
-        //        {
-        //            var callback = playerInfo.Callback;
-        //            if (callback == null)
-        //                continue;
-
-        //            var playerInfoCopy = playerInfo;
-
-        //            ((Action<int>)callback.NotifyPlayerFinishedTurn)
-        //                .ToAsync(_scheduler)(currentPlayer.EmpireID)
-        //                .Subscribe(
-        //                    _ => { },
-        //                    e => DropPlayer(playerInfoCopy.Player));
-        //        }
-        //    }
-
-        //    TryProcessTurn();
-        //}
-
+ 
         public void UpdateGameOptions(GameOptions options)
         {
             if (_isGameStarted)
@@ -1587,15 +1491,11 @@ namespace Supremacy.WCF
                     return;
                 }
 
-                Civilization borg = new Civilization("BORG");
-                //borg.Key = "BORG";
-                //borg.CivID = 6;
-                
-
                 var blanketOrder = CombatOrder.Engage;
-                var blanketTargetOne = borg;
-                var blanketTargetTwo = borg;
-                    // Standard Order in case no If catches the situation
+                var blanketTargetOne = CombatTargetOne.BORG;
+                var blanketTargetTwo = CombatTargetTwo.BORG;
+
+                // Standard Order in case no If catches the situation
                 //bool IsMinor = false;
 
                 //switch (update.Owner.Key) // Set standard Order for each Empire
@@ -1710,8 +1610,8 @@ namespace Supremacy.WCF
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
                 SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder)); // Sending of the order
-                //SendCombatTarget1(CombatHelper.GenerateTargetPrimary(ownerAssets, blanketTargetOne));
-                //SendCombatTarget2(CombatHelper.GenerateTargetSecondary(ownerAssets, blanketTargetTwo));
+                SendCombatTarget1(CombatHelper.GenerateBlanketTargetPrimary(ownerAssets, blanketTargetOne));
+                SendCombatTarget2(CombatHelper.GenerateBlanketTargetSecondary(ownerAssets, blanketTargetTwo));
             }
 
 

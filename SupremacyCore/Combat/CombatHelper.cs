@@ -259,15 +259,46 @@ namespace Supremacy.Combat
             return orders;
         }
 
+        public static CombatTargetPrimaries GenerateBlanketTargetPrimary(CombatAssets assets, CombatTargetOne target)
+        {
+            bool _generateBlanketOrdersTracing = true;
+            var owner = assets.Owner;
+            var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
+
+            foreach (var ship in assets.CombatShips)  // CombatShips
+            {
+                targetOne.SetTargetOne(ship.Source, target);
+
+                //if (_generateBlanketOrdersTracing == true && target != CombatTargetOne.BORG) // reduces lines especially on starting (all ships starting with Hail)
+                //{
+                //    GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is targeted to {3}, primary target civ ={4}, secondary target civ ={5}",
+                //        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, target);
+                //}
+            }
+
+            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            {
+                targetOne.SetTargetOne(ship.Source, (target));
+
+            }
+
+            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
+            {
+                targetOne.SetTargetOne(assets.Station.Source, (target));
+                if (_generateBlanketOrdersTracing == true)
+                {
+                    //GameLog.Core.Combat.DebugFormat("{0} is ordered to {1}", assets.Station.Source, target);
+                }
+            }
+
+            return targetOne;
+        }
         public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, Civilization target)
         {
-
             //bool _generateTargetPrimariesTracing = true; 
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
-            //Civilization borg = new Civilization("BORG");
-            //Civilization cards = new Civilization("CARDASSIANS");
-            //Civilization terrans = new Civilization("TERRANEMPIRE");
+
 
             if (target == null)
             {
@@ -278,17 +309,13 @@ namespace Supremacy.Combat
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
 
-
-                //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Combat Ship {0} with target = {1}", ship.Name, ship.Owner, target.Name.ToString());
-                //targetOne.SetTargetOne(ship.Source, (target == cards) ? cards : target);
-                targetOne.SetTargetOne(ship.Source, target);
-                GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
-                //, target.Name.ToString()
+                targetOne.SetTargetOneCiv(ship.Source, target);
+                GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);      
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                targetOne.SetTargetOne(ship.Source, target);
+                targetOne.SetTargetOneCiv(ship.Source, target);
 
                 GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
                 //targetOne.SetTargetOne(ship.Source, (target == cards) ? cards : target);
@@ -297,7 +324,7 @@ namespace Supremacy.Combat
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                targetOne.SetTargetOne(assets.Station.Source, target);
+                targetOne.SetTargetOneCiv(assets.Station.Source, target);
                 GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
 
@@ -305,7 +332,40 @@ namespace Supremacy.Combat
             //    targetOne.Owner, owner, target);
             return targetOne;
         }
+        public static CombatTargetSecondaries GenerateBlanketTargetSecondary(CombatAssets assets, CombatTargetTwo target)
+        {
+            bool _generateBlanketOrdersTracing = true;
+            var owner = assets.Owner;
+            var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
 
+            foreach (var ship in assets.CombatShips)  // CombatShips
+            {
+                targetTwo.SetTargetTwo(ship.Source, target);
+
+                //if (_generateBlanketOrdersTracing == true) // reduces lines especially on starting (all ships starting with Hail)
+                //{
+                //    GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is targeted to {3}, secondary target civ ={4}, secondary target civ ={5}",
+                //        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, target);
+                //}
+            }
+
+            foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            {
+                targetTwo.SetTargetTwo(ship.Source, (target));
+
+            }
+
+            if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
+            {
+                targetTwo.SetTargetTwo(assets.Station.Source, (target));
+                if (_generateBlanketOrdersTracing == true)
+                {
+                    //GameLog.Core.Combat.DebugFormat("{0} is ordered to {1}", assets.Station.Source, target);
+                }
+            }
+
+            return targetTwo;
+        }
         public static CombatTargetSecondaries GenerateTargetSecondary(CombatAssets assets, Civilization target)
         {
             // bool _generateTargetSecondaryTracing = true;
@@ -314,19 +374,19 @@ namespace Supremacy.Combat
             var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
-                targetTwo.SetTargetTwo(ship.Source, target);
+                targetTwo.SetTargetTwoCiv(ship.Source, target);
                 //targetTwo.Distinct().ToList();
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                targetTwo.SetTargetTwo(ship.Source, target);
+                targetTwo.SetTargetTwoCiv(ship.Source, target);
                 //targetTwo.Distinct().ToList();
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                targetTwo.SetTargetTwo(assets.Station.Source, target);
+                targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
                 //targetTwo.Distinct().ToList();
             }
             return targetTwo;

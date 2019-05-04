@@ -18,13 +18,18 @@ using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
+    public enum CombatTargetOne : byte
+    {
+        BORG
+    }
 
     [Serializable]
-    public class  CombatTargetPrimaries // : IEnumerable<Civilization>
+    public class  CombatTargetPrimaries : IEnumerable<CombatTargetOne>
     {
         private readonly int _combatId; // will we use this? think so
         private readonly int _ownerId; // will we use this?
         private readonly Dictionary<int, Civilization> _targetPrimaries;
+        private readonly Dictionary<int, CombatTargetOne> _targetCombatOne;
     
         public int CombatID
         {
@@ -48,21 +53,31 @@ namespace Supremacy.Combat
             }
             _ownerId = owner.CivID;
             _targetPrimaries = new Dictionary<int, Civilization>();
+            _targetCombatOne = new Dictionary<int, CombatTargetOne>();
             _combatId = combatId;
 
             GameLog.Core.Test.DebugFormat("CombatTargetPrimaries owner = {0}, _combatID = {1}", owner, _combatId);
 
         }
-        public void SetTargetOne(Orbital source, Civilization targetOne)
-        {
 
+        public void SetTargetOne(Orbital source, CombatTargetOne targetOne)
+        {
+            
             if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
-            _targetPrimaries[source.ObjectID] = targetOne;
+            _targetCombatOne[source.ObjectID] = targetOne;
 
            // GameLog.Core.Test.DebugFormat("source short name ={0}, CombatTargetOne = {1}", source, targetOne);
+        }
+
+        public void SetTargetOneCiv(Orbital source, Civilization targetOne)
+        {
+            var Civ = new Civilization(targetOne.ToString());
+            if (source == null)
+                throw new ArgumentNullException("source");
+            _targetPrimaries[source.ObjectID] = Civ;
         }
 
         public void ClearTargetOne(Orbital source)
@@ -104,14 +119,15 @@ namespace Supremacy.Combat
 
         }
 
-        //public IEnumerator<Civilization> GetEnumerator()
-        //{
-        //    return _targetPrimaries.Values.GetEnumerator();
-        //}
+        public IEnumerator<CombatTargetOne> GetEnumerator()
+        {
+            return _targetCombatOne.Values.GetEnumerator();
+        }
 
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return GetEnumerator();
-        //}
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
     }
 }
