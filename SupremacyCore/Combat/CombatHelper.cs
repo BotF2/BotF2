@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace Supremacy.Combat
 {
-    public static class CombatHelper 
+    public static class CombatHelper
     {
         /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
@@ -49,8 +49,8 @@ namespace Supremacy.Combat
         }
 
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
-        {          
-            var assets = new Dictionary<Civilization, CombatAssets>();        
+        {
+            var assets = new Dictionary<Civilization, CombatAssets>();
             var results = new List<CombatAssets>();
             var units = new Dictionary<Civilization, CombatUnit>();
             var sector = GameContext.Current.Universe.Map[location];
@@ -58,18 +58,18 @@ namespace Supremacy.Combat
             TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
             var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
             var oppositionFleets = ExposedAssets.OppositionFleets;
-           
+
             if ((oppositionFleets.Count == 0) && (sector.Station == null))
             {
                 return results;
             }
 
             else
-            {             
-               var _ships = from p in engagingFleets.SelectMany(l => l.Ships) select p;
-             
-               var Ships = _ships.Distinct().ToList();
-               
+            {
+                var _ships = from p in engagingFleets.SelectMany(l => l.Ships) select p;
+
+                var Ships = _ships.Distinct().ToList();
+
                 foreach (var ship in Ships)
                 {
                     CombatUnit unit = new CombatUnit(ship);
@@ -88,26 +88,26 @@ namespace Supremacy.Combat
                     {
                         assets[ship.Owner] = new CombatAssets(ship.Owner, location);
                     }
-                    if (ship.IsCombatant) 
+                    if (ship.IsCombatant)
                     {
                         assets[ship.Owner].CombatShips.Add(new CombatUnit(ship));
-                        
-                        if (ship.IsCamouflaged) 
+
+                        if (ship.IsCamouflaged)
                         {
                             unit.Decamouflage();
                             ship.IsCamouflaged = false; // do we need an updater here to unit.Decamouflage() reset ship.IsCamouflaged? - so far it does not appear to do this in the GameLog below.
 
-                            GameContext.Current.CivilizationManagers[ship.Owner].SitRepEntries.Add(new DeCamouflagedSitRepEntry(ship, maxOppostionScanStrength)); 
+                            GameContext.Current.CivilizationManagers[ship.Owner].SitRepEntries.Add(new DeCamouflagedSitRepEntry(ship, maxOppostionScanStrength));
                             GameLog.Core.Combat.DebugFormat("CombatShip Decamouflage - max scan ={0}, unit Camouflage = {1} for {2} {3} {4} at {5} Is Camouflaged? {6}",
-                                maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString(), ship.IsCamouflaged.ToString());                         
+                                maxOppostionScanStrength, unit.CamouflagedStrength, unit.Source.ObjectID, unit.Source.Name, unit.Source.Design, location.ToString(), ship.IsCamouflaged.ToString());
                         }
 
                     }
                     else
                     {
                         assets[ship.Owner].NonCombatShips.Add(new CombatUnit(ship));
-                       
-                        if (ship.IsCamouflaged) 
+
+                        if (ship.IsCamouflaged)
                         {
                             unit.Decamouflage();
                             ship.IsCamouflaged = false;
@@ -131,7 +131,7 @@ namespace Supremacy.Combat
 
                 assets[owner].Station = new CombatUnit(sector.Station);
             }
-                         
+
             results.AddRange(assets.Values);
 
             return results;
@@ -159,7 +159,7 @@ namespace Supremacy.Combat
             {
                 return false;
             }
-                // do not call GetTargetOne or Two here!, use in ChoseTarget
+            // do not call GetTargetOne or Two here!, use in ChoseTarget
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
@@ -168,15 +168,15 @@ namespace Supremacy.Combat
             }
 
             switch (diplomacyData.Status) // see WillFightAlongside below
-                {
-                    //case ForeignPowerStatus.Peace:
-                    //case ForeignPowerStatus.Friendly:
-                    //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+            {
+                //case ForeignPowerStatus.Peace:
+                //case ForeignPowerStatus.Friendly:
+                //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
                     return false;
-                }
+            }
             return true;
         }
 
@@ -227,7 +227,7 @@ namespace Supremacy.Combat
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
                 orders.SetOrder(ship.Source, order);
-                
+
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
                     GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
@@ -260,8 +260,8 @@ namespace Supremacy.Combat
         }
 
         public static CombatTargetPrimaries GenerateTargetPrimary(CombatAssets assets, Civilization target)
-        {  
-    
+        {
+
             //bool _generateTargetPrimariesTracing = true; 
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
@@ -269,21 +269,28 @@ namespace Supremacy.Combat
             //Civilization cards = new Civilization("CARDASSIANS");
             //Civilization terrans = new Civilization("TERRANEMPIRE");
 
+            if (target == null)
+            {
+                GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: target == null #######");
+                return targetOne;
+            }
+
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
-                targetOne.SetTargetOne(ship.Source, target);
-               
+
+
                 //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Combat Ship {0} with target = {1}", ship.Name, ship.Owner, target.Name.ToString());
                 //targetOne.SetTargetOne(ship.Source, (target == cards) ? cards : target);
-                //targetOne.SetTargetOne(ship.Source, (target == terrans) ? terrans : target);
-               // GameLog.Core.Test.DebugFormat("Force Primary to Terran: Combat Ship {0} with target = {1}", ship.Name, ship.Owner);
+                targetOne.SetTargetOne(ship.Source, target);
+                GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
+                //, target.Name.ToString()
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
                 targetOne.SetTargetOne(ship.Source, target);
-              
-                //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Non Combat Ship {0} with target = {1}", ship, target.Name.ToString());
+
+                GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
                 //targetOne.SetTargetOne(ship.Source, (target == cards) ? cards : target);
                 //targetOne.SetTargetOne(ship.Source, (target == terrans) ? terrans : target);
             }
@@ -291,6 +298,7 @@ namespace Supremacy.Combat
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
                 targetOne.SetTargetOne(assets.Station.Source, target);
+                GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
 
             //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary targets Onwer = {0}, (shooting)Assets.Owner ={1}, target civ = {2}",
@@ -300,7 +308,7 @@ namespace Supremacy.Combat
 
         public static CombatTargetSecondaries GenerateTargetSecondary(CombatAssets assets, Civilization target)
         {
-           // bool _generateTargetSecondaryTracing = true;
+            // bool _generateTargetSecondaryTracing = true;
             var owner = assets.Owner;
 
             var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);

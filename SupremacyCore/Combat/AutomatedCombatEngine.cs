@@ -29,31 +29,44 @@ namespace Supremacy.Combat
         private object firstOwner;
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
-        private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
-        private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
-   
-        public List<Tuple<CombatUnit, CombatWeapon[]>> FriendlyCombatShips
+        private List<Tuple<CombatUnit, CombatWeapon[]>> _ownerShips;  // own ships
+        private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyShips;  // fight along side
+        private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionsShips;
+
+        public List<Tuple<CombatUnit, CombatWeapon[]>> OwnerShips
         {
             get
             {
-                return this._friendlyCombatShips;
+                return this._ownerShips;
             }
             set
             {
-                this._friendlyCombatShips = value;
+                this._ownerShips = value;
             }
         }
-        public List<Tuple<CombatUnit, CombatWeapon[]>>  OppositionCombatShips
+        public List<Tuple<CombatUnit, CombatWeapon[]>> FriendlyShips
         {
             get
             {
-                return this._oppositionCombatShips;
+                return this._friendlyShips;
             }
             set
             {
-                this._oppositionCombatShips = value;
+                this._friendlyShips = value;
             }
         }
+        public List<Tuple<CombatUnit, CombatWeapon[]>> OppositionShips
+        {
+            get
+            {
+                return this._oppositionsShips;
+            }
+            set
+            {
+                this._oppositionsShips = value;
+            }
+        }
+
 
         //private readonly SendCombatUpdateCallback _updateCallback;
         public AutomatedCombatEngine(
@@ -80,6 +93,17 @@ namespace Supremacy.Combat
             newCycleReduction = 1;
 
             int maxScanStrengthOpposition = 0;
+
+
+            GameLog.Core.Test.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
+            foreach (var ship in _combatShips)
+            {
+                GameLog.Core.Test.DebugFormat("_combatShip: {0} {1} ({2})",
+                    ship.Item1.Source.ObjectID, ship.Item1.Name, ship.Item1.Source.Design);
+
+            }
+
+            
 
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
@@ -116,88 +140,124 @@ namespace Supremacy.Combat
                     }
                 }
             }
+
+
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _combatShipsTemp.Clear();
 
-            OppositionCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            OppositionCombatShips.Clear();
+            OwnerShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            OwnerShips.Clear();
 
-            FriendlyCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            FriendlyCombatShips.Clear();
+            OppositionShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            OppositionShips.Clear();
+
+            FriendlyShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            FriendlyShips.Clear();
 
             var firstUnit = _combatShips.FirstOrDefault();
 
-            // get opposition ships from targteting
 
-            foreach (var otherunit in _combatShips)
-            {
-                if (GetTargetOne(firstUnit.Item1.Source) == otherunit.Item1.Owner || GetTargetTwo(firstUnit.Item1.Source) == otherunit.Item1.Owner && firstUnit != otherunit)
-                    OppositionCombatShips.Add(otherunit);
-                GameLog.Core.Test.DebugFormat("First Unit {0} {1}, Targeting {2}", firstUnit.Item1.Source, firstUnit.Item1.Source.Owner, GetTargetOne(firstUnit.Item1.Source));   //[source.OwnerID].GetOrder(source););
-            }
 
-            OppositionCombatShips.Distinct();
 
             // get friendly ships from diplomacy - fight along side through CombatHelper
-            foreach (var currentUnit  in _combatShips)
+            foreach (var currentAsset in _combatShips)
             {
-              
-                //OppositionCombatShips.Distinct();
-                //if (CombatHelper.WillEngage(currentUnit.Item1.Owner, firstUnit.Item1.Owner))
+                //if (CombatHelper.WillEngage(currentAsset.Item1.Owner, firstUnit.Item1.Owner))
                 //{
-                //    OppositionCombatShips.Add(currentUnit);
-                //    OppositionCombatShips.Randomize();
+                //    OppositionShips.Add(currentAsset);
+                //    OppositionShips.Randomize();
                 //}
                 //else
-               // GameLog.Core.Test.DebugFormat("Current Asset {0} {1}, Targeting {2}", currentUnit.Item1.Source, currentUnit.Item1.Source.Owner, GetTargetOne(currentUnit.Item1.Source));   //[source.OwnerID].GetOrder(source););
+                //GameLog.Core.CombatDetails.DebugFormat("Current Asset {0} {1}, Targeting {2}", currentAsset.Item1.Source, currentAsset.Item1.Source.Owner, GetTargetOne(currentAsset.Item1.Source));   //[source.OwnerID].GetOrder(source););
 
-                if (currentUnit.Item1.Owner != firstUnit.Item1.Owner)
-                    GameLog.Core.Test.DebugFormat("checking WillFightAlongside: currentUnit.Item1.Owner = {0}, firstUnit.Item1.Owner {1}",
-                        currentUnit.Item1.Owner, firstUnit.Item1.Owner);
+                //if (currentAsset.Item1.Owner != firstUnit.Item1.Owner)
+                //{
+                //    //GameLog.Core.Test.DebugFormat("checking WillFightAlongside: currentAsset.Item1.Owner = {0}, firstUnit.Item1.Owner {1}",
+                //    GameLog.Core.Test.DebugFormat("Next: checking WillFightAlongside: {0} <> {1}",
+                //        currentAsset.Item1.Owner, firstUnit.Item1.Owner);
+                //}
 
-                if (CombatHelper.WillFightAlongside(currentUnit.Item1.Owner, firstUnit.Item1.Owner))
+                if (CombatHelper.WillFightAlongside(currentAsset.Item1.Owner, firstUnit.Item1.Owner))
                 {
-                    FriendlyCombatShips.Add(currentUnit);
+                    FriendlyShips.Add(currentAsset);
 
-                    GameLog.Core.Test.DebugFormat("adding to FRIENDLY_CombatShips = {0} D={1} {2}",
-                                        currentUnit.Item1.Source.ObjectID, currentUnit.Item1.Source.Design, currentUnit.Item1.Source);
+                    GameLog.Core.Test.DebugFormat("added to FRIENDLY_CombatShips = {0} D={1} {2}",
+                                        currentAsset.Item1.Source.ObjectID, currentAsset.Item1.Source.Design, currentAsset.Item1.Source);
 
-                    //FriendlyCombatShips.Randomize();   // see below
-                    var ship = FriendlyCombatShips.FirstOrDefault();
-                   //GameLog.Core.Test.DebugFormat("first friendly {0} Name {1} target one {2}", ship.Item1.Owner, ship.Item1.Name, GetTargetOne(currentUnit.Item1.Owner).ToString());
+                    //FriendlyShips.Randomize();   // see below
+                    //var ship = FriendlyShips.FirstOrDefault();
+                    //GameLog.Core.Test.DebugFormat("first friendly {0} Name {1} target one {2}", ship.Item1.Owner, ship.Item1.Name, GetTargetOne(currentAsset.Item1.Owner).ToString());
                 }
-       
-                GameLog.Core.Test.DebugFormat("-------------------------------------------------------------------");
-                //, ... GetTargetOne = not working at the moment
-                var countFriends = FriendlyCombatShips.Count();
+                else if (CombatHelper.WillEngage(currentAsset.Item1.Owner, firstUnit.Item1.Owner))
+                {
+                    OppositionShips.Add(currentAsset);
+                    GameLog.Core.Test.DebugFormat("added to OppositionShips = {0} D={1} {2}",
+                    currentAsset.Item1.Source.ObjectID, currentAsset.Item1.Source.Design, currentAsset.Item1.Source);
+                    
+                }
+                else
+                {
+                    OwnerShips.Add(currentAsset);
+                    GameLog.Core.Test.DebugFormat("added to OwnerShips = {0} D={1} {2}",
+                        currentAsset.Item1.Source.ObjectID, currentAsset.Item1.Source.Design, currentAsset.Item1.Source);
+                }
 
-                GameLog.Core.Test.DebugFormat("currentUnit = {0} DesignID={1} {2}, *vs* firstUnit: {3} DesignID={4} {5} O= {6} Prime target {7} Second {8} # Friends {9}",
-                                        currentUnit.Item1.Source.ObjectID,
-                                        //currentUnit.Item1.Source.Design,     // just DesignId makes the lines shorter
-                                        currentUnit.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
-                                        currentUnit.Item1.Source.Name,
+
+                OppositionShips.Randomize();
+                // Check OppositionShips
+                //GameLog.Core.Test.DebugFormat("NEXT: output of all oppositions ships");
+                if (OppositionShips.Count() > 0)
+                {
+                    OppositionShips.Distinct(); // eliminate duplicate ships
+                    foreach (var oppShip in OppositionShips)
+                    {
+                        GameLog.Core.Test.DebugFormat("OppositionShips: {0} {1} {2}, TargetOne = {3}, TargetOne = {4}",
+                        oppShip.Item1.Owner, oppShip.Item1.Source.ObjectID, oppShip.Item1.Source.Name
+                            , GetTargetOne(oppShip.Item1.Source), GetTargetTwo(oppShip.Item1.Source));
+                    }
+                }
+
+
+                //GameLog.Core.Test.DebugFormat("-------------------------------------------------------------------");
+                //, ... GetTargetOne = not working at the moment
+                var countFriends = FriendlyShips.Count();
+
+                if (currentAsset.Item1.Owner != firstUnit.Item1.Owner)
+                    GameLog.Core.Test.DebugFormat("firstUnit: {3} DesignID={4} {5} O= {6} *vs* currentAsset = {0} DesignID={1} {2}: ",
+                                        //Targets: Prime={7}, Second={8}, # Friends {9} {10}, Count {11}
+                                        currentAsset.Item1.Source.ObjectID,
+                                        //currentAsset.Item1.Source.Design,     // just DesignId makes the lines shorter
+                                        currentAsset.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
+                                        currentAsset.Item1.Source.Name,
 
                                         firstUnit.Item1.Source.ObjectID,
                                         //firstUnit.Item1.Source.Design,     // just DesignId makes the lines shorter
                                         firstUnit.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
                                         firstUnit.Item1.Source.Name,
-                                        firstUnit.Item1.Source.Owner,
-                                        GetTargetOne(currentUnit.Item1.Source).ToString(),
-                                        GetTargetTwo(currentUnit.Item1.Source).ToString(),
-                                        GetTargetOne(firstUnit.Item1.Source).ToString(),
-                                        GetTargetTwo(firstUnit.Item1.Source).ToString(),
-                                        countFriends
+                                        firstUnit.Item1.Source.Owner
+                                        //,
+                                        //GetTargetOne(currentAsset.Item1.Source).ToString(),
+                                        //GetTargetTwo(currentAsset.Item1.Source).ToString(),
+                                        //GetTargetOne(firstUnit.Item1.Source).ToString(),
+                                        //GetTargetTwo(firstUnit.Item1.Source).ToString(),
+                                        //countFriends
                                         );
             }
 
-            FriendlyCombatShips.Randomize();
+            GameLog.Core.Test.DebugFormat("OwnerShips.Count() = {0}", OwnerShips.Count());
+            GameLog.Core.Test.DebugFormat("FriendlyShips.Count() = {0}", FriendlyShips.Count());
+            GameLog.Core.Test.DebugFormat("OppositionShips.Count() = {0}", OppositionShips.Count());
+
+            OwnerShips.Randomize();
+            FriendlyShips.Randomize();
+            OppositionShips.Randomize();
 
 
             double ratioATemp = 0.00; // used to transform ship.Count to double decimals
             double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
 
             // Prevent division by 0, if one side has been wiped out / or retreated.
-            if (OppositionCombatShips.ToList().Count == 0 || FriendlyCombatShips.Count == 0)
+            if (OppositionShips.ToList().Count == 0 || FriendlyShips.Count == 0)
             {
                 shipRatio = 1;
                 excessShipsStartingAt = 0;
@@ -205,26 +265,26 @@ namespace Supremacy.Combat
             }
             else
             {
-                if (FriendlyCombatShips.ToList().Count - OppositionCombatShips.ToList().Count > 0)
+                if (FriendlyShips.ToList().Count - OppositionShips.ToList().Count > 0)
                 {
-                    excessShipsStartingAt = OppositionCombatShips.ToList().Count * 2;
+                    excessShipsStartingAt = OppositionShips.ToList().Count * 2;
 
-                    ratioATemp = FriendlyCombatShips.Count();
-                    ratioBTemp = OppositionCombatShips.Count();
+                    ratioATemp = FriendlyShips.Count();
+                    ratioBTemp = OppositionShips.Count();
                     shipRatio = ratioATemp / ratioBTemp;
                     weakerSide = 1;
                 }
 
                 else
                 {
-                    excessShipsStartingAt = FriendlyCombatShips.Count * 2;
-                    ratioATemp = FriendlyCombatShips.Count();
-                    ratioBTemp = OppositionCombatShips.Count();
+                    excessShipsStartingAt = FriendlyShips.Count * 2;
+                    ratioATemp = FriendlyShips.Count();
+                    ratioBTemp = OppositionShips.Count();
                     shipRatio = ratioBTemp / ratioATemp;
                     weakerSide = 2;
                 }
             }
-            if (FriendlyCombatShips.Count() == OppositionCombatShips.Count())
+            if (FriendlyShips.Count() == OppositionShips.Count())
                 weakerSide = 0;
             if (shipRatio > 1.0)
             {
@@ -247,27 +307,27 @@ namespace Supremacy.Combat
             {
                 newCycleReduction = 0.05;
             }
-            if (FriendlyCombatShips.Count() < 4 || OppositionCombatShips.Count() < 4) // small fleets attack each other at full power
+            if (FriendlyShips.Count() < 4 || OppositionShips.Count() < 4) // small fleets attack each other at full power
             {
                 newCycleReduction = 1;
             }
-            GameLog.Core.CombatDetails.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}", 
+            GameLog.Core.CombatDetails.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}",
                 newCycleReduction,
                 excessShipsStartingAt,
                 ratioATemp,
-                ratioBTemp, 
+                ratioBTemp,
                 shipRatio,
                 weakerSide);
 
-            OppositionCombatShips.Randomize();
-            FriendlyCombatShips.Randomize();
+            OppositionShips.Randomize();
+            FriendlyShips.Randomize();
             for (int i = 0; i < _combatShips.Count; i++) // sorting combat Ships to have one ship of each side alternating
             {
-                if (i <= FriendlyCombatShips.Count - 1)
-                    _combatShipsTemp.Add(FriendlyCombatShips[i]);// First Ship in _ is Friendly (initialization)
+                if (i <= FriendlyShips.Count - 1)
+                    _combatShipsTemp.Add(FriendlyShips[i]);// First Ship in _ is Friendly (initialization)
 
-                if (i <= OppositionCombatShips.ToList().Count - 1)                    
-                    _combatShipsTemp.Add(OppositionCombatShips.ToList()[i]); // Second Ship in _combatShipsTemp is opposition (initialization)   
+                if (i <= OppositionShips.ToList().Count - 1)
+                    _combatShipsTemp.Add(OppositionShips.ToList()[i]); // Second Ship in _combatShipsTemp is opposition (initialization)   
             }
 
             _combatShips.Clear(); //  after ships where sorted into Temp, delete 
@@ -303,8 +363,8 @@ namespace Supremacy.Combat
                 //}
 
                 var oppositionShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
-               // var oppositionShips = _combatShips.Where(cs => (GetTargetOne(_combatShips[i].Item1.Owner).ToString() == cs.Item1.OwnerID.ToString()));
-                  //  .Where(s => );   
+                // var oppositionShips = _combatShips.Where(cs => (GetTargetOne(_combatShips[i].Item1.Owner).ToString() == cs.Item1.OwnerID.ToString()));
+                //  .Where(s => );   
                 var friendlyShips = _combatShips.Where(cs => !CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
 
                 if (i + 1 > excessShipsStartingAt && excessShipsStartingAt != 0) // added: if ships equal = 0 = excessShips, then no cycle reduction
@@ -406,7 +466,7 @@ namespace Supremacy.Combat
                             var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
                             //target.TakeDamage((target.Source.OrbitalDesign.HullStrength +1) * (maneuver/32)+1); // max possible hull damage of 25%
 
-                            GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}", 
+                            GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}",
                                 target.Source.ObjectID, target.Source.Name, target.Source.Design,
                                 target.Source.OrbitalDesign.HullStrength,
                                 (target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1,
@@ -514,7 +574,7 @@ namespace Supremacy.Combat
                                     }
                                 }
                                 GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}",
-                                    attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, 
+                                    attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design,
                                     target.Source.ObjectID, target.Name, target.Source.Design,
                                     amountOfWeapons);
                                 // all weapons fired for current ship i
@@ -559,7 +619,7 @@ namespace Supremacy.Combat
                                 }
 
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 GameLog.Core.Combat.DebugFormat("Exception e {0} ship {1} {2} {3}", e, _combatShips[i].Item1.Source.Design, _combatShips[i].Item1.Source.Name, _combatShips[i].Item1.Source.ObjectID);
                             }
@@ -643,7 +703,7 @@ namespace Supremacy.Combat
                         }
                         else
                             GameLog.Core.Combat.DebugFormat("Assets Null");
-                                
+
                     }
                     continue;
                 }
@@ -778,14 +838,14 @@ namespace Supremacy.Combat
         /// 
 
         private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
-        { 
+        {
             var sourceAccuracy = source.Source.GetAccuracyModifier(); // var? Or double?
             var maneuverability = target.Source.GetManeuverablility(); // byte
             if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
             {
                 GameLog.Core.CombatDetails.DebugFormat("sourceAccuracy {0} out of range, now reset to 0.5", sourceAccuracy);
                 sourceAccuracy = 0.5;
-            }    
+            }
             var targetDamageControl = target.Source.GetDamageControlModifier();
             if (targetDamageControl > 1 || targetDamageControl < 0.1)  // if getting damge control is odd, take standard until bug fixed
                 targetDamageControl = 0.5;
@@ -867,16 +927,16 @@ namespace Supremacy.Combat
                 sourceAccuracyTemp = 1.7;
 
             //GameLog.Core.CombatDetails.DebugFormat("various values: {0} {1} {2} at {3} ({4}), OTHERS: friendlyOwner = {6}, firstOwner = {6}",
-                //source.Source.ObjectID, source.Source.Name, source.Source.Design, target.Source.Sector.Name, target.Source.Sector.Location, friendlyOwner.ToString(), firstOwner.ToString());
+            //source.Source.ObjectID, source.Source.Name, source.Source.Design, target.Source.Sector.Name, target.Source.Sector.Location, friendlyOwner.ToString(), firstOwner.ToString());
 
             //GameLog.Core.CombatDetails.DebugFormat("various values: sourceAccuracy = {0}, sourceAccuracyTemp = {1}, maneuverability = {2}, currentManeuverability = {3}, ManeuverabilityModifer = {4}, targetDamageControl = {5}",
-                //sourceAccuracy,
-                //sourceAccuracyTemp,
-                //maneuverability,
-                //currentManeuverability,
-                //ManeuverabilityModifer,
-                //targetDamageControl
-                //);
+            //sourceAccuracy,
+            //sourceAccuracyTemp,
+            //maneuverability,
+            //currentManeuverability,
+            //ManeuverabilityModifer,
+            //targetDamageControl
+            //);
 
             if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
             {
