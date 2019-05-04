@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
-        private Dictionary<Civilization, Civilization> _willTarget;
+        //private Dictionary<Civilization, Civilization> _willTarget;
         private List<Object> _civList;
         private List<string> _civShortNameList;
         private List<string> _civFirePowerList;

@@ -54,46 +54,46 @@ namespace Supremacy.Client
  
         #region Properties
 
-        public List<Civilization> OtherCivs
-        {
-            get
-            {
-                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
-                return _otherCivs;
-            }
-            set
-            {
-                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
+        //public List<Civilization> OtherCivs
+        //{
+        //    get
+        //    {
+        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
+        //        return _otherCivs;
+        //    }
+        //    set
+        //    {
+        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
 
-                _otherCivs = value;
-            }
-        }
+        //        _otherCivs = value;
+        //    }
+        //}
 
-        public List<Civilization> FriendlyCivs // Do we really need this as a Property?
-        {
-            get
-            {
-                return _friendlyCivs;
-            }
-            set
-            {
-                _friendlyCivs = value;
-            }
-        }
+        //public List<Civilization> FriendlyCivs // Do we really need this as a Property?
+        //{
+        //    get
+        //    {
+        //        return _friendlyCivs;
+        //    }
+        //    set
+        //    {
+        //        _friendlyCivs = value;
+        //    }
+        //}
 
-        public List<Civilization> OtherNameAndFirePower
-        {
-            get
-            {
-                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
-                return _otherNameAndFirePower;
-            }
-            set
-            {
-                //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
-                _otherNameAndFirePower = value;
-            }
-        }
+        //public List<Civilization> OtherNameAndFirePower
+        //{
+        //    get
+        //    {
+        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
+        //        return _otherNameAndFirePower;
+        //    }
+        //    set
+        //    {
+        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
+        //        _otherNameAndFirePower = value;
+        //    }
+        //}
 
         #endregion
           
@@ -119,6 +119,7 @@ namespace Supremacy.Client
             HostileEscapedItems.ItemTemplate = itemTemplate;
 
             DataTemplate civFriendTemplate = TryFindResource("FriendTreeTemplate") as DataTemplate;
+
             // friend civilizations summary
             FriendCivilizationsItems.ItemTemplate = civFriendTemplate;
 

@@ -267,7 +267,7 @@ namespace Supremacy.Combat
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
             //Civilization borg = new Civilization("BORG");
             //Civilization cards = new Civilization("CARDASSIANS");
-            Civilization terrans = new Civilization("TERRANEMPIRE");
+            //Civilization terrans = new Civilization("TERRANEMPIRE");
 
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
@@ -275,8 +275,8 @@ namespace Supremacy.Combat
                
                 //GameLog.Core.Test.DebugFormat("GenerateTargetPrimary: Combat Ship {0} with target = {1}", ship.Name, ship.Owner, target.Name.ToString());
                 //targetOne.SetTargetOne(ship.Source, (target == cards) ? cards : target);
-                targetOne.SetTargetOne(ship.Source, (target == terrans) ? terrans : target);
-                GameLog.Core.Test.DebugFormat("Force Primary to Terran: Combat Ship {0} with target = {1}", ship.Name, ship.Owner, target.Name.ToString());
+                //targetOne.SetTargetOne(ship.Source, (target == terrans) ? terrans : target);
+               // GameLog.Core.Test.DebugFormat("Force Primary to Terran: Combat Ship {0} with target = {1}", ship.Name, ship.Owner);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)

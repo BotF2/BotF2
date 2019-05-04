@@ -42,8 +42,8 @@ namespace Supremacy.Combat
         private readonly int _combatId;
         protected int _roundNumber;
         private bool _runningOrders;
-        private bool _runningTargetOne;
-        private bool _runningTargetTwo;
+        //private bool _runningTargetOne;
+        //private bool _runningTargetTwo;
         private bool _allSidesStandDown;
         private bool _ready;
         protected readonly List<CombatAssets> _assets;
@@ -133,45 +133,45 @@ namespace Supremacy.Combat
             }
         }
 
-        protected bool RunningTargetOne
-        {
-            get
-            {
-                lock (SyncLockOrders)
-                {
-                    return _runningTargetOne;
-                }
-            }
-            private set
-            {
-                lock (SyncLockOrders)
-                {
-                    _runningTargetOne = value;
-                    if (_runningTargetOne)
-                        _ready = false;
-                }
-            }
-        }
+        //protected bool RunningTargetOne
+        //{
+        //    get
+        //    {
+        //        lock (SyncLockOrders)
+        //        {
+        //            return _runningTargetOne;
+        //        }
+        //    }
+        //    private set
+        //    {
+        //        lock (SyncLockOrders)
+        //        {
+        //            _runningTargetOne = value;
+        //            if (_runningTargetOne)
+        //                _ready = false;
+        //        }
+        //    }
+        //}
 
-        protected bool RunningTargetTwo
-        {
-            get
-            {
-                lock (SyncLockOrders)
-                {
-                    return _runningTargetTwo;
-                }
-            }
-            private set
-            {
-                lock (SyncLockOrders)
-                {
-                    _runningTargetTwo = value;
-                    if (_runningTargetTwo)
-                        _ready = false;
-                }
-            }
-        }
+        //protected bool RunningTargetTwo
+        //{
+        //    get
+        //    {
+        //        lock (SyncLockOrders)
+        //        {
+        //            return _runningTargetTwo;
+        //        }
+        //    }
+        //    private set
+        //    {
+        //        lock (SyncLockOrders)
+        //        {
+        //            _runningTargetTwo = value;
+        //            if (_runningTargetTwo)
+        //                _ready = false;
+        //        }
+        //    }
+        //}
 
         public bool IsCombatOver
         {
@@ -218,8 +218,8 @@ namespace Supremacy.Combat
             }
 
             _runningOrders = false;
-            _runningTargetOne = false;
-            _runningTargetTwo = false;
+            //_runningTargetOne = false;
+            //_runningTargetTwo = false;
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
             _roundNumber = 1;
@@ -230,18 +230,39 @@ namespace Supremacy.Combat
             _targetOneByCiv = new Dictionary<int, CombatTargetPrimaries>();
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
             SyncLockOrders = _orders;
-            SyncLockTargetOnes = _targetOneByCiv;
-            SyncLockTargetTwos = _targetTwoByCiv;
+            //SyncLockTargetOnes = _targetOneByCiv;
+            //SyncLockTargetTwos = _targetTwoByCiv;
 
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            var firstUnit = _combatShips.FirstOrDefault();
 
+            // get opposition ships from targteting
+            //var borg = new Civilization("BORG");
+            //var fed = new Civilization("FEDERATION");
+            //var borgTargetOne = new CombatTargetPrimaries(fed, CombatID);
+           // var borgish = CombatTargetPrimaries("BORG");
+            //foreach (var otherunit in _combatShips)
+            //{
+            //    _targetOneByCiv.Add((GetTargetOne(firstUnit.Item1.Source).CivID), borgTargetOne); //otherunit.Item1.Owner; // || GetTargetTwo(firstUnit.Item1.Source) == otherunit.Item1.Owner && firstUnit != otherunit)
+            //       //
+            //    GameLog.Core.Test.DebugFormat("First Unit {0} {1}, Targeting {2}", firstUnit.Item1.Source, firstUnit.Item1.Source.Owner, GetTargetOne(firstUnit.Item1.Source));   //[source.OwnerID].GetOrder(source););
+            //}
+   
+            //CombatTargetPrimaries borgish = new CombatTargetPrimaries(fed, CombatID);
+            //
+            
             foreach (CombatAssets civAssets in _assets.ToList())
             {
+                //_targetOneByCiv = _.Where(s =>)
+                //borgish.SetTargetOne(civAssets., borg);
+                //_targetOneByCiv.Add(civAssets.OwnerID, borgTargetOne);
+                //GameLog.Core.Test.DebugFormat("borg target one {0}", borgTargetOne.Owner);
                 if (civAssets.Station != null)
                 {
                     _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
                         civAssets.Station,
                         CombatWeapon.CreateWeapons(civAssets.Station.Source));
+              
                                    
                 }
                 foreach (CombatUnit shipStats in civAssets.CombatShips)
@@ -292,8 +313,8 @@ namespace Supremacy.Combat
 
         public void SubmitTargetOnes(CombatTargetPrimaries targets)
         {
-            lock (SyncLockTargetOnes) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
-            {
+            //lock (SyncLockTargetOnes) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            //{
                 if (!_targetOneByCiv.ContainsKey(targets.OwnerID))
                 {
                     _targetOneByCiv[targets.OwnerID] = targets;
@@ -313,13 +334,13 @@ namespace Supremacy.Combat
                         _ready = true;
                     }
                 }
-            }
+            //}
         }
 
         public void SubmitTargetTwos(CombatTargetSecondaries targets)
         {
-            lock (SyncLockTargetTwos) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
-            {
+            //lock (SyncLockTargetTwos) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            //{
                 if (!_targetTwoByCiv.ContainsKey(targets.OwnerID))
                 {
                     _targetTwoByCiv[targets.OwnerID] = targets;
@@ -339,7 +360,7 @@ namespace Supremacy.Combat
                         _ready = true;
                     }
                 }
-            }
+            //}
         }
 
         public void ResolveCombatRound()
@@ -347,14 +368,14 @@ namespace Supremacy.Combat
             lock (_orders)
             {
                 RunningOrders = true;
-                lock (_targetOneByCiv)
-                {
-                    RunningTargetOne = true;
-                    lock (_targetTwoByCiv)
-                    {
-                        GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound");
+                //lock (_targetOneByCiv)
+                //{
+                //    RunningTargetOne = true;
+                //    lock (_targetTwoByCiv)
+                //    {
+                //        GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound");
 
-                        RunningTargetTwo = true;
+                //        RunningTargetTwo = true;
 
 
                         _assets.ForEach(a => a.CombatID = _combatId);
@@ -379,10 +400,10 @@ namespace Supremacy.Combat
                         {
                             _roundNumber++;
                         }
-                        _targetTwoByCiv.Clear();
-                    }
-                    _targetOneByCiv.Clear();
-                }
+                //        _targetTwoByCiv.Clear();
+                //    }
+                //    _targetOneByCiv.Clear();
+                //}
                 _orders.Clear();
             }
             SendUpdates();
@@ -391,8 +412,8 @@ namespace Supremacy.Combat
             RemoveDefeatedPlayers();
 
             RunningOrders = false;
-            RunningTargetOne = false;
-            RunningTargetTwo = false;
+            //RunningTargetOne = false;
+            //RunningTargetTwo = false;
 
             if (IsCombatOver)
             {

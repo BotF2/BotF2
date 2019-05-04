@@ -83,9 +83,11 @@ namespace Supremacy.Combat
                 return false;
             return _targetPrimaries.ContainsKey(source.ObjectID);
         }
-
+         
+        
         public Civilization GetTargetOne(Orbital source)
         {
+            var borg = new Civilization("BORG");
 
             if (source == null)
             {
@@ -93,9 +95,10 @@ namespace Supremacy.Combat
             }
             if (!_targetPrimaries.ContainsKey(source.ObjectID))
             {
-                GameLog.Core.Test.DebugFormat("No target One in _targetPrimaries. source short name ={0}, source ={1} CombatTargetOne = {2}",
-                    source, source);
-                throw new ArgumentException("No target one has been set for the specified source");
+                return borg;
+                //GameLog.Core.Test.DebugFormat("No target One in _targetPrimaries. source short name ={0}, source ={1} CombatTargetOne = {2}",
+                   // source, source);
+               // throw new ArgumentException("No target one has been set for the specified source");
             }
              return _targetPrimaries[source.ObjectID];
 

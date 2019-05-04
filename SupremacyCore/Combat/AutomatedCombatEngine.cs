@@ -119,8 +119,8 @@ namespace Supremacy.Combat
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _combatShipsTemp.Clear();
 
-            //OppositionCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            //OppositionCombatShips.Clear();
+            OppositionCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            OppositionCombatShips.Clear();
 
             FriendlyCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             FriendlyCombatShips.Clear();
@@ -128,55 +128,62 @@ namespace Supremacy.Combat
             var firstUnit = _combatShips.FirstOrDefault();
 
             // get opposition ships from targteting
-            var OppositionCombatShips = _combatShips
-                .Where(s => GetTargetOne(s.Item1.Source) == firstUnit.Item1.Owner)
-                .Where(s => GetTargetTwo(s.Item1.Source) == firstUnit.Item1.Owner);
-            OppositionCombatShips.Distinct(); // eliminate duplicate ships
+
+            foreach (var otherunit in _combatShips)
+            {
+                if (GetTargetOne(firstUnit.Item1.Source) == otherunit.Item1.Owner || GetTargetTwo(firstUnit.Item1.Source) == otherunit.Item1.Owner && firstUnit != otherunit)
+                    OppositionCombatShips.Add(otherunit);
+                GameLog.Core.Test.DebugFormat("First Unit {0} {1}, Targeting {2}", firstUnit.Item1.Source, firstUnit.Item1.Source.Owner, GetTargetOne(firstUnit.Item1.Source));   //[source.OwnerID].GetOrder(source););
+            }
+
+            OppositionCombatShips.Distinct();
 
             // get friendly ships from diplomacy - fight along side through CombatHelper
-            foreach (var currentAsset in _combatShips)
+            foreach (var currentUnit  in _combatShips)
             {
-                //if (CombatHelper.WillEngage(currentAsset.Item1.Owner, firstUnit.Item1.Owner))
+              
+                //OppositionCombatShips.Distinct();
+                //if (CombatHelper.WillEngage(currentUnit.Item1.Owner, firstUnit.Item1.Owner))
                 //{
-                //    OppositionCombatShips.Add(currentAsset);
+                //    OppositionCombatShips.Add(currentUnit);
                 //    OppositionCombatShips.Randomize();
                 //}
                 //else
-                GameLog.Core.Test.DebugFormat("Current Asset {0} {1}, Targeting {2}", currentAsset.Item1.Source, currentAsset.Item1.Source.Owner, GetTargetOne(currentAsset.Item1.Source));   //[source.OwnerID].GetOrder(source););
+               // GameLog.Core.Test.DebugFormat("Current Asset {0} {1}, Targeting {2}", currentUnit.Item1.Source, currentUnit.Item1.Source.Owner, GetTargetOne(currentUnit.Item1.Source));   //[source.OwnerID].GetOrder(source););
 
-                if (currentAsset.Item1.Owner != firstUnit.Item1.Owner)
-                    GameLog.Core.Test.DebugFormat("checking WillFightAlongside: currentAsset.Item1.Owner = {0}, firstUnit.Item1.Owner {1}",
-                        currentAsset.Item1.Owner, firstUnit.Item1.Owner);
+                if (currentUnit.Item1.Owner != firstUnit.Item1.Owner)
+                    GameLog.Core.Test.DebugFormat("checking WillFightAlongside: currentUnit.Item1.Owner = {0}, firstUnit.Item1.Owner {1}",
+                        currentUnit.Item1.Owner, firstUnit.Item1.Owner);
 
-                if (CombatHelper.WillFightAlongside(currentAsset.Item1.Owner, firstUnit.Item1.Owner))
+                if (CombatHelper.WillFightAlongside(currentUnit.Item1.Owner, firstUnit.Item1.Owner))
                 {
-                    FriendlyCombatShips.Add(currentAsset);
+                    FriendlyCombatShips.Add(currentUnit);
 
                     GameLog.Core.Test.DebugFormat("adding to FRIENDLY_CombatShips = {0} D={1} {2}",
-                                        currentAsset.Item1.Source.ObjectID, currentAsset.Item1.Source.Design, currentAsset.Item1.Source);
+                                        currentUnit.Item1.Source.ObjectID, currentUnit.Item1.Source.Design, currentUnit.Item1.Source);
 
                     //FriendlyCombatShips.Randomize();   // see below
                     var ship = FriendlyCombatShips.FirstOrDefault();
-                   //GameLog.Core.Test.DebugFormat("first friendly {0} Name {1} target one {2}", ship.Item1.Owner, ship.Item1.Name, GetTargetOne(currentAsset.Item1.Owner).ToString());
+                   //GameLog.Core.Test.DebugFormat("first friendly {0} Name {1} target one {2}", ship.Item1.Owner, ship.Item1.Name, GetTargetOne(currentUnit.Item1.Owner).ToString());
                 }
        
                 GameLog.Core.Test.DebugFormat("-------------------------------------------------------------------");
                 //, ... GetTargetOne = not working at the moment
                 var countFriends = FriendlyCombatShips.Count();
 
-                GameLog.Core.Test.DebugFormat("currentAsset = {0} DesignID={1} {2}, *vs* firstUnit: {3} DesignID={4} {5} O= {6} Prime target {7} Second {8} # Friends {9}",
-                                        currentAsset.Item1.Source.ObjectID,
-                                        //currentAsset.Item1.Source.Design,     // just DesignId makes the lines shorter
-                                        currentAsset.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
-                                        currentAsset.Item1.Source.Name,
+                GameLog.Core.Test.DebugFormat("currentUnit = {0} DesignID={1} {2}, *vs* firstUnit: {3} DesignID={4} {5} O= {6} Prime target {7} Second {8} # Friends {9}",
+                                        currentUnit.Item1.Source.ObjectID,
+                                        //currentUnit.Item1.Source.Design,     // just DesignId makes the lines shorter
+                                        currentUnit.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
+                                        currentUnit.Item1.Source.Name,
 
                                         firstUnit.Item1.Source.ObjectID,
                                         //firstUnit.Item1.Source.Design,     // just DesignId makes the lines shorter
                                         firstUnit.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
                                         firstUnit.Item1.Source.Name,
                                         firstUnit.Item1.Source.Owner,
-                                        GetTargetOne(currentAsset.Item1.Source).ToString(),
-                                        GetTargetTwo(currentAsset.Item1.Source).ToString(),
+                                        GetTargetOne(currentUnit.Item1.Source).ToString(),
+                                        GetTargetTwo(currentUnit.Item1.Source).ToString(),
                                         GetTargetOne(firstUnit.Item1.Source).ToString(),
                                         GetTargetTwo(firstUnit.Item1.Source).ToString(),
                                         countFriends

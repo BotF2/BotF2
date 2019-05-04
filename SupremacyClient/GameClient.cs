@@ -269,9 +269,9 @@ namespace Supremacy.Client
         public GameClient(
             [NotNull] ILoggerFacade logger, 
             [NotNull] ISupremacyCallback clientCallback, 
-            [NotNull] IPlayerOrderService playerOrderService,
-            [NotNull] IPlayerTarget1Service playerTarget1Service,
-            [NotNull] IPlayerTarget2Service playerTarget2Service)
+            [NotNull] IPlayerOrderService playerOrderService)
+            //[NotNull] IPlayerTarget1Service playerTarget1Service,
+            //[NotNull] IPlayerTarget2Service playerTarget2Service)
         {
             if (logger == null)
                 throw new ArgumentNullException("logger");
@@ -279,10 +279,10 @@ namespace Supremacy.Client
                 throw new ArgumentNullException("clientCallback");
             if (playerOrderService == null)
                 throw new ArgumentNullException("playerOrderService");
-            if (playerTarget1Service == null)
-                throw new ArgumentNullException("playerTarget1Service");
-            if (playerTarget2Service == null)
-                throw new ArgumentNullException("playerTarget2Service");
+            //if (playerTarget1Service == null)
+            //    throw new ArgumentNullException("playerTarget1Service");
+            //if (playerTarget2Service == null)
+            //    throw new ArgumentNullException("playerTarget2Service");
 
             _clientLock = new object();
             _eventLock = new object();

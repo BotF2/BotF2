@@ -378,8 +378,8 @@ namespace Supremacy.Client
             _container.RegisterType<IGameClient, GameClient>(new TransientLifetimeManager());
             _container.RegisterType<IGameServer, GameServer>(new TransientLifetimeManager());
             _container.RegisterType<IPlayerOrderService, PlayerOrderService>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IPlayerTarget1Service, PlayerTarget1Service>(new ExternallyControlledLifetimeManager());
-            _container.RegisterType<IPlayerTarget2Service, PlayerTarget2Service>(new ExternallyControlledLifetimeManager());
+            //_container.RegisterType<IPlayerTarget1Service, PlayerTarget1Service>(new ExternallyControlledLifetimeManager());
+            //_container.RegisterType<IPlayerTarget2Service, PlayerTarget2Service>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IGameController, GameController>(new TransientLifetimeManager());
             //_container.RegisterInstance<IScriptService>(new ScriptService());*/
 
