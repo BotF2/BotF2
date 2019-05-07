@@ -30,7 +30,8 @@ namespace Supremacy.Combat
         private readonly int _ownerId; // will we use this?
         private readonly Dictionary<int, Civilization> _targetPrimaries;
         private readonly Dictionary<int, CombatTargetOne> _targetCombatOne;
-    
+        //private List<Tuple<Civilization, Civilization>> _targetOneData;  
+
         public int CombatID
         {
             get { return _combatId; }
@@ -45,6 +46,10 @@ namespace Supremacy.Combat
             get { return GameContext.Current.Civilizations[_ownerId]; }
         }
 
+        //public Civilization TargetOne
+        //{
+        //    get { return _targetPrimaries; }
+        //}
         public CombatTargetPrimaries(Civilization owner, int combatId)
         {
             if (owner == null)
@@ -53,6 +58,7 @@ namespace Supremacy.Combat
             }
             _ownerId = owner.CivID;
             _targetPrimaries = new Dictionary<int, Civilization>();
+            //_targetOneData = new List<Tuple<Civilization, Civilization>>();
             _targetCombatOne = new Dictionary<int, CombatTargetOne>();
             _combatId = combatId;
 
@@ -74,10 +80,10 @@ namespace Supremacy.Combat
 
         public void SetTargetOneCiv(Orbital source, Civilization targetOne)
         {
-            var Civ = new Civilization(targetOne.ToString());
+            //var Civ = new Civilization(targetOne.ToString());
             if (source == null)
                 throw new ArgumentNullException("source");
-            _targetPrimaries[source.ObjectID] = Civ;
+            _targetPrimaries[source.ObjectID] = targetOne;
         }
 
         public void ClearTargetOne(Orbital source)
@@ -110,13 +116,16 @@ namespace Supremacy.Combat
             }
             if (!_targetPrimaries.ContainsKey(source.ObjectID))
             {
-                return borg;
+        
+                    throw new ArgumentException("No order has been set for the specified source");
+               // return borg;
                 //GameLog.Core.Test.DebugFormat("No target One in _targetPrimaries. source short name ={0}, source ={1} CombatTargetOne = {2}",
                    // source, source);
                // throw new ArgumentException("No target one has been set for the specified source");
             }
+            GameLog.Core.Test.DebugFormat("Selection target one to GetTargetOne() targetOne = {0}", _targetPrimaries[source.ObjectID]);
              return _targetPrimaries[source.ObjectID];
-
+            
         }
 
         public IEnumerator<CombatTargetOne> GetEnumerator()

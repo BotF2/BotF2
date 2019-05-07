@@ -60,7 +60,7 @@ namespace Supremacy.Combat
 
         public void SetTargetTwo(Orbital source, CombatTargetTwo target)
         {
-            
+            //var Civ = new Civilization(target.ToString());
             if (source == null)
                 throw new ArgumentNullException("source");
             _targetCombatTwo[source.ObjectID] = target;
@@ -69,10 +69,10 @@ namespace Supremacy.Combat
 
         public void SetTargetTwoCiv(Orbital source, Civilization targetTwo)
         {
-            var Civ = new Civilization(targetTwo.ToString());
+            //var Civ = new Civilization(targetTwo.ToString());
             if (source == null)
                 throw new ArgumentNullException("source");
-            _targetSecondaries[source.ObjectID] = Civ;
+            _targetSecondaries[source.ObjectID] = targetTwo;
         }
 
         public void ClearTargetTwo(Orbital source)

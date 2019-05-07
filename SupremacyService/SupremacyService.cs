@@ -1490,10 +1490,10 @@ namespace Supremacy.WCF
                 {
                     return;
                 }
-
+                var borg = new Civilization("BORG");
                 var blanketOrder = CombatOrder.Engage;
-                var blanketTargetOne = CombatTargetOne.BORG;
-                var blanketTargetTwo = CombatTargetTwo.BORG;
+                var blanketTargetOne = borg;
+                var blanketTargetTwo = borg;
 
                 // Standard Order in case no If catches the situation
                 //bool IsMinor = false;

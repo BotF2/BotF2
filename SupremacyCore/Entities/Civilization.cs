@@ -11,7 +11,7 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-
+using Supremacy.Combat;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -722,6 +722,11 @@ namespace Supremacy.Entities
                 return true;
             return (a.Key != b.Key);
         }
+
+        //public static implicit operator CombatTargetTwo(Civilization v)
+        //{
+        //    throw new NotImplementedException();
+        //}
         #endregion
     }
 }

@@ -417,7 +417,7 @@
                                        Margin="4,0,0,0"
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
-                                        Text="{Binding Path=FriendlyEmpireStrength}"/>
+                                        Text="{Binding Path=FriendlyEmpireStrength, StringFormat='#,#\\'}"/>
                         </StackPanel>
                         <StackPanel 
                                 Grid.Column="0"
@@ -433,9 +433,9 @@
                                         Text="{s:StringResource COMBAT_OTHERS_FIREPOWER}"/>
                             <TextBlock Foreground="Red" 
                                         Margin="4,0,0,0"
-                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"                                      
                                         FontSize="16pt" 
-                                        Text="{Binding Path=AllHostileEmpireStrength}"/>
+                                        Text="{Binding Path=AllHostileEmpireStrength, StringFormat='#,#\\'}"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

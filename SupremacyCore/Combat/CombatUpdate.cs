@@ -397,7 +397,7 @@ namespace Supremacy.Combat
                     }
                 }
                 GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
-                return otherCivStrength.ToString() + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
+                return otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
             }
         }
 
@@ -469,7 +469,7 @@ namespace Supremacy.Combat
                     }
                 }
                 GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
-                return otherCivStrength.ToString() + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
+                return otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
             }
             else { return null; }
 
