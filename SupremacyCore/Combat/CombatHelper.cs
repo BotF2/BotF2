@@ -219,35 +219,6 @@ namespace Supremacy.Combat
             return false;
         }
 
-        //public static Civilization TargetOnesData(int civID)
-        //{
-        //    GetCivs(_assets);
-        //    return _targetOneData[civID];
-        //}
-        //public static bool WillTargetOne(Civilization firstCiv, Civilization secondCiv)
-        //{
-        //    var combatAssets = GetCombatAssets()
-        //    var targetOneData = new Dictionary<int, Civilization>();
-
-        //    if (firstCiv == null)
-        //    {
-        //        throw new ArgumentNullException("firstCiv");
-        //    }
-        //    if (secondCiv == null)
-        //    {
-        //        throw new ArgumentNullException("secondCiv");
-        //    }
-        //    //var targetStatus = GetTargetOne()  //GameContext.Current.DiplomacyData[firstCiv, secondCiv];
-        //    //Dictionary<int, Civilization> targetOne = new Dictionary<int, Civilization>();
-        //    //var targetOne = CombatEngine.
-        //    //if (secondCiv == )
-        //    //{
-        //    //    return true;
-        //    //}
-
-        //    return false;
-        //}
-
         public static CombatOrders GenerateBlanketOrders(CombatAssets assets, CombatOrder order)
         {
             bool _generateBlanketOrdersTracing = true;
@@ -293,10 +264,10 @@ namespace Supremacy.Combat
         //    bool _generateBlanketTargetTracing = true;
         //    var owner = assets.Owner;
         //    var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
-
+        //        Civilization borg = new Civilization("BORG");
         //    foreach (var ship in assets.CombatShips)  // CombatShips
         //    {
-        //        Civilization borg = new Civilization("BORG");
+
         //        if (_generateBlanketTargetTracing == true)
         //            targetOne.SetTargetOne(ship.Source, target);
         //    }
@@ -318,32 +289,34 @@ namespace Supremacy.Combat
         //    return targetOne;
         //}
 
-        public static CombatTargetPrimaries GenerateBlanketTargetPrimary(CombatAssets assets, Civilization target)
+        public static CombatTargetPrimaries GenerateBlanketTargetPrimary(CombatAssets assets, Civilization target) // the orbital and it's target civ from combat window
         {
             bool _generateTargetPrimariesTracing = true;
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
+            Civilization borg = new Civilization("BORG");
 
-           foreach (var ship in assets.CombatShips)  // CombatShips
-            {
-                Civilization borg = new Civilization("BORG");
+            foreach (var ship in assets.CombatShips)  // CombatShips
+            {  
                 if (_generateTargetPrimariesTracing == true && target != borg)
                     targetOne.SetTargetOneCiv(ship.Source, target);
+                else targetOne.SetTargetOneCiv(ship.Source, borg);
                 GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);      
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-
-                targetOne.SetTargetOneCiv(ship.Source, target);
-
+                if (_generateTargetPrimariesTracing == true && target != borg)
+                    targetOne.SetTargetOneCiv(ship.Source, target);
+                else targetOne.SetTargetOneCiv(ship.Source, borg);
                 GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
-
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                targetOne.SetTargetOneCiv(assets.Station.Source, target);
+                if (_generateTargetPrimariesTracing == true && target != borg)
+                    targetOne.SetTargetOneCiv(assets.Station.Source, target);
+                else targetOne.SetTargetOneCiv(assets.Station.Source, borg);
                 GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
 
@@ -356,10 +329,10 @@ namespace Supremacy.Combat
         //    bool _generateBlanketTargetTracing = true;
         //    var owner = assets.Owner;
         //    var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
-
+       //Civilization borg = new Civilization("BORG");
         //    foreach (var ship in assets.CombatShips)  // CombatShips
         //    {
-        //        Civilization borg = new Civilization("BORG");
+        //        
         //        if (_generateBlanketTargetTracing == true)
         //            targetTwo.SetTargetTwo(ship.Source, target);
         //    }
@@ -382,25 +355,32 @@ namespace Supremacy.Combat
         //}
         public static CombatTargetSecondaries GenerateBlanketTargetSecondary(CombatAssets assets, Civilization target)
         {
-            // bool _generateTargetSecondaryTracing = true;
+            bool _generateTargetSecondaryTracing = true;
             var owner = assets.Owner;
-
             var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
+            Civilization borg = new Civilization("BORG");
+
             foreach (var ship in assets.CombatShips)  // CombatShips
-            {
-                targetTwo.SetTargetTwoCiv(ship.Source, target);
+            {          
+                if (_generateTargetSecondaryTracing == true && target != borg)
+                    targetTwo.SetTargetTwoCiv(ship.Source, target);
+                else targetTwo.SetTargetTwoCiv(ship.Source, borg);
                 //targetTwo.Distinct().ToList();
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                targetTwo.SetTargetTwoCiv(ship.Source, target);
+                if (_generateTargetSecondaryTracing == true && target != borg)
+                    targetTwo.SetTargetTwoCiv(ship.Source, target);
+                else targetTwo.SetTargetTwoCiv(ship.Source, borg);
                 //targetTwo.Distinct().ToList();
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
+                if (_generateTargetSecondaryTracing == true && target != borg)
+                    targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
+                else targetTwo.SetTargetTwoCiv(assets.Station.Source, borg);
                 //targetTwo.Distinct().ToList();
             }
             return targetTwo;

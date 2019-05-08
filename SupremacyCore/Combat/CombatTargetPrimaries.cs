@@ -20,17 +20,22 @@ namespace Supremacy.Combat
 {
     public enum CombatTargetOne : byte
     {
+        FEDERATION,
+        TERRANEMPIRE,
+        ROMULANS,
+        KLINGONS,
+        CARDASSIANS,
+        DOMINION,
         BORG
     }
 
     [Serializable]
     public class  CombatTargetPrimaries : IEnumerable<CombatTargetOne>
     {
-        private readonly int _combatId; // will we use this? think so
-        private readonly int _ownerId; // will we use this?
+        private readonly int _combatId;
+        private readonly int _ownerId; 
         private readonly Dictionary<int, Civilization> _targetPrimaries;
         private readonly Dictionary<int, CombatTargetOne> _targetCombatOne;
-        //private List<Tuple<Civilization, Civilization>> _targetOneData;  
 
         public int CombatID
         {
@@ -46,10 +51,6 @@ namespace Supremacy.Combat
             get { return GameContext.Current.Civilizations[_ownerId]; }
         }
 
-        //public Civilization TargetOne
-        //{
-        //    get { return _targetPrimaries; }
-        //}
         public CombatTargetPrimaries(Civilization owner, int combatId)
         {
             if (owner == null)
@@ -58,7 +59,6 @@ namespace Supremacy.Combat
             }
             _ownerId = owner.CivID;
             _targetPrimaries = new Dictionary<int, Civilization>();
-            //_targetOneData = new List<Tuple<Civilization, Civilization>>();
             _targetCombatOne = new Dictionary<int, CombatTargetOne>();
             _combatId = combatId;
 
@@ -74,7 +74,7 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("source");
             }
             _targetCombatOne[source.ObjectID] = targetOne;
-
+           
            // GameLog.Core.Test.DebugFormat("source short name ={0}, CombatTargetOne = {1}", source, targetOne);
         }
 
@@ -84,6 +84,8 @@ namespace Supremacy.Combat
             if (source == null)
                 throw new ArgumentNullException("source");
             _targetPrimaries[source.ObjectID] = targetOne;
+            //CombatTargetOne theTargetEnum = (CombatTargetOne)Enum.Parse(typeof(CombatTargetOne), targetOne.Key, true);   
+            //_targetCombatOne[source.ObjectID] = theTargetEnum;
         }
 
         public void ClearTargetOne(Orbital source)
@@ -91,11 +93,13 @@ namespace Supremacy.Combat
             if (source == null)
                 return;
             _targetPrimaries.Remove(source.ObjectID);
+            _targetCombatOne.Remove(source.ObjectID);
         }
 
         public void Clear()
         {
             _targetPrimaries.Clear();
+            _targetCombatOne.Clear();
         }
 
         public bool IsTargetOneSet(Orbital source)
@@ -104,9 +108,9 @@ namespace Supremacy.Combat
                 return false;
             return _targetPrimaries.ContainsKey(source.ObjectID);
         }
-         
-        
-        public Civilization GetTargetOne(Orbital source)
+
+
+        public CombatTargetOne GetTargetOne(Orbital source)
         {
             var borg = new Civilization("BORG");
 
@@ -114,18 +118,14 @@ namespace Supremacy.Combat
             {
                 throw new ArgumentNullException("source");
             }
-            if (!_targetPrimaries.ContainsKey(source.ObjectID))
+            if (!_targetPrimaries.ContainsKey(source.OwnerID))
             {
-        
-                    throw new ArgumentException("No order has been set for the specified source");
-               // return borg;
-                //GameLog.Core.Test.DebugFormat("No target One in _targetPrimaries. source short name ={0}, source ={1} CombatTargetOne = {2}",
-                   // source, source);
-               // throw new ArgumentException("No target one has been set for the specified source");
+                _targetPrimaries.Add(source.OwnerID, borg);
+                _targetCombatOne.Add(source.OwnerID, CombatTargetOne.BORG);
+
             }
-            GameLog.Core.Test.DebugFormat("Selection target one to GetTargetOne() targetOne = {0}", _targetPrimaries[source.ObjectID]);
-             return _targetPrimaries[source.ObjectID];
-            
+            GameLog.Core.Test.DebugFormat("Orbital {0} GetTargetOne() {1} {2}", source, _targetCombatOne[source.ObjectID], _targetPrimaries[source.ObjectID]);
+            return _targetCombatOne[source.ObjectID];
         }
 
         public IEnumerator<CombatTargetOne> GetEnumerator()

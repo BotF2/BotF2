@@ -20,10 +20,14 @@ namespace Supremacy.Combat
 {
     public enum CombatTargetTwo : byte
     {
+        FEDERATION,
+        TERRANEMPIRE,
+        ROMULANS,
+        KLINGONS,
+        CARDASSIANS,
+        DOMINION,
         BORG
     }
-
-
     [Serializable]
     public class  CombatTargetSecondaries : IEnumerable<CombatTargetTwo>
     {
@@ -31,6 +35,7 @@ namespace Supremacy.Combat
         private readonly int _ownerId;
         private readonly Dictionary<int, Civilization> _targetSecondaries;
         private readonly Dictionary<int, CombatTargetTwo> _targetCombatTwo;
+
         public int CombatID
         {
             get { return _combatId; }
@@ -80,11 +85,13 @@ namespace Supremacy.Combat
             if (source == null)
                 return;
             _targetSecondaries.Remove(source.ObjectID);
+            _targetCombatTwo.Remove(source.ObjectID);
         }
 
         public void Clear()
         {
             _targetSecondaries.Clear();
+            _targetCombatTwo.Clear();
         }
 
         public bool IsTargetTwoSet(Orbital source)
@@ -94,17 +101,21 @@ namespace Supremacy.Combat
             return _targetSecondaries.ContainsKey(source.ObjectID);
         }
 
-        public Civilization GetTargetTwo(Orbital source)
+        public CombatTargetTwo GetTargetTwo(Orbital source)
         {
+            var borg = new Civilization("BORG");
+
             if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
             if (!_targetSecondaries.ContainsKey(source.ObjectID))
             {
+                _targetSecondaries.Add(source.OwnerID, borg);
+                _targetCombatTwo.Add(source.OwnerID, CombatTargetTwo.BORG);
                 throw new ArgumentException("No target two has been set for the specified source");
             }
-            return _targetSecondaries[source.ObjectID];
+            return _targetCombatTwo[source.ObjectID];
         }
 
         public IEnumerator<CombatTargetTwo> GetEnumerator()

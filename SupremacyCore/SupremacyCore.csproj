@@ -180,7 +180,6 @@
     <Compile Include="Combat\CombatTargetSecondaries.cs" />
     <Compile Include="Combat\CombatTargetPrimaries.cs" />
     <Compile Include="Combat\InvasionArena.cs" />
-    <Compile Include="Combat\TargetOneData.cs" />
     <Compile Include="Combat\TakeSidesAsset.cs" />
     <Compile Include="Combat\UsingCombatArray.cs" />
     <Compile Include="Diplomacy\CreditsClauseData.cs" />

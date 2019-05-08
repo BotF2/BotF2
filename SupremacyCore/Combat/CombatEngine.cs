@@ -52,7 +52,7 @@ namespace Supremacy.Combat
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
         private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
-        private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; // like _orders
+        private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; 
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
 
 
@@ -770,8 +770,8 @@ namespace Supremacy.Combat
         {
             try
             {
-                //GameLog.Core.Test.DebugFormat("Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
-                return _orders[source.OwnerID].GetOrder(source);
+                GameLog.Core.CombatDetails.DebugFormat("Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
+                return _orders[source.OwnerID].GetOrder(source); // this is the enum CombatOrder.BORG (or FEDERATION or.....)
             }
             catch //(Exception e)
             {
@@ -785,13 +785,20 @@ namespace Supremacy.Combat
         }
 
        // private Civilization borg = new Civilization();
-        protected Civilization GetTargetOne(Orbital source)
+        protected CombatTargetOne GetTargetOne(Orbital source)
         {
+            //var borg = new Civilization("BORG");
+            //CombatTargetPrimaries attackerKey = new CombatTargetPrimaries(source.Owner, CombatID);
             try
             {
-                GameLog.Core.Test.DebugFormat("GetTargetOne for source = {0} {1} {2} is Targetting -> {3}",
-                   source.Owner, source.ObjectID, source.Name, _targetOneByCiv[source.OwnerID].GetTargetOne(source));
-                return _targetOneByCiv[source.OwnerID].GetTargetOne(source);
+                var targetCiv = new CombatTargetPrimaries(source.Owner, CombatID);
+                //CombatTargetPrimaries targetOne = new CombatTargetPrimaries(source.Owner, CombatID);
+                GameLog.Core.Test.DebugFormat("GetTargetOne for source = {0} {1} {2} and is Targetting -> {3} {4} {5}",
+                   source.Owner, source.ObjectID, source.Name, targetCiv.Owner, targetCiv, GetTargetOne(source));     // _targetOneByCiv[source.OwnerID].GetTargetOne(source));
+                if (targetCiv == null)
+                    return CombatTargetOne.BORG;
+                else
+                    return _targetOneByCiv[source.OwnerID].GetTargetOne(source); ;// this is the enum CombatTargetOne.BORG (OR FEDERATION OR....)
             }
             catch (Exception e)
             {
@@ -800,16 +807,12 @@ namespace Supremacy.Combat
                 //GameLog.LogException(e);
             }
 
-
-
-            GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target one for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            //return _targetOneByCiv[source.CivID].GetTargetOne(source);
-
-            Civilization borg = new Civilization(CombatTargetOne.BORG.ToString());
-            return borg;
+            //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target one for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+ 
+            return CombatTargetOne.BORG;
         }
 
-        protected Civilization GetTargetTwo(Orbital source)
+        protected CombatTargetTwo GetTargetTwo(Orbital source)
         {
             try
             {
@@ -819,13 +822,13 @@ namespace Supremacy.Combat
             }
             catch //(Exception e)
             {
-                //GameLog.Core.Combat.ErrorFormat("Unable to get order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                GameLog.Core.Combat.ErrorFormat("Unable to get target two for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
                 //GameLog.LogException(e);
             }
 
             //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target two for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            Civilization borg = new Civilization(CombatTargetTwo.BORG.ToString());
-            return borg;
+    
+            return CombatTargetTwo.BORG;
         }
 
         protected abstract void ResolveCombatRoundCore();

@@ -1419,8 +1419,6 @@ namespace Supremacy.WCF
             }
         }
 
-
-
         public void SendCombatTarget1(CombatTargetPrimaries target1)
         {
             try
@@ -1428,13 +1426,13 @@ namespace Supremacy.WCF
                 if (_combatEngine == null || target1 == null)
                     return;
 
-                //lock (_combatEngine.SyncLockTargetOnes)
-                //{
+                lock (_combatEngine.SyncLockTargetOnes)
+                {
                     _combatEngine.SubmitTargetOnes(target1);
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
-                //}
+                }
             }
             catch (Exception e)
             {
@@ -1450,13 +1448,13 @@ namespace Supremacy.WCF
                 if (_combatEngine == null || target2 == null)
                     return;
 
-                //lock (_combatEngine.SyncLockTargetTwos)
-                //{
+                lock (_combatEngine.SyncLockTargetTwos)
+                {
                     _combatEngine.SubmitTargetTwos(target2);
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
-                //}
+                }
             }
             catch (Exception e)
             {
