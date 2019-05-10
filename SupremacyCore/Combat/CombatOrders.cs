@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
@@ -40,10 +41,7 @@ namespace Supremacy.Combat
     public class CombatOrders : IEnumerable<CombatOrder>
     {
         private readonly int _combatId;
-       // private readonly int _primeTargetCivId;
         private readonly int _ownerId;
-        //private readonly int _primaryTargetCivId;
-        //private readonly int _secondaryTargetCivId;
         private readonly AssaultStrategy _assaultStrategy;
         private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
         private readonly Dictionary<int, CombatOrder> _orders;
@@ -120,6 +118,7 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("source");
             if (!_orders.ContainsKey(source.ObjectID))
                 throw new ArgumentException("No order has been set for the specified source");
+            GameLog.Core.Test.DebugFormat("GetOrder source {0}", source.Name);
             return _orders[source.ObjectID];
         }
 

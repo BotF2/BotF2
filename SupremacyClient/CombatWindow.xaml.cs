@@ -405,15 +405,10 @@ namespace Supremacy.Client
         {
             RadioButton radioButton1 = (RadioButton)sender;
             Civilization theTargeted1Civ = (Civilization)radioButton1.DataContext;
-            //string targetString = theTargetedCiv.Key.ToString();
-            //var civTargetOne = (Civilization)Enum.Parse(typeof(Civilization), targetString);
-            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));
+          
+            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));// theTargeted1Civ));
 
-            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}",
-                theTargeted1Civ);
-
-            //GameLog.Core.Combat.DebugFormat("Primary Target _playerAssets={0}, enum TargetOne ={1}, theTargetCiv ={2}, target String ={3}, sender ={4}",
-            //    _playerAssets, enumTargetOne, theTargetedCiv, targetString, sender);
+            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", theTargeted1Civ.ToString()); //theTargeted1Civ);
 
         }
 
@@ -421,6 +416,7 @@ namespace Supremacy.Client
         {
             RadioButton radioButton2 = (RadioButton)sender;
             Civilization theTargeted2Civ = (Civilization)radioButton2.DataContext;
+          
             //string targetString = theTargetedCiv.Key.ToString();
             //var enumTargetTwo = (CombatTargetTwo)Enum.Parse(typeof(CombatTargetTwo), targetString);
             ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, theTargeted2Civ));

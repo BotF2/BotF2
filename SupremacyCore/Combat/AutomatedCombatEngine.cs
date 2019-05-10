@@ -83,7 +83,7 @@ namespace Supremacy.Combat
 
         protected override void ResolveCombatRoundCore()
         {
-            // Setting variables to standard (initilization)
+            // Setting variables to standard (initilization) of these fields
             shipRatio = 1;
             excessShipsStartingAt = 0;
             weakerSide = 0;
@@ -101,7 +101,7 @@ namespace Supremacy.Combat
 
             }
 
-            
+
 
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
@@ -157,6 +157,10 @@ namespace Supremacy.Combat
             {
                 //List<CombatTargetOne> civsTargets = Enum.GetValues(typeof(CombatTargetOne)).Cast<CombatTargetOne>().ToList();
                 var targetCiv = new CombatTargetPrimaries(attackingShip.Item1.Owner, CombatID);
+                var orderForAttackingShip = GetOrder(attackingShip.Item1.Source);
+                var targetCiviliz = GetTargetOne(attackingShip.Item1.Source);
+                GameLog.Core.Test.DebugFormat("CombatTargetPrimaries in AutomatedCE: attackingShip.Item1.Name {0} attackingShip.Item1.Owner {1} and CombatId {2} targetCiviliz {3} - and order for attacking ship {4}",
+                    attackingShip.Item1.Name, attackingShip.Item1.Owner, CombatID, targetCiviliz, orderForAttackingShip.ToString());
                 foreach (var currentAsset in _combatShips)
                 {
                     if (attackingShip.Item1.Owner != currentAsset.Item1.Owner && targetCiv.Owner == currentAsset.Item1.Owner)
@@ -236,6 +240,14 @@ namespace Supremacy.Combat
             GameLog.Core.Test.DebugFormat("FriendlyShips.Count() = {0}", FriendlyShips.Count());
             GameLog.Core.Test.DebugFormat("OppositionShips.Count() = {0}", OppositionShips.Count());
 
+            // test section
+            for (int i = 0; i < _combatShips.Count; i++)
+            {
+                //if ()
+                //{
+                //    var target = ChooseTarget(attackingShip);
+                //}
+            }
             //double ratioATemp = 0.00; // used to transform ship.Count to double decimals
             //double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
 

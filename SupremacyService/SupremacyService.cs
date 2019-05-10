@@ -1490,7 +1490,8 @@ namespace Supremacy.WCF
                 }
                 var borg = new Civilization("BORG");
                 var blanketOrder = CombatOrder.Engage;
-                var blanketTargetOne = borg;
+                //var blanketTargetOne = CombatTargetOne.BORG;
+               var blanketTargetOne = borg;
                 var blanketTargetTwo = borg;
 
                 // Standard Order in case no If catches the situation
@@ -1608,6 +1609,7 @@ namespace Supremacy.WCF
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
                 SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder)); // Sending of the order
+                //SendCombatTarget1(CombatHelper.GenerateBlanketTargetPrimaries(ownerAssets, blanketTargetOne));
                 SendCombatTarget1(CombatHelper.GenerateBlanketTargetPrimary(ownerAssets, blanketTargetOne));
                 SendCombatTarget2(CombatHelper.GenerateBlanketTargetSecondary(ownerAssets, blanketTargetTwo));
             }

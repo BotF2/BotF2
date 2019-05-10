@@ -18,24 +18,24 @@ using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
-    public enum CombatTargetOne : byte
-    {
-        FEDERATION,
-        TERRANEMPIRE,
-        ROMULANS,
-        KLINGONS,
-        CARDASSIANS,
-        DOMINION,
-        BORG
-    }
+    //public enum CombatTargetOne : byte
+    //{
+    //    FEDERATION,
+    //    TERRANEMPIRE,
+    //    ROMULANS,
+    //    KLINGONS,
+    //    CARDASSIANS,
+    //    DOMINION,
+    //    BORG
+    //}
 
     [Serializable]
-    public class  CombatTargetPrimaries : IEnumerable<CombatTargetOne>
+    public class  CombatTargetPrimaries //: IEnumerable<CombatTargetOne>
     {
         private readonly int _combatId;
         private readonly int _ownerId; 
         private readonly Dictionary<int, Civilization> _targetPrimaries;
-        private readonly Dictionary<int, CombatTargetOne> _targetCombatOne;
+        //private readonly Dictionary<int, CombatTargetOne> _targetCombatOne;
 
         public int CombatID
         {
@@ -59,24 +59,22 @@ namespace Supremacy.Combat
             }
             _ownerId = owner.CivID;
             _targetPrimaries = new Dictionary<int, Civilization>();
-            _targetCombatOne = new Dictionary<int, CombatTargetOne>();
+            //_targetCombatOne = new Dictionary<int, CombatTargetOne>();
             _combatId = combatId;
 
-            GameLog.Core.Test.DebugFormat("CombatTargetPrimaries owner = {0}, _combatID = {1}", owner, _combatId);
-
         }
 
-        public void SetTargetOne(Orbital source, CombatTargetOne targetOne)
-        {
-            
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-            _targetCombatOne[source.ObjectID] = targetOne;
-           
-           // GameLog.Core.Test.DebugFormat("source short name ={0}, CombatTargetOne = {1}", source, targetOne);
-        }
+        //public void SetTargetOne(Orbital source, CombatTargetOne targetOne)
+        //{
+
+        //    if (source == null)
+        //    {
+        //        throw new ArgumentNullException("source");
+        //    }
+        //    _targetCombatOne[source.ObjectID] = targetOne;
+
+        //    // GameLog.Core.Test.DebugFormat("source short name ={0}, CombatTargetOne = {1}", source, targetOne);
+        //}
 
         public void SetTargetOneCiv(Orbital source, Civilization targetOne)
         {
@@ -93,13 +91,13 @@ namespace Supremacy.Combat
             if (source == null)
                 return;
             _targetPrimaries.Remove(source.ObjectID);
-            _targetCombatOne.Remove(source.ObjectID);
+           // _targetCombatOne.Remove(source.ObjectID);
         }
 
         public void Clear()
         {
             _targetPrimaries.Clear();
-            _targetCombatOne.Clear();
+            //_targetCombatOne.Clear();
         }
 
         public bool IsTargetOneSet(Orbital source)
@@ -109,10 +107,8 @@ namespace Supremacy.Combat
             return _targetPrimaries.ContainsKey(source.ObjectID);
         }
 
-
-        public CombatTargetOne GetTargetOne(Orbital source)
+        public Civilization GetTargetOne(Orbital source)
         {
-            var borg = new Civilization("BORG");
 
             if (source == null)
             {
@@ -120,23 +116,39 @@ namespace Supremacy.Combat
             }
             if (!_targetPrimaries.ContainsKey(source.OwnerID))
             {
-                _targetPrimaries.Add(source.OwnerID, borg);
-                _targetCombatOne.Add(source.OwnerID, CombatTargetOne.BORG);
-
+                throw new ArgumentException("No target one has been set for the specified source");
             }
-            GameLog.Core.Test.DebugFormat("Orbital {0} GetTargetOne() {1} {2}", source, _targetCombatOne[source.ObjectID], _targetPrimaries[source.ObjectID]);
-            return _targetCombatOne[source.ObjectID];
+            GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1} {2}", source.ObjectID, _targetPrimaries[source.ObjectID], _targetPrimaries[source.ObjectID].ToString());
+            return _targetPrimaries[source.ObjectID];
+            //return _targetCombatOne[source.ObjectID];
         }
+        //public CombatTargetOne GetTargetOne(Orbital source)
+        //{
+        //    var borg = new Civilization("BORG");
 
-        public IEnumerator<CombatTargetOne> GetEnumerator()
-        {
-            return _targetCombatOne.Values.GetEnumerator();
-        }
+        //    if (source == null)
+        //    {
+        //        throw new ArgumentNullException("source");
+        //    }
+        //    if (!_targetPrimaries.ContainsKey(source.OwnerID))
+        //    {
+        //        _targetPrimaries.Add(source.OwnerID, borg);
+        //        _targetCombatOne.Add(source.OwnerID, CombatTargetOne.BORG);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        //    }
+        //    GameLog.Core.Test.DebugFormat("Orbital {0} GetTargetOne() {1} {2}", source, _targetCombatOne[source.ObjectID], _targetPrimaries[source.ObjectID]);
+        //    return _targetCombatOne[source.ObjectID];
+        //}
+
+        //public IEnumerator<CombatTargetOne> GetEnumerator()
+        //{
+        //    return _targetCombatOne.Values.GetEnumerator();
+        //}
+
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return GetEnumerator();
+        //}
 
     }
 }
