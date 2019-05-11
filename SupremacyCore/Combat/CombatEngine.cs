@@ -767,7 +767,7 @@ namespace Supremacy.Combat
             try
             {
                 GameLog.Core.CombatDetails.DebugFormat("Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
-                return _orders[source.OwnerID].GetOrder(source); // this is the enum CombatOrder.BORG (or FEDERATION or.....)
+                return _orders[source.OwnerID].GetOrder(source); // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetOrder() in CombatOrders.cs
             }
             catch //(Exception e)
             {
@@ -787,15 +787,15 @@ namespace Supremacy.Combat
             try
             {
 
-                GameLog.Core.Test.DebugFormat("Get target one for  orbital id {0} orbirtal name {1}", source.ObjectID, source.Name);                                                                                                                      //if (targetCiv == null)
+                GameLog.Core.Test.DebugFormat("Get target one for  orbital id {0} orbirtal name {1} Civ from GetTargetOne {2}", source.ObjectID, source.Name, _targetOneByCiv[source.OwnerID].GetTargetOne(source));                                                                                                                      //if (targetCiv == null)
                 //if(source !=null)
-                return _targetOneByCiv[source.OwnerID].Owner; 
+                return _targetOneByCiv[source.OwnerID].GetTargetOne(source); 
 
             }
             catch // (Exception e)
             {
                 if (source.Owner.IsHuman == false)
-                    GameLog.Core.Test.ErrorFormat("Unable to get target one for source {0} owner {1}, {2}", source, source.Owner);
+                    GameLog.Core.Test.ErrorFormat("Unable to get target one for source {0} owner {1}", source, source.Owner);
                 //GameLog.LogException(e);
             }
            return borg;
