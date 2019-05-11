@@ -416,9 +416,7 @@ namespace Supremacy.Client
         {
             RadioButton radioButton2 = (RadioButton)sender;
             Civilization theTargeted2Civ = (Civilization)radioButton2.DataContext;
-          
-            //string targetString = theTargetedCiv.Key.ToString();
-            //var enumTargetTwo = (CombatTargetTwo)Enum.Parse(typeof(CombatTargetTwo), targetString);
+
             ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, theTargeted2Civ));
 
         }

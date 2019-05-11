@@ -78,27 +78,28 @@ namespace Supremacy.Combat
 
         public void SetTargetOneCiv(Orbital source, Civilization targetOne)
         {
-            //var Civ = new Civilization(targetOne.ToString());
             if (source == null)
                 throw new ArgumentNullException("source");
+            GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne.Name);
             _targetPrimaries[source.ObjectID] = targetOne;
-            //CombatTargetOne theTargetEnum = (CombatTargetOne)Enum.Parse(typeof(CombatTargetOne), targetOne.Key, true);   
-            //_targetCombatOne[source.ObjectID] = theTargetEnum;
+            //_targetPrimaries.Add(source.ObjectID, _targetOne);
+
+
         }
 
-        public void ClearTargetOne(Orbital source)
-        {
-            if (source == null)
-                return;
-            _targetPrimaries.Remove(source.ObjectID);
-           // _targetCombatOne.Remove(source.ObjectID);
-        }
+        //public void ClearTargetOne(Orbital source)
+        //{
+        //    if (source == null)
+        //        return;
+        //    _targetPrimaries.Remove(source.ObjectID);
+        //   // _targetCombatOne.Remove(source.ObjectID);
+        //}
 
-        public void Clear()
-        {
-            _targetPrimaries.Clear();
-            //_targetCombatOne.Clear();
-        }
+        //public void Clear()
+        //{
+        //    _targetPrimaries.Clear();
+        //    //_targetCombatOne.Clear();
+        //}
 
         public bool IsTargetOneSet(Orbital source)
         {

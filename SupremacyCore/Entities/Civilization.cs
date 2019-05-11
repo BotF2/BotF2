@@ -138,11 +138,13 @@ namespace Supremacy.Entities
         /// </summary>
         /// <param name="key">The unique key.</param>
         
-        public Civilization(string key)
-        {
-            _key = key;
+        //public Civilization(string key)
+        //{
+        //    _key = key;
+        //    _civType = CivilizationType.Empire;
+        //    _civId = 6;
 
-        }
+        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class from XML data.

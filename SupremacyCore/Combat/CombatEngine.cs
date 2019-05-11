@@ -356,9 +356,9 @@ namespace Supremacy.Combat
                 //    RunningTargetOne = true;
                 //    lock (_targetTwoByCiv)
                 //    {
-                        GameLog.Core.Test.DebugFormat("ResolveCombatRound locking orders and targets");
+                        //GameLog.Core.Test.DebugFormat("ResolveCombatRound locking orders and targets");
 
-                        RunningTargetTwo = true;
+                        //RunningTargetTwo = true;
 
                         _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset
                         CalculateEmpireStrengths();
@@ -427,19 +427,19 @@ namespace Supremacy.Combat
             foreach (var civAssets in _assets)
             {
                 // Combat ships
-                if (civAssets.CombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
+                if (civAssets.CombatShips.Select(unit => GetCombatOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
                     return false;
                 }
 
                 // Non-combat ships
-                if (civAssets.NonCombatShips.Select(unit => GetOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
+                if (civAssets.NonCombatShips.Select(unit => GetCombatOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
                     return false;
                 }
 
                 // Station
-                if ((civAssets.Station != null) && (GetOrder(civAssets.Station.Source) == CombatOrder.Engage || GetOrder(civAssets.Station.Source) == CombatOrder.Transports || GetOrder(civAssets.Station.Source) == CombatOrder.Rush || GetOrder(civAssets.Station.Source) == CombatOrder.Formation))
+                if ((civAssets.Station != null) && (GetCombatOrder(civAssets.Station.Source) == CombatOrder.Engage || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Transports || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Rush || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Formation))
                 {
                     return false;
                 }
@@ -762,12 +762,15 @@ namespace Supremacy.Combat
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        protected CombatOrder GetOrder(Orbital source)
+        protected CombatOrder GetCombatOrder(Orbital source)
         {
+            var _localOrder = new CombatOrder();
+            _localOrder = CombatOrder.Engage;
             try
             {
-                GameLog.Core.Test.DebugFormat("Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
-                return _orders[source.OwnerID].GetOrder(source); // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetOrder() in CombatOrders.cs
+                GameLog.Core.Combat.DebugFormat("Try Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
+                _localOrder = _orders[source.OwnerID].GetOrder(source);
+                //return _orders[source.OwnerID].GetOrder(source); // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
             }
             catch //(Exception e)
             {
@@ -776,50 +779,51 @@ namespace Supremacy.Combat
                 //GameLog.LogException(e);
             }
 
-            GameLog.Core.Test.DebugFormat("Setting Engage as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-            return CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
+            GameLog.Core.CombatDetails.DebugFormat("Setting order for {0} {1} ({2}) owner ={3} order={4}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _localOrder.ToString());
+            return _localOrder; //CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
         }
 
         // private Civilization borg = new Civilization();
         protected Civilization GetTargetOne(Orbital source)
         {
-            CombatTargetPrimaries targetOne = new CombatTargetPrimaries(source.Owner, CombatID);
-            var borg = new Civilization("BORG");
+            var _targetOne = new Civilization();
+            _targetOne = GameContext.Current.Civilizations.LastOrDefault();
+
             try
             {
-
-                GameLog.Core.Test.DebugFormat("Get target one for  orbital id {0} orbirtal name {1} Civ from GetTargetOne {2}", source.ObjectID, source.Name, _targetOneByCiv[source.OwnerID].GetTargetOne(source));                                                                                                                      //if (targetCiv == null)
-                //if(source !=null)
-                return targetOne.GetTargetOne(source);   //_targetOneByCiv[source.OwnerID].GetTargetOne(source); 
+                GameLog.Core.Test.DebugFormat("Try Get target one for {0} owner {1}: target = {2}", source, source.Owner, _targetOneByCiv[source.OwnerID].GetTargetOne(source));                                                                                                                     //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
+                _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);   //_targetOneByCiv[source.OwnerID].GetTargetOne(source); 
 
             }
             catch // (Exception e)
             {
-                if (source.Owner.IsHuman == false)
-                    GameLog.Core.Test.ErrorFormat("Unable to get target one for source {0} owner {1}", source, source.Owner);
-                //GameLog.LogException(e);
+                //if (source.Owner.IsHuman == false)
+                GameLog.Core.Test.ErrorFormat("Unable to get target one for {0} {1} ({2}) Owner {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                ////GameLog.LogException(e);
             }
-           return borg;
+            GameLog.Core.Test.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
+                source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _targetOne.Name ); 
+            return _targetOne;
         }
 
         protected Civilization GetTargetTwo(Orbital source)
         {
-            var borg = new Civilization("BORG");
+            var _targetTwo = new Civilization();
+            _targetTwo = GameContext.Current.Civilizations.LastOrDefault();
             try
             {
-
-                GameLog.Core.Test.DebugFormat("Get target one for  orbital id {0} orbirtal name {1}", source.ObjectID, source.Name);                                                                                                                      //if (targetCiv == null)
+                GameLog.Core.Test.DebugFormat("Try Get target one for  orbital id {0} orbirtal name {1}", source.ObjectID, source.Name, _targetTwo.ToString());                                                                                                                      //if (targetCiv == null)
                 //if(source !=null)
-                return _targetTwoByCiv[source.OwnerID].Owner;
-
+                _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
+                //return _targetTwoByCiv[source.OwnerID].Owner;
             }
             catch // (Exception e)
             {
                 if (source.Owner.IsHuman == false)
-                    GameLog.Core.Test.ErrorFormat("Unable to get target one for source {0} owner {1}, {2}", source, source.Owner);
+                    GameLog.Core.Test.ErrorFormat("Unable to get target Two for source {0} owner {1}, {2} default to Borg {2}", source, source.Owner, _targetTwo.ToString());
                 //GameLog.LogException(e);
             }
-            return borg;
+            return _targetTwo;
         }
         //protected CombatTargetOne GetTargetOne(Orbital source)
         //{

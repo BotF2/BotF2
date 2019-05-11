@@ -90,6 +90,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 throw new ArgumentNullException("source");
+            GameLog.Core.CombatDetails.DebugFormat("for SetOrder source civ attaker {0} and Civilization order = {1}", source.Owner, order.ToString());
             _orders[source.ObjectID] = order;
         }
 
@@ -118,7 +119,7 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("source");
             if (!_orders.ContainsKey(source.ObjectID))
                 throw new ArgumentException("No order has been set for the specified source");
-            GameLog.Core.Test.DebugFormat("GetOrder source {0}", source.Name);
+            GameLog.Core.CombatDetails.DebugFormat("GetCombatOrder source {0}", source.Name);
             return _orders[source.ObjectID];
         }
 

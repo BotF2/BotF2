@@ -294,21 +294,20 @@ namespace Supremacy.Combat
             bool _generateTargetPrimariesTracing = true;
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
-            Civilization borg = new Civilization("BORG");
 
             foreach (var ship in assets.CombatShips)  // CombatShips
             {
                 if (_generateTargetPrimariesTracing == true) // && target != borg)
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                else targetOne.SetTargetOneCiv(ship.Source, borg);
-                GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
+                //else targetOne.SetTargetOneCiv(ship.Source, borg);
+                GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
                 if (_generateTargetPrimariesTracing == true) // && target != borg)
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                else targetOne.SetTargetOneCiv(ship.Source, borg);
+                //else targetOne.SetTargetOneCiv(ship.Source, borg);
                 GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
             }
 
@@ -316,7 +315,7 @@ namespace Supremacy.Combat
             {
                 if (_generateTargetPrimariesTracing == true) // && target != borg)
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);
-                else targetOne.SetTargetOneCiv(assets.Station.Source, borg);
+                //else targetOne.SetTargetOneCiv(assets.Station.Source, borg);
                 GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
 
@@ -358,29 +357,29 @@ namespace Supremacy.Combat
             bool _generateTargetSecondaryTracing = true;
             var owner = assets.Owner;
             var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
-            Civilization borg = new Civilization("BORG");
+            //Civilization borg = new Civilization("BORG");
 
             foreach (var ship in assets.CombatShips)  // CombatShips
             {          
-                if (_generateTargetSecondaryTracing == true && target != borg)
+                if (_generateTargetSecondaryTracing == true )
                     targetTwo.SetTargetTwoCiv(ship.Source, target);
-                else targetTwo.SetTargetTwoCiv(ship.Source, borg);
+               // else targetTwo.SetTargetTwoCiv(ship.Source, borg);
                 //targetTwo.Distinct().ToList();
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                if (_generateTargetSecondaryTracing == true && target != borg)
+                if (_generateTargetSecondaryTracing == true)
                     targetTwo.SetTargetTwoCiv(ship.Source, target);
-                else targetTwo.SetTargetTwoCiv(ship.Source, borg);
+                //else targetTwo.SetTargetTwoCiv(ship.Source, borg);
                 //targetTwo.Distinct().ToList();
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                if (_generateTargetSecondaryTracing == true && target != borg)
+                if (_generateTargetSecondaryTracing == true)
                     targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
-                else targetTwo.SetTargetTwoCiv(assets.Station.Source, borg);
+                //else targetTwo.SetTargetTwoCiv(assets.Station.Source, borg);
                 //targetTwo.Distinct().ToList();
             }
             return targetTwo;
