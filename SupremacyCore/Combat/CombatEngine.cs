@@ -351,11 +351,11 @@ namespace Supremacy.Combat
                 RunningOrders = true;
                 //RunningTargetOne = true;
                 //RunningTargetTwo = true;
-                lock (_targetOneByCiv)
-                {
-                    RunningTargetOne = true;
-                    lock (_targetTwoByCiv)
-                    {
+                //lock (_targetOneByCiv)
+                //{
+                //    RunningTargetOne = true;
+                //    lock (_targetTwoByCiv)
+                //    {
                         GameLog.Core.Test.DebugFormat("ResolveCombatRound locking orders and targets");
 
                         RunningTargetTwo = true;
@@ -382,10 +382,10 @@ namespace Supremacy.Combat
                         {
                             _roundNumber++;
                         }
-                        _targetTwoByCiv.Clear();
-                    }
-                    _targetOneByCiv.Clear();
-                }
+                    //    _targetTwoByCiv.Clear();
+                    //}
+                    //_targetOneByCiv.Clear();
+                //}
 
                 _orders.Clear();
                 if (!IsCombatOver)
@@ -766,7 +766,7 @@ namespace Supremacy.Combat
         {
             try
             {
-                GameLog.Core.CombatDetails.DebugFormat("Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
+                GameLog.Core.Test.DebugFormat("Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
                 return _orders[source.OwnerID].GetOrder(source); // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetOrder() in CombatOrders.cs
             }
             catch //(Exception e)
@@ -776,20 +776,21 @@ namespace Supremacy.Combat
                 //GameLog.LogException(e);
             }
 
-            GameLog.Core.Combat.DebugFormat("Setting Engage as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+            GameLog.Core.Test.DebugFormat("Setting Engage as fallback order for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
             return CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
         }
 
         // private Civilization borg = new Civilization();
         protected Civilization GetTargetOne(Orbital source)
         {
+            CombatTargetPrimaries targetOne = new CombatTargetPrimaries(source.Owner, CombatID);
             var borg = new Civilization("BORG");
             try
             {
 
                 GameLog.Core.Test.DebugFormat("Get target one for  orbital id {0} orbirtal name {1} Civ from GetTargetOne {2}", source.ObjectID, source.Name, _targetOneByCiv[source.OwnerID].GetTargetOne(source));                                                                                                                      //if (targetCiv == null)
                 //if(source !=null)
-                return _targetOneByCiv[source.OwnerID].GetTargetOne(source); 
+                return targetOne.GetTargetOne(source);   //_targetOneByCiv[source.OwnerID].GetTargetOne(source); 
 
             }
             catch // (Exception e)

@@ -118,7 +118,7 @@ namespace Supremacy.Combat
             {
                 throw new ArgumentException("No target one has been set for the specified source");
             }
-            GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1} {2}", source.ObjectID, _targetPrimaries[source.ObjectID], _targetPrimaries[source.ObjectID].ToString());
+            GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.ObjectID, _targetPrimaries[source.ObjectID]);
             return _targetPrimaries[source.ObjectID];
             //return _targetCombatOne[source.ObjectID];
         }
