@@ -59,6 +59,10 @@ namespace Supremacy.Combat
             _name = source.Name;
         }
 
+        public CombatUnit()
+        {
+        }
+
         public Orbital Source
         {
             get { return GameContext.Current.Universe.Get<Orbital>(_sourceId); }
