@@ -159,8 +159,8 @@ namespace Supremacy.Combat
                 var targetCiv = new CombatTargetPrimaries(attackingShip.Item1.Owner, CombatID);
                 var orderForAttackingShip = GetCombatOrder(attackingShip.Item1.Source);
                 var targetCiviliz = GetTargetOne(attackingShip.Item1.Source);
-                GameLog.Core.Test.DebugFormat("CombatTargetPrimaries in AutomatedCE: attackingShip.Item1.Name {0} attackingShip.Item1.Owner {1} and CombatId {2} targetCiviliz {3} - and order for attacking ship {4}",
-                    attackingShip.Item1.Name, attackingShip.Item1.Owner, CombatID, targetCiviliz, orderForAttackingShip.ToString());
+                GameLog.Core.Test.DebugFormat("CombatTargetPrimaries in AutomatedCE: attackingShip.Item1.Name {0} attackingShip.Item1.Owner {1} and CombatId {2} targetCiviliz = {3}, order for attacking ship = {4} attacking ship target = {5}",
+                    attackingShip.Item1.Name, attackingShip.Item1.Owner, CombatID, targetCiviliz, orderForAttackingShip.ToString(), GetTargetOne(attackingShip.Item1.Source));
                 foreach (var currentAsset in _combatShips)
                 {
                     //if (attackingShip.Item1.Owner != currentAsset.Item1.Owner && targetCiv.Owner == currentAsset.Item1.Owner)

@@ -115,7 +115,7 @@ namespace Supremacy.Combat
             {
                 throw new ArgumentNullException("source");
             }
-            if (!_targetPrimaries.ContainsKey(source.OwnerID))
+            if (!_targetPrimaries.ContainsKey(source.ObjectID))
             {
                 throw new ArgumentException("No target one has been set for the specified source");
             }

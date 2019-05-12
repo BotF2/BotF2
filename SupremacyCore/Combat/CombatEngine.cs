@@ -792,13 +792,13 @@ namespace Supremacy.Combat
             try
             {
                 GameLog.Core.Test.DebugFormat("Try Get target one for {0} owner {1}: target = {2}", source, source.Owner, _targetOneByCiv[source.OwnerID].GetTargetOne(source));                                                                                                                     //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
-                _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);   //_targetOneByCiv[source.OwnerID].GetTargetOne(source); 
+                _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);   
 
             }
             catch // (Exception e)
             {
                 //if (source.Owner.IsHuman == false)
-                GameLog.Core.Test.ErrorFormat("Unable to get target one for {0} {1} ({2}) Owner {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                GameLog.Core.Test.DebugFormat("Unable to get target one for {0} {1} ({2}) Owner {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
                 ////GameLog.LogException(e);
             }
             GameLog.Core.Test.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
