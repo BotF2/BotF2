@@ -80,8 +80,6 @@ namespace Supremacy.WCF
             _errorService = ServiceLocator.Current.GetInstance<IGameErrorService>();
             _playerInfo = new ServerPlayerInfoCollection();
             _playerOrders = new Dictionary<Player, PlayerOrdersMessage>();
-            //_playerTarget1 = new Dictionary<Player, PlayerTarget1Message>();
-            //_playerTarget2 = new Dictionary<Player, PlayerTarget2Message>();
             _lobbyData = new LobbyData
             {
                 Players = _playerInfo.Select(o => o.Player).ToArray()
@@ -100,10 +98,6 @@ namespace Supremacy.WCF
         #endregion
 
         #region Properties
-        //internal static GameLog Log
-        //{
-        //    get { return _log.Value; }
-        //}
 
         internal static ISupremacyCallback Callback
         {
@@ -458,11 +452,8 @@ namespace Supremacy.WCF
 
                 Player gameHost = GetPlayerById(0);
                 List<Order> orders;
-                //List<Order> target1;
-                //List<Order> target2;
                 List<Civilization> autoTurnCivs;
-                //List<Civilization> autoTurnCivsTarget1;
-                //List<Civilization> autoTurnCivsTarget2;
+    
 
                 lock (_playerOrders)
                 {
@@ -721,7 +712,7 @@ namespace Supremacy.WCF
                 if (_playerInfo.Count == 0)
                 {
                     Interlocked.Exchange(ref _isProcessingTurn, 0);
-                    return false;
+                    return false;   
                 }
 
                 lock (_aiAsyncLock)
@@ -771,7 +762,7 @@ namespace Supremacy.WCF
 
                 //try
                 //{
-                //    var anyOutstandingTarget2= _playerInfo
+                //    var anyOutstandingTarget2 = _playerInfo
                 //        .Select(playerInfo => playerInfo.Player)
                 //        .Any(player => !_playerTarget2.ContainsKey(player) || _playerTarget2[player] == null);
 
@@ -1430,8 +1421,8 @@ namespace Supremacy.WCF
                 {
                     _combatEngine.SubmitTargetOnes(target1);
 
-                    if (_combatEngine.Ready)
-                        TryResumeCombat(_combatEngine);
+                    //if (_combatEngine.Ready)
+                    //    TryResumeCombat(_combatEngine);
                 }
             }
             catch (Exception e)
@@ -1452,8 +1443,8 @@ namespace Supremacy.WCF
                 {
                     _combatEngine.SubmitTargetTwos(target2);
 
-                    if (_combatEngine.Ready)
-                        TryResumeCombat(_combatEngine);
+                    //if (_combatEngine.Ready)
+                    //    TryResumeCombat(_combatEngine);
                 }
             }
             catch (Exception e)
@@ -1492,6 +1483,8 @@ namespace Supremacy.WCF
                 var _targetBorg = new Civilization();
                 foreach (var civ in GameContext.Current.Civilizations)
                 {
+                    //if (civ.CivID == 0)
+                    //    _targetBorg = civ;
                     if (civ.CivID == 6)
                         _targetBorg = civ;
                 }

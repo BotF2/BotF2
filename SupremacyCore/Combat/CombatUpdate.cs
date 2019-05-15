@@ -30,7 +30,6 @@ namespace Supremacy.Combat
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
-        //private Dictionary<Civilization, Civilization> _willTarget;
         private List<Object> _civList;
         private List<string> _civShortNameList;
         private List<string> _civFirePowerList;
@@ -96,7 +95,6 @@ namespace Supremacy.Combat
                     foreach (var cs in ha.CombatShips)   // only combat ships 
                     {
                         _allHostileEmpireStrength += cs.FirePower;
-
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
                         //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
                     }
@@ -108,7 +106,6 @@ namespace Supremacy.Combat
                     if (ha.Station != null)
                     {
                         _allHostileEmpireStrength += ha.Station.FirePower;
-
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0}  - in total now {1}",
                         //    ha.Station.Name, _hostileEmpireStrength); 
                     }
@@ -477,18 +474,9 @@ namespace Supremacy.Combat
 
         public string TargetCiv1Status(Civilization us, Civilization others)
         {
-            //get {
-            //var us = _playerAssets.Owner;
-
             var _targetCiv1Status = GameContext.Current.DiplomacyData[us, others].Status.ToString();
             GameLog.Core.Combat.DebugFormat("Status Target 1: Us = {0}, Status = {2}, others = {1}", us, others, _targetCiv1Status);
-
-            //foreach (var civs in _otherCivs)
-            //{
-            //    var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
-            //}
-            return _targetCiv1Status;
-            //}
+            return _targetCiv1Status;            
         }
 
         public int CombatID

@@ -778,6 +778,7 @@ namespace Supremacy.Combat
             var attackerTargetOne = GetTargetOne(attacker.Source); // what civ to attack
             var attackerTargetTwo = GetTargetTwo(attacker.Source); // what civ to attack
             var attackerShipOwner = attacker.Owner;
+            GameLog.Core.Test.DebugFormat("go get target one {0} for {1}", attacker.Source.Name, attackerTargetOne);
 
             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
             {

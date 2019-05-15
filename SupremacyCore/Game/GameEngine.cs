@@ -723,7 +723,7 @@ namespace Supremacy.Game
                 {
                     var assets = CombatHelper.GetCombatAssets(fleet.Location);
                     if (assets.Count > 1)
-                        {
+                    {
                         combats.Add(assets);
                         combatLocations.Add(fleet.Location);
                     }
