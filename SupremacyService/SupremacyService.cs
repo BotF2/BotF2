@@ -1158,13 +1158,11 @@ namespace Supremacy.WCF
             {
                 var slot = new PlayerSlot
                 {
-
                     SlotID = i,
                     EmpireID = initData.EmpireIDs[i],
                     EmpireName = initData.EmpireNames[i],
                     Status = initData.SlotStatus[i],
                     Claim = initData.SlotClaims[i]
-
                 };
 
                 _lobbyData.Slots[i] = slot;
@@ -1382,7 +1380,6 @@ namespace Supremacy.WCF
         {
             _combatEngine = new AutomatedCombatEngine(
                 assets,
-              //  civilizations,
                 SendCombatUpdateCallback,
                 NotifyCombatEndedCallback);
             _combatEngine.SendInitialUpdate();

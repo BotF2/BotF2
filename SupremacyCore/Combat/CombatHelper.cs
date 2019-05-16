@@ -178,7 +178,12 @@ namespace Supremacy.Combat
                 case ForeignPowerStatus.CounterpartyIsMember:
                     return false;
             }
-            return true;
+            //if (diplomacyData.Status == ForeignPowerStatus.AtWar)
+            //{
+                return true;
+            //}
+            //else
+            //return false;
         }
 
         /// <summary>
