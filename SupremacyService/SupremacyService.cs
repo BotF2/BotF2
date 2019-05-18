@@ -1397,7 +1397,7 @@ namespace Supremacy.WCF
                     _combatEngine.SubmitOrders(orders);
 
                     if (_combatEngine.Ready)
-                        TryResumeCombat(_combatEngine);
+                        TryResumeCombat(_combatEngine); // closes combat window and takes combat into fighting with AutomatedCombatEngine code
                 }
             }
             catch (Exception e) 
