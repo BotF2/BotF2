@@ -111,7 +111,7 @@ namespace Supremacy.Combat
                     throw new ArgumentNullException();
                 }
                 _unitOwnerIDs.Add(unitTuple.Item1.OwnerID);
-                _unitOwnerIDs.Distinct().ToList();
+                _unitOwnerIDs.Distinct();
             }
                 // populate _oppositionUnits dictionary
             foreach (var unitTuple in _combatShips)
@@ -120,7 +120,7 @@ namespace Supremacy.Combat
                   unitTuple.Item1.Source.Owner.ShortName, unitTuple.Item1.Name, unitTuple.Item1.Source.Design);
 
                 List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-                int attackerOwnerID; // track attacker owner id in use
+                int attackerOwnerID = 0; // track attacker owner id in use
                 int priorAttackerOwnerID = -1;
                 foreach (var attackerUnitTuple in _combatShips)
                 {   
@@ -908,7 +908,7 @@ namespace Supremacy.Combat
                 //GameLog.Core.Test.DebugFormat("target one = {0} for {1}", attacker.Source.Name, attackerTargetOne);
                 var oppositionUints = _oppositionUnits[attackerCivID];
                 var firstOppositonUnit = _oppositionUnits[attackerCivID].Randomize().FirstOrDefault().Item1;
-                bool hasOppositionStation = ((_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner));
+                bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
                 while (true)
                 {
                     switch (attackerOrder)
