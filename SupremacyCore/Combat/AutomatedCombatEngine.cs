@@ -30,7 +30,7 @@ namespace Supremacy.Combat
         //private object firstOwner;
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
-        // private List<Tuple<CombatUnit, CombatWeapon[]>> _otherShips;  // own ships
+        private List<int> _unitOwnerIDs;  
         //private Tuple<CombatUnit, CombatWeapon[]> _attackerTuple; 
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionUnits;
 
@@ -82,6 +82,7 @@ namespace Supremacy.Combat
             : base(assets, updateCallback, combatEndedCallback)
         {
             _oppositionUnits = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            _unitOwnerIDs = new List<int>();
         }
 
         //private void CastType(object firstOwner)
@@ -100,46 +101,66 @@ namespace Supremacy.Combat
 
             int maxScanStrengthOpposition = 0;
 
-            GameLog.Core.Test.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
+            GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
 
-            // populate _oppositionUnits dictionary
+            // populate _unitOwnerIDs
             foreach (var unitTuple in _combatShips)
             {
-                GameLog.Core.Test.DebugFormat("_combatShip: {0} {1} ({2})",
-                    unitTuple.Item1.Source.ObjectID, unitTuple.Item1.Name, unitTuple.Item1.Source.Design);
-                //var ownerList = _combatShips.Distinct(_combatShips.); //Where(p => p.Item1.Owner != p.Item1.Owner);
                 if (unitTuple == null)
                 {
                     throw new ArgumentNullException();
                 }
+                _unitOwnerIDs.Add(unitTuple.Item1.OwnerID);
+                _unitOwnerIDs.Distinct();
+            }
+                // populate _oppositionUnits dictionary
+            foreach (var unitTuple in _combatShips)
+            {
+                GameLog.Core.Test.DebugFormat("Uint at dictionary loop {0} {1} {2}",
+                  unitTuple.Item1.Source.Owner.ShortName, unitTuple.Item1.Name, unitTuple.Item1.Source.Design);
 
-                //Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> 
-              
-                List<Tuple<CombatUnit, CombatWeapon[]>> foundUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-                int attackerCivID = 0;
+                List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+                int attackerOwnerID = 0; // track attacker owner id in use
+                int priorAttackerOwnerID = -1;
                 foreach (var attackerUnitTuple in _combatShips)
-                {
-                    if (attackerUnitTuple != unitTuple)
+                {   
+                    attackerOwnerID = attackerUnitTuple.Item1.OwnerID;
+                    if (attackerOwnerID != unitTuple.Item1.OwnerID && attackerOwnerID != priorAttackerOwnerID)
                     {
+                        priorAttackerOwnerID = attackerUnitTuple.Item1.OwnerID;
                         var attackerOrder = GetCombatOrder(attackerUnitTuple.Item1.Source);
                         var attackerTargetOne = GetTargetOne(attackerUnitTuple.Item1.Source); // what civ to attack
-                        var attackerTargetTwo = GetTargetTwo(attackerUnitTuple.Item1.Source); // what civ to attack
-                        attackerCivID = attackerUnitTuple.Item1.Owner.CivID;
-                        GameLog.Core.Test.DebugFormat("target one = {0} for {1}", attackerUnitTuple.Item1.Source.Name, attackerTargetOne);
-
+                        var attackerTargetTwo = GetTargetTwo(attackerUnitTuple.Item1.Source); // what civ to attack                        
+                        GameLog.Core.Test.DebugFormat("{0} {1} is targeting {2}", attackerUnitTuple.Item1.Source.Name, attackerUnitTuple.Item1.Owner.ShortName, attackerTargetOne.ShortName);
+                        GameLog.Core.Test.DebugFormat("prior attacker owner ID {0}", priorAttackerOwnerID);
                         if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
                         {
                             throw new ArgumentException("Cannot choose a target for a ship that does not have orders that require a target");
                         }
 
-                        if (attackerTargetOne == unitTuple.Item1.Owner || attackerTargetTwo == unitTuple.Item1.Owner || CombatHelper.WillEngage(attackerUnitTuple.Item1.Owner, unitTuple.Item1.Owner)) ;   //GameContext.Current.DiplomacyData[attacker.Owner, combatUnitTuple.Item1.Owner].Status.ToString() == "AtWar") ;
+                        foreach (var unitTupleTarget in _combatShips)
                         {
-                            foundUnitTupleList.Add(unitTuple);
+                            if (attackerTargetOne == unitTupleTarget.Item1.Owner || attackerTargetTwo == unitTupleTarget.Item1.Owner || CombatHelper.WillEngage(attackerUnitTuple.Item1.Owner, unitTupleTarget.Item1.Owner)) ;   //GameContext.Current.DiplomacyData[attacker.Owner, combatUnitTuple.Item1.Owner].Status.ToString() == "AtWar") ;
+                            {
+                                if (attackerUnitTuple.Item1.OwnerID != unitTupleTarget.Item1.OwnerID)
+                                {
+                                    targetUnitTupleList.Add(unitTupleTarget);
+                                    GameLog.Core.Test.DebugFormat("Add target {0} for attacker {1}",
+                                            unitTupleTarget.Item1.Name, attackerUnitTuple.Item1.Owner);
+                                }
+                            }
                         }
-                    }
-                    if (!_oppositionUnits.ContainsKey(attackerCivID))
-                    {
-                        _oppositionUnits[attackerCivID] = foundUnitTupleList;
+
+                        if (_unitOwnerIDs.Contains(attackerOwnerID))
+                        {
+                            if (!_oppositionUnits.ContainsKey(attackerOwnerID))
+                            {
+                                _oppositionUnits[attackerOwnerID] = targetUnitTupleList; // setting up dictionary
+                                _unitOwnerIDs.Remove(attackerOwnerID);
+                                targetUnitTupleList.Clear();
+                            }
+                           
+                        }
                     }
                 }
             }

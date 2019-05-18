@@ -800,8 +800,8 @@ namespace Supremacy.Combat
                 GameLog.Core.Test.DebugFormat("Unable to get target one for {0} {1} ({2}) Owner {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
                 ////GameLog.LogException(e);
             }
-            GameLog.Core.Test.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
-                source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _targetOne.Name ); 
+            //GameLog.Core.Test.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
+            //    source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _targetOne.Name ); 
             return _targetOne;
         }
 
@@ -811,7 +811,7 @@ namespace Supremacy.Combat
             _targetTwo = GameContext.Current.Civilizations.LastOrDefault();
             try
             {
-                GameLog.Core.Test.DebugFormat("Try Get target one for  orbital id {0} orbirtal name {1}", source.ObjectID, source.Name, _targetTwo.ToString());                                                                                                                      //if (targetCiv == null)
+/*                GameLog.Core.Test.DebugFormat("Try Get target one for  orbital id {0} orbirtal name {1}", source.ObjectID, source.Name, _targetTwo.ToString());   */                                                                                                                   //if (targetCiv == null)
                 //if(source !=null)
                 _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
                 //return _targetTwoByCiv[source.OwnerID].Owner;

@@ -283,7 +283,7 @@ namespace Supremacy.Combat
                 if (_generateTargetPrimariesTracing == true) // && target != borg)
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);
           
-                GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
+                GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
 
             return targetOne;
