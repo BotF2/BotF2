@@ -1430,8 +1430,8 @@ namespace Supremacy.WCF
                 {
                     _combatEngine.SubmitTargetOnes(target1);
 
-                    if (_combatEngine.Ready)
-                        TryResumeCombat(_combatEngine);
+                    //if (_combatEngine.Ready)
+                    //    TryResumeCombat(_combatEngine);
                 }
             }
             catch (Exception e)
@@ -1452,8 +1452,8 @@ namespace Supremacy.WCF
                 {
                     _combatEngine.SubmitTargetTwos(target2);
 
-                    if (_combatEngine.Ready)
-                        TryResumeCombat(_combatEngine);
+                    //if (_combatEngine.Ready)
+                    //    TryResumeCombat(_combatEngine);
                 }
             }
             catch (Exception e)
@@ -1527,16 +1527,16 @@ namespace Supremacy.WCF
                         if (engine.Ready)
                             engine.ResolveCombatRound();
                     }
-                    lock (engine.SyncLockTargetOnes)
-                    {
-                        if (engine.Ready)
-                            engine.ResolveCombatRound();
-                    }
-                    lock (engine.SyncLockTargetTwos)
-                    {
-                        if (engine.Ready)
-                            engine.ResolveCombatRound();
-                    }
+                    //lock (engine.SyncLockTargetOnes)
+                    //{
+                    //    if (engine.Ready)
+                    //        engine.ResolveCombatRound();
+                    //}
+                    //lock (engine.SyncLockTargetTwos)
+                    //{
+                    //    if (engine.Ready)
+                    //        engine.ResolveCombatRound();
+                    //}
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {

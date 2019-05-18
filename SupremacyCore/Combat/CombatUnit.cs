@@ -35,6 +35,10 @@ namespace Supremacy.Combat
 
         protected CombatUnit(System.Collections.Generic.IEnumerable<Ship> ship) { }
 
+        public CombatUnit()
+        {
+
+        }
         public CombatUnit(Orbital source)
         {
             if (source == null)
