@@ -1,0 +1,10 @@
+diff a/SupremacyCore/Combat/AutomatedCombatEngine.cs b/SupremacyCore/Combat/AutomatedCombatEngine.cs	(rejected hunks)
+@@ -111,7 +111,7 @@
+                     throw new ArgumentNullException();
+                 }
+                 _unitOwnerIDs.Add(unitTuple.Item1.OwnerID);
+-                _unitOwnerIDs.Distinct();
++                _unitOwnerIDs.Distinct().ToList();
+             }
+                 // populate _oppositionUnits dictionary
+             foreach (var unitTuple in _combatShips)
