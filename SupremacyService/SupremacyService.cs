@@ -1517,16 +1517,16 @@ namespace Supremacy.WCF
                         if (engine.Ready)
                             engine.ResolveCombatRound();
                     }
-                    lock (engine.SyncLockTargetOnes)
-                    {
-                        if (engine.Ready)
-                            engine.ResolveCombatRound();
-                    }
-                    lock (engine.SyncLockTargetTwos)
-                    {
-                        if (engine.Ready)
-                            engine.ResolveCombatRound();
-                    }
+                    //lock (engine.SyncLockTargetOnes)
+                    //{
+                    //    if (engine.Ready)
+                    //        engine.ResolveCombatRound();
+                    //}
+                    //lock (engine.SyncLockTargetTwos)
+                    //{
+                    //    if (engine.Ready)
+                    //        engine.ResolveCombatRound();
+                    //}
                 }
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {
