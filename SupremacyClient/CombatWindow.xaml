@@ -296,7 +296,7 @@
     </FrameworkElement.Resources>
     <Grid 
         Height="700"
-        Width="1150">
+        Width="1170">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -552,12 +552,12 @@
                             HorizontalAlignment="Left">
                         <Grid 
                                 Height="Auto"
-                                Width="290">
+                                Width="350">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="140"/>
                         </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1"/>   <!--header "Fire Power" - not used anymore-->
