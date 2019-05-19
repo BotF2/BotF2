@@ -308,7 +308,7 @@ namespace Supremacy.Combat
                 if (_generateTargetPrimariesTracing == true) // && target != borg)
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 //else targetOne.SetTargetOneCiv(ship.Source, borg);
-                GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
+                GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
@@ -316,7 +316,7 @@ namespace Supremacy.Combat
                 if (_generateTargetPrimariesTracing == true) // && target != borg)
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);
                 //else targetOne.SetTargetOneCiv(assets.Station.Source, borg);
-                GameLog.Core.Test.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
+                GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
 
             return targetOne;
