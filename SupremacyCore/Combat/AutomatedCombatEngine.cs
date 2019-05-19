@@ -97,49 +97,6 @@ namespace Supremacy.Combat
 
 
             GameLog.Core.Test.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
-             //populate dictionary
-            //foreach (var unitTuple in _combatShips)
-            //{
-            //    List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            //    int attackerOnwerID = 0;
-            //    int priorAttackerOnwerID = -1;
-            //    foreach (var attachingUnitTuple in _combatShips)
-            //    {
-            //        attackerOnwerID = attachingUnitTuple.Item1.OwnerID;
-            //        if (attackerOnwerID != unitTuple.Item1.OwnerID && attackerOnwerID != priorAttackerOnwerID)
-            //        {
-            //            priorAttackerOnwerID = attachingUnitTuple.Item1.OwnerID;
-
-            //            var attackerOrder = GetCombatOrder(attachingUnitTuple.Item1.Source);
-            //            var attackerTragetOne = GetTargetOne(attachingUnitTuple.Item1.Source);
-            //            var attackerTragetTwo = GetTargetTwo(attachingUnitTuple.Item1.Source);
-            //            if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
-            //            {
-            //                throw new ArgumentException("Cannot choose a target for unit that does not require a target");
-            //            }
-
-            //            foreach (var unitTupleTarget in _combatShips)
-            //            {
-            //                if (attackerTragetOne == unitTupleTarget.Item1.Owner || attackerTragetTwo == unitTupleTarget.Item1.Owner || CombatHelper.WillEngage(attachingUnitTuple.Item1.Owner, unitTupleTarget.Item1.Owner)) ;
-            //                {
-            //                    if (attachingUnitTuple.Item1.OwnerID != unitTupleTarget.Item1.OwnerID)
-            //                    {
-            //                        targetUnitTupleList.Add(unitTupleTarget);
-            //                    }
-            //                }
-            //            }
-            //            if (_unitOnwerIDs.Contains(attackerOnwerID))
-            //            {
-            //                if ((!_oppositionUnits.ContainsKey(attackerOnwerID)))
-            //                {
-            //                    _oppositionUnits[attackerOnwerID] = targetUnitTupleList;
-            //                    _unitOnwerIDs.Remove(attackerOnwerID);
-            //                    targetUnitTupleList.Clear();
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
 
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (!IsCombatOver)
@@ -176,7 +133,68 @@ namespace Supremacy.Combat
                     }
                 }
             }
+            //var attackerOrder = GetCombatOrder(attacker.Source);
+            foreach (var unitTuple in _combatShips)
+            {
+                List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+                int attackerOnwerID = 0;
+                int priorAttackerOnwerID = -1;
+                foreach (var attackingUnitTuple in _combatShips)
+                {
+                    var attackerOrder = GetCombatOrder(attackingUnitTuple.Item1.Source);
+                    attackerOnwerID = attackingUnitTuple.Item1.OwnerID;
+                    if (attackerOnwerID != unitTuple.Item1.OwnerID) // || (attackerOnwerID != priorAttackerOnwerID))
+                    {
+                        priorAttackerOnwerID = attackingUnitTuple.Item1.OwnerID;
 
+                        //var attackerOrder = GetCombatOrder(attachingUnitTuple.Item1.Source);
+                        var attackerTragetOne = GetTargetOne(attackingUnitTuple.Item1.Source);
+                        var attackerTragetTwo = GetTargetTwo(attackingUnitTuple.Item1.Source);
+                        GameLog.Core.Test.DebugFormat("{0} {1} is targeting {2}", attackingUnitTuple.Item1.Owner.ShortName,attackingUnitTuple.Item1.Source.Name, attackerTragetOne.ShortName);
+                        GameLog.Core.Test.DebugFormat("prior Attacker ID {0}", priorAttackerOnwerID);
+                        if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
+                        {
+                            throw new ArgumentException("Cannot choose a target for unit that does not require a target");
+                        }
+                        foreach (var civIDCollector in _combatShips)
+                        {
+                            _unitOnwerIDs.Add(civIDCollector.Item1.OwnerID);
+                            _unitOnwerIDs.Distinct().ToList();
+                        }
+                        foreach (var unitTupleTarget in _combatShips)
+                        {
+
+                            if (attackerTragetOne == unitTupleTarget.Item1.Owner || attackerTragetTwo == unitTupleTarget.Item1.Owner) //GameContext.Current.DiplomacyData[attacker.Owner, combatUnitTuple.Item1.Owner].Status.ToString() == "AtWar") ;
+                            {
+
+                                if (attackingUnitTuple.Item1.OwnerID != unitTupleTarget.Item1.OwnerID)
+                                {
+                                    GameLog.Core.Test.DebugFormat("Add Target {0} for attacker {1}", unitTupleTarget.Item1.Name, attackingUnitTuple.Item1.Name);
+                                    targetUnitTupleList.Add(unitTupleTarget);
+                                }
+                            }
+
+                            //if (_unitOnwerIDs.Contains(attackerOnwerID))
+                            //{
+                                if ((!_oppositionUnits.ContainsKey(attackerOnwerID)))
+                                {
+                                    _oppositionUnits[attackerOnwerID] = targetUnitTupleList;
+                                    foreach (var Tupli in targetUnitTupleList)
+                                    {
+                                        GameLog.Core.Test.DebugFormat("the target Tuple List unit {0} for attacker {1}", Tupli.Item1.Name, attackingUnitTuple.Item1.Owner.ShortName);
+                                    }
+                                    foreach (var oppositionUnit in _oppositionUnits[attackerOnwerID])
+                                    {
+                                        GameLog.Core.Test.DebugFormat("the oppositon List unit {0} for attacker {1}", oppositionUnit.Item1.Name, attackingUnitTuple.Item1.Owner.ShortName);
+                                    }
+                                    _unitOnwerIDs.Remove(attackerOnwerID);
+                                    targetUnitTupleList.Clear();
+                                }
+                            //}
+                        }
+                    }
+                }
+            }
             CombatUnit target = new CombatUnit();
 
             foreach (var attackingUnitTuple in _combatShips)
@@ -772,131 +790,82 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException();
             }
             var attackerOrder = GetCombatOrder(attacker.Source);
-            foreach (var unitTuple in _combatShips)
-            {
-                List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-                int attackerOnwerID = 0;
-                int priorAttackerOnwerID = -1;
-                foreach (var attachingUnitTuple in _combatShips)
-                {
-                    attackerOnwerID = attachingUnitTuple.Item1.OwnerID;
-                    if (attackerOnwerID != unitTuple.Item1.OwnerID) // || (attackerOnwerID != priorAttackerOnwerID))
-                    {
-                        priorAttackerOnwerID = attachingUnitTuple.Item1.OwnerID;
-
-                        //var attackerOrder = GetCombatOrder(attachingUnitTuple.Item1.Source);
-                        var attackerTragetOne = GetTargetOne(attachingUnitTuple.Item1.Source);
-                        var attackerTragetTwo = GetTargetTwo(attachingUnitTuple.Item1.Source);
-                        if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
-                        {
-                            throw new ArgumentException("Cannot choose a target for unit that does not require a target");
-                        }
-
-                        foreach (var unitTupleTarget in _combatShips)
-                        {
-                            if (attackerTragetOne == unitTupleTarget.Item1.Owner || attackerTragetTwo == unitTupleTarget.Item1.Owner) //|| CombatHelper.WillEngage(attachingUnitTuple.Item1.Owner, unitTupleTarget.Item1.Owner)) ;
-                            {
-                                if (attachingUnitTuple.Item1.OwnerID != unitTupleTarget.Item1.OwnerID)
-                                {
-                                    targetUnitTupleList.Add(unitTupleTarget);
-                                }
-                            }
-                        }
-                        //if (_unitOnwerIDs.Contains(attackerOnwerID))
-                        //{
-                        if ((!_oppositionUnits.ContainsKey(attackerOnwerID)))
-                        {
-                            _oppositionUnits[attackerOnwerID] = targetUnitTupleList;
-                            _unitOnwerIDs.Remove(attackerOnwerID);
-                            targetUnitTupleList.Clear();
-                        }
-                        //}
-                    }
-                }
-            }
-
-
             var attackerCivID = attacker.Owner.CivID;
-            var attackerOwnerID = attacker.OwnerID;
+            var attackingOwnerID = attacker.OwnerID;
             bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
-            var oppositionUnits = _oppositionUnits[attackerOwnerID];
-            //if (oppositionUnits.Count() > 0)
-            //{
-                var firstOppositionUint = _oppositionUnits[attackerCivID].Randomize().FirstOrDefault().Item1;
+            var oppositionUnits = _oppositionUnits[attackingOwnerID].ToList();
 
-                //List<Tuple<CombatUnit, CombatWeapon[]>> oppositionShips = _combatShips.Where(cs => targetCiv.Owner.ToString() == cs.Item1.Owner.ToString() && !cs.Item1.IsCloaked && !cs.Item1.IsDestroyed && attackerShipOwner != cs.Item1.Owner).ToList();
+           var firstOppositionUint = oppositionUnits.First().Item1;
 
-                while (true)
+            while (true)
+            {
+                switch (attackerOrder)
                 {
-                    switch (attackerOrder)
-                    {
-                        case CombatOrder.Engage:
-                        case CombatOrder.Formation:
-                            //Only ships to target
-                            if (oppositionUnits.Count() > 0)
-                            {
-                                return firstOppositionUint;
-                            }
-                            break;
-                        ////Has both ships and station to target
-                        //if (hasOppositionStation && (oppositionShips.Count() > 0))
-                        //{
-                        //    var oppOrder = GetCombatOrder(oppositionShips.FirstOrDefault().Item1.Source);
-                        //    if (oppOrder == CombatOrder.Formation) //(RandomHelper.Random(5) == 0)
-                        //    {
-                        //        //GameLog.Core.Combat.DebugFormat("",
-                        //        // oppositionShips.FirstOrDefault().Item1.Source.ObjectID,
-                        //        // oppositionShips.FirstOrDefault().Item1.Source.Name,
-                        //        // oppositionShips.FirstOrDefault().Item1.Source.Design,
-                        //        // oppOrder);
-                        //        return oppositionShips.FirstOrDefault().Item1;
-                        //    }
-                        //    else
-                        //    {
-                        //        return _combatStation.Item1;
-                        //    }
-                        //    // ´MAYBE needs change that target cannot be retreated ships...
-                        //}
-                        ////Only has a station to target
-                        //if (hasOppositionStation)
-                        //{
-                        //    return _combatStation.Item1;
-                        //}
-                        ////Nothing to target
-                        //return null;
+                    case CombatOrder.Engage:
+                    case CombatOrder.Formation:
+                        if (_oppositionUnits.Count() > 0)
+                        {
+                            return firstOppositionUint;
+                        }
+                        break;
+                    ////Has both ships and station to target
+                    //if (hasOppositionStation && (oppositionShips.Count() > 0))
+                    //{
+                    //    var oppOrder = GetCombatOrder(oppositionShips.FirstOrDefault().Item1.Source);
+                    //    if (oppOrder == CombatOrder.Formation) //(RandomHelper.Random(5) == 0)
+                    //    {
+                    //        //GameLog.Core.Combat.DebugFormat("",
+                    //        // oppositionShips.FirstOrDefault().Item1.Source.ObjectID,
+                    //        // oppositionShips.FirstOrDefault().Item1.Source.Name,
+                    //        // oppositionShips.FirstOrDefault().Item1.Source.Design,
+                    //        // oppOrder);
+                    //        return oppositionShips.FirstOrDefault().Item1;
+                    //    }
+                    //    else
+                    //    {
+                    //        return _combatStation.Item1;
+                    //    }
+                    //    // ´MAYBE needs change that target cannot be retreated ships...
+                    //}
+                    ////Only has a station to target
+                    //if (hasOppositionStation)
+                    //{
+                    //    return _combatStation.Item1;
+                    //}
+                    ////Nothing to target
+                    //return null;
 
-                        case CombatOrder.Rush:
-                            //If there are any ships that are retreating, target them
+                    case CombatOrder.Rush:
+                        //If there are any ships that are retreating, target them
 
-                            var oppositionRetreating = _combatShips.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
-                            if (oppositionRetreating.Count() > 0)
-                            {
-                                return oppositionRetreating.First().Item1;
-                            }
-                            attackerOrder = CombatOrder.Engage;
-                            break;
+                        var oppositionRetreating = _combatShips.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
+                        if (oppositionRetreating.Count() > 0)
+                        {
+                            return oppositionRetreating.First().Item1;
+                        }
+                        attackerOrder = CombatOrder.Engage;
+                        break;
 
-                        case CombatOrder.Transports:
-                            //If there are transports and they are not in formation, target them
-                            var oppositionTransports = _combatShips.Where(cs => (cs.Item1.Source.OrbitalDesign.ShipType == "Transport") && !cs.Item1.IsDestroyed);
-                            bool oppositionIsInFormation = oppositionUnits.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
-                            if ((oppositionTransports.Count() > 0) && (!oppositionIsInFormation))
-                            {
-                                return oppositionTransports.First().Item1;
-                            }
-                            //If there any ships retreating, target them
+                    case CombatOrder.Transports:
+                        //If there are transports and they are not in formation, target them
+                        var oppositionTransports = _combatShips.Where(cs => (cs.Item1.Source.OrbitalDesign.ShipType == "Transport") && !cs.Item1.IsDestroyed);
+                        bool oppositionIsInFormation = oppositionUnits.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
+                        if ((oppositionTransports.Count() > 0) && (!oppositionIsInFormation))
+                        {
+                            return oppositionTransports.First().Item1;
+                        }
+                        //If there any ships retreating, target them
 
-                            var oppositionRetreatingRaid = _combatShips.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
-                            if (oppositionRetreatingRaid.Count() > 0)
-                            {
-                                return oppositionRetreatingRaid.First().Item1;
-                            }
-                            attackerOrder = CombatOrder.Engage;
-                            break;
-                        default:
-                            return firstOppositionUint; ///oppositionRetreatingRaid.First().Item1; ;
-                    }
-                //}
+                        var oppositionRetreatingRaid = _combatShips.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
+                        if (oppositionRetreatingRaid.Count() > 0)
+                        {
+                            return oppositionRetreatingRaid.First().Item1;
+                        }
+                        attackerOrder = CombatOrder.Engage;
+                        break;
+                    default:
+                        return firstOppositionUint; ///oppositionRetreatingRaid.First().Item1; ;
+                }
             }
         }
             /// <summary>
