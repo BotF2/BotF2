@@ -193,8 +193,8 @@ namespace Supremacy.Combat
                             //var attackerOrder = GetCombatOrder(attachingUnitTuple.Item1.Source);
                             var attackerTragetOne = GetTargetOne(attackingUnitTuple.Item1.Source);
                             var attackerTragetTwo = GetTargetTwo(attackingUnitTuple.Item1.Source);
-                            GameLog.Core.Test.DebugFormat("attacker {0} {1} targeting {2}", attackingUnitTuple.Item1.Owner.ShortName, attackingUnitTuple.Item1.Source.Name, attackerTragetOne.ShortName);
-                            GameLog.Core.Test.DebugFormat("unit Tuple ID {0} {1} va attacker ID {2} {3}", unitTupleOnwerID, unitTuple.Item1.Name, attackingUnitTuple.Item1.OwnerID, attackingUnitTuple.Item1.Name);
+                            GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting {2}", attackingUnitTuple.Item1.Owner.ShortName, attackingUnitTuple.Item1.Source.Name, attackerTragetOne.ShortName);
+                            GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & attacker {2} {3}", unitTuple.Item1.OwnerID, unitTuple.Item1.Name, attackingUnitTuple.Item1.OwnerID, attackingUnitTuple.Item1.Name);
                             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
                             {
                                 throw new ArgumentException("Cannot choose a target for unit that does not require a target");
@@ -208,8 +208,8 @@ namespace Supremacy.Combat
                                     //GameLog.Core.Test.DebugFormat("",);
                                     if (attackingUnitTuple.Item1.OwnerID != unitTupleTarget.Item1.OwnerID)
                                     {
-                                        GameLog.Core.Test.DebugFormat("Add Target {0} for attacker {1}", unitTupleTarget.Item1.Name, attackingUnitTuple.Item1.Name);
-                                        GameLog.Core.Test.DebugFormat("Add returnfire {0} for attacker {1}", attackingUnitTuple.Item1.Name, unitTupleTarget.Item1.Name);
+                                        GameLog.Core.Test.DebugFormat("Add Target of {0} for attacker {1}", unitTupleTarget.Item1.Name, attackingUnitTuple.Item1.Owner.ShortName);
+                                        GameLog.Core.Test.DebugFormat("returnfire at {0} for attacker {1}", attackingUnitTuple.Item1.Name, unitTupleTarget.Item1.Owner.ShortName);
                                         targetUnitTupleList.Add(unitTupleTarget);
                                         returnFireTupleList.Add(attackingUnitTuple);
                                     }
