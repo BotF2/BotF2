@@ -32,45 +32,6 @@ namespace Supremacy.Combat
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private List<int> _unitOnwerIDs;
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionUnits;
-        //private Dictionary<int, int> _unitCivIDTarget1;
-        //private Dictionary<int, int> _unitCivIDTarget2;
-        //private List<Tuple<CombatUnit, CombatWeapon[]>> _otherShips;  // own ships
-        //private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyShips;  // fight along side
-        //private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionsShips;
-
-        //public List<Tuple<CombatUnit, CombatWeapon[]>> OtherShips
-        //{
-        //    get
-        //    {
-        //        return this._otherShips;
-        //    }
-        //    set
-        //    {
-        //        this._otherShips = value;
-        //    }
-        //}
-        //public List<Tuple<CombatUnit, CombatWeapon[]>> FriendlyShips
-        //{
-        //    get
-        //    {
-        //        return this._friendlyShips;
-        //    }
-        //    set
-        //    {
-        //        this._friendlyShips = value;
-        //    }
-        //}
-        //public List<Tuple<CombatUnit, CombatWeapon[]>> OppositionShips
-        //{
-        //    get
-        //    {
-        //        return this._oppositionsShips;
-        //    }
-        //    set
-        //    {
-        //        this._oppositionsShips = value;
-        //    }
-        //}
 
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
@@ -81,11 +42,6 @@ namespace Supremacy.Combat
             _unitOnwerIDs = new List<int>();
             _oppositionUnits = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
-
-        //private void CastType(object firstOwner)
-        //{
-        //    Civilization actualType = (Civilization)firstOwner;
-        //}
 
         protected override void ResolveCombatRoundCore()
         {
@@ -180,7 +136,7 @@ namespace Supremacy.Combat
                     GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
                     List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
                     int attackerOnwerID = 0;
-                    int unitTupleOnwerID = -1;
+                    int unitTupleTracker = -1;
                     foreach (var attackingUnitTuple in _combatShips)
                     {
 
@@ -188,7 +144,7 @@ namespace Supremacy.Combat
                         attackerOnwerID = attackingUnitTuple.Item1.OwnerID;
                         if (attackerOnwerID != unitTuple.Item1.OwnerID && _unitOnwerIDs.Contains(attackerOnwerID)) // || (attackerOnwerID != priorAttackerOnwerID))
                         {
-                            unitTupleOnwerID = unitTuple.Item1.OwnerID;
+                            unitTupleTracker = unitTuple.Item1.OwnerID;
 
                             //var attackerOrder = GetCombatOrder(attachingUnitTuple.Item1.Source);
                             var attackerTragetOne = GetTargetOne(attackingUnitTuple.Item1.Source);
@@ -203,7 +159,7 @@ namespace Supremacy.Combat
                             foreach (var unitTupleTarget in _combatShips)
                             {
 
-                                if (attackerTragetOne == unitTupleTarget.Item1.Owner || attackerTragetTwo == unitTupleTarget.Item1.Owner) // || GameContext.Current.DiplomacyData[attackingUnitTuple.Item1.Owner, unitTupleTarget.Item1.Owner].Status.ToString() == "AtWar");
+                                if (attackerTragetOne == unitTupleTarget.Item1.Owner || attackerTragetTwo == unitTupleTarget.Item1.Owner || GameContext.Current.DiplomacyData[attackingUnitTuple.Item1.Owner, unitTupleTarget.Item1.Owner].Status == ForeignPowerStatus.AtWar) ;
                                 {
                                     //GameLog.Core.Test.DebugFormat("",);
                                     if (attackingUnitTuple.Item1.OwnerID != unitTupleTarget.Item1.OwnerID)
