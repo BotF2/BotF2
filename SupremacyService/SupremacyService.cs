@@ -1430,8 +1430,6 @@ namespace Supremacy.WCF
                 {
                     _combatEngine.SubmitTargetOnes(target1);
 
-                    //if (_combatEngine.Ready)
-                    //    TryResumeCombat(_combatEngine);
                 }
             }
             catch (Exception e)
@@ -1452,8 +1450,6 @@ namespace Supremacy.WCF
                 {
                     _combatEngine.SubmitTargetTwos(target2);
 
-                    //if (_combatEngine.Ready)
-                    //    TryResumeCombat(_combatEngine);
                 }
             }
             catch (Exception e)

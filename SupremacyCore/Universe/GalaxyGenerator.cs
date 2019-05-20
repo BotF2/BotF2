@@ -814,7 +814,7 @@ namespace Supremacy.Universe
             homeLocations = new Collections.CollectionBase<MapLocation>();
             var chosenCivs = new List<Civilization>();
 
-            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, !GameContext.Current.IsMultiplayerGame);
+            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);//!GameContext.Current.IsMultiplayerGame);
             if (minorRaceFrequency != MinorRaceFrequency.None)
                 PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs);
 

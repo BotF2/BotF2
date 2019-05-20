@@ -159,7 +159,8 @@ namespace Supremacy.Combat
                             foreach (var unitTupleTarget in _combatShips)
                             {
 
-                                if (attackerTragetOne == unitTupleTarget.Item1.Owner || attackerTragetTwo == unitTupleTarget.Item1.Owner || GameContext.Current.DiplomacyData[attackingUnitTuple.Item1.Owner, unitTupleTarget.Item1.Owner].Status == ForeignPowerStatus.AtWar) ;
+                                if (attackerTragetOne == unitTupleTarget.Item1.Owner || attackerTragetTwo == unitTupleTarget.Item1.Owner
+                                    || GameContext.Current.DiplomacyData[attackingUnitTuple.Item1.Owner, unitTupleTarget.Item1.Owner].Status == ForeignPowerStatus.AtWar) ;
                                 {
                                     //GameLog.Core.Test.DebugFormat("",);
                                     if (attackingUnitTuple.Item1.OwnerID != unitTupleTarget.Item1.OwnerID)
