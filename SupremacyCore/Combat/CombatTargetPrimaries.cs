@@ -80,9 +80,9 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne.Name);
+            //GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne.Name);
             _targetPrimaries[source.ObjectID] = targetOne;
-            //_targetPrimaries.Add(source.ObjectID, _targetOne);
+            
 
 
         }

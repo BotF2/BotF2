@@ -356,11 +356,11 @@ namespace Supremacy.Combat
                 //    RunningTargetOne = true;
                 //    lock (_targetTwoByCiv)
                 //    {
-                        //GameLog.Core.Test.DebugFormat("ResolveCombatRound locking orders and targets");
+                //GameLog.Core.Test.DebugFormat("ResolveCombatRound locking orders and targets");
 
-                        //RunningTargetTwo = true;
+                //RunningTargetTwo = true;
 
-                        _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset
+                _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset
                         CalculateEmpireStrengths();
 
                         if ((_roundNumber > 1) || !AllSidesStandDown())
@@ -382,9 +382,9 @@ namespace Supremacy.Combat
                         {
                             _roundNumber++;
                         }
-                    //    _targetTwoByCiv.Clear();
-                    //}
-                    //_targetOneByCiv.Clear();
+                //_targetTwoByCiv.Clear();
+                //    }
+                //_targetOneByCiv.Clear();
                 //}
 
                 _orders.Clear();
