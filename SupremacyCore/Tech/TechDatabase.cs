@@ -203,7 +203,7 @@ namespace Supremacy.Tech
                 string sourceKey = xmlFacility.GetAttribute("Key");
                 if (xmlFacility["ObsoletedItems"] != null)
                 {
-                    foreach (XmlElement xmlObsoleted in 
+                    foreach (XmlElement xmlObsoleted in
                         xmlFacility["ObsoletedItems"].GetElementsByTagName("ObsoletedItem"))
                     {
                         string obsoletedKey = xmlObsoleted.InnerText.Trim();
@@ -227,7 +227,7 @@ namespace Supremacy.Tech
                             if (designIdMap.ContainsKey(prereqKey)
                                 && db.ProductionFacilityDesigns.Contains(designIdMap[prereqKey]))
                             {
-                                equivPrereqs.Add(db.ProductionFacilityDesigns[designIdMap[prereqKey]]);                                
+                                equivPrereqs.Add(db.ProductionFacilityDesigns[designIdMap[prereqKey]]);
                             }
                         }
                         if (equivPrereqs.Count > 0)
@@ -240,7 +240,7 @@ namespace Supremacy.Tech
                         xmlFacility["UpgradeOptions"].GetElementsByTagName("UpgradeOption"))
                     {
                         string upgradeKey = xmlUpgrade.InnerText.Trim();
-                        if (designIdMap.ContainsKey(upgradeKey) 
+                        if (designIdMap.ContainsKey(upgradeKey)
                             && db.ProductionFacilityDesigns.Contains(designIdMap[upgradeKey]))
                         {
                             db.ProductionFacilityDesigns[designIdMap[sourceKey]].UpgradableDesigns.Add(
@@ -262,7 +262,7 @@ namespace Supremacy.Tech
                 //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: battery.DesignID={0}, {1}", battery.DesignID, battery.LocalizedName);
                 db.OrbitalBatteryDesigns.Add(battery);
             }
-            
+
             foreach (XmlElement xmlBattery in xmlBatteries.GetElementsByTagName("OrbitalBattery"))
             {
                 var sourceKey = xmlBattery.GetAttribute("Key");
@@ -579,14 +579,14 @@ namespace Supremacy.Tech
                 var separator = ";";
                 var line = "";
                 StreamWriter streamWriter;
-                var file = "./lib/test.txt";
+                var file = "./lib/test-ProdFac.txt";
                 streamWriter = new StreamWriter(file);
                 String strHeader = "";  // first line of output files
 
                 #region ProductionFacilities_To_CSV
                 try // avoid hang up if this file is opened by another program 
                 {
-                    file = pathOutputFile + "FromTechObj-ProdFac_(autoCreated).csv";
+                    file = pathOutputFile + "_FromTechObj-ProdFac_(autoCreated).csv";
 
                     Console.WriteLine("writing {0}", file);
 
@@ -608,24 +608,40 @@ namespace Supremacy.Tech
                         "CE_Weapons" + separator +
                         "CE_BuildCost" + separator +
                         "CE_IsUniversallyAvailable" + separator +
+
+                        "CE_LaborCost" + separator +
+                        "CE_Category" + separator +
+
+                        // just placeholder
+                        "CE_Bonus" + separator +
+                        "CE_Restrictions" + separator +
                         "CE_Prerequisites" + separator +
                         "CE_ObsoletedItems" + separator +
-                        "CE_UpgradeOptions" + separator +
-                        "CE_Restrictions" + separator +
-                        //"CE_EnergyCosts_not_used_anymore?" + separator +
-                        "CE_BuildSlots" + separator +
-                        "CE_BuildSlotMaxOutput" + separator +
-                        "CE_BuildSlotOutputType" + separator +
-                        "CE_BuildSlotOutput" + separator +
-                        "CE_BuildSlotEnergyCost" + separator +
-                        "CE_MaxBuildTechLevel";
+                        "CE_UpgradeOptions"
+                        ;
 
                     streamWriter.WriteLine(strHeader);
                     // End of head line
 
+                    string category = "";
                     foreach (var PF in db.ProductionFacilityDesigns)   // each shipyard
                     {
                         //App.DoEvents();  // for avoid error after 60 seconds
+
+                        if (PF.Category > 0)
+                            category = PF.Category.ToString();
+
+                        if (PF.Category == 0)
+                        {
+                            category = PF.Category.ToString();
+                            if (PF.Key.Contains("DILITHIUM"))
+                                category = "Dilithium";
+                            if (PF.Key.Contains("DEUTERIUM"))
+                                category = "Deuterium";
+                            if (PF.Key.Contains("RAWMATERIALS"))
+                                category = "RawMaterials";
+                        }
+
 
                         line =
                         "ProductionFacility" + separator +
@@ -664,17 +680,22 @@ namespace Supremacy.Tech
                         //"</Weapons>" + separator +                // not helpful
 
 
-                        //PF.BuildCost + separator +
-                        //PF.IsUniversallyAvailable + separator +
-                        //"UpgradeOptions for " + PF.Key + separator +
+                        PF.BuildCost + separator +
+                        PF.IsUniversallyAvailable + separator +
 
-                        //"Prerequisites for " + PF.Key + separator +
-                        //"ObsoletedItems for " + PF.Key + separator +
-                        //PF.LaborCost + separator +
+                        PF.LaborCost + separator +
 
-                        //PF.Category + separator +
+                        category + separator +
+
+
+
+                        // just placeholders
+                        "Bonus for " + PF.Key + separator +
                         "Restrictions for " + PF.Key + separator +
-                        "Bonus for " + PF.Key;
+                        "Prerequisites for " + PF.Key + separator +
+                        "ObsoletedItems for " + PF.Key + separator +
+                        "UpgradeOptions for " + PF.Key
+                        ;
 
                         //Console.WriteLine("{0}", line);
 
@@ -683,7 +704,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-ProductionFacilities_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-ProductionFacilities_(autoCreated).csv", e);
                 }
 
                 // End of ProductionFacilities
@@ -694,7 +715,10 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = pathOutputFile + "FromTechObj-ShipNames_(autoCreated).csv";
+                    file = pathOutputFile + "_FromTechObj-ShipNames_(autoCreated).csv";
+
+                    streamWriter = new StreamWriter(file);
+
                     Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -721,7 +745,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-ShipNames_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-ShipNames_(autoCreated).csv", e);
                 }
                 // End of PShipNames
                 #endregion PossibleShipNames_To_CSV;
@@ -730,7 +754,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // Ships    
-                    file = pathOutputFile + "FromTechObj-Ships_(autoCreated).csv";
+                    file = pathOutputFile + "_FromTechObj-Ships_(autoCreated).csv";
                     //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -847,23 +871,7 @@ namespace Supremacy.Tech
                             item.PopulationHealth + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export
                             item.IsUniversallyAvailable + separator +
 
-                            // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
-                            item.Key + separator +
 
-                            //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
-                            //"<ObsoletedItems> + newline + " +                 // not helpful
-                            //"<ObsoletedItem></ObsoletedItem>" +// not helpful
-                            //" + newline + </ObsoletedItems>" +                 // not helpful
-                            //separator +
-
-                            //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
-                            item.Key + "I" + separator +
-                            //item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
-                            //"<UpgradeOptions> + newline + " +                // not helpful
-                            //"<UpgradeOption></UpgradeOption> + " +// not helpful
-                            //separator +
-
-                            // if UpgrodeOption is "SHIPI" (I at the end) -> remove manually
 
                             item.CrewSize + separator +
                             item.ScienceAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
@@ -888,11 +896,6 @@ namespace Supremacy.Tech
 
                             item.InterceptAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
 
-                            // Possibles ShipNames
-                            //"<ShipNames> + newline + " +                // not helpful
-                            //"<ShipName></ShipName>" +// not helpful
-                            //" + newline + </ShipNames>" +                 // not helpful
-                            "PossibleShipNames" + item.Key + separator +   // doubled ??
 
 
                             //"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
@@ -902,14 +905,40 @@ namespace Supremacy.Tech
 
                             //"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
                             item.SecondaryWeapon.Count + separator +
-                            item.SecondaryWeapon.Damage;
+                            item.SecondaryWeapon.Damage + separator +
+
+
+                             // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
+                             "ObsoletedItems" + item.Key + separator +
+
+                             //item.ObsoletedDesigns.FirstIndexOf(item) + separator +  // not working fine
+                             //"<ObsoletedItems> + newline + " +                 // not helpful
+                             //"<ObsoletedItem></ObsoletedItem>" +// not helpful
+                             //" + newline + </ObsoletedItems>" +                 // not helpful
+                             //separator +
+
+                             //<UpgradeOptions>  // new trying.... justing take the key and add a "I"
+                             "UpgradeOptions" + item.Key + separator +
+                            //item.UpgradableDesigns.FirstIndexOf(item) + separator +  // not working fine
+                            //"<UpgradeOptions> + newline + " +                // not helpful
+                            //"<UpgradeOption></UpgradeOption> + " +// not helpful
+                            //separator +
+
+
+
+                            // Possibles ShipNames
+                            //"<ShipNames> + newline + " +                // not helpful
+                            //"<ShipName></ShipName>" +// not helpful
+                            //" + newline + </ShipNames>" +                 // not helpful
+                            "PossibleShipNames" + item.Key
+                            ;
 
                         streamWriter.WriteLine(line);
                     }
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-Ships_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Ships_(autoCreated).csv", e);
                 }
 
                 // End of Ships
@@ -919,7 +948,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = pathOutputFile + "FromTechObj-Shipyards_(autoCreated).csv";
+                    file = pathOutputFile + "_FromTechObj-Shipyards_(autoCreated).csv";
                     //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -940,17 +969,20 @@ namespace Supremacy.Tech
                         "CE_Weapons" + separator +
                         "CE_BuildCost" + separator +
                         "CE_IsUniversallyAvailable" + separator +
-                        "CE_Prerequisites" + separator +
-                        "CE_ObsoletedItems" + separator +
-                        "CE_UpgradeOptions" + separator +
-                        "CE_Restrictions" + separator +
+
                         //"CE_EnergyCosts_not_used_anymore?" + separator +
                         "CE_BuildSlots" + separator +
                         "CE_BuildSlotMaxOutput" + separator +
                         "CE_BuildSlotOutputType" + separator +
                         "CE_BuildSlotOutput" + separator +
                         "CE_BuildSlotEnergyCost" + separator +
-                        "CE_MaxBuildTechLevel";
+                        "CE_MaxBuildTechLevel" + separator +
+
+                        "CE_Restrictions" + separator +
+                        "CE_Prerequisites" + separator +
+                        "CE_ObsoletedItems" + separator +
+                        "CE_UpgradeOptions" + separator
+                        ;
 
                     streamWriter.WriteLine(strHeader);
                     // End of head line
@@ -993,24 +1025,27 @@ namespace Supremacy.Tech
 
                         shipyard.BuildCost + separator +
                         shipyard.IsUniversallyAvailable + separator +
-                        "Prerequisites for " + shipyard.Key + separator +
-                        "ObsoletedItems for " + shipyard.Key + separator +
-                        "UpgradeOptions for " + shipyard.Key + separator +
+
                         //"EnergyCost_not_used_anymore?" + separator +
-                        shipyard.Restriction + separator +
+
                         shipyard.BuildSlots + separator +
                         shipyard.BuildSlotMaxOutput + separator +
                         shipyard.BuildSlotOutputType + separator +
                         shipyard.BuildSlotOutput + separator +
                         shipyard.BuildSlotEnergyCost + separator +
-                        shipyard.MaxBuildTechLevel;
+                        shipyard.MaxBuildTechLevel + separator +
+                        shipyard.Restriction + separator +
+                        "Prerequisites for " + shipyard.Key + separator +
+                        "ObsoletedItems for " + shipyard.Key + separator +
+                        "UpgradeOptions for " + shipyard.Key
+                        ;
 
                         streamWriter.WriteLine(line);
                     }
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-Shipyards_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Shipyards_(autoCreated).csv", e);
                 }
 
                 // End of Shipyards
@@ -1021,7 +1056,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = pathOutputFile + "FromTechObj-Stations_(autoCreated).csv";
+                    file = pathOutputFile + "_FromTechObj-Stations_(autoCreated).csv";
                     Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -1045,11 +1080,7 @@ namespace Supremacy.Tech
                         "CE_MaintanceCost" + separator +
                         "CE_Crew" + separator +
                         "CE_IsUniversallyAvailable" + separator +
-                        "CE_Prerequisites" + separator +
-                        "CE_ObsoletedItems" + separator +
-                        "CE_UpgradeOptions" + separator +
-                        
-                        "CE_StationNames" + separator +
+
                         "CE_ScienceAbility" + separator +
                         "CE_ScanPower" + separator +
                         //"CE_EnergyCosts_not_used_anymore?" + separator +
@@ -1058,16 +1089,25 @@ namespace Supremacy.Tech
                         "CE_ShieldStrength" + separator +
                         "CE_ShieldRecharge" + separator +
 
+                        "CE_Beam" + separator +
                         "CE_Beam Count" + separator +
                         "CE_Damage" + separator +
                         "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
 
-
+                        "CE_Torpedo" + separator +
                         "CE_Torpedo Count" + separator +
-                        "CE_Damage" +
+                        "CE_Damage" + separator +
 
                         "CE_RepairSlots" + separator +
-                        "CE_RepairCapacity";
+                        "CE_RepairCapacity" + separator +
+
+                        // just placeholders at the moment for > other/outside replacements
+                        "CE_Prerequisites" + separator +
+                        "CE_ObsoletedItems" + separator +
+                        "CE_UpgradeOptions" + separator +
+
+                        "CE_StationNames"
+                        ;
 
                     streamWriter.WriteLine(strHeader);
                     // End of head line
@@ -1111,18 +1151,16 @@ namespace Supremacy.Tech
                         station.BuildCost + separator +
                         station.RawMaterials + separator +
                         station.MaintenanceCost + separator +
-                        station.IsUniversallyAvailable + separator +
                         station.CrewSize + separator +
-                        "Prerequisites for " + station.Key + separator +
-                        "ObsoletedItems for " + station.Key + separator +
-                        "UpgradeOptions for " + station.Key + separator +
+                        station.IsUniversallyAvailable + separator +
+
+
                         //"EnergyCost_not_used_anymore?" + separator +
-                        
-                        "PossibleStationNames" + station.Key + separator +   // doubled ??
+
                         station.ScienceAbility + separator +
                         station.ScanStrength + separator +  // equal to ScanPower
                         station.SensorRange + separator +
-                        
+
                         station.HullStrength + separator +
                         station.ShieldStrength + separator +
                         station.ShieldRechargeRate + separator +
@@ -1139,6 +1177,13 @@ namespace Supremacy.Tech
 
                         station.BuildSlots + separator +
                         station.BuildOutput + separator +
+
+                        // just placeholders at the moment for > other/outside replacements
+                        "Prerequisites for " + station.Key + separator +
+                        "ObsoletedItems for " + station.Key + separator +
+                        "UpgradeOptions for " + station.Key + separator +
+                        "PossibleStationNames" + station.Key + separator +
+
                         separator;  // ends with an empty column
 
 
@@ -1147,7 +1192,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... FromTechObj-Stations_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Stations_(autoCreated).csv", e);
                 }
 
                 // End of Stations
@@ -1155,9 +1200,9 @@ namespace Supremacy.Tech
 
                 // End of Autocreated files 
                 streamWriter.Close();
-                WriterClose:;
+            WriterClose:;
             }
-            
+
 
             db._designIdMap = designIdMap;
 
@@ -1267,7 +1312,7 @@ namespace Supremacy.Tech
 
 
                         XmlElement designElement = xmlDoc.CreateElement("Building");
-                  GameLog.Client.GameData.DebugFormat("designBuildings={0}, {1}", design, designElement);
+                        GameLog.Client.GameData.DebugFormat("designBuildings={0}, {1}", design, designElement);
                         design.AppendXml(designElement);
                         groupElement.AppendChild(designElement);
                     }
@@ -1316,7 +1361,7 @@ namespace Supremacy.Tech
                 }
 
                 xmlDoc.WriteTo(xmlWriter);
-                
+
             }
         }
 

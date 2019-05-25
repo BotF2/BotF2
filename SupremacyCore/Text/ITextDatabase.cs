@@ -93,14 +93,14 @@ namespace Supremacy.Text
             var separator = ";";
             var line = "";
             StreamWriter streamWriter;
-            var file = "./lib/test3.txt";
+            var file = "./lib/test-FromTextDatabase.txt";
             //streamWriter = new StreamWriter(file);
             String strHeader = "";  // first line of output files
 
             try // avoid hang up if this file is opened by another program 
             {
 
-                file = pathOutputfile + "FromTextDatabase_(autoCreated).csv";
+                file = pathOutputfile + "_FromTextDatabase_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
@@ -136,9 +136,10 @@ namespace Supremacy.Text
                             (string)localizedEntryElement.Attribute("Language"),
                             (string)localizedEntryElement.Element("Name"),
                             //(string)localizedEntryElement.Element("ClassLevel"),
-                            (string)localizedEntryElement.Element("Description"),
                             (string)localizedEntryElement.Element("Custom1"),
-                            (string)localizedEntryElement.Element("Custom2"));
+                            (string)localizedEntryElement.Element("Custom2"),
+                            (string)localizedEntryElement.Element("Description")
+                            );
 
                         entry.AddInternal(localizedEntry);
 
@@ -147,9 +148,10 @@ namespace Supremacy.Text
                             entry.Key + separator +
                             (string)localizedEntryElement.Attribute("Language") + separator +
                             (string)localizedEntryElement.Element("Name") + separator +
-                            (string)localizedEntryElement.Element("Description") + separator +
                             (string)localizedEntryElement.Element("Custom1") + separator +
-                            (string)localizedEntryElement.Element("Custom2");
+                            (string)localizedEntryElement.Element("Custom2") + separator +
+                            (string)localizedEntryElement.Element("Description");   // Description at end because of some semicolon inside
+
                         //Console.WriteLine("{0}", line);
                         streamWriter.WriteLine(line);
 
@@ -158,23 +160,23 @@ namespace Supremacy.Text
                 }
 
                 streamWriter.Close();
-                WriterCloseFromTextDatabase:;
+            WriterCloseFromTextDatabase:;
                 // End of Autocreated files   
 
 
-            var raceTable = database.RaceTextTable;
-            var raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
-            var raceTableElement = doc.Root.Elements("Tables")
-                .Elements("Table")
-                .Where(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType))
-                .FirstOrDefault();
+                var raceTable = database.RaceTextTable;
+                var raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
+                var raceTableElement = doc.Root.Elements("Tables")
+                    .Elements("Table")
+                    .Where(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType))
+                    .FirstOrDefault();
 
-            if (raceTableElement == null)    // Races might be done in RaceDatabase.cs
+                if (raceTableElement == null)    // Races might be done in RaceDatabase.cs
                     return database;
 
-            var raceEntries = raceTableElement
-                .Elements("Entries")
-                .Elements("Entry");
+                var raceEntries = raceTableElement
+                    .Elements("Entries")
+                    .Elements("Entry");
 
                 foreach (var entryElement in raceEntries)
                 {
@@ -203,9 +205,9 @@ namespace Supremacy.Text
             }
             catch (Exception e)
             {
-                GameLog.Core.GameData.Error("Cannot write ... FromTextDatabase_(autoCreated).csv", e);
+                GameLog.Core.GameData.Error("Cannot write ... _FromTextDatabase_(autoCreated).csv", e);
             }
- 
+
             return database;
         }
 
@@ -561,7 +563,7 @@ namespace Supremacy.Text
                 get { return false; }
             }
 
-            public void RejectChanges() {}
+            public void RejectChanges() { }
 
             public string Language
             {
@@ -590,15 +592,15 @@ namespace Supremacy.Text
             public string Description { get; set; }
             public string Custom1 { get; set; }
             public string Custom2 { get; set; }
-            
-            public void BeginEdit() {}
-            public void EndEdit() {}
-            public void CancelEdit() {}
+
+            public void BeginEdit() { }
+            public void EndEdit() { }
+            public void CancelEdit() { }
 
             public event EventHandler Changed
             {
-                add {}
-                remove {}
+                add { }
+                remove { }
             }
         }
         #endregion
@@ -680,8 +682,8 @@ namespace Supremacy.Text
 
             public event EventHandler Changed
             {
-                add {}
-                remove {}
+                add { }
+                remove { }
             }
         }
         #endregion
@@ -703,7 +705,8 @@ namespace Supremacy.Text
     }
 
     public interface ITextDatabaseEntryCollection<TLocalizedEntry> : ICollection<ITextDatabaseEntry<TLocalizedEntry>>, INotifyCollectionChanged, IRevertibleChangeTracking, IEditableObject
-        where TLocalizedEntry : ILocalizedTextDatabaseEntry {}
+        where TLocalizedEntry : ILocalizedTextDatabaseEntry
+    { }
 
     public interface ITextDatabaseEntry<TLocalizedEntry> : ICollection<TLocalizedEntry>, IEditableObject, IRevertibleChangeTracking, INotifyCollectionChanged, INotifyChanged where TLocalizedEntry : ILocalizedTextDatabaseEntry
     {
@@ -746,7 +749,8 @@ namespace Supremacy.Text
     }
 
     public interface ILocalizedStringCollection
-        : ICollection<ILocalizedTextDatabaseEntry>, INotifyCollectionChanged, IEditableObject, IRevertibleChangeTracking { }
+        : ICollection<ILocalizedTextDatabaseEntry>, INotifyCollectionChanged, IEditableObject, IRevertibleChangeTracking
+    { }
 
     public interface ILocalizedTextDatabaseEntry : IRevertibleChangeTracking, IEditableObject, INotifyChanged
     {

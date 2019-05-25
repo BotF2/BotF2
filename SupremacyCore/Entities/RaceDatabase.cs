@@ -39,7 +39,7 @@ namespace Supremacy.Entities
         /// <summary>
         /// Constructs a new RaceDatabase
         /// </summary>
-        public RaceDatabase() : base(o => o.Key) {}
+        public RaceDatabase() : base(o => o.Key) { }
 
         /// <summary>
         /// Saves the race database to XML.
@@ -57,18 +57,18 @@ namespace Supremacy.Entities
         {
             var ns = XNamespace.Get("Supremacy:Races.xsd");
             var supremacyNamespace = XNamespace.Get("Supremacy:Supremacy.xsd");
-            
+
             var rootElement = new XElement(
                 ns + "Races",
                 new XAttribute(
                     XNamespace.Xmlns + "s",
                     supremacyNamespace));
-            
+
             var xmlDoc = new XDocument(rootElement);
 
             foreach (var race in this)
                 race.AppendXml(rootElement);
-            
+
             xmlDoc.Save(fileName, SaveOptions.None);
         }
 
@@ -128,13 +128,13 @@ namespace Supremacy.Entities
                     var separator = ";";
                     var line = "";
                     StreamWriter streamWriter;
-                    var file = "./lib/testCiv.txt";
+                    var file = "./lib/test-FromRaces.txt";
                     streamWriter = new StreamWriter(file);
                     String strHeader = "";  // first line of output files
 
                     try // avoid hang up if this file is opened by another program 
                     {
-                        file = pathOutputFile + "FromRacesXML_(autoCreated).csv";
+                        file = pathOutputFile + "_FromRacesXML_(autoCreated).csv";
 
                         Console.WriteLine("writing {0}", file);
 
@@ -165,7 +165,7 @@ namespace Supremacy.Entities
                         // End of head line
 
 
-                        GameLog.Core.GameData.DebugFormat("begin writing FromRacesXML_(autoCreated).csv ... beware of NO dismatch of Keys between Civ..xml and Races.xml");
+                        GameLog.Core.GameData.DebugFormat("begin writing _FromRacesXML_(autoCreated).csv ... beware of NO dismatch of Keys between Civ..xml and Races.xml");
                         string RaceName = "";
                         foreach (var race in raceDatabase)   // each race
                         {
@@ -174,7 +174,7 @@ namespace Supremacy.Entities
                             try
                             {
                                 RaceName = race.Name;   // missing: check for civs   (code was just CopyPaste from civ at the moment)
-                                
+
                             }
                             catch
                             {
@@ -217,7 +217,7 @@ namespace Supremacy.Entities
                     }
                     catch (Exception e)
                     {
-                        GameLog.Core.GameData.Error("Cannot write ... FromRacesXML_(autoCreated).csv", e);
+                        GameLog.Core.GameData.Error("Cannot write ... _FromRacesXML_(autoCreated).csv", e);
                     }
 
 

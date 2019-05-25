@@ -55,8 +55,8 @@ namespace Supremacy.Universe
             StreamWriter streamWriter;
             StreamWriter streamWriter2;
             var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
-            var file = "./lib/test2.txt";
-            var file2 = "./lib/test4.txt";
+            var file = "./lib/test-FromHomeSystems.txt";
+            var file2 = "./lib/test2-FromHomeSystems.txt";
             streamWriter = new StreamWriter(file);
             streamWriter2 = new StreamWriter(file2);
             streamWriter.Close();
@@ -69,7 +69,7 @@ namespace Supremacy.Universe
             try // avoid hang up if this file is opened by another program 
             {
                 // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
-                file = pathOutputFile + "FromHomeSystemsXML_(autoCreated).csv";
+                file = pathOutputFile + "_FromHomeSystemsXML_(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
 
@@ -109,7 +109,7 @@ namespace Supremacy.Universe
 
 
 
-                file2 = pathOutputFile + "FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
+                file2 = pathOutputFile + "_FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file2);
 
@@ -147,7 +147,7 @@ namespace Supremacy.Universe
                 foreach (XmlElement homeSystemElement in xmlRoot.GetElementsByTagName("HomeSystem"))
                 {
                     GameLog.Core.XMLCheck.DebugFormat("HomeSystems CIV = {0}", homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant());
-                    
+
                     string civId = homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant();
                     db[civId] = new StarSystemDescriptor(homeSystemElement["StarSystem"]);
                     //GameLog.Client.GameData.DebugFormat("HomeSystems.xml-civId={0}", civId);
@@ -192,16 +192,16 @@ namespace Supremacy.Universe
                     streamWriter.WriteLine(strLine);
 
 
-                    
+
 
 
                     strLine2 =
                         civId + separator +       //  following entries not working yet
-                        //db[civId].StartingOutposts + separator +
-                        //db[civId].StartingShipyards + separator +
-                        //db[civId].StartingBuildings + separator +
-                        //db[civId].StartingOrbitalBatteries.Count + separator +
-                        //db[civId].StartingShips.Count + separator +
+                                                  //db[civId].StartingOutposts + separator +
+                                                  //db[civId].StartingShipyards + separator +
+                                                  //db[civId].StartingBuildings + separator +
+                                                  //db[civId].StartingOrbitalBatteries.Count + separator +
+                                                  //db[civId].StartingShips.Count + separator +
 
                         //db[civId].FoodPF.DesignType + separator +
                         //db[civId].FoodPF.Active + separator +
@@ -257,18 +257,18 @@ namespace Supremacy.Universe
 
                     streamWriter2.WriteLine(strLine2);
 
-                    
+
                 }  // end of foreach
             WriterCloseHomeSystemsXML:;
-            streamWriter.Close();
-            streamWriter2.Close();
+                streamWriter.Close();
+                streamWriter2.Close();
             }
             catch (Exception e)
             {
-                GameLog.Core.GameData.Error("Problem with HomeSystems.xml or writing file FromHomeSystemsXML_(autoCreated).csv", e);
+                GameLog.Core.GameData.Error("Problem with HomeSystems.xml or writing file _FromHomeSystemsXML_(autoCreated).csv", e);
             }
 
-                                       
+
             return db;
         }
 
@@ -398,7 +398,7 @@ namespace Supremacy.Universe
         private ProductionFacilityDescriptor _industryPF = null;
         private ProductionFacilityDescriptor _energyPF = null;
         private ProductionFacilityDescriptor _researchPF = null;
-        private ProductionFacilityDescriptor _intelligencePF = null;        
+        private ProductionFacilityDescriptor _intelligencePF = null;
         #endregion
 
         #region Constructors
@@ -488,7 +488,8 @@ namespace Supremacy.Universe
         public StarType? StarType
         {
             get { return _starType; }
-            set {
+            set
+            {
                 if (value != _starType)
                 {
                     _starType = value;
@@ -560,7 +561,7 @@ namespace Supremacy.Universe
         {
             get { return _dilithium; }
         }
-        
+
         public float RawMaterials
         {
             get { return _rawMaterials; }
@@ -627,7 +628,7 @@ namespace Supremacy.Universe
             if (bonusElements.Count > 0)
             {
                 _bonuses = SystemBonus.NoBonus;
-                
+
                 foreach (XmlElement bonusElement in bonusElements)
                 {
                     if (Enum.IsDefined(typeof(SystemBonus), bonusElement.GetAttribute("Type").Trim()))
@@ -656,9 +657,9 @@ namespace Supremacy.Universe
                             if (techLevel.HasAttribute("PopulationRatio"))
                             {
                                 var popRatio = techLevel.GetAttribute("PopulationRatio").Trim().ToUpperInvariant();
-                                try 
-                                { 
-                                    _populationRatio = float.Parse(popRatio, System.Globalization.CultureInfo.InvariantCulture) / 100.0f; 
+                                try
+                                {
+                                    _populationRatio = float.Parse(popRatio, System.Globalization.CultureInfo.InvariantCulture) / 100.0f;
                                 }
                                 catch (Exception e)
                                 {
@@ -936,7 +937,7 @@ namespace Supremacy.Universe
 
                                     string shipDesign = ship.InnerText.Trim().ToUpperInvariant();
                                     //GameLog.Client.GameData.DebugFormat("HomeSystems.xml-shipDesign={0}, Count={1}", shipDesign, shipCount);
-                                    for(int i = 0; i < shipCount; i++)
+                                    for (int i = 0; i < shipCount; i++)
                                         _startingShips.Add(shipDesign);
                                 }
                             }
@@ -1268,7 +1269,7 @@ namespace Supremacy.Universe
             if (bonusElements.Count > 0)
             {
                 _bonuses = PlanetBonus.NoBonus;
-                
+
                 foreach (XmlElement bonusElement in bonusElements)
                 {
                     if (Enum.IsDefined(typeof(PlanetBonus), bonusElement.GetAttribute("Type").Trim()))
