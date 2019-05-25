@@ -182,6 +182,41 @@ namespace Supremacy.Combat
         }
 
         /// <summary>
+        /// Determines whether the given <see cref="Civilization"/>s is not at war
+        /// each other in combat
+        /// </summary>
+        /// <param name="firstCiv"></param>
+        /// <param name="secondCiv"></param>
+        /// <returns></returns>
+        public static bool AreNotAtWar(Civilization firstCiv, Civilization secondCiv)
+        {
+
+            if (firstCiv == null)
+            {
+                throw new ArgumentNullException("firstCiv");
+            }
+            if (secondCiv == null)
+            {
+                throw new ArgumentNullException("secondCiv");
+            }
+            if (firstCiv == secondCiv)
+            {
+                return false;
+            }
+            // do not call GetTargetOne or Two here!, use in ChoseTarget
+            var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
+            if (diplomacyData == null)
+            {
+                GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
+                return false;
+            }
+
+            if (diplomacyData.Status == ForeignPowerStatus.AtWar)
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Determines whether the given <see cref="Civilization"/>s will
         /// fight alongside each other
         /// </summary>
