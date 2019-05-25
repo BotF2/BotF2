@@ -378,20 +378,20 @@ namespace Supremacy.Combat
                         GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
                         UpdateOrbitals();
 
-                        if (!IsCombatOver)
-                        {
+                        //if (!IsCombatOver)
+                        //{
                             _roundNumber++;
-                        }
+                        //}
                 //_targetTwoByCiv.Clear();
                 //    }
                 //_targetOneByCiv.Clear();
                 //}
 
                 _orders.Clear();
-                if (!IsCombatOver)
-                {
+                //if (!IsCombatOver)
+                //{
                     _roundNumber++;
-                }
+                //}
             }
          
             //lock (_targetOneByCiv)
@@ -522,10 +522,11 @@ namespace Supremacy.Combat
                         friendlyAssets.Add(otherAsset);
                     }
                 }
-                if ((friendlyAssets.Count == 0 || hostileAssets.Count == 0) || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))
+                if ((friendlyAssets.Count == 0 || hostileAssets.Count == 0) || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0 || _roundNumber >1)))
                 {
                     _allSidesStandDown = true;
-                    AsyncHelper.Invoke(_combatEndedCallback, this);   // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
+                    AsyncHelper.Invoke(_combatEndedCallback, this);
+                    // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
                     break;
                 }
 

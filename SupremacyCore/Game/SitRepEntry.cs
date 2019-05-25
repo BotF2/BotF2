@@ -260,7 +260,8 @@ namespace Supremacy.Game
                         StarTypeFullText = _starType.ToString();
                         break;
                 }
-
+                GameLog.Core.Test.DebugFormat("Science Ship {0} at {1}, a {2}, gained {3} research points studying this {4}.",
+                    ScienceShip.Name, Sector, StarTypeFullText, _researchGained, StarTypeFullText);
                 return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
                     ScienceShip.Name, Sector, StarTypeFullText, _researchGained, StarTypeFullText);
             }
