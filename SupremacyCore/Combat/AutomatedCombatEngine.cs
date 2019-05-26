@@ -152,7 +152,7 @@ namespace Supremacy.Combat
                                 if (_stopLoop[unitTupleTarget.Item1.OwnerID] > 1)
                                     break;
 
-                                if (attackerTragetOne == unitTuple.Item1.Owner || attackerTragetTwo == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTupleTarget.Item1.Owner));
+                                if (attackerTragetOne == unitTuple.Item1.Owner || attackerTragetTwo == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTupleTarget.Item1.Owner))
                                 //|| GameContext.Current.DiplomacyData[attackingTuple.Item1.Owner, unitTupleTarget.Item1.Owner].Status == ForeignPowerStatus.NoContact) ;// || returningFire==unitTupleTarget.Item1.Owner )
                                 {
                                     _stopLoop2[unitTupleTarget.Item1.OwnerID] = _attackerCounter;

@@ -51,7 +51,6 @@ namespace Supremacy.Combat
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
-       // private readonly Dictionary<int, Civilization> _targetOneByCiv;
         private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; 
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
@@ -139,14 +138,14 @@ namespace Supremacy.Combat
         {
             get
             {
-                lock (SyncLockOrders)
+                lock (SyncLockTargetOnes)
                 {
                     return _runningTargetOne;
                 }
             }
             private set
             {
-                lock (SyncLockOrders)
+                lock (SyncLockTargetOnes)
                 {
                     _runningTargetOne = value;
                     if (_runningTargetOne)
@@ -159,14 +158,14 @@ namespace Supremacy.Combat
         {
             get
             {
-                lock (SyncLockOrders)
+                lock (SyncLockTargetTwos)
                 {
                     return _runningTargetTwo;
                 }
             }
             private set
             {
-                lock (SyncLockOrders)
+                lock (SyncLockTargetTwos)
                 {
                     _runningTargetTwo = value;
                     if (_runningTargetTwo)
@@ -378,20 +377,19 @@ namespace Supremacy.Combat
                         GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
                         UpdateOrbitals();
 
-                        //if (!IsCombatOver)
-                        //{
+                        if (!IsCombatOver)
+                        {
                             _roundNumber++;
+                        }
+                        _targetTwoByCiv.Clear();
+                        //    }
+                        _targetOneByCiv.Clear();
                         //}
-                //_targetTwoByCiv.Clear();
-                //    }
-                //_targetOneByCiv.Clear();
-                //}
-
-                _orders.Clear();
-                //if (!IsCombatOver)
-                //{
-                    _roundNumber++;
-                //}
+                        _orders.Clear();
+                        if (!IsCombatOver)
+                        {
+                            _roundNumber++;
+                        }
             }
          
             //lock (_targetOneByCiv)
@@ -458,7 +456,7 @@ namespace Supremacy.Combat
         {
             if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
             {
-                GameLog.Core.Combat.Info("Combat is turned off");
+                GameLog.Core.Test.DebugFormat("Combat is turned off");
                 AsyncHelper.Invoke(_combatEndedCallback, this);
                 return;
 
@@ -513,16 +511,16 @@ namespace Supremacy.Combat
                 {
                     if (otherAsset == playerAsset)
                         continue;
-                    if (CombatHelper.WillEngage(owner, otherAsset.Owner))
-                    {
-                        hostileAssets.Add(otherAsset);
-                    }
-                    else
+                    if (CombatHelper.WillFightAlongside(owner, otherAsset.Owner))
                     {
                         friendlyAssets.Add(otherAsset);
                     }
+                    else
+                    {
+                        hostileAssets.Add(otherAsset);
+                    }
                 }
-                if ((friendlyAssets.Count == 0 || hostileAssets.Count == 0) || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0 || _roundNumber >1)))
+                if (friendlyAssets.Count == 0 || hostileAssets.Count == 0 || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))                
                 {
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);
@@ -826,52 +824,7 @@ namespace Supremacy.Combat
             }
             return _targetTwo;
         }
-        //protected CombatTargetOne GetTargetOne(Orbital source)
-        //{
-        //    //var borg = new Civilization("BORG");
-        //    //CombatTargetPrimaries attackerKey = new CombatTargetPrimaries(source.Owner, CombatID);
-        //    try
-        //    {
-        //        var targetCiv = new CombatTargetPrimaries(source.Owner, CombatID);
-        //        //CombatTargetPrimaries targetOne = new CombatTargetPrimaries(source.Owner, CombatID);
-        //        GameLog.Core.Test.DebugFormat("GetTargetOne for source = {0} {1} {2} and is Targetting -> {3} {4} {5}",
-        //           source.Owner, source.ObjectID, source.Name, targetCiv.Owner, targetCiv, GetTargetOne(source));     // _targetOneByCiv[source.OwnerID].GetTargetOne(source));
-        //        if (targetCiv == null)
-        //            return CombatTargetOne.BORG;
-        //        else
-        //            return _targetOneByCiv[source.OwnerID].GetTargetOne(source); ;// this is the enum CombatTargetOne.BORG (OR FEDERATION OR....)
-        //    }
-        //    catch (Exception e)
-        //    {
-
-        //        GameLog.Core.Test.ErrorFormat("Unable to get target one for source {0} owner {1}, {2}", source, source.Owner, e);
-        //        //GameLog.LogException(e);
-        //    }
-
-        //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target one for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-
-        //return CombatTargetOne.BORG;
-        //}
-
-        //protected CombatTargetTwo GetTargetTwo(Orbital source)
-        //{
-        //    try
-        //    {
-        //        GameLog.Core.Combat.DebugFormat("for obital = {0}, Name {1}, target civ {2}", source, source.Name, _targetTwoByCiv[source.OwnerID].GetTargetTwo(source));
-        //        return _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
-
-        //    }
-        //    catch //(Exception e)
-        //    {
-        //        GameLog.Core.Combat.ErrorFormat("Unable to get target two for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-        //        //GameLog.LogException(e);
-        //    }
-
-        //    //GameLog.Core.Combat.DebugFormat("Setting Borg as fallback target two for {0} {1} ({2}) Owner: {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-    
-        //    return CombatTargetTwo.BORG;
-        //}
-
+        
         protected abstract void ResolveCombatRoundCore();
 
     }

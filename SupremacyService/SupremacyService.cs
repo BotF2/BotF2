@@ -1391,7 +1391,6 @@ namespace Supremacy.WCF
         {
             _combatEngine = new AutomatedCombatEngine(
                 assets,
-              //  civilizations,
                 SendCombatUpdateCallback,
                 NotifyCombatEndedCallback);
             _combatEngine.SendInitialUpdate();
