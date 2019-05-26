@@ -388,10 +388,7 @@ namespace Supremacy.Combat
                 //}
 
                 _orders.Clear();
-                //if (!IsCombatOver)
-                //{
-                    //_roundNumber++;
-                //}
+
             }
          
             //lock (_targetOneByCiv)
@@ -410,9 +407,6 @@ namespace Supremacy.Combat
 
             GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
             RemoveDefeatedPlayers();
-            
-
-          
 
             Running = false;
             RunningTargetOne = false;
@@ -518,13 +512,13 @@ namespace Supremacy.Combat
                 {
                     if (otherAsset == playerAsset)
                         continue;
-                    if (CombatHelper.WillEngage(owner, otherAsset.Owner))
+                    if (CombatHelper.WillFightAlongside(owner, otherAsset.Owner))
                     {
-                        hostileAssets.Add(otherAsset);
+                        friendlyAssets.Add(otherAsset);
                     }
                     else
                     {
-                        friendlyAssets.Add(otherAsset);
+                        hostileAssets.Add(otherAsset);
                     }
                 }
                 if ((friendlyAssets.Count == 0 || hostileAssets.Count == 0) || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0 || _roundNumber >1) || _roundNumber >1)) // Project Multi
