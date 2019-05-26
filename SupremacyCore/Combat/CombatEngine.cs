@@ -55,13 +55,11 @@ namespace Supremacy.Combat
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; 
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
 
-
         public bool BattelInOwnTerritory
         {
             get { return _battleInOwnTerritory; }
             set { _battleInOwnTerritory = value; }
         }
-
 
         public int TotalFirepower
         {
@@ -81,7 +79,6 @@ namespace Supremacy.Combat
             set { _favorTheBoldMalus = value; }
         }
 
-
         public int FleetAsCommandshipBonus
         {
             get { return _fleetAsCommandshipBonus; }
@@ -93,7 +90,6 @@ namespace Supremacy.Combat
             get { return _has20PlusPercentFastAttack; }
             set { _has20PlusPercentFastAttack = value; }
         }
-
 
         public Dictionary<string, int> EmpireStrengths
         {
@@ -182,7 +178,11 @@ namespace Supremacy.Combat
                 {
                     return true;
                 }
-                return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1);
+
+                var countAssets = _assets.Count();
+                var remainingAssets = _assets.Count(assets => assets.HasSurvivingAssets);
+                GameLog.Core.Test.DebugFormat("IsCombatOver true if 1 => {1} assets, {0} countAssets", (_assets.Count(assets => assets.HasSurvivingAssets) <= 1), remainingAssets);
+                return (_assets.Count(assets => assets.HasSurvivingAssets) <= countAssets);
             }
         }
 
@@ -500,7 +500,6 @@ namespace Supremacy.Combat
                     break;
                 }
 
-
                 var update = new CombatUpdate(
                     _combatId,
                     _roundNumber,
@@ -640,6 +639,8 @@ namespace Supremacy.Combat
                 retreatChanceModifier += 25;
                 GameLog.Core.Combat.DebugFormat("If round is 3 or more. +25 to modifier (now {0})", retreatChanceModifier);
             }
+            //if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating)
+            //    return true;
 
             if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
             {
@@ -741,7 +742,7 @@ namespace Supremacy.Combat
             {
                 GameLog.Core.Combat.DebugFormat("Try Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
                 _localOrder = _orders[source.OwnerID].GetOrder(source);
-                //return _orders[source.OwnerID].GetOrder(source); // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
+                return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
             }
             catch //(Exception e)
             {
