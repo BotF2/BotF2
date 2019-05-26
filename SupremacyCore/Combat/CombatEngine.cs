@@ -348,16 +348,6 @@ namespace Supremacy.Combat
             lock (_orders)
             {
                 RunningOrders = true;
-                //RunningTargetOne = true;
-                //RunningTargetTwo = true;
-                //lock (_targetOneByCiv)
-                //{
-                //    RunningTargetOne = true;
-                //    lock (_targetTwoByCiv)
-                //    {
-                //GameLog.Core.Test.DebugFormat("ResolveCombatRound locking orders and targets");
-
-                //RunningTargetTwo = true;
 
                 _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset
                         CalculateEmpireStrengths();
@@ -382,28 +372,10 @@ namespace Supremacy.Combat
                             _roundNumber++;
                         }
                         _targetTwoByCiv.Clear();
-                        //    }
                         _targetOneByCiv.Clear();
-                        //}
                         _orders.Clear();
-                        if (!IsCombatOver)
-                        {
-                            _roundNumber++;
-                        }
             }
-         
-            //lock (_targetOneByCiv)
-            //{
-            //    //RunningTargetOne = true;
-            //    //_assets.ForEach(a => a.CombatID = _combatId);
-            //    _targetOneByCiv.Clear();
-            //}
-            //lock (_targetTwoByCiv)
-            //{
-            //    //RunningTargetTwo = true;
-            //    //_assets.ForEach(a => a.CombatID = _combatId);
-            //    _targetTwoByCiv.Clear();
-            //}
+
             SendUpdates();
 
             GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
