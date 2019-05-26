@@ -1403,7 +1403,7 @@ namespace Supremacy.WCF
                 if (_combatEngine == null || orders == null)
                     return;
 
-                lock (_combatEngine.SyncLockOrders)
+                lock (_combatEngine.SyncLock)
                 {
                     _combatEngine.SubmitOrders(orders);
 
@@ -1517,7 +1517,7 @@ namespace Supremacy.WCF
                 GameContext.PushThreadContext(_game);
                 try
                 {
-                    lock (engine.SyncLockOrders)
+                    lock (engine.SyncLock)
                     {
                         if (engine.Ready)
                             engine.ResolveCombatRound();
