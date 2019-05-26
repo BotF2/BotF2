@@ -181,8 +181,8 @@ namespace Supremacy.Combat
 
                 var countAssets = _assets.Count();
                 var remainingAssets = _assets.Count(assets => assets.HasSurvivingAssets);
-                GameLog.Core.Test.DebugFormat("IsCombatOver true if 1 => {1} assets, {0} countAssets", (_assets.Count(assets => assets.HasSurvivingAssets) <= 1), remainingAssets);
-                return (_assets.Count(assets => assets.HasSurvivingAssets) <= countAssets);
+                GameLog.Core.Test.DebugFormat("IsCombatOver? {0} if {1} <=1 & assets, {0} countAssets {2}", (_assets.Count(assets => assets.HasSurvivingAssets) <= countAssets), remainingAssets, countAssets);
+                return (_assets.Count(assets => assets.HasSurvivingAssets) <= countAssets -1);
             }
         }
 
