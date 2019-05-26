@@ -330,9 +330,9 @@ namespace Supremacy.Combat
 
                 lock (_targetTwoByCiv)
                 {
-                    foreach (var civId in _targetTwoByCiv.Keys)
+                    foreach (var civKey in _targetTwoByCiv.Keys)
                     {
-                        outstandingTargets.Remove(civId);
+                        outstandingTargets.Remove(civKey);
                     }
 
                     if (outstandingTargets.Count == 0)
