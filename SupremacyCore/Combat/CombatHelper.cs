@@ -266,7 +266,7 @@ namespace Supremacy.Combat
 
                 if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("{0} {1} ({2}) is ordered to {3}, primary target civ ={4}, secondary target civ ={5}",
+                    GameLog.Core.CombatDetails.DebugFormat("{0} {1} {2} is ordered to {3}",
                         ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
