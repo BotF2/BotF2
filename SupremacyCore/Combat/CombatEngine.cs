@@ -29,7 +29,7 @@ namespace Supremacy.Combat
         private int _fleetAsCommandshipBonus;
         private bool _has20PlusPercentFastAttack;
 
-        public readonly object SyncLockOrders;
+        public readonly object SyncLock;
         public readonly object SyncLockTargetOnes;
         public readonly object SyncLockTargetTwos;
         protected const double BaseChanceToRetreat = 0.50;
@@ -115,18 +115,18 @@ namespace Supremacy.Combat
             get { return _combatId; }
         }
 
-        protected bool RunningOrders
+        protected bool Running
         {
             get
             {
-                lock (SyncLockOrders)
+                lock (SyncLock)
                 {
                     return _runningOrders;
                 }
             }
             private set
             {
-                lock (SyncLockOrders)
+                lock (SyncLock)
                 {
                     _runningOrders = value;
                     if (_runningOrders)
@@ -139,14 +139,14 @@ namespace Supremacy.Combat
         {
             get
             {
-                lock (SyncLockOrders)
+                lock (SyncLock)
                 {
                     return _runningTargetOne;
                 }
             }
             private set
             {
-                lock (SyncLockOrders)
+                lock (SyncLock)
                 {
                     _runningTargetOne = value;
                     if (_runningTargetOne)
@@ -159,14 +159,14 @@ namespace Supremacy.Combat
         {
             get
             {
-                lock (SyncLockOrders)
+                lock (SyncLock)
                 {
                     return _runningTargetTwo;
                 }
             }
             private set
             {
-                lock (SyncLockOrders)
+                lock (SyncLock)
                 {
                     _runningTargetTwo = value;
                     if (_runningTargetTwo)
@@ -191,9 +191,9 @@ namespace Supremacy.Combat
         {
             get
             {
-                lock (SyncLockOrders)
+                lock (SyncLock)
                 {
-                    if (RunningOrders || IsCombatOver) // RunningTargetOne || RunningTargetTwo)
+                    if (Running || IsCombatOver) // RunningTargetOne || RunningTargetTwo)
                         return false;
                     return _ready;
                 }
@@ -231,7 +231,7 @@ namespace Supremacy.Combat
             _orders = new Dictionary<int, CombatOrders>();
             _targetOneByCiv = new Dictionary<int, CombatTargetPrimaries>();
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
-            SyncLockOrders = _orders;
+            SyncLock = _orders;
             SyncLockTargetOnes = _targetOneByCiv;
             SyncLockTargetTwos = _targetTwoByCiv;
 
@@ -268,7 +268,7 @@ namespace Supremacy.Combat
 
         public void SubmitOrders(CombatOrders orders)
         {
-            lock (SyncLockOrders) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
             {
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
@@ -348,7 +348,7 @@ namespace Supremacy.Combat
         {
             lock (_orders)
             {
-                RunningOrders = true;
+                Running = true;
                 //RunningTargetOne = true;
                 //RunningTargetTwo = true;
                 //lock (_targetOneByCiv)
@@ -414,7 +414,7 @@ namespace Supremacy.Combat
 
           
 
-            RunningOrders = false;
+            Running = false;
             RunningTargetOne = false;
             RunningTargetTwo = false;
 
