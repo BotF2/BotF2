@@ -319,7 +319,7 @@ namespace Supremacy.Client
                 foreach (Civilization Friend in _friendlyCivs)
                 {
                     FriendCivilizationsItems.Items.Add(Friend); // a template for rach other civ
-                    GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Friend.ShortName);
+                    GameLog.Core.Combat.DebugFormat("_friendlyCivs containing = {0}", Friend.ShortName);
                 }
 
             }
