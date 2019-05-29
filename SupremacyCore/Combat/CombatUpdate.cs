@@ -477,18 +477,11 @@ namespace Supremacy.Combat
 
         public string TargetCiv1Status(Civilization us, Civilization others)
         {
-            //get {
-            //var us = _playerAssets.Owner;
-
             var _targetCiv1Status = GameContext.Current.DiplomacyData[us, others].Status.ToString();
             GameLog.Core.Combat.DebugFormat("Status Target 1: Us = {0}, Status = {2}, others = {1}", us, others, _targetCiv1Status);
 
-            //foreach (var civs in _otherCivs)
-            //{
-            //    var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
-            //}
             return _targetCiv1Status;
-            //}
+            
         }
 
         public int CombatID
@@ -525,7 +518,6 @@ namespace Supremacy.Combat
         {
             get
             {
-
                 return _friendlyAssets;
             }
         }
@@ -547,32 +539,39 @@ namespace Supremacy.Combat
                 if (_standoff)
                     return true;
 
-                int friendlyAssets = 0;
+                int friendlyAssets = 0; // ships and stations
                 int hostileAssets = 0;
                 
                 foreach (CombatAssets assets in FriendlyAssets)
                 {
                     if (assets.HasSurvivingAssets)
                     {
-                        //GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
-                        friendlyAssets++;
+                        friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                        if (assets.Station != null)
+                            friendlyAssets += 1;                
+                        GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
                     }
+                    //if (assets.HasSurvivingAssets)
+                    //{
+                    //    friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                    //    if (assets.Station != null)
+                    //        friendlyAssets += 1;
+                    //    GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+                    //}
                 }
-
                 //GameLog.Print("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
-
                 if (friendlyAssets == 0)
                 {
-                    GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
-                    return true;
+                    return true;   
                 }
 
                 foreach (CombatAssets assets in HostileAssets)
                 {
                     if (assets.HasSurvivingAssets)
                     {
-                        //GameLog.Core.Combat.DebugFormat("Combat: hostileAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
-                        hostileAssets++;
+                        hostileAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                        if (assets.Station != null)
+                            hostileAssets += 1;                      
                     }
                 }
 
@@ -582,7 +581,7 @@ namespace Supremacy.Combat
                     return true;
                 }
 
-                return (hostileAssets == 0);
+                return (hostileAssets == 0 || friendlyAssets == 0);
             }
         }
     }

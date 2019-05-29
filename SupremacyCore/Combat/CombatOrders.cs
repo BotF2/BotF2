@@ -28,7 +28,7 @@ namespace Supremacy.Combat
         Rush,
         Transports,
         Formation
-        //Assimilate
+        //Assimilate might be an order, instead of invade system, for only the borg
     }
 
     public enum AssaultStrategy

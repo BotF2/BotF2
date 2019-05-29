@@ -46,7 +46,10 @@ namespace Supremacy.Combat
             _destroyedShips = new List<CombatUnit>();
             _assimilatedShips = new List<CombatUnit>();
         }
+        public CombatAssets()
+        {
 
+        }
         public int CombatID
         {
             get { return _combatId; }

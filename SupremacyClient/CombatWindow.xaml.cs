@@ -44,11 +44,10 @@ namespace Supremacy.Client
     {
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
-        private Civilization _playerCivilization;
-
+        private CombatAssets _otherAssets;
+        private bool _targetSelected = false;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
-        private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any, can this replace _shooterCivilizations1 and 2?           
-        private List<Civilization> _otherNameAndFirePower; // this collection populates insignia, name and firepower of other civs
+        private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any          
 
         private IAppContext _appContext;
  
@@ -147,9 +146,16 @@ namespace Supremacy.Client
             {
                 if (assets.Owner == _appContext.LocalPlayer.Empire)
                 {
+                   // _playerAssetsCount = update.FriendlyAssets.Count();
                     _playerAssets = assets;
-                    _playerCivilization = assets.Owner;
+                    //_playerCivilization = assets.Owner;
                     break;
+                }
+                else
+                {
+                    //  _playerAssetsCount = update.HostileAssets.Count();
+                    _otherAssets = assets;
+                    //_playerCivilization = assets.Owner;
                 }
             }
             if (_playerAssets == null)
@@ -157,7 +163,11 @@ namespace Supremacy.Client
                 _playerAssets = update.FriendlyAssets[0];
                // _playerCivilization = update.Owner[0];
             }
-
+            if (_otherAssets == null)
+            {
+                _otherAssets = update.HostileAssets[0];
+                // _playerCivilization = update.Owner[0];
+            }
             DataContext = _update;
 
             if (update.IsCombatOver)
@@ -397,10 +407,10 @@ namespace Supremacy.Client
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
         }
-        private void SelectControl()
-        {
+        //private void SelectControl()
+        //{
             
-        }
+        //}
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
@@ -441,6 +451,7 @@ namespace Supremacy.Client
 
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;
+           // DialogResult = true;
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
          
         }

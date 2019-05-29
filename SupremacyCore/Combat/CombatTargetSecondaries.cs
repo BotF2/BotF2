@@ -18,23 +18,13 @@ using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
-    //public enum CombatTargetTwo : byte
-    //{
-    //    FEDERATION,
-    //    TERRANEMPIRE,
-    //    ROMULANS,
-    //    KLINGONS,
-    //    CARDASSIANS,
-    //    DOMINION,
-    //    BORG
-    //}
+
     [Serializable]
     public class  CombatTargetSecondaries //: IEnumerable<CombatTargetTwo>
     {
         private readonly int _combatId;
         private readonly int _ownerId;
         private readonly Dictionary<int, Civilization> _targetSecondaries;
-        //private readonly Dictionary<int, CombatTargetTwo> _targetCombatTwo;
 
         public int CombatID
         {
@@ -59,24 +49,14 @@ namespace Supremacy.Combat
 
             _ownerId = owner.CivID;
             _targetSecondaries = new Dictionary<int, Civilization>();
-            //_targetCombatTwo = new Dictionary<int, CombatTargetTwo>();
             _combatId = combatId;
         }
 
-        //public void SetTargetTwo(Orbital source, CombatTargetTwo target)
-        //{
-        //    //var Civ = new Civilization(target.ToString());
-        //    if (source == null)
-        //        throw new ArgumentNullException("source");
-        //    _targetCombatTwo[source.ObjectID] = target;
-
-        //}
-
         public void SetTargetTwoCiv(Orbital source, Civilization targetTwo)
         {
-
             if (source == null)
-                throw new ArgumentNullException("source");
+                GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetTwoCiv");
+                //throw new ArgumentNullException("source");
             _targetSecondaries[source.ObjectID] = targetTwo;
         }
 
@@ -85,13 +65,13 @@ namespace Supremacy.Combat
             if (source == null)
                 return;
             _targetSecondaries.Remove(source.ObjectID);
-           // _targetCombatTwo.Remove(source.ObjectID);
+        
         }
 
         public void Clear()
         {
             _targetSecondaries.Clear();
-            //_targetCombatTwo.Clear();
+           
         }
 
         public bool IsTargetTwoSet(Orbital source)
@@ -114,14 +94,5 @@ namespace Supremacy.Combat
             return _targetSecondaries[source.ObjectID];
         }
 
-        //public IEnumerator<CombatTargetTwo> GetEnumerator()
-        //{
-        //    return _targetCombatTwo.Values.GetEnumerator();
-        //}
-
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return GetEnumerator();
-        //}
     }
 }

@@ -457,12 +457,8 @@ namespace Supremacy.WCF
                 new AutoResetEvent(false).WaitOne(100, true);
 
                 Player gameHost = GetPlayerById(0);
-                List<Order> orders;
-                //List<Order> target1;
-                //List<Order> target2;
+                List<Order> orders; // fleet orders, not combat orders
                 List<Civilization> autoTurnCivs;
-                //List<Civilization> autoTurnCivsTarget1;
-                //List<Civilization> autoTurnCivsTarget2;
 
                 lock (_playerOrders)
                 {
@@ -475,30 +471,6 @@ namespace Supremacy.WCF
                 {
                     order.Execute(_game);
                 }
-
-                //lock (_playerTarget1)
-                //{
-                //    target1 = _playerTarget1.Values.SelectMany(v => v.Target1).ToList();
-                //    autoTurnCivsTarget1 = _playerTarget1.Where(po => po.Value.AutoTurnTarget1).Select(po => _game.Civilizations[po.Key.EmpireID]).ToList();
-                //    _playerTarget1.Clear();
-                //}
-
-                //foreach (var targetOne in target1)
-                //{
-                //    targetOne.Execute(_game);
-                //}
-
-                //lock (_playerTarget2)
-                //{
-                //    target2 = _playerTarget2.Values.SelectMany(v => v.Target2).ToList();
-                //    autoTurnCivsTarget2 = _playerTarget2.Where(po => po.Value.AutoTurnTarget2).Select(po => _game.Civilizations[po.Key.EmpireID]).ToList();
-                //    _playerTarget2.Clear();
-                //}
-
-                //foreach (var targetTwo in target2)
-                //{
-                //    targetTwo.Execute(_game);
-                //}
 
                 var stopwatch = Stopwatch.StartNew();
 
@@ -751,41 +723,6 @@ namespace Supremacy.WCF
                     return false;
                 }
 
-                //try
-                //{
-                //    var anyOutstandingTarget1 = _playerInfo
-                //        .Select(playerInfo => playerInfo.Player)
-                //        .Any(player => !_playerTarget1.ContainsKey(player) || _playerTarget1[player] == null);
-
-                //    if (anyOutstandingTarget1)
-                //    {
-                //        Interlocked.Exchange(ref _isProcessingTurn, 0);
-                //        return false;
-                //    }
-                //}
-                //catch
-                //{
-                //    Interlocked.Exchange(ref _isProcessingTurn, 0);
-                //    return false;
-                //}
-
-                //try
-                //{
-                //    var anyOutstandingTarget2= _playerInfo
-                //        .Select(playerInfo => playerInfo.Player)
-                //        .Any(player => !_playerTarget2.ContainsKey(player) || _playerTarget2[player] == null);
-
-                //    if (anyOutstandingTarget2)
-                //    {
-                //        Interlocked.Exchange(ref _isProcessingTurn, 0);
-                //        return false;
-                //    }
-                //}
-                //catch
-                //{
-                //    Interlocked.Exchange(ref _isProcessingTurn, 0);
-                //    return false;
-                //}
             }
 
             _threadPoolScheduler.Schedule(ProcessTurn);
@@ -1411,7 +1348,7 @@ namespace Supremacy.WCF
                         TryResumeCombat(_combatEngine);
                 }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 GameLog.Server.Combat.DebugFormat("SendCombatOrders null reference issue #164 {0}", orders.ToString());
                 GameLog.Server.Combat.Error(e);

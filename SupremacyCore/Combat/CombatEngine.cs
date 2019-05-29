@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Microsoft.Practices.ServiceLocation;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
@@ -41,6 +42,8 @@ namespace Supremacy.Combat
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         protected readonly Dictionary<int, Civilization> _targetOneData;
         private readonly int _combatId;
+        private int _zeroFirePowers;
+
         protected int _roundNumber;
         private bool _running;
         private bool _runningTargetOne;
@@ -174,18 +177,67 @@ namespace Supremacy.Combat
         {
             get
             {
+ 
                 if (_allSidesStandDown)
                 {
                     return true;
                 }
-
-                var countAssets = _assets.Count();
+                //friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                //if (assets.Station != null)
+                //    friendlyAssets += 1;
+                var countAssets = _assets.Count(); // assets means list of civilizations in combat so .Count is number of civs 
                 var remainingAssets = _assets.Count(assets => assets.HasSurvivingAssets);
-                GameLog.Core.Test.DebugFormat("IsCombatOver? {0} if {1} <=1 & assets, {0} countAssets {2}", (_assets.Count(assets => assets.HasSurvivingAssets) <= countAssets), remainingAssets, countAssets);
-                return (_assets.Count(assets => assets.HasSurvivingAssets) <= countAssets -1);
+                GameLog.Core.Test.DebugFormat("remaining assets {0} of {1} assets & round number {2} & round >5 for IsCombatOver = true? {3} IsCombatOver",
+                    remainingAssets, countAssets, _roundNumber, (_roundNumber > 3));
+
+                if (_roundNumber > 6 || remainingAssets <= 1)
+                {
+                    return true;
+                    // for testing, up to 7 rounds or one or zero civs left. This use to be if (remainingAssets <= 1) return true but this was when there had been only 2 sides
+                }
+                GameLog.Core.Test.DebugFormat("remaining assets {0} of {1} assets & round number {2} & round >5 for IsCombatOver = true? {3}",
+                    remainingAssets, countAssets, _roundNumber, (_roundNumber > 3));
+                return false;
+                //int friendlyAssets = 0; // ships and stations
+                //int hostileAssets = 0;
+
+                //foreach (CombatAssets assets in _friendlyAssets)
+                //{
+                //    if (assets.HasSurvivingAssets)
+                //    {
+                //        friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                //        if (assets.Station != null)
+                //            friendlyAssets += 1;
+                //        GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+                //    }
+                //}
+                ////GameLog.Print("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
+                //if (friendlyAssets == 0)
+                //{
+                //    return true;
+                //}
+
+                //foreach (CombatAssets assets in _hostileAssets)
+                //{
+                //    if (assets.HasSurvivingAssets)
+                //    {
+                //        hostileAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                //        if (assets.Station != null)
+                //            hostileAssets += 1;
+                //    }
+                //}
+
+                //if (hostileAssets == 0)
+                //{
+                //    //GameLog.Core.Combat.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
+                //    return true;
+                //}
+
+                //return (hostileAssets == 0 || friendlyAssets == 0);
+
             }
         }
-
+  
         public bool Ready
         {
             get
@@ -224,6 +276,9 @@ namespace Supremacy.Combat
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
             _roundNumber = 1;
+            _zeroFirePowers =0;
+            //_friendlyAssets = new List<CombatAssets>();
+            //_hostileAssets = new List<CombatAssets>();
             _assets = assets;
             _updateCallback = updateCallback;
             _combatEndedCallback = combatEndedCallback;
@@ -433,14 +488,46 @@ namespace Supremacy.Combat
                 return;
 
             }
-            foreach (var playerAsset in _assets)
+            //foreach (var combatent in _combatShips) // now search for destroyed ships
+            //{
+            //    if (combatent.Item1.IsDestroyed)
+            //    {
+            //        GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
+            //        if (combatent.Item1.Source is Ship)
+            //        {
+            //            var Assets = GetAssets(combatent.Item1.Owner);
+            //            if (Assets != null)
+            //            {
+            //                GameLog.Core.Combat.DebugFormat("Name of Owner = {0}, Assets.CombatShips{1}, Assets.NonCobatShips{2}", Assets.Owner.Name, Assets.CombatShips.Count, Assets.NonCombatShips.Count);
+
+            //                if (!Assets.DestroyedShips.Contains(combatent.Item1))
+            //                {
+            //                    Assets.DestroyedShips.Add(combatent.Item1);
+            //                }
+            //                if (combatent.Item1.Source.IsCombatant)
+            //                {
+            //                    Assets.CombatShips.Remove(combatent.Item1);
+            //                }
+            //                else
+            //                {
+            //                    Assets.NonCombatShips.Remove(combatent.Item1);
+            //                }
+            //            }
+            //            else
+            //                GameLog.Core.Combat.DebugFormat("Assets Null");
+
+            //        }
+            //        continue;
+            //    }
+            //}
+            foreach (var playerAsset in _assets) // _assets is list of assets so one list for our friends and for others
             {
                 var owner = playerAsset.Owner;
                 var friendlyAssets = new List<CombatAssets>();
                 var hostileAssets = new List<CombatAssets>();
                 var empireStrengths = new Dictionary<Civilization, int>();
 
-                friendlyAssets.Add(playerAsset);
+                friendlyAssets.Add(playerAsset); // arbitrary one side or the other is 'friendly' from when there were only two sides in combat
 
                 var CivForEmpireStrength = _assets.Distinct().ToList();
                 foreach (var civ in CivForEmpireStrength)
@@ -486,13 +573,24 @@ namespace Supremacy.Combat
                     if (CombatHelper.WillFightAlongside(owner, otherAsset.Owner))
                     {
                         friendlyAssets.Add(otherAsset);
+                        friendlyAssets.Distinct().ToList();
                     }
                     else
                     {
                         hostileAssets.Add(otherAsset);
+                        hostileAssets.Distinct().ToList();
                     }
                 }
-                if (friendlyAssets.Count == 0 || hostileAssets.Count == 0 || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))                
+               
+                foreach (var firePower in empireStrengths)
+                {
+                    if (firePower.Value == 0)
+                    {
+                        _zeroFirePowers += 1;
+                    }
+                }
+
+                if (friendlyAssets.Count() == 0 || hostileAssets.Count() == 0 || _zeroFirePowers >= 1)//(_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))                
                 {
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);
@@ -509,7 +607,7 @@ namespace Supremacy.Combat
                     friendlyAssets,
                     hostileAssets
                     );
-
+                // sends data back to combat window
                 AsyncHelper.Invoke(_updateCallback, this, update);
             }
         }
@@ -758,7 +856,7 @@ namespace Supremacy.Combat
         protected Civilization GetTargetOne(Orbital source)
         {
             var _targetOne = new Civilization();
-           _targetOne = GameContext.Current.Civilizations.LastOrDefault();
+          // _targetOne = CombatHelper.GetBorgCiv(); // GameContext.Current.Civilizations.LastOrDefault();
 
             try
             {
@@ -780,7 +878,7 @@ namespace Supremacy.Combat
         protected Civilization GetTargetTwo(Orbital source)
         {
             var _targetTwo = new Civilization();
-            _targetTwo = GameContext.Current.Civilizations.LastOrDefault();
+            _targetTwo = CombatHelper.GetBorgCiv(); // GameContext.Current.Civilizations.LastOrDefault();
             try
             {
                 //GameLog.Core.Test.DebugFormat("Try Get target two for  orbital id {0} orbirtal name {1}", source.ObjectID, source.Name, _targetTwo.ToString());                                                                                                                      //if (targetCiv == null)

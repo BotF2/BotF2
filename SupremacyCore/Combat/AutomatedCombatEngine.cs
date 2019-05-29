@@ -83,6 +83,11 @@ namespace Supremacy.Combat
                         }
                     }
                 }
+
+                //var noBorgRetreat = _combatShips
+                //    .Where(s => s.Item1.Source.)
+                //    .ToList();
+
                 //Decloak any cloaked ships  
                 foreach (var combatShip in _combatShips)
                 {
@@ -94,6 +99,8 @@ namespace Supremacy.Combat
                     }
                 }
             }
+
+  
             // populate dictionary of list of target units (_oppositionUnits)
             foreach (var unitTuple in _combatShips)
             {
@@ -112,11 +119,15 @@ namespace Supremacy.Combat
                         _attackerOnwerID = attackingTuple.Item1.OwnerID;
                       
                         if (_attackerOnwerID != unitTuple.Item1.OwnerID) // && !_unitAttackerIDs.Contains(attackingTuple.Item1.OwnerID))
-                        {
-                            var attackerTragetOne = GetTargetOne(attackingTuple.Item1.Source);
-                            var attackerTragetTwo = GetTargetTwo(attackingTuple.Item1.Source);
+                           {
+                            var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
+                            if (attackerTargetOne == null)
+                                attackerTargetOne = CombatHelper.GetBorgCiv();
+                            var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
+                            if (attackerTargetTwo == null)
+                                attackerTargetTwo = CombatHelper.GetBorgCiv();
 
-                            GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting? {2}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTragetOne.ShortName);
+                            GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting? {2}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName);
                             GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & attacker {2} {3}", unitTuple.Item1.OwnerID, unitTuple.Item1.Name, attackingTuple.Item1.OwnerID, attackingTuple.Item1.Name);
                             if ((attackerOrder == CombatOrder.Hail) || (attackerOrder == CombatOrder.LandTroops) || (attackerOrder == CombatOrder.Retreat) || (attackerOrder == CombatOrder.Standby))
                             {
@@ -152,16 +163,17 @@ namespace Supremacy.Combat
                                 if (_stopLoop[unitTupleTarget.Item1.OwnerID] > 1)
                                     break;
 
-                                if (attackerTragetOne == unitTuple.Item1.Owner || attackerTragetTwo == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTupleTarget.Item1.Owner))
+                                if (attackerTargetOne == unitTuple.Item1.Owner || attackerTargetTwo == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTupleTarget.Item1.Owner))
                                 //|| GameContext.Current.DiplomacyData[attackingTuple.Item1.Owner, unitTupleTarget.Item1.Owner].Status == ForeignPowerStatus.NoContact) ;// || returningFire==unitTupleTarget.Item1.Owner )
                                 {
                                     _stopLoop2[unitTupleTarget.Item1.OwnerID] = _attackerCounter;
                                     if (_stopLoop2[unitTupleTarget.Item1.OwnerID] > 1)
                                         continue;
-                                    //Targeting:
+
                                     GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
                                     targetUnitTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == unitTuple.Item1.OwnerID).Select(sc => sc).ToList();    //.Add(unitTupleTarget);
-                                    if(targetUnitTupleList!=null)
+                                    if (targetUnitTupleList == null || targetUnitTupleList.Count() == 0)
+                                        break;
                                     targetUnitTupleList.Distinct().ToList();
 
                                     GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
@@ -175,6 +187,7 @@ namespace Supremacy.Combat
                                     GameLog.Core.Test.DebugFormat("Targeting on ={0} fromm attacker {1}", unitTuple.Item1.Owner.ShortName, attackingTuple.Item1.Name);
                                     if (targetUnitTupleList != null)
                                         _oppositionUnits[_attackerOnwerID] = targetUnitTupleList;
+
                                     GameLog.Core.Test.DebugFormat("Return Target ={0} from target {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                     if (returnFireTupleList != null)
                                         _oppositionUnits[unitTuple.Item1.OwnerID] = returnFireTupleList;
@@ -715,7 +728,7 @@ namespace Supremacy.Combat
         //}
 
         //// remove desroyed ships. Now on this spot, so that they can fire, but get still removed later
-        //foreach (var combatent in _combatShips) // now earch for destroyed ships
+        //foreach (var combatent in _combatShips) // now s   earch for destroyed ships
         //{
         //    if (combatent.Item1.IsDestroyed)
         //    {
@@ -776,6 +789,14 @@ namespace Supremacy.Combat
 
         //}
 
+
+        //public void Retreat(CombatAssets ownerAsset)
+        //{
+        //    ownerAsset.EscapedShips.Add(ship.Item1);
+        //    ownerAsset.CombatShips.Remove(ship.Item1);
+        //    ownerAsset.NonCombatShips.Remove(ship.Item1);
+        //    _combatShips.Remove(ship);
+        //}
         /// <summary>
         /// Chooses a target for the given <see cref="CombatUnit"/>
         /// </summary>
@@ -980,7 +1001,6 @@ namespace Supremacy.Combat
 
                     // Fire Weapons, inflict damage
                     target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
-
 
                     GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
                         target.Source.ObjectID, target.Name, target.Source.Design,
