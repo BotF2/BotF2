@@ -67,8 +67,8 @@ namespace Supremacy.Combat
             _unitOnwerIDs = new List<int>();
             _stopLoop = new Dictionary<int, int>();
             _stopLoop2 = new Dictionary<int, int>();
-            _oppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            _friendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            //_oppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            //_friendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
 
         protected override void ResolveCombatRoundCore()
@@ -125,8 +125,16 @@ namespace Supremacy.Combat
                 }
             }
 
-  
-            // populate dictionary of list of target units (_oppositionUnits)
+            _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            _combatShipsTemp.Clear();
+
+            OppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            OppositionCombatShips.Clear();
+
+            FriendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            FriendlyCombatShips.Clear();
+
+            // populate dictionary of list of target units (_oppositionCombatShips)
             foreach (var unitTuple in _combatShips)
             {
                 if (!_unitOnwerIDs.Contains(unitTuple.Item1.OwnerID))
