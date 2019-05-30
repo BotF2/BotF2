@@ -32,8 +32,32 @@ namespace Supremacy.Combat
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private List<int> _unitOnwerIDs;
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionUnits;
+        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyUnits;
         private Dictionary<int, int> _stopLoop;
         private Dictionary<int, int> _stopLoop2;
+
+        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> FriendlyCombatShips
+        {
+            get
+            {
+                return _friendlyUnits;
+            }
+            set
+            {
+                this._friendlyUnits = value;
+            }
+        }
+        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionCombatShips
+        {
+            get
+            {
+                return _oppositionUnits;
+            }
+            set
+            {
+                this._oppositionUnits = value;
+            }
+        }
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
@@ -44,6 +68,7 @@ namespace Supremacy.Combat
             _stopLoop = new Dictionary<int, int>();
             _stopLoop2 = new Dictionary<int, int>();
             _oppositionUnits = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            _friendlyUnits = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
 
         protected override void ResolveCombatRoundCore()
