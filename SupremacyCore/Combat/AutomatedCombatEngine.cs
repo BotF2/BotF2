@@ -31,8 +31,8 @@ namespace Supremacy.Combat
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private List<int> _unitOnwerIDs;
-        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionUnits;
-        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyUnits;
+        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionCombatShips;
+        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyCombatShips;
         private Dictionary<int, int> _stopLoop;
         private Dictionary<int, int> _stopLoop2;
 
@@ -40,22 +40,22 @@ namespace Supremacy.Combat
         {
             get
             {
-                return _friendlyUnits;
+                return _friendlyCombatShips;
             }
             set
             {
-                this._friendlyUnits = value;
+                this._friendlyCombatShips = value;
             }
         }
         public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionCombatShips
         {
             get
             {
-                return _oppositionUnits;
+                return _oppositionCombatShips;
             }
             set
             {
-                this._oppositionUnits = value;
+                this._oppositionCombatShips = value;
             }
         }
         public AutomatedCombatEngine(
@@ -67,8 +67,8 @@ namespace Supremacy.Combat
             _unitOnwerIDs = new List<int>();
             _stopLoop = new Dictionary<int, int>();
             _stopLoop2 = new Dictionary<int, int>();
-            _oppositionUnits = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            _friendlyUnits = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            _oppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            _friendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
 
         protected override void ResolveCombatRoundCore()
@@ -211,18 +211,18 @@ namespace Supremacy.Combat
                                 {
                                     GameLog.Core.Test.DebugFormat("Targeting on ={0} fromm attacker {1}", unitTuple.Item1.Owner.ShortName, attackingTuple.Item1.Name);
                                     if (targetUnitTupleList != null)
-                                        _oppositionUnits[_attackerOnwerID] = targetUnitTupleList;
+                                        _oppositionCombatShips[_attackerOnwerID] = targetUnitTupleList;
 
                                     GameLog.Core.Test.DebugFormat("Return Target ={0} from target {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                     if (returnFireTupleList != null)
-                                        _oppositionUnits[unitTuple.Item1.OwnerID] = returnFireTupleList;
+                                        _oppositionCombatShips[unitTuple.Item1.OwnerID] = returnFireTupleList;
 
-                                    foreach (var oppositionUnit in _oppositionUnits[_attackerOnwerID])
+                                    foreach (var oppositionUnit in _oppositionCombatShips[_attackerOnwerID])
                                     {
                                         GameLog.Core.Test.DebugFormat("opposition List unit {0} for attacker {1}", oppositionUnit.Item1.Name, attackingTuple.Item1.Owner.ShortName);
 
                                     }
-                                    foreach (var oppositionReturnFireUnit in _oppositionUnits[unitTuple.Item1.OwnerID])
+                                    foreach (var oppositionReturnFireUnit in _oppositionCombatShips[unitTuple.Item1.OwnerID])
                                     {
                                         GameLog.Core.Test.DebugFormat("opposition returnfire List unit {0} for targeted {1}", oppositionReturnFireUnit.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                     }
@@ -837,7 +837,7 @@ namespace Supremacy.Combat
             var attackerCivID = attacker.Owner.CivID;
             var attackingOwnerID = attacker.OwnerID;
             bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
-            var oppositionUnits = _oppositionUnits[attackingOwnerID].ToList();
+            var oppositionUnits = _oppositionCombatShips[attackingOwnerID].ToList();
             oppositionUnits.Randomize();
             var firstOppositionUint = oppositionUnits.First().Item1;
 
@@ -847,7 +847,7 @@ namespace Supremacy.Combat
                 {
                     case CombatOrder.Engage:
                     case CombatOrder.Formation:
-                        if (_oppositionUnits.Count() > 0)
+                        if (_oppositionCombatShips.Count() > 0)
                         {
                             return firstOppositionUint;
                         }
