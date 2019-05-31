@@ -30,32 +30,42 @@ namespace Supremacy.Combat
         private object firstOwner;
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
-        //private List<int> _unitOnwerIDs;
-        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionCombatShips;
-        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyCombatShips;
-        //private Dictionary<int, int> _stopLoop;
-        //private Dictionary<int, int> _stopLoop2;
+        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionTargetDictionary;
+        private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyShipLists;
+        private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionShipLists;
 
-        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> FriendlyCombatShips
+        public List<List<Tuple<CombatUnit, CombatWeapon[]>>> FriendlyShipLists
         {
             get
             {
-                return _friendlyCombatShips;
+                return _oppositionShipLists;
             }
             set
             {
-                this._friendlyCombatShips = value;
+                this._oppositionShipLists = value;
             }
         }
-        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionCombatShips
+        public List<List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionShipLists
         {
             get
             {
-                return _oppositionCombatShips;
+                return _oppositionShipLists;
             }
             set
             {
-                this._oppositionCombatShips = value;
+                this._oppositionShipLists = value;
+            }
+        }
+
+        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionTargetDictionary
+        {
+            get
+            {
+                return _oppositionTargetDictionary;
+            }
+            set
+            {
+                this._oppositionTargetDictionary = value;
             }
         }
         public AutomatedCombatEngine(
@@ -64,9 +74,6 @@ namespace Supremacy.Combat
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)
         {
-            //_unitOnwerIDs = new List<int>(); // Owner IDs of combat ships
-            //_stopLoop = new Dictionary<int, int>(); // key is attacking civ id and value is civ id of target
-            //_stopLoop2 = new Dictionary<int, int>();
             //_oppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
             //_friendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
@@ -124,11 +131,11 @@ namespace Supremacy.Combat
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _combatShipsTemp.Clear();
 
-            OppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            OppositionCombatShips.Clear();
+            //OppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>(); // now a dictoinary and not a list
+            //OppositionCombatShips.Clear();
 
-            FriendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            FriendlyCombatShips.Clear();
+            //FriendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            //FriendlyCombatShips.Clear();
 
             List<int> _unitTupleIDList = new List<int>();
             List<int> _attackerIDList = new List<int>();
@@ -148,9 +155,9 @@ namespace Supremacy.Combat
                         if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed) // don't check your own ships & only pass in each civ as attacker once
                         {
                             var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source); // get targeted civ entered for attacking civ
-                            if (attackerTargetOne == CombatHelper.GetBorgCiv() && noBorg)
+                            if (attackerTargetOne == CombatHelper.GetBorgCiv() && noBorg && !CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner))
                             {
-                                attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg, ToDo: better job of AI combat here or some place else
+                                attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
                             }
                             var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
 
@@ -196,18 +203,18 @@ namespace Supremacy.Combat
 
                                 GameLog.Core.Test.DebugFormat("Targeting on ={0} fromm attacker {1}", unitTuple.Item1.Owner.ShortName, attackingTuple.Item1.Name);
                                 if (targetUnitTupleList != null)
-                                    _oppositionCombatShips[attackingTuple.Item1.OwnerID] = targetUnitTupleList;
+                                    _oppositionTargetDictionary[attackingTuple.Item1.OwnerID] = targetUnitTupleList;
 
                                 GameLog.Core.Test.DebugFormat("Return Target ={0} from target {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                 if (returnFireTupleList != null)
-                                    _oppositionCombatShips[unitTuple.Item1.OwnerID] = returnFireTupleList;
+                                    _oppositionTargetDictionary[unitTuple.Item1.OwnerID] = returnFireTupleList;
 
-                                foreach (var oppositionUnit in _oppositionCombatShips[attackingTuple.Item1.OwnerID])
+                                foreach (var oppositionUnit in _oppositionTargetDictionary[attackingTuple.Item1.OwnerID])
                                 {
                                     GameLog.Core.Test.DebugFormat("opposition List unit {0} for attacker {1}", oppositionUnit.Item1.Name, attackingTuple.Item1.Owner.ShortName);
 
                                 }
-                                foreach (var oppositionReturnFireUnit in _oppositionCombatShips[unitTuple.Item1.OwnerID])
+                                foreach (var oppositionReturnFireUnit in _oppositionTargetDictionary[unitTuple.Item1.OwnerID])
                                 {
                                     GameLog.Core.Test.DebugFormat("opposition returnfire List unit {0} for targeted {1}", oppositionReturnFireUnit.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                 }
@@ -856,7 +863,7 @@ namespace Supremacy.Combat
             var attackerCivID = attacker.Owner.CivID;
             var attackingOwnerID = attacker.OwnerID;
             bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
-            var oppositionUnits = _oppositionCombatShips[attackingOwnerID].ToList();
+            var oppositionUnits = _oppositionTargetDictionary[attackingOwnerID].ToList();
             oppositionUnits.Randomize();
             var firstOppositionUint = oppositionUnits.First().Item1;
 
@@ -866,7 +873,7 @@ namespace Supremacy.Combat
                 {
                     case CombatOrder.Engage:
                     case CombatOrder.Formation:
-                        if (_oppositionCombatShips.Count() > 0)
+                        if (_oppositionTargetDictionary.Count() > 0)
                         {
                             return firstOppositionUint;
                         }
