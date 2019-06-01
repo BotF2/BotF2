@@ -31,10 +31,44 @@ namespace Supremacy.Combat
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionTargetDictionary;
-        //private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyShipLists;
-        //private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionShipLists;
+        private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyShipLists;
+        private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionShipLists;
+        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionCombatShips;
+        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyCombatShips;
 
-
+        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionTargetDictionary
+        {
+            get
+            {
+                return _oppositionTargetDictionary;
+            }
+            set
+            {
+                this._oppositionTargetDictionary = value;
+            }
+        }
+        public List<List<Tuple<CombatUnit, CombatWeapon[]>>> FriendlyShipLists
+        {
+            get
+            {
+                return _oppositionShipLists;
+            }
+            set
+            {
+                this._oppositionShipLists = value;
+            }
+        }
+        public List<List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionShipLists
+        {
+            get
+            {
+                return _oppositionShipLists;
+            }
+            set
+            {
+                this._oppositionShipLists = value;
+            }
+        }
         //public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionTargetDictionary
         //{
         //    get
@@ -52,7 +86,7 @@ namespace Supremacy.Combat
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)
         {
-            //_oppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            _oppositionTargetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
             //_friendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
 
