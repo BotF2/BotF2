@@ -160,14 +160,14 @@ namespace Supremacy.Combat
                         if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed) // don't check your own ships & only pass in each civ as attacker once
                         {
                             var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source); // get targeted civ entered for attacking civ
-                            //GameLog.Core.Test.DebugFormat("Get borg? {0} and found borg? {1}", CombatHelper.GetBorgCiv().ShortName, !foundBorg);
+                            GameLog.Core.Test.DebugFormat("Get borg? {0} and found borg? {1}", CombatHelper.GetBorgCiv().ShortName, !foundBorg);
                             //if (GetTargetOne(unitTuple.Item1.Source) == CombatHelper.GetBorgCiv() && GetTargetOne(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg)
                             //{
                             //    if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
                             //    {
-                            //        if( attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
+                            //        if (attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
                             //            attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
-                            //        else if(attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
+                            //        else if (attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
                             //            attackerTargetOne = _combatShips.First().Item1.Owner;
                             //    }
                             //}
