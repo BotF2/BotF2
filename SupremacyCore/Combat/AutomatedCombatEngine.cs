@@ -31,43 +31,21 @@ namespace Supremacy.Combat
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionTargetDictionary;
-        private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyShipLists;
-        private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionShipLists;
+        //private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyShipLists;
+        //private List<List<Tuple<CombatUnit, CombatWeapon[]>>> _oppositionShipLists;
 
-        public List<List<Tuple<CombatUnit, CombatWeapon[]>>> FriendlyShipLists
-        {
-            get
-            {
-                return _oppositionShipLists;
-            }
-            set
-            {
-                this._oppositionShipLists = value;
-            }
-        }
-        public List<List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionShipLists
-        {
-            get
-            {
-                return _oppositionShipLists;
-            }
-            set
-            {
-                this._oppositionShipLists = value;
-            }
-        }
 
-        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionTargetDictionary
-        {
-            get
-            {
-                return _oppositionTargetDictionary;
-            }
-            set
-            {
-                this._oppositionTargetDictionary = value;
-            }
-        }
+        //public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> OppositionTargetDictionary
+        //{
+        //    get
+        //    {
+        //        return _oppositionTargetDictionary;
+        //    }
+        //    set
+        //    {
+        //        this._oppositionTargetDictionary = value;
+        //    }
+        //}
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
@@ -145,7 +123,7 @@ namespace Supremacy.Combat
             // populate dictionary of list of target units (_oppositionCombatShips)
             foreach (var unitTuple in _combatShips)
             {
-               bool  noBorg = (_combatShips.Where(sc => sc.Item1.OwnerID == 6).Select(sc => sc).ToList().Count() > 0); // any borg here?
+               bool  foundBorg = (_combatShips.Where(sc => sc.Item1.OwnerID == 6).Select(sc => sc).ToList().Count() > 0); // any borg here?
                 if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID) && !unitTuple.Item1.IsDestroyed) // only pass in each civ once
                 {
                     GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
@@ -155,7 +133,7 @@ namespace Supremacy.Combat
                         if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed) // don't check your own ships & only pass in each civ as attacker once
                         {
                             var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source); // get targeted civ entered for attacking civ
-                            if (attackerTargetOne == CombatHelper.GetBorgCiv() && noBorg && !CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner))
+                            if (attackerTargetOne == CombatHelper.GetBorgCiv() && !foundBorg && !CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner))
                             {
                                 attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
                             }
@@ -201,7 +179,7 @@ namespace Supremacy.Combat
                             if (!targetTupleListOwnerID.Contains(attackingTuple.Item1.OwnerID) && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID)) // do not attack own ships and do not repeat yourself
                             {
 
-                                GameLog.Core.Test.DebugFormat("Targeting on ={0} fromm attacker {1}", unitTuple.Item1.Owner.ShortName, attackingTuple.Item1.Name);
+                                GameLog.Core.Test.DebugFormat("Targeting on ={0} from attacker {1}", unitTuple.Item1.Owner.ShortName, attackingTuple.Item1.Name);
                                 if (targetUnitTupleList != null)
                                     _oppositionTargetDictionary[attackingTuple.Item1.OwnerID] = targetUnitTupleList;
 
