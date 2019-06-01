@@ -65,7 +65,7 @@ namespace Supremacy.Combat
             : base(assets, updateCallback, combatEndedCallback)
         {
             _targetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            //_friendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            _shipListDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
 
         protected override void ResolveCombatRoundCore()
@@ -121,11 +121,26 @@ namespace Supremacy.Combat
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _combatShipsTemp.Clear();
 
-            //OppositionCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>(); // now a dictoinary and not a list
-            //OppositionCombatShips.Clear();
+            TargetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>(); // now a dictoinary and not a list
+            TargetDictionary.Clear();
 
-            //FriendlyCombatShips = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            //FriendlyCombatShips.Clear();
+            ShipListtDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            ShipListtDictionary.Clear();
+
+            // get owner ids for the ships in this sector (ownerIDs)
+            List<int> ownerIDs = new List<int>();
+            foreach (var tupleShip in _combatShips)
+            {
+                ownerIDs.Add(tupleShip.Item1.OwnerID);
+            }
+            ownerIDs.Distinct().ToList();
+
+            // populate dictionary of ships lists for each owner, The key is owner id (_shipListDictionary)
+            foreach (var ownerID in ownerIDs)
+            {
+                var listOfShipsByOwnerID = _combatShips.Where(sc => sc.Item1.OwnerID == ownerID).Select(sc => sc).ToList();
+                _shipListDictionary[listOfShipsByOwnerID.Last().Item1.OwnerID] = listOfShipsByOwnerID;
+            }
 
             List<int> _unitTupleIDList = new List<int>();
             List<int> _attackerIDList = new List<int>();
@@ -135,7 +150,7 @@ namespace Supremacy.Combat
             // populate dictionary of list of target units (_oppositionCombatShips)
             foreach (var unitTuple in _combatShips)
             {
-               bool  foundBorg = (_combatShips.Where(sc => sc.Item1.OwnerID == 6).Select(sc => sc).ToList().Count() > 0); // any borg here?
+               bool  foundBorg = (_combatShips.Where(sc => sc.Item1.OwnerID == 6).Select(sc => sc).ToList().Any()); // any borg here?
                 if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID) && !unitTuple.Item1.IsDestroyed) // only pass in each civ once
                 {
                     GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
@@ -145,10 +160,17 @@ namespace Supremacy.Combat
                         if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed) // don't check your own ships & only pass in each civ as attacker once
                         {
                             var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source); // get targeted civ entered for attacking civ
-                            if (attackerTargetOne == CombatHelper.GetBorgCiv() && !foundBorg && !CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner))
-                            {
-                                attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
-                            }
+                            //GameLog.Core.Test.DebugFormat("Get borg? {0} and found borg? {1}", CombatHelper.GetBorgCiv().ShortName, !foundBorg);
+                            //if (GetTargetOne(unitTuple.Item1.Source) == CombatHelper.GetBorgCiv() && GetTargetOne(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg)
+                            //{
+                            //    if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
+                            //    {
+                            //        if( attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
+                            //            attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
+                            //        else if(attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
+                            //            attackerTargetOne = _combatShips.First().Item1.Owner;
+                            //    }
+                            //}
                             var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
 
                             GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting? {2}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName);
@@ -169,8 +191,8 @@ namespace Supremacy.Combat
                                 if (returnFireTupleList != null)
                                     returnFireTupleList.Distinct().ToList();
                             }
-                            if (GetTargetOne(attackingTuple.Item1.Source) != GetTargetTwo(attackingTuple.Item1.Source)) 
-                            {
+                            if (GetTargetOne(attackingTuple.Item1.Source) != GetTargetTwo(attackingTuple.Item1.Source) && (GetTargetTwo(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg)) 
+                            {                               
                                 GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
                                 targetUnitTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == unitTuple.Item1.OwnerID).Select(sc => sc).ToList();
                                 if (targetUnitTupleList != null)
@@ -179,7 +201,7 @@ namespace Supremacy.Combat
                                 GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                 returnFireTupleList = _combatShips.Where(cs => cs.Item1.OwnerID == attackingTuple.Item1.OwnerID).Select(cs => cs).ToList();
                                 if (returnFireTupleList != null)
-                                    returnFireTupleList.Distinct().ToList();                         
+                                    returnFireTupleList.Distinct().ToList();
                             }
                             // populate dictionary for secondary-targetTwo if it is different from primary targeting. Do this after we populated primary-targetone
                             List<int> targetTupleListOwnerID = new List<int>();
