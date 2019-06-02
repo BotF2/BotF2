@@ -856,40 +856,34 @@ namespace Supremacy.Combat
         protected Civilization GetTargetOne(Orbital source)
         {
             var _targetOne = new Civilization();
-          // _targetOne = CombatHelper.GetBorgCiv(); // GameContext.Current.Civilizations.LastOrDefault();
-
             try
             {
                /* GameLog.Core.Combat.DebugFormat("Try Get target one for {0} owner {1}: target = {2}", source, source.Owner, _targetOneByCiv[source.OwnerID].GetTargetOne(source));     */                                                                                                                //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
                 _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);   
-
             }
             catch // (Exception e)
             {
                 //if (source.Owner.IsHuman == false)
                 GameLog.Core.Combat.DebugFormat("Unable to get target one for {0} {1} ({2}) Owner {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                _targetOne = CombatHelper.GetBorgCiv();
+                GameLog.Core.Combat.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
+                    source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _targetOne.Name);
                 ////GameLog.LogException(e);
             }
-            GameLog.Core.Combat.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
-                source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _targetOne.Name ); 
             return _targetOne;
         }
 
         protected Civilization GetTargetTwo(Orbital source)
         {
             var _targetTwo = new Civilization();
-            _targetTwo = CombatHelper.GetBorgCiv(); // GameContext.Current.Civilizations.LastOrDefault();
             try
             {
-                //GameLog.Core.Test.DebugFormat("Try Get target two for  orbital id {0} orbirtal name {1}", source.ObjectID, source.Name, _targetTwo.ToString());                                                                                                                      //if (targetCiv == null)
-                //if(source !=null)
                 _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
-                //return _targetTwoByCiv[source.OwnerID].Owner;
             }
             catch // (Exception e)
             {
-                if (source.Owner.IsHuman == false)
-                    GameLog.Core.Test.ErrorFormat("Unable to get target Two for source {0} owner {1}, {2} default to Borg {2}", source, source.Owner, _targetTwo.ToString());
+                //GameLog.Core.Test.ErrorFormat("Unable to get target Two for source {0} owner {1}, {2} default to Borg {2}", source, source.Owner, _targetTwo.ToString());
+                _targetTwo = CombatHelper.GetBorgCiv();
                 //GameLog.LogException(e);
             }
             return _targetTwo;

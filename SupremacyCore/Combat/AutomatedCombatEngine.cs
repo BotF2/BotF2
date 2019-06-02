@@ -143,7 +143,6 @@ namespace Supremacy.Combat
             }
 
             List<int> _unitTupleIDList = new List<int>();
-            List<int> _attackerIDList = new List<int>();
             List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>(); // list of target tuples
             List<Tuple<CombatUnit, CombatWeapon[]>> returnFireTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
@@ -156,13 +155,14 @@ namespace Supremacy.Combat
                     GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
 
                     foreach (var attackingTuple in _combatShips)
-                    {                    
+                    {
                         if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed) // don't check your own ships & only pass in each civ as attacker once
                         {
                             var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
                             var unitTupleTargetOne = GetTargetOne(attackingTuple.Item1.Source);
                             var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
-                            GameLog.Core.Test.DebugFormat("found borg? {0}", foundBorg);
+                            GameLog.Core.Test.DebugFormat("found borg? {0} and Borg CivID {1}", foundBorg, CombatHelper.GetBorgCiv().CivID);
+                            // if both sides are default targeting borg but no borg are present look for other targets in the sector
                             if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && foundBorg)
                             {
                                 if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
@@ -186,55 +186,38 @@ namespace Supremacy.Combat
                                 if (targetUnitTupleList == null || targetUnitTupleList.Count() == 0)
                                     break;
                                 targetUnitTupleList.Distinct().ToList();
-
+                                if(targetUnitTupleList != null)
+                                {
+                                    loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
+                                }
+ 
                                 GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                 returnFireTupleList = _combatShips.Where(cs => cs.Item1.OwnerID == attackingTuple.Item1.OwnerID).Select(cs => cs).ToList();
                                 if (returnFireTupleList != null)
+                                {
                                     returnFireTupleList.Distinct().ToList();
+                                    loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
+                                }
                             }
                             if (GetTargetOne(attackingTuple.Item1.Source) != GetTargetTwo(attackingTuple.Item1.Source) && (GetTargetTwo(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg)) 
                             {                               
                                 GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
                                 targetUnitTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == unitTuple.Item1.OwnerID).Select(sc => sc).ToList();
                                 if (targetUnitTupleList != null)
+                                {
                                     targetUnitTupleList.Distinct().ToList();
+                                    loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
+                                }
 
                                 GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
                                 returnFireTupleList = _combatShips.Where(cs => cs.Item1.OwnerID == attackingTuple.Item1.OwnerID).Select(cs => cs).ToList();
                                 if (returnFireTupleList != null)
+                                {
                                     returnFireTupleList.Distinct().ToList();
-                            }
-                            // populate dictionary for secondary-targetTwo if it is different from primary targeting. Do this after we populated primary-targetone
-                            List<int> targetTupleListOwnerID = new List<int>();
-                            foreach (var tuple in targetUnitTupleList)
-                            {
-                                targetTupleListOwnerID.Add(tuple.Item1.OwnerID);
-                            }
-
-                            if (!targetTupleListOwnerID.Contains(attackingTuple.Item1.OwnerID)) // && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID)) // do not attack own ships and do not repeat yourself
-                            {
-
-                                GameLog.Core.Test.DebugFormat("Targeting on ={0} from attacker {1}", unitTuple.Item1.Owner.ShortName, attackingTuple.Item1.Name);
-                                if (targetUnitTupleList != null)
-                                    _targetDictionary[attackingTuple.Item1.OwnerID] = targetUnitTupleList;
-
-                                GameLog.Core.Test.DebugFormat("Return Target ={0} from target {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
-                                if (returnFireTupleList != null)
-                                    _targetDictionary[unitTuple.Item1.OwnerID] = returnFireTupleList;
-
-                                foreach (var oppositionUnit in _targetDictionary[attackingTuple.Item1.OwnerID])
-                                {
-                                    GameLog.Core.Test.DebugFormat("opposition List unit {0} for attacker {1}", oppositionUnit.Item1.Name, attackingTuple.Item1.Owner.ShortName);
-
-                                }
-                                foreach (var oppositionReturnFireUnit in _targetDictionary[unitTuple.Item1.OwnerID])
-                                {
-                                    GameLog.Core.Test.DebugFormat("opposition returnfire List unit {0} for targeted {1}", oppositionReturnFireUnit.Item1.Name, unitTuple.Item1.Owner.ShortName);
+                                    loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
                                 }
                             }
                         }
-                        _attackerIDList.Add(attackingTuple.Item1.OwnerID); // record civ as already having been attacker
-                        _attackerIDList.Distinct().ToList();
                     }
                     _unitTupleIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been unitTuple
                     _unitTupleIDList.Distinct().ToList();
@@ -1077,6 +1060,16 @@ namespace Supremacy.Combat
                         );
                 }
                 weapon.Discharge();
+            }
+            private void loadTargets(int ownerID, List<Tuple<CombatUnit, CombatWeapon[]>> listTuple)
+            {
+                _targetDictionary[ownerID] = listTuple;
+
+                foreach (var dictionayUnit in _targetDictionary[ownerID])
+                {
+                    GameLog.Core.Test.DebugFormat("Target Dictionary List unit {0} added for attacker {1}", dictionayUnit.Item1.Name, listTuple);
+                }
+
             }
 
         }
