@@ -325,8 +325,8 @@ namespace Supremacy.Client
             }
 
             Civilization onlyFireIfFiredAppone = new Civilization();
-            onlyFireIfFiredAppone.ShortName = "Only return fire";
-            onlyFireIfFiredAppone.Key = "HOLDYOURFIRE";
+            onlyFireIfFiredAppone.ShortName = "HoldYourFire";
+            onlyFireIfFiredAppone.Key = "HoldFire";
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)

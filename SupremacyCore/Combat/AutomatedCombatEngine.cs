@@ -159,22 +159,23 @@ namespace Supremacy.Combat
                     {                    
                         if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed) // don't check your own ships & only pass in each civ as attacker once
                         {
-                            var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source); // get targeted civ entered for attacking civ
-                            GameLog.Core.Test.DebugFormat("Get borg? {0} and found borg? {1}", CombatHelper.GetBorgCiv().ShortName, !foundBorg);
-                            //if (GetTargetOne(unitTuple.Item1.Source) == CombatHelper.GetBorgCiv() && GetTargetOne(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg)
-                            //{
-                            //    if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
-                            //    {
-                            //        if (attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
-                            //            attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
-                            //        else if (attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
-                            //            attackerTargetOne = _combatShips.First().Item1.Owner;
-                            //    }
-                            //}
+                            var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
+                            var unitTupleTargetOne = GetTargetOne(attackingTuple.Item1.Source);
                             var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
+                            GameLog.Core.Test.DebugFormat("found borg? {0}", foundBorg);
+                            if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && foundBorg)
+                            {
+                                if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
+                                {
+                                    if (attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
+                                        attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
+                                    else if (attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
+                                        attackerTargetOne = _combatShips.First().Item1.Owner;
+                                }
+                            }
 
-                            GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting? {2}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName);
-                            GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & attacker {2} {3}", unitTuple.Item1.OwnerID, unitTuple.Item1.Name, attackingTuple.Item1.OwnerID, attackingTuple.Item1.Name);
+                            GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting? {2} & unitTuple {3}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName, unitTuple.Item1.Name);
+                            GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & attacker {2} & 'attacker' = {3}", unitTuple.Item1.Owner.ShortName, unitTuple.Item1.Name, attackerTargetTwo.ShortName, attackingTuple.Item1.Name);
    
                             List<Tuple<CombatUnit, CombatWeapon[]>> targetShipList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
@@ -210,7 +211,7 @@ namespace Supremacy.Combat
                                 targetTupleListOwnerID.Add(tuple.Item1.OwnerID);
                             }
 
-                            if (!targetTupleListOwnerID.Contains(attackingTuple.Item1.OwnerID) && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID)) // do not attack own ships and do not repeat yourself
+                            if (!targetTupleListOwnerID.Contains(attackingTuple.Item1.OwnerID)) // && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID)) // do not attack own ships and do not repeat yourself
                             {
 
                                 GameLog.Core.Test.DebugFormat("Targeting on ={0} from attacker {1}", unitTuple.Item1.Owner.ShortName, attackingTuple.Item1.Name);

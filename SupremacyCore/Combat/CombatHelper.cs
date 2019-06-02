@@ -296,14 +296,15 @@ namespace Supremacy.Combat
         }
  
         public static CombatTargetPrimaries GenerateBlanketTargetPrimary(CombatAssets assets, Civilization target) // the orbital and it's target civ from combat window
-        {   
-            //bool _generateTargetPrimariesTracing = true;   
+        {     
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
 
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
             {
-                if ( owner != null) // (_generateTargetPrimariesTracing == true)
+                if (target.ShortName == "HoldYourFire")
+                    target = GetBorgCiv();
+                if ( owner != null) 
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
                 GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
@@ -311,7 +312,9 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                if ( owner != null) // (_generateTargetPrimariesTracing == true)
+                if (target.ShortName == "HoldYourFire")
+                    target = GetBorgCiv();
+                if ( owner != null) 
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
                 GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
@@ -319,31 +322,38 @@ namespace Supremacy.Combat
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                //if (_generateTargetPrimariesTracing == true) // && target != borg)
-                    targetOne.SetTargetOneCiv(assets.Station.Source, target);
-              
+                if (target.ShortName == "HoldYourFire")
+                    target = GetBorgCiv();
+                targetOne.SetTargetOneCiv(assets.Station.Source, target);        
                 GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
-
             return targetOne;
         }
 
         public static CombatTargetSecondaries GenerateBlanketTargetSecondary(CombatAssets assets, Civilization target)
         {
-            //bool _generateTargetSecondaryTracing = true;
             var owner = assets.Owner;
             var targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
 
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
-            {          
-                if (owner != null)//(_generateTargetPrimariesTracing == true)
+            {
+                if (target.ShortName == "HoldYourFire")
+                {
+                    //GameLog.Core.Test.DebugFormat("target {0}", target.ShortName);
+                    target = GetBorgCiv();
+                }
+                //GameLog.Core.Test.DebugFormat("target {0}", target.ShortName);
+                if (owner != null)
                     targetTwo.SetTargetTwoCiv(ship.Source, target);
                 else targetTwo.SetTargetTwoCiv(ship.Source, GetBorgCiv());
+                //GameLog.Core.Test.DebugFormat("target Borg? {0}", GetBorgCiv().ShortName);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                if (owner != null)//(_generateTargetPrimariesTracing == true)
+                if (target.ShortName == "HoldYourFire")
+                    target = GetBorgCiv();
+                if (owner != null)
                     targetTwo.SetTargetTwoCiv(ship.Source, target);
                 else targetTwo.SetTargetTwoCiv(ship.Source, GetBorgCiv());
 
@@ -351,8 +361,9 @@ namespace Supremacy.Combat
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-               // if (_generateTargetSecondaryTracing == true)
-                    targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
+                if (target.ShortName == "HoldYourFire")
+                    target = GetBorgCiv();
+                targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
 
             }
             return targetTwo;
@@ -415,10 +426,9 @@ namespace Supremacy.Combat
             var _targetOne = new Civilization();
             foreach (var civ in GameContext.Current.Civilizations)
             {
-                if (civ.CivID == 6)
+                if (civ.ShortName == "Borg")
                 {
                     _targetOne = civ;
-                    if (_targetOne.CivID == 6)
                         break;
                 }
             }
