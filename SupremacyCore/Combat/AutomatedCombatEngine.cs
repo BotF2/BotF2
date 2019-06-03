@@ -31,7 +31,6 @@ namespace Supremacy.Combat
         private int friendlyWeaponPower = 0;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _targetDictionary;
-
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _shipListDictionary;
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _friendlyCombatShips;
 
@@ -135,7 +134,7 @@ namespace Supremacy.Combat
             }
             ownerIDs.Distinct().ToList();
 
-            // populate dictionary of ships lists for each owner, The key is owner id (_shipListDictionary)
+            // populate dictionary of ships in a lists for each owner, The key is owner id (_shipListDictionary)
             foreach (var ownerID in ownerIDs)
             {
                 var listOfShipsByOwnerID = _combatShips.Where(sc => sc.Item1.OwnerID == ownerID).Select(sc => sc).ToList();
@@ -147,10 +146,10 @@ namespace Supremacy.Combat
             List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>(); // list of target tuples
             List<Tuple<CombatUnit, CombatWeapon[]>> returnFireTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
-            // populate dictionary of list of target units (_oppositionCombatShips)
+            // populate dictionary with lists of target units (_oppositionCombatShips), key is owner id, civ id
             foreach (var unitTuple in _combatShips)
             {
-               bool  foundBorg = (_combatShips.Where(sc => sc.Item1.OwnerID == 6).Select(sc => sc).ToList().Any()); // any borg here?
+               bool foundBorg = (_combatShips.Where(sc => sc.Item1.OwnerID == 6).Select(sc => sc).ToList().Any()); // any borg here?
                 if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID) && !unitTuple.Item1.IsDestroyed) // only pass in each civ once
                 {
                     GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
@@ -164,7 +163,7 @@ namespace Supremacy.Combat
                             var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
                             GameLog.Core.Test.DebugFormat("found borg? {0} and Borg CivID {1}", foundBorg, CombatHelper.GetBorgCiv().CivID);
                             // if both sides are default targeting borg but no borg are present look for other targets in the sector
-                            if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && foundBorg)
+                            if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && !foundBorg)
                             {
                                 if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
                                 {
