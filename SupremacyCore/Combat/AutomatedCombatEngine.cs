@@ -81,7 +81,7 @@ namespace Supremacy.Combat
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
 
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
-            if (!IsCombatOver)
+            if (_roundNumber<3)
             {
                 //  Once a ship has retreated, its important that it does not do it again..
                 var easyRetreatShips = _combatShips
@@ -838,9 +838,8 @@ namespace Supremacy.Combat
             }
             var attackerOrder = GetCombatOrder(attacker.Source);
             var attackerCivID = attacker.Owner.CivID;
-            var attackingOwnerID = attacker.OwnerID;
-            bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
-            var oppositionUnits = _targetDictionary[attackingOwnerID].ToList();
+            var attackingOwnerID = attacker.OwnerID; var oppositionUnits = _targetDictionary[attackingOwnerID].ToList();
+            bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);           
             oppositionUnits.Randomize();
             var firstOppositionUint = oppositionUnits.First().Item1;
 
@@ -855,37 +854,11 @@ namespace Supremacy.Combat
                             return firstOppositionUint;
                         }
                         break;
-                    ////Has both ships and station to target
-                    //if (hasOppositionStation && (oppositionShips.Count() > 0))
-                    //{
-                    //    var oppOrder = GetCombatOrder(oppositionShips.FirstOrDefault().Item1.Source);
-                    //    if (oppOrder == CombatOrder.Formation) //(RandomHelper.Random(5) == 0)
-                    //    {
-                    //        //GameLog.Core.Combat.DebugFormat("",
-                    //        // oppositionShips.FirstOrDefault().Item1.Source.ObjectID,
-                    //        // oppositionShips.FirstOrDefault().Item1.Source.Name,
-                    //        // oppositionShips.FirstOrDefault().Item1.Source.Design,
-                    //        // oppOrder);
-                    //        return oppositionShips.FirstOrDefault().Item1;
-                    //    }
-                    //    else
-                    //    {
-                    //        return _combatStation.Item1;
-                    //    }
-                    //    // ´MAYBE needs change that target cannot be retreated ships...
-                    //}
-                    ////Only has a station to target
-                    //if (hasOppositionStation)
-                    //{
-                    //    return _combatStation.Item1;
-                    //}
-                    ////Nothing to target
-                    //return null;
 
                     case CombatOrder.Rush:
                         //If there are any ships that are retreating, target them
 
-                        var oppositionRetreating = _combatShips.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
+                        var oppositionRetreating = oppositionUnits.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
                         if (oppositionRetreating.Count() > 0)
                         {
                             return oppositionRetreating.First().Item1;
@@ -895,7 +868,7 @@ namespace Supremacy.Combat
 
                     case CombatOrder.Transports:
                         //If there are transports and they are not in formation, target them
-                        var oppositionTransports = _combatShips.Where(cs => (cs.Item1.Source.OrbitalDesign.ShipType == "Transport") && !cs.Item1.IsDestroyed);
+                        var oppositionTransports = oppositionUnits.Where(cs => (cs.Item1.Source.OrbitalDesign.ShipType == "Transport") && !cs.Item1.IsDestroyed);
                         bool oppositionIsInFormation = oppositionUnits.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
                         if ((oppositionTransports.Count() > 0) && (!oppositionIsInFormation))
                         {
@@ -903,7 +876,7 @@ namespace Supremacy.Combat
                         }
                         //If there any ships retreating, target them
 
-                        var oppositionRetreatingRaid = _combatShips.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
+                        var oppositionRetreatingRaid = oppositionUnits.Where(cs => (GetCombatOrder(cs.Item1.Source) == CombatOrder.Retreat) && !cs.Item1.IsDestroyed);
                         if (oppositionRetreatingRaid.Count() > 0)
                         {
                             return oppositionRetreatingRaid.First().Item1;
