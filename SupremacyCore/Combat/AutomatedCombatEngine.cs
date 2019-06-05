@@ -149,7 +149,7 @@ namespace Supremacy.Combat
             // populate dictionary with lists of target units (_oppositionCombatShips), key is owner id, civ id
             foreach (var unitTuple in _combatShips)
             {
-               bool foundBorg = (_combatShips.Where(sc => sc.Item1.OwnerID == 6).Select(sc => sc).ToList().Any()); // any borg here?
+               bool foundBorg = (_combatShips.Where(sc => sc.Item1.Owner.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
                 if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID) && !unitTuple.Item1.IsDestroyed) // only pass in each civ once
                 {
                     GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
