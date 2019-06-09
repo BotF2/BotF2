@@ -426,7 +426,7 @@ namespace Supremacy.Combat
             var _targetOne = new Civilization();
             foreach (var civ in GameContext.Current.Civilizations)
             {
-                if (civ.ShortName == "Borg")
+                if (civ.CivID == 6) //&& GameContext.Current.Civilizations.Contains(civ.Key)=="BORG")
                 {
                     _targetOne = civ;
                         break;

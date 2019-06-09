@@ -149,16 +149,16 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //try    // maybe slows down the game very much
-                //{
+                try    // maybe slows down the game very much
+                {
                     var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
                     return civManager.TotalPopulation;
-                //}
-                //catch (Exception e)
-                //{
-                //    GameLog.Print("Problem occured at TotalPopulation");
-                //    return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
-                //}
+                }
+                catch (Exception e)
+                {
+                    GameLog.GetLog("Problem occured at TotalPopulation");
+                    return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
+                }
             }
         }
         #endregion

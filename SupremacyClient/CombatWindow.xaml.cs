@@ -327,6 +327,7 @@ namespace Supremacy.Client
             Civilization onlyFireIfFiredAppone = new Civilization();
             onlyFireIfFiredAppone.ShortName = "HoldYourFire";
             onlyFireIfFiredAppone.Key = "HoldFire";
+           
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
@@ -407,10 +408,7 @@ namespace Supremacy.Client
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
         }
-        //private void SelectControl()
-        //{
-            
-        //}
+
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
@@ -418,7 +416,7 @@ namespace Supremacy.Client
           
             ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));// theTargeted1Civ));
 
-            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", theTargeted1Civ.ToString()); //theTargeted1Civ);
+            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", theTargeted1Civ.ShortName); //theTargeted1Civ);
 
         }
 

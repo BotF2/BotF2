@@ -1424,7 +1424,7 @@ namespace Supremacy.WCF
                 var _targetBorg = new Civilization();
                 foreach (var civ in GameContext.Current.Civilizations)
                 {
-                    if (civ.CivID == 6)
+                    if (civ.Key == "Borg")
                         _targetBorg = civ;
                 }
                 var blanketOrder = CombatOrder.Engage;

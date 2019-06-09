@@ -90,6 +90,7 @@ namespace Supremacy.Combat
         {
             _targetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
             _shipListDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            _willFightAlongSide = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
 
         protected override void ResolveCombatRoundCore()
@@ -167,12 +168,12 @@ namespace Supremacy.Combat
             }
 
             // populate dictionary of will fight alongside ships in a list for each owner
-            for (int i = 0; i < _combatShips.Count; i++)
+            for (int t = 0; t < _combatShips.Count(); t++)
             {
-                var ownerAssets = GetAssets(_combatShips[i].Item1.Owner);
-                _willFightAlongSide[_combatShips[i].Item1.OwnerID] = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[i].Item1.Owner, cs.Item1.Owner)).Select(cs => cs).ToList();
+                //var ownerAssets = GetAssets(_combatShips[t].Item1.Owner);
+                _willFightAlongSide[_combatShips[t].Item1.OwnerID] = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[t].Item1.Owner, cs.Item1.Owner)).Select(cs => cs).ToList();
+                _willFightAlongSide.Distinct().ToList();
             }
-
 
             List<int> _unitTupleIDList = new List<int>();
             List<int> _attackerIDList = new List<int>();
@@ -192,9 +193,9 @@ namespace Supremacy.Combat
                         if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID))  // don't check your own ships & only pass in each civ as attacker once
                         {
                             var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
-                            var unitTupleTargetOne = GetTargetOne(attackingTuple.Item1.Source);
+                            var unitTupleTargetOne = GetTargetOne(unitTuple.Item1.Source);
                             var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
-                            GameLog.Core.Test.DebugFormat("found borg? {0} and Borg CivID {1}", foundBorg, CombatHelper.GetBorgCiv().CivID);
+                            GameLog.Core.Test.DebugFormat("found borg? {0} attacker target={1}, tuple target={2} getBorg{3}", foundBorg, attackerTargetOne, unitTupleTargetOne, CombatHelper.GetBorgCiv());
                             // if both sides are default targeting borg but no borg are present look for other targets in the sector
                             if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && !foundBorg)
                             {
@@ -368,7 +369,7 @@ namespace Supremacy.Combat
             //}
 
 
-            //loop through the target dictionary looking for target lists
+            //****************loop through the target dictionary looking for target lists************************
             for (int i=0; i < ownerIDs.Count; i++)
             {
                 List<int> usedTheseCivIDs = new List<int>(); // do not repeat this civ
@@ -390,22 +391,22 @@ namespace Supremacy.Combat
                     {
                         if (!usedTheseCivIDs.Contains(usedID))
                         {
-                            usedTheseCivIDs.Add(usedID);
-                            usedTheseCivIDs.Add(ownerIDs[i]);
-                            usedTheseCivIDs.Distinct().ToList();
+                            usedTheseCivIDs.Add(usedID); // opposition civ id
+                            usedTheseCivIDs.Add(ownerIDs[i]); // friend civ id from dictionary
+                            usedTheseCivIDs.Distinct().ToList(); 
                         }
                     }
 
-                    FriendlyCombatShips = _combatShips.Where(sc => sc.Item1.OwnerID == ownerIDs[i]).Select(sc => sc).ToList();
-                    if (_willFightAlongSide != null)
+                    FriendlyCombatShips = _shipListDictionary[i]; //_combatShips.Where(sc => sc.Item1.OwnerID == ownerIDs[i]).Select(sc => sc).ToList();
+                    if (_willFightAlongSide[ownerIDs[i]] != null)
                         FriendlyCombatShips.AddRange(_willFightAlongSide[ownerIDs[i]]);
                     FriendlyCombatShips.Randomize();
 
                     // this needs to be a new combat to pick up a third civ after civ one and two fight
-                    if(_targetDictionary[ownerIDs[i]].Count() != _targetDictionary[OppositionCombatShips.FirstOrDefault().Item1.OwnerID].Count())
-                    {
-                        usedTheseCivIDs.RemoveRange(othersCivIDs); // if there are other civs target the the opposition civ give them combat too
-                    }
+                    //if(_targetDictionary[ownerIDs[i]].Count() != _targetDictionary[OppositionCombatShips.FirstOrDefault().Item1.OwnerID].Count())
+                    //{
+                    //    usedTheseCivIDs.RemoveRange(othersCivIDs); // if there are other civs target the the opposition civ give them combat too
+                    //}
 
                 }
 
@@ -486,16 +487,14 @@ namespace Supremacy.Combat
                         _combatShipsTemp.Add(OppositionCombatShips.ToList()[l]); // Second Ship in _combatShipsTemp is opposition (initialization)   
                 }
 
-                _combatShips.Clear(); //  after ships where sorted into Temp, delete 
-                                      // the original Array. After that populate empty array with sorted temp array
+                _combatShips.Clear(); //  after ships where sorted into Temp, delete orginal list
+                                      //  After that populate empty list with sorted temp list
                 for (int m = 0; m < _combatShipsTemp.Count; m++)
                 {
                     _combatShips.Add(_combatShipsTemp[m]);
-
                 }
                 _combatShipsTemp.Clear(); // Temp cleared for next runthrough
                 _combatShips.Randomize();
-
 
                 // Stop using Temp, only use it to sort and then get rid of it
 
@@ -509,7 +508,6 @@ namespace Supremacy.Combat
                 {
                     //GameLog.Core.Combat.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
                     //     _combatShipsTemp[i].Item1.Source.ObjectID, _combatShipsTemp[i].Item1.Source.Name, _combatShipsTemp[i].Item1.Source.Design, i);
-
 
                     var ownerAssets = GetAssets(_combatShips[k].Item1.Owner);
                     //var ships = new List<Ship>(_combatShips.).ToList();
@@ -532,41 +530,45 @@ namespace Supremacy.Combat
                         cycleReduction = 1;
                     }
 
-                    List<string> ownEmpires = _combatShips.Where(s =>
-                        (s.Item1.Owner == _combatShips[k].Item1.Owner))
+                    List<string> ownCiv = _combatShips.Where(s =>
+                        (s.Item1.OwnerID == ownerIDs[i]))
                         .Select(s => s.Item1.Owner.Key)
                         .Distinct()
                         .ToList();
 
-
-                    List<string> friendlyEmpires = _combatShips.Where(s =>
-                        (s.Item1.Owner != _combatShips[k].Item1.Owner) &&
+                    List<string> friendlyCivs = _combatShips.Where(s =>
+                        (s.Item1.OwnerID != ownerIDs[i]) &&
                         CombatHelper.WillFightAlongside(s.Item1.Owner, _combatShips[k].Item1.Owner))
                         .Select(s => s.Item1.Owner.Key)
                         .Distinct()
                         .ToList();
 
-
-                    List<string> hostileEmpires = _combatShips.Where(s =>
-                        (s.Item1.Owner != _combatShips[k].Item1.Owner) &&
-                        CombatHelper.WillEngage(s.Item1.Owner, _combatShips[k].Item1.Owner))
-                        .Select(s => s.Item1.Owner.Key)
-                        .Distinct()
-                        .ToList();
-
-
-                    firstOwner = _combatShips[0].Item1.Owner;
-                    if (CombatHelper.WillEngage(_combatShips[k].Item1.Owner, _combatShips[0].Item1.Owner) && _combatShips[0].Item1.Owner != _combatShips[k].Item1.Owner)
+                    List<string> hostileCivs = new List<string>();
+                       
+                    var hostileShipList = _targetDictionary[ownerIDs[i]];
+                    foreach (var hostilShip in hostileShipList)
                     {
-                        friendlyOwner = false;
+                        hostileCivs.Add(hostilShip.Item1.Owner.Key);
+                        hostileCivs.Distinct().ToList();
+                    }
+
+                    var friendShips = _willFightAlongSide[ownerIDs[i]];
+                    List<int> friendIDs = new List<int>();
+                    foreach (var ship in friendShips)
+                    {
+                        friendIDs.Add(ship.Item1.OwnerID);
+                    }
+                    if (_combatShips[k].Item1.OwnerID == ownerIDs[i] || friendIDs.Contains(_combatShips[k].Item1.OwnerID)) // need us or friendly
+                    {
+                         friendlyOwner = true;
                     }
                     else
                     {
-                        friendlyOwner = true;
+                        friendlyOwner = false;
                     }
 
-                    int friendlyWeaponPower = ownEmpires.Sum(e => _empireStrengths[e]) + friendlyEmpires.Sum(e => _empireStrengths[e]);
-                    int hostileWeaponPower = hostileEmpires.Sum(e => _empireStrengths[e]);
+                    int friendlyWeaponPower = ownCiv.Sum(e => _empireStrengths[e]) + friendlyCivs.Sum(e => _empireStrengths[e]);
+                    int hostileWeaponPower = hostileCivs.Sum(e => _empireStrengths[e]);
                     int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
                     //Figure out if any of the opposition ships have sensors powerful enough to penetrate our camo. If so, will be decamo.
@@ -586,9 +588,9 @@ namespace Supremacy.Combat
 
                     //TODO: Move this to DiplomacyHelper
                     List<string> allEmpires = new List<string>();
-                    allEmpires.AddRange(ownEmpires);
-                    allEmpires.AddRange(friendlyEmpires);
-                    allEmpires.AddRange(hostileEmpires);
+                    allEmpires.AddRange(ownCiv);
+                    allEmpires.AddRange(friendlyCivs);
+                    allEmpires.AddRange(hostileCivs);
                     foreach (var firstEmpire in allEmpires.Distinct().ToList())
                     {
                         foreach (var secondEmpire in allEmpires.Distinct().ToList())
@@ -735,12 +737,8 @@ namespace Supremacy.Combat
                                         target.Source.ObjectID, target.Name, target.Source.Design,
                                         amountOfWeapons);
                                     // all weapons fired for current ship i
-
                                 }
-
                             }
-
-
                             foreach (var combatShip in _combatShips)
                             {
                                 if (combatShip.Item1.IsDestroyed)
@@ -865,7 +863,6 @@ namespace Supremacy.Combat
                         continue;
                     }
                 }
-
                 //End the combat... at turn X = 5, by letting all sides reteat
                 if (_roundNumber == 5) // equals 4 engagements. Minors need an A.I. to find back to homeworld then...
                 {
@@ -890,7 +887,7 @@ namespace Supremacy.Combat
                         }
                     }
                 }// end to end combat
-
+///********************************************************************
             }// end of combat looping
         }
 
@@ -1094,7 +1091,7 @@ namespace Supremacy.Combat
             }
             private void loadTargets(int ownerID, List<Tuple<CombatUnit, CombatWeapon[]>> listTuple)
             {
-                listTuple = _combatShips.Where(cs => cs.Item1.OwnerID == ownerID).Select(cs => cs).ToList();
+            listTuple = _shipListDictionary[ownerID];  //_combatShips.Where(cs => cs.Item1.OwnerID == ownerID).Select(cs => cs).ToList();
                 if (listTuple != null)
                 {
                     listTuple.Distinct().ToList();
