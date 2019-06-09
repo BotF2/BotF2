@@ -183,62 +183,88 @@ namespace Supremacy.Combat
             // populate target dictionary with lists of target units (_oppositionCombatShips), key is owner id, civ id
             foreach (var unitTuple in _combatShips)
             {
-               bool foundBorg = (_combatShips.Where(sc => sc.Item1.Owner.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
-                if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID) && !unitTuple.Item1.IsDestroyed) // only pass in each civ once
-                {
-                    GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
+                bool foundBorg = (_combatShips.Where(sc => sc.Item1.Owner.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
 
-                    foreach (var attackingTuple in _combatShips)
+                try
+                {
+
+
+                    if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID) && !unitTuple.Item1.IsDestroyed) // only pass in each civ once
                     {
-                        if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID))  // don't check your own ships & only pass in each civ as attacker once
+                        GameLog.Core.Test.DebugFormat("--------------------------");
+                        GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
+
+                        foreach (var attackingTuple in _combatShips)
                         {
-                            var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
-                            var unitTupleTargetOne = GetTargetOne(unitTuple.Item1.Source);
-                            var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
-                            GameLog.Core.Test.DebugFormat("found borg? {0} attacker target={1}, tuple target={2} getBorg{3}", foundBorg, attackerTargetOne, unitTupleTargetOne, CombatHelper.GetBorgCiv());
-                            // if both sides are default targeting borg but no borg are present look for other targets in the sector
-                            if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && !foundBorg)
+                            GameLog.Core.Test.DebugFormat("attackingTuple = {0} {1}", attackingTuple.Item1.Source.ObjectID, attackingTuple.Item1.Name);
+                            if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID))  // don't check your own ships & only pass in each civ as attacker once
                             {
-                                if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
+                                var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
+                                var unitTupleTargetOne = GetTargetOne(unitTuple.Item1.Source);
+                                var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
+
+                                //if (unitTupleTargetOne.CivID == -1 || attackerTargetOne.CivID == -1 || attackerTargetTwo.CivID == -1)
+                                //{
+                                //    GameLog.Core.Test.DebugFormat("one of civs equal -1");
+                                //    break;
+                                //}
+                                GameLog.Core.Test.DebugFormat("unitTupleTargetOne.CivID = {0}, attackerTargetOne.CivID = {1},attackerTargetTwo.CivID = {2}", 
+                                    unitTupleTargetOne.CivID, attackerTargetOne.CivID, attackerTargetTwo.CivID);
+
+                                GameLog.Core.Test.DebugFormat("found borg? {0} attacker target={1}, tuple target={2} getBorg{3}", foundBorg, attackerTargetOne, unitTupleTargetOne, CombatHelper.GetBorgCiv());
+                                // if both sides are default targeting borg but no borg are present look for other targets in the sector
+                                if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && !foundBorg)
                                 {
-                                    if (attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
-                                        attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
-                                    else if (attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
-                                        attackerTargetOne = _combatShips.First().Item1.Owner;
+                                    if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
+                                    {
+                                        if (attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
+                                            attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
+                                        else if (attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
+                                            attackerTargetOne = _combatShips.First().Item1.Owner;
+                                    }
+                                }
+
+                                if (GetTargetOne(attackingTuple.Item1.Source).ShortName == "8888Civ")
+                                    break;
+
+
+                                GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting? {2} & unitTuple {3}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName, unitTuple.Item1.Name);
+                                GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & attacker {2} & 'attacker' = {3}", unitTuple.Item1.Owner.ShortName, unitTuple.Item1.Name, attackerTargetTwo.ShortName, attackingTuple.Item1.Name);
+
+                                if ((attackerTargetOne == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTuple.Item1.Owner)))
+                                {
+                                    GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
+                                    targetUnitTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == unitTuple.Item1.OwnerID).Select(sc => sc).ToList();
+                                    if (targetUnitTupleList == null || targetUnitTupleList.Count() == 0)
+                                        break;
+                                    loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
+
+                                    GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
+                                    loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
+                                }
+                                if (GetTargetOne(attackingTuple.Item1.Source) != GetTargetTwo(attackingTuple.Item1.Source) && (GetTargetTwo(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg))
+                                {
+                                    GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
+                                    loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
+
+                                    GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
+                                    loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
                                 }
                             }
-
-                            GameLog.Core.Test.DebugFormat("attacker ={0} {1} targeting? {2} & unitTuple {3}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName, unitTuple.Item1.Name);
-                            GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & attacker {2} & 'attacker' = {3}", unitTuple.Item1.Owner.ShortName, unitTuple.Item1.Name, attackerTargetTwo.ShortName, attackingTuple.Item1.Name);
-   
-                            if ((attackerTargetOne == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTuple.Item1.Owner))) 
-                            {
-                                GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
-                                targetUnitTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == unitTuple.Item1.OwnerID).Select(sc => sc).ToList();   
-                                if (targetUnitTupleList == null || targetUnitTupleList.Count() == 0)
-                                    break;
-                                loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
-
-                                GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
-                                loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
-                            }
-                            if (GetTargetOne(attackingTuple.Item1.Source) != GetTargetTwo(attackingTuple.Item1.Source) && (GetTargetTwo(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg)) 
-                            {                               
-                                GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
-                                loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
-
-                                GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
-                                loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
-                            }
+                            _attackerIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been attacker
+                            _attackerIDList.Distinct().ToList();
                         }
-                        _attackerIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been attacker
-                        _attackerIDList.Distinct().ToList();
+                        _unitTupleIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been unitTuple
+                        _unitTupleIDList.Distinct().ToList();
+
+
                     }
-                    _unitTupleIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been unitTuple
-                    _unitTupleIDList.Distinct().ToList();
+                }
+                catch
+                {
+                    GameLog.Core.Test.DebugFormat("Problem at for each unitTuple");
                 }
             }
-
             //    CombatUnit target = new CombatUnit();
 
             //    //do combat for each unit in sector
@@ -368,527 +394,547 @@ namespace Supremacy.Combat
             //    //}
             //}
 
-
-            //****************loop through the target dictionary looking for target lists************************
-            for (int i=0; i < ownerIDs.Count; i++)
+            foreach (var item in ownerIDs)
             {
-                List<int> usedTheseCivIDs = new List<int>(); // do not repeat this civ
-                List<int> othersCivIDs = new List<int>(); 
-                if (_targetDictionary[ownerIDs[i]] != null && !usedTheseCivIDs.Contains(ownerIDs[i]))
+                GameLog.Core.Test.DebugFormat("ownerIDs contains = {0}", item);
+            }
+
+
+            // ToDo: nobody is targeting anybody - find out how to close combat 
+            if (_targetDictionary != null && _targetDictionary.Count() != 0)
+            {
+                
+                //****************loop through the target dictionary looking for target lists************************
+                for (int i = 0; i < ownerIDs.Count; i++)
                 {
-                    OppositionCombatShips = _targetDictionary[ownerIDs[i]];
+                    List<int> usedTheseCivIDs = new List<int>(); // do not repeat this civ
+                    List<int> othersCivIDs = new List<int>();
+                    if (_targetDictionary[ownerIDs[i]] != null && !usedTheseCivIDs.Contains(ownerIDs[i]))
+                    {
+                        OppositionCombatShips = _targetDictionary[ownerIDs[i]];
+                        OppositionCombatShips.Randomize();
+
+                        foreach (var tupleShip in OppositionCombatShips)
+                        {
+                            othersCivIDs.Add(tupleShip.Item1.OwnerID);
+                            othersCivIDs.Distinct().ToList();
+                        }
+
+                        ownerIDs.Distinct().ToList();
+                        // if opposition civ has third+ civs in target dictionary run that combat too
+                        foreach (int usedID in ownerIDs)
+                        {
+                            if (!usedTheseCivIDs.Contains(usedID))
+                            {
+                                usedTheseCivIDs.Add(usedID); // opposition civ id
+                                usedTheseCivIDs.Add(ownerIDs[i]); // friend civ id from dictionary
+                                usedTheseCivIDs.Distinct().ToList();
+                            }
+                        }
+
+                        if (_shipListDictionary[i].Count() > 0)
+                        {
+                            FriendlyCombatShips = _shipListDictionary[i]; //_combatShips.Where(sc => sc.Item1.OwnerID == ownerIDs[i]).Select(sc => sc).ToList();
+                            if (_willFightAlongSide[ownerIDs[i]] != null)
+                                FriendlyCombatShips.AddRange(_willFightAlongSide[ownerIDs[i]]);
+                            FriendlyCombatShips.Randomize();
+                            foreach (var ship  in FriendlyCombatShips)
+                            {
+                                GameLog.Core.CombatDetails.DebugFormat("added to FriendlyCombatShips: {0} {1}", ship.Item1.Source.ObjectID, ship.Item1.Source.Name);
+                            }
+                        }
+
+                        // this needs to be a new combat to pick up a third civ after civ one and two fight
+                        //if(_targetDictionary[ownerIDs[i]].Count() != _targetDictionary[OppositionCombatShips.FirstOrDefault().Item1.OwnerID].Count())
+                        //{
+                        //    usedTheseCivIDs.RemoveRange(othersCivIDs); // if there are other civs target the the opposition civ give them combat too
+                        //}
+
+                    }
+
+                    double ratioATemp = 0.00; // used to transform ship.Count to double decimals
+                    double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
+
+                    // Prevent division by 0, if one side has been wiped out / or retreated.
+                    if (OppositionCombatShips.ToList().Count == 0 || FriendlyCombatShips.Count == 0)
+                    {
+                        shipRatio = 1;
+                        excessShipsStartingAt = 0;
+                        weakerSide = 0;
+                    }
+                    else
+                    {
+                        if (FriendlyCombatShips.ToList().Count - OppositionCombatShips.ToList().Count > 0)
+                        {
+                            excessShipsStartingAt = OppositionCombatShips.ToList().Count * 2;
+
+                            ratioATemp = FriendlyCombatShips.Count();
+                            ratioBTemp = OppositionCombatShips.Count();
+                            shipRatio = ratioATemp / ratioBTemp;
+                            weakerSide = 1;
+                        }
+
+                        else
+                        {
+                            excessShipsStartingAt = FriendlyCombatShips.Count * 2;
+                            ratioATemp = FriendlyCombatShips.Count();
+                            ratioBTemp = OppositionCombatShips.Count();
+                            shipRatio = ratioBTemp / ratioATemp;
+                            weakerSide = 2;
+                        }
+                    }
+                    if (FriendlyCombatShips.Count() == OppositionCombatShips.Count())
+                        weakerSide = 0;
+                    if (shipRatio > 1.0)
+                    {
+                        newCycleReduction = 0.5;
+                    }
+
+                    if (shipRatio > 1.2)
+                    {
+                        newCycleReduction = 0.25;
+                    }
+                    if (shipRatio > 1.5)
+                    {
+                        newCycleReduction = 0.15;
+                    }
+                    if (shipRatio > 2.5)
+                    {
+                        newCycleReduction = 0.08;
+                    }
+                    if (shipRatio > 10)
+                    {
+                        newCycleReduction = 0.05;
+                    }
+                    if (FriendlyCombatShips.Count() < 4 || OppositionCombatShips.Count() < 4) // small fleets attack each other at full power
+                    {
+                        newCycleReduction = 1;
+                    }
+                    GameLog.Core.CombatDetails.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}",
+                        newCycleReduction,
+                        excessShipsStartingAt,
+                        ratioATemp,
+                        ratioBTemp,
+                        shipRatio,
+                        weakerSide);
+
                     OppositionCombatShips.Randomize();
-
-                    foreach (var tupleShip in OppositionCombatShips)
-                    {
-                        othersCivIDs.Add(tupleShip.Item1.OwnerID);
-                        othersCivIDs.Distinct().ToList();
-                    }
-
-                    ownerIDs.Distinct().ToList();
-                    // if opposition civ has third+ civs in target dictionary run that combat too
-                    foreach (int usedID in ownerIDs)
-                    {
-                        if (!usedTheseCivIDs.Contains(usedID))
-                        {
-                            usedTheseCivIDs.Add(usedID); // opposition civ id
-                            usedTheseCivIDs.Add(ownerIDs[i]); // friend civ id from dictionary
-                            usedTheseCivIDs.Distinct().ToList(); 
-                        }
-                    }
-
-                    FriendlyCombatShips = _shipListDictionary[i]; //_combatShips.Where(sc => sc.Item1.OwnerID == ownerIDs[i]).Select(sc => sc).ToList();
-                    if (_willFightAlongSide[ownerIDs[i]] != null)
-                        FriendlyCombatShips.AddRange(_willFightAlongSide[ownerIDs[i]]);
                     FriendlyCombatShips.Randomize();
-
-                    // this needs to be a new combat to pick up a third civ after civ one and two fight
-                    //if(_targetDictionary[ownerIDs[i]].Count() != _targetDictionary[OppositionCombatShips.FirstOrDefault().Item1.OwnerID].Count())
-                    //{
-                    //    usedTheseCivIDs.RemoveRange(othersCivIDs); // if there are other civs target the the opposition civ give them combat too
-                    //}
-
-                }
-
-                double ratioATemp = 0.00; // used to transform ship.Count to double decimals
-                double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
-
-                // Prevent division by 0, if one side has been wiped out / or retreated.
-                if (OppositionCombatShips.ToList().Count == 0 || FriendlyCombatShips.Count == 0)
-                {
-                    shipRatio = 1;
-                    excessShipsStartingAt = 0;
-                    weakerSide = 0;
-                }
-                else
-                {
-                    if (FriendlyCombatShips.ToList().Count - OppositionCombatShips.ToList().Count > 0)
+                    for (int l = 0; l < _combatShips.Count; l++) // sorting combat Ships to have one ship of each side alternating
                     {
-                        excessShipsStartingAt = OppositionCombatShips.ToList().Count * 2;
+                        if (l <= FriendlyCombatShips.Count - 1)
+                            _combatShipsTemp.Add(FriendlyCombatShips[l]);// First Ship in _ is Friendly (initialization)
 
-                        ratioATemp = FriendlyCombatShips.Count();
-                        ratioBTemp = OppositionCombatShips.Count();
-                        shipRatio = ratioATemp / ratioBTemp;
-                        weakerSide = 1;
+                        if (l <= OppositionCombatShips.ToList().Count - 1)
+                            _combatShipsTemp.Add(OppositionCombatShips.ToList()[l]); // Second Ship in _combatShipsTemp is opposition (initialization)   
                     }
 
-                    else
+                    _combatShips.Clear(); //  after ships where sorted into Temp, delete orginal list
+                                          //  After that populate empty list with sorted temp list
+                    for (int m = 0; m < _combatShipsTemp.Count; m++)
                     {
-                        excessShipsStartingAt = FriendlyCombatShips.Count * 2;
-                        ratioATemp = FriendlyCombatShips.Count();
-                        ratioBTemp = OppositionCombatShips.Count();
-                        shipRatio = ratioBTemp / ratioATemp;
-                        weakerSide = 2;
+                        _combatShips.Add(_combatShipsTemp[m]);
                     }
-                }
-                if (FriendlyCombatShips.Count() == OppositionCombatShips.Count())
-                    weakerSide = 0;
-                if (shipRatio > 1.0)
-                {
-                    newCycleReduction = 0.5;
-                }
+                    _combatShipsTemp.Clear(); // Temp cleared for next runthrough
+                    _combatShips.Randomize();
 
-                if (shipRatio > 1.2)
-                {
-                    newCycleReduction = 0.25;
-                }
-                if (shipRatio > 1.5)
-                {
-                    newCycleReduction = 0.15;
-                }
-                if (shipRatio > 2.5)
-                {
-                    newCycleReduction = 0.08;
-                }
-                if (shipRatio > 10)
-                {
-                    newCycleReduction = 0.05;
-                }
-                if (FriendlyCombatShips.Count() < 4 || OppositionCombatShips.Count() < 4) // small fleets attack each other at full power
-                {
-                    newCycleReduction = 1;
-                }
-                GameLog.Core.CombatDetails.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}",
-                    newCycleReduction,
-                    excessShipsStartingAt,
-                    ratioATemp,
-                    ratioBTemp,
-                    shipRatio,
-                    weakerSide);
+                    // Stop using Temp, only use it to sort and then get rid of it
 
-                OppositionCombatShips.Randomize();
-                FriendlyCombatShips.Randomize();
-                for (int l = 0; l < _combatShips.Count; l++) // sorting combat Ships to have one ship of each side alternating
-                {
-                    if (l <= FriendlyCombatShips.Count - 1)
-                        _combatShipsTemp.Add(FriendlyCombatShips[l]);// First Ship in _ is Friendly (initialization)
-
-                    if (l <= OppositionCombatShips.ToList().Count - 1)
-                        _combatShipsTemp.Add(OppositionCombatShips.ToList()[l]); // Second Ship in _combatShipsTemp is opposition (initialization)   
-                }
-
-                _combatShips.Clear(); //  after ships where sorted into Temp, delete orginal list
-                                      //  After that populate empty list with sorted temp list
-                for (int m = 0; m < _combatShipsTemp.Count; m++)
-                {
-                    _combatShips.Add(_combatShipsTemp[m]);
-                }
-                _combatShipsTemp.Clear(); // Temp cleared for next runthrough
-                _combatShips.Randomize();
-
-                // Stop using Temp, only use it to sort and then get rid of it
-
-                for (int j = 0; j < _combatShips.Count; j++) // 
-                {
-                    GameLog.Core.CombatDetails.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
-                        _combatShips[j].Item1.Source.ObjectID, _combatShips[j].Item1.Source.Name, _combatShips[j].Item1.Source.Design, j);
-                }
-
-                for (int k = 0; k < _combatShips.Count; k++)
-                {
-                    //GameLog.Core.Combat.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
-                    //     _combatShipsTemp[i].Item1.Source.ObjectID, _combatShipsTemp[i].Item1.Source.Name, _combatShipsTemp[i].Item1.Source.Design, i);
-
-                    var ownerAssets = GetAssets(_combatShips[k].Item1.Owner);
-                    //var ships = new List<Ship>(_combatShips.).ToList();
-                    //for (int ship = 0; ship < _combatShips.; ship++)
-                    //{
-
-                    //}
-
-                    //var OppositionCombatShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
-                    //var OppositionCombatShips = _combatShips.Where(cs => GetTargetOne(_combatShips[i].Item1.Source) == cs.Item1.Source));
-
-                    //var FriendlyCombatShips = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[i].Item1.Owner, cs.Item1.Owner));
-
-                    if (k + 1 > excessShipsStartingAt && excessShipsStartingAt != 0) // added: if ships equal = 0 = excessShips, then no cycle reduction
+                    for (int j = 0; j < _combatShips.Count; j++) // 
                     {
-                        cycleReduction = newCycleReduction;
-                    } // +1 because a 2nd ship can have full firepower, but not the 3rd exceeding the other side
-                    else
-                    {
-                        cycleReduction = 1;
+                        GameLog.Core.CombatDetails.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
+                            _combatShips[j].Item1.Source.ObjectID, _combatShips[j].Item1.Source.Name, _combatShips[j].Item1.Source.Design, j);
                     }
 
-                    List<string> ownCiv = _combatShips.Where(s =>
-                        (s.Item1.OwnerID == ownerIDs[i]))
-                        .Select(s => s.Item1.Owner.Key)
-                        .Distinct()
-                        .ToList();
-
-                    List<string> friendlyCivs = _combatShips.Where(s =>
-                        (s.Item1.OwnerID != ownerIDs[i]) &&
-                        CombatHelper.WillFightAlongside(s.Item1.Owner, _combatShips[k].Item1.Owner))
-                        .Select(s => s.Item1.Owner.Key)
-                        .Distinct()
-                        .ToList();
-
-                    List<string> hostileCivs = new List<string>();
-                       
-                    var hostileShipList = _targetDictionary[ownerIDs[i]];
-                    foreach (var hostilShip in hostileShipList)
+                    for (int k = 0; k < _combatShips.Count; k++)
                     {
-                        hostileCivs.Add(hostilShip.Item1.Owner.Key);
-                        hostileCivs.Distinct().ToList();
-                    }
+                        //GameLog.Core.Combat.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
+                        //     _combatShipsTemp[i].Item1.Source.ObjectID, _combatShipsTemp[i].Item1.Source.Name, _combatShipsTemp[i].Item1.Source.Design, i);
 
-                    var friendShips = _willFightAlongSide[ownerIDs[i]];
-                    List<int> friendIDs = new List<int>();
-                    foreach (var ship in friendShips)
-                    {
-                        friendIDs.Add(ship.Item1.OwnerID);
-                    }
-                    if (_combatShips[k].Item1.OwnerID == ownerIDs[i] || friendIDs.Contains(_combatShips[k].Item1.OwnerID)) // need us or friendly
-                    {
-                         friendlyOwner = true;
-                    }
-                    else
-                    {
-                        friendlyOwner = false;
-                    }
+                        var ownerAssets = GetAssets(_combatShips[k].Item1.Owner);
+                        //var ships = new List<Ship>(_combatShips.).ToList();
+                        //for (int ship = 0; ship < _combatShips.; ship++)
+                        //{
 
-                    int friendlyWeaponPower = ownCiv.Sum(e => _empireStrengths[e]) + friendlyCivs.Sum(e => _empireStrengths[e]);
-                    int hostileWeaponPower = hostileCivs.Sum(e => _empireStrengths[e]);
-                    int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
+                        //}
 
-                    //Figure out if any of the opposition ships have sensors powerful enough to penetrate our camo. If so, will be decamo.
-                    if (OppositionCombatShips.Count() > 0)
+                        //var OppositionCombatShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[i].Item1.Owner, cs.Item1.Owner));
+                        //var OppositionCombatShips = _combatShips.Where(cs => GetTargetOne(_combatShips[i].Item1.Source) == cs.Item1.Source));
 
-                    {
-                        maxScanStrengthOpposition = OppositionCombatShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+                        //var FriendlyCombatShips = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[i].Item1.Owner, cs.Item1.Owner));
 
-
-                        if (_combatShips[k].Item1.IsCamouflaged && _combatShips[k].Item1.CamouflagedStrength < maxScanStrengthOpposition)
+                        if (k + 1 > excessShipsStartingAt && excessShipsStartingAt != 0) // added: if ships equal = 0 = excessShips, then no cycle reduction
                         {
-                            _combatShips[k].Item1.Decamouflage();
-                            GameLog.Core.Combat.DebugFormat("{0} has camou strength {1} vs maxScan {2}",
-                                _combatShips[k].Item1.Name, _combatShips[k].Item1.CamouflagedStrength, maxScanStrengthOpposition);
+                            cycleReduction = newCycleReduction;
+                        } // +1 because a 2nd ship can have full firepower, but not the 3rd exceeding the other side
+                        else
+                        {
+                            cycleReduction = 1;
                         }
-                    }
 
-                    //TODO: Move this to DiplomacyHelper
-                    List<string> allEmpires = new List<string>();
-                    allEmpires.AddRange(ownCiv);
-                    allEmpires.AddRange(friendlyCivs);
-                    allEmpires.AddRange(hostileCivs);
-                    foreach (var firstEmpire in allEmpires.Distinct().ToList())
-                    {
-                        foreach (var secondEmpire in allEmpires.Distinct().ToList())
+                        List<string> ownCiv = _combatShips.Where(s =>
+                            (s.Item1.OwnerID == ownerIDs[i]))
+                            .Select(s => s.Item1.Owner.Key)
+                            .Distinct()
+                            .ToList();
+
+                        List<string> friendlyCivs = _combatShips.Where(s =>
+                            (s.Item1.OwnerID != ownerIDs[i]) &&
+                            CombatHelper.WillFightAlongside(s.Item1.Owner, _combatShips[k].Item1.Owner))
+                            .Select(s => s.Item1.Owner.Key)
+                            .Distinct()
+                            .ToList();
+
+                        List<string> hostileCivs = new List<string>();
+
+                        var hostileShipList = _targetDictionary[ownerIDs[i]];
+                        foreach (var hostilShip in hostileShipList)
                         {
-                            if (!DiplomacyHelper.IsContactMade(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire]))
+                            hostileCivs.Add(hostilShip.Item1.Owner.Key);
+                            hostileCivs.Distinct().ToList();
+                        }
+
+                        var friendShips = _willFightAlongSide[ownerIDs[i]];
+                        List<int> friendIDs = new List<int>();
+                        foreach (var ship in friendShips)
+                        {
+                            friendIDs.Add(ship.Item1.OwnerID);
+                        }
+                        if (_combatShips[k].Item1.OwnerID == ownerIDs[i] || friendIDs.Contains(_combatShips[k].Item1.OwnerID)) // need us or friendly
+                        {
+                            friendlyOwner = true;
+                        }
+                        else
+                        {
+                            friendlyOwner = false;
+                        }
+
+                        int friendlyWeaponPower = ownCiv.Sum(e => _empireStrengths[e]) + friendlyCivs.Sum(e => _empireStrengths[e]);
+                        int hostileWeaponPower = hostileCivs.Sum(e => _empireStrengths[e]);
+                        int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
+
+                        //Figure out if any of the opposition ships have sensors powerful enough to penetrate our camo. If so, will be decamo.
+                        if (OppositionCombatShips.Count() > 0)
+
+                        {
+                            maxScanStrengthOpposition = OppositionCombatShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+
+
+                            if (_combatShips[k].Item1.IsCamouflaged && _combatShips[k].Item1.CamouflagedStrength < maxScanStrengthOpposition)
                             {
-                                DiplomacyHelper.EnsureContact(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire], _combatShips[0].Item1.Source.Location);
+                                _combatShips[k].Item1.Decamouflage();
+                                GameLog.Core.Combat.DebugFormat("{0} has camou strength {1} vs maxScan {2}",
+                                    _combatShips[k].Item1.Name, _combatShips[k].Item1.CamouflagedStrength, maxScanStrengthOpposition);
                             }
                         }
-                    }
 
-                    bool oppositionIsRushing = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Rush));
-                    bool oppositionIsInFormation = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
-                    bool oppositionIsHailing = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Hail));
-                    bool oppositionIsRetreating = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Retreat));
-                    bool oppositionIsRaidTransports = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Transports));
-                    bool oppositionIsEngage = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Engage));
-
-                    var order = GetCombatOrder(_combatShips[k].Item1.Source);
-                    switch (order)
-                    {
-                        case CombatOrder.Engage:
-                        case CombatOrder.Rush:
-                        case CombatOrder.Transports:
-                        case CombatOrder.Formation:
-
-                            var attackingShip = _combatShips[k].Item1;
-                            var target = ChooseTarget(attackingShip);
-                            // GameLog.Core.Test.DebugFormat("Choose target call with attackingShip {0} of {1} to get target {2} {3}", attackingShip, attackingShip.Owner.ToString(), target.ToString(), target.Owner);
-                            if (order != CombatOrder.Formation && order != CombatOrder.Engage)
+                        //TODO: Move this to DiplomacyHelper
+                        List<string> allEmpires = new List<string>();
+                        allEmpires.AddRange(ownCiv);
+                        allEmpires.AddRange(friendlyCivs);
+                        allEmpires.AddRange(hostileCivs);
+                        foreach (var firstEmpire in allEmpires.Distinct().ToList())
+                        {
+                            foreach (var secondEmpire in allEmpires.Distinct().ToList())
                             {
-                                var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
-                                                                                                  //target.TakeDamage((target.Source.OrbitalDesign.HullStrength +1) * (maneuver/32)+1); // max possible hull damage of 25%
-
-                                GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}",
-                                    target.Source.ObjectID, target.Source.Name, target.Source.Design,
-                                    target.Source.OrbitalDesign.HullStrength,
-                                    (target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1,
-                                    maneuver,
-                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.Design
-                                    );
-                                target.TakeDamage((target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1); // max possible hull damage of 25%
+                                if (!DiplomacyHelper.IsContactMade(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire]))
+                                {
+                                    DiplomacyHelper.EnsureContact(Game.GameContext.Current.Civilizations[firstEmpire], Game.GameContext.Current.Civilizations[secondEmpire], _combatShips[0].Item1.Source.Location);
+                                }
                             }
-                            if (target == null)
-                            {
-                                GameLog.Core.Combat.DebugFormat("No target for {0} {1} ({2})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design);
-                            }
-                            if (target != null)
-                            {
-                                GameLog.Core.Combat.DebugFormat("Target for {0} {1} ({2}) is {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
+                        }
 
-                                // If we rushed a formation we could take damage
-                                int chanceRushingFormation = RandomHelper.Random(100);
-                                if (oppositionIsInFormation && (order == CombatOrder.Rush || order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                        bool oppositionIsRushing = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Rush));
+                        bool oppositionIsInFormation = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
+                        bool oppositionIsHailing = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Hail));
+                        bool oppositionIsRetreating = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Retreat));
+                        bool oppositionIsRaidTransports = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Transports));
+                        bool oppositionIsEngage = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Engage));
+
+                        var order = GetCombatOrder(_combatShips[k].Item1.Source);
+                        switch (order)
+                        {
+                            case CombatOrder.Engage:
+                            case CombatOrder.Rush:
+                            case CombatOrder.Transports:
+                            case CombatOrder.Formation:
+
+                                var attackingShip = _combatShips[k].Item1;
+                                var target = ChooseTarget(attackingShip);
+                                // GameLog.Core.Test.DebugFormat("Choose target call with attackingShip {0} of {1} to get target {2} {3}", attackingShip, attackingShip.Owner.ToString(), target.ToString(), target.Owner);
+                                if (order != CombatOrder.Formation && order != CombatOrder.Engage)
                                 {
-                                    attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
+                                    var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
+                                                                                                      //target.TakeDamage((target.Source.OrbitalDesign.HullStrength +1) * (maneuver/32)+1); // max possible hull damage of 25%
 
-                                    GameLog.Core.Combat.DebugFormat("{0} {1} rushed or raid transports in formation and took {2} damage to hull ({3} hull left)",
-                                        attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                                    GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}",
+                                        target.Source.ObjectID, target.Source.Name, target.Source.Design,
+                                        target.Source.OrbitalDesign.HullStrength,
+                                        (target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1,
+                                        maneuver,
+                                        attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.Design
+                                        );
+                                    target.TakeDamage((target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1); // max possible hull damage of 25%
                                 }
-                                if (oppositionIsEngage && (order == CombatOrder.Formation || order == CombatOrder.Rush) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                                if (target == null)
                                 {
-                                    attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
-
-                                    GameLog.Core.Combat.DebugFormat("{0} {1} in Formation or Rushing while Engaged and took {2} damage to hull ({3} hull left)",
-                                        attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                                    GameLog.Core.Combat.DebugFormat("No target for {0} {1} ({2})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design);
                                 }
-                                if (oppositionIsRushing && (order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                                if (target != null)
                                 {
-                                    attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+                                    GameLog.Core.Combat.DebugFormat("Target for {0} {1} ({2}) is {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
-                                    GameLog.Core.Combat.DebugFormat("{0} {1} Raiding Transports and got Rushed took {2} damage to hull ({3} hull left)",
-                                        attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
-                                }
-                                if (oppositionIsRaidTransports && (order == CombatOrder.Engage) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
-                                {
-                                    attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 6);  // 17 % down out of Hullstrength of TechObjectDatabase.xml
-
-                                    GameLog.Core.Combat.DebugFormat("{0} {1} Engag order got Raided and took {2} damage to hull ({3} hull left)",
-                                        attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
-                                }
-
-                                bool assimilationSuccessful = false;
-                                //If the attacker is Borg, try and assimilate before you try destroying it
-                                if (attackingShip.Owner.Name == "Borg" && target.Owner.Name != "Borg")
-                                {
-                                    GameLog.Core.Combat.DebugFormat("{0} {1} attempting assimilation on {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
-                                    int chanceToAssimilate = RandomHelper.Random(100);
-                                    assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
-                                }
-
-                                //Perform the assimilation, but only on ships
-                                if (assimilationSuccessful && target.Source is Ship)
-                                {
-                                    GameLog.Core.Combat.DebugFormat("{0} {1} successfully assimilated {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
-
-                                    CombatAssets oppositionAssets = GetAssets(target.Owner);
-                                    if (!ownerAssets.AssimilatedShips.Contains(target))
+                                    // If we rushed a formation we could take damage
+                                    int chanceRushingFormation = RandomHelper.Random(100);
+                                    if (oppositionIsInFormation && (order == CombatOrder.Rush || order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
                                     {
-                                        ownerAssets.AssimilatedShips.Add(target);
-                                        target.IsAssimilated = true;
+                                        attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                        GameLog.Core.Combat.DebugFormat("{0} {1} rushed or raid transports in formation and took {2} damage to hull ({3} hull left)",
+                                            attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
                                     }
-                                    if (target.Source.IsCombatant)
+                                    if (oppositionIsEngage && (order == CombatOrder.Formation || order == CombatOrder.Rush) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
                                     {
-                                        oppositionAssets.CombatShips.Remove(target);
+                                        attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                        GameLog.Core.Combat.DebugFormat("{0} {1} in Formation or Rushing while Engaged and took {2} damage to hull ({3} hull left)",
+                                            attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
                                     }
-                                    else
+                                    if (oppositionIsRushing && (order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
                                     {
-                                        oppositionAssets.NonCombatShips.Remove(target);
+                                        attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                        GameLog.Core.Combat.DebugFormat("{0} {1} Raiding Transports and got Rushed took {2} damage to hull ({3} hull left)",
+                                            attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                                    }
+                                    if (oppositionIsRaidTransports && (order == CombatOrder.Engage) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                                    {
+                                        attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 6);  // 17 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                        GameLog.Core.Combat.DebugFormat("{0} {1} Engag order got Raided and took {2} damage to hull ({3} hull left)",
+                                            attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
                                     }
 
-                                }
-                                else // if not assmilated attack, perform attack fire weapons
-                                {
-                                    //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
-
-
-                                    var weapons = _combatShips[k].Item2.Where(w => w.CanFire);
-                                    int amountOfWeapons = weapons.Count();
-                                    //var partlyFiring = 0;
-
-
-                                    foreach (var weapon in _combatShips[k].Item2.Where(w => w.CanFire))
+                                    bool assimilationSuccessful = false;
+                                    //If the attacker is Borg, try and assimilate before you try destroying it
+                                    if (attackingShip.Owner.Name == "Borg" && target.Owner.Name != "Borg")
                                     {
-                                        if (!target.IsDestroyed)  //&& !target.) // Bug?: do not target retreated ships
+                                        GameLog.Core.Combat.DebugFormat("{0} {1} attempting assimilation on {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
+                                        int chanceToAssimilate = RandomHelper.Random(100);
+                                        assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
+                                    }
+
+                                    //Perform the assimilation, but only on ships
+                                    if (assimilationSuccessful && target.Source is Ship)
+                                    {
+                                        GameLog.Core.Combat.DebugFormat("{0} {1} successfully assimilated {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
+
+                                        CombatAssets oppositionAssets = GetAssets(target.Owner);
+                                        if (!ownerAssets.AssimilatedShips.Contains(target))
                                         {
-                                            // just not firing full fire power of one ship before the other ship is firing, but ..
-                                            // but each 2nd Weapon e.g. first 5 Beams than 3 Torpedos
-                                            //    commend unknown/old stuff if ((partlyFiring += 1) * 2 < amountOfWeapons)
-                                            // {
-
-
-                                            //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}, partlyFiring Step {7}",
-                                            //    attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design,
-                                            //    amountOfWeapons, partlyFiring);
-
-                                            PerformAttack(attackingShip, target, weapon);
-
-                                            //}
+                                            ownerAssets.AssimilatedShips.Add(target);
+                                            target.IsAssimilated = true;
                                         }
+                                        if (target.Source.IsCombatant)
+                                        {
+                                            oppositionAssets.CombatShips.Remove(target);
+                                        }
+                                        else
+                                        {
+                                            oppositionAssets.NonCombatShips.Remove(target);
+                                        }
+
                                     }
-                                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}",
-                                        attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design,
-                                        target.Source.ObjectID, target.Name, target.Source.Design,
-                                        amountOfWeapons);
-                                    // all weapons fired for current ship i
-                                }
-                            }
-                            foreach (var combatShip in _combatShips)
-                            {
-                                if (combatShip.Item1.IsDestroyed)
-                                {
-                                    ownerAssets.AssimilatedShips.Remove(target);
-                                }
-                            }
-
-                            break;
-
-                        case CombatOrder.Retreat:
-
-                            if (WasRetreateSuccessful(_combatShips[k].Item1, oppositionIsRushing, oppositionIsEngage, oppositionIsInFormation, oppositionIsHailing, oppositionIsRetreating, oppositionIsRaidTransports, weaponRatio))
-                            {
-                                try
-                                {
-                                    // added destroyed ship cannot retreat
-                                    if (!ownerAssets.EscapedShips.Contains(_combatShips[k].Item1) && !_combatShips[k].Item1.IsDestroyed)
+                                    else // if not assmilated attack, perform attack fire weapons
                                     {
+                                        //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
-                                        ownerAssets.EscapedShips.Add(_combatShips[k].Item1);
+
+                                        var weapons = _combatShips[k].Item2.Where(w => w.CanFire);
+                                        int amountOfWeapons = weapons.Count();
+                                        //var partlyFiring = 0;
+
+
+                                        foreach (var weapon in _combatShips[k].Item2.Where(w => w.CanFire))
+                                        {
+                                            if (!target.IsDestroyed)  //&& !target.) // Bug?: do not target retreated ships
+                                            {
+                                                // just not firing full fire power of one ship before the other ship is firing, but ..
+                                                // but each 2nd Weapon e.g. first 5 Beams than 3 Torpedos
+                                                //    commend unknown/old stuff if ((partlyFiring += 1) * 2 < amountOfWeapons)
+                                                // {
+
+
+                                                //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}, partlyFiring Step {7}",
+                                                //    attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design,
+                                                //    amountOfWeapons, partlyFiring);
+
+                                                PerformAttack(attackingShip, target, weapon);
+
+                                                //}
+                                            }
+                                        }
+                                        GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}",
+                                            attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design,
+                                            target.Source.ObjectID, target.Name, target.Source.Design,
+                                            amountOfWeapons);
+                                        // all weapons fired for current ship i
                                     }
-
-                                    if (_combatShips[k].Item1.Source.IsCombatant)
+                                }
+                                foreach (var combatShip in _combatShips)
+                                {
+                                    if (combatShip.Item1.IsDestroyed)
                                     {
+                                        ownerAssets.AssimilatedShips.Remove(target);
+                                    }
+                                }
 
-                                        ownerAssets.CombatShips.Remove(_combatShips[k].Item1);
+                                break;
+
+                            case CombatOrder.Retreat:
+
+                                if (WasRetreateSuccessful(_combatShips[k].Item1, oppositionIsRushing, oppositionIsEngage, oppositionIsInFormation, oppositionIsHailing, oppositionIsRetreating, oppositionIsRaidTransports, weaponRatio))
+                                {
+                                    try
+                                    {
+                                        // added destroyed ship cannot retreat
+                                        if (!ownerAssets.EscapedShips.Contains(_combatShips[k].Item1) && !_combatShips[k].Item1.IsDestroyed)
+                                        {
+
+                                            ownerAssets.EscapedShips.Add(_combatShips[k].Item1);
+                                        }
+
+                                        if (_combatShips[k].Item1.Source.IsCombatant)
+                                        {
+
+                                            ownerAssets.CombatShips.Remove(_combatShips[k].Item1);
+                                        }
+                                        else
+                                        {
+
+                                            ownerAssets.NonCombatShips.Remove(_combatShips[k].Item1);
+                                        }
+
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        GameLog.Core.Combat.DebugFormat("Exception e {0} ship {1} {2} {3}", e, _combatShips[k].Item1.Source.Design, _combatShips[k].Item1.Source.Name, _combatShips[k].Item1.Source.ObjectID);
+                                    }
+                                    _combatShips.Remove(_combatShips[k]);
+                                }
+
+                                // Chance of hull damage if you fail to retreat and are being rushed
+                                else if (oppositionIsRushing && (weaponRatio > 1))
+                                {
+
+                                    _combatShips[k].Item1.TakeDamage(_combatShips[k].Item1.Source.OrbitalDesign.HullStrength / 2);  // 50 % down out of Hullstrength of TechObjectDatabase.xml
+
+                                    GameLog.Core.Combat.DebugFormat("{0} {1} failed to retreat whilst being rushed and took {2} damage to hull ({3} hull left)",
+
+                                        _combatShips[k].Item1.Source.ObjectID, _combatShips[k].Item1.Source.Name, _combatShips[k].Item1.Source.OrbitalDesign.HullStrength / 2, _combatShips[k].Item1.Source.HullStrength);
+                                }
+                                break;
+
+                            case CombatOrder.Hail:
+                                GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) hailing...", _combatShips[k].Item1.Name, _combatShips[k].Item1.Source.ObjectID, _combatShips[k].Item1.Source.Design.Name);
+                                break;
+
+                            case CombatOrder.Standby:
+                                GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[k].Item1.Name, _combatShips[k].Item1.Source.ObjectID, _combatShips[k].Item1.Source.Design.Name);
+                                break;
+
+                        }
+
+                    }
+
+                    //Make sure that the station has a go at the enemy too
+                    if ((_combatStation != null) && !_combatStation.Item1.IsDestroyed)
+                    {
+                        var order = GetCombatOrder(_combatStation.Item1.Source);
+
+                        CombatUnit target = null;
+                        switch (order)
+                        {
+                            case CombatOrder.Engage:
+                            case CombatOrder.Rush:
+                            case CombatOrder.Transports:
+                            case CombatOrder.Formation:
+                                target = ChooseTarget(_combatStation.Item1);
+                                break;
+                        }
+
+                        if (target != null)
+                        {
+                            foreach (CombatWeapon weapon in _combatStation.Item2.Where(w => w.CanFire))
+                            {
+                                PerformAttack(_combatStation.Item1, target, weapon);
+                            }
+                        }
+                    }
+
+                    // remove desroyed ships. Now on this spot, so that they can fire, but get still removed later
+                    foreach (var combatent in _combatShips) // now search for destroyed ships
+                    {
+                        if (combatent.Item1.IsDestroyed)
+                        {
+                            GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
+                            if (combatent.Item1.Source is Ship)
+                            {
+                                var Assets = GetAssets(combatent.Item1.Owner);
+                                if (Assets != null)
+                                {
+                                    GameLog.Core.Combat.DebugFormat("Name of Owner = {0}, Assets.CombatShips{1}, Assets.NonCobatShips{2}", Assets.Owner.Name, Assets.CombatShips.Count, Assets.NonCombatShips.Count);
+
+                                    if (!Assets.DestroyedShips.Contains(combatent.Item1))
+                                    {
+                                        Assets.DestroyedShips.Add(combatent.Item1);
+                                    }
+                                    if (combatent.Item1.Source.IsCombatant)
+                                    {
+                                        Assets.CombatShips.Remove(combatent.Item1);
                                     }
                                     else
                                     {
-
-                                        ownerAssets.NonCombatShips.Remove(_combatShips[k].Item1);
+                                        Assets.NonCombatShips.Remove(combatent.Item1);
                                     }
-
-                                }
-                                catch (Exception e)
-                                {
-                                    GameLog.Core.Combat.DebugFormat("Exception e {0} ship {1} {2} {3}", e, _combatShips[k].Item1.Source.Design, _combatShips[k].Item1.Source.Name, _combatShips[k].Item1.Source.ObjectID);
-                                }
-                                _combatShips.Remove(_combatShips[k]);
-                            }
-
-                            // Chance of hull damage if you fail to retreat and are being rushed
-                            else if (oppositionIsRushing && (weaponRatio > 1))
-                            {
-
-                                _combatShips[k].Item1.TakeDamage(_combatShips[k].Item1.Source.OrbitalDesign.HullStrength / 2);  // 50 % down out of Hullstrength of TechObjectDatabase.xml
-
-                                GameLog.Core.Combat.DebugFormat("{0} {1} failed to retreat whilst being rushed and took {2} damage to hull ({3} hull left)",
-
-                                    _combatShips[k].Item1.Source.ObjectID, _combatShips[k].Item1.Source.Name, _combatShips[k].Item1.Source.OrbitalDesign.HullStrength / 2, _combatShips[k].Item1.Source.HullStrength);
-                            }
-                            break;
-
-                        case CombatOrder.Hail:
-                            GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) hailing...", _combatShips[k].Item1.Name, _combatShips[k].Item1.Source.ObjectID, _combatShips[k].Item1.Source.Design.Name);
-                            break;
-
-                        case CombatOrder.Standby:
-                            GameLog.Core.Combat.DebugFormat("{1} {0} ({2}) standing by...", _combatShips[k].Item1.Name, _combatShips[k].Item1.Source.ObjectID, _combatShips[k].Item1.Source.Design.Name);
-                            break;
-
-                    }
-
-                }
-
-                //Make sure that the station has a go at the enemy too
-                if ((_combatStation != null) && !_combatStation.Item1.IsDestroyed)
-                {
-                    var order = GetCombatOrder(_combatStation.Item1.Source);
-
-                    CombatUnit target = null;
-                    switch (order)
-                    {
-                        case CombatOrder.Engage:
-                        case CombatOrder.Rush:
-                        case CombatOrder.Transports:
-                        case CombatOrder.Formation:
-                            target = ChooseTarget(_combatStation.Item1);
-                            break;
-                    }
-
-                    if (target != null)
-                    {
-                        foreach (CombatWeapon weapon in _combatStation.Item2.Where(w => w.CanFire))
-                        {
-                            PerformAttack(_combatStation.Item1, target, weapon);
-                        }
-                    }
-                }
-
-                // remove desroyed ships. Now on this spot, so that they can fire, but get still removed later
-                foreach (var combatent in _combatShips) // now s   earch for destroyed ships
-                {
-                    if (combatent.Item1.IsDestroyed)
-                    {
-                        GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
-                        if (combatent.Item1.Source is Ship)
-                        {
-                            var Assets = GetAssets(combatent.Item1.Owner);
-                            if (Assets != null)
-                            {
-                                GameLog.Core.Combat.DebugFormat("Name of Owner = {0}, Assets.CombatShips{1}, Assets.NonCobatShips{2}", Assets.Owner.Name, Assets.CombatShips.Count, Assets.NonCombatShips.Count);
-
-                                if (!Assets.DestroyedShips.Contains(combatent.Item1))
-                                {
-                                    Assets.DestroyedShips.Add(combatent.Item1);
-                                }
-                                if (combatent.Item1.Source.IsCombatant)
-                                {
-                                    Assets.CombatShips.Remove(combatent.Item1);
                                 }
                                 else
-                                {
-                                    Assets.NonCombatShips.Remove(combatent.Item1);
-                                }
-                            }
-                            else
-                                GameLog.Core.Combat.DebugFormat("Assets Null");
+                                    GameLog.Core.Combat.DebugFormat("Assets Null");
 
+                            }
+                            continue;
                         }
-                        continue;
                     }
-                }
-                //End the combat... at turn X = 5, by letting all sides reteat
-                if (_roundNumber == 5) // equals 4 engagements. Minors need an A.I. to find back to homeworld then...
-                {
-                    _roundNumber += 1;
-                    var allRetreatShips = _combatShips
-                        .Where(s => !s.Item1.IsDestroyed)
-                        .Where(s => s.Item1.Owner != s.Item1.Source.Sector.Owner) // Ships in own territory make a stand (remain in the system they own), after 5 turns.
-                        .ToList();
-                    foreach (var ship in allRetreatShips)
+
+                    //End the combat... at turn X = 5, by letting all sides reteat
+                    if (_roundNumber == 5) // equals 4 engagements. Minors need an A.I. to find back to homeworld then...
                     {
-                        if (ship.Item1 != null)
+                        _roundNumber += 1;
+                        var allRetreatShips = _combatShips
+                            .Where(s => !s.Item1.IsDestroyed)
+                            .Where(s => s.Item1.Owner != s.Item1.Source.Sector.Owner) // Ships in own territory make a stand (remain in the system they own), after 5 turns.
+                            .ToList();
+                        foreach (var ship in allRetreatShips)
                         {
-                            var ownerAssets = GetAssets(ship.Item1.Owner);
-                            if (!ownerAssets.EscapedShips.Contains(ship.Item1))
+                            if (ship.Item1 != null)
                             {
-                                ownerAssets.EscapedShips.Add(ship.Item1);
-                                ownerAssets.CombatShips.Remove(ship.Item1);
-                                ownerAssets.NonCombatShips.Remove(ship.Item1);
-                                _combatShips.Remove(ship);
-                            }
+                                var ownerAssets = GetAssets(ship.Item1.Owner);
+                                if (!ownerAssets.EscapedShips.Contains(ship.Item1))
+                                {
+                                    ownerAssets.EscapedShips.Add(ship.Item1);
+                                    ownerAssets.CombatShips.Remove(ship.Item1);
+                                    ownerAssets.NonCombatShips.Remove(ship.Item1);
+                                    _combatShips.Remove(ship);
+                                }
 
+                            }
                         }
-                    }
-                }// end to end combat
-///********************************************************************
-            }// end of combat looping
+                    }// end to end combat
+                     //EndofCombat:
+                     ///********************************************************************
+                }// end of combat looping
+
+            }
         }
 
 

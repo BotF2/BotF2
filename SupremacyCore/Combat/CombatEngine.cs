@@ -177,27 +177,31 @@ namespace Supremacy.Combat
         {
             get
             {
+                if (_roundNumber > 1)
+                    return true;
+                else
+                    return false;
  
-                if (_allSidesStandDown)
-                {
-                    return true;
-                }
-                //friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
-                //if (assets.Station != null)
-                //    friendlyAssets += 1;
-                var countAssets = _assets.Count(); // assets means list of civilizations in combat so .Count is number of civs 
-                var remainingAssets = _assets.Count(assets => assets.HasSurvivingAssets);
-                GameLog.Core.Test.DebugFormat("remaining assets {0} of {1} assets & round number {2} & round >5 for IsCombatOver = true? {3} IsCombatOver",
-                    remainingAssets, countAssets, _roundNumber, (_roundNumber > 3));
+                //if (_allSidesStandDown)
+                //{
+                //    return true;
+                //}
+                ////friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                ////if (assets.Station != null)
+                ////    friendlyAssets += 1;
+                //var countAssets = _assets.Count(); // assets means list of civilizations in combat so .Count is number of civs 
+                //var remainingAssets = _assets.Count(assets => assets.HasSurvivingAssets);
+                //GameLog.Core.Test.DebugFormat("remaining assets {0} of {1} assets & round number {2} & round >5 for IsCombatOver = true? {3} IsCombatOver",
+                //    remainingAssets, countAssets, _roundNumber, (_roundNumber > 3));
 
-                if (_roundNumber > 6 || remainingAssets <= 1)
-                {
-                    return true;
-                    // for testing, up to 7 rounds or one or zero civs left. This use to be if (remainingAssets <= 1) return true but this was when there had been only 2 sides
-                }
-                GameLog.Core.Test.DebugFormat("remaining assets {0} of {1} assets & round number {2} & round >5 for IsCombatOver = true? {3}",
-                    remainingAssets, countAssets, _roundNumber, (_roundNumber > 3));
-                return false;
+                //if (_roundNumber > 6 || remainingAssets <= 1)
+                //{
+                //    return true;
+                //    // for testing, up to 7 rounds or one or zero civs left. This use to be if (remainingAssets <= 1) return true but this was when there had been only 2 sides
+                //}
+                //GameLog.Core.Test.DebugFormat("remaining assets {0} of {1} assets & round number {2} & round >5 for IsCombatOver = true? {3}",
+                //    remainingAssets, countAssets, _roundNumber, (_roundNumber > 3));
+                //return false;
                 //int friendlyAssets = 0; // ships and stations
                 //int hostileAssets = 0;
 
@@ -237,7 +241,7 @@ namespace Supremacy.Combat
 
             }
         }
-  
+
         public bool Ready
         {
             get
@@ -276,7 +280,7 @@ namespace Supremacy.Combat
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
             _roundNumber = 1;
-            _zeroFirePowers =0;
+            _zeroFirePowers = 0;
             //_friendlyAssets = new List<CombatAssets>();
             //_hostileAssets = new List<CombatAssets>();
             _assets = assets;
@@ -405,30 +409,30 @@ namespace Supremacy.Combat
                 Running = true;
 
                 _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset
-                        CalculateEmpireStrengths();
+                CalculateEmpireStrengths();
 
-                        if ((_roundNumber > 1) || !AllSidesStandDown())
-                        {
-                            RechargeWeapons();
-                            ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
-                        }
-                        if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
-                        {
-                            PerformAssimilation();
-                        }
-                        GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before PerformRetreat");
-                        PerformRetreat();
+                if ((_roundNumber > 1) || !AllSidesStandDown())
+                {
+                    RechargeWeapons();
+                    ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
+                }
+                if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
+                {
+                    PerformAssimilation();
+                }
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before PerformRetreat");
+                PerformRetreat();
 
-                        GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
-                        UpdateOrbitals();
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
+                UpdateOrbitals();
 
-                        if (!IsCombatOver)
-                        {
-                            _roundNumber++;
-                        }
-                        _targetTwoByCiv.Clear();
-                        _targetOneByCiv.Clear();
-                        _orders.Clear();
+                if (!IsCombatOver)
+                {
+                    _roundNumber++;
+                }
+                _targetTwoByCiv.Clear();
+                _targetOneByCiv.Clear();
+                _orders.Clear();
             }
 
             SendUpdates();
@@ -562,7 +566,7 @@ namespace Supremacy.Combat
                 // just for controlling
                 foreach (var civ in empireStrengths)   // the dictionary contains the values
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("CombatID: {0} - CivForEmpireStrength for Empire {1} = {2}", _combatId, civ.Key, civ.Value);
+                    GameLog.Core.CombatDetails.DebugFormat("######  CombatID: {0} - CivForEmpireStrength for Empire {1} = {2}", _combatId, civ.Key, civ.Value);
                 }
 
 
@@ -581,7 +585,7 @@ namespace Supremacy.Combat
                         hostileAssets.Distinct().ToList();
                     }
                 }
-               
+
                 foreach (var firePower in empireStrengths)
                 {
                     if (firePower.Value == 0)
@@ -858,18 +862,25 @@ namespace Supremacy.Combat
             var _targetOne = new Civilization();
             try
             {
-               /* GameLog.Core.Combat.DebugFormat("Try Get target one for {0} owner {1}: target = {2}", source, source.Owner, _targetOneByCiv[source.OwnerID].GetTargetOne(source));     */                                                                                                                //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
-                _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);   
+                GameLog.Core.Test.DebugFormat("Try Get target one for {0} owner {1}: target = {2}", source, source.Owner, _targetOneByCiv[source.OwnerID].GetTargetOne(source));                                                                                                                     //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
+                _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);
+
+                if (_targetOne == null)
+                {
+                    _targetOne = CombatHelper.Get8888Civ();
+                    GameLog.Core.Test.DebugFormat("_targetOne is set to 8888Civ");
+                }
             }
             catch // (Exception e)
             {
                 //if (source.Owner.IsHuman == false)
                 GameLog.Core.Combat.DebugFormat("Unable to get target one for {0} {1} ({2}) Owner {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-                _targetOne = CombatHelper.GetBorgCiv();
+                _targetOne = CombatHelper.Get8888Civ();
                 GameLog.Core.Combat.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
                     source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _targetOne.Name);
                 ////GameLog.LogException(e);
             }
+            GameLog.Core.Test.DebugFormat("returning GetTargetOne: CivID = {0}, Key = {1}", _targetOne.CivID, _targetOne.Key);
             return _targetOne;
         }
 
@@ -883,12 +894,12 @@ namespace Supremacy.Combat
             catch // (Exception e)
             {
                 //GameLog.Core.Test.ErrorFormat("Unable to get target Two for source {0} owner {1}, {2} default to Borg {2}", source, source.Owner, _targetTwo.ToString());
-                _targetTwo = CombatHelper.GetBorgCiv();
+                _targetTwo = CombatHelper.Get8888Civ();
                 //GameLog.LogException(e);
             }
             return _targetTwo;
         }
-        
+
         protected abstract void ResolveCombatRoundCore();
 
     }

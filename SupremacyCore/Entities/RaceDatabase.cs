@@ -220,7 +220,7 @@ namespace Supremacy.Entities
                         GameLog.Core.GameData.Error("Cannot write ... _FromRacesXML_(autoCreated).csv", e);
                     }
 
-
+                    streamWriter.Close();
                 }
 
 

@@ -532,57 +532,59 @@ namespace Supremacy.Combat
             get { return _standoff; }
         }
 
-        public bool IsCombatOver
+        public bool CombatUpdate_IsCombatOver
         {
             get
             {
-                if (_standoff)
+                if (_roundNumber > 1)
                     return true;
-
-                int friendlyAssets = 0; // ships and stations
-                int hostileAssets = 0;
-                
-                foreach (CombatAssets assets in FriendlyAssets)
-                {
-                    if (assets.HasSurvivingAssets)
-                    {
-                        friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
-                        if (assets.Station != null)
-                            friendlyAssets += 1;                
-                        GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
-                    }
-                    //if (assets.HasSurvivingAssets)
-                    //{
-                    //    friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
-                    //    if (assets.Station != null)
-                    //        friendlyAssets += 1;
-                    //    GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
-                    //}
-                }
-                //GameLog.Print("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
-                if (friendlyAssets == 0)
-                {
-                    return true;   
-                }
-
-                foreach (CombatAssets assets in HostileAssets)
-                {
-                    if (assets.HasSurvivingAssets)
-                    {
-                        hostileAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
-                        if (assets.Station != null)
-                            hostileAssets += 1;                      
-                    }
-                }
-
-                if (hostileAssets == 0)
-                {
-                    //GameLog.Core.Combat.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
-                    return true;
-                }
-
-                return (hostileAssets == 0 || friendlyAssets == 0);
+                return false;
             }
+
+                //int friendlyAssets = 0; // ships and stations
+                //int hostileAssets = 0;
+
+                //foreach (CombatAssets assets in FriendlyAssets)
+                //{
+                //    if (assets.HasSurvivingAssets)
+                //    {
+                //        friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                //        if (assets.Station != null)
+                //            friendlyAssets += 1;                
+                //        GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+                //    }
+                //    //if (assets.HasSurvivingAssets)
+                //    //{
+                //    //    friendlyAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                //    //    if (assets.Station != null)
+                //    //        friendlyAssets += 1;
+                //    //    GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+                //    //}
+                //}
+                ////GameLog.Print("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
+                //if (friendlyAssets == 0)
+                //{
+                //    return true;   
+                //}
+
+                //foreach (CombatAssets assets in HostileAssets)
+                //{
+                //    if (assets.HasSurvivingAssets)
+                //    {
+                //        hostileAssets = assets.CombatShips.Count() + assets.NonCombatShips.Count();
+                //        if (assets.Station != null)
+                //            hostileAssets += 1;                      
+                //    }
+            //}
+            //return false;
+            //if (hostileAssets == 0)
+            //{
+            //    //GameLog.Core.Combat.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
+            //    return true;
+            //}
+
+            //return (hostileAssets == 0 || friendlyAssets == 0);
+        //}
         }
     }
 }

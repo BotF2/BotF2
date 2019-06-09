@@ -170,7 +170,7 @@ namespace Supremacy.Client
             }
             DataContext = _update;
 
-            if (update.IsCombatOver)
+            if (update.CombatUpdate_IsCombatOver)
             {
 
                 if (_update.IsStandoff)
@@ -230,9 +230,9 @@ namespace Supremacy.Client
             //Can hail
             HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null)); //(update.RoundNumber == 1);
 
-            UpperButtonsPanel.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
-            LowerButtonsPanel.Visibility = update.IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
-            CloseButton.Visibility = update.IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
+            UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+            LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+            CloseButton.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
             UpperButtonsPanel.IsEnabled = true;
             LowerButtonsPanel.IsEnabled = true;
 
@@ -327,6 +327,7 @@ namespace Supremacy.Client
             Civilization onlyFireIfFiredAppone = new Civilization();
             onlyFireIfFiredAppone.ShortName = "HoldYourFire";
             onlyFireIfFiredAppone.Key = "HoldFire";
+            onlyFireIfFiredAppone.CivID = 9999;
            
 
             /* Hostile (others) Assets */
