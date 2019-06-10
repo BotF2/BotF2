@@ -302,7 +302,7 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this targets
             {
-                if (target == null)
+                if (target.CivID ==-1)
                     target = GetBorgCiv();
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
@@ -312,7 +312,7 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                if (target == null)
+                if (target.CivID ==-1)
                     target = GetBorgCiv();
                 //if ( owner != null) 
                 else
@@ -323,7 +323,7 @@ namespace Supremacy.Combat
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                if (target == null)
+                if (target.CivID == -1)
                     target = GetBorgCiv();
                 else
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);        
@@ -339,7 +339,7 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
             {
-                if (target == null)
+                if (target.CivID == -1)
                     targetTwo.SetTargetTwoCiv(ship.Source, GetBorgCiv() );
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
                 //GameLog.Core.Test.DebugFormat("target Borg? {0}", GetBorgCiv().ShortName);
@@ -347,16 +347,14 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                //if (target.ShortName == "HoldYourFire")
-                //    target = GetBorgCiv();
-                if (target == null)
+                if (target.CivID == -1)
                     targetTwo.SetTargetTwoCiv(ship.Source, GetBorgCiv());
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
-                if (target == null)
+                if (target.CivID == -1)
                   targetTwo.SetTargetTwoCiv(assets.Station.Source, GetBorgCiv());
                 else
                     targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
@@ -421,20 +419,20 @@ namespace Supremacy.Combat
             var _targetOne = new Civilization();
             foreach (var civ in GameContext.Current.Civilizations)
             {
-                if (civ.CivID == 6) 
-                {
-                    _targetOne = civ;
-                        break;
-                }
+                bool foundBorg = (GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
+                if (foundBorg)
+                    _targetOne = GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).FirstOrDefault();
+                else
+                    _targetOne = GetHoldFireCiv();
             }
             return _targetOne;
         }
 
-        public static Civilization Get8888Civ()
+        public static Civilization GetHoldFireCiv()
         {
             var _targetOne = new Civilization();
-            _targetOne.ShortName = "8888Civ";
-            _targetOne.Key = "8888Civ";
+            _targetOne.ShortName = "holdFireCiv";
+            _targetOne.Key = "holdFireCiv";
             _targetOne.CivID = 8888;
             
             return _targetOne;
