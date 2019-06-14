@@ -858,56 +858,13 @@ namespace Supremacy.Combat
         }
 
         protected Civilization GetTargetOne(Orbital source)
-        {
-            bool foundBorg = (GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
-            var _targetOne = new Civilization();
-            try
-            {                                                                                                                   //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
-                _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);
-
-                if (_targetOne.CivID == -1)
-                {
-                    //if (foundBorg)
-                        _targetOne = CombatHelper.GetBorgCiv();
-                    //else
-                    // _targetOne = CombatHelper.GetHoldFireCiv();                  
-                }
-                GameLog.Core.Test.DebugFormat("Try Get target one for {0} owner {1}: target = {2}", source, source.Owner, _targetOne.Name);
-                return _targetOne;
-            }
-            catch // (Exception e)
-            {
-                //GameLog.Core.Combat.DebugFormat("Unable to get target one for {0} {1} ({2}) Owner {3}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
-                _targetOne = CombatHelper.GetHoldFireCiv();
-                GameLog.Core.Combat.DebugFormat("Setting target for {0} {1} ({2}) owner: {3} TARGET = {4}",
-                    source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _targetOne.Name);
-                ////GameLog.LogException(e);
-            }
-            GameLog.Core.Test.DebugFormat("Got Target One returning GetTargetOne:{0}, Key = {1}", _targetOne.CivID, _targetOne.Key);
+        {                                                                                                                 //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
+            var _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);
             return _targetOne;
         }
         protected Civilization GetTargetTwo(Orbital source)
         {
-            bool foundBorg = (GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
-            var _targetTwo = new Civilization();
-            try
-            {
-                _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
-                if (_targetTwo.CivID == -1)
-                {
-                    if (foundBorg)
-                        _targetTwo = CombatHelper.GetBorgCiv();
-                    else
-                    _targetTwo = CombatHelper.GetHoldFireCiv();
-                }
-
-            }
-            catch // (Exception e)
-            {
-                //GameLog.Core.Test.ErrorFormat("Unable to get target Two for source {0} owner {1}, {2} default to Borg {2}", source, source.Owner, _targetTwo.ToString());
-                _targetTwo = CombatHelper.GetHoldFireCiv();
-                //GameLog.LogException(e);
-            }
+            var _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
             return _targetTwo;
         }
 

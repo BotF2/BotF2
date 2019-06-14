@@ -93,6 +93,7 @@ namespace Supremacy.Combat
             _willFightAlongSide = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
         }
 
+   
         protected override void ResolveCombatRoundCore()
         {
             // Setting variables to standard (initilization) of these fields
@@ -105,7 +106,7 @@ namespace Supremacy.Combat
             int maxScanStrengthOpposition = 0;
 
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
-
+    
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
             {
@@ -159,12 +160,13 @@ namespace Supremacy.Combat
                 ownerIDs.Add(tupleShip.Item1.OwnerID);
             }
             ownerIDs.Distinct().ToList();
-             
+
+            #region populate target dictionary
             // populate dictionary of ships in a lists for each owner, The key is owner id (_shipListDictionary)
             foreach (var ownerID in ownerIDs)
             {
                 var listOfShipsByOwnerID = _combatShips.Where(sc => sc.Item1.OwnerID == ownerID).Select(sc => sc).ToList();
-                _shipListDictionary[listOfShipsByOwnerID.Last().Item1.OwnerID] = listOfShipsByOwnerID;
+                _shipListDictionary[ownerID] = listOfShipsByOwnerID;
             }
 
             // populate dictionary of will fight alongside ships in a list for each owner
@@ -183,11 +185,11 @@ namespace Supremacy.Combat
             // populate target dictionary with lists of target units (_oppositionCombatShips), key is owner id / civ id
             foreach (var unitTuple in _combatShips)
             {
-                 bool foundBorg = (_combatShips.Where(sc => sc.Item1.Owner.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
+                 bool foundBorgShip = (_combatShips.Where(sc => sc.Item1.Owner.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
 
                 try
                 {
-                    if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID) && !unitTuple.Item1.IsDestroyed) // only pass in each civ once
+                    if (!_unitTupleIDList.Contains(unitTuple.Item1.OwnerID)) // only pass in each civ once
                     {
                         GameLog.Core.Test.DebugFormat("--------------------------");
                         GameLog.Core.Test.DebugFormat("Top of loop unitTuple {0} {1}", unitTuple.Item1.Owner, unitTuple.Item1.Name);
@@ -197,57 +199,124 @@ namespace Supremacy.Combat
                             if (attackingTuple.Item1.OwnerID == unitTuple.Item1.OwnerID)
                                 continue;
                             GameLog.Core.Test.DebugFormat("Top of loop attackingTuple = {0} {1}", attackingTuple.Item1.Source.ObjectID, attackingTuple.Item1.Name);
-                            if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !attackingTuple.Item1.IsDestroyed && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID))  // don't check your own ships & only pass in each civ as attacker once
+                            if (attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID && !_attackerIDList.Contains(attackingTuple.Item1.OwnerID))  // don't check your own ships & only pass in each civ as attacker once
                             {
-                                var attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
-                                var unitTupleTargetOne = GetTargetOne(unitTuple.Item1.Source);
-                                var attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
-                                var unitTupleTargetTwo = GetTargetTwo(unitTuple.Item1.Source);
+                                Civilization attackerTargetOne = new Civilization();
+                                Civilization attackerTargetTwo = new Civilization();
+                                Civilization unitTupleTargetOne = new Civilization();
+                                Civilization unitTupleTargetTwo = new Civilization();
+                                if (attackingTuple.Item1.Owner.ShortName != "Borg" && unitTuple.Item1.Owner.ShortName != "Borg")
+                                {
+                                    try
+                                    {
+                                        attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
+                                    }
+                                    catch
+                                    {
+                                        attackerTargetOne = CombatHelper.TryGetBorgCiv();
+                                    }
+                                    try
+                                    {
+                                        attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
 
-                                GameLog.Core.Test.DebugFormat("unitTuple Targets CivID ={0}, attacker TargetOnes CivID ={1}, attacker TargetTwos CivID ={2}",
-                                    unitTupleTargetOne.CivID, attackerTargetOne.CivID, attackerTargetTwo.CivID);
+                                    }
+                                    catch
+                                    {
+                                        attackerTargetTwo = CombatHelper.TryGetBorgCiv();
+                                    }
+                                    try
+                                    {
+                                        unitTupleTargetOne = GetTargetOne(unitTuple.Item1.Source);
+                                    }
+                                    catch
+                                    {
+                                        unitTupleTargetOne = CombatHelper.TryGetBorgCiv();
+                                    }
+                                    try
+                                    {
+                                        unitTupleTargetTwo = GetTargetTwo(unitTuple.Item1.Source);
+                                    }
+                                    catch
+                                    {
+                                        unitTupleTargetTwo = CombatHelper.TryGetBorgCiv();
+                                    }
+                                }
+                                else if (attackingTuple.Item1.Owner.ShortName == "Borg") // borg do not target self
+                                {
+                                    attackerTargetOne = CombatHelper.GetDefaultHoldFireCiv();
+                                    attackerTargetTwo = CombatHelper.GetDefaultHoldFireCiv();
+                                }
+                                else if (unitTuple.Item1.Owner.ShortName == "Borg")
+                                {
+                                    unitTupleTargetOne = CombatHelper.GetDefaultHoldFireCiv();
+                                    unitTupleTargetTwo = CombatHelper.GetDefaultHoldFireCiv();
+                                }
+                                GameLog.Core.Test.DebugFormat("Attacker {0} with Target1 ={1} & 2={2}",
+                                    attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName, attackerTargetTwo.ShortName);
+                                GameLog.Core.Test.DebugFormat("unitTuple {0} with Target1 ={1} & 2={2}",
+                                    unitTuple.Item1.Source.Name, unitTupleTargetOne.ShortName, unitTupleTargetTwo.ShortName);
 
-                                GameLog.Core.Test.DebugFormat("found borg? {0} attacker   one={1}, tuple target one ={2}", foundBorg, attackerTargetOne, unitTupleTargetOne);
-                                // if both sides are default targeting borg but no borg are present look for other targets in the sector
-                                if (GetTargetOne(unitTuple.Item1.Source).ShortName == "Borg" && GetTargetOne(attackingTuple.Item1.Source).ShortName == "Borg" && !foundBorg)
+                                GameLog.Core.Test.DebugFormat("found borg ship? {0}", foundBorgShip);
+
+                                // if both sides are default targeting holdFireCiv (or borg while no borg ships found) then look for other targets in the sector anyway
+                                if (attackerTargetOne.ShortName == "Borg" && unitTupleTargetOne.ShortName == "Borg" && !foundBorgShip ||
+                                        unitTupleTargetOne.ShortName == "DefaultHoldFireCiv" && attackerTargetOne.ShortName == "DefaultHoldFireCiv")
                                 {
                                     if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
                                     {
+                                        GameLog.Core.Test.DebugFormat("Two defaulted Borg or Hold fire Players trying to add targets {0} or {1}", _combatShips.Last().Item1.Owner.ShortName, _combatShips.First().Item1.Owner.ShortName);
                                         if (attackingTuple.Item1.OwnerID != _combatShips.Last().Item1.OwnerID)
                                             attackerTargetOne = _combatShips.Last().Item1.Owner; // desperation target when no Borg and last ship is not your ally
                                         else if (attackingTuple.Item1.OwnerID != _combatShips.First().Item1.OwnerID)
                                             attackerTargetOne = _combatShips.First().Item1.Owner;
                                     }
                                 }
-                                GameLog.Core.Test.DebugFormat("breaking for attacker targeting hold fire Civ? {0}", (GetTargetOne(attackingTuple.Item1.Source).ShortName == "8888Civ"));
+                                
+                                GameLog.Core.Test.DebugFormat("if attacker choose holding fire 1 & 2 true={0} should see breaking loop next", (attackerTargetOne.ShortName == "ChoseHoldFireCiv" && attackerTargetTwo.ShortName == "ChoseHoldFireCiv"));
 
-                                if ((GetTargetOne(attackingTuple.Item1.Source).ShortName == "holdFireCiv" || GetTargetTwo(attackingTuple.Item1.Source).ShortName == "holdFireCiv"))
-                                    { 
+                                // if choosing to hold fire than do not set targets  - unless a return fire adds them in code below
+                                if (attackerTargetOne.ShortName == "ChoseHoldFireCiv" && attackerTargetTwo.ShortName == "ChoseHoldFireCiv")
+                                {
+                                    GameLog.Core.Test.DebugFormat("breaking one attack loop for human attacker holding fire");
                                     if (unitTupleTargetOne != attackingTuple.Item1.Owner || unitTupleTargetTwo != attackingTuple.Item1.Owner);
-                                        break;
-                                    }
-                              
+                                    break;
+                                }
+
                                 GameLog.Core.Test.DebugFormat("attacker ={0} {1} target one? {2} & unitTuple {3}", attackingTuple.Item1.Owner.ShortName, attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName, unitTuple.Item1.Name);
                                 GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & target one? {2} & 'attacker' = {3}", unitTuple.Item1.Owner.ShortName, unitTuple.Item1.Name, unitTupleTargetOne.ShortName, attackingTuple.Item1.Name);
 
                                 if ((attackerTargetOne == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTuple.Item1.Owner)))
                                 {
-                                    GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
+                                    GameLog.Core.Test.DebugFormat("Add Targeting of {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
                                     targetUnitTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == unitTuple.Item1.OwnerID).Select(sc => sc).ToList();
                                     if (targetUnitTupleList == null || targetUnitTupleList.Count() == 0)
                                         break;
-                                    loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList); // method to load list into target dictionary
+                                    LoadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList); // method to load list into target dictionary
 
-                                    GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
-                                    loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList); // return fire
+                                    GameLog.Core.Test.DebugFormat("Add returnfire of {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
+                                    LoadTargets(unitTuple.Item1.OwnerID, returnFireTupleList); // return fire
                                 }
-                                if (GetTargetOne(attackingTuple.Item1.Source) != GetTargetTwo(attackingTuple.Item1.Source) && (GetTargetTwo(attackingTuple.Item1.Source) == CombatHelper.GetBorgCiv() && !foundBorg))
+                                if (GetTargetOne(attackingTuple.Item1.Source) != GetTargetTwo(attackingTuple.Item1.Source)) 
                                 {
-                                    GameLog.Core.Test.DebugFormat("Add Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
-                                    loadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
+                                    if (attackerTargetTwo == unitTuple.Item1.Owner)
+                                    {
+                                        if (GetTargetTwo(attackingTuple.Item1.Source).ShortName != "Borg" && GetTargetTwo(attackingTuple.Item1.Source).ShortName != "ChoseHoldFireCiv")
+                                        {
+                                            GameLog.Core.Test.DebugFormat("2nd Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
+                                            LoadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
 
-                                    GameLog.Core.Test.DebugFormat("Add returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
-                                    loadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
+                                            GameLog.Core.Test.DebugFormat("2nd returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
+                                            LoadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
+                                        }
+                                        if (GetTargetTwo(attackingTuple.Item1.Source).ShortName == "Borg" && foundBorgShip)
+                                        {
+                                            GameLog.Core.Test.DebugFormat("2nd borg Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
+                                            LoadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
+
+                                            GameLog.Core.Test.DebugFormat("2nd borg returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
+                                            LoadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
+                                        }
+                                    }
                                 }
                             }
                             _attackerIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been attacker
@@ -255,35 +324,34 @@ namespace Supremacy.Combat
                         }
                         _unitTupleIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been unitTuple
                         _unitTupleIDList.Distinct().ToList();
-
-
                     }
                 }
                 catch
                 {
-                    GameLog.Core.Test.DebugFormat("Problem at for each unitTuple");
+                    GameLog.Core.Test.DebugFormat("A try at unitTuple found no targets");
                 }
             }
-            //    CombatUnit target = new CombatUnit();
+            #endregion // populate target dictionary
+            //CombatUnit target = new CombatUnit();
 
-            //    //do combat for each unit in sector
-            //    foreach (var attackingUnit in _combatShips)
+            ////do combat for each unit in sector - simple ChooseTarget and PerformAttack
+            //foreach (var attackingUnit in _combatShips)
+            //{
+            //    target = ChooseTarget(attackingUnit.Item1);
+            //    if (target == null)
+            //        continue;
+
+            //    if (!target.IsDestroyed)  //&& !target.) // Bug?: do not target retreated ships
             //    {
-            //            target = ChooseTarget(attackingUnit.Item1);
-            //        if (target == null)
-            //            continue;
-
-            //        if (!target.IsDestroyed)  //&& !target.) // Bug?: do not target retreated ships
+            //        // just not firing full fire power of one ship before the other ship is firing, but ..
+            //        // but each 2nd Weapon e.g. first 5 Beams than 3 Torpedos
+            //        foreach (var weapon in attackingUnit.Item2)
             //        {
-            //            // just not firing full fire power of one ship before the other ship is firing, but ..
-            //            // but each 2nd Weapon e.g. first 5 Beams than 3 Torpedos
-            //            foreach (var weapon in attackingUnit.Item2)
-            //            {
-            //                GameLog.Core.Test.DebugFormat("Perform Attack Weapon {0} for attacker unit {1}", weapon, attackingUnit.Item1.Name);
-            //                PerformAttack(attackingUnit.Item1, target, weapon);
-            //            }
+            //            GameLog.Core.Test.DebugFormat("Perform Attack Weapon {0} for attacker unit {1}", weapon, attackingUnit.Item1.Name);
+            //            PerformAttack(attackingUnit.Item1, target, weapon);
             //        }
             //    }
+            //}
             //    foreach (var combatent in _combatShips) // now search for destroyed ships
             //    {
             //        if (combatent.Item1.IsDestroyed)
@@ -318,89 +386,15 @@ namespace Supremacy.Combat
             //    }
             //}
 
-
-            //    if (GetTargetOne(unitTuple.Item1.Source) == currentAsset.Item1.Source.Owner) 
-            //{
-            //    GameLog.Core.Test.DebugFormat("Populate Oppositon Ships currentAsset other ship ={0} owner ={1}, attacking ship target civ ={2} ",
-            //        currentAsset.Item1.Source, currentAsset.Item1.Source.Owner, (GetTargetOne(unitTuple.Item1.Source).Name.ToString()));
-            //    OppositionCombatShips.Add(currentAsset);
-            //    OppositionCombatShips.Distinct().Randomize();
-            //}
-            ////}
-
-            //else if (CombatHelper.WillFightAlongside(currentAsset.Item1.Owner, unitTuple.Item1.Owner)|| unitTuple.Item1.Owner == currentAsset.Item1.Owner)
-            //{
-            //    FriendlyCombatShips.Add(currentAsset);
-            //    FriendlyCombatShips.Distinct().Randomize();
-            //    GameLog.Core.Test.DebugFormat("added to FRIENDLY_CombatShips = {0} D={1} {2}",
-            //                        currentAsset.Item1.Source.ObjectID, currentAsset.Item1.Source.Design, currentAsset.Item1.Source);
-            //}
-
-            //else
-            //{
-            //    OtherShips.Add(currentAsset);
-            //    OtherShips.Distinct().Randomize();
-            //    GameLog.Core.Test.DebugFormat("added to OtherShips = {0} D={1} {2}",
-            //        currentAsset.Item1.Source.ObjectID, currentAsset.Item1.Source.Design, currentAsset.Item1.Source);
-            //}
-
-            //if (OppositionCombatShips.Count() > 0)
-            //{
-            //    foreach (var oppShip in OppositionCombatShips)
-            //    {
-            //        GameLog.Core.Test.DebugFormat("OppositionCombatShips: {0} {1} {2}, TargetOne = {3}, TargetOne = {4}",
-            //        oppShip.Item1.Owner, oppShip.Item1.Source.ObjectID, oppShip.Item1.Source.Name
-            //            , GetTargetOne(oppShip.Item1.Source), GetTargetTwo(oppShip.Item1.Source));
-            //    }
-            //}
-
-            //GameLog.Core.Test.DebugFormat("-------------------------------------------------------------------");
-            //, ... GetTargetOne = not working at the moment
-            // var countFriends = FriendlyCombatShips.Count();
-
-            //if (currentAsset.Item1.Owner != attackingShip.Item1.Owner)
-            //    GameLog.Core.Test.DebugFormat("attackingShip: {3} DesignID={4} {5} O= {6} *vs* currentAsset = {0} DesignID={1} {2}: ",
-            //                        //Targets: Prime={7}, Second={8}, # Friends {9} {10}, Count {11}
-            //                        currentAsset.Item1.Source.ObjectID,
-            //                        //currentAsset.Item1.Source.Design,     // just DesignId makes the lines shorter
-            //                        currentAsset.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
-            //                        currentAsset.Item1.Source.Name,
-
-            //                        attackingShip.Item1.Source.ObjectID,
-            //                        //attackingShip.Item1.Source.Design,     // just DesignId makes the lines shorter
-            //                        attackingShip.Item1.Source.Design.DesignID,  // just DesignId makes the lines shorter
-            //                        attackingShip.Item1.Source.Name,
-            //                        attackingShip.Item1.Source.Owner
-            //                        //,
-            //                        //GetTargetOne(currentAsset.Item1.Source).ToString(),
-            //                        //GetTargetTwo(currentAsset.Item1.Source).ToString(),
-            //                        //GetTargetOne(attackingShip.Item1.Source).ToString(),
-            //                        //GetTargetTwo(attackingShip.Item1.Source).ToString(),
-            //                        //countFriends
-            //                        );
-            //    }
-            //}
-            //GameLog.Core.Test.DebugFormat("OtherShips.Count() = {0}", OtherShips.Count());
-            //GameLog.Core.Test.DebugFormat("FriendlyCombatShips.Count() = {0}", FriendlyCombatShips.Count());
-            //GameLog.Core.Test.DebugFormat("OppositionCombatShips.Count() = {0}", OppositionCombatShips.Count());
-
-            //// test section
-            //for (int i = 0; i < _combatShips.Count; i++)
-            //{
-            //    //if ()
-            //    //{
-            //    //    var target = ChooseTarget(attackingShip);
-            //    //}
-            //}
-
             foreach (var item in ownerIDs)
             {
                 GameLog.Core.Test.DebugFormat("ownerIDs contains = {0}", item);
             }
 
-
+            #region combat loop
             // ToDo: nobody is targeting anybody - find out how to close combat 
             if (_targetDictionary != null && _targetDictionary.Count() != 0)
+
             {
                 
                 //****************loop through the target dictionary looking for target lists************************
@@ -431,17 +425,17 @@ namespace Supremacy.Combat
                             }
                         }
 
-                        if (_shipListDictionary[i].Count() > 0)
+                        //if (_shipListDictionary[i] != null)
+                        //{
+                        FriendlyCombatShips = _combatShips.Where(sc => sc.Item1.OwnerID == i).Select(sc => sc).ToList();
+                        if (_willFightAlongSide[ownerIDs[i]] != null)
+                            FriendlyCombatShips.AddRange(_willFightAlongSide[ownerIDs[i]]);
+                        FriendlyCombatShips.Randomize();
+                        foreach (var ship  in FriendlyCombatShips)
                         {
-                            FriendlyCombatShips = _shipListDictionary[i]; //_combatShips.Where(sc => sc.Item1.OwnerID == ownerIDs[i]).Select(sc => sc).ToList();
-                            if (_willFightAlongSide[ownerIDs[i]] != null)
-                                FriendlyCombatShips.AddRange(_willFightAlongSide[ownerIDs[i]]);
-                            FriendlyCombatShips.Randomize();
-                            foreach (var ship  in FriendlyCombatShips)
-                            {
-                                GameLog.Core.CombatDetails.DebugFormat("added to FriendlyCombatShips: {0} {1}", ship.Item1.Source.ObjectID, ship.Item1.Source.Name);
-                            }
+                            GameLog.Core.CombatDetails.DebugFormat("added to FriendlyCombatShips: {0} {1}", ship.Item1.Source.ObjectID, ship.Item1.Source.Name);
                         }
+                        //}
 
                         // this needs to be a new combat to pick up a third civ after civ one and two fight
                         //if(_targetDictionary[ownerIDs[i]].Count() != _targetDictionary[OppositionCombatShips.FirstOrDefault().Item1.OwnerID].Count())
@@ -932,18 +926,12 @@ namespace Supremacy.Combat
                      //EndofCombat:
                      ///********************************************************************
                 }// end of combat looping
-
+                #endregion
             }
-        }
 
+        }// end of ResolveCombatRoundCore()
 
-        //public void Retreat(CombatAssets ownerAsset)
-        //{
-        //    ownerAsset.EscapedShips.Add(ship.Item1);
-        //    ownerAsset.CombatShips.Remove(ship.Item1);
-        //    ownerAsset.NonCombatShips.Remove(ship.Item1);
-        //    _combatShips.Remove(ship);
-        //}
+        #region ChooseTarget()
         /// <summary>
         /// Chooses a target for the given <see cref="CombatUnit"/>
         /// </summary>
@@ -1007,142 +995,142 @@ namespace Supremacy.Combat
                 }
             }
         }
-            /// <summary>
-            /// Deals damage to the target, and calculates whether the target has been destroyed
-            /// </summary>
-            /// <param name="source"></param>
-            /// <param name="target"></param>
-            /// <param name="weapon"></param>
-            /// 
-
-            private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
+        /// <summary>
+        /// Deals damage to the target, and calculates whether the target has been destroyed
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="weapon"></param>
+        /// 
+        #endregion //choose target
+        private void PerformAttack(CombatUnit source, CombatUnit target, CombatWeapon weapon)
+        {
+            var sourceAccuracy = source.Source.GetAccuracyModifier(); // var? Or double?
+            var maneuverability = target.Source.GetManeuverablility(); // byte
+            if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
             {
-                var sourceAccuracy = source.Source.GetAccuracyModifier(); // var? Or double?
-                var maneuverability = target.Source.GetManeuverablility(); // byte
-                if (sourceAccuracy > 1 || sourceAccuracy < 0.1)  // if getting odd numbers, take normal one, until bug fixed
-                {
-                    GameLog.Core.CombatDetails.DebugFormat("sourceAccuracy {0} out of range, now reset to 0.5", sourceAccuracy);
-                    sourceAccuracy = 0.5;
-                }
-                var targetDamageControl = target.Source.GetDamageControlModifier();
-                if (targetDamageControl > 1 || targetDamageControl < 0.1)  // if getting damge control is odd, take standard until bug fixed
-                    targetDamageControl = 0.5;
-
-                // if side ==2 opposition is stronger, first frienldy side gets the bonus and side ==1 first friendly side has more ships, opposition side gets the bonus
-                switch (weakerSide)
-                {
-                    //if (weakerSide == 1) //first (Friendly) side has more ships
-                    case 1:
-                        {
-                            if (source.Owner != target.Owner || !friendlyOwner) //(If it is an opposition ship[ not first owner of firendly to first owner] improve on thier fire)
-                            {
-                                sourceAccuracy = 1.0 + (1 - newCycleReduction);
-                                if (sourceAccuracy > 1.5)
-                                {
-                                    sourceAccuracy = 1.45;
-                                }
-                                cycleReduction = 1;
-                            }
-                            break;
-                        }
-                    //else if (wearkerSide == 0)
-                    case 0:
-                        {
-                            // if wearkerSide == 0, then both are equal. Do no change
-                            cycleReduction = 1;
-                            break;
-                        }
-                    //else if (wearkerSide == 2) 
-                    case 2:// Opposition side has more ships so cycle
-                        {
-                            if (source.Owner == target.Owner || friendlyOwner) //(If it is samne owner as first, or friendly to first, improve on thier fire)
-                            {
-                                sourceAccuracy = 1.0 + (1 - newCycleReduction);
-                                if (sourceAccuracy > 1.5)
-                                {
-                                    sourceAccuracy = 1.45;
-                                }
-                                cycleReduction = 1;
-                            } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
-                            break;
-                        }
-                }
-                // if firing ship OR targeted ship are heroShips, change values to be better.
-                if (source.Name.Contains("!"))
-                {
-                    sourceAccuracy = 1.7; // change to 170% accuracy
-                }
-
-                if (target.Name.Contains("!"))
-                {
-                    targetDamageControl = 1;
-                }
-                // Added lines to reduce damage to SB and OB to 10%. Also  Changed damage to 2.5 instead of 4. and 10 instead of 50
-                if (!target.IsMobile &&
-                    target.Source.Sector.Name == "Sol"
-                    || target.Source.Sector.Name == "Terra"
-                    || target.Source.Sector.Name == "Omarion"
-                    || target.Source.Sector.Name == "Borg"
-                    || target.Source.Sector.Name == "Qo'noS"
-                    || target.Source.Sector.Name == "Romulus"
-                    || target.Source.Sector.Name == "Cardassia")
-                {
-                    targetDamageControl = 1.4;
-                    //GameLog.Core.Combat.DebugFormat("targetDamageControl = {0} due to HomeSystemStation or OB at {1}", targetDamageControl, target.Source.Sector.Name);
-                } // end added lines
-                  // currentx
-                double currentManeuverability = maneuverability;// get int target maneuverablity, convert to double
-                double ManeuverabilityModifer = 0.0;
-                var sourceAccuracyTemp = 0.5;
-                if (sourceAccuracy > 0.9 && sourceAccuracy < 1.7)
-                    sourceAccuracyTemp = 0.6;
-                ManeuverabilityModifer = ((5 - currentManeuverability) / 10); // +/- 0.4 Targets maneuverablity
-                sourceAccuracyTemp = sourceAccuracyTemp + ManeuverabilityModifer;
-                if (sourceAccuracyTemp < 0.0 || sourceAccuracyTemp > 1) // prevent out of range numbers
-                    sourceAccuracyTemp = 0.5;
-
-                if (sourceAccuracy == 1.7) // if heroship value, use it
-                    sourceAccuracyTemp = 1.7;
-
-                //GameLog.Core.CombatDetails.DebugFormat("various values: {0} {1} {2} at {3} ({4}), OTHERS: friendlyOwner = {6}, firstOwner = {6}",
-                //source.Source.ObjectID, source.Source.Name, source.Source.Design, target.Source.Sector.Name, target.Source.Sector.Location, friendlyOwner.ToString(), firstOwner.ToString());
-
-                //GameLog.Core.CombatDetails.DebugFormat("various values: sourceAccuracy = {0}, sourceAccuracyTemp = {1}, maneuverability = {2}, currentManeuverability = {3}, ManeuverabilityModifer = {4}, targetDamageControl = {5}",
-                //sourceAccuracy,
-                //sourceAccuracyTemp,
-                //maneuverability,
-                //currentManeuverability,
-                //ManeuverabilityModifer,
-                //targetDamageControl
-                //);
-
-                if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
-                {
-
-                    // Fire Weapons, inflict damage
-                    target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
-
-                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
-                        target.Source.ObjectID, target.Name, target.Source.Design,
-                        (int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10),
-                        cycleReduction,
-                        sourceAccuracy,
-                        targetDamageControl,
-                        target.ShieldStrength,
-                        target.HullStrength
-                        );
-                }
-                weapon.Discharge();
+                GameLog.Core.CombatDetails.DebugFormat("sourceAccuracy {0} out of range, now reset to 0.5", sourceAccuracy);
+                sourceAccuracy = 0.5;
             }
-            private void loadTargets(int ownerID, List<Tuple<CombatUnit, CombatWeapon[]>> listTuple)
+            var targetDamageControl = target.Source.GetDamageControlModifier();
+            if (targetDamageControl > 1 || targetDamageControl < 0.1)  // if getting damge control is odd, take standard until bug fixed
+                targetDamageControl = 0.5;
+
+            // if side ==2 opposition is stronger, first frienldy side gets the bonus and side ==1 first friendly side has more ships, opposition side gets the bonus
+            switch (weakerSide)
             {
-            listTuple = _shipListDictionary[ownerID];  //_combatShips.Where(cs => cs.Item1.OwnerID == ownerID).Select(cs => cs).ToList();
-                if (listTuple != null)
-                {
-                    listTuple.Distinct().ToList();
-                    _targetDictionary[ownerID] = listTuple;
-                }
+                //if (weakerSide == 1) //first (Friendly) side has more ships
+                case 1:
+                    {
+                        if (source.Owner != target.Owner || !friendlyOwner) //(If it is an opposition ship[ not first owner of firendly to first owner] improve on thier fire)
+                        {
+                            sourceAccuracy = 1.0 + (1 - newCycleReduction);
+                            if (sourceAccuracy > 1.5)
+                            {
+                                sourceAccuracy = 1.45;
+                            }
+                            cycleReduction = 1;
+                        }
+                        break;
+                    }
+                //else if (wearkerSide == 0)
+                case 0:
+                    {
+                        // if wearkerSide == 0, then both are equal. Do no change
+                        cycleReduction = 1;
+                        break;
+                    }
+                //else if (wearkerSide == 2) 
+                case 2:// Opposition side has more ships so cycle
+                    {
+                        if (source.Owner == target.Owner || friendlyOwner) //(If it is samne owner as first, or friendly to first, improve on thier fire)
+                        {
+                            sourceAccuracy = 1.0 + (1 - newCycleReduction);
+                            if (sourceAccuracy > 1.5)
+                            {
+                                sourceAccuracy = 1.45;
+                            }
+                            cycleReduction = 1;
+                        } // First (friend) owner is source owner or performAttack is on a friendlyOwner as source owner call from the _combatShipTemp cycle
+                        break;
+                    }
+            }
+            // if firing ship OR targeted ship are heroShips, change values to be better.
+            if (source.Name.Contains("!"))
+            {
+                sourceAccuracy = 1.7; // change to 170% accuracy
+            }
+
+            if (target.Name.Contains("!"))
+            {
+                targetDamageControl = 1;
+            }
+            // Added lines to reduce damage to SB and OB to 10%. Also  Changed damage to 2.5 instead of 4. and 10 instead of 50
+            if (!target.IsMobile &&
+                target.Source.Sector.Name == "Sol"
+                || target.Source.Sector.Name == "Terra"
+                || target.Source.Sector.Name == "Omarion"
+                || target.Source.Sector.Name == "Borg"
+                || target.Source.Sector.Name == "Qo'noS"
+                || target.Source.Sector.Name == "Romulus"
+                || target.Source.Sector.Name == "Cardassia")
+            {
+                targetDamageControl = 1.4;
+                //GameLog.Core.Combat.DebugFormat("targetDamageControl = {0} due to HomeSystemStation or OB at {1}", targetDamageControl, target.Source.Sector.Name);
+            } // end added lines
+                // currentx
+            double currentManeuverability = maneuverability;// get int target maneuverablity, convert to double
+            double ManeuverabilityModifer = 0.0;
+            var sourceAccuracyTemp = 0.5;
+            if (sourceAccuracy > 0.9 && sourceAccuracy < 1.7)
+                sourceAccuracyTemp = 0.6;
+            ManeuverabilityModifer = ((5 - currentManeuverability) / 10); // +/- 0.4 Targets maneuverablity
+            sourceAccuracyTemp = sourceAccuracyTemp + ManeuverabilityModifer;
+            if (sourceAccuracyTemp < 0.0 || sourceAccuracyTemp > 1) // prevent out of range numbers
+                sourceAccuracyTemp = 0.5;
+
+            if (sourceAccuracy == 1.7) // if heroship value, use it
+                sourceAccuracyTemp = 1.7;
+
+            //GameLog.Core.CombatDetails.DebugFormat("various values: {0} {1} {2} at {3} ({4}), OTHERS: friendlyOwner = {6}, firstOwner = {6}",
+            //source.Source.ObjectID, source.Source.Name, source.Source.Design, target.Source.Sector.Name, target.Source.Sector.Location, friendlyOwner.ToString(), firstOwner.ToString());
+
+            //GameLog.Core.CombatDetails.DebugFormat("various values: sourceAccuracy = {0}, sourceAccuracyTemp = {1}, maneuverability = {2}, currentManeuverability = {3}, ManeuverabilityModifer = {4}, targetDamageControl = {5}",
+            //sourceAccuracy,
+            //sourceAccuracyTemp,
+            //maneuverability,
+            //currentManeuverability,
+            //ManeuverabilityModifer,
+            //targetDamageControl
+            //);
+
+            if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
+            {
+
+                // Fire Weapons, inflict damage
+                target.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
+
+                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
+                    target.Source.ObjectID, target.Name, target.Source.Design,
+                    (int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10),
+                    cycleReduction,
+                    sourceAccuracy,
+                    targetDamageControl,
+                    target.ShieldStrength,
+                    target.HullStrength
+                    );
+            }
+            weapon.Discharge();
+        }
+        private void LoadTargets(int ownerID, List<Tuple<CombatUnit, CombatWeapon[]>> listTuple)
+        {
+        listTuple = _shipListDictionary[ownerID];  //_combatShips.Where(cs => cs.Item1.OwnerID == ownerID).Select(cs => cs).ToList();
+            if (listTuple != null)
+            {
+                listTuple.Distinct().ToList();
+                _targetDictionary[ownerID] = listTuple;
             }
         }
     }
+}
 
