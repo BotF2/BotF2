@@ -303,8 +303,10 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this targets
             {
-                if (target.CivID ==-1)
-                    target = TryGetBorgCiv();
+                if (target.CivID == -1)
+                {
+                    targetOne.SetTargetOneCiv(ship.Source, TryGetBorgCiv());
+                }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 //else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
@@ -313,9 +315,10 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
-                if (target.CivID ==-1)
-                    target = TryGetBorgCiv();
-                //if ( owner != null) 
+                if (target.CivID == -1)
+                {
+                    targetOne.SetTargetOneCiv(ship.Source, TryGetBorgCiv());
+                }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 //else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
@@ -325,7 +328,9 @@ namespace Supremacy.Combat
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
                 if (target.CivID == -1)
-                    target = TryGetBorgCiv();
+                {
+                    targetOne.SetTargetOneCiv(assets.Station.Source, TryGetBorgCiv());
+                }    
                 else
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);        
                 GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
@@ -422,24 +427,24 @@ namespace Supremacy.Combat
         /// <returns></returns>
         public static Civilization TryGetBorgCiv()
         {
-            var _targetOne = new Civilization();
+            var _target = new Civilization();
             if (borgInGame)
             {
-                _targetOne = GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).FirstOrDefault();
+                _target = GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).FirstOrDefault();
             }
-            else _targetOne = GetDefaultHoldFireCiv();
+            else _target = GetDefaultHoldFireCiv();
 
-            return _targetOne;
+            return _target;
 
         }
 
         public static Civilization GetDefaultHoldFireCiv()
         {
-            var _targetOne = new Civilization();
-            _targetOne.ShortName = "DefaultHoldFireCiv";
-            _targetOne.CivID = 9999;
+            var _target = new Civilization();
+            _target.ShortName = "DefaultHoldFireCiv";
+            _target.CivID = 9999;
             
-            return _targetOne;
+            return _target;
         }
 
     }
