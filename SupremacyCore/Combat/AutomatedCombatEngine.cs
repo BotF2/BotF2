@@ -274,10 +274,10 @@ namespace Supremacy.Combat
                                     }
                                 }
                                 
-                                GameLog.Core.Test.DebugFormat("if attacker choose holding fire 1 & 2 true={0} should see breaking loop next", (attackerTargetOne.ShortName == "ChoseHoldFireCiv" && attackerTargetTwo.ShortName == "ChoseHoldFireCiv"));
+                                GameLog.Core.Test.DebugFormat("if attacker choose holding fire 1 & 2 true={0} should see breaking loop next", (attackerTargetOne.ShortName == "Only Return Fire" && attackerTargetTwo.ShortName == "Only Return Fire"));
 
                                 // if choosing to hold fire than do not set targets  - unless a return fire adds them in code below
-                                if (attackerTargetOne.ShortName == "ChoseHoldFireCiv" && attackerTargetTwo.ShortName == "ChoseHoldFireCiv")
+                                if (attackerTargetOne.ShortName == "Only Return Fire" && attackerTargetTwo.ShortName == "Only Return Fire")
                                 {
                                     GameLog.Core.Test.DebugFormat("breaking one attack loop for human attacker holding fire");
                                     if (unitTupleTargetOne != attackingTuple.Item1.Owner || unitTupleTargetTwo != attackingTuple.Item1.Owner);
@@ -302,7 +302,7 @@ namespace Supremacy.Combat
                                 //{
                                 //    if (attackerTargetTwo == unitTuple.Item1.Owner)
                                 //    {
-                                //        if (GetTargetTwo(attackingTuple.Item1.Source).ShortName != "Borg" && GetTargetTwo(attackingTuple.Item1.Source).ShortName != "ChoseHoldFireCiv")
+                                //        if (GetTargetTwo(attackingTuple.Item1.Source).ShortName != "Borg" && GetTargetTwo(attackingTuple.Item1.Source).ShortName != "Only Return Fire")
                                 //        {
                                 //            GameLog.Core.Test.DebugFormat("2nd Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
                                 //            LoadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);

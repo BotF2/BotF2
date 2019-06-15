@@ -327,7 +327,7 @@ namespace Supremacy.Client
             }
 
             Civilization onlyFireIfFiredAppone = new Civilization();
-            onlyFireIfFiredAppone.ShortName = "ChoseHoldFireCiv";
+            onlyFireIfFiredAppone.ShortName = "Only Return Fire";
             onlyFireIfFiredAppone.CivID = 8888;
 
 
