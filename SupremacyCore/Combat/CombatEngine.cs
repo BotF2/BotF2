@@ -858,12 +858,14 @@ namespace Supremacy.Combat
         }
 
         protected Civilization GetTargetOne(Orbital source)
-        {                                                                                                                 //if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
+        {
+            GameLog.Core.Test.DebugFormat("GetTargetOne ={0}", _targetOneByCiv[source.OwnerID].GetTargetOne(source));//if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
             var _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);
             return _targetOne;
         }
         protected Civilization GetTargetTwo(Orbital source)
         {
+            GameLog.Core.Test.DebugFormat("GetTargetTwo ={0}", _targetTwoByCiv[source.OwnerID].GetTargetTwo(source));
             var _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
             return _targetTwo;
         }

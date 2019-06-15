@@ -48,7 +48,8 @@ namespace Supremacy.Client
         private bool _targetSelected = false;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any          
-
+        private Civilization theTargeted1Civ;
+        private Civilization theTargeted2Civ;
         private IAppContext _appContext;
 
         #region Properties
@@ -129,7 +130,8 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
-
+            Civilization theTargeted1Civ = new Civilization();
+            Civilization theTargeted2Civ = new Civilization();
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -412,9 +414,9 @@ namespace Supremacy.Client
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
-            Civilization theTargeted1Civ = (Civilization)radioButton1.DataContext;
+            theTargeted1Civ = (Civilization)radioButton1.DataContext;
 
-            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));// theTargeted1Civ));
+            //ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));// theTargeted1Civ));
 
             GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", theTargeted1Civ.ShortName); //theTargeted1Civ);
 
@@ -423,9 +425,9 @@ namespace Supremacy.Client
         private void TargetButton2_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton2 = (RadioButton)sender;
-            Civilization theTargeted2Civ = (Civilization)radioButton2.DataContext;
+            theTargeted2Civ = (Civilization)radioButton2.DataContext;
 
-            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, theTargeted2Civ));
+            
 
             GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", theTargeted2Civ.ShortName);
         }
@@ -450,9 +452,10 @@ namespace Supremacy.Client
 
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;
-            // DialogResult = true;
-            ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
 
+            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));
+            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, theTargeted2Civ));
+            ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
         }
 
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)

@@ -322,7 +322,7 @@ namespace Supremacy.Combat
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 //else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
-                GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
+                //GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
@@ -333,7 +333,7 @@ namespace Supremacy.Combat
                 }    
                 else
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);        
-                GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
+                //GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
             return targetOne;
         }
@@ -348,7 +348,7 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                     targetTwo.SetTargetTwoCiv(ship.Source, TryGetBorgCiv() );
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
-                //GameLog.Core.Test.DebugFormat("target Borg? {0}", GetBorgCiv().ShortName);
+                GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetSecondary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)

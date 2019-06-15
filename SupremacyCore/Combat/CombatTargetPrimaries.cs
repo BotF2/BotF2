@@ -56,7 +56,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetOneCiv");
-            //GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne.Name);
+            GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne.Name);
             _targetPrimaries[source.ObjectID] = targetOne;            
         }
 
@@ -77,7 +77,7 @@ namespace Supremacy.Combat
             {
                 throw new ArgumentException("No target one has been set for the specified source");
             }
-            //GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.ObjectID, _targetPrimaries[source.ObjectID]);
+            GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);
             return _targetPrimaries[source.ObjectID];           
         }
 

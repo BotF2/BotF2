@@ -56,7 +56,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetTwoCiv");
-                //throw new ArgumentNullException("source");
+            GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}", source.Owner, targetTwo.Name);
             _targetSecondaries[source.ObjectID] = targetTwo;
         }
 
@@ -91,6 +91,7 @@ namespace Supremacy.Combat
             {
                 throw new ArgumentException("No target two has been set for the specified source");
             }
+            GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetTwo() targeting {1}", source.Name, _targetSecondaries[source.ObjectID]);
             return _targetSecondaries[source.ObjectID];
         }
 
