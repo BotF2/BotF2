@@ -50,7 +50,7 @@ namespace Supremacy.Client
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any          
 
         private IAppContext _appContext;
- 
+
         #region Properties
 
         //public List<Civilization> OtherCivs
@@ -95,7 +95,7 @@ namespace Supremacy.Client
         //}
 
         #endregion
-          
+
         public CombatWindow()
         {
             InitializeComponent();
@@ -129,7 +129,7 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
-   
+
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -146,7 +146,7 @@ namespace Supremacy.Client
             {
                 if (assets.Owner == _appContext.LocalPlayer.Empire)
                 {
-                   // _playerAssetsCount = update.FriendlyAssets.Count();
+                    // _playerAssetsCount = update.FriendlyAssets.Count();
                     _playerAssets = assets;
                     //_playerCivilization = assets.Owner;
                     break;
@@ -161,7 +161,7 @@ namespace Supremacy.Client
             if (_playerAssets == null)
             {
                 _playerAssets = update.FriendlyAssets[0];
-               // _playerCivilization = update.Owner[0];
+                // _playerCivilization = update.Owner[0];
             }
             if (_otherAssets == null)
             {
@@ -255,7 +255,7 @@ namespace Supremacy.Client
             HostileDestroyedItems.Items.Clear();
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
-            
+
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
@@ -269,14 +269,14 @@ namespace Supremacy.Client
 
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
-      
+
                 var shootingPlayerCivs = new List<Civilization>();
 
                 if (friendlyAssets.Station != null)
                 {
                     FriendlyStationItem.Header = friendlyAssets.Station;
                     shootingPlayerCivs.Add(friendlyAssets.Station.Owner);
-                   
+
                 }
                 if (friendlyAssets.CombatShips != null)
                 {
@@ -284,7 +284,7 @@ namespace Supremacy.Client
                     {
                         FriendlyCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
-                      
+
                     }
                 }
                 if (friendlyAssets.NonCombatShips != null)
@@ -293,13 +293,13 @@ namespace Supremacy.Client
                     {
                         FriendlyNonCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
-                  
+
                     }
                 }
                 foreach (CombatUnit shipStats in friendlyAssets.DestroyedShips)
                 {
                     FriendlyDestroyedItems.Items.Add(shipStats);
-                
+
                 }
 
                 foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
@@ -310,12 +310,12 @@ namespace Supremacy.Client
                 foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
                 {
                     FriendlyEscapedItems.Items.Add(shipStats);
-                 
+
                 }
-                
+
                 shootingPlayerCivs = shootingPlayerCivs.Distinct().ToList();
                 _friendlyCivs = shootingPlayerCivs;
-;
+                ;
                 foreach (Civilization Friend in _friendlyCivs)
                 {
                     FriendCivilizationsItems.Items.Add(Friend); // a template for rach other civ
@@ -327,14 +327,14 @@ namespace Supremacy.Client
             Civilization onlyFireIfFiredAppone = new Civilization();
             onlyFireIfFiredAppone.ShortName = "ChoseHoldFireCiv";
             onlyFireIfFiredAppone.CivID = 8888;
-           
+
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
 
                 var otherCivs = new List<Civilization>();
-           
+
                 if (hostileAssets.Station != null)
                 {
                     HostileStationItem.Header = hostileAssets.Station;
@@ -354,26 +354,26 @@ namespace Supremacy.Client
                 foreach (CombatUnit shipStats in hostileAssets.EscapedShips)
                 {
                     HostileEscapedItems.Items.Add(shipStats);
-     
+
                 }
                 foreach (CombatUnit shipStats in hostileAssets.DestroyedShips)
                 {
                     HostileDestroyedItems.Items.Add(shipStats);
-                 
+
                 }
                 foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
                 {
                     HostileAssimilatedItems.Items.Add(shipStats);
                 }
                 _otherCivs = otherCivs.Distinct().ToList(); // adding Civilizations of the others into the field (a list) _otherCivs
-                
+
                 foreach (Civilization Other in _otherCivs)
-                { 
+                {
                     OtherCivilizationsSummaryItem1.Items.Add(Other); // a template for rach other civ
                     GameLog.Core.Combat.DebugFormat("_otherCivs containing = {0}", Other.ShortName);
 
                 }
-                             
+
             }
             OtherCivilizationsSummaryItem1.Items.Add(onlyFireIfFiredAppone);
             ShowHideUnitTrees();
@@ -403,7 +403,7 @@ namespace Supremacy.Client
             HostileAssimilatedItems.Visibility = HostileAssimilatedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
             HostileEscapedItems.Header = HostileEscapedItems.HasItems ? ResourceManager.GetString("COMBAT_ESCAPED_UNITS") : null;
             HostileEscapedItems.Visibility = HostileEscapedItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-          
+
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
 
@@ -413,7 +413,7 @@ namespace Supremacy.Client
         {
             RadioButton radioButton1 = (RadioButton)sender;
             Civilization theTargeted1Civ = (Civilization)radioButton1.DataContext;
-          
+
             ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));// theTargeted1Civ));
 
             GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", theTargeted1Civ.ShortName); //theTargeted1Civ);
@@ -427,6 +427,7 @@ namespace Supremacy.Client
 
             ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, theTargeted2Civ));
 
+            GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", theTargeted2Civ.ShortName);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -449,9 +450,9 @@ namespace Supremacy.Client
 
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;
-           // DialogResult = true;
+            // DialogResult = true;
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
-         
+
         }
 
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)
@@ -459,6 +460,6 @@ namespace Supremacy.Client
             //base.DialogResult = true;
             DialogResult = true;
         }
-       
+
     }
 }
