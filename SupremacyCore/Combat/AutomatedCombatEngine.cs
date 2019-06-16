@@ -296,7 +296,7 @@ namespace Supremacy.Combat
                                 GameLog.Core.Test.DebugFormat("unitTuple {0} {1} & target one? {2} & 'attacker' = {3}", unitTuple.Item1.Owner.ShortName, unitTuple.Item1.Name, unitTupleTargetOne.ShortName, attackingTuple.Item1.Name);
 
                                 if ((attackerTargetOne == unitTuple.Item1.Owner || attackerTargetTwo == unitTuple.Item1.Owner || !CombatHelper.AreNotAtWar(attackingTuple.Item1.Owner, unitTuple.Item1.Owner)))
-                                 {
+                                {
                                     GameLog.Core.Test.DebugFormat("Add Targeting of {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
                                     targetUnitTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == unitTuple.Item1.OwnerID).Select(sc => sc).ToList();
                                     if (targetUnitTupleList == null || targetUnitTupleList.Count() == 0)
@@ -341,11 +341,20 @@ namespace Supremacy.Combat
                 {
                     GameLog.Core.Test.DebugFormat("A try at unitTuple found no targets");
                 }
-                foreach (var q in ownerIDs)
+                try
                 {
-                    GameLog.Core.Test.DebugFormat("dictionary entry {0} is {1}", q, TargetDictionary[q].FirstOrDefault().Item1.Owner.ShortName);
-                    //TargetDictionary[q].FirstOrDefault();
+                    foreach (var q in ownerIDs)
+                    {
+                        GameLog.Core.Test.DebugFormat("dictionary entry {0} is ={1}", q, TargetDictionary[q].FirstOrDefault().Item1.Owner.ShortName);
+                        //TargetDictionary[q].FirstOrDefault();
+                    }
                 }
+                catch
+                {
+                    GameLog.Core.Test.DebugFormat("dictionary has no targets");
+
+                }
+            //}
             }
             #endregion // populate target dictionary
 
