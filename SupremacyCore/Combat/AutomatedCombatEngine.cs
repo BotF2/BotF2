@@ -194,7 +194,7 @@ namespace Supremacy.Combat
             // populate target dictionary with lists of target units (_oppositionCombatShips), key is owner id / civ id
             foreach (var unitTuple in _combatShips)
             {
-                bool foundBorgShip = (_combatShips.Where(sc => sc.Item1.Owner.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
+                //bool foundBorgShip = (_combatShips.Where(sc => sc.Item1.Owner.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
 
                 try
                 {
@@ -214,63 +214,62 @@ namespace Supremacy.Combat
                                 Civilization attackerTargetTwo = new Civilization();
                                 Civilization unitTupleTargetOne = new Civilization();
                                 Civilization unitTupleTargetTwo = new Civilization();
-                                if (attackingTuple.Item1.Owner.ShortName != "Borg" && unitTuple.Item1.Owner.ShortName != "Borg")
+                                //if (attackingTuple.Item1.Owner.ShortName != "Borg" && unitTuple.Item1.Owner.ShortName != "Borg")
+                                //{
+                                try
                                 {
-                                    try
-                                    {
-                                        attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
-                                    }
-                                    catch
-                                    {
-                                        attackerTargetOne = CombatHelper.TryGetBorgCiv();
-                                    }
-                                    try
-                                    {
-                                        attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
-
-                                    }
-                                    catch
-                                    {
-                                        attackerTargetTwo = CombatHelper.TryGetBorgCiv();
-                                    }
-                                    try
-                                    {
-                                        unitTupleTargetOne = GetTargetOne(unitTuple.Item1.Source);
-                                    }
-                                    catch
-                                    {
-                                        unitTupleTargetOne = CombatHelper.TryGetBorgCiv();
-                                    }
-                                    try
-                                    {
-                                        unitTupleTargetTwo = GetTargetTwo(unitTuple.Item1.Source);
-                                    }
-                                    catch
-                                    {
-                                        unitTupleTargetTwo = CombatHelper.TryGetBorgCiv();
-                                    }
+                                    attackerTargetOne = GetTargetOne(attackingTuple.Item1.Source);
                                 }
-                                else if (attackingTuple.Item1.Owner.ShortName == "Borg") // borg do not target self
+                                catch
                                 {
                                     attackerTargetOne = CombatHelper.GetDefaultHoldFireCiv();
+                                }
+                                try
+                                {
+                                    attackerTargetTwo = GetTargetTwo(attackingTuple.Item1.Source);
+
+                                }
+                                catch
+                                {
                                     attackerTargetTwo = CombatHelper.GetDefaultHoldFireCiv();
                                 }
-                                else if (unitTuple.Item1.Owner.ShortName == "Borg")
+                                try
+                                {
+                                    unitTupleTargetOne = GetTargetOne(unitTuple.Item1.Source);
+                                }
+                                catch
                                 {
                                     unitTupleTargetOne = CombatHelper.GetDefaultHoldFireCiv();
+                                }
+                                try
+                                {
+                                    unitTupleTargetTwo = GetTargetTwo(unitTuple.Item1.Source);
+                                }
+                                catch
+                                {
                                     unitTupleTargetTwo = CombatHelper.GetDefaultHoldFireCiv();
                                 }
+                                //}
+                                //else if (attackingTuple.Item1.Owner.ShortName == "Borg") // borg do not target self
+                                //{
+                                //    attackerTargetOne = CombatHelper.GetDefaultHoldFireCiv();
+                                //    attackerTargetTwo = CombatHelper.GetDefaultHoldFireCiv();
+                                //}
+                                //else if (unitTuple.Item1.Owner.ShortName == "Borg")
+                                //{
+                                //    unitTupleTargetOne = CombatHelper.GetDefaultHoldFireCiv();
+                                //    unitTupleTargetTwo = CombatHelper.GetDefaultHoldFireCiv();
+                                //}
                                 GameLog.Core.Test.DebugFormat("Attacker {0} with Target1 ={1} & 2={2}",
                                     attackingTuple.Item1.Source.Name, attackerTargetOne.ShortName, attackerTargetTwo.ShortName);
                                 GameLog.Core.Test.DebugFormat("unitTuple {0} with Target1 ={1} & 2={2}",
                                     unitTuple.Item1.Source.Name, unitTupleTargetOne.ShortName, unitTupleTargetTwo.ShortName);
 
-                                GameLog.Core.Test.DebugFormat("found borg ship? {0}", foundBorgShip);
+                                //GameLog.Core.Test.DebugFormat("found borg ship? {0}", foundBorgShip);
 
-                                // if both sides are default targeting holdFireCiv (or borg while no borg ships found) then look for other targets in the sector anyway
+                                // if both sides are default targeting holdFireCiv then look for other targets in the sector anyway
                                 //ToDo: AI put in check if they are already being targeted by a third party? (Why look for more) & put in a check of civ behavior like war-like or peaceful?
-                                if (attackerTargetOne.ShortName == "Borg" && unitTupleTargetOne.ShortName == "Borg" && !foundBorgShip ||
-                                        unitTupleTargetOne.ShortName == "DefaultHoldFireCiv" && attackerTargetOne.ShortName == "DefaultHoldFireCiv")
+                                if (unitTupleTargetOne.ShortName == "DefaultHoldFireCiv" && attackerTargetOne.ShortName == "DefaultHoldFireCiv") //attackerTargetOne.ShortName == "Borg" && unitTupleTargetOne.ShortName == "Borg" && !foundBorgShip                 
                                 {
                                     if (!CombatHelper.WillFightAlongside(_combatShips.Last().Item1.Owner, attackingTuple.Item1.Owner) && attackingTuple.Item1.OwnerID != unitTuple.Item1.OwnerID)
                                     {
@@ -282,13 +281,13 @@ namespace Supremacy.Combat
                                     }
                                 }
 
-                                GameLog.Core.Test.DebugFormat("if attacker choose holding fire 1 & 2 true={0} should see breaking loop next", (attackerTargetOne.ShortName == "Only Return Fire" && attackerTargetTwo.ShortName == "Only Return Fire"));
+                                GameLog.Core.Test.DebugFormat("if attacker only returns fire 1 & 2 true={0} should see breaking loop next", (attackerTargetOne.ShortName == "Only Return Fire" && attackerTargetTwo.ShortName == "Only Return Fire"));
 
-                                // if choosing to hold fire than do not set targets  - unless a return fire adds them in code below
+                                // if player takes only return fire than do not set targets  - unless a return fire adds them in code below
                                 if (attackerTargetOne.ShortName == "Only Return Fire" && attackerTargetTwo.ShortName == "Only Return Fire")
                                 {
                                     GameLog.Core.Test.DebugFormat("breaking one attack loop for human attacker holding fire");
-                                    if (unitTupleTargetOne != attackingTuple.Item1.Owner || unitTupleTargetTwo != attackingTuple.Item1.Owner) ;
+                                    if (unitTupleTargetOne != attackingTuple.Item1.Owner || unitTupleTargetTwo != attackingTuple.Item1.Owner) 
                                     break;
                                 }
 
@@ -307,28 +306,7 @@ namespace Supremacy.Combat
                                     returnFireTupleList = _combatShips.Where(sc => sc.Item1.OwnerID == attackingTuple.Item1.OwnerID).Select(sc => sc).ToList();
                                     LoadTargets(unitTuple.Item1.OwnerID, returnFireTupleList); // return fire
                                 }
-                                //if (attackerTargetOne != attackerTargetTwo)
-                                //{
-                                //    //if (attackerTargetTwo == unitTuple.Item1.Owner)
-                                //    //{
-                                //        if (attackerTargetTwo.ShortName != "Borg" && attackerTargetTwo.ShortName != "Only Return Fire")
-                                //        {
-                                //            GameLog.Core.Test.DebugFormat("2nd Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
-                                //            LoadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
 
-                                //            GameLog.Core.Test.DebugFormat("2nd returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
-                                //            LoadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
-                                //        }
-                                //        if (GetTargetTwo(attackingTuple.Item1.Source).ShortName == "Borg" && foundBorgShip)
-                                //        {
-                                //            GameLog.Core.Test.DebugFormat("2nd borg Targeting at {0} for attacker {1}", unitTuple.Item1.Name, attackingTuple.Item1.Owner.ShortName);
-                                //            LoadTargets(attackingTuple.Item1.OwnerID, targetUnitTupleList);
-
-                                //            GameLog.Core.Test.DebugFormat("2nd borg returnfire at {0} for targeted' {1}", attackingTuple.Item1.Name, unitTuple.Item1.Owner.ShortName);
-                                //            LoadTargets(unitTuple.Item1.OwnerID, returnFireTupleList);
-                                //        }
-                                //    //}
-                                //}
                             }
                             _attackerIDList.Add(unitTuple.Item1.OwnerID); // record civ as already having been attacker
                             _attackerIDList.Distinct().ToList();
@@ -723,6 +701,8 @@ namespace Supremacy.Combat
                     case CombatOrder.Formation:
 
                         var attackingShip = _combatShips[k].Item1;
+                        //if (_targetDictionary[_combatShips[k].Item1.OwnerID].Count == 0 || (_targetDictionary[_combatStation.Item1.OwnerID].Count == 0))
+                          //  break;
                         var target = ChooseTarget(attackingShip);
                         // GameLog.Core.Test.DebugFormat("Choose target call with attackingShip {0} of {1} to get target {2} {3}", attackingShip, attackingShip.Owner.ToString(), target.ToString(), target.Owner);
                         if (order != CombatOrder.Formation && order != CombatOrder.Engage)
@@ -1015,7 +995,12 @@ namespace Supremacy.Combat
             }
             var attackerOrder = GetCombatOrder(attacker.Source);
             var attackerCivID = attacker.Owner.CivID;
-            var attackingOwnerID = attacker.OwnerID; var oppositionUnits = _targetDictionary[attackingOwnerID].ToList();
+            var attackingOwnerID = attacker.OwnerID;
+            if (_targetDictionary[attackingOwnerID].Count() == 0)
+            {
+                EndCombatConditions(attacker);
+            }
+            var oppositionUnits = _targetDictionary[attackingOwnerID].ToList();
             bool hasOppositionStation = (_combatStation != null) && !_combatStation.Item1.IsDestroyed && (_combatStation.Item1.Owner != attacker.Owner);
             oppositionUnits.Randomize();
             var firstOppositionUint = oppositionUnits.First().Item1;
@@ -1026,7 +1011,7 @@ namespace Supremacy.Combat
                 {
                     case CombatOrder.Engage:
                     case CombatOrder.Formation:
-                        if (_targetDictionary.Count() > 0)
+                        if (_targetDictionary[attacker.OwnerID].Count() > 0)
                         {
                             return firstOppositionUint;
                         }
@@ -1209,6 +1194,10 @@ namespace Supremacy.Combat
                 GameLog.Core.Test.DebugFormat("dictionary at {0} has ={1}", ownerID, _targetDictionary[ownerID].FirstOrDefault().Item1.Owner.ShortName); 
             }
 
+        }
+        private void EndCombatConditions(CombatUnit attacker)
+        {
+            FriendlyCombatShips = _combatShips.Where(s => s.Item1.OwnerID == attacker.OwnerID).Select(s => s).ToList();
         }
         #endregion
     }

@@ -24,7 +24,7 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
-        public static bool borgInGame = (GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
+       // public static bool borgInGame = (GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
         
         /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
@@ -306,7 +306,7 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1)
                 {
-                    targetOne.SetTargetOneCiv(ship.Source, TryGetBorgCiv());
+                    targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
                 }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
@@ -318,7 +318,7 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1)
                 {
-                    targetOne.SetTargetOneCiv(ship.Source, TryGetBorgCiv());
+                    targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
                 }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
@@ -330,7 +330,7 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1)
                 {
-                    targetOne.SetTargetOneCiv(assets.Station.Source, TryGetBorgCiv());
+                    targetOne.SetTargetOneCiv(assets.Station.Source, GetDefaultHoldFireCiv());
                 }    
                 else
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);        
@@ -347,7 +347,7 @@ namespace Supremacy.Combat
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
             {
                 if (target.CivID == -1)
-                    targetTwo.SetTargetTwoCiv(ship.Source, TryGetBorgCiv() );
+                    targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
                 GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetSecondary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
@@ -355,14 +355,14 @@ namespace Supremacy.Combat
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
                 if (target.CivID == -1)
-                    targetTwo.SetTargetTwoCiv(ship.Source, TryGetBorgCiv());
+                    targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
                 if (target.CivID == -1)
-                  targetTwo.SetTargetTwoCiv(assets.Station.Source, TryGetBorgCiv());
+                  targetTwo.SetTargetTwoCiv(assets.Station.Source, GetDefaultHoldFireCiv());
                 else
                     targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
             }
@@ -426,19 +426,23 @@ namespace Supremacy.Combat
         /// returns the borg civilization if borg are in the game. If not then calls GetDefaultHoldFireCiv
         /// </summary>
         /// <returns></returns>
-        public static Civilization TryGetBorgCiv()
-        {
-            var _target = new Civilization();
-            if (borgInGame)
-            {
-                _target = GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).FirstOrDefault();
-            }
-            else _target = GetDefaultHoldFireCiv();
+        //public static Civilization TryGetBorgCiv()
+        //{
+        //    var _target = new Civilization();
+        //    if (borgInGame)
+        //    {
+        //        _target = GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).FirstOrDefault();
+        //    }
+        //    else _target = GetDefaultHoldFireCiv();
 
-            return _target;
+        //    return _target;
 
-        }
+        //}
 
+        /// <summary>
+        /// returns the dummy civilization for computer player empires that do no chose targeting
+        /// </summary>
+        /// <returns></returns>
         public static Civilization GetDefaultHoldFireCiv()
         {
             var _target = new Civilization();
