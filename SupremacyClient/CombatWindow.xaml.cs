@@ -45,57 +45,14 @@ namespace Supremacy.Client
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
         private CombatAssets _otherAssets;
-        private bool _targetSelected = false;
+      //  private bool _targetSelected = false;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
-        private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any          
-        private Civilization theTargeted1Civ;
-        private Civilization theTargeted2Civ;
+        private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
+        private Civilization _onlyFireIfFiredAppone;
+        private Civilization _theTargeted1Civ;
+        private Civilization _theTargeted2Civ;
         private IAppContext _appContext;
-
-        #region Properties
-
-        //public List<Civilization> OtherCivs
-        //{
-        //    get
-        //    {
-        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
-        //        return _otherCivs;
-        //    }
-        //    set
-        //    {
-        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
-
-        //        _otherCivs = value;
-        //    }
-        //}
-
-        //public List<Civilization> FriendlyCivs // Do we really need this as a Property?
-        //{
-        //    get
-        //    {
-        //        return _friendlyCivs;
-        //    }
-        //    set
-        //    {
-        //        _friendlyCivs = value;
-        //    }
-        //}
-
-        //public List<Civilization> OtherNameAndFirePower
-        //{
-        //    get
-        //    {
-        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - GET: _otherCivs = {0}", _otherCivs.ToString());
-        //        return _otherNameAndFirePower;
-        //    }
-        //    set
-        //    {
-        //        //null ref crash GameLog.Core.Combat.DebugFormat("OtherCivs - SET: _otherCivs = {0}", value.ToString());
-        //        _otherNameAndFirePower = value;
-        //    }
-        //}
-
-        #endregion
+       
 
         public CombatWindow()
         {
@@ -130,8 +87,15 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
-            Civilization theTargeted1Civ = new Civilization();
-            Civilization theTargeted2Civ = new Civilization();
+            
+            _onlyFireIfFiredAppone = new Civilization();
+            _onlyFireIfFiredAppone.ShortName = "Only Return Fire";
+            _onlyFireIfFiredAppone.CivID = 8888;
+            _theTargeted1Civ = new Civilization();
+            _theTargeted1Civ = _onlyFireIfFiredAppone;
+            _theTargeted2Civ = new Civilization();
+            _theTargeted2Civ = _onlyFireIfFiredAppone;
+
         }
 
         private void OnCombatUpdateReceived(DataEventArgs<CombatUpdate> args)
@@ -215,8 +179,6 @@ namespace Supremacy.Client
             }
 
             PopulateUnitTrees();
-
-            //var path = civEmblem.Source.ToString();
 
             //We need combat assets to be able to engage
             EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null));
@@ -326,10 +288,9 @@ namespace Supremacy.Client
 
             }
 
-            Civilization onlyFireIfFiredAppone = new Civilization();
-            onlyFireIfFiredAppone.ShortName = "Only Return Fire";
-            onlyFireIfFiredAppone.CivID = 8888;
-
+            //Civilization onlyFireIfFiredAppone = new Civilization();
+            //onlyFireIfFiredAppone.ShortName = "Only Return Fire";
+            //onlyFireIfFiredAppone.CivID = 8888;
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
@@ -377,7 +338,7 @@ namespace Supremacy.Client
                 }
 
             }
-            OtherCivilizationsSummaryItem1.Items.Add(onlyFireIfFiredAppone);
+            OtherCivilizationsSummaryItem1.Items.Add(_onlyFireIfFiredAppone);
             ShowHideUnitTrees();
         }
 
@@ -414,22 +375,41 @@ namespace Supremacy.Client
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
-            theTargeted1Civ = (Civilization)radioButton1.DataContext;
-
-            //ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));// theTargeted1Civ));
-
-            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", theTargeted1Civ.ShortName); //theTargeted1Civ);
+            _theTargeted1Civ = (Civilization)radioButton1.DataContext;
+            if (_theTargeted1Civ.ShortName == "Only Return Fire" && _theTargeted2Civ.ShortName == "Only Return Fire")
+            {
+                EngageButton.IsEnabled = false;
+                RushButton.IsEnabled = false;
+                TransportsButton.IsEnabled = false;
+            }
+            else
+            {
+                EngageButton.IsEnabled = true;
+                RushButton.IsEnabled = true;
+                TransportsButton.IsEnabled = true;
+            }
+            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
 
         }
 
         private void TargetButton2_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton2 = (RadioButton)sender;
-            theTargeted2Civ = (Civilization)radioButton2.DataContext;
+            _theTargeted2Civ = (Civilization)radioButton2.DataContext;
+            if (_theTargeted1Civ.ShortName == "Only Return Fire" && _theTargeted2Civ.ShortName == "Only Return Fire")
+            {
+                EngageButton.IsEnabled = false;
+                RushButton.IsEnabled = false;
+                TransportsButton.IsEnabled = false;
+            }
+            else
+            {
+                EngageButton.IsEnabled = true;
+                RushButton.IsEnabled = true;
+                TransportsButton.IsEnabled = true;
+            }
 
-            
-
-            GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", theTargeted2Civ.ShortName);
+            GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -453,8 +433,8 @@ namespace Supremacy.Client
             UpperButtonsPanel.IsEnabled = false;
             LowerButtonsPanel.IsEnabled = false;
 
-            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, theTargeted1Civ));
-            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, theTargeted2Civ));
+            ClientCommands.SendCombatTarget1.Execute(CombatHelper.GenerateBlanketTargetPrimary(_playerAssets, _theTargeted1Civ));
+            ClientCommands.SendCombatTarget2.Execute(CombatHelper.GenerateBlanketTargetSecondary(_playerAssets, _theTargeted2Civ));
             ClientCommands.SendCombatOrders.Execute(CombatHelper.GenerateBlanketOrders(_playerAssets, order));
         }
 

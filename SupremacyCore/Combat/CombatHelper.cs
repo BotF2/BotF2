@@ -333,7 +333,7 @@ namespace Supremacy.Combat
                 }    
                 else
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);        
-                //GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
+                GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
             return targetOne;
         }
