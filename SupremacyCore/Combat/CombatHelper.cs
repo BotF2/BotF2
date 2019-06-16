@@ -240,16 +240,17 @@ namespace Supremacy.Combat
             {
                 return false;
             }
-
-            switch (diplomacyData.Status)
+            if (firstCiv != secondCiv)
             {
-                //case ForeignPowerStatus.Affiliated:
-                case ForeignPowerStatus.Allied:
-                case ForeignPowerStatus.OwnerIsMember:
-                case ForeignPowerStatus.CounterpartyIsMember:
-                    return true;
+                switch (diplomacyData.Status)
+                {
+                    //case ForeignPowerStatus.Affiliated:
+                    case ForeignPowerStatus.Allied:
+                    case ForeignPowerStatus.OwnerIsMember:
+                    case ForeignPowerStatus.CounterpartyIsMember:
+                        return true;
+                }
             }
-
             // TODO: How should we handle war partners?
 
             return false;

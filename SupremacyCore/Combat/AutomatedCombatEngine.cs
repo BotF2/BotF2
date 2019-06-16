@@ -165,8 +165,8 @@ namespace Supremacy.Combat
             }
             ownerIDs.Distinct().ToList();
 
-            var CivOne = ownerIDs.First();
-            GameLog.Core.CombatDetails.DebugFormat("CivOne = {0}", CivOne);
+            //var CivOne = ownerIDs.First();
+            //GameLog.Core.CombatDetails.DebugFormat("CivOne = {0}", CivOne);
 
             // populate dictionary of ships in a lists for each owner, The key is owner id (_shipListDictionary)
             foreach (var ownerID in ownerIDs)
@@ -179,7 +179,9 @@ namespace Supremacy.Combat
             for (int t = 0; t < _combatShips.Count(); t++)
             {
                 //var ownerAssets = GetAssets(_combatShips[t].Item1.Owner);
-                _willFightAlongSide[_combatShips[t].Item1.OwnerID] = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[t].Item1.Owner, cs.Item1.Owner)).Select(cs => cs).ToList();
+                _willFightAlongSide[_combatShips[t].Item1.OwnerID] = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[t].Item1.Owner, cs.Item1.Owner))
+                    .Select(cs => cs)
+                    .ToList();
                 _willFightAlongSide.Distinct().ToList();
             }
 
@@ -426,7 +428,10 @@ namespace Supremacy.Combat
             //{
 
 
-            FriendlyCombatShips = _combatShips.Where(s => s.Item1.OwnerID == CivOne).Select(sc => sc).ToList();
+            FriendlyCombatShips = _combatShips.Where(s => s.Item1.OwnerID == ownerIDs[0]).Select(sc => sc).ToList();
+            if (_willFightAlongSide[ownerIDs[0]].Count() != 0)
+                FriendlyCombatShips.AddRange(_willFightAlongSide[ownerIDs[0]]);
+            FriendlyCombatShips.Randomize();
             FriendlyCombatShips.Distinct().ToList();
 
 
@@ -442,7 +447,7 @@ namespace Supremacy.Combat
             //        }
 
 
-            //Where(s => s.Item1.OwnerID == CivOne).Select(sc => sc).ToList();
+            //Where(s => s.Item1.OwnerID == ownerIDs[0]).Select(sc => sc).ToList();
             OppositionCombatShips = _targetDictionary[ownerIDs[0]]; //.Where(s => s.Item1.OwnerID != ownerIDs[0]).Select(sc => sc).ToList();
             OppositionCombatShips.Randomize();
 
@@ -466,10 +471,8 @@ namespace Supremacy.Combat
 
             //if (_shipListDictionary[i] != null)
             //{
-            FriendlyCombatShips = _combatShips.Where(sc => sc.Item1.OwnerID == ownerIDs[0]).Select(sc => sc).ToList();
-            if (_willFightAlongSide[ownerIDs[0]] != null)
-                FriendlyCombatShips.AddRange(_willFightAlongSide[ownerIDs[0]]);
-            FriendlyCombatShips.Randomize();
+            //FriendlyCombatShips = _combatShips.Where(sc => sc.Item1.OwnerID == ownerIDs[0]).Select(sc => sc).ToList();
+
             //foreach (var ship  in FriendlyCombatShips)
             //{
             //    GameLog.Core.CombatDetails.DebugFormat("added to FriendlyCombatShips: {0} {1}", ship.Item1.Source.ObjectID, ship.Item1.Source.Name);
@@ -624,13 +627,13 @@ namespace Supremacy.Combat
                 }
 
                 List<string> ownCiv = _combatShips.Where(s =>
-                    (s.Item1.OwnerID == ownerIDs[CivOne]))
+                    (s.Item1.OwnerID == ownerIDs[0]))
                     .Select(s => s.Item1.Owner.Key)
                     .Distinct()
                     .ToList();
 
                 List<string> friendlyCivs = _combatShips.Where(s =>
-                    (s.Item1.OwnerID != ownerIDs[CivOne]) &&
+                    (s.Item1.OwnerID != ownerIDs[0]) &&
                     CombatHelper.WillFightAlongside(s.Item1.Owner, _combatShips[k].Item1.Owner))
                     .Select(s => s.Item1.Owner.Key)
                     .Distinct()
@@ -638,20 +641,20 @@ namespace Supremacy.Combat
 
                 List<string> hostileCivs = new List<string>();
 
-                var hostileShipList = _targetDictionary[ownerIDs[CivOne]];
+                var hostileShipList = _targetDictionary[ownerIDs[0]];
                 foreach (var hostilShip in hostileShipList)
                 {
                     hostileCivs.Add(hostilShip.Item1.Owner.Key);
                     hostileCivs.Distinct().ToList();
                 }
 
-                var friendShips = _willFightAlongSide[ownerIDs[CivOne]];
+                var friendShips = _willFightAlongSide[ownerIDs[0]];
                 List<int> friendIDs = new List<int>();
                 foreach (var ship in friendShips)
                 {
                     friendIDs.Add(ship.Item1.OwnerID);
                 }
-                if (_combatShips[k].Item1.OwnerID == ownerIDs[CivOne] || friendIDs.Contains(_combatShips[k].Item1.OwnerID)) // need us or friendly
+                if (_combatShips[k].Item1.OwnerID == ownerIDs[0] || friendIDs.Contains(_combatShips[k].Item1.OwnerID)) // need us or friendly
                 {
                     friendlyOwner = true;
                 }
