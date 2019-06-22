@@ -711,6 +711,135 @@ namespace Supremacy.Tech
                 #endregion ProductionFacilities_To_CSV
 
 
+
+                #region Buildings_To_CSV
+                try // avoid hang up if this file is opened by another program 
+                {
+                    file = pathOutputFile + "_FromTechObj-Buildings_(autoCreated).csv";
+
+                    Console.WriteLine("writing {0}", file);
+
+                    if (file == null)
+                        goto WriterClose;
+
+                    streamWriter = new StreamWriter(file);
+
+                    strHeader =    // Head line
+                        "CE_Building" + separator +
+                        "ATT_Key" + separator +
+
+                        "CE_TechRequirements" + separator +
+                        "CE_BioTech" + separator +
+                        "CE_Computers" + separator +
+                        "CE_Construction" + separator +
+                        "CE_Energy" + separator +
+                        "CE_Propulsion" + separator +
+                        "CE_Weapons" + separator +
+                        "CE_BuildCost" + separator +
+                        "CE_IsUniversallyAvailable" + separator +
+
+                        "CE_EnergyCost" + separator +
+                        //"CE_Category" + separator +
+
+                        // just placeholder
+                        "CE_Bonus" + separator +
+                        "CE_Restrictions" //+ separator +
+                        //"CE_Prerequisites" + separator +
+                        //"CE_ObsoletedItems" + separator +
+                        //"CE_UpgradeOptions"
+                        ;
+
+                    streamWriter.WriteLine(strHeader);
+                    // End of head line
+
+                    string category = "";
+                    foreach (var B in db.BuildingDesigns)   // each shipyard
+                    {
+                        //App.DoEvents();  // for avoid error after 60 seconds
+
+                        //if (B.Category > 0)
+                        //    category = B.Category.ToString();
+
+                        //if (B.Category == 0)
+                        //{
+                        //    category = B.Category.ToString();
+                        //    if (B.Key.Contains("DILITHIUM"))
+                        //        category = "Dilithium";
+                        //    if (B.Key.Contains("DEUTERIUM"))
+                        //        category = "Deuterium";
+                        //    if (B.Key.Contains("RAWMATERIALS"))
+                        //        category = "RawMaterials";
+                        //}
+
+
+                        line =
+                        "Building" + separator +
+                        B.Key + separator +
+                        //B.Image + separator +
+
+
+                        //shipyard.DesignID + separator +   // not useful for current working
+                        //shipyard.ShipType + separator +  // moved down for current working
+                        //shipyard.ClassName + separator +  // moved down for current working
+                        //shipyard.Key;   // just for testing
+
+                        //<TechRequirements>
+                        "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                                           // after GoogleSheet-Export: replace...
+                                           // </Weapons> by </Weapons></TechRequirements>
+                                           // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                        //"<Biotech>" + separator +                // not helpful
+                        B.TechRequirements[TechCategory.BioTech] + separator +
+                        //"</Biotech>" + separator +                 // not helpful
+                        //"<Computers>" + separator +                 // not helpful
+                        B.TechRequirements[TechCategory.Computers] + separator +
+                        //"</Computers>" + separator +                // not helpful
+                        //"<Construction>" + separator +                 // not helpful
+                        B.TechRequirements[TechCategory.Construction] + separator +
+                        //"</Construction>" + separator +                // not helpful
+                        //"<Energy>" + separator +                 // not helpful
+                        B.TechRequirements[TechCategory.Energy] + separator +
+                        //"</Energy>" + separator +                // not helpful
+                        //"<Propulsion>" + separator +                 // not helpful
+                        B.TechRequirements[TechCategory.Propulsion] + separator +
+                        //"</Propulsion>" + separator +                // not helpful
+                        //"<Weapons>" + separator +                 // not helpful
+                        B.TechRequirements[TechCategory.Weapons] + separator +
+                        //"</Weapons>" + separator +                // not helpful
+
+
+                        B.BuildCost + separator +
+                        B.IsUniversallyAvailable + separator +
+
+                        B.EnergyCost + separator +
+
+                        category + separator +
+
+
+
+                        // just placeholders
+                        "Bonus for " + B.Key + separator +
+                        "Restrictions for " + B.Key //+ separator +
+                        //"Prerequisites for " + B.Key + separator +
+                        //"ObsoletedItems for " + B.Key + separator +
+                        //"UpgradeOptions for " + B.Key
+                        ;
+
+                        //Console.WriteLine("{0}", line);
+
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Buildings_(autoCreated).csv", e);
+                }
+
+                // End of Buildings
+                #endregion Buildings_To_CSV
+
+
                 #region PossibleShipNames_To_CSV
                 try // avoid hang up if this file is opened by another program 
                 {
