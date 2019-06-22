@@ -37,40 +37,40 @@ namespace Supremacy.Combat
         private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _defaultCombatShips;
 
-        public List<Tuple<CombatUnit, CombatWeapon[]>> FriendlyCombatShips
-        {
-            get
-            {
-                return this._friendlyCombatShips;
-            }
-            set
-            {
-                this._friendlyCombatShips = value;
-            }
-        }
-        public List<Tuple<CombatUnit, CombatWeapon[]>> OppositionCombatShips
-        {
-            get
-            {
-                return this._oppositionCombatShips;
-            }
-            set
-            {
-                this._oppositionCombatShips = value;
-            }
-        }
+        //public List<Tuple<CombatUnit, CombatWeapon[]>> FriendlyCombatShips
+        //{
+        //    get
+        //    {
+        //        return this._friendlyCombatShips;
+        //    }
+        //    set
+        //    {
+        //        this._friendlyCombatShips = value;
+        //    }
+        //}
+        //public List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips
+        //{
+        //    get
+        //    {
+        //        return this._oppositionCombatShips;
+        //    }
+        //    set
+        //    {
+        //        this._oppositionCombatShips = value;
+        //    }
+        //}
 
-        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> TargetDictionary
-        {
-            get
-            {
-                return _targetDictionary;
-            }
-            set
-            {
-                this._targetDictionary = value;
-            }
-        }
+        //public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> TargetDictionary
+        //{
+        //    get
+        //    {
+        //        return _targetDictionary;
+        //    }
+        //    set
+        //    {
+        //        this._targetDictionary = value;
+        //    }
+        //}
 
         public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> ShipListtDictionary // do we need this? just look in _combatShips by ownerID?
         {
@@ -150,8 +150,8 @@ namespace Supremacy.Combat
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _combatShipsTemp.Clear();
 
-            TargetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>(); // now a dictoinary and not a list
-            TargetDictionary.Clear();
+            _targetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>(); // now a dictoinary and not a list
+            _targetDictionary.Clear();
 
             ShipListtDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
             ShipListtDictionary.Clear();
@@ -312,8 +312,8 @@ namespace Supremacy.Combat
                 {
                     foreach (var q in ownerIDs)
                     {
-                        GameLog.Core.Test.DebugFormat("dictionary entry {0} is ={1}", q, TargetDictionary[q].FirstOrDefault().Item1.Owner.ShortName);
-                        //TargetDictionary[q].FirstOrDefault();
+                        GameLog.Core.Test.DebugFormat("dictionary entry {0} is ={1}", q, _targetDictionary[q].FirstOrDefault().Item1.Owner.ShortName);
+                        //_targetDictionary[q].FirstOrDefault();
                     }
                 }
                 catch
@@ -340,12 +340,12 @@ namespace Supremacy.Combat
             _friendlyCombatShips.Randomize();
             _friendlyCombatShips.Distinct().ToList();
 
-            OppositionCombatShips = _targetDictionary[ownerIDs[0]]; 
-            OppositionCombatShips.Randomize();
+            _oppositionCombatShips = _targetDictionary[ownerIDs[0]]; 
+            _oppositionCombatShips.Randomize();
 
             var firstFriendlyUnit = _combatShips.FirstOrDefault();
 
-            foreach (var tupleShip in OppositionCombatShips)
+            foreach (var tupleShip in _oppositionCombatShips)
             {
                 othersCivIDs.Add(tupleShip.Item1.OwnerID);
                 othersCivIDs.Distinct().ToList();
@@ -370,7 +370,7 @@ namespace Supremacy.Combat
             double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
 
             // Prevent division by 0, if one side has been wiped out / or retreated.
-            if (OppositionCombatShips.ToList().Count == 0 || _friendlyCombatShips.Count == 0)
+            if (_oppositionCombatShips.ToList().Count == 0 || _friendlyCombatShips.Count == 0)
             {
                 shipRatio = 1;
                 excessShipsStartingAt = 0;
@@ -378,11 +378,11 @@ namespace Supremacy.Combat
             }
             else
             {
-                if (_friendlyCombatShips.ToList().Count - OppositionCombatShips.ToList().Count > 0)
+                if (_friendlyCombatShips.ToList().Count - _oppositionCombatShips.ToList().Count > 0)
                 {
-                    excessShipsStartingAt = OppositionCombatShips.ToList().Count * 2;
+                    excessShipsStartingAt = _oppositionCombatShips.ToList().Count * 2;
                     ratioATemp = _friendlyCombatShips.Count();
-                    ratioBTemp = OppositionCombatShips.Count();
+                    ratioBTemp = _oppositionCombatShips.Count();
                     shipRatio = ratioATemp / ratioBTemp;
                     weakerSide = 1;
                 }
@@ -391,13 +391,13 @@ namespace Supremacy.Combat
                 {
                     excessShipsStartingAt = _friendlyCombatShips.Count * 2;
                     ratioATemp = _friendlyCombatShips.Count();
-                    ratioBTemp = OppositionCombatShips.Count();
+                    ratioBTemp = _oppositionCombatShips.Count();
                     shipRatio = ratioBTemp / ratioATemp;
                     weakerSide = 2;
                 }
             }
 
-            if (_friendlyCombatShips.Count() == OppositionCombatShips.Count())
+            if (_friendlyCombatShips.Count() == _oppositionCombatShips.Count())
                 weakerSide = 0;
             if (shipRatio > 1.0)
             {
@@ -420,7 +420,7 @@ namespace Supremacy.Combat
             {
                 newCycleReduction = 0.05;
             }
-            if (_friendlyCombatShips.Count() < 4 || OppositionCombatShips.Count() < 4) // small fleets attack each other at full power
+            if (_friendlyCombatShips.Count() < 4 || _oppositionCombatShips.Count() < 4) // small fleets attack each other at full power
             {
                 newCycleReduction = 1;
             }
@@ -442,8 +442,8 @@ namespace Supremacy.Combat
                 if (l <= _friendlyCombatShips.Count - 1)
                     _combatShipsTemp.Add(_friendlyCombatShips[l]);// First Ship in _ is Friendly (initialization)
 
-                if (l <= OppositionCombatShips.ToList().Count - 1)
-                    _combatShipsTemp.Add(OppositionCombatShips.ToList()[l]); // Second Ship in _combatShipsTemp is opposition (initialization)   
+                if (l <= _oppositionCombatShips.ToList().Count - 1)
+                    _combatShipsTemp.Add(_oppositionCombatShips.ToList()[l]); // Second Ship in _combatShipsTemp is opposition (initialization)   
             }
 
             _combatShips.Clear(); //  after ships where sorted into Temp, delete orginal list
@@ -473,8 +473,9 @@ namespace Supremacy.Combat
 
                 var ownerAssets = GetAssets(_combatShips[k].Item1.Owner);
 
-               // var oppositionCombatShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[k].Item1.Owner, cs.Item1.Owner));
-                var oppositionShips = _combatShips.Where(cs => (GetTargetOne(_combatShips[k].Item1.Source) == cs.Item1.Owner));
+               // var _oppositionCombatShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[k].Item1.Owner, cs.Item1.Owner));
+                var oppositionShips = _combatShips.Where(cs => (GetTargetOne(_combatShips[k].Item1.Source) == cs.Item1.Owner)).Where(cs => (GetTargetTwo(_combatShips[k].Item1.Source) == cs.Item1.Owner));
+                // need to add GetTargetTwo
 
                 var friendlyCombatShips = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[k].Item1.Owner, cs.Item1.Owner));
 
@@ -531,10 +532,10 @@ namespace Supremacy.Combat
                 int weaponRatio = friendlyWeaponPower * 10 / (hostileWeaponPower + 1);
 
                 //Figure out if any of the opposition ships have sensors powerful enough to penetrate our camo. If so, will be decamo.
-                if (OppositionCombatShips.Count() > 0)
+                if (_oppositionCombatShips.Count() > 0)
 
                 {
-                    maxScanStrengthOpposition = OppositionCombatShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
+                    maxScanStrengthOpposition = _oppositionCombatShips.Max(s => s.Item1.Source.OrbitalDesign.ScanStrength);
 
 
                     if (_combatShips[k].Item1.IsCamouflaged && _combatShips[k].Item1.CamouflagedStrength < maxScanStrengthOpposition)
@@ -568,12 +569,12 @@ namespace Supremacy.Combat
                 #region Top of Bonus damage for combat orders combinations  
                 //Each ship by attacker order (switch) vs target order and find bonus damage
                 
-                //bool targetIsRushing = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Rush));
-                //bool targetIsInFormation = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
-                //bool targetIsHailing = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Hail));
-                //bool targetIsRetreating = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Retreat));
-                //bool targetIsRaidTransports = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Transports));
-                //bool targetIsEngage = OppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Engage));
+                //bool targetIsRushing = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Rush));
+                //bool targetIsInFormation = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
+                //bool targetIsHailing = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Hail));
+                //bool targetIsRetreating = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Retreat));
+                //bool targetIsRaidTransports = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Transports));
+                //bool targetIsEngage = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Engage));
 
                 bool oppositionIsRushing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Rush));
                 bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation)); 
@@ -853,20 +854,18 @@ namespace Supremacy.Combat
                         }
                         else
                             GameLog.Core.Combat.DebugFormat("Assets Null");
-
                     }
-                    else
+                    else if (_combatShips.Contains(_combatStation))
                     {
-                        if (_combatStation.Item1.IsDestroyed)
+                        if (!Assets.DestroyedShips.Contains(combatent.Item1))
                         {
-                            Assets = GetAssets(_combatStation.Item1.Owner);
-                            // Assets.Station. How to destroy a station?
+                            Assets.DestroyedShips.Add(combatent.Item1);
                         }
-                        //remove station ???
                     }
                     continue;
                 }
             }
+
             #endregion clean up retreated ships
             //End the combat... at turn X = 5, by letting all sides reteat
             if (_roundNumber == 5) // equals 4 engagements. Minors need an A.I. to find back to homeworld then...
@@ -1138,7 +1137,9 @@ namespace Supremacy.Combat
         //}
         private void EndCombatConditions(CombatUnit attacker)
         {
-            FriendlyCombatShips = _combatShips.Where(s => s.Item1.OwnerID == attacker.OwnerID).Select(s => s).ToList();
+            _friendlyCombatShips = _combatShips.Where(s => s.Item1.OwnerID == attacker.OwnerID).Select(s => s).ToList();
+            if (_willFightAlongSide[attacker.OwnerID].Count() != 0)
+                _friendlyCombatShips.AddRange(_willFightAlongSide[attacker.OwnerID]);
         }
         #endregion
     }

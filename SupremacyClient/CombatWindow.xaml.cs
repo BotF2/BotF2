@@ -265,7 +265,7 @@ namespace Supremacy.Client
                     FriendlyDestroyedItems.Items.Add(shipStats);
 
                 }
-
+                
                 foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
                 {
                     FriendlyAssimilatedItems.Items.Add(shipStats);
