@@ -470,7 +470,7 @@ namespace Supremacy.Combat
             //#endregion CycleReduction caluation values
 
             //#region Sort combat units into temp file that alternating friend and opposition
-           
+
             //for (int l = 0; l < _combatShips.Count; l++) // sorting combat Ships to have one ship of each side alternating
             //{
             //    if (l <= _friendlyCombatShips.Count - 1)
@@ -507,7 +507,7 @@ namespace Supremacy.Combat
 
                 var ownerAssets = GetAssets(_combatShips[k].Item1.Owner);
 
-               // var _oppositionCombatShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[k].Item1.Owner, cs.Item1.Owner));
+                // var _oppositionCombatShips = _combatShips.Where(cs => CombatHelper.WillEngage(_combatShips[k].Item1.Owner, cs.Item1.Owner));
                 var oppositionShips = _combatShips.Where(cs => (GetTargetOne(_combatShips[k].Item1.Source) == cs.Item1.Owner)).Where(cs => (GetTargetTwo(_combatShips[k].Item1.Source) == cs.Item1.Owner));
                 // need to add GetTargetTwo
 
@@ -602,7 +602,7 @@ namespace Supremacy.Combat
 
                 #region Top of Bonus damage for combat orders combinations  
                 //Each ship by attacker order (switch) vs target order and find bonus damage
-                
+
                 //bool targetIsRushing = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Rush));
                 //bool targetIsInFormation = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
                 //bool targetIsHailing = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Hail));
@@ -611,7 +611,7 @@ namespace Supremacy.Combat
                 //bool targetIsEngage = _oppositionCombatShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Engage));
 
                 bool oppositionIsRushing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Rush));
-                bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation)); 
+                bool oppositionIsInFormation = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Formation));
                 bool oppositionIsHailing = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Hail));
                 bool oppositionIsRetreating = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Retreat));
                 bool oppositionIsRaidTransports = oppositionShips.Any(os => os.Item1.Source.IsCombatant && (GetCombatOrder(os.Item1.Source) == CombatOrder.Transports));
@@ -669,18 +669,18 @@ namespace Supremacy.Combat
 
                         //int[,] empiresInBattle; // An Array of who is in the battle.
                         //empiresInBattle = new int[12, 3]; // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
-                                                          // 12 Elements can hold 12 participating empires. 
-                                                          //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
-                                                          //empiresInBattle[0, 1] contains the Target1 of that empire (As CivID as well)
-                                                          //empiresInBattle[0, 2] contains the Target2 of that empire.
+                        // 12 Elements can hold 12 participating empires. 
+                        //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
+                        //empiresInBattle[0, 1] contains the Target1 of that empire (As CivID as well)
+                        //empiresInBattle[0, 2] contains the Target2 of that empire.
 
                         // Example:
-                        empiresInBattle[0, 0] = 0; // Last 0 equals Federation
-                        empiresInBattle[0, 1] = 2; // Last 2 equals Federation target Klingons
-                        empiresInBattle[0, 2] = 1; // 1 equals Federation target Terrans, too
-                        empiresInBattle[1, 0] = 1; // Last 1 Equals Terrans
-                        empiresInBattle[1, 1] = 999; // Terran target = noone
-                        empiresInBattle[1, 2] = 999; // Terran target Two = noone
+                        //empiresInBattle[0, 0] = 0; // Last 0 equals Federation
+                        //empiresInBattle[0, 1] = 2; // Last 2 equals Federation target Klingons
+                        //empiresInBattle[0, 2] = 1; // 1 equals Federation target Terrans, too
+                        //empiresInBattle[1, 0] = 1; // Last 1 Equals Terrans
+                        //empiresInBattle[1, 1] = 999; // Terran target = noone
+                        //empiresInBattle[1, 2] = 999; // Terran target Two = noone
 
 
 
@@ -689,19 +689,19 @@ namespace Supremacy.Combat
                         _combatShipsTemp = _combatShips; // filling with ALL participating ships
                         _combatShipsTemp.RandomElement(); // Randomize ALL ships
 
-                        // Docking Ken´s Disctonary to my Array. CivIDs needs to be transfered to an Array, becaus  you can loop arrays.
-                        empiresInBattle[0, 0] = Dictonary Element X
-            empiresInBattle[0, 1] = ...
-            empiresInBattle[0, 2] = ...
-            empiresInBattle[1, 0] = ...
-            empiresInBattle[1, 2] = ...
+                        //            // Docking Ken´s Disctonary to my Array. CivIDs needs to be transfered to an Array, becaus  you can loop arrays.
+                        //            empiresInBattle[0, 0] = Dictonary Element X
+                        //empiresInBattle[0, 1] = ...
+                        //empiresInBattle[0, 2] = ...
+                        //empiresInBattle[1, 0] = ...
+                        //empiresInBattle[1, 2] = ...
 
 
-          
-            int x = 0; // position x on the array determins the empire who is currently fireing. starting with index 0 (first player), [0,0] =which contains a civilization ID.
-                        int x2 = 0; // x2 is the 2nd index on the array which contains targed one (on position 1) and target two (on position 0). 
+
+                        int indexOfAttackerEmpires = 0; // position x on the array determins the empire who is currently fireing. starting with index 0 (first player), [0,0] =which contains a civilization ID.
+                                                        //int 0 = 0; // 0 is the 2nd index on the array which contains targed one (on position 1) and target two (on position 0). 
                         int TargetOneORTwo = 1; // starts with attacking firt target
-
+                        int shipFirepower = 0;
 
                         // loops from one empire attacking (and recieving return fire) to the next, until all ships have fired
                         while (true)
@@ -710,25 +710,22 @@ namespace Supremacy.Combat
                             if (TargetOneORTwo == 3) // if trying to attack target three (not available), target empire one again
                                 TargetOneORTwo = 1;
 
-                            int AttackingEmpire = empiresInBattle[x, x2];
-                            int targetedEmpire = empiresInBattle[x, x2 + TargetOneORTwo];
+                            int AttackingEmpireID = empiresInBattle[indexOfAttackerEmpires, 0];
+                            int targetedEmpireID = empiresInBattle[indexOfAttackerEmpires, 0 + TargetOneORTwo];
                             // Let Empire One (which is in empiresInBattle[0,0]) fire first
                             // Search for the next fitting ship, that is of the targeted empire AND has Hull > 0
-                            var AttackingShip = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpire,
-                            sc => sc.Item1.Hull > 0,
-                            sc => sc.Item1.Firepower > 0).Select(sc => sc).ToList(); // Also make it distinct
-                            int ScissorBonus = 0; // This adds a bonus e.g. if a destroyer is firing on a command ship
+                            var AttackingShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
+                            .Where(sc => sc.Item1.FirePower > 0).Select(sc => sc).ToList();
+                            var AttackingShip = AttackingShips.FirstOrDefault();// Also make it distinct
+
+                            double ScissorBonus = 0d; // This adds a bonus e.g. if a destroyer is firing on a command ship
                             int remainingFirepower = 0; // Counts if there is remaining firepower that would hit another ship, too.
-
-
-
-
-
 
                             while (true) // Attacking Ship looks for target(s)
                             {
-                                var currentTarget = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpire,
-                                        sc => sc.Item1.Hull > 0).Select(sc => sc).ToList(); // Also make it distinct
+                                var currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
+                                        .Where(sc => sc.Item1.HullStrength > 0).Select(sc => sc).ToList();
+                                var currentTarget = currentTargets.FirstOrDefault(); // Also make it distinct
 
 
                                 if (currentTarget == null)
@@ -742,33 +739,37 @@ namespace Supremacy.Combat
 
 
                                 // Hero Ship?
-                                if (AttackingShip.Name.Contains("!"))
+                                if (AttackingShip.Item1.Name.Contains("!"))
                                 {
                                     sourceAccuracy = 1.7; // change to 170% accuracy
                                 }
                                 // targed a Hero?                
-                                if (currentTarget.Name.Contains("!"))
+                                if (currentTarget.Item1.Name.Contains("!"))
                                 {
                                     targetDamageControl = 1;
                                 }
 
 
                                 // Determin ScissorBonus depending on both ship types
-                                if (AttackingShip.Item1.Type == "Destroyer" && currentTarget.Item1.Type == "Command"
-                                    || AttackingShip.Item1.Type == "Cruiser" && currentTarget.Item1.Type == "Destroyer"
-                                    || AttackingShip.Item1.Type == "Command" && currentTarget.Item1.Type == "Cruiser")
-                                    ScissorBonus = AttackingShip.TotalFirepower * 0.2; // 20 % Scissor Bonus
+                                if (AttackingShip.Item1.Source.OrbitalDesign.ShipType == "Destroyer" && currentTarget.Item1.Source.OrbitalDesign.ShipType == "Command"
+                                    || AttackingShip.Item1.Source.OrbitalDesign.ShipType == "Cruiser" && currentTarget.Item1.Source.OrbitalDesign.ShipType == "Destroyer"
+                                    || AttackingShip.Item1.Source.OrbitalDesign.ShipType == "Command" && currentTarget.Item1.Source.OrbitalDesign.ShipType == "Cruiser")
+                                    ScissorBonus = AttackingShip.Item1.Source.Firepower() * 0.2; // 20 % Scissor Bonus
 
                                 // later
 
                                 // Do we have more Weapons then target has shields? FirepowerRemains...
-                                if (currentTarget.Item1.Shields + currentTarget.Item1.Hull > AttackingShip.TotalFirepower + ScissorBonus)
-                                    remainingFirepower = AttackingShip.TotalFirepower + ScissorBonus - (currentTarget.Item1.Shields + currentTarget.Item1.Hull)
+                                if (currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength > AttackingShip.Item1.Source.Firepower() + Convert.ToInt32(ScissorBonus))
                                 {
-                                    remainingFirepower = -1; // no more targets nessecary, targed will already absorb the hit
+                                    remainingFirepower = -1;
+
+                                    foreach (var weapon in _combatShips[k].Item2.Where(w => w.CanFire))
+                                    {
+                                        weapon.Discharge();
+                                    }
 
                                 }
-
+                                else remainingFirepower = AttackingShip.Item1.Source.Firepower() + Convert.ToInt32(ScissorBonus) - (currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength);
 
                                 ///////////////////////////////////////////////////
                                 // Deal Damage (eihter here OR use PERFORM ATTACK)/
@@ -782,7 +783,7 @@ namespace Supremacy.Combat
                                 {
 
                                     // Fire Weapons, inflict damage
-                                    currentTarget.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
+                                    currentTarget.Item1.TakeDamage((int)(AttackingShip.Item1.Source.Firepower() * Convert.ToInt32(1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
 
                                     // Gamelog
                                     //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
@@ -822,11 +823,11 @@ namespace Supremacy.Combat
                                 // (copy when other loop is finished + adjust)
                             }
 
-                            x = x + 1; // The next Empire in the Array gets its shot in the next whileloop
-                                       // Once all empires have fired once, the first empire fires again
-                            if (empiresInBattle[x, 0] == 999)
+                            indexOfAttackerEmpires = indexOfAttackerEmpires + 1; // The next Empire in the Array gets its shot in the next whileloop
+                                                                                 // Once all empires have fired once, the first empire fires again
+                            if (empiresInBattle[indexOfAttackerEmpires, 0] == 999)
                             {
-                                x = 0;
+                                indexOfAttackerEmpires = 0;
                                 TargetOneORTwo = TargetOneORTwo + 1; // cycle to next targeted empire
                             }
                         }
@@ -839,7 +840,8 @@ namespace Supremacy.Combat
 
 
 
-                }
+                
+            
 
                     #region Older combat code
                     //    //var attackingShip = _combatShips[k].Item1;
@@ -1320,7 +1322,7 @@ namespace Supremacy.Combat
                     target.HullStrength
                     );
             }
-            weapon.Discharge();
+            //weapon.Discharge();
         }
         #endregion
 
@@ -1373,3 +1375,4 @@ namespace Supremacy.Combat
     }
 }
 
+#endregion
