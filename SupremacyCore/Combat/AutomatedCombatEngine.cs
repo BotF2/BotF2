@@ -27,8 +27,7 @@ namespace Supremacy.Combat
         private double excessShipsStartingAt;
         private double shipRatio = 1;
         private bool friendlyOwner = true;
-        // private object firstOwner;
-        // private int friendlyWeaponPower = 0;
+        private int[,] empiresInBattle;
         private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _targetDictionary;
         private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _shipListDictionary;
@@ -95,6 +94,7 @@ namespace Supremacy.Combat
             _friendlyCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _oppositionCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _defaultCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            empiresInBattle = new int[12,3];
         }
 
         protected override void ResolveCombatRoundCore()
@@ -324,6 +324,40 @@ namespace Supremacy.Combat
             }
             #endregion // populate target dictionary
 
+            #region populate the arrays
+
+            int[,] empiresInBattle; // An Array of who is in the battle.
+            empiresInBattle = new int[12, 3]; // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
+                                              // 12 Elements can hold 12 participating empires. 
+                                              //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
+                                              //empiresInBattle[0, 1] contains the Target1 of that empire (As CivID as well)
+                                              //empiresInBattle[0, 2] contains the Target2 of that empire.
+                                              // Re-Start Array with 999 everywhere
+            for (int i = 0; i < 11; i++)
+            {
+                for (int i2 = 0; i2 < 3; i2++)
+                {
+                    empiresInBattle[i, i2] = 999;
+                }
+            }
+
+            for (int q = 0; q < 12; q++)
+            {
+                foreach (int ownerID in ownerIDs)
+                {
+                    empiresInBattle[q, 0] = ownerID;
+                    foreach (var unitTuple in _combatShips)
+                    {
+                        if (unitTuple.Item1.OwnerID == ownerID)
+                        {
+                            empiresInBattle[q, 1] = GetTargetOne(unitTuple.Item1.Source).CivID;
+                            empiresInBattle[q, 2] = GetTargetTwo(unitTuple.Item1.Source).CivID;
+                        }
+                    }
+                }
+            }
+            #endregion
+
             foreach (var item in ownerIDs)
             {
                 GameLog.Core.Test.DebugFormat("ownerIDs contains = {0}", item);
@@ -366,102 +400,102 @@ namespace Supremacy.Combat
 
             #region Get CycleReduction values in ResolveCombatRoundCore()
 
-            double ratioATemp = 0.00; // used to transform ship.Count to double decimals
-            double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
+            //double ratioATemp = 0.00; // used to transform ship.Count to double decimals
+            //double ratioBTemp = 0.00; // used to transform ship.Count to double decimals
 
-            // Prevent division by 0, if one side has been wiped out / or retreated.
-            if (_oppositionCombatShips.ToList().Count == 0 || _friendlyCombatShips.Count == 0)
-            {
-                shipRatio = 1;
-                excessShipsStartingAt = 0;
-                weakerSide = 0; //0 = no bigger ships counts, 1 = First Friendly side bigger, 2 = Oppostion side bigger
-            }
-            else
-            {
-                if (_friendlyCombatShips.ToList().Count - _oppositionCombatShips.ToList().Count > 0)
-                {
-                    excessShipsStartingAt = _oppositionCombatShips.ToList().Count * 2;
-                    ratioATemp = _friendlyCombatShips.Count();
-                    ratioBTemp = _oppositionCombatShips.Count();
-                    shipRatio = ratioATemp / ratioBTemp;
-                    weakerSide = 1;
-                }
+            //// Prevent division by 0, if one side has been wiped out / or retreated.
+            //if (_oppositionCombatShips.ToList().Count == 0 || _friendlyCombatShips.Count == 0)
+            //{
+            //    shipRatio = 1;
+            //    excessShipsStartingAt = 0;
+            //    weakerSide = 0; //0 = no bigger ships counts, 1 = First Friendly side bigger, 2 = Oppostion side bigger
+            //}
+            //else
+            //{
+            //    if (_friendlyCombatShips.ToList().Count - _oppositionCombatShips.ToList().Count > 0)
+            //    {
+            //        excessShipsStartingAt = _oppositionCombatShips.ToList().Count * 2;
+            //        ratioATemp = _friendlyCombatShips.Count();
+            //        ratioBTemp = _oppositionCombatShips.Count();
+            //        shipRatio = ratioATemp / ratioBTemp;
+            //        weakerSide = 1;
+            //    }
 
-                else
-                {
-                    excessShipsStartingAt = _friendlyCombatShips.Count * 2;
-                    ratioATemp = _friendlyCombatShips.Count();
-                    ratioBTemp = _oppositionCombatShips.Count();
-                    shipRatio = ratioBTemp / ratioATemp;
-                    weakerSide = 2;
-                }
-            }
+            //    else
+            //    {
+            //        excessShipsStartingAt = _friendlyCombatShips.Count * 2;
+            //        ratioATemp = _friendlyCombatShips.Count();
+            //        ratioBTemp = _oppositionCombatShips.Count();
+            //        shipRatio = ratioBTemp / ratioATemp;
+            //        weakerSide = 2;
+            //    }
+            //}
 
-            if (_friendlyCombatShips.Count() == _oppositionCombatShips.Count())
-                weakerSide = 0;
-            if (shipRatio > 1.0)
-            {
-                newCycleReduction = 0.5;
-            }
+            //if (_friendlyCombatShips.Count() == _oppositionCombatShips.Count())
+            //    weakerSide = 0;
+            //if (shipRatio > 1.0)
+            //{
+            //    newCycleReduction = 0.5;
+            //}
 
-            if (shipRatio > 1.2)
-            {
-                newCycleReduction = 0.25;
-            }
-            if (shipRatio > 1.5)
-            {
-                newCycleReduction = 0.15;
-            }
-            if (shipRatio > 2.5)
-            {
-                newCycleReduction = 0.08;
-            }
-            if (shipRatio > 10)
-            {
-                newCycleReduction = 0.05;
-            }
-            if (_friendlyCombatShips.Count() < 4 || _oppositionCombatShips.Count() < 4) // small fleets attack each other at full power
-            {
-                newCycleReduction = 1;
-            }
+            //if (shipRatio > 1.2)
+            //{
+            //    newCycleReduction = 0.25;
+            //}
+            //if (shipRatio > 1.5)
+            //{
+            //    newCycleReduction = 0.15;
+            //}
+            //if (shipRatio > 2.5)
+            //{
+            //    newCycleReduction = 0.08;
+            //}
+            //if (shipRatio > 10)
+            //{
+            //    newCycleReduction = 0.05;
+            //}
+            //if (_friendlyCombatShips.Count() < 4 || _oppositionCombatShips.Count() < 4) // small fleets attack each other at full power
+            //{
+            //    newCycleReduction = 1;
+            //}
 
-            GameLog.Core.CombatDetails.DebugFormat("-------------  going into combat  -----------------------");
-            GameLog.Core.CombatDetails.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}",
-                newCycleReduction,
-                excessShipsStartingAt,
-                ratioATemp,
-                ratioBTemp,
-                shipRatio,
-                weakerSide);
-            #endregion CycleReduction caluation values
+            //GameLog.Core.CombatDetails.DebugFormat("-------------  going into combat  -----------------------");
+            //GameLog.Core.CombatDetails.DebugFormat("various values: newCycleReduction = {0}, excessShipsStartingAt = {1}, ratioATemp = {2}, ratioBTemp = {3},  shipRatio = {4}, weakerSide = {5}",
+            //    newCycleReduction,
+            //    excessShipsStartingAt,
+            //    ratioATemp,
+            //    ratioBTemp,
+            //    shipRatio,
+            //    weakerSide);
+            //#endregion CycleReduction caluation values
 
-            #region Sort combat units into temp file that alternating friend and opposition
+            //#region Sort combat units into temp file that alternating friend and opposition
            
-            for (int l = 0; l < _combatShips.Count; l++) // sorting combat Ships to have one ship of each side alternating
-            {
-                if (l <= _friendlyCombatShips.Count - 1)
-                    _combatShipsTemp.Add(_friendlyCombatShips[l]);// First Ship in _ is Friendly (initialization)
+            //for (int l = 0; l < _combatShips.Count; l++) // sorting combat Ships to have one ship of each side alternating
+            //{
+            //    if (l <= _friendlyCombatShips.Count - 1)
+            //        _combatShipsTemp.Add(_friendlyCombatShips[l]);// First Ship in _ is Friendly (initialization)
 
-                if (l <= _oppositionCombatShips.ToList().Count - 1)
-                    _combatShipsTemp.Add(_oppositionCombatShips.ToList()[l]); // Second Ship in _combatShipsTemp is opposition (initialization)   
-            }
+            //    if (l <= _oppositionCombatShips.ToList().Count - 1)
+            //        _combatShipsTemp.Add(_oppositionCombatShips.ToList()[l]); // Second Ship in _combatShipsTemp is opposition (initialization)   
+            //}
 
-            _combatShips.Clear(); //  after ships where sorted into Temp, delete orginal list
-                                  //  After that populate empty list with sorted temp list
-            for (int m = 0; m < _combatShipsTemp.Count; m++)
-            {
-                _combatShips.Add(_combatShipsTemp[m]);
-            }
-            _combatShipsTemp.Clear(); // Temp cleared for next runthrough
-            _combatShips.Randomize();
+            //_combatShips.Clear(); //  after ships where sorted into Temp, delete orginal list
+            //                      //  After that populate empty list with sorted temp list
+            //for (int m = 0; m < _combatShipsTemp.Count; m++)
+            //{
+            //    _combatShips.Add(_combatShipsTemp[m]);
+            //}
+            //_combatShipsTemp.Clear(); // Temp cleared for next runthrough
+            //_combatShips.Randomize();
 
-            // Stop using Temp, only use it to sort and then get rid of it
+            //// Stop using Temp, only use it to sort and then get rid of it
 
-            for (int j = 0; j < _combatShips.Count; j++) // 
-            {
-                GameLog.Core.CombatDetails.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
-                    _combatShips[j].Item1.Source.ObjectID, _combatShips[j].Item1.Source.Name, _combatShips[j].Item1.Source.Design, j);
-            }
+            //for (int j = 0; j < _combatShips.Count; j++) // 
+            //{
+            //    GameLog.Core.CombatDetails.DebugFormat("sorting Temp Ships {3} = {0} {1} ({2})",
+            //        _combatShips[j].Item1.Source.ObjectID, _combatShips[j].Item1.Source.Name, _combatShips[j].Item1.Source.Design, j);
+            //}
             #endregion
 
             #region now divide sides up for combat
@@ -615,133 +649,327 @@ namespace Supremacy.Combat
                     case CombatOrder.Transports:
                     case CombatOrder.Formation:
 
-                        //var attackingShip = _combatShips[k].Item1;
-                        var target = ChooseTarget(attackingShip); // CHOOSE TARGET
-                        if (order != CombatOrder.Formation && order != CombatOrder.Engage)// so maneuverable _combatShips[k] has order Rush or Transports target takes damage
+
+
+                        // Project multi: Overview
+
+                        // Description:
+                        // Initialize _combatShipsTemp with all _combatShips, initializing a variable with the current Firepower (total in the beginning)
+                        // Filling an array with the information about which empires participate and their targets. (maybe also include their combatOrder)
+                        // Ships fireing cycle though all the participating empires
+                        // Attacking ship fires all its weapons to a target ship (multiple ships if the attacker has enought weapons)
+                        // Then the other empire is immediatly fireing back, with up to the same amount of weapons (if possible) use multiple re-attacking ships, if you have to.
+                        // remember damage and the amount of weapons left.
+                        // Cycle though all the empires until all ships have fired. (maybe stopping it before that, so that some damaged ships remain). 
+                        // Also cycle though targets, e.g. if a empire targetes 2 empires, then fire at one empire in one round and at the next empire, the next round, alternating.
+
+
+                        // Project multi: Pseudo code (partly incomplete)
+
+
+                        //int[,] empiresInBattle; // An Array of who is in the battle.
+                        //empiresInBattle = new int[12, 3]; // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
+                                                          // 12 Elements can hold 12 participating empires. 
+                                                          //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
+                                                          //empiresInBattle[0, 1] contains the Target1 of that empire (As CivID as well)
+                                                          //empiresInBattle[0, 2] contains the Target2 of that empire.
+
+                        // Example:
+                        empiresInBattle[0, 0] = 0; // Last 0 equals Federation
+                        empiresInBattle[0, 1] = 2; // Last 2 equals Federation target Klingons
+                        empiresInBattle[0, 2] = 1; // 1 equals Federation target Terrans, too
+                        empiresInBattle[1, 0] = 1; // Last 1 Equals Terrans
+                        empiresInBattle[1, 1] = 999; // Terran target = noone
+                        empiresInBattle[1, 2] = 999; // Terran target Two = noone
+
+
+
+
+                        _combatShipsTemp.Clear(); // Initializing as nothing
+                        _combatShipsTemp = _combatShips; // filling with ALL participating ships
+                        _combatShipsTemp.RandomElement(); // Randomize ALL ships
+
+                        // Docking Ken´s Disctonary to my Array. CivIDs needs to be transfered to an Array, becaus  you can loop arrays.
+                        empiresInBattle[0, 0] = Dictonary Element X
+            empiresInBattle[0, 1] = ...
+            empiresInBattle[0, 2] = ...
+            empiresInBattle[1, 0] = ...
+            empiresInBattle[1, 2] = ...
+
+
+          
+            int x = 0; // position x on the array determins the empire who is currently fireing. starting with index 0 (first player), [0,0] =which contains a civilization ID.
+                        int x2 = 0; // x2 is the 2nd index on the array which contains targed one (on position 1) and target two (on position 0). 
+                        int TargetOneORTwo = 1; // starts with attacking firt target
+
+
+                        // loops from one empire attacking (and recieving return fire) to the next, until all ships have fired
+                        while (true)
                         {
-                            var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
-                            //target.TakeDamage((target.Source.OrbitalDesign.HullStrength +1) * (maneuver/32)+1); // max possible hull damage of 25%
 
-                            GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}",
-                                target.Source.ObjectID, target.Source.Name, target.Source.Design,
-                                target.Source.OrbitalDesign.HullStrength,
-                                (target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1,
-                                maneuver,
-                                attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.Design
-                                );
-                            target.TakeDamage((target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1); // INFLICT HULL DAMAGE, max possible hull damage of 25%
-                        }
-                        if (target == null)
-                        {
-                            GameLog.Core.Combat.DebugFormat("No target for {0} {1} ({2})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design);
-                        }
-                        if (target != null)
-                        {
-                            GameLog.Core.Combat.DebugFormat("Target for {0} {1} ({2}) is {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
+                            if (TargetOneORTwo == 3) // if trying to attack target three (not available), target empire one again
+                                TargetOneORTwo = 1;
 
-                            // If we rush or attack transports on a formation we could take damage
-                            //int chanceRushingFormation = RandomHelper.Random(100);
-                            if (oppositionIsInFormation && (order == CombatOrder.Rush || order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                            int AttackingEmpire = empiresInBattle[x, x2];
+                            int targetedEmpire = empiresInBattle[x, x2 + TargetOneORTwo];
+                            // Let Empire One (which is in empiresInBattle[0,0]) fire first
+                            // Search for the next fitting ship, that is of the targeted empire AND has Hull > 0
+                            var AttackingShip = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpire,
+                            sc => sc.Item1.Hull > 0,
+                            sc => sc.Item1.Firepower > 0).Select(sc => sc).ToList(); // Also make it distinct
+                            int ScissorBonus = 0; // This adds a bonus e.g. if a destroyer is firing on a command ship
+                            int remainingFirepower = 0; // Counts if there is remaining firepower that would hit another ship, too.
+
+
+
+
+
+
+                            while (true) // Attacking Ship looks for target(s)
                             {
-                                attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
+                                var currentTarget = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpire,
+                                        sc => sc.Item1.Hull > 0).Select(sc => sc).ToList(); // Also make it distinct
 
-                                GameLog.Core.Combat.DebugFormat("{0} {1} rushed or raid transports in formation and took {2} damage to hull ({3} hull left)",
-                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
-                            }
-                            if (oppositionIsEngage && (order == CombatOrder.Formation || order == CombatOrder.Rush) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
-                            {
-                                attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
 
-                                GameLog.Core.Combat.DebugFormat("{0} {1} in Formation or Rushing while Engaged and took {2} damage to hull ({3} hull left)",
-                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
-                            }
-                            if (oppositionIsRushing && (order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
-                            {
-                                attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+                                if (currentTarget == null)
+                                    continue;
 
-                                GameLog.Core.Combat.DebugFormat("{0} {1} Raiding Transports and got Rushed took {2} damage to hull ({3} hull left)",
-                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
-                            }
-                            if (oppositionIsRaidTransports && (order == CombatOrder.Engage) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
-                            {
-                                attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 6);  // 17 % down out of Hullstrength of TechObjectDatabase.xml
+                                // Calculate Bonus/Malus
+                                // Get Accuracy, Damage Control when fixed
+                                double sourceAccuracyTemp = 1; // used to determin whether or not it is a hit
+                                double sourceAccuracy = 1; // used to increase damage as well, if hero ship
+                                double targetDamageControl = 0.5;
 
-                                GameLog.Core.Combat.DebugFormat("{0} {1} Engag order got Raided and took {2} damage to hull ({3} hull left)",
-                                    attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
-                            }
 
-                            #endregion
-
-                            #region assimilation
-                            bool assimilationSuccessful = false;
-                            //If the attacker is Borg, try and assimilate before you try destroying it
-                            if (attackingShip.Owner.Name == "Borg" && target.Owner.Name != "Borg")
-                            {
-                                GameLog.Core.Combat.DebugFormat("{0} {1} attempting assimilation on {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
-                                int chanceToAssimilate = RandomHelper.Random(100);
-                                assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
-                            }
-
-                            //Perform the assimilation, but only on ships
-                            if (assimilationSuccessful && target.Source is Ship)
-                            {
-                                GameLog.Core.Combat.DebugFormat("{0} {1} successfully assimilated {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
-
-                                CombatAssets oppositionAssets = GetAssets(target.Owner);
-                                if (!ownerAssets.AssimilatedShips.Contains(target))
+                                // Hero Ship?
+                                if (AttackingShip.Name.Contains("!"))
                                 {
-                                    ownerAssets.AssimilatedShips.Add(target);
-                                    target.IsAssimilated = true;
+                                    sourceAccuracy = 1.7; // change to 170% accuracy
                                 }
-                                if (target.Source.IsCombatant)
+                                // targed a Hero?                
+                                if (currentTarget.Name.Contains("!"))
                                 {
-                                    oppositionAssets.CombatShips.Remove(target);
+                                    targetDamageControl = 1;
                                 }
+
+
+                                // Determin ScissorBonus depending on both ship types
+                                if (AttackingShip.Item1.Type == "Destroyer" && currentTarget.Item1.Type == "Command"
+                                    || AttackingShip.Item1.Type == "Cruiser" && currentTarget.Item1.Type == "Destroyer"
+                                    || AttackingShip.Item1.Type == "Command" && currentTarget.Item1.Type == "Cruiser")
+                                    ScissorBonus = AttackingShip.TotalFirepower * 0.2; // 20 % Scissor Bonus
+
+                                // later
+
+                                // Do we have more Weapons then target has shields? FirepowerRemains...
+                                if (currentTarget.Item1.Shields + currentTarget.Item1.Hull > AttackingShip.TotalFirepower + ScissorBonus)
+                                    remainingFirepower = AttackingShip.TotalFirepower + ScissorBonus - (currentTarget.Item1.Shields + currentTarget.Item1.Hull)
+                                {
+                                    remainingFirepower = -1; // no more targets nessecary, targed will already absorb the hit
+
+                                }
+
+
+                                ///////////////////////////////////////////////////
+                                // Deal Damage (eihter here OR use PERFORM ATTACK)/
+                                ///////////////////////////////////////////////////
+
+
+                                // If perform attack is used, send currentTarget + AttackingShip + its Weapons.
+                                // If dealing damage here, just fix the Weapons issue.
+                                // Weapon need to be filled the same way as it was in the code
+                                if (RandomHelper.Random(100) <= (100 * sourceAccuracyTemp))  // not every weapons does a hit
+                                {
+
+                                    // Fire Weapons, inflict damage
+                                    currentTarget.TakeDamage((int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10)); // minimal damage of 50 included
+
+                                    // Gamelog
+                                    //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) took damage {3} (cycleReduction = {4}, sourceAccuracy = {5}), DamageControl = {6}, Shields = {7}, Hull = {8}",
+                                    //    target.Source.ObjectID, target.Name, target.Source.Design,
+                                    //    (int)(weapon.MaxDamage.CurrentValue * (1.5 - targetDamageControl) * sourceAccuracy * cycleReduction * 2.5 + 10),
+                                    //    cycleReduction,
+                                    //    sourceAccuracy,
+                                    //    targetDamageControl,
+                                    //    target.ShieldStrength,
+                                    //    target.HullStrength
+                                    //    );
+                                }
+                                //weapon.Discharge(); needed yes or no?
+
+
+
+                                if (remainingFirepower == -1)
+                                {
+                                    // Set AttackingShips TotalWeapons to 0
+                                    break;
+                                }// break the while, we do not need more targets for this AttackingShip
                                 else
                                 {
-                                    oppositionAssets.NonCombatShips.Remove(target);
+                                    // set AttackingShips TotalWeapons to remainingFirepower. Loop again
                                 }
-                                #endregion
-                            }
-                            #region performAttack in order switch
-                            else // if not assmilated attack, perform attack fire weapons
+
+
+
+                            } // this while will fire on as many targets as nessecary to discharge attackingShips weapons fully
+
+
+                            // Now the attacked Empire returns fire, until same damage is dealed to attacking empire´s ship(s)
+                            while (true)
                             {
-                                //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
 
-
-                                var weapons = _combatShips[k].Item2.Where(w => w.CanFire);
-                                int amountOfWeapons = weapons.Count();
-                                //var partlyFiring = 0;
-
-
-                                foreach (var weapon in _combatShips[k].Item2.Where(w => w.CanFire))
-                                {
-                                    if (!target.IsDestroyed)  //&& !target.) // Bug?: do not target retreated ships
-                                    {
-                                        PerformAttack(attackingShip, target, weapon);
-                                    }
-                                }
-                                GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}",
-                                    attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design,
-                                    target.Source.ObjectID, target.Name, target.Source.Design,
-                                    amountOfWeapons);
-                                // all weapons fired for current ship k
-
+                                //... simular to attacking firing on taget,  now the target fires on (multiple) attackers of the empire that fired in the while before 
+                                // (copy when other loop is finished + adjust)
                             }
-                            #endregion
-                        }
 
-
-                        foreach (var combatShip in _combatShips)
-                        {
-                            if (combatShip.Item1.IsDestroyed)
+                            x = x + 1; // The next Empire in the Array gets its shot in the next whileloop
+                                       // Once all empires have fired once, the first empire fires again
+                            if (empiresInBattle[x, 0] == 999)
                             {
-                                ownerAssets.AssimilatedShips.Remove(target);
+                                x = 0;
+                                TargetOneORTwo = TargetOneORTwo + 1; // cycle to next targeted empire
                             }
                         }
 
-                        break;
-                    
+                        // NEXT EMPIRE
+                        // Once no more ships available, close loop
+                        // Update _combatShips to current _combatShipsTemp
+                        // Investigate how and where "friendlyships" etc. are used to display remaining ships fitting to the screen
+                        // FINISH BATTLE
+
+
+
+                }
+
+                    #region Older combat code
+                    //    //var attackingShip = _combatShips[k].Item1;
+                    //    var target = ChooseTarget(attackingShip); // CHOOSE TARGET
+                    //    if (order != CombatOrder.Formation && order != CombatOrder.Engage)// so maneuverable _combatShips[k] has order Rush or Transports target takes damage
+                    //    {
+                    //        var maneuver = attackingShip.Source.OrbitalDesign.Maneuverability;// ship maneuver values 1 to 8 (stations and OB = zero)
+                    //        //target.TakeDamage((target.Source.OrbitalDesign.HullStrength +1) * (maneuver/32)+1); // max possible hull damage of 25%
+
+                    //        GameLog.Core.Combat.DebugFormat("({2}) {0} {1}: new hull strength {3}, took damage {4} due to Maneuverability {5} from ({8}) {6} {7}",
+                    //            target.Source.ObjectID, target.Source.Name, target.Source.Design,
+                    //            target.Source.OrbitalDesign.HullStrength,
+                    //            (target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1,
+                    //            maneuver,
+                    //            attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.Design
+                    //            );
+                    //        target.TakeDamage((target.Source.OrbitalDesign.HullStrength + 1) * (maneuver / 32) + 1); // INFLICT HULL DAMAGE, max possible hull damage of 25%
+                    //    }
+                    //    if (target == null)
+                    //    {
+                    //        GameLog.Core.Combat.DebugFormat("No target for {0} {1} ({2})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design);
+                    //    }
+                    //    if (target != null)
+                    //    {
+                    //        GameLog.Core.Combat.DebugFormat("Target for {0} {1} ({2}) is {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
+
+                    //        // If we rush or attack transports on a formation we could take damage
+                    //        //int chanceRushingFormation = RandomHelper.Random(100);
+                    //        if (oppositionIsInFormation && (order == CombatOrder.Rush || order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                    //        {
+                    //            attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 4);  // 25 % down out of Hullstrength of TechObjectDatabase.xml
+
+                    //            GameLog.Core.Combat.DebugFormat("{0} {1} rushed or raid transports in formation and took {2} damage to hull ({3} hull left)",
+                    //                attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                    //        }
+                    //        if (oppositionIsEngage && (order == CombatOrder.Formation || order == CombatOrder.Rush) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                    //        {
+                    //            attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+
+                    //            GameLog.Core.Combat.DebugFormat("{0} {1} in Formation or Rushing while Engaged and took {2} damage to hull ({3} hull left)",
+                    //                attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                    //        }
+                    //        if (oppositionIsRushing && (order == CombatOrder.Transports) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                    //        {
+                    //            attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 5);  // 20 % down out of Hullstrength of TechObjectDatabase.xml
+
+                    //            GameLog.Core.Combat.DebugFormat("{0} {1} Raiding Transports and got Rushed took {2} damage to hull ({3} hull left)",
+                    //                attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                    //        }
+                    //        if (oppositionIsRaidTransports && (order == CombatOrder.Engage) && (chanceRushingFormation >= (int)((BaseChanceToRushFormation * 100))))
+                    //        {
+                    //            attackingShip.TakeDamage(attackingShip.Source.OrbitalDesign.HullStrength / 6);  // 17 % down out of Hullstrength of TechObjectDatabase.xml
+
+                    //            GameLog.Core.Combat.DebugFormat("{0} {1} Engag order got Raided and took {2} damage to hull ({3} hull left)",
+                    //                attackingShip.Source.ObjectID, attackingShip.Source.Name, attackingShip.Source.OrbitalDesign.HullStrength / 4, attackingShip.Source.HullStrength);
+                    //        }
+
+                    //        #endregion
+
+                    //        #region assimilation
+                    //        bool assimilationSuccessful = false;
+                    //        //If the attacker is Borg, try and assimilate before you try destroying it
+                    //        if (attackingShip.Owner.Name == "Borg" && target.Owner.Name != "Borg")
+                    //        {
+                    //            GameLog.Core.Combat.DebugFormat("{0} {1} attempting assimilation on {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
+                    //            int chanceToAssimilate = RandomHelper.Random(100);
+                    //            assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
+                    //        }
+
+                    //        //Perform the assimilation, but only on ships
+                    //        if (assimilationSuccessful && target.Source is Ship)
+                    //        {
+                    //            GameLog.Core.Combat.DebugFormat("{0} {1} successfully assimilated {2} {3}", attackingShip.Name, attackingShip.Source.ObjectID, target.Name, target.Source.ObjectID);
+
+                    //            CombatAssets oppositionAssets = GetAssets(target.Owner);
+                    //            if (!ownerAssets.AssimilatedShips.Contains(target))
+                    //            {
+                    //                ownerAssets.AssimilatedShips.Add(target);
+                    //                target.IsAssimilated = true;
+                    //            }
+                    //            if (target.Source.IsCombatant)
+                    //            {
+                    //                oppositionAssets.CombatShips.Remove(target);
+                    //            }
+                    //            else
+                    //            {
+                    //                oppositionAssets.NonCombatShips.Remove(target);
+                    //            }
+                    //            #endregion
+                    //        }
+                    //        #region performAttack in order switch
+                    //        else // if not assmilated attack, perform attack fire weapons
+                    //        {
+                    //            //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5})", attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design, target.Source.ObjectID, target.Name, target.Source.Design);
+
+
+                    //            var weapons = _combatShips[k].Item2.Where(w => w.CanFire);
+                    //            int amountOfWeapons = weapons.Count();
+                    //            //var partlyFiring = 0;
+
+
+                    //            foreach (var weapon in _combatShips[k].Item2.Where(w => w.CanFire))
+                    //            {
+                    //                if (!target.IsDestroyed)  //&& !target.) // Bug?: do not target retreated ships
+                    //                {
+                    //                    PerformAttack(attackingShip, target, weapon);
+                    //                }
+                    //            }
+                    //            GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) attacking {3} {4} ({5}), amountOfWeapons = {6}",
+                    //                attackingShip.Source.ObjectID, attackingShip.Name, attackingShip.Source.Design,
+                    //                target.Source.ObjectID, target.Name, target.Source.Design,
+                    //                amountOfWeapons);
+                    //            // all weapons fired for current ship k
+
+                    //        }
+                    //        #endregion
+                    //    }
+
+
+                    //    foreach (var combatShip in _combatShips)
+                    //    {
+                    //        if (combatShip.Item1.IsDestroyed)
+                    //        {
+                    //            ownerAssets.AssimilatedShips.Remove(target);
+                    //        }
+                    //    }
+
+                    //    break;
+                    #endregion
+
                     #region Retreat to break order switch
 
                     case CombatOrder.Retreat:

@@ -447,7 +447,7 @@ namespace Supremacy.Combat
         {
             Civilization _target = new Civilization();
             _target.ShortName = "DefaultHoldFireCiv";
-            _target.CivID = 9999;
+            _target.CivID = 999;
             
             return _target;
         }
