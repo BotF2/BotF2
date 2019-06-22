@@ -1421,15 +1421,13 @@ namespace Supremacy.WCF
                     return;
                 }
 
-                var _targetBorg = new Civilization();
-                foreach (var civ in GameContext.Current.Civilizations)
-                {
-                    if (civ.Key == "Borg")
-                        _targetBorg = civ;
-                }
+                Civilization _target = new Civilization();
+                _target.ShortName = "DefaultHoldFireCiv";
+                _target.CivID = 9999;
+
                 var blanketOrder = CombatOrder.Engage;
-                var blanketTargetOne = _targetBorg;
-                var blanketTargetTwo = _targetBorg;
+                var blanketTargetOne = _target;
+                var blanketTargetTwo = _target;
 
                 int countStation = 0;
                 if (enemyAssets.Station != null)
@@ -1438,9 +1436,10 @@ namespace Supremacy.WCF
                 GameLog.Core.Combat.DebugFormat("blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
-                SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder)); // Sending of the order
                 SendCombatTarget1(CombatHelper.GenerateBlanketTargetPrimary(ownerAssets, blanketTargetOne));
                 SendCombatTarget2(CombatHelper.GenerateBlanketTargetSecondary(ownerAssets, blanketTargetTwo));
+                SendCombatOrders(CombatHelper.GenerateBlanketOrders(ownerAssets, blanketOrder)); // Sending of the order
+
             }
 
 

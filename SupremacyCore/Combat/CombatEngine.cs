@@ -177,11 +177,17 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (_roundNumber > 1)
+                if (_allSidesStandDown)
+                {
                     return true;
-                else
-                    return false;
- 
+                }
+                return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal to one true/false
+
+                //if (_roundNumber > 1)
+                //    return true;
+                //else
+                //    return false;
+
                 //if (_allSidesStandDown)
                 //{
                 //    return true;
@@ -281,8 +287,6 @@ namespace Supremacy.Combat
             _combatId = GameContext.Current.GenerateID();
             _roundNumber = 1;
             _zeroFirePowers = 0;
-            //_friendlyAssets = new List<CombatAssets>();
-            //_hostileAssets = new List<CombatAssets>();
             _assets = assets;
             _updateCallback = updateCallback;
             _combatEndedCallback = combatEndedCallback;
@@ -433,6 +437,7 @@ namespace Supremacy.Combat
                 _targetTwoByCiv.Clear();
                 _targetOneByCiv.Clear();
                 _orders.Clear();
+
             }
 
             SendUpdates();
@@ -440,9 +445,9 @@ namespace Supremacy.Combat
             GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
             RemoveDefeatedPlayers();
 
-            Running = false;
             RunningTargetOne = false;
             RunningTargetTwo = false;
+            Running = false;
 
             if (IsCombatOver)
             {
@@ -598,7 +603,6 @@ namespace Supremacy.Combat
                 {
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);
-                    // if hostileAssets = 0 then don't show a combat window and send a "combatEnded"
                     break;
                 }
 

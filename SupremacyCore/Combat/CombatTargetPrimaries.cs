@@ -56,7 +56,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetOneCiv");
-            GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne.Name);
+            GameLog.Core.Test.DebugFormat("for SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne);
             _targetPrimaries[source.ObjectID] = targetOne;            
         }
 

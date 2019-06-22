@@ -702,7 +702,6 @@ namespace Supremacy.Game
                  //.Where(p => !p.IsCamouflaged).ToList();
             foreach (var fleet in fleetsAtLocation)
             {
-
                 //if (fleet.IsCamouflaged == false)
                 //{
                 //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4}, IsCloaked = {5}",
@@ -714,7 +713,6 @@ namespace Supremacy.Game
                 //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4} (TRUE??), IsCloaked = {5}",
                 //            fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
                 //}
-
 
                 //List<Fleet> _owners = new List<Fleet>();
                 //var Owners = _owners.Where(p => p.Owner != null).GroupBy(p => p.Owner).Select(g => g.FirstOrDefault()).ToList();
@@ -741,7 +739,7 @@ namespace Supremacy.Game
             foreach (var combat in combats)
             {
                 CombatReset.Reset();
-                GameLog.Core.Combat.DebugFormat("---- COMBAT OCCURED --------------------");
+                GameLog.Core.Combat.DebugFormat("---- COMBAT OCCURED GameEngine --------------------");
                 OnCombatOccurring(combat);
                 CombatReset.WaitOne();
             }
