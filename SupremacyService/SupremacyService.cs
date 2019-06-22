@@ -1423,7 +1423,7 @@ namespace Supremacy.WCF
 
                 Civilization _target = new Civilization();
                 _target.ShortName = "DefaultHoldFireCiv";
-                _target.CivID = 9999;
+                _target.CivID = 999;
 
                 var blanketOrder = CombatOrder.Engage;
                 var blanketTargetOne = _target;
