@@ -658,6 +658,7 @@ namespace Supremacy.Combat
 
                         _combatShipsTemp.Clear(); // Initializing as nothing
                         _combatShipsTemp = _combatShips; // filling with ALL participating ships
+                        if (_combatShipsTemp.Count() >0)
                         _combatShipsTemp.RandomElement(); // Randomize ALL ships
 
                         //            // Docking Ken´s Disctonary to my Array. CivIDs needs to be transfered to an Array, becaus  you can loop arrays.
@@ -707,16 +708,21 @@ namespace Supremacy.Combat
                             // Attacking Ship looks for target(s)
                             while (true) // Attacking Ship looks for target(s)
                             {
+                                var defenderOrder = CombatOrder.Retreat; // default order for now when 'target' is a dummy civilization
                                 var currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                                         .Where(sc => sc.Item1.HullStrength > 0).Select(sc => sc).ToList();
                                 var currentTarget = currentTargets.FirstOrDefault(); // Also make it distinct
                                                                                      
                                 //NEW123
                                 var attackerOrder = GetCombatOrder(AttackingShip.Item1.Source);
-                                var defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
+                                if (currentTargets.Count() != 0)
+                                {
+                                    defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
+                                }
+
                                 if ((_combatStation != null) && defenderOrder != CombatOrder.Formation) // Formation protects Starbase, otherwise ships are protected.
                                 {
-                                    if (Convert.ToInt32(_combatStation.Item1.Source.HullStrength) > 0)
+                                    if (_combatStation.Item1.Source.HullStrength.CurrentValue > 0) // is this how to get int our of HullStrength Meter?
                                     {
                                         currentTarget = _combatStation;
                                     }
