@@ -35,6 +35,7 @@ namespace Supremacy.Combat
         private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
         private List<Tuple<CombatUnit, CombatWeapon[]>> _defaultCombatShips;
+        private Dictionary<CombatUnit, int> _shipFirePower;
 
         public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> ShipListtDictionary // do we need this? just look in _combatShips by ownerID?
         {
@@ -697,9 +698,7 @@ namespace Supremacy.Combat
                             //END NEW123
 
                             double ScissorBonus = 0d; // This adds a bonus e.g. if a destroyer is firing on a command ship
-                            int remainingFirepower = 0; // Counts if there is remaining firepower that would hit another ship, too.
-
-
+                            int remainingFirepowerInWhile = 0; // Counts if there is remaining firepower that would hit another ship, too.
 
                             /// NEW123
                             
@@ -708,18 +707,22 @@ namespace Supremacy.Combat
                             // Attacking Ship looks for target(s)
                             while (true) // Attacking Ship looks for target(s)
                             {
-                                var defenderOrder = CombatOrder.Retreat; // default order for now when 'target' is a dummy civilization
+                                //var defenderOrder = CombatOrder.Retreat; // default order for now when 'target' is a dummy civilization
                                 var currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                                         .Where(sc => sc.Item1.HullStrength > 0).Select(sc => sc).ToList();
                                 var currentTarget = currentTargets.FirstOrDefault(); // Also make it distinct
-                                                                                     
+                                if (currentTarget == null)
+                                    if (_combatStation != null)
+                                        currentTarget = _combatStation;
+                                    else // VERY NEW
+                                        break; // VERY NEW
+                                else
+                                    break;
                                 //NEW123
                                 var attackerOrder = GetCombatOrder(AttackingShip.Item1.Source);
-                                if (currentTargets.Count() != 0)
-                                {
-                                    defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
-                                }
 
+                                var    defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
+                                
                                 if ((_combatStation != null) && defenderOrder != CombatOrder.Formation) // Formation protects Starbase, otherwise ships are protected.
                                 {
                                     if (_combatStation.Item1.Source.HullStrength.CurrentValue > 0) // is this how to get int our of HullStrength Meter?
@@ -728,16 +731,7 @@ namespace Supremacy.Combat
                                     }
                                 }
 
-
-                                if (currentTarget == null)
-                                    if (_combatStation != null)
-                                        currentTarget = _combatStation;
-                                else
-                                    break; 
-
                                 // END NEW123
-
-
 
                                 // Calculate Bonus/Malus
                                 // Get Accuracy, Damage Control when fixed
@@ -820,43 +814,39 @@ namespace Supremacy.Combat
 
                                 Convert.ToInt32(combatOrderBonusMalus);
 
-
-
                                 // Determin ScissorBonus depending on both ship types
-                                
-                                    if (
-                                        (AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
-                                        && currentTarget.Item1.Source.Design.Key.Contains("DESTROYER") || currentTarget.Item1.Source.Design.Key.Contains("FRIGATE"))
-                                        ||
-                                        (AttackingShip.Item1.Source.Design.Key.Contains("DESTROYER") && AttackingShip.Item1.Source.Design.Key.Contains("FRIGATE")
-                                        && currentTarget.Item1.Source.Design.Key.Contains("COMMAND") || currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP"))
-                                        ||
-                                        (AttackingShip.Item1.Source.Design.Key.Contains("COMMAND") || AttackingShip.Item1.Source.Design.Key.Contains("BATTLESHIP") || AttackingShip.Item1.Source.Design.Key.Contains("CUBE")
-                                        && currentTarget.Item1.Source.Design.Key.Contains("CRUISER") && !currentTarget.Item1.Source.Design.Key.Contains("STRIKE"))
-                                        ||
-                                        !currentTarget.Item1.Source.Design.Key.Contains("CRUISER")
-                                        && !currentTarget.Item1.Source.Design.Key.Contains("COMMAND")
-                                         && !currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP")
-                                          && !currentTarget.Item1.Source.Design.Key.Contains("DESTROYER")
-                                           && !currentTarget.Item1.Source.Design.Key.Contains("FRIGATE")
-                                            && !currentTarget.Item1.Source.Design.Key.Contains("CUBE")
-                                     
-                                        )
+
+                                if (
+                                    ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE"))
+                                    && (currentTarget.Item1.Source.Design.Key.Contains("DESTROYER") || currentTarget.Item1.Source.Design.Key.Contains("FRIGATE") || currentTarget.Item1.Source.Design.Key.Contains("PROBE"))
+                                    ||
+                                    ((AttackingShip.Item1.Source.Design.Key.Contains("DESTROYER") || AttackingShip.Item1.Source.Design.Key.Contains("FRIGATE") || AttackingShip.Item1.Source.Design.Key.Contains("PROBE"))
+                                    && (currentTarget.Item1.Source.Design.Key.Contains("COMMAND") || currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP") || currentTarget.Item1.Source.Design.Key.Contains("CUBE")))
+                                    ||
+                                    ((AttackingShip.Item1.Source.Design.Key.Contains("COMMAND") || AttackingShip.Item1.Source.Design.Key.Contains("BATTLESHIP") || AttackingShip.Item1.Source.Design.Key.Contains("CUBE"))
+                                    && (currentTarget.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !currentTarget.Item1.Source.Design.Key.Contains("STRIKE"))
+                                    ||
+                                    (!currentTarget.Item1.Source.Design.Key.Contains("CRUISER")
+                                    && !currentTarget.Item1.Source.Design.Key.Contains("COMMAND")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("DESTROYER")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("FRIGATE")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("CUBE")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("SPHERE")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("PROBE")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("DIAMOND"))
+                                                                       )
                                     ScissorBonus = AttackingShip.Item1.Source.Firepower() * 0.2; // 20 % Scissor Bonus
-
-                            
-
-                                
+                                                          
                                 // Do we have more Weapons then target has shields? FirepowerRemains... /// NEW123 added combatOrderBonusMallus and other changes // Maneuverability 8 = 33% more shields. 1 = 4% more shields
                                 int check = currentTarget.Item1.Source.GetManeuverablility(); // allows to check if maneuverability is gotten correctly
                                 if (additionalRun)
                                 {
                                     if ((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24) / 100) >
-                                    remainingFirepower) // if remainingFirepower is absorbed by targets Hull/shields/Maneuverability, set it to -1 and discharge weapons.
+                                    remainingFirepowerInWhile) // if remainingFirepower is absorbed by targets Hull/shields/Maneuverability, set it to -1 and discharge weapons.
                                     {
 
-
-                                        remainingFirepower = -1;
+                                        remainingFirepowerInWhile = -1;
 
                                         foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire))
                                         {
@@ -864,18 +854,16 @@ namespace Supremacy.Combat
                                         }
 
                                     }
-                                    else remainingFirepower = remainingFirepower
+                                    else remainingFirepowerInWhile = remainingFirepowerInWhile
                                             - Convert.ToInt32((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24)) / 100);
                                     // Otherwise we still have remainingFirepower
 
                                 }
-
-                                
-
+                             
                                 if ((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24) /100) > 
                                     AttackingShip.Item1.Source.Firepower() * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus))
                                 {
-                                    remainingFirepower = -1;
+                                    remainingFirepowerInWhile = -1;
 
                                     foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire))
                                     {
@@ -883,7 +871,7 @@ namespace Supremacy.Combat
                                     }
 
                                 }
-                                else remainingFirepower = Convert.ToInt32(AttackingShip.Item1.Source.Firepower() * sourceAccuracy) + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus) 
+                                else remainingFirepowerInWhile = Convert.ToInt32(AttackingShip.Item1.Source.Firepower() * sourceAccuracy) + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus) 
                                         - (currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength);
 
 
@@ -891,7 +879,7 @@ namespace Supremacy.Combat
                                 // Fire Weapons, inflict damage. Either with all calculated bonus/malus. Or if this was done last turn, use remainingFirepower (if any)
                                 if (additionalRun)
                                 {
-                                    currentTarget.Item1.TakeDamage((int)(remainingFirepower));
+                                    currentTarget.Item1.TakeDamage((int)(remainingFirepowerInWhile));
                                 }
                                 else
                                 {
@@ -912,8 +900,7 @@ namespace Supremacy.Combat
                                 ////weapon.Discharge(); needed yes or no?
                                 //END NEW123
 
-
-                                if (remainingFirepower == -1)
+                                if (remainingFirepowerInWhile == -1)
                                 {
                                     // Set AttackingShips TotalWeapons to 0
                                     //NEW123
@@ -931,10 +918,7 @@ namespace Supremacy.Combat
 
                             } // this while will fire on as many targets as nessecary to discharge attackingShips weapons fully
 
-                           
-
-
-
+                        
 
                             // NEW123 the entire next While is NEW and copied from the privious WHILE
                             
@@ -942,7 +926,7 @@ namespace Supremacy.Combat
                             // Re-Initilazing start Variables
                             additionalRun = false;
                             ScissorBonus = 0D;
-                            remainingFirepower = 0;
+                            remainingFirepowerInWhile = 0;
                             targetedEmpireID  = empiresInBattle[indexOfAttackerEmpires, 0]; // Switch sides. targededEmpire becomes Attacker and vice versa
                             AttackingEmpireID = empiresInBattle[indexOfAttackerEmpires, 0 + TargetOneORTwo];
                              AttackingShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
@@ -962,27 +946,22 @@ namespace Supremacy.Combat
                                             .Where(sc => sc.Item1.HullStrength > 0).Select(sc => sc).ToList();
                                 var currentTarget = currentTargets.FirstOrDefault(); // Also make it distinct
 
-                                
+                                if (currentTarget == null)
+                                    if (_combatStation != null)
+                                        currentTarget = _combatStation;
+                                    else // VERY NEW
+                                        break; // VERY NEW
+                                else
+                                    break;
                                 var attackerOrder = GetCombatOrder(AttackingShip.Item1.Source);
                                 var defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
                                 if ((_combatStation != null) && defenderOrder != CombatOrder.Formation) // Formation protects Starbase, otherwise ships are protected.
                                 {
-                                    if (Convert.ToInt32(_combatStation.Item1.Source.HullStrength) > 0)
+                                    if (_combatStation.Item1.Source.HullStrength.CurrentValue > 0)
                                     {
                                         currentTarget = _combatStation;
                                     }
                                 }
-
-
-                                if (currentTarget == null)
-                                    if (_combatStation != null)
-                                        currentTarget = _combatStation;
-                                    else
-                                        break;
-
-                              
-
-
 
                                 // Calculate Bonus/Malus
                                 // Get Accuracy, Damage Control when fixed
@@ -1009,10 +988,7 @@ namespace Supremacy.Combat
                                 {
                                     targetDamageControl = 1;
                                 }
-
-
-                                
-
+                            
                                 double combatOrderBonusMalus = 0;
                                 // Engage
                                 if (attackerOrder == CombatOrder.Engage && (defenderOrder == CombatOrder.Rush || defenderOrder == CombatOrder.Formation))
@@ -1065,28 +1041,28 @@ namespace Supremacy.Combat
 
                                 Convert.ToInt32(combatOrderBonusMalus);
 
-
-
                                 // Determin ScissorBonus depending on both ship types
 
                                 if (
-                                    (AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
-                                    && currentTarget.Item1.Source.Design.Key.Contains("DESTROYER") || currentTarget.Item1.Source.Design.Key.Contains("FRIGATE"))
+                                    ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE"))
+                                    && (currentTarget.Item1.Source.Design.Key.Contains("DESTROYER") || currentTarget.Item1.Source.Design.Key.Contains("FRIGATE") || currentTarget.Item1.Source.Design.Key.Contains("PROBE"))
                                     ||
-                                    (AttackingShip.Item1.Source.Design.Key.Contains("DESTROYER") && AttackingShip.Item1.Source.Design.Key.Contains("FRIGATE")
-                                    && currentTarget.Item1.Source.Design.Key.Contains("COMMAND") || currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP"))
+                                    ((AttackingShip.Item1.Source.Design.Key.Contains("DESTROYER") || AttackingShip.Item1.Source.Design.Key.Contains("FRIGATE") || AttackingShip.Item1.Source.Design.Key.Contains("PROBE"))
+                                    && (currentTarget.Item1.Source.Design.Key.Contains("COMMAND") || currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP") || currentTarget.Item1.Source.Design.Key.Contains("CUBE")))
                                     ||
-                                    (AttackingShip.Item1.Source.Design.Key.Contains("COMMAND") || AttackingShip.Item1.Source.Design.Key.Contains("BATTLESHIP") || AttackingShip.Item1.Source.Design.Key.Contains("CUBE")
-                                    && currentTarget.Item1.Source.Design.Key.Contains("CRUISER") && !currentTarget.Item1.Source.Design.Key.Contains("STRIKE"))
+                                    ((AttackingShip.Item1.Source.Design.Key.Contains("COMMAND") || AttackingShip.Item1.Source.Design.Key.Contains("BATTLESHIP") || AttackingShip.Item1.Source.Design.Key.Contains("CUBE"))
+                                    && (currentTarget.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !currentTarget.Item1.Source.Design.Key.Contains("STRIKE"))
                                     ||
-                                    !currentTarget.Item1.Source.Design.Key.Contains("CRUISER")
+                                    (!currentTarget.Item1.Source.Design.Key.Contains("CRUISER")
                                     && !currentTarget.Item1.Source.Design.Key.Contains("COMMAND")
-                                     && !currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP")
-                                      && !currentTarget.Item1.Source.Design.Key.Contains("DESTROYER")
-                                       && !currentTarget.Item1.Source.Design.Key.Contains("FRIGATE")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("DESTROYER")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("FRIGATE")
                                         && !currentTarget.Item1.Source.Design.Key.Contains("CUBE")
-
-                                    )
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("SPHERE")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("PROBE")
+                                        && !currentTarget.Item1.Source.Design.Key.Contains("DIAMOND"))
+                                                                        )
                                     ScissorBonus = AttackingShip.Item1.Source.Firepower() * 0.2; // 20 % Scissor Bonus
 
 
@@ -1097,11 +1073,11 @@ namespace Supremacy.Combat
                                 if (additionalRun)
                                 {
                                     if ((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24) / 100) >
-                                    remainingFirepower) // if remainingFirepower is absorbed by targets Hull/shields/Maneuverability, set it to -1 and discharge weapons.
+                                    remainingFirepowerInWhile) // if remainingFirepower is absorbed by targets Hull/shields/Maneuverability, set it to -1 and discharge weapons.
                                     {
 
 
-                                        remainingFirepower = -1;
+                                        remainingFirepowerInWhile = -1;
 
                                         foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire))
                                         {
@@ -1109,7 +1085,7 @@ namespace Supremacy.Combat
                                         }
 
                                     }
-                                    else remainingFirepower = remainingFirepower
+                                    else remainingFirepowerInWhile = remainingFirepowerInWhile
                                             - Convert.ToInt32((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24)) / 100);
                                     // Otherwise we still have remainingFirepower
 
@@ -1120,7 +1096,7 @@ namespace Supremacy.Combat
                                 if ((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24) / 100) >
                                     AttackingShip.Item1.Source.Firepower() * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus))
                                 {
-                                    remainingFirepower = -1;
+                                    remainingFirepowerInWhile = -1;
 
                                     foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire))
                                     {
@@ -1128,7 +1104,7 @@ namespace Supremacy.Combat
                                     }
 
                                 }
-                                else remainingFirepower = Convert.ToInt32(AttackingShip.Item1.Source.Firepower() * sourceAccuracy) + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
+                                else remainingFirepowerInWhile = Convert.ToInt32(AttackingShip.Item1.Source.Firepower() * sourceAccuracy) + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
                                         - (currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength);
 
 
@@ -1136,7 +1112,7 @@ namespace Supremacy.Combat
                                 // Fire Weapons, inflict damage. Either with all calculated bonus/malus. Or if this was done last turn, use remainingFirepower (if any)
                                 if (additionalRun)
                                 {
-                                    currentTarget.Item1.TakeDamage((int)(remainingFirepower));
+                                    currentTarget.Item1.TakeDamage((int)(remainingFirepowerInWhile));
                                 }
                                 else
                                 {
@@ -1158,7 +1134,7 @@ namespace Supremacy.Combat
                                 
 
 
-                                if (remainingFirepower == -1)
+                                if (remainingFirepowerInWhile == -1)
                                 {
                                     // Set AttackingShips TotalWeapons to 0
                                   
