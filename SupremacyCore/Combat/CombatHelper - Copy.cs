@@ -447,11 +447,10 @@ namespace Supremacy.Combat
         {
             Civilization _target = new Civilization();
             _target.ShortName = "DefaultHoldFireCiv";
-            _target.CivID = 777; // Where is that 777 used? In Supremacry Services there is the real 777
+            _target.CivID = 999;
             
             return _target;
         }
 
     }
 }
-
