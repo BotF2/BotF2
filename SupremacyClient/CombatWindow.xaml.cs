@@ -45,7 +45,7 @@ namespace Supremacy.Client
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
         private CombatAssets _otherAssets;
-      //  private bool _targetSelected = false;
+        private bool _targetTransports = false;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
         private Civilization _onlyFireIfFiredAppone;
@@ -185,12 +185,12 @@ namespace Supremacy.Client
             //We need combat assets to be able to rush the opposition
             RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
             //There needs to be transports in the opposition to be able to target them
-            TransportsButton.IsEnabled = (_update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))) ||
-                (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))); // klingon transports are combat ships
+            TransportsButton.IsEnabled = false;// (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
+               // || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))));
             //We need at least 3 ships to create a formation
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat
-            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0) || (fa.Station != null));
+            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0));
             //Can hail
             HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null)); //(update.RoundNumber == 1);
 
@@ -388,6 +388,14 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
+            if (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
+                || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))))
+            {
+                TransportsButton.IsEnabled = true;
+            }
+            else TransportsButton.IsEnabled = false;
+
+            GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
             GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
 
         }
@@ -408,6 +416,13 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
+            // are there transports in the target civilization's fleet?
+            //if (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport" && ncs.Owner == _theTargeted2Civ))
+            //    || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport" && ncs.Owner == _theTargeted2Civ)))
+            //{
+            //    _targetTransports = true;
+            //}
+            //else _targetTransports = false;
 
             GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }
