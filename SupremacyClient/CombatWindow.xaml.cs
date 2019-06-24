@@ -416,14 +416,12 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            // are there transports in the target civilization's fleet?
-            //if (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport" && ncs.Owner == _theTargeted2Civ))
-            //    || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport" && ncs.Owner == _theTargeted2Civ)))
-            //{
-            //    _targetTransports = true;
-            //}
-            //else _targetTransports = false;
-
+            if (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
+               || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))))
+            {
+                TransportsButton.IsEnabled = true;
+            }
+            else TransportsButton.IsEnabled = false;
             GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }
 
