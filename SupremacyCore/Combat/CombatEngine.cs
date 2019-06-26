@@ -26,9 +26,9 @@ namespace Supremacy.Combat
 
         private bool _battleInOwnTerritory;
         private int _totalFirepower; // looks like _empireStrenths dictionary below
-        private double _favorTheBoldMalus;
-        private int _fleetAsCommandshipBonus;
-        private bool _has20PlusPercentFastAttack;
+        //private double _favorTheBoldMalus;
+        //private int _fleetAsCommandshipBonus;
+        //private bool _has20PlusPercentFastAttack;
 
         public readonly object SyncLock;
         public readonly object SyncLockTargetOnes;
@@ -76,23 +76,23 @@ namespace Supremacy.Combat
             }
         }
 
-        public double FavorTheBoldMalus
-        {
-            get { return _favorTheBoldMalus; }
-            set { _favorTheBoldMalus = value; }
-        }
+        //public double FavorTheBoldMalus
+        //{
+        //    get { return _favorTheBoldMalus; }
+        //    set { _favorTheBoldMalus = value; }
+        //}
 
-        public int FleetAsCommandshipBonus
-        {
-            get { return _fleetAsCommandshipBonus; }
-            set { _fleetAsCommandshipBonus = value; }
-        }
+        //public int FleetAsCommandshipBonus
+        //{
+        //    get { return _fleetAsCommandshipBonus; }
+        //    set { _fleetAsCommandshipBonus = value; }
+        //}
 
-        public bool Has20PlusPercentFastAttack
-        {
-            get { return _has20PlusPercentFastAttack; }
-            set { _has20PlusPercentFastAttack = value; }
-        }
+        //public bool Has20PlusPercentFastAttack
+        //{
+        //    get { return _has20PlusPercentFastAttack; }
+        //    set { _has20PlusPercentFastAttack = value; }
+        //}
 
         public Dictionary<string, int> EmpireStrengths
         {

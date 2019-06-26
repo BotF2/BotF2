@@ -67,21 +67,41 @@ namespace Supremacy.Combat
 
                     foreach (var cs in fa.CombatShips)   // only combat ships 
                     {
-                        _friendlyEmpireStrength += cs.FirePower;
-
-                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        _friendlyEmpireStrength =    Convert.ToInt32(
+                                Convert.ToDouble(_friendlyEmpireStrength + cs.FirePower)
+                                + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
+                                * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+                                );
+           
+                       GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
                             cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _friendlyEmpireStrength);
+                    }
+
+                    // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
+                    foreach (var ncs in fa.NonCombatShips)   // only NonCombat ships 
+                    {
+                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        _friendlyEmpireStrength =   Convert.ToInt32(
+                                Convert.ToDouble(_friendlyEmpireStrength + ncs.FirePower)
+                                + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
+                                * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+                                );
                     }
 
                     if (fa.Station != null)
                     {
-                        _friendlyEmpireStrength += fa.Station.FirePower;
+                        
+                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        _friendlyEmpireStrength =     Convert.ToInt32(
+                                Convert.ToDouble(_friendlyEmpireStrength + fa.Station.FirePower)
+                                + Convert.ToDouble(fa.Station.ShieldStrength + fa.Station.HullStrength)
+                                );
 
                         GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
                             fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
                     }
                 }
-
                 return _friendlyEmpireStrength;
             }
         }
@@ -95,7 +115,13 @@ namespace Supremacy.Combat
 
                     foreach (var cs in ha.CombatShips)   // only combat ships 
                     {
-                        _allHostileEmpireStrength += cs.FirePower;
+                       // _allHostileEmpireStrength += cs.FirePower;
+                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        _allHostileEmpireStrength =   Convert.ToInt32(
+                                Convert.ToDouble(_allHostileEmpireStrength + cs.FirePower)
+                                + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
+                                * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+                                );
 
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
                         //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
@@ -103,11 +129,21 @@ namespace Supremacy.Combat
 
                     foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
                     {
-                        _allHostileEmpireStrength += ncs.FirePower;
+                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        _allHostileEmpireStrength =   Convert.ToInt32(
+                                Convert.ToDouble(_allHostileEmpireStrength + ncs.FirePower)
+                                + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
+                                * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+                                );
                     }
                     if (ha.Station != null)
                     {
-                        _allHostileEmpireStrength += ha.Station.FirePower;
+                        // Update X 25 june 2019 Total Strenght instead of just Firepower
+                        //_allHostileEmpireStrength += ha.Station.FirePower;
+                        _allHostileEmpireStrength =  Convert.ToInt32(
+                                Convert.ToDouble(_allHostileEmpireStrength + ha.Station.FirePower)
+                                + Convert.ToDouble(ha.Station.ShieldStrength + ha.Station.HullStrength)
+                                );
 
                         //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0}  - in total now {1}",
                         //    ha.Station.Name, _hostileEmpireStrength); 
@@ -377,7 +413,10 @@ namespace Supremacy.Combat
                     {
                         if (civShortName == cs.Owner.ShortName)
                         {
-                            otherCivStrength += cs.FirePower;
+                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.FirePower))
+                                + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength))
+                                * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
                         }
                     }
@@ -385,14 +424,18 @@ namespace Supremacy.Combat
                     {
                         if (civShortName == ncs.Owner.ShortName)
                         {
-                            otherCivStrength += ncs.FirePower;
+                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.FirePower))
+                                + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
+                                * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
                         }
                     }
 
                     if (ha.Station != null)  //  station
                     {
-                        otherCivStrength += ha.Station.FirePower;
+                        // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+                        otherCivStrength = otherCivStrength + ha.Station.FirePower + ha.Station.HullStrength + ha.Station.ShieldStrength;
                         _otherAssetsLocal.Remove(ha);
                     }
                 }
@@ -449,7 +492,10 @@ namespace Supremacy.Combat
                     {
                         if (civShortName == cs.Owner.ShortName)
                         {
-                            otherCivStrength += cs.FirePower;
+                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.FirePower)) 
+                                + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength)) 
+                                * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
                         }
                     }
@@ -457,18 +503,22 @@ namespace Supremacy.Combat
                     {
                         if (civShortName == ncs.Owner.ShortName)
                         {
-                            otherCivStrength += ncs.FirePower;
+                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.FirePower))
+                                + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
+                                * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
                         }
                     }
 
                     if (ha.Station != null)  //  station
                     {
-                        otherCivStrength += ha.Station.FirePower;
+                        // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+                        otherCivStrength = otherCivStrength + ha.Station.FirePower + ha.Station.HullStrength + ha.Station.ShieldStrength;
                         _otherAssetsLocal.Remove(ha);
                     }
                 }
-                GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
+                GameLog.Core.CombatDetails.DebugFormat("A civilization with CombatPower: {0}", otherCivStrength);
                 return otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
             }
             else { return null; }
@@ -588,3 +638,4 @@ namespace Supremacy.Combat
         }
     }
 }
+
