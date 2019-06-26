@@ -304,7 +304,7 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this targets
             {
-                if (target.CivID == -1)
+                if (target.CivID == -1 || target == null)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
                 }
@@ -346,7 +346,7 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
             {
-                if (target.CivID == -1)
+                if (target.CivID == -1 || target != null)
                     targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
                 GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetSecondary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
@@ -448,7 +448,8 @@ namespace Supremacy.Combat
             Civilization _target = new Civilization();
             _target.ShortName = "DefaultHoldFireCiv";
             _target.CivID = 777; // Where is that 777 used? In Supremacry Services there is the real 777
-            
+            _target.Key = "DefaultHoldFireCiv";
+
             return _target;
         }
 

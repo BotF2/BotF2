@@ -19,54 +19,54 @@ namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
     {
-        private double cycleReduction = 1d;
-        private double newCycleReduction = 1d;
-        private double excessShipsStartingAt;
-        private double shipRatio = 1;
-        private bool friendlyOwner = true;
+        //private double cycleReduction = 1d;
+        //private double newCycleReduction = 1d;
+        //private double excessShipsStartingAt;
+        //private double shipRatio = 1;
+        //private bool friendlyOwner = true;
         private int[,] empiresInBattle;
-        private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
-        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _targetDictionary;
-        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _shipListDictionary;
-        private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _willFightAlongSide;
-        private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
-        private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
-        private List<Tuple<CombatUnit, CombatWeapon[]>> _defaultCombatShips;
-        private Dictionary<CombatUnit, int> _shipFirePower;
-        public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> ShipListtDictionary // do we need this? just look in _combatShips by ownerID?
-        {
-            get
-            {
-                return _shipListDictionary;
-            }
-            set
-            {
-                this._shipListDictionary = value;
-            }
-        }
+       // private int weakerSide = 0; // 0= no bigger ships counts, 1= First Friendly side bigger, 2= Oppostion side bigger
+        //private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _targetDictionary;
+        //private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _shipListDictionary;
+        //private Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> _willFightAlongSide;
+        //private List<Tuple<CombatUnit, CombatWeapon[]>> _friendlyCombatShips;
+        //private List<Tuple<CombatUnit, CombatWeapon[]>> _oppositionCombatShips;
+        //private List<Tuple<CombatUnit, CombatWeapon[]>> _defaultCombatShips;
+        //private Dictionary<CombatUnit, int> _shipFirePower;
+        //public Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>> ShipListtDictionary // do we need this? just look in _combatShips by ownerID?
+        //{
+        //    get
+        //    {
+        //        return _shipListDictionary;
+        //    }
+        //    set
+        //    {
+        //        this._shipListDictionary = value;
+        //    }
+        //}
         public AutomatedCombatEngine(
             List<CombatAssets> assets,
             SendCombatUpdateCallback updateCallback,
             NotifyCombatEndedCallback combatEndedCallback)
             : base(assets, updateCallback, combatEndedCallback)
         {
-            _targetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            _shipListDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            _willFightAlongSide = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            _friendlyCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            _oppositionCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            _defaultCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            //_targetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            //_shipListDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            //_willFightAlongSide = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            //_friendlyCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            //_oppositionCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            //_defaultCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             empiresInBattle = new int[12, 3];
         }
         protected override void ResolveCombatRoundCore()
         {
             // Setting variables to standard (initilization) of these fields
-            shipRatio = 1;
-            excessShipsStartingAt = 0;
-            weakerSide = 0;
-            cycleReduction = 1;
-            newCycleReduction = 1;
-            int maxScanStrengthOpposition = 0;
+            //shipRatio = 1;
+            //excessShipsStartingAt = 0;
+            //weakerSide = 0;
+            //cycleReduction = 1;
+            //newCycleReduction = 1;
+            //int maxScanStrengthOpposition = 0;
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
@@ -123,39 +123,44 @@ namespace Supremacy.Combat
             }
             _combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             _combatShipsTemp.Clear();
-            _targetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>(); // now a dictoinary and not a list
-            _targetDictionary.Clear();
-            ShipListtDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
-            ShipListtDictionary.Clear();
-            // get owner ids for the ships in this sector (ownerIDs)
             List<int> ownerIDs = new List<int>();
             foreach (var tupleShip in _combatShips)
             {
                 ownerIDs.Add(tupleShip.Item1.OwnerID);
-                _targetDictionary[tupleShip.Item1.OwnerID] = _defaultCombatShips;
+                //_targetDictionary[tupleShip.Item1.OwnerID] = _defaultCombatShips;
             }
             ownerIDs.Distinct().ToList();
+            #region setup dictionaries
+            //_targetDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>(); // now a dictoinary and not a list
+            //_targetDictionary.Clear();
+            //ShipListtDictionary = new Dictionary<int, List<Tuple<CombatUnit, CombatWeapon[]>>>();
+            //ShipListtDictionary.Clear();
+            // get owner ids for the ships in this sector (ownerIDs)
+
             //var CivOne = ownerIDs.First();
             //GameLog.Core.CombatDetails.DebugFormat("CivOne = {0}", CivOne);
             // populate dictionary of ships in a lists for each owner, The key is owner id (_shipListDictionary)
-            foreach (var ownerID in ownerIDs)
-            {
-                var listOfShipsByOwnerID = _combatShips.Where(sc => sc.Item1.OwnerID == ownerID).Select(sc => sc).ToList();
-                _shipListDictionary[ownerID] = listOfShipsByOwnerID;
-            }
-            // populate dictionary of will fight alongside ships in a list for each owner
-            for (int t = 0; t < _combatShips.Count(); t++)
-            {
-                //var ownerAssets = GetAssets(_combatShips[t].Item1.Owner);
-                _willFightAlongSide[_combatShips[t].Item1.OwnerID] = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[t].Item1.Owner, cs.Item1.Owner))
-                    .Select(cs => cs)
-                    .ToList();
-                _willFightAlongSide.Distinct().ToList();
-            }
-            List<int> _unitTupleIDList = new List<int>();
-            List<int> _attackerIDList = new List<int>();
-            List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>(); // list of target tuples
-            List<Tuple<CombatUnit, CombatWeapon[]>> returnFireTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            //foreach (var ownerID in ownerIDs)
+            //{
+            //    var listOfShipsByOwnerID = _combatShips.Where(sc => sc.Item1.OwnerID == ownerID).Select(sc => sc).ToList();
+            //    _shipListDictionary[ownerID] = listOfShipsByOwnerID;
+            //}
+            //// populate dictionary of will fight alongside ships in a list for each owner
+            //for (int t = 0; t < _combatShips.Count(); t++)
+            //{
+            //    //var ownerAssets = GetAssets(_combatShips[t].Item1.Owner);
+            //    _willFightAlongSide[_combatShips[t].Item1.OwnerID] = _combatShips.Where(cs => CombatHelper.WillFightAlongside(_combatShips[t].Item1.Owner, cs.Item1.Owner))
+            //        .Select(cs => cs)
+            //        .ToList();
+            //    _willFightAlongSide.Distinct().ToList();
+            //}
+
+            //List<int> _unitTupleIDList = new List<int>();
+            //List<int> _attackerIDList = new List<int>();
+            //List<Tuple<CombatUnit, CombatWeapon[]>> targetUnitTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>(); // list of target tuples
+            //List<Tuple<CombatUnit, CombatWeapon[]>> returnFireTupleList = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            #endregion
+
             #region populate target dictionaries
             // populate target dictionary with lists of target units (_oppositionCombatShips), key is owner id / civ id
             //foreach (var unitTuple in _combatShips)
@@ -275,6 +280,7 @@ namespace Supremacy.Combat
             //    }
             //}
             #endregion // populate target dictionary
+
             #region populate the arrays
             int[,] empiresInBattle; // An Array of who is in the battle.
             empiresInBattle = new int[12, 3]; // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
@@ -851,7 +857,7 @@ namespace Supremacy.Combat
                         GameLog.Core.Combat.DebugFormat("Still Attacking loop: Change target to (Station if station owner is not formation) {0}", currentTarget.Item1.Name);
                         // Calculate Bonus/Malus
                         // Get Accuracy, Damage Control when fixed
-                        double sourceAccuracyTemp = 1; // used to determin whether or not it is a hit
+                       // double sourceAccuracyTemp = 1; // used to determin whether or not it is a hit
                         double sourceAccuracy = 1; // used to increase damage as well, if hero ship
                         double targetDamageControl = 0.5;
                         sourceAccuracy = AttackingShip.Item1.Source.GetAccuracyModifier();
@@ -1143,7 +1149,7 @@ namespace Supremacy.Combat
                     
                     // Calculate Bonus/Malus
                     // Get Accuracy, Damage Control when fixed
-                    double sourceAccuracyTemp = 1; // used to determin whether or not it is a hit
+                    //double sourceAccuracyTemp = 1; // used to determin whether or not it is a hit
                     double sourceAccuracy = 1; // used to increase damage as well, if hero ship
                     double targetDamageControl = 0.5;
                     sourceAccuracy = AttackingShip.Item1.Source.GetAccuracyModifier();

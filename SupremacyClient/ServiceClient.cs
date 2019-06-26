@@ -181,8 +181,11 @@ namespace Supremacy.Client
 
         public void SendCombatOrders(CombatOrders orders)
         {
-            try { Channel.SendCombatOrders(orders); }
-            catch (FaultException) {}
+            if (orders != null && Channel !=null)
+            {
+                try { Channel.SendCombatOrders(orders); }
+                catch (FaultException) { }
+            }
         }
 
         public void SendCombatTarget1(CombatTargetPrimaries target1)

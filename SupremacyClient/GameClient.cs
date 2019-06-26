@@ -656,7 +656,10 @@ namespace Supremacy.Client
 
         private void ExecuteSendCombatOrdersCommand(CombatOrders orders)
         {
-            ExecuteRemoteCommand(() => _serviceClient.SendCombatOrders(orders));
+            if (orders != null && _serviceClient !=null)
+            {
+                ExecuteRemoteCommand(() => _serviceClient.SendCombatOrders(orders));
+            }
         }
 
         private void ExecuteSendCombatTarget1Command(CombatTargetPrimaries target1)

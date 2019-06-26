@@ -91,6 +91,7 @@ namespace Supremacy.Client
             _onlyFireIfFiredAppone = new Civilization();
             _onlyFireIfFiredAppone.ShortName = "Only Return Fire";
             _onlyFireIfFiredAppone.CivID = 888;
+            _onlyFireIfFiredAppone.Key = "Only Return Fire";
             _theTargeted1Civ = new Civilization();
             _theTargeted1Civ = _onlyFireIfFiredAppone;
             _theTargeted2Civ = new Civilization();
