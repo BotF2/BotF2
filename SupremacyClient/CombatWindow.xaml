@@ -253,7 +253,7 @@
             </StackPanel>
         </DataTemplate>
         
-        <!-- Others insignia, name, firepower diplomatic status at Top list of others on left side - Data Template for one item view  -->
+        <!-- Others insignia, name, firepower diplomatic status at Top list of others on right side - Data Template for one item view  -->
         <DataTemplate x:Key="OtherNameAndFirePowerTemplate">
             <StackPanel Margin="0,2,0,0"
                         Orientation="Horizontal"
@@ -295,7 +295,7 @@
         <!--Main Combat Window - Begin-->
     </FrameworkElement.Resources>
     <Grid 
-        Height="700"
+        Height="750"
         Width="1170">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -339,7 +339,8 @@
                     Grid.Column="0"
                     Grid.Row="1"
                   VerticalAlignment="Top"
-                  MaxHeight="700"
+                  Height="580"
+                  MaxHeight ="580"
                     Width="Auto"            
                     Margin="2">
             <TreeView x:Name="FriendlyAssetsTree"
@@ -523,8 +524,8 @@
                   Foreground="LightGoldenrodYellow"
                   Background="Black"
                   VerticalAlignment="Top"
-                  Height="500"
-                  MaxHeight="580"
+                  Height="580"
+                  MaxHeight ="580"
                     Grid.Column="2"
                     Grid.Row="1"
                     Width="Auto"            

@@ -338,7 +338,7 @@ namespace Supremacy.Combat
                 }
                 if (civi.IsHuman)
                 {
-                    if (empiresInBattle[q, 1] == 888 && empiresInBattle[q, 2] == 888) /// 777 = human does not have clicked a target
+                    if (empiresInBattle[q, 1] == 888 && empiresInBattle[q, 2] == 888) /// 888 = human 'hold fire' target click, 777 = AI dummy target
                     {
                         empiresInBattle[q, 1] = 999; // 999 = null = no active fire)
                         empiresInBattle[q, 2] = 999;
