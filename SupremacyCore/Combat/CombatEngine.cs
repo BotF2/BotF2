@@ -536,7 +536,7 @@ namespace Supremacy.Combat
                 var hostileAssets = new List<CombatAssets>();
                 var empireStrengths = new Dictionary<Civilization, int>();
 
-                friendlyAssets.Add(playerAsset); // arbitrary one side or the other is 'friendly' from when there were only two sides in combat
+                friendlyAssets.Add(playerAsset); // arbitrary one side or the other is 'friendly' for combatwindow right and left side
 
                 var CivForEmpireStrength = _assets.Distinct().ToList();
                 foreach (var civ in CivForEmpireStrength)
