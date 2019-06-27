@@ -1350,7 +1350,7 @@ namespace Supremacy.WCF
             }
             catch (Exception e)
             {
-                GameLog.Server.Combat.DebugFormat("SendCombatOrders null reference issue #164 {0}", orders.ToString());
+                GameLog.Server.Combat.DebugFormat("SendCombatOrders null reference closed issue #164 {0}", orders.ToString());
                 GameLog.Server.Combat.Error(e);
             }
         }

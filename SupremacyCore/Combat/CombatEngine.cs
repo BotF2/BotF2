@@ -55,7 +55,7 @@ namespace Supremacy.Combat
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
         private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
-        private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv; 
+        private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv;
         protected Dictionary<string, int> _empireStrengths; // string in key of civ and int is total fire power of civ
 
         public bool BattelInOwnTerritory
@@ -296,7 +296,6 @@ namespace Supremacy.Combat
             SyncLock = _orders;
             SyncLockTargetOnes = _targetOneByCiv;
             SyncLockTargetTwos = _targetTwoByCiv;
-
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
             foreach (CombatAssets civAssets in _assets.ToList())
@@ -306,22 +305,18 @@ namespace Supremacy.Combat
                     _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
                         civAssets.Station,
                         CombatWeapon.CreateWeapons(civAssets.Station.Source));
-
                 }
                 foreach (CombatUnit shipStats in civAssets.CombatShips)
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
-
                 }
                 foreach (CombatUnit shipStats in civAssets.NonCombatShips)
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
-
-
                 }
 
             }
@@ -332,12 +327,20 @@ namespace Supremacy.Combat
         {
             lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
             {
+                _orders[888] = orders;
+                _orders[999] = orders;
+                _orders[777] = orders;
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
                     _orders[orders.OwnerID] = orders;
                 }
-
-                var outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList();
+                
+                var outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
+                List<int> dummyIDs = new List<int>();
+                dummyIDs.Add(777);
+                dummyIDs.Add(888);
+                dummyIDs.Add(999);
+                outstandingOrders.AddRange(dummyIDs);
 
                 lock (_orders)
                 {
@@ -412,10 +415,10 @@ namespace Supremacy.Combat
             {
                 Running = true;
 
-                _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset
+                _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset _assets
                 CalculateEmpireStrengths();
 
-                if ((_roundNumber > 1) || !AllSidesStandDown())
+                if ((_roundNumber>1) ||!AllSidesStandDown()) 
                 {
                     RechargeWeapons();
                     ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
@@ -432,6 +435,7 @@ namespace Supremacy.Combat
 
                 if (!IsCombatOver)
                 {
+                    GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - round number {0} to {1}", _roundNumber, _roundNumber + 1);
                     _roundNumber++;
                 }
                 _targetTwoByCiv.Clear();
@@ -442,7 +446,7 @@ namespace Supremacy.Combat
 
             SendUpdates();
 
-            GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before RemoveDefeatedPlayers");
+            GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound Sent SendUpdates then RemoveDefeatedPlayers() while _asset count = {0}", _assets.Count());
             RemoveDefeatedPlayers();
 
             RunningTargetOne = false;
@@ -451,12 +455,12 @@ namespace Supremacy.Combat
 
             if (IsCombatOver)
             {
-                GameLog.Core.Test.DebugFormat("ResolveCombatRound - IsCombatOver = TRUE");
+                GameLog.Core.Test.DebugFormat("ResolveCombatRound - now IsCombatOver = TRUE");
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
         }
 
-        private bool AllSidesStandDown()
+        public bool AllSidesStandDown() // ??? do we no longer care what the orders are - no longer have a second chance at setting orders?
         {
             foreach (var civAssets in _assets)
             {
@@ -465,22 +469,23 @@ namespace Supremacy.Combat
                 {
                     return false;
                 }
-
                 // Non-combat ships
                 if (civAssets.NonCombatShips.Select(unit => GetCombatOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
                     return false;
                 }
-
                 // Station
                 if ((civAssets.Station != null) && (GetCombatOrder(civAssets.Station.Source) == CombatOrder.Engage || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Transports || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Rush || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Formation))
                 {
                     return false;
                 }
-
             }
-
+            GameLog.Core.Test.DebugFormat("AllSidesStandDown() true? ={0}", AllSidesStandDown());
             return true;
+            //if (_roundNumber > 1)
+            //    return true;
+            //else
+            //    return false;
         }
 
         public void SendInitialUpdate()
@@ -490,13 +495,14 @@ namespace Supremacy.Combat
 
         private void SendUpdates()
         {
-            if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
-            {
-                GameLog.Core.Test.DebugFormat("Combat is turned off");
-                AsyncHelper.Invoke(_combatEndedCallback, this);
-                return;
+            #region Out Commented
+            //if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
+            //{
+            //    GameLog.Core.Test.DebugFormat("Combat is turned off");
+            //    AsyncHelper.Invoke(_combatEndedCallback, this);
+            //    return;
 
-            }
+            //}
             //foreach (var combatent in _combatShips) // now search for destroyed ships
             //{
             //    if (combatent.Item1.IsDestroyed)
@@ -529,7 +535,8 @@ namespace Supremacy.Combat
             //        continue;
             //    }
             //}
-            foreach (var playerAsset in _assets) // _assets is list of assets so one list for our friends and for others
+            #endregion
+            foreach (var playerAsset in _assets) // _assets is list of current player (friend) assets so one list for our friends, friend's and other's asset are in asset (not _assets)
             {
                 var owner = playerAsset.Owner;
                 var friendlyAssets = new List<CombatAssets>();
@@ -575,7 +582,7 @@ namespace Supremacy.Combat
                 }
 
 
-                foreach (var otherAsset in _assets)
+                foreach (var otherAsset in _assets) // _assets is all combat assest in sector while "asset" is the friendly (player) assets
                 {
                     if (otherAsset == playerAsset)
                         continue;
@@ -599,7 +606,7 @@ namespace Supremacy.Combat
                     }
                 }
 
-                if (friendlyAssets.Count() == 0 || hostileAssets.Count() == 0 || _zeroFirePowers >= 1)//(_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))                
+                if (friendlyAssets.Count() == 0 || hostileAssets.Count() == 0 || _zeroFirePowers >= 1)// number of empires with 0 fire power (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))                
                 {
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);
@@ -696,69 +703,69 @@ namespace Supremacy.Combat
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
-        protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, bool oppositionIsEngage, bool oppositonIsHailing, bool oppsoitionIsRetreating, bool oppsoitionIsRaidTransports, int weaponRatio)
-        {
-            int chanceToRetreat = RandomHelper.Random(100);
-            int retreatChanceModifier = 0;
+        //protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, bool oppositionIsEngage, bool oppositonIsHailing, bool oppsoitionIsRetreating, bool oppsoitionIsRaidTransports, int weaponRatio)
+        //{
+        //    int chanceToRetreat = RandomHelper.Random(100);
+        //    int retreatChanceModifier = 0;
 
-            GameLog.Core.Combat.DebugFormat("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
+        //    GameLog.Core.Combat.DebugFormat("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
 
-            if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
-            {
-                GameLog.Core.Combat.DebugFormat("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
-                return true;
-            }
+        //    if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
+        //    {
+        //        GameLog.Core.Combat.DebugFormat("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
+        //        return true;
+        //    }
 
-            if (weaponRatio > 6) // if you outgun the retreater they are less likely to get away
-            {
-                retreatChanceModifier = -10;
-                GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. - Modifier was {1}", weaponRatio, retreatChanceModifier);
-            }
-            //else if (weaponRatio > 3)
-            //{
-            //    retreatChanceModifier = -20;
-            //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -20 modifier", weaponRatio);
-            //}
-            //else if (weaponRatio > 1)
-            //{
-            //    retreatChanceModifier = -10;
-            //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -10 modifier", weaponRatio);
-            //}
-            //else
-            //{
-            //    retreatChanceModifier = 0;
-            //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. 0 modifier", weaponRatio);
-            //}
-            if (oppositionIsEngage)
-            {
-                retreatChanceModifier += 15;
-                GameLog.Core.Combat.DebugFormat("Opposition is Engage. +15 modifier (now {0})", retreatChanceModifier);
-            }
+        //    if (weaponRatio > 6) // if you outgun the retreater they are less likely to get away
+        //    {
+        //        retreatChanceModifier = -10;
+        //        GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. - Modifier was {1}", weaponRatio, retreatChanceModifier);
+        //    }
+        //    //else if (weaponRatio > 3)
+        //    //{
+        //    //    retreatChanceModifier = -20;
+        //    //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -20 modifier", weaponRatio);
+        //    //}
+        //    //else if (weaponRatio > 1)
+        //    //{
+        //    //    retreatChanceModifier = -10;
+        //    //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -10 modifier", weaponRatio);
+        //    //}
+        //    //else
+        //    //{
+        //    //    retreatChanceModifier = 0;
+        //    //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. 0 modifier", weaponRatio);
+        //    //}
+        //    if (oppositionIsEngage)
+        //    {
+        //        retreatChanceModifier += 15;
+        //        GameLog.Core.Combat.DebugFormat("Opposition is Engage. +15 modifier (now {0})", retreatChanceModifier);
+        //    }
 
-            if (oppositionIsRushing || oppsoitionIsRaidTransports) // if you rush the retreater they are less likely to get away
-            {
-                retreatChanceModifier += -10;
-                GameLog.Core.Combat.DebugFormat("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
-            }
-            if (_roundNumber > 2)
-            {
-                retreatChanceModifier += 25;
-                GameLog.Core.Combat.DebugFormat("If round is 3 or more. +25 to modifier (now {0})", retreatChanceModifier);
-            }
-            //if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating)
-            //    return true;
+        //    if (oppositionIsRushing || oppsoitionIsRaidTransports) // if you rush the retreater they are less likely to get away
+        //    {
+        //        retreatChanceModifier += -10;
+        //        GameLog.Core.Combat.DebugFormat("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
+        //    }
+        //    if (_roundNumber > 2)
+        //    {
+        //        retreatChanceModifier += 25;
+        //        GameLog.Core.Combat.DebugFormat("If round is 3 or more. +25 to modifier (now {0})", retreatChanceModifier);
+        //    }
+        //    //if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating)
+        //    //    return true;
 
-            if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
-            {
-                GameLog.Core.Combat.DebugFormat("{0} {1} succesfully retreated", unit.Source.ObjectID, unit.Source.Name);
-                return true;
-            }
-            else
-            {
-                GameLog.Core.Combat.DebugFormat("{0} {1} failed to retreat", unit.Source.ObjectID, unit.Source.Name);
-                return false;
-            }
-        }
+        //    if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
+        //    {
+        //        GameLog.Core.Combat.DebugFormat("{0} {1} succesfully retreated", unit.Source.ObjectID, unit.Source.Name);
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        GameLog.Core.Combat.DebugFormat("{0} {1} failed to retreat", unit.Source.ObjectID, unit.Source.Name);
+        //        return false;
+        //    }
+        //}
 
         /// <summary>
         /// Performs the assimilation of ships that have been assimilated
@@ -863,15 +870,24 @@ namespace Supremacy.Combat
 
         protected Civilization GetTargetOne(Orbital source)
         {
-            GameLog.Core.Test.DebugFormat("GetTargetOne ={0}", _targetOneByCiv[source.OwnerID].GetTargetOne(source));//if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
-            var _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);
-            return _targetOne;
+            if (source != null)
+            {
+                GameLog.Core.Test.DebugFormat("GetTargetOne ={0}", _targetOneByCiv[source.OwnerID].GetTargetOne(source));//if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
+                var _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);
+                return _targetOne;
+            }
+            else
+                return CombatHelper.GetDefaultHoldFireCiv();
         }
         protected Civilization GetTargetTwo(Orbital source)
         {
-            GameLog.Core.Test.DebugFormat("GetTargetTwo ={0}", _targetTwoByCiv[source.OwnerID].GetTargetTwo(source));
-            var _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
-            return _targetTwo;
+            if (source != null)
+            { 
+                GameLog.Core.Test.DebugFormat("GetTargetTwo ={0}", _targetTwoByCiv[source.OwnerID].GetTargetTwo(source));
+                var _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
+                return _targetTwo;
+            }
+            else return CombatHelper.GetDefaultHoldFireCiv();
         }
 
         protected abstract void ResolveCombatRoundCore();

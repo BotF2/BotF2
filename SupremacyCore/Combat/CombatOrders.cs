@@ -44,7 +44,7 @@ namespace Supremacy.Combat
         private readonly int _ownerId;
         private readonly AssaultStrategy _assaultStrategy;
         private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
-        private readonly Dictionary<int, CombatOrder> _orders;
+        private readonly Dictionary<int, CombatOrder> _orders; // Dictinary, int key is ownerID & combat order from enum
       
 
         public int CombatID

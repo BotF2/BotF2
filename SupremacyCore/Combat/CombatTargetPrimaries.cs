@@ -75,7 +75,8 @@ namespace Supremacy.Combat
             }
             if (!_targetPrimaries.ContainsKey(source.ObjectID))
             {
-                throw new ArgumentException("No target one has been set for the specified source");
+                _targetPrimaries[source.ObjectID] = CombatHelper.GetDefaultHoldFireCiv();
+                //throw new ArgumentException("No target one has been set for the specified source");
             }
             GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);
             return _targetPrimaries[source.ObjectID];           
