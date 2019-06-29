@@ -1339,18 +1339,20 @@ namespace Supremacy.WCF
             {
                 if (_combatEngine == null || orders == null)
                     return;
-
+                
                 lock (_combatEngine.SyncLock)
                 {
-                    _combatEngine.SubmitOrders(orders);
+                    //if (orders.OwnerID != Player.GameHostID)
+                        _combatEngine.SubmitOrders(orders); // null ref ?? but code keeps going?
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
                 }
+                //else TryResumeCombat(_combatEngine);
             }
             catch (Exception e)
             {
-                GameLog.Server.Combat.DebugFormat("SendCombatOrders null reference closed issue #164 {0}", orders.ToString());
+                GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
                 GameLog.Server.Combat.Error(e);
             }
         }

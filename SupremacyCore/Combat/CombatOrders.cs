@@ -59,7 +59,10 @@ namespace Supremacy.Combat
 
         public Civilization Owner
         {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
+            get
+            {
+                return GameContext.Current.Civilizations[_ownerId];
+            }
         }
 
         public CombatOrders(Civilization owner, int combatId,
