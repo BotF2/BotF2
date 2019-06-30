@@ -11,7 +11,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Windows.Automation;
 using System.Xml;
 using System.Xml.Schema;
 
@@ -20,6 +22,7 @@ using Supremacy.Client;
 using Supremacy.Collections;
 
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Utility;
@@ -449,8 +452,13 @@ namespace Supremacy.Tech
              * Ships *
              *********/
             XmlElement xmlShips = xmlDoc.DocumentElement["Ships"];
+            string lastSuccessfullyLoadedShipDesign = "";
+            int successfullyLoadedShipDesignCounter = 0;
             foreach (XmlElement xmlShip in xmlShips.GetElementsByTagName("Ship"))
             {
+                lastSuccessfullyLoadedShipDesign = xmlShip.Name;
+                successfullyLoadedShipDesignCounter += 1;
+
                 ShipDesign ship = new ShipDesign(xmlShip);
                 ship.DesignID = db.GetNewDesignID();
                 designIdMap[ship.Key] = ship.DesignID;
@@ -506,6 +514,9 @@ namespace Supremacy.Tech
                     }
                 }
             }
+            GameLog.Core.XMLCheck.InfoFormat("lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
+            //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
+                GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 392 were fine)", successfullyLoadedShipDesignCounter);
 
             /************
              * Stations *
@@ -573,6 +584,8 @@ namespace Supremacy.Tech
 
             bool _traceTechObjectDatabase = true;  // file is writen while starting a game -> Federation -> Start
 
+            //if (ClientSettings.TracesXML2CSV == true)
+
             if (_traceTechObjectDatabase == true)
             {
                 var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
@@ -613,8 +626,8 @@ namespace Supremacy.Tech
                         "CE_Category" + separator +
 
                         // just placeholder
-                        "CE_Bonus" + separator +
-                        "CE_Restrictions" + separator +
+                        //"CE_Bonus" + separator +  // no bonus for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure< is in usage
+                        //"CE_Restrictions" + separator +   // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
                         "CE_Prerequisites" + separator +
                         "CE_ObsoletedItems" + separator +
                         "CE_UpgradeOptions"
@@ -641,6 +654,56 @@ namespace Supremacy.Tech
                             if (PF.Key.Contains("RAWMATERIALS"))
                                 category = "RawMaterials";
                         }
+
+                        string obsDesign = "";
+                        foreach (var obsolete in PF.ObsoletedDesigns)
+                        {
+                            obsDesign += obsolete.Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", PF.Key, obsDesign);
+
+
+                        string prerequisitesCollection = "";
+                        foreach (var prereq in PF.Prerequisites)
+                        {
+                            prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", PF.Key, prerequisitesCollection);
+
+
+                        string upgradeDesign = "";
+                        foreach (var upgrade in PF.ObsoletedDesigns)
+                        {
+                            upgradeDesign += upgrade.Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", PF.Key, upgradeDesign);
+
+
+                        //string bonusCollection = "";
+                        ////string _bon = GameContext.Current.TechDatabase.ProductionFacilityDesigns.[PF.DesignID].UnitOutput.;
+                        //foreach (var _bonus in PF.UnitOutput())
+                        //{
+                        //    bonusCollection += upgrade.Key + ",";
+                        //}
+                        //bonusCollection = "Bonus for {0}" + PF.Key;
+                        //GameLog.Core.Test.DebugFormat("{0} has bonusCollection = {1} ", PF.Key, bonusCollection);
+
+
+
+                        //string _buildcondition = "";   // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
+                        //_buildcondition = "BuildCondition for " + PF.Key;
+                        //// following doesn't work yet
+                        //try { 
+                        //    foreach (var buildCond in PF.BuildCondition.ScriptCode)
+                        //    {
+                        //        _buildcondition += buildCond.ToString() + ",";
+                        //    }
+                        //    GameLog.Core.Test.DebugFormat("{0} has _buildcondition = {1} ", PF.Key, _buildcondition);
+                        //}
+                        //catch
+                        //{
+                        //    _buildcondition = "BuildCondition for " + PF.Key;
+                        //}
 
 
                         line =
@@ -690,11 +753,21 @@ namespace Supremacy.Tech
 
 
                         // just placeholders
-                        "Bonus for " + PF.Key + separator +
-                        "Restrictions for " + PF.Key + separator +
-                        "Prerequisites for " + PF.Key + separator +
-                        "ObsoletedItems for " + PF.Key + separator +
-                        "UpgradeOptions for " + PF.Key
+                        //"Bonus for " + PF.Key + separator +
+                        //bonusCollection + separator +       // no bonus for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
+
+                        //"Restrictions for " + PF.Key + separator +
+                        //_buildcondition + separator +       // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
+
+                        //"Prerequisites for " + PF.Key + separator +
+                        prerequisitesCollection + separator + // works ??
+
+                        //"ObsoletedItems for " + PF.Key + separator +
+                        obsDesign + separator + // works ??
+
+                        //"UpgradeOptions for " + PF.Key                                                
+                        upgradeDesign + separator // + // works ??
+
                         ;
 
                         //Console.WriteLine("{0}", line);
@@ -728,6 +801,24 @@ namespace Supremacy.Tech
                         "CE_Building" + separator +
                         "ATT_Key" + separator +
 
+                        "CE_B1_Amount" + separator +
+                        "CE_Bonus1" + separator +
+
+                        "CE_B2_Amount" + separator +
+                        "CE_Bonus2" + separator +
+
+                        "CE_B3_Amount" + separator +
+                        "CE_Bonus3" + separator +
+
+
+                        // no more than 3 bonuses, but prepared for 5
+                        //"CE_Bonus4" + separator +
+                        //"CE_B4_Amount" + separator +
+
+                        //"CE_Bonus5" + separator +
+                        //"CE_B5_Amount" + separator +
+
+
                         "CE_TechRequirements" + separator +
                         "CE_BioTech" + separator +
                         "CE_Computers" + separator +
@@ -742,40 +833,122 @@ namespace Supremacy.Tech
                         //"CE_Category" + separator +
 
                         // just placeholder
-                        "CE_Bonus" + separator +
-                        "CE_Restrictions" //+ separator +
-                        //"CE_Prerequisites" + separator +
-                        //"CE_ObsoletedItems" + separator +
-                        //"CE_UpgradeOptions"
+
+                        "CE_Restriction1" + separator +
+                        "CE_Restriction2" + separator +
+                        "CE_Restriction3" + separator +
+                        "CE_Restriction4" + separator +
+                        "CE_Restriction5" //+ separator +
                         ;
 
                     streamWriter.WriteLine(strHeader);
                     // End of head line
 
-                    string category = "";
+                    //string Restriction = "";
+
+                    //string bonusType = "";
+                    string bonustype1 = "";
+                    string bonustype2 = "";
+                    string bonustype3 = "";
+                    //string bonustype4 = "";
+                    //string bonustype5 = "";
+
+                    string bonusAmount1 = "";
+                    string bonusAmount2 = "";
+                    string bonusAmount3 = "";
+                    //string bonusAmount4 = "";
+                    //string bonusAmount5 = "";
+
+
                     foreach (var B in db.BuildingDesigns)   // each shipyard
                     {
                         //App.DoEvents();  // for avoid error after 60 seconds
 
-                        //if (B.Category > 0)
-                        //    category = B.Category.ToString();
+                        int i = 0;
 
-                        //if (B.Category == 0)
-                        //{
-                        //    category = B.Category.ToString();
-                        //    if (B.Key.Contains("DILITHIUM"))
-                        //        category = "Dilithium";
-                        //    if (B.Key.Contains("DEUTERIUM"))
-                        //        category = "Deuterium";
-                        //    if (B.Key.Contains("RAWMATERIALS"))
-                        //        category = "RawMaterials";
-                        //}
+                        foreach (var bonus in B.Bonuses)
+                        {
+                            i = i + 1;  // first "bonus 1" then bonus 2
+
+                            string bonusType = bonus.BonusType.ToString();
+                            string bonusAmount = bonus.Amount.ToString();
+
+                            switch (i)
+                            {
+                                case 1: bonustype1 = bonusType; bonusAmount1 = bonusAmount; break;
+                                case 2: bonustype2 = bonusType; bonusAmount2 = bonusAmount; break;
+                                case 3: bonustype3 = bonusType; bonusAmount3 = bonusAmount; break;
+                                    //case 4: bonustype4 = bonusType; bonusAmount4 = bonusAmount; break;
+                                    //case 5: bonustype5 = bonusType; bonusAmount5 = bonusAmount; break;
+                            }
+
+                        }
+
+                        string Restriction = "";
+                        // Restriction: put into one string with including semicolon, out just at the end (otherwise split and count)
+
+                        // often
+                        //if (B.HasRestriction(BuildRestriction.None)) { Restriction += "None;"; }  // delivers wrong result
+                        if (B.HasRestriction(BuildRestriction.OnePerSystem)) { Restriction += "OnePerSystem;"; }
+                        if (B.HasRestriction(BuildRestriction.OnePerEmpire)) { Restriction += "OnePerEmpire;"; }
+                        if (B.HasRestriction(BuildRestriction.HomeSystem)) { Restriction += "HomeSystem;"; }
+
+
+                        if (B.HasRestriction(BuildRestriction.ArcticPlanet)) { Restriction += "ArcticPlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.Asteroids)) { Restriction += "Asteroids;"; }
+                        if (B.HasRestriction(BuildRestriction.BarrenPlanet)) { Restriction += "BarrenPlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.BlueStar)) { Restriction += "BlueStar;"; }
+                        if (B.HasRestriction(BuildRestriction.ConqueredSystem)) { Restriction += "ConqueredSystem;"; }
+                        if (B.HasRestriction(BuildRestriction.CrystallinePlanet)) { Restriction += "CrystallinePlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.DemonPlanet)) { Restriction += "DemonPlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.DesertPlanet)) { Restriction += "DesertPlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.DilithiumBonus)) { Restriction += "DilithiumBonus;"; }
+                        if (B.HasRestriction(BuildRestriction.GasGiant)) { Restriction += "GasGiant;"; }
+                        if (B.HasRestriction(BuildRestriction.JunglePlanet)) { Restriction += "JunglePlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.MemberSystem)) { Restriction += "MemberSystem;"; }
+                        if (B.HasRestriction(BuildRestriction.Moons)) { Restriction += "Moons;"; }
+                        if (B.HasRestriction(BuildRestriction.NativeSystem)) { Restriction += "NativeSystem;"; }
+                        if (B.HasRestriction(BuildRestriction.Nebula)) { Restriction += "Nebula;"; }
+                        if (B.HasRestriction(BuildRestriction.NonNativeSystem)) { Restriction += "NonNativeSystem;"; }
+                        if (B.HasRestriction(BuildRestriction.OceanicPlanet)) { Restriction += "OceanicPlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.OnePer100MaxPopUnits)) { Restriction += "OnePer100MaxPopUnits;"; }
+                        if (B.HasRestriction(BuildRestriction.OrangeStar)) { Restriction += "OrangeStar;"; }
+                        if (B.HasRestriction(BuildRestriction.RawMaterialsBonus)) { Restriction += "RawMaterialsBonus;"; }
+                        if (B.HasRestriction(BuildRestriction.RedStar)) { Restriction += "RedStar;"; }
+                        if (B.HasRestriction(BuildRestriction.RoguePlanet)) { Restriction += "RoguePlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.TerranPlanet)) { Restriction += "TerranPlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.VolcanicPlanet)) { Restriction += "VolcanicPlanet;"; }
+                        if (B.HasRestriction(BuildRestriction.WhiteStar)) { Restriction += "WhiteStar;"; }
+                        if (B.HasRestriction(BuildRestriction.YellowStar)) { Restriction += "YellowStar;"; }
+
+                        if (B.HasRestriction(BuildRestriction.GreenStar)) { Restriction += "Green Star (no Green Stars in Universe!);"; }
+
 
 
                         line =
                         "Building" + separator +
                         B.Key + separator +
                         //B.Image + separator +
+
+                        bonusAmount1 + separator +
+                        bonustype1 + separator +
+
+                        bonusAmount2 + separator +
+                        bonustype2 + separator +
+
+                        bonusAmount3 + separator +
+                        bonustype3 + separator +
+
+
+                        // no more than 3 bonuses, but prepared for 5
+
+                        //bonusAmount4 + separator +
+                        //bonustype4 + separator +
+
+                        //bonusAmount5 + separator +
+                        //bonustype5 + separator +
+
+
 
 
                         //shipyard.DesignID + separator +   // not useful for current working
@@ -814,13 +987,15 @@ namespace Supremacy.Tech
 
                         B.EnergyCost + separator +
 
-                        category + separator +
+                        //category + separator +
 
 
 
                         // just placeholders
-                        "Bonus for " + B.Key + separator +
-                        "Restrictions for " + B.Key //+ separator +
+                        //"Bonus for " + 
+
+
+                        Restriction // for " + B.Key //+ separator +
                         //"Prerequisites for " + B.Key + separator +
                         //"ObsoletedItems for " + B.Key + separator +
                         //"UpgradeOptions for " + B.Key
@@ -829,6 +1004,15 @@ namespace Supremacy.Tech
                         //Console.WriteLine("{0}", line);
 
                         streamWriter.WriteLine(line);
+
+                        //clear strings for next buildingng
+                        bonustype1 = ""; bonusAmount1 = "";
+                        bonustype2 = ""; bonusAmount2 = "";
+                        bonustype3 = ""; bonusAmount3 = "";
+                        //bonustype4 = ""; bonusAmount4 = "";
+                        //bonustype5 = ""; bonusAmount5 = "";
+
+                        Restriction = "";
                     }
                 }
                 catch (Exception e)
@@ -1205,7 +1389,7 @@ namespace Supremacy.Tech
                         "CE_Propulsion" + separator +
                         "CE_Weapons" + separator +
                         "CE_BuildCost" + separator +
-                        "CE_RawMaterails" + separator +
+                        "CE_RawMaterials" + separator +
                         "CE_MaintanceCost" + separator +
                         "CE_Crew" + separator +
                         "CE_IsUniversallyAvailable" + separator +
@@ -1326,6 +1510,155 @@ namespace Supremacy.Tech
 
                 // End of Stations
                 #endregion Stations_To_CSV
+
+
+                #region OrbBat_To_CSV
+                try // avoid hang up if this file is opened by another program 
+                {
+                    // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
+                    file = pathOutputFile + "_FromTechObj-OrbBat_(autoCreated).csv";
+                    Console.WriteLine("writing {0}", file);
+
+                    if (file == null)
+                        goto WriterClose;
+
+                    streamWriter = new StreamWriter(file);
+
+                    strHeader =    // Head line
+                        "CE_OrbitalBattery" + separator +
+                        "ATT_Key" + separator +
+
+                        "CE_TechRequirements" + separator +
+                        "CE_BioTech" + separator +
+                        "CE_Computers" + separator +
+                        "CE_Construction" + separator +
+                        "CE_Energy" + separator +
+                        "CE_Propulsion" + separator +
+                        "CE_Weapons" + separator +
+
+                        "CE_BuildCost" + separator +
+                        "CE_RawMaterials" + separator +
+                        "CE_MaintanceCost" + separator +
+                        "CE_UnitEnergyCost" + separator +
+                        "CE_IsUniversallyAvailable" + separator +
+
+                        "CE_ScienceAbility" + separator +
+                        "CE_ScanPower" + separator +
+                        //"CE_EnergyCosts_not_used_anymore?" + separator +
+                        "CE_SensorRange" + separator +
+                        "CE_HullStrength" + separator +
+                        "CE_ShieldStrength" + separator +
+                        "CE_ShieldRecharge" + separator +
+
+                        "CE_Beam" + separator +
+                        "CE_Beam Count" + separator +
+                        "CE_Damage" + separator +
+                        "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
+
+                        "CE_Torpedo" + separator +
+                        "CE_Torpedo Count" + separator +
+                        "CE_Damage" + separator +
+
+                        //"CE_RepairSlots" + separator +
+                        //"CE_RepairCapacity" + separator +
+
+                        // just placeholders at the moment for > other/outside replacements
+                        //"CE_Prerequisites" + separator +
+                        "CE_ObsoletedItems" + separator +
+                        "CE_UpgradeOptions" //+ separator +
+
+                        //"CE_StationNames"
+                        ;
+
+                    streamWriter.WriteLine(strHeader);
+                    // End of head line
+
+                    foreach (var ob in db.OrbitalBatteryDesigns)   // each shipyard
+                    {
+                        line =
+                        "OrbitalBattery" + separator +
+                        ob.Key + separator +
+                        //ob.DesignID + separator +   // not useful for current working
+                        //ob.ShipType + separator +  // moved down for current working
+                        //ob.ClassName + separator +  // moved down for current working
+                        //ob.Key;   // just for testing
+
+                        //<TechRequirements>
+                        "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                                           // after GoogleSheet-Export: replace...
+                                           // </Weapons> by </Weapons></TechRequirements>
+                                           // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                        //"<Biotech>" + separator +                // not helpful
+                        ob.TechRequirements[TechCategory.BioTech] + separator +
+                        //"</Biotech>" + separator +                 // not helpful
+                        //"<Computers>" + separator +                 // not helpful
+                        ob.TechRequirements[TechCategory.Computers] + separator +
+                        //"</Computers>" + separator +                // not helpful
+                        //"<Construction>" + separator +                 // not helpful
+                        ob.TechRequirements[TechCategory.Construction] + separator +
+                        //"</Construction>" + separator +                // not helpful
+                        //"<Energy>" + separator +                 // not helpful
+                        ob.TechRequirements[TechCategory.Energy] + separator +
+                        //"</Energy>" + separator +                // not helpful
+                        //"<Propulsion>" + separator +                 // not helpful
+                        ob.TechRequirements[TechCategory.Propulsion] + separator +
+                        //"</Propulsion>" + separator +                // not helpful
+                        //"<Weapons>" + separator +                 // not helpful
+                        ob.TechRequirements[TechCategory.Weapons] + separator +
+                        //"</Weapons>" + separator +                // not helpful
+
+
+                        ob.BuildCost + separator +
+                        ob.RawMaterials + separator +
+                        ob.MaintenanceCost + separator +
+                        ob.UnitEnergyCost + separator +
+                        ob.IsUniversallyAvailable + separator +
+
+
+                        //"EnergyCost_not_used_anymore?" + separator +
+
+                        ob.ScienceAbility + separator +
+                        ob.ScanStrength + separator +  // equal to ScanPower
+                        ob.SensorRange + separator +
+
+                        ob.HullStrength + separator +
+                        ob.ShieldStrength + separator +
+                        ob.ShieldRechargeRate + separator +
+
+                        "Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
+                        ob.PrimaryWeapon.Count + separator +
+                        ob.PrimaryWeapon.Damage + separator +
+                        ob.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
+
+
+                        "Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
+                        ob.SecondaryWeapon.Count + separator +
+                        ob.SecondaryWeapon.Damage + separator +
+
+                        //ob.BuildSlots + separator +
+                        //ob.BuildOutput + separator +
+
+                        // just placeholders at the moment for > other/outside replacements
+                        //"Prerequisites for " + ob.Key + separator +
+                        "ObsoletedItems for " + ob.Key + separator +
+                        "UpgradeOptions for " + ob.Key + separator +
+                        //"PossibleOrbBatNames" + ob.Key + separator +
+
+                        separator;  // ends with an empty column
+
+
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-OrbBat_(autoCreated).csv", e);
+                }
+
+                // End of OrbBat
+                #endregion OrbBat_To_CSV
+
 
                 // End of Autocreated files 
                 streamWriter.Close();
