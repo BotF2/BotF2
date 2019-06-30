@@ -68,6 +68,7 @@ namespace Supremacy.Combat
             //newCycleReduction = 1;
             //int maxScanStrengthOpposition = 0;
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
+
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 3)
             {
@@ -88,11 +89,13 @@ namespace Supremacy.Combat
                             ownerAssets.CombatShips.Remove(ship.Item1);
                             ownerAssets.NonCombatShips.Remove(ship.Item1);
                             _combatShips.Remove(ship);
+                            GameLog.Core.Test.DebugFormat("Easy retreated ={0}", ship.Item1.Name);
                         }
                     }
                 }
+                // other ships with retreat order have a lesser chance to retreat
                 var hardRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.ShipType != "Frigate") && (s.Item1.Source.OrbitalDesign.ShipType != "Scout"))
+                    .Where(s => s.Item1.IsCloaked != true && (s.Item1.Source.OrbitalDesign.ShipType != "Frigate") && (s.Item1.Source.OrbitalDesign.ShipType != "Scout"))
                     .Where(s => !s.Item1.IsDestroyed) //  Destroyed ships cannot retreat
                     .Where(s => GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
@@ -107,6 +110,7 @@ namespace Supremacy.Combat
                             ownerAssets.CombatShips.Remove(ship.Item1);
                             ownerAssets.NonCombatShips.Remove(ship.Item1);
                             _combatShips.Remove(ship);
+                            GameLog.Core.Test.DebugFormat("Hard retreated ={0}", ship.Item1.Name);
                         }
                     }
                 }
@@ -120,9 +124,33 @@ namespace Supremacy.Combat
                             combatShip.Item1.Source.ObjectID, combatShip.Item1.Name, combatShip.Item1.Source.Design, combatShip.Item1.IsCloaked);
                     }
                 }
+
+                //Resistance is futile, try assimilation before you attack then retreat if assimilated
+                bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.ShortName == "Borg");
+                bool assimilationSuccessful = false;
+                var notDaBorg = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg").Select(xborg => xborg).ToList();
+                if (foundDaBorg)
+                {
+                    foreach (var target in notDaBorg)
+                    {
+                        int chanceToAssimilate = RandomHelper.Random(100);
+                        assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
+                        if (target.Item1.Source is Ship && assimilationSuccessful)
+                        {
+                            var ownerAssets = GetAssets(target.Item1.Owner);
+                            if (!ownerAssets.EscapedShips.Contains(target.Item1)) // escaped ships cannot escape again
+                            {
+                                ownerAssets.EscapedShips.Add(target.Item1);
+                                ownerAssets.CombatShips.Remove(target.Item1);
+                                ownerAssets.NonCombatShips.Remove(target.Item1);
+                                _combatShips.Remove(target);
+                                GameLog.Core.Test.DebugFormat("Assimilated ={0}", target.Item1.Name);
+                            }
+                        }
+                    }
+                } 
             }
-            //_combatShipsTemp = new List<Tuple<CombatUnit, CombatWeapon[]>>();
-            //_combatShipsTemp.Clear();
+            // list of civs (owner ids) that are still in combat sector (going into combat) after retreat and assimilation - retreat
             List<int> ownerIDs = new List<int>();
             foreach (var tupleShip in _combatShips)
             {
@@ -1053,7 +1081,7 @@ namespace Supremacy.Combat
                 }
                 //..... END OF ATTACKING WHILE...
                 #endregion
-                // this while will fire on as many targets as nessecary to discharge attackingShips weapons fully
+                // this while loop will fire on as many targets as nessecary to discharge attackingShips weapons fully
                 //END OF ATTACKING WHILE
 
                 // Re-Initilazing start Variables for retaliation while
@@ -1702,15 +1730,16 @@ namespace Supremacy.Combat
                 ////_defaultCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
                 #endregion
                 break;
-            }// end to end combat
+            }
+            // break out of while loop end combat
              //End of Combat:
             foreach (var combatent in _combatShipsTemp) // now search for destroyed ships
             {
                 if (combatent.Item1.IsDestroyed)
                 {
-
                     var Assets = GetAssets(combatent.Item1.Owner);
-                    GameLog.Core.Combat.DebugFormat("Opposition {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
+                    Assets.AssimilatedShips.Remove(combatent.Item1);
+                    GameLog.Core.Combat.DebugFormat("Combatent {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
                     if (combatent.Item1.Source is Ship)
                     {
                         if (Assets != null)
@@ -1720,7 +1749,7 @@ namespace Supremacy.Combat
                             {
                                 Assets.DestroyedShips.Add(combatent.Item1);
                             }
-                            if (combatent.Item1.Source.IsCombatant)
+                                if (combatent.Item1.Source.IsCombatant)
                             {
                                 Assets.CombatShips.Remove(combatent.Item1);
                             }
@@ -1743,7 +1772,7 @@ namespace Supremacy.Combat
                 }
             }
 
-            //End the combat... at turn X = 5, by letting all sides reteat
+           // End the combat... at turn X = 5, by letting all sides reteat
             if (true) // End Combat after 3 While loops
             {
                 _roundNumber += 1;

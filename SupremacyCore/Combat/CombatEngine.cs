@@ -784,7 +784,6 @@ namespace Supremacy.Combat
                     var newfleet = ship.CreateFleet();
                     newfleet.Location = destination.Location;
                     newfleet.Owner = borg;
-
                     newfleet.SetOrder(FleetOrders.EngageOrder.Create());
                     if (newfleet.Order == null)
                     {

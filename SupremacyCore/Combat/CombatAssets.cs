@@ -129,7 +129,10 @@ namespace Supremacy.Combat
         {
             get { return CombatShips.Any() || NonCombatShips.Any() || ((Station != null) && !Station.IsDestroyed); }
         }
-
+         public bool HasEscapedAssets
+        {
+            get { return EscapedShips.Any(); }
+        }
         public void UpdateAllSources()
         {
             foreach (CombatUnit shipStats in _combatShips)
