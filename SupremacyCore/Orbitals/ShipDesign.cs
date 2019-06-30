@@ -200,7 +200,6 @@ namespace Supremacy.Orbitals
         /// <param name="element">The XML element.</param>
         public ShipDesign(XmlElement element) : base(element)
         {
-
             _possibleNames = new Dictionary<string, int>();
 
             if (element["ShipType"] != null)
@@ -439,7 +438,7 @@ namespace Supremacy.Orbitals
             var shipDesign = ship.ShipDesign.Name;
 
 
-            if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true)
+            if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true && civManager.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
             {
                 GameLog.Core.GameData.DebugFormat("{0}, {1}, {2}, {3}, {4}, {5}, ship highest tech level is {6} for {7}, exceeding current Techlevel",
 
