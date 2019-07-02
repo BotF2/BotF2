@@ -70,8 +70,9 @@ namespace Supremacy.Combat
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
 
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
-            if (_roundNumber < 3)
+            if (_roundNumber < 7) // multiplayer starts at round 5
             {
+                GameLog.Core.Test.DebugFormat("round# ={0} now", _roundNumber);
                 //  Once a ship has retreated, its important that it does not do it again..
                 var easyRetreatShips = _combatShips
                     .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.ShipType == "Frigate") || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
@@ -1729,6 +1730,11 @@ namespace Supremacy.Combat
                 //_oppositionCombatShips = _combatShips.Where(s => s.Item1.OwnerID == attacker.OwnerID).Select(s => s).ToList();
                 ////_defaultCombatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
                 #endregion
+                for (int i = 0; i < _combatShips.Count; i++)
+                {
+                    GameLog.Core.Test.DebugFormat("the _combatShip[i] ={0}", _combatShips[i].Item1.Name);
+                    GameLog.Core.Test.DebugFormat("_combatShipTemp[i] ={0}", _combatShipsTemp[i].Item1.Name);
+                }
                 break;
             }
             // break out of while loop end combat
@@ -1775,7 +1781,9 @@ namespace Supremacy.Combat
            // End the combat... at turn X = 5, by letting all sides reteat
             if (true) // End Combat after 3 While loops
             {
+                GameLog.Core.Combat.DebugFormat("round# ={0}", _roundNumber);
                 _roundNumber += 1;
+                GameLog.Core.Combat.DebugFormat("round# ={0} now", _roundNumber);
                 // _combatShips = _combatShipsTemp;
                 // NEW123 CHANGED TO TEMP, does this work?
                 var allRetreatShips = _combatShipsTemp // All non destroyed ships retreat (survive)
@@ -1790,6 +1798,7 @@ namespace Supremacy.Combat
                         var ownerAssets = GetAssets(ship.Item1.Owner);
                         if (!ownerAssets.EscapedShips.Contains(ship.Item1))
                         {
+                            GameLog.Core.Combat.DebugFormat("EscapedShips ={0}", ship.Item1.Name);
                             ownerAssets.EscapedShips.Add(ship.Item1);
                             ownerAssets.CombatShips.Remove(ship.Item1);
                             ownerAssets.NonCombatShips.Remove(ship.Item1);
