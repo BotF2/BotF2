@@ -1741,11 +1741,12 @@ namespace Supremacy.Combat
              //End of Combat:
             foreach (var combatent in _combatShipsTemp) // now search for destroyed ships
             {
+                GameLog.Core.Combat.DebugFormat("Combatent {0} {1} IsDestroid ={2} if true see second line, Hull ={3} ", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                 if (combatent.Item1.IsDestroyed)
                 {
                     var Assets = GetAssets(combatent.Item1.Owner);
                     Assets.AssimilatedShips.Remove(combatent.Item1);
-                    GameLog.Core.Combat.DebugFormat("Combatent {0} {1} ({2}) was destroyed", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.Source.Design);
+                    GameLog.Core.Combat.DebugFormat("Combatent {0} {1} IsDestroid ={2} the second line, Hull ={3}", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                     if (combatent.Item1.Source is Ship)
                     {
                         if (Assets != null)

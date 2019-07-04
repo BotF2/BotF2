@@ -467,7 +467,7 @@ namespace Supremacy.Combat
 
         public bool AllSidesStandDown() // ??? do we no longer care what the orders are - no longer have a second chance at setting orders?
         {
-            //GameLog.Core.Combat.DebugFormat("Now AllsideStandDown ={0} based on combat orders", AllSidesStandDown());
+            GameLog.Core.Combat.DebugFormat("Now AllsideStandDown? based on combat orders");
             foreach (var civAssets in _assets)
             {
                 // Combat ships
