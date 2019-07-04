@@ -94,19 +94,19 @@ namespace Supremacy.Combat
         //    set { _has20PlusPercentFastAttack = value; }
         //}
 
-        public Dictionary<string, int> EmpireStrengths
-        {
-            get
-            {
-                //GameLog.Core.Combat.DebugFormat("GET EmpireStrengths = {0}", _empireStrengths.ToString());
-                return _empireStrengths;
-            }
-            set
-            {
-                //GameLog.Core.Combat.DebugFormat("SET EmpireStrengths = {0}", value.ToString());
-                _empireStrengths = value;
-            }
-        }
+        //public Dictionary<string, int> EmpireStrengths
+        //{
+        //    get
+        //    {
+        //        //GameLog.Core.Combat.DebugFormat("GET EmpireStrengths = {0}", _empireStrengths.ToString());
+        //        return _empireStrengths;
+        //    }
+        //    set
+        //    {
+        //        //GameLog.Core.Combat.DebugFormat("SET EmpireStrengths = {0}", value.ToString());
+        //        _empireStrengths = value;
+        //    }
+        //}
 
         protected int CombatID
         {
@@ -178,7 +178,7 @@ namespace Supremacy.Combat
             get
             {
                 //GameLog.Core.Combat.DebugFormat("_roundNumber = {0}", _roundNumber);
-                //GameLog.Core.Combat.DebugFormat("_allSidesStandDown ={0}, IsCombatOver ={1} as HasSurvivingAssets ", _allSidesStandDown, (_assets.Count(assets => assets.HasSurvivingAssets) <= 1));
+                GameLog.Core.Combat.DebugFormat("_allSidesStandDown ={0}, IsCombatOver ={1} as HasSurvivingAssets ", _allSidesStandDown, (_assets.Count(assets => assets.HasSurvivingAssets) <= 1));
                 if (_allSidesStandDown)
                 {
                     return true;
@@ -560,7 +560,6 @@ namespace Supremacy.Combat
                 foreach (var civAsset in CivForEmpireStrength)
                 {
                     //GameLog.Core.Combat.DebugFormat("beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
-
                     int currentEmpireStrength = 0;
                    
                     foreach (var cs in _assets)  // only combat ships
@@ -642,10 +641,10 @@ namespace Supremacy.Combat
         {
             for (int i = 0; i < _assets.Count; i++)
             {
-                GameLog.Core.Combat.DebugFormat("Surviving assets for {0}? ={1}", _assets[i].Owner.Key, _assets[i].HasSurvivingAssets);
+                GameLog.Core.Combat.DebugFormat("Surviving assets in sector for {0}? ={1}", _assets[i].Owner.Key, _assets[i].HasSurvivingAssets);
                 if (!_assets[i].HasSurvivingAssets)
                 {
-                    GameLog.Core.Combat.DebugFormat("remove {0} asset", _assets[i].Owner.Key);
+                    GameLog.Core.Combat.DebugFormat("remove {0} asset from sector", _assets[i].Owner.Key);
                     _assets.RemoveAt(i--);
                 }
             }

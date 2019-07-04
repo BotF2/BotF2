@@ -346,7 +346,7 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
             {
-                if (target.CivID == -1 || target != null)
+                if (target.CivID == -1 || target == null)
                 {
                     targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
                 }
