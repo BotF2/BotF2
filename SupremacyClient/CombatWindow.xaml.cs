@@ -46,6 +46,7 @@ namespace Supremacy.Client
         private CombatAssets _playerAssets;
         private CombatAssets _otherAssets;
         private bool _targetTransports = false;
+        // CHANGE X
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
         private Civilization _onlyFireIfFiredAppone;
@@ -220,7 +221,7 @@ namespace Supremacy.Client
             HostileDestroyedItems.Items.Clear();
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
-
+            // CHANGE X
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
@@ -231,7 +232,7 @@ namespace Supremacy.Client
         private void PopulateUnitTrees()
         {
             ClearUnitTrees();
-
+            // CHANGE X
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
 
@@ -370,9 +371,7 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
-
         }
-
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
@@ -396,7 +395,7 @@ namespace Supremacy.Client
             }
             else TransportsButton.IsEnabled = false;
 
-            GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
+            //GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
             GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
 
         }

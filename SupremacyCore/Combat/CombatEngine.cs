@@ -94,19 +94,19 @@ namespace Supremacy.Combat
         //    set { _has20PlusPercentFastAttack = value; }
         //}
 
-        //public Dictionary<string, int> EmpireStrengths
-        //{
-        //    get
-        //    {
-        //        //GameLog.Core.Combat.DebugFormat("GET EmpireStrengths = {0}", _empireStrengths.ToString());
-        //        return _empireStrengths;
-        //    }
-        //    set
-        //    {
-        //        //GameLog.Core.Combat.DebugFormat("SET EmpireStrengths = {0}", value.ToString());
-        //        _empireStrengths = value;
-        //    }
-        //}
+        public Dictionary<string, int> EmpireStrengths
+        {
+            get
+            {
+                //GameLog.Core.Combat.DebugFormat("GET EmpireStrengths = {0}", _empireStrengths.ToString());
+                return _empireStrengths;
+            }
+            set
+            {
+                //GameLog.Core.Combat.DebugFormat("SET EmpireStrengths = {0}", value.ToString());
+                _empireStrengths = value;
+            }
+        }
 
         protected int CombatID
         {
@@ -341,7 +341,7 @@ namespace Supremacy.Combat
                 
                 var outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
                 List<int> dummyIDs = new List<int>();
-                dummyIDs.Add(777);
+                dummyIDs.Add(775);
                 dummyIDs.Add(888);
                 dummyIDs.Add(999);
                 outstandingOrders.AddRange(dummyIDs);
@@ -426,16 +426,17 @@ namespace Supremacy.Combat
                 {
                     RechargeWeapons();
                     ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
-                    //RemoveDefeatedPlayers();
+                    // CHANGE X FIRST AFTER BATTLE
+                    //RemoveDefeatedPlayers(); 
                 }
                 if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
                 {
                     PerformAssimilation();
                 }
-                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before PerformRetreat");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at PerformRetreat");
                 PerformRetreat();
 
-                //GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - before UpdateOrbitals");
+                GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at UpdateOrbitals");
                 UpdateOrbitals();
                 GameLog.Core.Combat.DebugFormat("If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
                 if (!IsCombatOver)
@@ -467,7 +468,7 @@ namespace Supremacy.Combat
 
         public bool AllSidesStandDown() // ??? do we no longer care what the orders are - no longer have a second chance at setting orders?
         {
-            GameLog.Core.Combat.DebugFormat("Now AllsideStandDown? based on combat orders");
+            //GameLog.Core.Combat.DebugFormat("Now AllsideStandDown ={0} based on combat orders", AllSidesStandDown());
             foreach (var civAssets in _assets)
             {
                 // Combat ships
@@ -560,6 +561,7 @@ namespace Supremacy.Combat
                 foreach (var civAsset in CivForEmpireStrength)
                 {
                     //GameLog.Core.Combat.DebugFormat("beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
+
                     int currentEmpireStrength = 0;
                    
                     foreach (var cs in _assets)  // only combat ships
@@ -584,9 +586,11 @@ namespace Supremacy.Combat
                     }
                     GameLog.Core.Combat.DebugFormat("At CivKey ={0} add empire strength ={1}", civAsset.Owner.Key, currentEmpireStrength);
                 }
-
-                foreach (var otherAsset in _assets) // _assets is all combat assest in sector while "asset" is the friendly (player) assets
+                // CHANGE X
+                foreach (var otherAsset in _assets) // _assets is all combat assest in sector while "otherAsset" is the "friendly" first asset
                 {
+
+                    //List<Orbital> = _assets.Where(ass => ass.CombatShips.FirstOrDefault() == )
                     if (otherAsset == playerAsset)
                         continue;
                     if (CombatHelper.WillFightAlongside(owner, otherAsset.Owner))
@@ -610,10 +614,10 @@ namespace Supremacy.Combat
                         _zeroFirePowers += 1;
                     }
                 }
-                GameLog.Core.Combat.DebugFormat("friendlyAssets {0}=0? or hostilAssets {1}=0? or an empirestrength =0? {2}", friendlyAssets.Count(), hostileAssets.Count(), (_zeroFirePowers >= 1));
+                GameLog.Core.Combat.DebugFormat("friendlyAssets {0}=0? or hostilAssets {1}=0? or an empirestrength =0? {2}", friendlyAssets.Count(), hostileAssets.Count(), (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)));
                 GameLog.Core.Combat.DebugFormat("if one true then _allSideStandDown = true and AsyncHeler invoke on _combatEndedCallback and break foreach of assets");
                 GameLog.Core.Combat.DebugFormat("if all false then update _combatID, round number, _allSidesStandDown, owner, location, friendly and hostile assets");
-                if (friendlyAssets.Count() == 0 || hostileAssets.Count() == 0 || (_zeroFirePowers >= 1))// number of empires with 0 fire power (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))                
+                if ((friendlyAssets.Count == 0 || hostileAssets.Count == 0) || (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0))) //(_zeroFirePowers >= 1))// number of empires with 0 fire power (_empireStrengths != null && _empireStrengths.All(e => e.Value == 0)))                
                 {
                     _allSidesStandDown = true;
                     AsyncHelper.Invoke(_combatEndedCallback, this);
@@ -639,9 +643,10 @@ namespace Supremacy.Combat
         /// </summary>
         private void RemoveDefeatedPlayers()
         {
+            // CHANGE X
             for (int i = 0; i < _assets.Count; i++)
             {
-                GameLog.Core.Combat.DebugFormat("Surviving assets in sector for {0}? ={1}", _assets[i].Owner.Key, _assets[i].HasSurvivingAssets);
+                GameLog.Core.Combat.DebugFormat("Surviving assets in sector {0}? ={1}", _assets[i].Owner.Key, _assets[i].HasSurvivingAssets);
                 if (!_assets[i].HasSurvivingAssets)
                 {
                     GameLog.Core.Combat.DebugFormat("remove {0} asset from sector", _assets[i].Owner.Key);
@@ -814,7 +819,7 @@ namespace Supremacy.Combat
         /// </summary>
         protected void PerformRetreat()
         {
-            try
+            try // CHANGE X
             {
                 GameLog.Core.Combat.DebugFormat("PerformRetreat begins");
                 foreach (var assets in _assets)
@@ -897,7 +902,8 @@ namespace Supremacy.Combat
                 var _targetTwo = _targetTwoByCiv[source.OwnerID].GetTargetTwo(source);
                 return _targetTwo;
             }
-            else return CombatHelper.GetDefaultHoldFireCiv();
+            else
+                return CombatHelper.GetDefaultHoldFireCiv();
         }
 
         protected abstract void ResolveCombatRoundCore();

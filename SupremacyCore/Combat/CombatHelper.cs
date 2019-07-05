@@ -310,7 +310,7 @@ namespace Supremacy.Combat
                 }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                //else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
+                ;
                 GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
@@ -322,8 +322,6 @@ namespace Supremacy.Combat
                 }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                //else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
-                //GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
@@ -346,7 +344,7 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
             {
-                if (target.CivID == -1 || target == null)
+                if (target.CivID == -1 || target == null) // UPDATE X 04 july 2019 manualy re-do update from ken, to fix targetTwo bug
                 {
                     targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
                 }
@@ -427,32 +425,11 @@ namespace Supremacy.Combat
             return (int)result;
         }
 
-        /// <summary>
-        /// returns the borg civilization if borg are in the game. If not then calls GetDefaultHoldFireCiv
-        /// </summary>
-        /// <returns></returns>
-        //public static Civilization TryGetBorgCiv()
-        //{
-        //    var _target = new Civilization();
-        //    if (borgInGame)
-        //    {
-        //        _target = GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).FirstOrDefault();
-        //    }
-        //    else _target = GetDefaultHoldFireCiv();
-
-        //    return _target;
-
-        //}
-
-        /// <summary>
-        /// returns the dummy civilization for computer player empires that do no chose targeting
-        /// </summary>
-        /// <returns></returns>
         public static Civilization GetDefaultHoldFireCiv()
         {
             Civilization _target = new Civilization();
             _target.ShortName = "DefaultHoldFireCiv";
-            _target.CivID = 777; // Where is that 777 used? In Supremacry Services there is the real 777
+            _target.CivID = 777; //_target.CivID = 778; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
             _target.Key = "DefaultHoldFireCiv";
 
             return _target;

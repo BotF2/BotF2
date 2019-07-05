@@ -1355,7 +1355,7 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
                 GameLog.Server.Combat.Error(e);
             }
-        }
+        } // CHANGE X TOTAL END HERE, WINDOW REMAINS
 
         public void SendCombatTarget1(CombatTargetPrimaries target1)
         {
@@ -1399,6 +1399,8 @@ namespace Supremacy.WCF
 
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
+
+            // CHANGE X HERE IS SOMETHING
             GameContext.PushThreadContext(_game);
 
             var player = _playerInfo.FromEmpireId(update.OwnerID);
@@ -1411,6 +1413,7 @@ namespace Supremacy.WCF
                 }
             }
 
+            // CHANGE X
             //No proper CombatAI, so just for now fake some orders
             else if (!engine.IsCombatOver && !update.Owner.IsHuman)
             {
@@ -1425,7 +1428,7 @@ namespace Supremacy.WCF
 
                 Civilization _target = new Civilization();
                 _target.ShortName = "DefaultHoldFireCiv";
-                _target.CivID = 777;
+                _target.CivID = 776; // CHANGE X AIS default CIV for Target ONE
                 _target.Key = "DefaultHoldFireCiv";
 
                 var blanketOrder = CombatOrder.Engage;
@@ -1458,7 +1461,7 @@ namespace Supremacy.WCF
                 {
                     lock (engine.SyncLock)
                     {
-                        if (engine.Ready)
+                        if (engine.Ready) // CHANGE X Position 2
                             engine.ResolveCombatRound();
                     }
 

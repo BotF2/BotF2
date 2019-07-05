@@ -30,14 +30,13 @@ namespace Supremacy.Combat
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
         private IList<CombatAssets> _hostileAssets;
-        //private Dictionary<Civilization, Civilization> _willTarget;
         private List<Object> _civList;
         private List<string> _civShortNameList;
         private List<string> _civFirePowerList;
         private List<Civilization> _civStatusList;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
-
+        // CHANGE X
         public CombatUpdate(int combatId,int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
             if (owner == null)
@@ -582,12 +581,12 @@ namespace Supremacy.Combat
             get { return _standoff; }
         }
         public bool CombatUpdate_IsCombatOver // This bool opens and closes the 'close' button and the combat order buttons
-        {// ? good or bad to add zer fire power to close combat window, OK as long a retreat works with zero fire power
+        {
             get
             {
                 if (_standoff)
                     return true;
-
+                // CHANGE X
                 int friendlyAssets = 0;
                 int hostileAssets = 0;
                 int currentCivStrength = 0;
@@ -597,7 +596,7 @@ namespace Supremacy.Combat
 
                     if (asset.HasSurvivingAssets)
                     {
-                        //GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", assets.CombatShips.Count);
+                        GameLog.Core.Combat.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", asset.CombatShips.Count);
                         friendlyAssets++;
                     }
                     //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
