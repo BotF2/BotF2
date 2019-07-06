@@ -666,13 +666,16 @@ namespace Supremacy.Tech
                         string prerequisitesCollection = "";
                         foreach (var prereq in PF.Prerequisites)
                         {
-                            prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                            foreach (var item in prereq)
+                            {
+                                prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                            }
                         }
                         //GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", PF.Key, prerequisitesCollection);
 
 
                         string upgradeDesign = "";
-                        foreach (var upgrade in PF.ObsoletedDesigns)
+                        foreach (var upgrade in PF.UpgradableDesigns)
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
@@ -1302,6 +1305,32 @@ namespace Supremacy.Tech
 
                     foreach (var shipyard in db.ShipyardDesigns)   // each shipyard
                     {
+                        string obsDesign = "";
+                        foreach (var obsolete in shipyard.ObsoletedDesigns)
+                        {
+                            obsDesign += obsolete.Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", shipyard.Key, obsDesign);
+
+
+                        string prerequisitesCollection = "";
+                        foreach (var prereq in shipyard.Prerequisites)
+                        {
+                            foreach (var item in prereq)
+                            {
+                                prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                            }
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", shipyard.Key, prerequisitesCollection);
+
+
+                        string upgradeDesign = "";
+                        foreach (var upgrade in shipyard.UpgradableDesigns)
+                        {
+                            upgradeDesign += upgrade.Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", shipyard.Key, upgradeDesign);
+
                         line =
                         "Shipyard" + separator +
                         shipyard.Key + separator +
@@ -1348,9 +1377,14 @@ namespace Supremacy.Tech
                         shipyard.BuildSlotEnergyCost + separator +
                         shipyard.MaxBuildTechLevel + separator +
                         shipyard.Restriction + separator +
-                        "Prerequisites for " + shipyard.Key + separator +
-                        "ObsoletedItems for " + shipyard.Key + separator +
-                        "UpgradeOptions for " + shipyard.Key
+
+                        prerequisitesCollection + separator +
+                        //"Prerequisites for " + shipyard.Key + separator +
+                        obsDesign + separator +
+                        //"ObsoletedItems for " + shipyard.Key + separator +
+                        upgradeDesign + separator +
+                        //"UpgradeOptions for " + shipyard.Key
+                        separator // emtpy colomn
                         ;
 
                         streamWriter.WriteLine(line);
@@ -1360,7 +1394,7 @@ namespace Supremacy.Tech
                 {
                     GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Shipyards_(autoCreated).csv", e);
                 }
-
+                
                 // End of Shipyards
                 #endregion Shipyards_To_CSV
 
@@ -1427,6 +1461,43 @@ namespace Supremacy.Tech
 
                     foreach (var station in db.StationDesigns)   // each shipyard
                     {
+                        if (station.Key == "ROM_STARBASE_I")  // just for testing - any problems for ROM_I or II ??
+                            GameLog.Core.Test.DebugFormat("{0} testing ", station.Key);
+
+                        string obsDesign = "";
+                        foreach (var obsolete in station.ObsoletedDesigns)
+                        {
+                            obsDesign += obsolete.Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", station.Key, obsDesign);
+
+
+                        string prerequisitesCollection = "";
+                        foreach (var prereq in station.Prerequisites)
+                        {
+                            foreach (var item in prereq)
+                            {
+                                prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                            }
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", station.Key, prerequisitesCollection);
+
+
+                        string upgradeDesign = "";
+                        foreach (var upgrade in station.UpgradableDesigns)
+                        {
+                            upgradeDesign += upgrade.Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", station.Key, upgradeDesign);
+
+                        //string possibleNames = "";
+                        //foreach (var possName in db.xxxx.)  // didn't find a way for station names
+                        //{
+                        //    possibleNames += possName.Key + ",";
+                        //}
+                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", station.Key, upgradeDesign);
+
+                        // --------------------------
                         line =
                         "Station" + separator +
                         station.Key + separator +
@@ -1481,7 +1552,7 @@ namespace Supremacy.Tech
                         "Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
                         station.PrimaryWeapon.Count + separator +
                         station.PrimaryWeapon.Damage + separator +
-                        station.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
+                        station.PrimaryWeapon.Refire /*+ "percent"*/ + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
 
 
                         "Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
@@ -1492,9 +1563,13 @@ namespace Supremacy.Tech
                         station.BuildOutput + separator +
 
                         // just placeholders at the moment for > other/outside replacements
-                        "Prerequisites for " + station.Key + separator +
-                        "ObsoletedItems for " + station.Key + separator +
-                        "UpgradeOptions for " + station.Key + separator +
+                        prerequisitesCollection + separator +
+                        //"Prerequisites for " + station.Key + separator +
+                        obsDesign + separator +
+                        //"ObsoletedItems for " + station.Key + separator +
+                        upgradeDesign + separator +
+                        //"UpgradeOptions for " + station.Key + separator +
+                        //possibleNames + separator +
                         "PossibleStationNames" + station.Key + separator +
 
                         separator;  // ends with an empty column
@@ -1575,6 +1650,32 @@ namespace Supremacy.Tech
 
                     foreach (var ob in db.OrbitalBatteryDesigns)   // each shipyard
                     {
+                        string obsDesign = "";
+                        foreach (var obsolete in ob.ObsoletedDesigns)
+                        {
+                            obsDesign += obsolete.Key + ",";
+                        }
+                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", ob.Key, obsDesign);
+
+
+                        //string prerequisitesCollection = "";
+                        //foreach (var prereq in shipyard.Prerequisites)
+                        //{
+                        //    foreach (var item in prereq)
+                        //    {
+                        //        prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                        //    }
+                        //}
+                        ////GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", shipyard.Key, prerequisitesCollection);
+
+
+                        string upgradeDesign = "";
+                        foreach (var upgrade in ob.UpgradableDesigns)
+                        {
+                            upgradeDesign += upgrade.Key + ",";
+                        }
+
+
                         line =
                         "OrbitalBattery" + separator +
                         ob.Key + separator +
@@ -1641,8 +1742,13 @@ namespace Supremacy.Tech
 
                         // just placeholders at the moment for > other/outside replacements
                         //"Prerequisites for " + ob.Key + separator +
-                        "ObsoletedItems for " + ob.Key + separator +
-                        "UpgradeOptions for " + ob.Key + separator +
+
+                        obsDesign + separator +
+                        //"ObsoletedItems for " + ob.Key + separator +
+
+                        upgradeDesign + separator +
+                        //"UpgradeOptions for " + ob.Key + separator +
+
                         //"PossibleOrbBatNames" + ob.Key + separator +
 
                         separator;  // ends with an empty column
