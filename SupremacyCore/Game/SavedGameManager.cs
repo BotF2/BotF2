@@ -88,6 +88,8 @@ namespace Supremacy.Game
                 else
                     fullPath = Path.Combine(SavedGameDirectory, FixFileName(fileName));
 
+                GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fullPath);
+
                 SavedGameHeader header;
                 using (var fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
