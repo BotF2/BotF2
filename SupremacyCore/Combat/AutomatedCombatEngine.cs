@@ -304,24 +304,7 @@ namespace Supremacy.Combat
             int returnFireFirepower = 0; // Amount of Firepower the other Empire had. Its the base for return fire
             int attackingRoundCounts = 0; // Counts during 2nd loop (Attacking Loop, how many runs there where)
             int countReturnFireLoop = 0;
-            //int shipCount = 0;
-            //for (int i = 0; i <11; i++)
-            //{
-            //    var testforShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == empiresInBattle[i, 0])
-            //           .Where(sc => sc.Item1.ReminingFirePower > 0).Select(sc => sc).ToList();
-            //    if(testforShips == null)
-            //    {
 
-            //    }
-            //    else
-            //    {
-            //        shipCount += 1;
-            //    }
-            //}
-            //if (shipCount < 2)
-            //{
-            //    activeBattle = false;
-            //}
             while (activeBattle == true)
             {
 
@@ -390,7 +373,7 @@ namespace Supremacy.Combat
                 {
                     howOftenContinued = 0;
 
-                    returnFireFirepower = AttackingShip.Item1.RemainingFirepower; // Tranfers Empire´s Attacking Ship Total Firepower to be the base for the other Empire return fire.
+                    returnFireFirepower = AttackingShip.Item1.RemainingFirepower; // Tranfers Empire´s Attacking Ship Total Firepower to be the base for the other Empire return fire.                  
                 }
                 //END NEW123
                 GameLog.Core.Combat.DebugFormat("Saved returnFirepower later used in next loop {0}", returnFireFirepower);
@@ -425,7 +408,7 @@ namespace Supremacy.Combat
                     {
                         currentTarget = currentTargets.RandomElementOrDefault();
                     }
-                    if (currentTarget == null)
+                    if (currentTarget == null || currentTargets.Count == 0) //
                     {
                         if (_combatStation != null)
                         {

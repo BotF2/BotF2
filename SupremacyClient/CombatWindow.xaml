@@ -97,8 +97,8 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                        Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>
-                        <TextBlock Text=" - FirePower: "/>
-                        <TextBlock Text="{Binding Path=FirePower}"/>
+                        <TextBlock Text=", Firepower: "/>
+                        <TextBlock Text="{Binding Path=Firepower}"/>
                         <TextBlock x:Name="DestroyedText"
                        Foreground="Crimson"
                        Margin="12,0,0,0"

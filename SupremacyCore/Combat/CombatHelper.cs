@@ -429,7 +429,7 @@ namespace Supremacy.Combat
         {
             Civilization _target = new Civilization();
             _target.ShortName = "DefaultHoldFireCiv";
-            _target.CivID = 777; //_target.CivID = 778; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
+            _target.CivID = 777; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
             _target.Key = "DefaultHoldFireCiv";
 
             return _target;

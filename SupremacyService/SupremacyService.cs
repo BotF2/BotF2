@@ -1428,7 +1428,7 @@ namespace Supremacy.WCF
 
                 Civilization _target = new Civilization();
                 _target.ShortName = "DefaultHoldFireCiv";
-                _target.CivID = 776; // CHANGE X AIS default CIV for Target ONE
+                _target.CivID = 777; // CHANGE X AIS default CIV for Target ONE
                 _target.Key = "DefaultHoldFireCiv";
 
                 var blanketOrder = CombatOrder.Engage;
