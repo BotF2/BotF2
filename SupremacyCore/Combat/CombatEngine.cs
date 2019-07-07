@@ -420,7 +420,7 @@ namespace Supremacy.Combat
             SendUpdates();
         }
 
-        private void SendUpdates()
+        protected void SendUpdates()
         {
             #region Out Commented
             //if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
@@ -459,13 +459,13 @@ namespace Supremacy.Combat
 
                             foreach (var ship in cs.CombatShips)
                             {
-                                currentEmpireStrength += ship.FirePower;
+                                currentEmpireStrength += ship.Firepower;
                                 //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
                                 //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                             }
 
                             if (cs.Station != null)
-                                currentEmpireStrength += cs.Station.FirePower;
+                                currentEmpireStrength += cs.Station.Firepower;
                             if (!_empireStrengths.Any(e => e.Key.ToString() == cs.Owner.ToString()))
                                 _empireStrengths.Add(civAsset.Owner.ToString(), currentEmpireStrength);
                         }
@@ -578,75 +578,6 @@ namespace Supremacy.Combat
                 //makes crash !!   _empireStrengths.Add(empire.Key, empire.Value);
             }
         }
-
-        /// <summary>
-        /// Determines whether the given ship is able to successfully retreat
-        /// </summary>
-        /// <param name="unit"></param>
-        /// <returns></returns>
-        //protected bool WasRetreateSuccessful(CombatUnit unit, bool oppositionIsRushing, bool oppositionIsInFormation, bool oppositionIsEngage, bool oppositonIsHailing, bool oppsoitionIsRetreating, bool oppsoitionIsRaidTransports, int weaponRatio)
-        //{
-        //    int chanceToRetreat = RandomHelper.Random(100);
-        //    int retreatChanceModifier = 0;
-
-        //    GameLog.Core.Combat.DebugFormat("Calculating retreat for {0} {1}", unit.Source.ObjectID, unit.Source.Name);
-
-        //    if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating) // If you go into formation or hailing or Retreating you are not in position to stop the opposition from retreating                   
-        //    {
-        //        GameLog.Core.Combat.DebugFormat("{0} {1} successfully retreated - opposition was in formation", unit.Source.ObjectID, unit.Source.Name);
-        //        return true;
-        //    }
-
-        //    if (weaponRatio > 6) // if you outgun the retreater they are less likely to get away
-        //    {
-        //        retreatChanceModifier = -10;
-        //        GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. - Modifier was {1}", weaponRatio, retreatChanceModifier);
-        //    }
-        //    //else if (weaponRatio > 3)
-        //    //{
-        //    //    retreatChanceModifier = -20;
-        //    //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -20 modifier", weaponRatio);
-        //    //}
-        //    //else if (weaponRatio > 1)
-        //    //{
-        //    //    retreatChanceModifier = -10;
-        //    //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. -10 modifier", weaponRatio);
-        //    //}
-        //    //else
-        //    //{
-        //    //    retreatChanceModifier = 0;
-        //    //    GameLog.Core.Combat.DebugFormat("Weapon ratio was {0}. 0 modifier", weaponRatio);
-        //    //}
-        //    if (oppositionIsEngage)
-        //    {
-        //        retreatChanceModifier += 15;
-        //        GameLog.Core.Combat.DebugFormat("Opposition is Engage. +15 modifier (now {0})", retreatChanceModifier);
-        //    }
-
-        //    if (oppositionIsRushing || oppsoitionIsRaidTransports) // if you rush the retreater they are less likely to get away
-        //    {
-        //        retreatChanceModifier += -10;
-        //        GameLog.Core.Combat.DebugFormat("Opposition is rushing. -10 modifier (now {0})", retreatChanceModifier);
-        //    }
-        //    if (_roundNumber > 2)
-        //    {
-        //        retreatChanceModifier += 25;
-        //        GameLog.Core.Combat.DebugFormat("If round is 3 or more. +25 to modifier (now {0})", retreatChanceModifier);
-        //    }
-        //    //if (oppositionIsInFormation || oppositonIsHailing || oppsoitionIsRetreating)
-        //    //    return true;
-
-        //    if (chanceToRetreat <= (BaseChanceToRetreat * 100) + retreatChanceModifier)
-        //    {
-        //        GameLog.Core.Combat.DebugFormat("{0} {1} succesfully retreated", unit.Source.ObjectID, unit.Source.Name);
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        GameLog.Core.Combat.DebugFormat("{0} {1} failed to retreat", unit.Source.ObjectID, unit.Source.Name);
-        //        return false;
-        //    }
-        //}
 
         /// <summary>
         /// Performs the assimilation of ships that have been assimilated

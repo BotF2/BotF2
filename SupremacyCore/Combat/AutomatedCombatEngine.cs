@@ -32,7 +32,7 @@ namespace Supremacy.Combat
         protected override void ResolveCombatRoundCore()
         {
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
-
+            bool activeBattle = true; // false when less than two civs remaining
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
             if (_roundNumber < 7) // multiplayer starts at round 5
             {
@@ -55,6 +55,7 @@ namespace Supremacy.Combat
                             ownerAssets.NonCombatShips.Remove(ship.Item1);
                             _combatShips.Remove(ship);
                             GameLog.Core.Test.DebugFormat("Easy retreated ={0}", ship.Item1.Name);
+                            //SendUpdates();
                         }
                     }
                 }
@@ -202,6 +203,11 @@ namespace Supremacy.Combat
                     {
                         while (true)
                         {
+                            if (allparticipatings.Count() < 2)
+                            {
+                                activeBattle = false;
+                                break;
+                            }      
                             empiresInBattle[q, 1] = allparticipatings.RandomElement();
                             if (empiresInBattle[q, 1] == empiresInBattle[q, 0])
                             {
@@ -224,6 +230,11 @@ namespace Supremacy.Combat
                     {
                         while (true)
                         {
+                            if (allparticipatings.Count() < 2)
+                            {
+                                activeBattle = false;
+                                break;
+                            }
                             empiresInBattle[q, 2] = allparticipatings.RandomElement();
                             if (empiresInBattle[q, 2] == empiresInBattle[q, 0])
                             {
@@ -283,7 +294,7 @@ namespace Supremacy.Combat
             int TargetOneORTwo = 1; // starts with attacking first target
                                     //int shipFirepower = 0;
             int howOftenContinued = 0;
-            bool activeBattle = true;
+            
             GameLog.Core.Combat.DebugFormat("Main While is starting");
 
             #region top of Battle while loop to attacker while loop
@@ -293,8 +304,27 @@ namespace Supremacy.Combat
             int returnFireFirepower = 0; // Amount of Firepower the other Empire had. Its the base for return fire
             int attackingRoundCounts = 0; // Counts during 2nd loop (Attacking Loop, how many runs there where)
             int countReturnFireLoop = 0;
+            //int shipCount = 0;
+            //for (int i = 0; i <11; i++)
+            //{
+            //    var testforShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == empiresInBattle[i, 0])
+            //           .Where(sc => sc.Item1.ReminingFirePower > 0).Select(sc => sc).ToList();
+            //    if(testforShips == null)
+            //    {
+
+            //    }
+            //    else
+            //    {
+            //        shipCount += 1;
+            //    }
+            //}
+            //if (shipCount < 2)
+            //{
+            //    activeBattle = false;
+            //}
             while (activeBattle == true)
             {
+
                 returnFireFirepower = 0;
 
                 if (TargetOneORTwo == 3) // if trying to attack target three (not available), target empire one again
@@ -311,12 +341,12 @@ namespace Supremacy.Combat
                 // Search for the next fitting ship, that is of the targeted empire AND has Hull > 0
 
                 var AttackingShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
-                                    .Where(sc => sc.Item1.ReminingFirePower > 0).Select(sc => sc).ToList();
+                                    .Where(sc => sc.Item1.RemainingFirepower > 0).Select(sc => sc).ToList();
                 var AttackingShip = AttackingShips.FirstOrDefault();
-                if (AttackingShips != null)
+                if (AttackingShips.Count > 0 && AttackingShips != null)
                 {
                     AttackingShip = AttackingShips.RandomElementOrDefault();
-                    GameLog.Core.Combat.DebugFormat("Current Attacking Ship {0}", AttackingShip.Item1.Name);
+                   GameLog.Core.Combat.DebugFormat("Current Attacking Ship {0}", AttackingShip.Item1.Name);
                 }
                 // COUNT ACTICE FIREROUND PER EMPIRE
                 shipsPerEmpire[indexOfAttackerEmpires, 2] += 1;
@@ -360,7 +390,7 @@ namespace Supremacy.Combat
                 {
                     howOftenContinued = 0;
 
-                    returnFireFirepower = AttackingShip.Item1.ReminingFirePower; // Tranfers Empire´s Attacking Ship Total Firepower to be the base for the other Empire return fire.
+                    returnFireFirepower = AttackingShip.Item1.RemainingFirepower; // Tranfers Empire´s Attacking Ship Total Firepower to be the base for the other Empire return fire.
                 }
                 //END NEW123
                 GameLog.Core.Combat.DebugFormat("Saved returnFirepower later used in next loop {0}", returnFireFirepower);
@@ -408,14 +438,24 @@ namespace Supremacy.Combat
                                 if (remainingFirepowerInWhile > 0)
                                 {
                                     // let this AttackShip "RemainingFirepower" be returnFireFirepower
-                                    AttackingShip.Item1.ReminingFirePower = remainingFirepowerInWhile;
+                                    AttackingShip.Item1.RemainingFirepower = remainingFirepowerInWhile;
                                     GameLog.Core.Combat.DebugFormat("No more target found in AttackingLoop. Trying to update for ship Name: {0} with remaining firepower = {1}", AttackingShip.Item1.Name, remainingFirepowerInWhile);
+                                    var testAttackingShip = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
+                                            .Where(sc => sc.Item1.RemainingFirepower > 0).Select(sc => sc).ToList();
                                     break;
                                     // use Gamelog/test that ship needs to have reduced weapons in _combatShipsTemp
                                 }
-                                else
+                                else  
                                 {
+                                    AttackingShip.Item1.RemainingFirepower = 0;//remainingFirepowerInWhile;
+                                    GameLog.Core.Combat.DebugFormat("No more target found in AttackingLoop. Trying to update for ship Name: {0} with remaining firepower = {1}", AttackingShip.Item1.Name, remainingFirepowerInWhile);
+                                    var testAttackingShip = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
+                                            .Where(sc => sc.Item1.RemainingFirepower > 0).Select(sc => sc).ToList();
                                     GameLog.Core.Combat.DebugFormat("Loop for finding an Target(s) for Attacking Ship starts BREAKS because no target found");
+                                    if (testAttackingShip != null)
+                                    {
+
+                                    }
                                     break; // VERY NEW
                                 }
                             }
@@ -472,11 +512,11 @@ namespace Supremacy.Combat
                     double combatOrderBonusMalus = 0;
                     // Engage
                     if (attackerOrder == CombatOrder.Engage && (defenderOrder == CombatOrder.Rush || defenderOrder == CombatOrder.Formation))
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.ReminingFirePower * 0.08;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.08;
                     // RAID
                     if (attackerOrder == CombatOrder.Transports && defenderOrder != CombatOrder.Formation) // if Raid, and no Formation select Transportships to be targeted
                     {
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.ReminingFirePower * 0.02;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.02;
                         currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                             .Where(sc => sc.Item1.HullStrength > 0)
                             .Where(sc => sc.Item1.Source.OrbitalDesign.ShipType.Contains("Transport"))
@@ -489,7 +529,7 @@ namespace Supremacy.Combat
                             currentTarget = currentTargets.RandomElementOrDefault();
                         }
                         if (attackerOrder == CombatOrder.Transports && defenderOrder == CombatOrder.Engage)
-                            combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.ReminingFirePower * 0.08; // even more weapon Bonus if defender is Engaging
+                            combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.08; // even more weapon Bonus if defender is Engaging
                     }
                     else if ((attackerOrder == CombatOrder.Transports && defenderOrder == CombatOrder.Formation && _combatStation is null)) // IF Raiding and Defender is doing combat Formating, let Frigates protect Transports
                     {
@@ -515,10 +555,10 @@ namespace Supremacy.Combat
                     }
                     // Rush
                     if (attackerOrder == CombatOrder.Rush && (defenderOrder == CombatOrder.Retreat || defenderOrder == CombatOrder.Transports))
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.ReminingFirePower * 0.10;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.10;
                     // Formation
                     if (attackerOrder == CombatOrder.Formation && (defenderOrder == CombatOrder.Transports || defenderOrder == CombatOrder.Rush))
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.ReminingFirePower * 0.12;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.12;
                     Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
                     if (
@@ -541,7 +581,7 @@ namespace Supremacy.Combat
                         && !currentTarget.Item1.Source.Design.Key.Contains("PROBE")
                         && !currentTarget.Item1.Source.Design.Key.Contains("DIAMOND"))
                                                         )
-                        ScissorBonus = AttackingShip.Item1.ReminingFirePower * 0.2; // 20 % Scissor Bonus
+                        ScissorBonus = AttackingShip.Item1.RemainingFirepower * 0.2; // 20 % Scissor Bonus
                                                                                     // BOnus/Malus is applied to damage sum
                     GameLog.Core.Combat.DebugFormat("follogwing Bonus/Malus a) due to Order: = {0}, b) due to Scissor = {1}", combatOrderBonusMalus, ScissorBonus);
                     // Do we have more Weapons then target has shields? FirepowerRemains... /// NEW123 added combatOrderBonusMallus and other changes // Maneuverability 8 = 33% more shields. 1 = 4% more shields
@@ -559,7 +599,7 @@ namespace Supremacy.Combat
                             {
                                 weapon.Discharge();
                             }
-                            AttackingShip.Item1.ReminingFirePower = 0;
+                            AttackingShip.Item1.RemainingFirepower = 0;
                         } // Otherwise we have yet another run with remainingFirepowerinWhile
                         else
                         {
@@ -572,7 +612,7 @@ namespace Supremacy.Combat
                     {
                         // If first run and target can absorb full damage
                         if ((currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength) * (1 + (currentTarget.Item1.Source.GetManeuverablility() / 0.24) / 100) >
-                            AttackingShip.Item1.ReminingFirePower * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus))
+                            AttackingShip.Item1.RemainingFirepower * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus))
                         {
                             rememberForDamage = remainingFirepowerInWhile;
                             remainingFirepowerInWhile = -1;
@@ -585,7 +625,7 @@ namespace Supremacy.Combat
                         else
                         {
                             // CHANGE X need to fix bonusstuff
-                            remainingFirepowerInWhile = Convert.ToInt32(AttackingShip.Item1.ReminingFirePower * sourceAccuracy) + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
+                            remainingFirepowerInWhile = Convert.ToInt32(AttackingShip.Item1.RemainingFirepower * sourceAccuracy) + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
                                     - (currentTarget.Item1.ShieldStrength + currentTarget.Item1.HullStrength);
                             remainingFirepowerInWhile = remainingFirepowerInWhile - Convert.ToInt32((Convert.ToDouble(remainingFirepowerInWhile) * sourceAccuracy)) - (Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus));
                             GameLog.Core.Combat.DebugFormat("its the first run on a target, an weapons remain RemainingFirepowerInWhile == {0}", remainingFirepowerInWhile);
@@ -598,11 +638,11 @@ namespace Supremacy.Combat
                     }
                     else
                     {
-                        currentTarget.Item1.TakeDamage((int)(AttackingShip.Item1.ReminingFirePower
+                        currentTarget.Item1.TakeDamage((int)(AttackingShip.Item1.RemainingFirepower
                             * Convert.ToInt32(1.5 - targetDamageControl) * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus))); // minimal damage of 50 included
                     }
                     GameLog.Core.Combat.DebugFormat("In Attacking Round {0}, the EmpireID {1} just fired", attackingRoundCounts, AttackingEmpireID);
-                    GameLog.Core.Combat.DebugFormat("now damage has just been applies either remainingFirepowerinWhile when addtional run {0} OR full shipsFirepower + Bonuses {1}", rememberForDamage, AttackingShip.Item1.ReminingFirePower);
+                    GameLog.Core.Combat.DebugFormat("now damage has just been applies either remainingFirepowerinWhile when addtional run {0} OR full shipsFirepower + Bonuses {1}", rememberForDamage, AttackingShip.Item1.RemainingFirepower);
 
                     ////weapon.Discharge(); needed yes or no?
                     //END NEW123
@@ -649,7 +689,7 @@ namespace Supremacy.Combat
                     if (needAdditionalAttackingShip)
                     {
                         AttackingShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
-                        .Where(sc => sc.Item1.FirePower > 0).Select(sc => sc).ToList();
+                        .Where(sc => sc.Item1.Firepower > 0).Select(sc => sc).ToList();
                         if (AttackingShips != null)
                         {
                             AttackingShip = AttackingShips.RandomElementOrDefault();
@@ -662,7 +702,7 @@ namespace Supremacy.Combat
                     }
 
                     GameLog.Core.Combat.DebugFormat("First Attacking Ship for RETURN FIRE found {0}", AttackingShip.Item1.Name);
-                    if (returnFireFirepower < AttackingShip.Item1.ReminingFirePower) // If AttackingShip can supply the required Weapons, we don´t need another attacking ship
+                    if (returnFireFirepower < AttackingShip.Item1.RemainingFirepower) // If AttackingShip can supply the required Weapons, we don´t need another attacking ship
                     {
                         needAdditionalAttackingShip = false;
                         applyDamage = returnFireFirepower;
@@ -672,7 +712,7 @@ namespace Supremacy.Combat
                     else // we need another attacking ship, later, for the remaining returnFireFirepower
                     {
                         needAdditionalAttackingShip = true;
-                        applyDamage = AttackingShip.Item1.ReminingFirePower;
+                        applyDamage = AttackingShip.Item1.RemainingFirepower;
                         returnFireFirepower = returnFireFirepower - applyDamage;
                         GameLog.Core.Combat.DebugFormat("Need more ships to apply full retailiation firepower: firepower left: {0}, applied first: {1}", returnFireFirepower, applyDamage);
                     }
@@ -694,7 +734,7 @@ namespace Supremacy.Combat
                                 if (returnFireFirepower > 0)
                                 {
                                     // let this AttackShip "RemainingFirepower" be returnFireFirepower
-                                    AttackingShip.Item1.ReminingFirePower = returnFireFirepower;
+                                    AttackingShip.Item1.RemainingFirepower = returnFireFirepower;
                                     GameLog.Core.Combat.DebugFormat("We have no more targets, but still firepower to retaliate =  {0}, save it to Ship {1} BREAK", returnFireFirepower, AttackingShip.Item1.Name);
                                     // use Gamelog/test that ship needs to have reduced weapons in _combatShipsTemp
                                     break;
@@ -849,7 +889,7 @@ namespace Supremacy.Combat
                             {
                                 weapon.Discharge();
                             }
-                            AttackingShip.Item1.ReminingFirePower = 0;
+                            AttackingShip.Item1.RemainingFirepower = 0;
                             // SETTING SHIP WEAPONS TO 0
                             foreach (var ship in _combatShipsTemp)
                             {
@@ -875,7 +915,7 @@ namespace Supremacy.Combat
                             {
                                 weapon.Discharge();
                             }
-                            AttackingShip.Item1.ReminingFirePower = 0;
+                            AttackingShip.Item1.RemainingFirepower = 0;
                             GameLog.Core.Combat.DebugFormat("Retailiation completed in first run");
                         }
                         else

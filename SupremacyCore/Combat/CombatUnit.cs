@@ -59,8 +59,8 @@ namespace Supremacy.Combat
             _sourceId = source.ObjectID;
             _ownerId = source.OwnerID;
             _hullStrength = source.HullStrength.CurrentValue;
-            _firepower = 100; // ToDo
-            _remainingFirepower = 100;
+            _firepower = (source.OrbitalDesign.PrimaryWeapon.Damage * source.OrbitalDesign.PrimaryWeapon.Count) + (source.OrbitalDesign.SecondaryWeapon.Damage * source.OrbitalDesign.SecondaryWeapon.Count);
+            _remainingFirepower = _firepower;
             _shieldStrength = source.ShieldStrength.CurrentValue;
             _name = source.Name;
         }
@@ -106,24 +106,18 @@ namespace Supremacy.Combat
             get { return _ownerId; }
         }
 
-        public int FirePower
+        public int Firepower
         {
             get
             {
-                var _unit = Source.OrbitalDesign;
-                _firepower = (_unit.PrimaryWeapon.Damage * _unit.PrimaryWeapon.Count) + (_unit.SecondaryWeapon.Damage * _unit.SecondaryWeapon.Count);
-                //GameLog.Core.CombatDetails.DebugFormat("{0} has FirePower = {1}", _unit.Key, _firepower);
                 return _firepower; 
             }
         }
-        public int ReminingFirePower
+
+        public int RemainingFirepower
         {
             get
             {
-                _remainingFirepower = FirePower;
-                //var _unit = Source.OrbitalDesign;
-                //_firepower = (_unit.PrimaryWeapon.Damage * _unit.PrimaryWeapon.Count) + (_unit.SecondaryWeapon.Damage * _unit.SecondaryWeapon.Count);
-                ////GameLog.Core.CombatDetails.DebugFormat("{0} has FirePower = {1}", _unit.Key, _firepower);
                 return _remainingFirepower;
             }
             set

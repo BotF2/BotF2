@@ -68,13 +68,13 @@ namespace Supremacy.Combat
                     {
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _friendlyEmpireStrength =    Convert.ToInt32(
-                                Convert.ToDouble(_friendlyEmpireStrength + cs.FirePower)
+                                Convert.ToDouble(_friendlyEmpireStrength + cs.Firepower)
                                 + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
                                 * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
                                 );
            
                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
-                            cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _friendlyEmpireStrength);
+                            cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Firepower, _friendlyEmpireStrength);
                     }
 
                     // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
@@ -82,7 +82,7 @@ namespace Supremacy.Combat
                     {
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _friendlyEmpireStrength =   Convert.ToInt32(
-                                Convert.ToDouble(_friendlyEmpireStrength + ncs.FirePower)
+                                Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
                                 + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
                                 * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
                                 );
@@ -93,7 +93,7 @@ namespace Supremacy.Combat
                         
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _friendlyEmpireStrength =     Convert.ToInt32(
-                                Convert.ToDouble(_friendlyEmpireStrength + fa.Station.FirePower)
+                                Convert.ToDouble(_friendlyEmpireStrength + fa.Station.Firepower)
                                 + Convert.ToDouble(fa.Station.ShieldStrength + fa.Station.HullStrength)
                                 );
 
@@ -117,7 +117,7 @@ namespace Supremacy.Combat
                        // _allHostileEmpireStrength += cs.FirePower;
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _allHostileEmpireStrength =   Convert.ToInt32(
-                                Convert.ToDouble(_allHostileEmpireStrength + cs.FirePower)
+                                Convert.ToDouble(_allHostileEmpireStrength + cs.Firepower)
                                 + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
                                 * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
                                 );
@@ -130,7 +130,7 @@ namespace Supremacy.Combat
                     {
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _allHostileEmpireStrength =   Convert.ToInt32(
-                                Convert.ToDouble(_allHostileEmpireStrength + ncs.FirePower)
+                                Convert.ToDouble(_allHostileEmpireStrength + ncs.Firepower)
                                 + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
                                 * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
                                 );
@@ -140,7 +140,7 @@ namespace Supremacy.Combat
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         //_allHostileEmpireStrength += ha.Station.FirePower;
                         _allHostileEmpireStrength =  Convert.ToInt32(
-                                Convert.ToDouble(_allHostileEmpireStrength + ha.Station.FirePower)
+                                Convert.ToDouble(_allHostileEmpireStrength + ha.Station.Firepower)
                                 + Convert.ToDouble(ha.Station.ShieldStrength + ha.Station.HullStrength)
                                 );
 
@@ -413,7 +413,7 @@ namespace Supremacy.Combat
                         if (civShortName == cs.Owner.ShortName)
                         {
                             // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.FirePower))
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.Firepower))
                                 + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength))
                                 * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
@@ -424,7 +424,7 @@ namespace Supremacy.Combat
                         if (civShortName == ncs.Owner.ShortName)
                         {
                             // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.FirePower))
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.Firepower))
                                 + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
                                 * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
@@ -434,7 +434,7 @@ namespace Supremacy.Combat
                     if (ha.Station != null)  //  station
                     {
                         // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                        otherCivStrength = otherCivStrength + ha.Station.FirePower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+                        otherCivStrength = otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
                         _otherAssetsLocal.Remove(ha);
                     }
                 }
@@ -492,7 +492,7 @@ namespace Supremacy.Combat
                         if (civShortName == cs.Owner.ShortName)
                         {
                             // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.FirePower)) 
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.Firepower)) 
                                 + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength)) 
                                 * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
@@ -503,7 +503,7 @@ namespace Supremacy.Combat
                         if (civShortName == ncs.Owner.ShortName)
                         {
                             // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.FirePower))
+                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.Firepower))
                                 + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
                                 * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
@@ -513,7 +513,7 @@ namespace Supremacy.Combat
                     if (ha.Station != null)  //  station
                     {
                         // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                        otherCivStrength = otherCivStrength + ha.Station.FirePower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+                        otherCivStrength = otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
                         _otherAssetsLocal.Remove(ha);
                     }
                 }
@@ -602,12 +602,12 @@ namespace Supremacy.Combat
                     //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
                     foreach (var ship in asset.CombatShips)
                     {
-                        currentCivStrength += ship.FirePower;
+                        currentCivStrength += ship.Firepower;
                         //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
                         //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                     }
                     if (asset.Station != null)
-                        currentCivStrength += asset.Station.FirePower;
+                        currentCivStrength += asset.Station.Firepower;
                 }
                 //GameLog.Print("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
                 if (friendlyAssets == 0 || currentCivStrength == 0)
@@ -625,12 +625,12 @@ namespace Supremacy.Combat
                     }
                     foreach (var ship in asset.CombatShips)
                     {
-                        currentCivStrength += ship.FirePower;
+                        currentCivStrength += ship.Firepower;
                         //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
                         //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
                     }
                     if (asset.Station != null)
-                        currentCivStrength += asset.Station.FirePower;
+                        currentCivStrength += asset.Station.Firepower;
                 }
 
                 if (hostileAssets == 0 || currentCivStrength == 0)
