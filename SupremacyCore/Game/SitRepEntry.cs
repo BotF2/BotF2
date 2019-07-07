@@ -67,7 +67,6 @@ namespace Supremacy.Game
         NewInfiltrate = 0x00000200,
         SpecialEvent = 0x00000400,
         FirstContact = 0x00000800,
-        //AdvisorEvent = 0x00001000,
     }
 
     /// <summary>
@@ -593,7 +592,6 @@ namespace Supremacy.Game
             _destroyedFoodReserves = destroyedFoodReserves;
         }
     }
-
     [Serializable]
     public class FoodReservesDestroyedAttackerSitRepEntry : SitRepEntry
     {
@@ -631,53 +629,6 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("colony");
             _systemId = target.System.ObjectID;
             _destroyedFoodReserves = destroyedFoodReserves;
-        }
-    }
-
-    [Serializable]
-    public class AdvisorEventNewTradeRouteSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemOneId;
-        private readonly int _systemTwoId;
-        private readonly int _otherStuff;
-
-        public StarSystem SystemOne
-        {
-            get { return GameContext.Current.Universe.Objects[_systemOneId] as StarSystem; }
-        }
-        public StarSystem SystemTwo
-        {
-            get { return GameContext.Current.Universe.Objects.}//Objects[_systemTwoId] as StarSystem; }
-        }
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.SpecialEvent; }
-        }
-
-        public override string SummaryText
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("TRADE_ROUTE_ADVISOR"),
-                    _otherStuff, SystemOne.Name, SystemTwo.Name);
-            }
-        }
-
-        public override bool IsPriority
-        {
-            get { return true; }
-        }
-
-        public AdvisorEventNewTradeRouteSitRepEntry(Civilization owner, Colony tradeColonyOne,Colony tradeColonyTwo, int otherStuff)
-            : base(owner, SitRepPriority.Red)
-        {
-            if (tradeColonyOne == null)
-                throw new ArgumentNullException("colony");
-            if (tradeColonyTwo == null)
-                throw new ArgumentNullException("colony");
-            _systemOneId = tradeColonyOne.System.ObjectID;
-            _systemTwoId = tradeColonyTwo.System.ObjectID;
-            _otherStuff = otherStuff;
         }
     }
 
