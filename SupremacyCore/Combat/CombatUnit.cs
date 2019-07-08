@@ -33,6 +33,8 @@ namespace Supremacy.Combat
         private int _cloakStrength = 0;
         private int _camouflagedStrength = 0;
         private int _scanStrength = 0;
+        private double _accuracy = 0d;
+        private double _damageControl = 0d;
 
         protected CombatUnit(System.Collections.Generic.IEnumerable<Ship> ship) { }
 
@@ -63,6 +65,8 @@ namespace Supremacy.Combat
             _remainingFirepower = _firepower;
             _shieldStrength = source.ShieldStrength.CurrentValue;
             _name = source.Name;
+            _accuracy = source.GetAccuracyModifier();
+            _damageControl = source.GetDamageControlModifier();
         }
 
         public Orbital Source
@@ -110,7 +114,7 @@ namespace Supremacy.Combat
         {
             get
             {
-                return _firepower; 
+                return _firepower;
             }
         }
 
@@ -126,6 +130,15 @@ namespace Supremacy.Combat
             }
         }
 
+        public double Accuracy
+        {
+            get { return _accuracy; }
+        }
+
+        public double DamageControl
+        {
+            get { return _damageControl; }
+        } 
         public int HullStrength
         {
             get { return _hullStrength; }
