@@ -31,6 +31,7 @@ namespace Supremacy.Combat
         }
         protected override void ResolveCombatRoundCore()
         {
+            
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
             bool activeBattle = true; // false when less than two civs remaining
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
@@ -363,7 +364,7 @@ namespace Supremacy.Combat
                         AttackingShip = null;
                     }
                 }
-                if (targetedEmpireID == 999 || targetedEmpireID == 777) // UPDATE X 03 july 2019 changed to 777 (those don´t fire) but 888s do.
+                if (targetedEmpireID == 999 || targetedEmpireID == 777 || targetedEmpireID == 888) // UPDATE X 10 july 2019 added 888
                 {
                     AttackingShip = null; // refue to fire activly, if user / AI sais so
                 }
@@ -472,6 +473,9 @@ namespace Supremacy.Combat
                             }
 
                         }
+                        // If target is null or == 0
+                        GameLog.Core.Combat.DebugFormat("Coudn´t find a target in attacker run. BREAK");
+                        break;
                     }
                     //if (currentTarget is null || currentTargets.Count == 0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
                     //{
@@ -662,11 +666,11 @@ namespace Supremacy.Combat
                             rememberForDamage = Convert.ToInt32(AttackingShip.Item1.RemainingFirepower);  // Change X
                             remainingFirepowerInWhile = -1;
                             GameLog.Core.Combat.DebugFormat("its the run on the first target in attacking loop and it can already absorb all weapons");
-                            foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire)) // Discharge Weapons
-                            {
-                                weapon.Discharge();
-                                AttackingShip.Item1.RemainingFirepower = 0; // Set remaining firepower to 0
-                            }
+                            //foreach (var weapon in AttackingShip.Item2.Where(w => w.CanFire)) // Discharge Weapons
+                            //{
+                            //    weapon.Discharge();
+                            //    AttackingShip.Item1.RemainingFirepower = 0; // Set remaining firepower to 0 // Uupdate X 10 july 2019 do not drain weapons before fireing
+                            //}
                         }
                         else
                         {
@@ -680,29 +684,32 @@ namespace Supremacy.Combat
                     }
                     // Fire Weapons, inflict damage. Either with all calculated bonus/malus. Or if this was done last turn, use remainingFirepower (if any)
                     Random zufall = new Random();
+                    double tempDamage = 0;
                     if (remainingFirepowerInWhile == 1)
                     {
-                        currentTarget.Item1.TakeDamage((int)((rememberForDamage + Convert.ToInt32(ScissorBonus)
-                            + Convert.ToDouble(combatOrderBonusMalus))
+                        currentTarget.Item1.TakeDamage((int)(Convert.ToInt32(tempDamage= 
+                            (rememberForDamage + Convert.ToInt32(ScissorBonus)
+                            + Convert.ToDouble(combatOrderBonusMalus)
                             * Convert.ToDouble(1.5 - targetDamageControl) 
                             * Convert.ToDouble(1 - currentTarget.Item1.Source.GetManeuverablility() / 0.24 / 100)
                             * sourceAccuracy * (zufall.Next(8,13)/10)
-                            ));// * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
+                            ))));// * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
                         AttackingShip.Item1.RemainingFirepower = 0;
                     }
                     else
                     {
-                        currentTarget.Item1.TakeDamage((int)((AttackingShip.Item1.RemainingFirepower + Convert.ToInt32(ScissorBonus)
-                            + Convert.ToDouble(combatOrderBonusMalus))
+                        currentTarget.Item1.TakeDamage((int)(Convert.ToInt32(tempDamage =
+                            (AttackingShip.Item1.RemainingFirepower + Convert.ToInt32(ScissorBonus)
+                            + Convert.ToDouble(combatOrderBonusMalus)
                             * Convert.ToDouble(1.5 - targetDamageControl)
                             * Convert.ToDouble(1 - currentTarget.Item1.Source.GetManeuverablility() / 0.24 / 100)
-                            * sourceAccuracy * (zufall.Next(8,13)/10)
-                            )); // minimal damage of 50 included
+                            * sourceAccuracy * (zufall.Next(8, 13) / 10)
+                            )))); // minimal damage of 50 included
                         AttackingShip.Item1.RemainingFirepower = remainingFirepowerInWhile;
 
                     }
                     GameLog.Core.Combat.DebugFormat("In Attacking Round {0}, the EmpireID {1} just fired", attackingRoundCounts, AttackingEmpireID);
-                    GameLog.Core.Combat.DebugFormat("now damage has just been applies either full weapons  (excluding bonus)  {0} OR lower damage if ship can only absorb that {1}", rememberForDamage, Convert.ToInt32(AttackingShip.Item1.RemainingFirepower));
+                    GameLog.Core.Combat.DebugFormat("now damage has just been applies either full weapons  (excluding bonus)  {0} OR lower damage if ship can only absorb that {1}", tempDamage, tempDamage);
                     GameLog.Core.Combat.DebugFormat("Target has hull left {0}", currentTarget.Item1.HullStrength);
                     ////weapon.Discharge(); needed yes or no?
                     //END NEW123
@@ -1078,15 +1085,16 @@ namespace Supremacy.Combat
 
                     // APPLY DAMAGE 
 
-
+                    double tempDamageInRetaliation = 0;
                    
-                    currentTarget.Item1.TakeDamage((int)(Convert.ToDouble((applyDamage + (ScissorBonus) + (combatOrderBonusMalus))
+                    currentTarget.Item1.TakeDamage((int)(Convert.ToInt32(tempDamageInRetaliation =
+                        Convert.ToDouble((applyDamage + (ScissorBonus) + (combatOrderBonusMalus))
                         * Convert.ToDouble(1- currentTarget.Item1.Source.GetManeuverablility() /0.24 / 100))
                             * Convert.ToDouble(1.5 - targetDamageControl) * 
-                            (zufall.Next(8, 13)/10) * sourceAccuracy )); // minimal damage of 50 included
+                            (zufall.Next(8, 13)/10) * sourceAccuracy ))); // minimal damage of 50 included
 
 
-                    GameLog.Core.Combat.DebugFormat("target ship in retaliation: {0} suffered damage: {1} +bonus-randum. it has hull left: {2}", currentTarget.Item1.Name, Convert.ToInt32(applyDamage), currentTarget.Item1.HullStrength);
+                    GameLog.Core.Combat.DebugFormat("target ship in retaliation: {0} suffered damage: {1} +bonus-randum. it has hull left: {2}", currentTarget.Item1.Name, tempDamageInRetaliation, currentTarget.Item1.HullStrength);
                     //GameLog.Core.Combat.DebugFormat("Retailiation damage of this round, now has been applied additional run: {0}, OR first run: {1} + Bonuse", remainingFirepowerInWhile, applyDamage);
 
 
