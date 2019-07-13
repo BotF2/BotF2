@@ -135,10 +135,10 @@ namespace Supremacy.Text
                         var localizedEntry = new TechObjectTextDatabaseEntry(
                             (string)localizedEntryElement.Attribute("Language"),
                             (string)localizedEntryElement.Element("Name"),
+                            (string)localizedEntryElement.Element("Description"),
                             //(string)localizedEntryElement.Element("ClassLevel"),
                             (string)localizedEntryElement.Element("Custom1"),
-                            (string)localizedEntryElement.Element("Custom2"),
-                            (string)localizedEntryElement.Element("Description")
+                            (string)localizedEntryElement.Element("Custom2")
                             );
 
                         entry.AddInternal(localizedEntry);
