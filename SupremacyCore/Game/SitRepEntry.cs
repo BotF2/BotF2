@@ -205,6 +205,42 @@ namespace Supremacy.Game
     }
     #endregion
 
+    #region UnassinedTradeRoute
+    [Serializable]
+    public class UnassignedTradeRoute : SitRepEntry
+    {
+        private readonly TradeRoute _tradeRoute;
+        public TradeRoute TradeRoute
+        {
+            get{ return _tradeRoute; }
+        }
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_UNASSIGNED_TRADE_ROUTE"),
+                    TradeRoute.SourceColony, TradeRoute.SourceColony.Location);
+            }
+        }
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public UnassignedTradeRoute(TradeRoute route): base(route.SourceColony.Owner, SitRepPriority.Yellow)
+        {
+            if (route == null)
+                throw new ArgumentException("TradeRoute");
+            _tradeRoute = route;
+        }
+    }
+    #endregion
+
     #region Science Ship SitRepEntries
     [Serializable]
     public class ScienceShipResearchGainedSitRepEntry : SitRepEntry

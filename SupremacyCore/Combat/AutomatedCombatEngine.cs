@@ -1180,12 +1180,11 @@ namespace Supremacy.Combat
             
             // IN here is my code (while x3)
 
-            for (int i = 0; i < _combatShips.Count; i++)
-            {
-                GameLog.Core.Test.DebugFormat("the _combatShip[i] ={0}", _combatShips[i].Item1.Name);
-                GameLog.Core.Test.DebugFormat("_combatShipTemp[i] ={0}", _combatShipsTemp[i].Item1.Name);
-            }
-
+            //for (int i = 0; i < _combatShips.Count; i++)
+            //{
+            //    GameLog.Core.Test.DebugFormat("the _combatShip[i] ={0}", _combatShips[i].Item1.Name);
+            //    GameLog.Core.Test.DebugFormat("_combatShipTemp[i] ={0}", _combatShipsTemp[i].Item1.Name);
+            //}
 
             // break out of while loop end combat
             //End of Combat:

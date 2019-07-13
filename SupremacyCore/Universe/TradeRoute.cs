@@ -114,7 +114,12 @@ namespace Supremacy.Universe
         /// </value>
         public bool IsAssigned
         {
-            get { return TargetColony != null; }
+            
+            get
+            {
+                GameLog.Core.TradeRoutes.DebugFormat("IsAssinged ={0}", (TargetColony != null)); //, TargetColony.Owner);
+                return TargetColony != null;
+            }
         }
 
         /// <summary>
@@ -257,7 +262,7 @@ namespace Supremacy.Universe
                 return false;
             if (colony.OwnerID == SourceColony.OwnerID)
                 return false;
-            return DiplomacyHelper.IsTradeEstablished(colony.Owner, SourceColony.Owner);
+            return true; // DiplomacyHelper.IsTradeEstablished(colony.Owner, SourceColony.Owner);
         }
 
         #region INotifyPropertyChanged Members

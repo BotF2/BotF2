@@ -624,6 +624,7 @@ namespace Supremacy.Universe
                 randomQuadrant = quadrant;
                 //GameLog.Core.GalaxyGenerator.DebugFormat("civ = {0}, HomeQuadrant = {1}", civ.Name, civ.HomeQuadrant);   // not finished yet
             }
+            minorRaces.Randomize();
             foreach (var civ in minorRaceCivs)
             {
                 if (galaxyCanon == GalaxyCanon.Canon)
@@ -635,7 +636,13 @@ namespace Supremacy.Universe
                 }
                 else
                 {
-                    //minorRaces[quadrant] = new List<Civilization>();
+                    // Update 10 july 2019 added this getrandom quadrant to cycle though quadrants for minors if random galaxy
+
+                    randomQuadrant = EnumHelper.GetValues<Quadrant>().RandomElementOrDefault();
+                    //randomQuadrant = quadrant;
+                    //GameLog.Core.GalaxyGenerator.DebugFormat("civ = {0}, HomeQuadrant = {1}", civ.Name, civ.HomeQuadrant);   // not finished yet
+
+                    // minorRaces[randomQuadrant] = new List<Civilization>(); // Change x commenting this had some results
                     minorRaces[randomQuadrant].Add(civ);
                     totalMinorRaces++;
                 }

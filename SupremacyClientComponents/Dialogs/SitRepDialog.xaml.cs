@@ -206,6 +206,12 @@ namespace Supremacy.Client.Dialogs
                     GalaxyScreenCommands.SelectSector.Execute(sitRep.Sector);
                     GalaxyScreenCommands.CenterOnSector.Execute(sitRep.Sector);
                 }
+                else if (selection is UnassignedTradeRoute)
+                {
+                    UnassignedTradeRoute sitRep = selection as UnassignedTradeRoute;
+                    Close();
+                    GalaxyScreenCommands.SelectSector.Execute((selection as UnassignedTradeRoute).TradeRoute.SourceColony.Location);
+                }
             }
         }
 
