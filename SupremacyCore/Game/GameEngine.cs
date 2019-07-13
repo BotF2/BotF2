@@ -1017,6 +1017,8 @@ namespace Supremacy.Game
                     //fleets
                     foreach (var fleet in game.Universe.FindOwned<Fleet>(civ))
                     {
+                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from FLEET {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", fleet.ObjectID, fleet.Name, 
+                        //    fleet.Owner, fleet.Location, fleet.ScanStrength, fleet.SensorRange);
                         mapData.UpgradeScanStrength(
                             fleet.Location,
                             fleet.ScanStrength,
@@ -1027,6 +1029,8 @@ namespace Supremacy.Game
                     //stations
                     foreach (var station in game.Universe.FindOwned<Station>(civ))
                     {
+                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from STATION {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", station.ObjectID, station.Name, 
+                        //    station.Owner, station.Location, station.StationDesign.ScanStrength, station.StationDesign.SensorRange);
                         mapData.UpgradeScanStrength(
                             station.Location,
                             station.StationDesign.ScanStrength,
@@ -1050,6 +1054,8 @@ namespace Supremacy.Game
                         if (scanBonuses.Any())
                             scanModifier = scanBonuses.Max();
 
+                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from COLONY {0} {1} ({2}) at  {3}, ScanStrength = {4}, Range = {5}", colony.ObjectID, colony.Name, 
+                        //    colony.Owner, colony.Location, 1 + scanModifier, 1 + scanModifier);  
                         mapData.UpgradeScanStrength(
                             colony.Location,
                             1 + scanModifier,
@@ -1134,6 +1140,7 @@ namespace Supremacy.Game
                                     sectorClaims.AddClaim(location, civ, claimWeight);
 
                                 civManager.MapData.SetScanned(location, true);
+                                //GameLog.Core.MapData.DebugFormat("{0} (Colony owner: {1}): SetScanned to -> True ", location.ToString(), colony.Owner);
                             }
                         }
                     }
