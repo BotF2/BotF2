@@ -162,10 +162,20 @@ namespace Supremacy.Orbitals
         /// Gets or sets the sensor range.
         /// </summary>
         /// <value>The sensor range.</value>
-        public int SensorRange
+        public int SensorRange    // structures included here ?? ... seems so
         {
-            get { return _sensorRange; }
-            set { _sensorRange = (byte)value; }
+            get
+            {
+                if (_sensorRange > 6)  // not more than 6 sectors to all directions
+                    _sensorRange = 6;
+                return _sensorRange;
+            }
+            set
+            {
+                if (_sensorRange > 6)
+                    _sensorRange = 6;
+                _sensorRange = (byte)value;
+            }
         }
 
         /// <summary>
