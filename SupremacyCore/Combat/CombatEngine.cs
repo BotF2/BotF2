@@ -341,13 +341,13 @@ namespace Supremacy.Combat
                 _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset _assets
                 CalculateEmpireStrengths();
                 GameLog.Core.Combat.DebugFormat("_roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
-                if ((_roundNumber>1) ||!AllSidesStandDown()) 
-                {
+                //if ((_roundNumber>1) || AllSidesStandDown()) 
+                //{
                     RechargeWeapons();
                     ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
                     // CHANGE X FIRST AFTER BATTLE
                     //RemoveDefeatedPlayers(); 
-                }
+                //}
                 if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
                 {
                     PerformAssimilation();
@@ -393,20 +393,23 @@ namespace Supremacy.Combat
                 // Combat ships
                 if (civAssets.CombatShips.Select(unit => GetCombatOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
+                    GameLog.Core.CombatDetails.DebugFormat("Combat ships - AllSidesStandDown is false");
                     return false;
                 }
                 // Non-combat ships
                 if (civAssets.NonCombatShips.Select(unit => GetCombatOrder(unit.Source)).Any(order => order == CombatOrder.Engage || order == CombatOrder.Rush || order == CombatOrder.Transports || order == CombatOrder.Formation))
                 {
+                    GameLog.Core.CombatDetails.DebugFormat("NON Combat ships - AllSidesStandDown is false");
                     return false;
                 }
                 // Station
                 if ((civAssets.Station != null) && (GetCombatOrder(civAssets.Station.Source) == CombatOrder.Engage || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Transports || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Rush || GetCombatOrder(civAssets.Station.Source) == CombatOrder.Formation))
                 {
+                    GameLog.Core.CombatDetails.DebugFormat("Station - AllSidesStandDown is false");
                     return false;
                 }
             }
-             
+            GameLog.Core.CombatDetails.DebugFormat("AllSidesStandDown is true");
             return true;
             //if (_roundNumber > 1)
             //    return true;
