@@ -165,6 +165,7 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationClient" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>

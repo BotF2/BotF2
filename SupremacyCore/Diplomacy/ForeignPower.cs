@@ -160,7 +160,10 @@ namespace Supremacy.Diplomacy
             var mapData = CivilizationManager.For(OwnerID).MapData;
 
             foreach (var claim in claims)
+            {
+                //GameLog.Core.MapData.DebugFormat("{0}: SetScanned to -> True  for EnsureCounterpartyTerritoryVisible()", claim.Location.ToString());
                 mapData.SetScanned(claim.Location, true);
+            }
         }
 
         public void BeginEmbargo()

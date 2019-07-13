@@ -49,17 +49,21 @@ namespace Supremacy.Game
 
         public int GetScanStrength(MapLocation location)
         {
-            //if (((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment  > 0)  // old: if not 8 as Offset
-            //    {
-            //    GameLog.Core.GameData.InfoFormat("ScanStrengthMask  = {1}, ScanStrengthAdjustment = {2}, mapData= {3}, RESULT: {0}: ScanStrength = {4}",
-            //        location,
-            //        ScanStrengthMask,
-            //        ScanStrengthAdjustment,
-            //        (_mapData[location.X, location.Y] & ScanStrengthMask),
-            //        ((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment 
-            //        );
-            //    }
-            
+            //if (((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment > 0)  // old: if not 8 as Offset
+            //{
+            //if ((((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment) < 0)  // < 0 means "Is NOT Scanned"
+            //GameLog.Core.GameData.InfoFormat("{0}, ScanStrength = {4}", //ScanStrengthMask  = {1}, ScanStrengthAdjustment = {2}, mapData= {3}, RESULT: ", //, GetScanStrength = {5} ",
+            //    location
+            //    , ScanStrengthMask
+            //    , ScanStrengthAdjustment
+            //    , (_mapData[location.X, location.Y] & ScanStrengthMask)
+            //    , ((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment
+            //    //, GetScanStrength(location)
+            //    );
+            //}
+
+            // new 2019-07-07
+            // " - 8";  // binary 1000
             return ((_mapData[location.X, location.Y] & ScanStrengthMask) >> ScanStrengthOffset) - ScanStrengthAdjustment;
         }
 
@@ -76,23 +80,23 @@ namespace Supremacy.Game
             //}
             //if ((_mapData[location.X, location.Y] & ExploredMask) > 0)
 
-            //if ((_mapData[location.X, location.Y] & ExploredMask) != 0)
+            //    if ((_mapData[location.X, location.Y] & ExploredMask) != 0)
 
+            //    {
+            //        GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '&' = {2}",
+            //            location,
+            //            ExploredMask,
+            //            (_mapData[location.X, location.Y] & ExploredMask)
+            //            );
+            //    }
+            //if ((_mapData[location.X, location.Y] & ExploredMask) > 0)
             //{
-            //    GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '&' = {2}",
+            //    GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '-' = {2}",
             //        location,
             //        ExploredMask,
-            //        (_mapData[location.X, location.Y] & ExploredMask)
+            //        (_mapData[location.X, location.Y] - ExploredMask)
             //        );
             //}
-            ////if ((_mapData[location.X, location.Y] & ExploredMask) > 0)
-            ////{
-            ////    GameLog.Core.GameData.InfoFormat("ExploredMask  = {1}, RESULT: {0}: Explored '-' = {2}",
-            ////        location,
-            ////        ExploredMask,
-            ////        (_mapData[location.X, location.Y] - ExploredMask)
-            ////        );
-            ////}
 
             return ((_mapData[location.X, location.Y] & ExploredMask) != 0);  // ExploredMask = 16384;  // binary 100.000.000.000.000
         }
@@ -109,14 +113,14 @@ namespace Supremacy.Game
             //        );
             //}
 
-            ////if ((_mapData[location.X, location.Y] - ScannedMask > 0))
-            ////{
-            ////    GameLog.Core.GameData.InfoFormat("ScannedMask = {1}, RESULT: {0}: ScanStrength '- > 0' = {2}",
-            ////        location,
-            ////        ScannedMask,
-            ////        (_mapData[location.X, location.Y] - ScannedMask)
-            ////        );
-            ////}
+            //if ((_mapData[location.X, location.Y] - ScannedMask > 0))
+            //{
+            //    GameLog.Core.GameData.InfoFormat("ScannedMask = {1}, RESULT: {0}: ScanStrength '- > 0' = {2}",
+            //        location,
+            //        ScannedMask,
+            //        (_mapData[location.X, location.Y] - ScannedMask)
+            //        );
+            //}
 
             return ((_mapData[location.X, location.Y] & ScannedMask) != 0); // ScannedMask = 32768;  // hex 3F00   // binary  1.000.000.000.000.000
         }
@@ -141,6 +145,7 @@ namespace Supremacy.Game
         {
             if (value)
             {
+                //GameLog.Core.MapData.DebugFormat("SetExplored = True so SetScanned is also turned -> True");
                 SetScanned(location, true);
                 _mapData[location.X, location.Y] |= ExploredMask;
             }
@@ -171,14 +176,18 @@ namespace Supremacy.Game
             _mapData[location.X, location.Y] = (_mapData[location.X, location.Y] & ~FuelRangeMask) | (Math.Min(value, MaxFuelRange) << FuelRangeOffset);
         }
 
-        public void SetScanned(MapLocation location, bool value)
+        public void SetScanned(MapLocation location, bool value)   // next: SetScanned with radius (from fleet)
         {
-            if (value)
+            if (value) // true
             {
                 _mapData[location.X, location.Y] |= ScannedMask;
+
+                //if (GetScanStrength(location) < 1)  // took membership, is set to Explored=IsScanned of from something else, but NOT from Scanning
+                //GameLog.Core.MapData.DebugFormat("({0},{1}) is {2} = 'Setscanned' with value {3}", location.X, location.Y, value, GetScanStrength(location));
             }
-            else
+            else  // false
             {
+                //GameLog.Core.MapData.DebugFormat("({0},{1}) is {2} to 'Setscanned' with value {3}", location.X, location.Y, value, GetScanStrength(location));
                 _mapData[location.X, location.Y] &= ~ScannedMask;
             }
         }
@@ -195,12 +204,19 @@ namespace Supremacy.Game
                 for (int y = startY; y <= endY; y++)
                 {
                     SetScanned(new MapLocation(x, y), value);
+
+                    //if (GetScanStrength(location) < 1)   //interference by XRay ??
+                    //GameLog.Core.MapData.DebugFormat("({0},{1}) value = {3} to is 'Setscanned using radius {2}' is set to 'IsScanned' -  scan value {4}", 
+                    //    location.X, location.Y, radius, value, GetScanStrength(location));
                 }
             }
         }
 
         public void SetScanStrength(MapLocation location, int value)
         {
+            //// new 2019-07-07
+            //value = value - 8;  // binary 1000
+
             if (value < MinScanStrength)
                 value = MinScanStrength;
 
@@ -211,6 +227,10 @@ namespace Supremacy.Game
 
             _mapData[location.X, location.Y] = ((_mapData[location.X, location.Y] & ~ScanStrengthMask) |
                                                (adjustedValue << ScanStrengthOffset));
+            //if (value > 0)
+            //GameLog.Core.MapData.DebugFormat("({0},{1}) is SET to new ScanStrength = {2}", location.X, location.Y, GetScanStrength(location),
+            //    value
+            //    );
 
             if (value > 0)
                 SetScanned(location, true);
@@ -301,6 +321,7 @@ namespace Supremacy.Game
                 {
                     location = new MapLocation(x, y);
                     SetScanStrength(location, GetScanStrength(location) + interference[x, y]);
+                    //GameLog.Core.MapData.DebugFormat("x+y = ({0},{1}), applied interference= {3}, new ScanStrength = {2}", x, y, interference[x, y], GetScanStrength(location));
                 }
             }
         }
