@@ -262,7 +262,7 @@ namespace Supremacy.Universe
                 return false;
             if (colony.OwnerID == SourceColony.OwnerID)
                 return false;
-            return true; // DiplomacyHelper.IsTradeEstablished(colony.Owner, SourceColony.Owner);
+            return DiplomacyHelper.IsTradeEstablished(colony.Owner, SourceColony.Owner);
         }
 
         #region INotifyPropertyChanged Members
