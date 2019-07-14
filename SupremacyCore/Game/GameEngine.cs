@@ -1939,10 +1939,10 @@ namespace Supremacy.Game
                         foreach (var route in colony.TradeRoutes)
                         {
                             colony.CreditsFromTrade.AdjustCurrent(route.Credits);
-                            GameLog.Core.Test.DebugFormat("trade route {0}, route is assigned ={1}", route.SourceColony.Owner, route.IsAssigned);
+                            GameLog.Core.TradeRoutes.DebugFormat("trade route {0}, route is assigned ={1}", route.SourceColony.Owner, route.IsAssigned);
                             if (!route.IsAssigned) // && civManager.SitRepEntries.Any(s=>s.Categories.ToString() == "SpecialEvent"))
                             {
-                                GameLog.Core.General.DebugFormat("trade route for {0}, credti {1}=0 should add sitRep", route.SourceColony.Owner, route.SourceColony.CreditsFromTrade.BaseValue);
+                                GameLog.Core.TradeRoutes.DebugFormat("trade route for {0}, credti {1}=0 should add sitRep", route.SourceColony.Owner, route.SourceColony.CreditsFromTrade.BaseValue);
                                 civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
                             }
                         }

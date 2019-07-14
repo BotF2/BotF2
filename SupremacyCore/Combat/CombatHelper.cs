@@ -311,7 +311,7 @@ namespace Supremacy.Combat
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 ;
-                GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
+                GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, /*ship.Owner, */target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)

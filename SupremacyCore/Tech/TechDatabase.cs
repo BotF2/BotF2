@@ -660,7 +660,7 @@ namespace Supremacy.Tech
                         {
                             obsDesign += obsolete.Key + ",";
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", PF.Key, obsDesign);
+                        //GameLog.Core.GameData.DebugFormat("{0} has obsolete designs = {1} ", PF.Key, obsDesign);
 
 
                         string prerequisitesCollection = "";
@@ -671,7 +671,7 @@ namespace Supremacy.Tech
                                 prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
                             }
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", PF.Key, prerequisitesCollection);
+                        //GameLog.Core.GameData.DebugFormat("{0} has prerequisites = {1} ", PF.Key, prerequisitesCollection);
 
 
                         string upgradeDesign = "";
@@ -679,7 +679,7 @@ namespace Supremacy.Tech
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", PF.Key, upgradeDesign);
+                        //GameLog.Core.GameData.DebugFormat("{0} has upgrade designs = {1} ", PF.Key, upgradeDesign);
 
 
                         //string bonusCollection = "";
@@ -689,7 +689,7 @@ namespace Supremacy.Tech
                         //    bonusCollection += upgrade.Key + ",";
                         //}
                         //bonusCollection = "Bonus for {0}" + PF.Key;
-                        //GameLog.Core.Test.DebugFormat("{0} has bonusCollection = {1} ", PF.Key, bonusCollection);
+                        //GameLog.Core.Txxt.DebugFormat("{0} has bonusCollection = {1} ", PF.Key, bonusCollection);
 
 
 
@@ -701,7 +701,7 @@ namespace Supremacy.Tech
                         //    {
                         //        _buildcondition += buildCond.ToString() + ",";
                         //    }
-                        //    GameLog.Core.Test.DebugFormat("{0} has _buildcondition = {1} ", PF.Key, _buildcondition);
+                        //    GameLog.Core.Txxest.DebugFormat("{0} has _buildcondition = {1} ", PF.Key, _buildcondition);
                         //}
                         //catch
                         //{
@@ -1310,7 +1310,7 @@ namespace Supremacy.Tech
                         {
                             obsDesign += obsolete.Key + ",";
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", shipyard.Key, obsDesign);
+                        //GameLog.Core.Texxst.DebugFormat("{0} has obsolete designs = {1} ", shipyard.Key, obsDesign);
 
 
                         string prerequisitesCollection = "";
@@ -1321,7 +1321,7 @@ namespace Supremacy.Tech
                                 prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
                             }
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", shipyard.Key, prerequisitesCollection);
+                        //GameLog.Core.Texxst.DebugFormat("{0} has prerequisites = {1} ", shipyard.Key, prerequisitesCollection);
 
 
                         string upgradeDesign = "";
@@ -1329,7 +1329,7 @@ namespace Supremacy.Tech
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", shipyard.Key, upgradeDesign);
+                        //GameLog.Core.Txxest.DebugFormat("{0} has upgrade designs = {1} ", shipyard.Key, upgradeDesign);
 
                         line =
                         "Shipyard" + separator +
@@ -1462,14 +1462,14 @@ namespace Supremacy.Tech
                     foreach (var station in db.StationDesigns)   // each shipyard
                     {
                         if (station.Key == "ROM_STARBASE_I")  // just for testing - any problems for ROM_I or II ??
-                            GameLog.Core.Test.DebugFormat("{0} testing ", station.Key);
+                            GameLog.Core.GameData.DebugFormat("{0} testing ", station.Key);
 
                         string obsDesign = "";
                         foreach (var obsolete in station.ObsoletedDesigns)
                         {
                             obsDesign += obsolete.Key + ",";
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", station.Key, obsDesign);
+                        //GameLog.Core.Texxst.DebugFormat("{0} has obsolete designs = {1} ", station.Key, obsDesign);
 
 
                         string prerequisitesCollection = "";
@@ -1480,7 +1480,7 @@ namespace Supremacy.Tech
                                 prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
                             }
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", station.Key, prerequisitesCollection);
+                        //GameLog.Core.Texxst.DebugFormat("{0} has prerequisites = {1} ", station.Key, prerequisitesCollection);
 
 
                         string upgradeDesign = "";
@@ -1488,14 +1488,14 @@ namespace Supremacy.Tech
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", station.Key, upgradeDesign);
+                        //GameLog.Core.Tesxxt.DebugFormat("{0} has upgrade designs = {1} ", station.Key, upgradeDesign);
 
                         //string possibleNames = "";
                         //foreach (var possName in db.xxxx.)  // didn't find a way for station names
                         //{
                         //    possibleNames += possName.Key + ",";
                         //}
-                        //GameLog.Core.Test.DebugFormat("{0} has upgrade designs = {1} ", station.Key, upgradeDesign);
+                        //GameLog.Core.Texxst.DebugFormat("{0} has upgrade designs = {1} ", station.Key, upgradeDesign);
 
                         // --------------------------
                         line =
@@ -1655,7 +1655,7 @@ namespace Supremacy.Tech
                         {
                             obsDesign += obsolete.Key + ",";
                         }
-                        //GameLog.Core.Test.DebugFormat("{0} has obsolete designs = {1} ", ob.Key, obsDesign);
+                        //GameLog.Core.CombatDetails.DebugFormat("{0} has obsolete designs = {1} ", ob.Key, obsDesign);
 
 
                         //string prerequisitesCollection = "";
@@ -1666,7 +1666,7 @@ namespace Supremacy.Tech
                         //        prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
                         //    }
                         //}
-                        ////GameLog.Core.Test.DebugFormat("{0} has prerequisites = {1} ", shipyard.Key, prerequisitesCollection);
+                        ////GameLog.Core.GameData.DebugFormat("{0} has prerequisites = {1} ", shipyard.Key, prerequisitesCollection);
 
 
                         string upgradeDesign = "";

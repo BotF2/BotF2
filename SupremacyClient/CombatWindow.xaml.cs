@@ -225,7 +225,7 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
-            GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
+            GameLog.Core.CombatDetails.DebugFormat("cleared all ClearUnitTrees");
 
         }
 
@@ -391,8 +391,8 @@ namespace Supremacy.Client
             }
             else TransportsButton.IsEnabled = false;
 
-            //GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
-            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
+            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
+            GameLog.Core.CombatDetails.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
 
         }
 
@@ -418,7 +418,7 @@ namespace Supremacy.Client
                 TransportsButton.IsEnabled = true;
             }
             else TransportsButton.IsEnabled = false;
-            GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
+            GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)

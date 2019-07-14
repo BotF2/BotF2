@@ -139,7 +139,7 @@ namespace Supremacy.Game
                             // give a lot of lines ....   GameLog.Core.SaveLoad.DebugFormat("{0}",value.ToString());
                             memoryStream.WriteByte((byte)value);
                         }
-                        GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileStream.ToString());
+                        GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileName);
                         //GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileStream.ToString());
                         memoryStream.Seek(0, SeekOrigin.Begin);
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());

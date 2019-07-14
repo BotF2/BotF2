@@ -1417,7 +1417,7 @@ namespace Supremacy.WCF
             //No proper CombatAI, so just for now fake some orders
             else if (!engine.IsCombatOver && !update.Owner.IsHuman)
             {
-                GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
+                // works   GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
                 var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
                 var enemyAssets = update.HostileAssets.FirstOrDefault(hostileAssets => hostileAssets.Owner != update.Owner);
 
@@ -1439,7 +1439,7 @@ namespace Supremacy.WCF
                 if (enemyAssets.Station != null)
                     countStation = 2;  // counting value for Station = 2 ships
 
-                GameLog.Core.Combat.DebugFormat("blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
+                GameLog.Core.Combat.DebugFormat("generated blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
                 SendCombatTarget1(CombatHelper.GenerateBlanketTargetPrimary(ownerAssets, blanketTargetOne));

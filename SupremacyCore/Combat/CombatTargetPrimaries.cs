@@ -55,8 +55,9 @@ namespace Supremacy.Combat
         public void SetTargetOneCiv(Orbital source, Civilization targetOne)
         {
             if (source == null)
-                GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetOneCiv");
-            GameLog.Core.Test.DebugFormat("SetTargetOneCiv source civ attaker {0} and Civilization target Name = {1}",source.Owner, targetOne);
+                GameLog.Core.CombatDetails.DebugFormat("Orbital source = null (!!!)");
+
+            GameLog.Core.CombatDetails.DebugFormat("attacker = {0}, Target = {1}",source.Owner, targetOne);
             _targetPrimaries[source.ObjectID] = targetOne;            
         }
 
@@ -78,7 +79,7 @@ namespace Supremacy.Combat
                 _targetPrimaries[source.ObjectID] = CombatHelper.GetDefaultHoldFireCiv();
                 //throw new ArgumentException("No target one has been set for the specified source");
             }
-            GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);
+            GameLog.Core.CombatDetails.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);
             return _targetPrimaries[source.ObjectID];           
         }
 

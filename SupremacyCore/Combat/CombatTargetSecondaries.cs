@@ -56,7 +56,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetTwoCiv");
-            GameLog.Core.Test.DebugFormat("for SetTargetTwoCiv source civ attaker {0} and Civilization target Name = {1}", source.Owner, targetTwo);
+            GameLog.Core.CombatDetails.DebugFormat("for SetTargetTwoCiv source civ attaker {0} and Civilization target Name = {1}", source.Owner, targetTwo);
             _targetSecondaries[source.ObjectID] = targetTwo;
         }
 
@@ -92,7 +92,7 @@ namespace Supremacy.Combat
                 _targetSecondaries[source.ObjectID] = CombatHelper.GetDefaultHoldFireCiv();
                 //throw new ArgumentException("No target two has been set for the specified source");
             }
-            GameLog.Core.Test.DebugFormat("Orbital name {0} in GetTargetTwo() targeting {1}", source.Name, _targetSecondaries[source.ObjectID]);
+            GameLog.Core.CombatDetails.DebugFormat("Orbital name {0} in GetTargetTwo() targeting {1}", source.Name, _targetSecondaries[source.ObjectID]);
             return _targetSecondaries[source.ObjectID];
         }
 

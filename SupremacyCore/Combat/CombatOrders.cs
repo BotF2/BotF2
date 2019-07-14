@@ -122,7 +122,9 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("source");
             if (!_orders.ContainsKey(source.ObjectID))
                 throw new ArgumentException("No order has been set for the specified source");
-            GameLog.Core.CombatDetails.DebugFormat("GetCombatOrder source {0}", source.Name);
+
+            // works   GameLog.Core.CombatDetails.DebugFormat("GetCombatOrder source {0}", source.Name);
+
             return _orders[source.ObjectID];
         }
 
