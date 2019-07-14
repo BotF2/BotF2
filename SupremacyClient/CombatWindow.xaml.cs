@@ -89,7 +89,7 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
             
-            _onlyFireIfFiredAppone = new Civilization();
+            _onlyFireIfFiredAppone = new Civilization(); // The click of "Only Return Fire" radio button by human player
             _onlyFireIfFiredAppone.ShortName = "Only Return Fire";
             _onlyFireIfFiredAppone.CivID = 888;
             _onlyFireIfFiredAppone.Key = "Only Return Fire";
@@ -289,10 +289,6 @@ namespace Supremacy.Client
                 }
 
             }
-
-            //Civilization onlyFireIfFiredAppone = new Civilization();
-            //onlyFireIfFiredAppone.ShortName = "Only Return Fire";
-            //onlyFireIfFiredAppone.CivID = 8888;
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)

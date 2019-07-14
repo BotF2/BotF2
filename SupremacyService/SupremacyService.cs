@@ -1343,7 +1343,7 @@ namespace Supremacy.WCF
                 lock (_combatEngine.SyncLock)
                 {
                     //if (orders.OwnerID != Player.GameHostID)
-                        _combatEngine.SubmitOrders(orders); // null ref ?? but code keeps going?
+                        _combatEngine.SubmitOrders(orders); 
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
@@ -1426,10 +1426,10 @@ namespace Supremacy.WCF
                     return;
                 }
 
-                Civilization _target = new Civilization();
-                _target.ShortName = "DefaultHoldFireCiv";
-                _target.CivID = 777; // CHANGE X AIS default CIV for Target ONE
-                _target.Key = "DefaultHoldFireCiv";
+                Civilization _target = new Civilization(); // The AI generates a dummy target for non-human player civ
+                _target.ShortName = "Only Return Fire";
+                _target.CivID = 888; // CHANGE X AIS default CIV for Target ONE
+                _target.Key = "Only Return Fire";
 
                 var blanketOrder = CombatOrder.Engage;
                 var blanketTargetOne = _target;

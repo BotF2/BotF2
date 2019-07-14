@@ -427,10 +427,10 @@ namespace Supremacy.Combat
 
         public static Civilization GetDefaultHoldFireCiv()
         {
-            Civilization _target = new Civilization();
-            _target.ShortName = "DefaultHoldFireCiv";
-            _target.CivID = 777; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
-            _target.Key = "DefaultHoldFireCiv";
+            Civilization _target = new Civilization(); // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
+            _target.ShortName = "Only Return Fire";
+            _target.CivID = 888; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
+            _target.Key = "Only Return Fire";
 
             return _target;
         }

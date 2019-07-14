@@ -260,7 +260,7 @@ namespace Supremacy.Combat
                 
                 var outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
                 List<int> dummyIDs = new List<int>();
-                dummyIDs.Add(775);
+                dummyIDs.Add(777); // was set to 775
                 dummyIDs.Add(888);
                 dummyIDs.Add(999);
                 outstandingOrders.AddRange(dummyIDs);
@@ -334,6 +334,8 @@ namespace Supremacy.Combat
 
         public void ResolveCombatRound()
         {
+            _targetTwoByCiv.Clear();
+            _targetOneByCiv.Clear();
             lock (_orders)
             {
                 Running = true;
@@ -354,7 +356,8 @@ namespace Supremacy.Combat
                 }
                 GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at PerformRetreat");
                 PerformRetreat();
-
+                _targetTwoByCiv.Clear();
+                _targetOneByCiv.Clear();
                 GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at UpdateOrbitals");
                 UpdateOrbitals();
                 GameLog.Core.Combat.DebugFormat("If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
@@ -524,7 +527,7 @@ namespace Supremacy.Combat
             }
           
         }
-
+         
         private void UpdateOrbitals()
         {
             _assets.ForEach(a => a.UpdateAllSources());
@@ -684,6 +687,7 @@ namespace Supremacy.Combat
 
         protected Civilization GetTargetOne(Orbital source)
         {
+
             if (_targetOneByCiv.Keys.Contains(source.OwnerID))
             {
                 // _targetOneByCiv is dictionary key = ownerID and value = CombatTargetPrimaries
