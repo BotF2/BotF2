@@ -26,9 +26,6 @@ namespace Supremacy.Combat
 
         private bool _battleInOwnTerritory;
         private int _totalFirepower; // looks like _empireStrenths dictionary below
-        //private double _favorTheBoldMalus;
-        //private int _fleetAsCommandshipBonus;
-        //private bool _has20PlusPercentFastAttack;
 
         public readonly object SyncLock;
         public readonly object SyncLockTargetOnes;
@@ -42,7 +39,7 @@ namespace Supremacy.Combat
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         protected readonly Dictionary<int, Civilization> _targetOneData;
         private readonly int _combatId;
-        private int _zeroFirePowers;
+        //private int _zeroFirePowers;
 
         protected int _roundNumber;
         private bool _running;
@@ -75,20 +72,6 @@ namespace Supremacy.Combat
                 _totalFirepower = value;
             }
         }
-// EmpireStrengths not used as a property, field only
-        //public Dictionary<string, int> EmpireStrengths
-        //{
-        //    get
-        //    {
-        //        //GameLog.Core.Combat.DebugFormat("GET EmpireStrengths = {0}", _empireStrengths.ToString());
-        //        return _empireStrengths;
-        //    }
-        //    set
-        //    {
-        //        //GameLog.Core.Combat.DebugFormat("SET EmpireStrengths = {0}", value.ToString());
-        //        _empireStrengths = value;
-        //    }
-        //}
 
         protected int CombatID
         {
@@ -207,7 +190,7 @@ namespace Supremacy.Combat
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
             _roundNumber = 1;
-            _zeroFirePowers = 0;
+            //_zeroFirePowers = 0;
             _assets = assets;
             _updateCallback = updateCallback;
             _combatEndedCallback = combatEndedCallback;
@@ -414,10 +397,6 @@ namespace Supremacy.Combat
             }
             GameLog.Core.CombatDetails.DebugFormat("AllSidesStandDown is true");
             return true;
-            //if (_roundNumber > 1)
-            //    return true;
-            //else
-            //    return false;
         }
 
         public void SendInitialUpdate()
@@ -428,15 +407,6 @@ namespace Supremacy.Combat
 
         protected void SendUpdates()
         {
-            #region Out Commented
-            //if (GameContext.Current.Options.GalaxyShape.ToString() == "Cluster-not-now")   // correct value is "Cluster" - just remove "-not-now" to disable Combats (done! and) shown
-            //{
-            //    GameLog.Core.Test.DebugFormat("Combat is turned off");
-            //    AsyncHelper.Invoke(_combatEndedCallback, this);
-            //    return;
-
-            //}
-            #endregion
             foreach (var playerAsset in _assets) // _assets is list of current player (friend) assets so one list for our friends, friend's and other's asset are in asset (not _assets)
             {
                 var owner = playerAsset.Owner;
