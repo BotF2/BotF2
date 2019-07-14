@@ -311,7 +311,7 @@ namespace Supremacy.Combat
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
                 ;
-                GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, /*ship.Owner, */target.Key);
+                GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
@@ -332,7 +332,7 @@ namespace Supremacy.Combat
                 }    
                 else
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);        
-                GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
+                GameLog.Core.Combat.DebugFormat("Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
             return targetOne;
         }
@@ -349,7 +349,7 @@ namespace Supremacy.Combat
                     targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
                 }
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
-                GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetSecondary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
+                GameLog.Core.CombatDetails.DebugFormat("Combat Ship {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)

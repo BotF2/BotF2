@@ -93,7 +93,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            GameLog.Core.CombatDetails.DebugFormat("for SetOrder source civ attaker {0} and Civilization order = {1}", source.Owner, order.ToString());
+            GameLog.Core.CombatDetails.DebugFormat("Set order = {1} for attacker {0}", source.Owner, order.ToString());
             _orders[source.ObjectID] = order;
         }
 

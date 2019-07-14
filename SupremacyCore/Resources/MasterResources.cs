@@ -65,7 +65,7 @@ namespace Supremacy.Resources
                             streamWriter.WriteLine(strHeader);
                             // End of head line
 
-                            GameLog.Core.GameData.ErrorFormat("begin writing _FromCivilizationsXML_(autoCreated).csv ... breaks if dismatch of Keys between Civ..xml and Races.xml");
+                            GameLog.Core.GameData.InfoFormat("begin writing _FromCivilizationsXML_(autoCreated).csv ... would breaks if dismatch of Keys between Civ..xml and Races.xml");
                             string RaceName = "";
                             foreach (var civ in m_CivDatabase)   // each civ
                             {
