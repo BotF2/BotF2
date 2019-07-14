@@ -194,7 +194,7 @@ namespace Supremacy.Client
             //We need assets to be able to retreat
             RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0));
             //Can hail
-            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null)); //(update.RoundNumber == 1);
+            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null)); //(update.RoundNumber == 1);
 
             UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;

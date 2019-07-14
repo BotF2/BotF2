@@ -34,7 +34,7 @@
               Value="True"/>
         </Style>
 
-        <!--Friendly and Hostile Data Template Detail view  of ONE item - Begin-->
+        <!--Friendly and Hostile Data Template Detail view  of ONE item (ship/station) - Begin-->
 
         <DataTemplate x:Key="AssetsTreeItemTemplate">
             <DockPanel LastChildFill="True"
