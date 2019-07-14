@@ -110,6 +110,7 @@ namespace Supremacy.Combat
                                 ownerAssets.EscapedShips.Add(target.Item1);
                                 ownerAssets.CombatShips.Remove(target.Item1);
                                 ownerAssets.NonCombatShips.Remove(target.Item1);
+                                ownerAssets.AssimilatedShips.Add(target.Item1);
                                 _combatShips.Remove(target);
                                 GameLog.Core.Test.DebugFormat("Assimilated ={0}", target.Item1.Name);
                             }
