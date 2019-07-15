@@ -25,7 +25,7 @@ namespace Supremacy.Combat
         private int _combatId;
         private int _roundNumber;
         private int _ownerId;
-
+        private int _otherCivStrength = 0;
         private bool _standoff;
         private MapLocation _location;
         private IList<CombatAssets> _friendlyAssets;
@@ -415,7 +415,7 @@ namespace Supremacy.Combat
                 civNameList.Remove(civShortName);
                 _civShortNameList = civNameList.ToList();
 
-                int otherCivStrength = 0;
+                //int otherCivStrength = 0;
                 var _otherAssetsLocal = _hostileAssets.ToList();
 
                 foreach (var ha in _hostileAssets)
@@ -426,7 +426,7 @@ namespace Supremacy.Combat
                         if (civShortName == cs.Owner.ShortName)
                         {
                             // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.Firepower))
+                            _otherCivStrength = Convert.ToInt32(Convert.ToDouble((_otherCivStrength + cs.Firepower))
                                 + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength))
                                 * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
@@ -437,7 +437,7 @@ namespace Supremacy.Combat
                         if (civShortName == ncs.Owner.ShortName)
                         {
                             // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.Firepower))
+                            _otherCivStrength = Convert.ToInt32(Convert.ToDouble((_otherCivStrength + ncs.Firepower))
                                 + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
                                 * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
                             _otherAssetsLocal.Remove(ha);
@@ -447,12 +447,12 @@ namespace Supremacy.Combat
                     if (ha.Station != null)  //  station
                     {
                         // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                        otherCivStrength = otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+                        _otherCivStrength = _otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
                         _otherAssetsLocal.Remove(ha);
                     }
                 }
-                GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", otherCivStrength);
-                return otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
+                GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", _otherCivStrength);
+                return _otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
             }
         }
 
@@ -622,8 +622,8 @@ namespace Supremacy.Combat
                     if (asset.Station != null)
                         currentCivStrength += asset.Station.Firepower;
                 }
-                GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(Amount)={0}", friendlyAssets);
-                if (friendlyAssets == 0 || currentCivStrength == 0)
+                GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(Amount)={0} and otherCivStrength ={1}", friendlyAssets, _otherCivStrength);
+                if (friendlyAssets == 0 || _otherCivStrength == 0)// currentCivStrength == 0)
                 {
                     GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
                     return true;
@@ -646,7 +646,7 @@ namespace Supremacy.Combat
                         currentCivStrength += asset.Station.Firepower;
                 }
 
-                if (hostileAssets == 0 || currentCivStrength == 0)
+                if (hostileAssets == 0 || _otherCivStrength == 0)//currentCivStrength == 0)
                 {
                     //GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
                     return true;
