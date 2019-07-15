@@ -22,7 +22,7 @@
             IsModal="True"
             Cursor="{StaticResource DefaultCursor}"
             ForceCursor="True">
-<!-- The DataTemplates used in the .cs file are up top here and the window start below these -->
+<!-- The DataTemplates used in the .cs file are up top here and the window starts below these -->
 
     <FrameworkElement.Resources>
         <Style TargetType="{x:Type TreeViewItem}">
@@ -181,10 +181,9 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                 Margin="5,0,10,0"
-                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="20pt" 
                                 Text="{Binding Path=ShortName}" />
-
                 </Grid>
             </StackPanel>
         </DataTemplate>
