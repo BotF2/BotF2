@@ -179,6 +179,9 @@ namespace Supremacy.Client
                         soundPlayer.Play();
                 }
             }
+            SubHeader2Text.Text = String.Format(
+                ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
+                _update.Sector.Name);
 
             PopulateUnitTrees();
 
