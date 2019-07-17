@@ -295,7 +295,7 @@
     </FrameworkElement.Resources>
     <Grid 
         Height="750"
-        Width="1170">
+        Width="1195">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -338,21 +338,22 @@
                  HorizontalAlignment="Left"/>
         </StackPanel>
 
-        <!--COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
+        <!--Left side COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
         <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
                   Foreground="Ivory"
                   Background="Black"
                     Grid.Column="0"
                     Grid.Row="1"
                   VerticalAlignment="Top"
-                  Height="580"
-                  MaxHeight ="580"
+                  Height="620"
+                  MaxHeight ="620"
                     Width="Auto"            
                     Margin="2">
             <TreeView x:Name="FriendlyAssetsTree"
-                     ItemsSource="{Binding FriendlyCivs}"
+                    ItemsSource="{Binding FriendlyCivs}"
                     BorderThickness="0"
                     VerticalAlignment="Top"
+                    Height="541"
                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     FontSize="10pt"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -525,13 +526,13 @@
             </TreeView>
         </GroupBox>
 
-        <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to DataTemple in .cs +-->
+        <!--right side COMBAT_Hostile(OTHER)_UNITS source path & items name to DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}" 
                   Foreground="LightGoldenrodYellow"
                   Background="Black"
                   VerticalAlignment="Top"
-                  Height="580"
-                  MaxHeight ="580"
+                  Height="620"
+                  MaxHeight ="620"
                     Grid.Column="2"
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
@@ -539,9 +540,9 @@
                     Margin="2">            
                 <TreeView x:Name="OtherCivsView" 
                           ItemsSource="{Binding OtherCivs}"
-                          BorderThickness="0"
+                          BorderThickness="1"
                           VerticalAlignment="Top"
-                            Height="600"
+                            Height="541"
                             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="10pt"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
