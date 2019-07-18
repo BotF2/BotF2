@@ -324,8 +324,8 @@ namespace Supremacy.Combat
 
         public void ResolveCombatRound()
         {
-            _targetTwoByCiv.Clear();
-            _targetOneByCiv.Clear();
+            //_targetTwoByCiv.Clear();
+            //_targetOneByCiv.Clear();
             lock (_orders)
             {
                 Running = true;
@@ -346,8 +346,8 @@ namespace Supremacy.Combat
                 }
                 GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at PerformRetreat");
                 PerformRetreat();
-                _targetTwoByCiv.Clear();
-                _targetOneByCiv.Clear();
+                //_targetTwoByCiv.Clear();
+                //_targetOneByCiv.Clear();
                 GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at UpdateOrbitals");
                 UpdateOrbitals();
                 GameLog.Core.CombatDetails.DebugFormat("If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
