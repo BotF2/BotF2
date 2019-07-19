@@ -324,8 +324,6 @@ namespace Supremacy.Combat
 
         public void ResolveCombatRound()
         {
-            //_targetTwoByCiv.Clear();
-            //_targetOneByCiv.Clear();
             lock (_orders)
             {
                 Running = true;
@@ -346,8 +344,7 @@ namespace Supremacy.Combat
                 }
                 GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at PerformRetreat");
                 PerformRetreat();
-                //_targetTwoByCiv.Clear();
-                //_targetOneByCiv.Clear();
+
                 GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound - at UpdateOrbitals");
                 UpdateOrbitals();
                 GameLog.Core.CombatDetails.DebugFormat("If IsCombatOver  = {0} then increment round number {1} to {2}", IsCombatOver, _roundNumber, _roundNumber + 1);
@@ -356,10 +353,7 @@ namespace Supremacy.Combat
                     //GameLog.Core.CombatDetails.DebugFormat("incrementing - round number {0} to {1}", _roundNumber, _roundNumber + 1);
                     _roundNumber++;
                 }
-                //_targetTwoByCiv.Clear();
-                //_targetOneByCiv.Clear();
                 _orders.Clear();
-
             }
 
             SendUpdates();
@@ -376,6 +370,8 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("now IsCombatOver = TRUE so invoked AsyncHelper");
                 AsyncHelper.Invoke(_combatEndedCallback, this);
             }
+            _targetTwoByCiv.Clear();
+            _targetOneByCiv.Clear();
         }
 
         public bool AllSidesStandDown() // ??? do we no longer care what the orders are - no longer have a second chance at setting orders?
