@@ -31,10 +31,10 @@ namespace Supremacy.Game
                 try
                 {
                     var localizedTitle = ResourceManager.GetString("AUTO_SAVE_GAME_TITLE");
-                    
+
                     if (!string.IsNullOrWhiteSpace(localizedTitle))
                         return localizedTitle;
-                    
+
                     return fallback;
                 }
                 catch (Exception e)
@@ -92,7 +92,7 @@ namespace Supremacy.Game
             {
                 try
                 {
-                    return "Game"; 
+                    return "Game";
 
                 }
                 catch
@@ -126,7 +126,7 @@ namespace Supremacy.Game
         /// <summary>
         /// Initializes a new instance of the <see cref="SavedGameHeader"/> class.
         /// </summary>
-        private SavedGameHeader() {}
+        private SavedGameHeader() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SavedGameHeader"/> class.
@@ -140,7 +140,7 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("game");
             if (localPlayer == null)
                 throw new ArgumentNullException("localPlayer");
-            
+
             IsMultiplayerGame = game.IsMultiplayerGame;
             LocalPlayerName = localPlayer.Name;
             LocalPlayerEmpireID = localPlayer.EmpireID;
@@ -183,7 +183,7 @@ namespace Supremacy.Game
 
             var empireCount = (byte)EmpireIDs.Length;
             //GameLog.Print("empireCount={0}", empireCount);
-         
+
             writer.Write(empireCount);
 
             for (int i = 0; i < empireCount; i++)
@@ -209,19 +209,20 @@ namespace Supremacy.Game
             var reader = new BinaryReader(input);
             var options = new GameOptions();
 
-            GameLog.Core.SaveLoad.DebugFormat("Beginning reading a saved game...");
+            GameLog.Core.SaveLoad.DebugFormat("----------------------------------------------------");
+            GameLog.Core.SaveLoad.DebugFormat("########  Beginning reading a saved game...");
 
             options.Read(reader);
 
             var header = new SavedGameHeader
-                         {
-                             Options = options,
-                             IsMultiplayerGame = reader.ReadBoolean(),
-                             LocalPlayerName = reader.ReadString(),
-                             LocalPlayerEmpireID = reader.ReadInt32(),
-                             TurnNumber = reader.ReadInt32(),
-                             Timestamp = new DateTimeOffset(reader.ReadInt64(), TimeSpan.FromTicks(reader.ReadInt64()))
-                            };
+            {
+                Options = options,
+                IsMultiplayerGame = reader.ReadBoolean(),
+                LocalPlayerName = reader.ReadString(),
+                LocalPlayerEmpireID = reader.ReadInt32(),
+                TurnNumber = reader.ReadInt32(),
+                Timestamp = new DateTimeOffset(reader.ReadInt64(), TimeSpan.FromTicks(reader.ReadInt64()))
+            };
 
             //doesn't work here
             //GameLog.Core.SaveLoad.DebugFormat("Reading SavedGameHeader: Timestamp={0}, LocalPlayerName={1}, LocalPlayerEmpireID={2}, TurnNumber={3}, IsMultiplayerGame={4}",
@@ -243,7 +244,7 @@ namespace Supremacy.Game
                 header.SlotClaims[i] = (SlotClaim)reader.ReadByte();
                 header.SlotStatus[i] = (SlotStatus)reader.ReadByte();
 
-                GameLog.Core.SaveLoad.DebugFormat("Reading Empires: {0}, CivID={1}, empires in total={2}, SlotClaim={3}, Slotstatus={4}",
+                GameLog.Core.SaveLoad.DebugFormat("Reading: Empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, Empire: {0}",
                                         header.EmpireNames[i], header.EmpireIDs[i], empireCount, header.SlotClaims[i], header.SlotStatus[i]);
             }
 

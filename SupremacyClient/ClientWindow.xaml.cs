@@ -296,6 +296,18 @@ namespace Supremacy.Client
                     Key.T,
                     ModifierKeys.Control));
 
+            //InputBindings.Add(
+            //    new KeyBinding(
+            //        ClientCommands.EndTurnTarget1,
+            //        Key.T,
+            //        ModifierKeys.Control));
+
+            //InputBindings.Add(
+            //    new KeyBinding(
+            //        ClientCommands.EndTurnTarget2,
+            //        Key.T,
+            //        ModifierKeys.Control));
+
             CommandBindings.Add(
                 new CommandBinding(
                     ClientCommands.AutoTurnCommand,
@@ -308,6 +320,32 @@ namespace Supremacy.Client
                             ClientCommands.EndTurn.Execute(null);
                         }
                     }));
+
+            //CommandBindings.Add(
+            //        new CommandBinding(
+            //            ClientCommands.AutoTurnCommand,
+            //            (s, e) =>
+            //            {
+            //                var service = ServiceLocator.Current.GetInstance<IPlayerTarget1Service>();
+            //                service.AutoTurnTarget1 = !service.AutoTurnTarget1;
+            //                if (service.AutoTurnTarget1)
+            //                {
+            //                    ClientCommands.EndTurnTarget1.Execute(null);
+            //                }
+            //            }));
+
+            //CommandBindings.Add(
+            //        new CommandBinding(
+            //            ClientCommands.AutoTurnCommand,
+            //            (s, e) =>
+            //            {
+            //                var service = ServiceLocator.Current.GetInstance<IPlayerTarget2Service>();
+            //                service.AutoTurnTarget2 = !service.AutoTurnTarget2;
+            //                if (service.AutoTurnTarget2)
+            //                {
+            //                    ClientCommands.EndTurnTarget2.Execute(null);
+            //                }
+            //            }));
 
             var settings = ClientSettings.Current;
 

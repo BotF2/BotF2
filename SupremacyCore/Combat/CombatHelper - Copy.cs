@@ -304,14 +304,14 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this targets
             {
-                if (target.CivID == -1 || target == null)
+                if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
                 }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                ;
-                GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
+                //else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
+                GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetPrimary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
@@ -322,6 +322,8 @@ namespace Supremacy.Combat
                 }
                 else
                     targetOne.SetTargetOneCiv(ship.Source, target);
+                //else targetOne.SetTargetOneCiv(ship.Source, GetBorgCiv());
+                //GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Non Combat Ship {0} with target = {1}", ship.Name, target.Key);
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
@@ -332,7 +334,7 @@ namespace Supremacy.Combat
                 }    
                 else
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);        
-                GameLog.Core.Combat.DebugFormat("Station {0} with target = {1}", assets.Station.Name, target.Key);
+                GameLog.Core.Combat.DebugFormat("GenerateBlanketTargetPrimary: Station {0} with target = {1}", assets.Station.Name, target.Key);
             }
             return targetOne;
         }
@@ -344,28 +346,23 @@ namespace Supremacy.Combat
 
             foreach (var ship in assets.CombatShips)  // all CombatShips get target
             {
-                if (target.CivID == -1 || target == null) // UPDATE X 04 july 2019 manualy re-do update from ken, to fix targetTwo bug
-                {
+                if (target.CivID == -1)
                     targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
-                }
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
-                GameLog.Core.CombatDetails.DebugFormat("Combat Ship {0} with target = {2}", ship.Name, ship.Owner, target.Key);
+                GameLog.Core.CombatDetails.DebugFormat("GenerateBlanketTargetSecondary: Combat Ship {1} - {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
             {
                 if (target.CivID == -1)
-                {
                     targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
-                }
                 else targetTwo.SetTargetTwoCiv(ship.Source, target);
             }
+
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
             {
                 if (target.CivID == -1)
-                {
-                    targetTwo.SetTargetTwoCiv(assets.Station.Source, GetDefaultHoldFireCiv());
-                }
+                  targetTwo.SetTargetTwoCiv(assets.Station.Source, GetDefaultHoldFireCiv());
                 else
                     targetTwo.SetTargetTwoCiv(assets.Station.Source, target);
             }
@@ -425,16 +422,35 @@ namespace Supremacy.Combat
             return (int)result;
         }
 
+        /// <summary>
+        /// returns the borg civilization if borg are in the game. If not then calls GetDefaultHoldFireCiv
+        /// </summary>
+        /// <returns></returns>
+        //public static Civilization TryGetBorgCiv()
+        //{
+        //    var _target = new Civilization();
+        //    if (borgInGame)
+        //    {
+        //        _target = GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).FirstOrDefault();
+        //    }
+        //    else _target = GetDefaultHoldFireCiv();
+
+        //    return _target;
+
+        //}
+
+        /// <summary>
+        /// returns the dummy civilization for computer player empires that do no chose targeting
+        /// </summary>
+        /// <returns></returns>
         public static Civilization GetDefaultHoldFireCiv()
         {
-            Civilization _target = new Civilization(); // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
-            _target.ShortName = "Only Return Fire";
-            _target.CivID = 888; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
-            _target.Key = "Only Return Fire";
-
+            Civilization _target = new Civilization();
+            _target.ShortName = "DefaultHoldFireCiv";
+            _target.CivID = 999;
+            
             return _target;
         }
 
     }
 }
-

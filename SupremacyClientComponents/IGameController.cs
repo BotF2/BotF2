@@ -57,6 +57,8 @@ namespace Supremacy.Client
         private readonly Dictionary<EventBase, SubscriptionToken> _eventSubscriptionTokens;
         private readonly List<IPresenter> _screenPresenters;
         private readonly DelegateCommand<object> _endTurnCommand;
+        //private readonly DelegateCommand<object> _endTurnTarget1Command;
+        //private readonly DelegateCommand<object> _endTurnTarget2Command;
         private readonly DelegateCommand<object> _showEndOfTurnSummaryCommand;
         private readonly Dispatcher _dispatcher;
         private IDisposable _connectWaitCursorHandle;
@@ -106,6 +108,8 @@ namespace Supremacy.Client
             _client = client;
             _playerOrderService = playerOrderService;
             _endTurnCommand = new DelegateCommand<object>(ExecuteTurnCommand) { IsActive = false };
+            //_endTurnTarget1Command = new DelegateCommand<object>(ExecuteTurnCommand) { IsActive = false };
+            //_endTurnTarget2Command = new DelegateCommand<object>(ExecuteTurnCommand) { IsActive = false };
             _showEndOfTurnSummaryCommand = new DelegateCommand<object>(ExecuteShowEndOfTurnSummaryCommand) { IsActive = true };
             _eventSubscriptionTokens = new Dictionary<EventBase, SubscriptionToken>();
             _screenPresenters = new List<IPresenter>();
@@ -176,6 +180,8 @@ namespace Supremacy.Client
         private void UnhookCommandAndEventHandlers()
         {
             ClientCommands.EndTurn.UnregisterCommand(_endTurnCommand);
+            //ClientCommands.EndTurnTarget1.UnregisterCommand(_endTurnTarget1Command);
+            //ClientCommands.EndTurnTarget2.UnregisterCommand(_endTurnTarget2Command);
             ClientCommands.ShowEndOfTurnSummary.UnregisterCommand(_showEndOfTurnSummaryCommand);
             ClientEvents.InvasionUpdateReceived.Unsubscribe(OnInvasionUpdateReceived);
 
@@ -216,6 +222,8 @@ namespace Supremacy.Client
         private void HookCommandAndEventHandlers()
         {
             ClientCommands.EndTurn.RegisterCommand(_endTurnCommand);
+            //ClientCommands.EndTurnTarget1.RegisterCommand(_endTurnTarget1Command);
+            //ClientCommands.EndTurnTarget2.RegisterCommand(_endTurnTarget2Command);
             ClientCommands.ShowEndOfTurnSummary.RegisterCommand(_showEndOfTurnSummaryCommand);
             ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
 
@@ -283,6 +291,8 @@ namespace Supremacy.Client
         private void OnTurnEnded(EventArgs t)
         {
             _endTurnCommand.IsActive = false;
+            //_endTurnTarget1Command.IsActive = false;
+            //_endTurnTarget2Command.IsActive = false;
         }
 
         private void OnAllTurnEnded(EventArgs t)
@@ -330,6 +340,8 @@ namespace Supremacy.Client
             ClearTurnWaitCursor();
 
             _endTurnCommand.IsActive = true;
+            //_endTurnTarget1Command.IsActive = true;
+            //_endTurnTarget2Command.IsActive = true;
 
             ProcessSitRepEntries();
         }
@@ -341,7 +353,8 @@ namespace Supremacy.Client
 
             foreach (var sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries)
             {
-                GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
+                // got a null ref from this gamelog. Are we missing a sitRepEntry.SummaryText?
+               // GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
                 if (sitRepEntry.HasDetails && ClientSettings.Current.EnableCombatScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
                     SitRepDetailDialog.Show(sitRepEntry);
             }

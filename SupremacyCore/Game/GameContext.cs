@@ -891,7 +891,15 @@ namespace Supremacy.Game
                         if (homeSystemDescriptor.FoodPF != null)
                         {
                             var db = Current.TechDatabase;
+
+                            //foreach (var item in db)
+                            //{
+                            //    //GameLog.Client.GameData.DebugFormat("item = {0}", item.Key);
+                            //}
+
+
                             ProductionFacilityDesign foodFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.FoodPF.DesignType]];
+
                             if (foodFacility != null)
                             {
                                 // Start by clearing already existing facilities

@@ -60,12 +60,14 @@ namespace Supremacy.Universe
                 StarTypeDist[starType] = Number.ParseInt32(UniverseTables["StarTypeDist"][starType.ToString()][0]);
                 foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
+                    GameLog.Core.GalaxyGenerator.DebugFormat("starType ={0}", starType);
                     StarTypeModToPlanetSizeDist[new Tuple<StarType, PlanetSize>(starType, planetSize)] =
                         Number.ParseInt32(
                             UniverseTables["StarTypeModToPlanetSizeDist"][starType.ToString()][planetSize.ToString()]);
                 }
                 foreach (var planetType in EnumHelper.GetValues<PlanetType>())
                 {
+                    GameLog.Core.MapData.DebugFormat("planetType ={0}", planetType);
                     StarTypeModToPlanetTypeDist[new Tuple<StarType, PlanetType>(starType, planetType)] =
                         Number.ParseInt32(
                             UniverseTables["StarTypeModToPlanetTypeDist"][starType.ToString()][planetType.ToString()]);
@@ -76,11 +78,13 @@ namespace Supremacy.Universe
             {
                 foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
+                    //GameLog.Core.MapData.DebugFormat("planetSize ={0}", planetSize);
                     SlotModToPlanetSizeDist[new Tuple<int, PlanetSize>(i, planetSize)] =
                         Number.ParseInt32(UniverseTables["SlotModToPlanetSizeDist"][i][planetSize.ToString()]);
                 }
                 foreach (var planetType in EnumHelper.GetValues<PlanetType>())
                 {
+                    //GameLog.Core.MapData.DebugFormat("planetType ={0}", planetType);
                     SlotModToPlanetTypeDist[new Tuple<int, PlanetType>(i, planetType)] =
                         Number.ParseInt32(UniverseTables["SlotModToPlanetTypeDist"][i][planetType.ToString()]);
                 }
@@ -129,7 +133,7 @@ namespace Supremacy.Universe
                 var line = reader.ReadLine();
                 if (line == null)
                     break;
-
+                GameLog.Core.GalaxyGenerator.DebugFormat("star name ={0}", line);
                 names.Add(line.Trim());
             }
 
@@ -151,7 +155,7 @@ namespace Supremacy.Universe
                 var line = reader.ReadLine();
                 if (line == null)
                     break;
-
+                GameLog.Core.GalaxyGenerator.DebugFormat("star name ={0}", line);
                 names.Add(line.Trim());
             }
 
@@ -175,10 +179,10 @@ namespace Supremacy.Universe
 
             // Ensure empireCount has a positive value to avoid a divide-by-zero error.
             var empireCount = Math.Max(1, GameContext.Current.Civilizations.Count(o => o.IsEmpire));
-
+            GameLog.Core.GalaxyGenerator.DebugFormat("size ={0} empireCount ={1} MinDistanceBetweenHomeworlds ={2}", size, empireCount, size/empireCount);
             return (size / empireCount);
         }
-
+        
         public static void GenerateGalaxy(GameContext game)
         {
             GameContext.PushThreadContext(game);
@@ -350,6 +354,7 @@ namespace Supremacy.Universe
         {
             var system = new StarSystemDescriptor();
             StarType starType;
+            // infinity loop if we cannot get a star that does not support planets or is not a nebula
 
             while (!(starType = GetStarType()).SupportsPlanets() || (starType == StarType.Nebula))
                 continue;
@@ -624,6 +629,7 @@ namespace Supremacy.Universe
                 randomQuadrant = quadrant;
                 //GameLog.Core.GalaxyGenerator.DebugFormat("civ = {0}, HomeQuadrant = {1}", civ.Name, civ.HomeQuadrant);   // not finished yet
             }
+            minorRaces.Randomize();
             foreach (var civ in minorRaceCivs)
             {
                 if (galaxyCanon == GalaxyCanon.Canon)
@@ -635,7 +641,13 @@ namespace Supremacy.Universe
                 }
                 else
                 {
-                    //minorRaces[quadrant] = new List<Civilization>();
+                    // Update 10 july 2019 added this getrandom quadrant to cycle though quadrants for minors if random galaxy
+
+                    randomQuadrant = EnumHelper.GetValues<Quadrant>().RandomElementOrDefault();
+                    //randomQuadrant = quadrant;
+                    //GameLog.Core.GalaxyGenerator.DebugFormat("civ = {0}, HomeQuadrant = {1}", civ.Name, civ.HomeQuadrant);   // not finished yet
+
+                    // minorRaces[randomQuadrant] = new List<Civilization>(); // Change x commenting this had some results
                     minorRaces[randomQuadrant].Add(civ);
                     totalMinorRaces++;
                 }
@@ -814,7 +826,7 @@ namespace Supremacy.Universe
             homeLocations = new Collections.CollectionBase<MapLocation>();
             var chosenCivs = new List<Civilization>();
 
-            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, !GameContext.Current.IsMultiplayerGame);
+            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);//!GameContext.Current.IsMultiplayerGame);
             if (minorRaceFrequency != MinorRaceFrequency.None)
                 PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs);
 
@@ -905,7 +917,7 @@ namespace Supremacy.Universe
             while (!(planetSize = EnumUtilities.NextEnum<PlanetSize>()).IsHabitable())
                 continue;
 
-            if (!system.IsStarTypeDefined)
+            if (!system.IsStarTypeDefined) // null star type
             {
                 while (!(system.StarType = GetStarType()).Value.SupportsPlanets() || (system.StarType.Value == StarType.Nebula))
                     continue;

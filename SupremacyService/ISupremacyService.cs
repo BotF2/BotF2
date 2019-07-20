@@ -66,10 +66,27 @@ namespace Supremacy.WCF
 
         [OperationContract(
             IsOneWay = true,
+            //Name = "EndTurnOrder",
             IsInitiating = false,
             IsTerminating = false,
             Action = "http://Supremacy.WPF/ISupremacyService/EndTurn")]
-        void EndTurn(PlayerOrdersMessage orders);
+        void EndTurn(PlayerOrdersMessage orders); // not combat orders, see combatorders below
+
+        //[OperationContract(
+        //    IsOneWay = true,
+        //    Name = "EndTurnTarget1",
+        //    IsInitiating = false,
+        //    IsTerminating = false,
+        //    Action = "http://Supremacy.WPF/ISupremacyService/EndTurnTarget1")]
+        //void EndTurn(PlayerTarget1Message target1);
+
+        //[OperationContract(
+        //    IsOneWay = true,
+        //    Name = "EndTurnTarget2",
+        //    IsInitiating = false,
+        //    IsTerminating = false,
+        //    Action = "http://Supremacy.WPF/ISupremacyService/EndTurnTarget2")]
+        //void EndTurn(PlayerTarget2Message target2);
 
         [OperationContract(
             IsOneWay = true,
@@ -119,6 +136,20 @@ namespace Supremacy.WCF
             IsTerminating = false,
             Action = "http://Supremacy.WPF/ISupremacyService/SendCombatOrders")]
         void SendCombatOrders(CombatOrders orders);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            Action = "http://Supremacy.WPF/ISupremacyService/SendCombatTarget1")]
+        void SendCombatTarget1(CombatTargetPrimaries target1);
+
+        [OperationContract(
+            IsOneWay = true,
+            IsInitiating = false,
+            IsTerminating = false,
+            Action = "http://Supremacy.WPF/ISupremacyService/SendCombatTarget2")]
+        void SendCombatTarget2(CombatTargetSecondaries target2);
 
         [OperationContract(
             IsOneWay = true,

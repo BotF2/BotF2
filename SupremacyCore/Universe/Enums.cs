@@ -47,7 +47,7 @@ namespace Supremacy.Universe
         RadioPulsar,
         XRayPulsar,
         Quasar,
-        BlackHole
+        BlackHole // other 'star' types
     }
     public class StarTypeConverter : EnumConverter
     {

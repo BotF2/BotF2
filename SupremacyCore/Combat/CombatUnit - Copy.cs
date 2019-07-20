@@ -33,8 +33,6 @@ namespace Supremacy.Combat
         private int _cloakStrength = 0;
         private int _camouflagedStrength = 0;
         private int _scanStrength = 0;
-        private double _accuracy = 0d;
-        private double _damageControl = 0d;
 
         protected CombatUnit(System.Collections.Generic.IEnumerable<Ship> ship) { }
 
@@ -61,12 +59,10 @@ namespace Supremacy.Combat
             _sourceId = source.ObjectID;
             _ownerId = source.OwnerID;
             _hullStrength = source.HullStrength.CurrentValue;
-            _firepower = (source.OrbitalDesign.PrimaryWeapon.Damage * source.OrbitalDesign.PrimaryWeapon.Count) + (source.OrbitalDesign.SecondaryWeapon.Damage * source.OrbitalDesign.SecondaryWeapon.Count);
-            _remainingFirepower = _firepower;
+            _firepower = 100; // ToDo
+            _remainingFirepower = 100;
             _shieldStrength = source.ShieldStrength.CurrentValue;
             _name = source.Name;
-            _accuracy = source.GetAccuracyModifier();
-            _damageControl = source.GetDamageControlModifier();
         }
 
         public Orbital Source
@@ -110,18 +106,24 @@ namespace Supremacy.Combat
             get { return _ownerId; }
         }
 
-        public int Firepower
+        public int FirePower
         {
             get
             {
-                return _firepower;
+                var _unit = Source.OrbitalDesign;
+                _firepower = (_unit.PrimaryWeapon.Damage * _unit.PrimaryWeapon.Count) + (_unit.SecondaryWeapon.Damage * _unit.SecondaryWeapon.Count);
+                //GameLog.Core.CombatDetails.DebugFormat("{0} has FirePower = {1}", _unit.Key, _firepower);
+                return _firepower; 
             }
         }
-
-        public int RemainingFirepower
+        public int ReminingFirePower
         {
             get
             {
+                _remainingFirepower = FirePower;
+                //var _unit = Source.OrbitalDesign;
+                //_firepower = (_unit.PrimaryWeapon.Damage * _unit.PrimaryWeapon.Count) + (_unit.SecondaryWeapon.Damage * _unit.SecondaryWeapon.Count);
+                ////GameLog.Core.CombatDetails.DebugFormat("{0} has FirePower = {1}", _unit.Key, _firepower);
                 return _remainingFirepower;
             }
             set
@@ -130,15 +132,6 @@ namespace Supremacy.Combat
             }
         }
 
-        public double Accuracy
-        {
-            get { return _accuracy; }
-        }
-
-        public double DamageControl
-        {
-            get { return _damageControl; }
-        } 
         public int HullStrength
         {
             get { return _hullStrength; }
@@ -292,4 +285,3 @@ namespace Supremacy.Combat
         }
     }
 }
-

@@ -660,13 +660,13 @@ namespace Supremacy.Client.Views
                         ship => ship.OwnerID == AppContext.LocalPlayer.EmpireID);
 
                     foreach (var ownedShip in ownedShipsAtLocation)
-                        GameLog.Client.Combat.DebugFormat("ownedship.Name = {0}", ownedShip.Name);
+                        GameLog.Client.CombatDetails.DebugFormat("ownedship.Name = {0}", ownedShip.Name);
 
                     availableShips = ownedShipsAtLocation.Where(
                         ship => !selectedTaskForce.View.Ships.Any(o => Equals(o.Source, ship)));
 
                     foreach (var availableShip in availableShips)
-                        GameLog.Client.Combat.DebugFormat("availableShip.Name = {0}", availableShip.Name);
+                        GameLog.Client.CombatDetails.DebugFormat("availableShip.Name = {0}", availableShip.Name);
                 }
 
                 var selectedShip = Model.SelectedShip;
@@ -767,6 +767,14 @@ namespace Supremacy.Client.Views
             {
                 ClientCommands.EndTurn.Execute(null);
             }
+            //if (PlayerTarget1Service.AutoTurnTarget1)
+            //{
+            //    ClientCommands.EndTurnTarget1.Execute(null);
+            //}
+            //if (PlayerTarget2Service.AutoTurnTarget2)
+            //{
+            //    ClientCommands.EndTurn.Execute(null);
+            //}
         }
 
         private void OnLobbyUpdated(ClientDataEventArgs<ILobbyData> args)

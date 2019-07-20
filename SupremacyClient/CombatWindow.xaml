@@ -22,7 +22,7 @@
             IsModal="True"
             Cursor="{StaticResource DefaultCursor}"
             ForceCursor="True">
-<!-- The DataTemplates used in the .cs file are up top here and the window start below these -->
+<!-- The DataTemplates used in the .cs file are up top here and the window starts below these -->
 
     <FrameworkElement.Resources>
         <Style TargetType="{x:Type TreeViewItem}">
@@ -34,7 +34,7 @@
               Value="True"/>
         </Style>
 
-        <!--Friendly and Hostile Data Template Detail view  of ONE item - Begin-->
+        <!--Friendly and Hostile Data Template Detail view  of ONE item (ship/station) - Begin-->
 
         <DataTemplate x:Key="AssetsTreeItemTemplate">
             <DockPanel LastChildFill="True"
@@ -97,8 +97,8 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                        Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}"/>
-                        <TextBlock Text=" - FirePower: "/>
-                        <TextBlock Text="{Binding Path=FirePower}"/>
+                        <TextBlock Text=", Firepower: "/>
+                        <TextBlock Text="{Binding Path=Firepower}"/>
                         <TextBlock x:Name="DestroyedText"
                        Foreground="Crimson"
                        Margin="12,0,0,0"
@@ -181,10 +181,9 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                 Margin="5,0,10,0"
-                                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="20pt" 
                                 Text="{Binding Path=ShortName}" />
-
                 </Grid>
             </StackPanel>
         </DataTemplate>
@@ -201,6 +200,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -246,11 +246,13 @@
                             Height="25"
                             Checked="TargetButton2_Click"
                             GroupName="Secondary"/>
+                    
+
                 </Grid>
             </StackPanel>
         </DataTemplate>
         
-        <!-- Others insignia, name and firepower at Top list of others on left side - Data Template for one item view  -->
+        <!-- Right side Others insignia, name, firepower diplomatic status at Top tlist of others - Data Template for one item view  -->
         <DataTemplate x:Key="OtherNameAndFirePowerTemplate">
             <StackPanel Margin="0,2,0,0"
                         Orientation="Horizontal"
@@ -292,13 +294,13 @@
         <!--Main Combat Window - Begin-->
     </FrameworkElement.Resources>
     <Grid 
-        Height="700"
-        Width="1150">
+        Height="750"
+        Width="1195">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="400"/>
-            <!--<ColumnDefinition Width="Auto"/>-->
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="Auto"/>
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -327,22 +329,31 @@
                  Foreground="Red"
                  TextAlignment="Left"
                  HorizontalAlignment="Left"/>
+            <TextBlock x:Name="SubHeader2Text"
+                 TextWrapping="Wrap"
+                 FontSize="10pt"
+                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                 Foreground="Orange"
+                 TextAlignment="Left"
+                 HorizontalAlignment="Left"/>
         </StackPanel>
 
-        <!--COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
+        <!--Left side COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
         <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
                   Foreground="Ivory"
                   Background="Black"
                     Grid.Column="0"
                     Grid.Row="1"
                   VerticalAlignment="Top"
-                  MaxHeight="700"
+                  Height="620"
+                  MaxHeight ="620"
                     Width="Auto"            
                     Margin="2">
             <TreeView x:Name="FriendlyAssetsTree"
-                     ItemsSource="{Binding FriendlyCivs}"
+                    ItemsSource="{Binding FriendlyCivs}"
                     BorderThickness="0"
                     VerticalAlignment="Top"
+                    Height="541"
                     FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     FontSize="10pt"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -414,7 +425,7 @@
                                        Margin="4,0,0,0"
                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                         FontSize="16pt" 
-                                        Text="{Binding Path=FriendlyEmpireStrength}"/>
+                                        Text="{Binding Path=FriendlyEmpireStrength, StringFormat='#,#\\'}"/>
                         </StackPanel>
                         <StackPanel 
                                 Grid.Column="0"
@@ -430,9 +441,9 @@
                                         Text="{s:StringResource COMBAT_OTHERS_FIREPOWER}"/>
                             <TextBlock Foreground="Red" 
                                         Margin="4,0,0,0"
-                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"                                      
                                         FontSize="16pt" 
-                                        Text="{Binding Path=AllHostileEmpireStrength}"/>
+                                        Text="{Binding Path=AllHostileEmpireStrength, StringFormat='#,#\\'}"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -446,7 +457,7 @@
         </GroupBox>
 
         
-        <!--Targeting and SUMMARY OF COMBAT_Hostile(OTHER) +-->
+        <!--Center Targeting and SUMMARY OF COMBAT_Hostile(OTHER) +-->
         
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_CIVILIZATIONS}" 
                   Foreground="Red"
@@ -459,7 +470,6 @@
             <TreeView x:Name="TargetingAndSummary"
                         BorderThickness="0"
                         VerticalAlignment="Top"
-                      HorizontalAlignment="Left"
                         MaxHeight="580"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="10pt"
@@ -479,8 +489,8 @@
                         <Border x:Name="SummaryBorder"
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                Margin="-17,4,4,4"
+                                HorizontalAlignment="Center"
+                                Margin="0,4,4,2"
                                 Width="310"
                                 Height="auto"
                                 BorderBrush="Gray"
@@ -489,6 +499,7 @@
                             <ListBox x:Name="OtherCivilizationsSummaryItem1"  
                                     IsSynchronizedWithCurrentItem="True"
                                     ItemsSource="{Binding}"
+                                     HorizontalAlignment="Center"
                                     ItemTemplate="{StaticResource OthersTreeSummaryTemplate}"
                                     Grid.Column="1"
                                     Grid.Row="1"     
@@ -503,8 +514,8 @@
                                 DockPanel.Dock="Top"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Margin="-15,8,4,4"
-                                Width="300"
+                                Margin="0,8,4,2"
+                                Width="310"
                                 Height="230"
                                 BorderBrush="LightGray"
                                 BorderThickness="4"
@@ -515,46 +526,43 @@
             </TreeView>
         </GroupBox>
 
-        <!--COMBAT_Hostile(OTHER)_UNITS source path & items name to DataTemple in .cs +-->
+        <!--right side COMBAT_Hostile(OTHER)_UNITS source path & items name to DataTemple in .cs +-->
         <GroupBox Header="{s:StringResource COMBAT_HOSTILE_UNITS}" 
                   Foreground="LightGoldenrodYellow"
                   Background="Black"
                   VerticalAlignment="Top"
-                  Height="500"
-                  MaxHeight="580"
+                  Height="620"
+                  MaxHeight ="620"
                     Grid.Column="2"
                     Grid.Row="1"
+                    Grid.ColumnSpan="2"
                     Width="Auto"            
-                    Margin="2">
-            
+                    Margin="2">            
                 <TreeView x:Name="OtherCivsView" 
                           ItemsSource="{Binding OtherCivs}"
-                            Grid.Column="2"
-                            Grid.Row="1"     
-                            Height="600"
-                            BorderThickness="0" 
-                            VerticalAlignment="Top"
+                          BorderThickness="1"
+                          VerticalAlignment="Top"
+                            Height="541"
                             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="10pt"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             ScrollViewer.VerticalScrollBarVisibility="Auto">
-
                     <StackPanel 
                             Grid.Column="2"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            Margin="-20,2,0,2"
+                            Margin="0,2,0,2"
                             Orientation="Vertical"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left">
                         <Grid 
                                 Height="Auto"
-                                Width="290">
+                                Width="350">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="140"/>
                         </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1"/>   <!--header "Fire Power" - not used anymore-->
@@ -566,19 +574,7 @@
                                 <RowDefinition Height="19"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                         
-                            <!--Headline-->
-                        <!--<TextBlock Grid.Column="0"
-                                   Grid.ColumnSpan="2"
-                                                Grid.Row ="0"
-                                               Margin="4,0,0,4"
-                                               Foreground="White" 
-                                               Background="Black"
-                                               HorizontalAlignment="Left"
-                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                FontSize="13pt" 
-                                                Text="Fire Powers"/>-->
-                        
+                                                
                              <!--CivsAndFirePowers 1-->
                         <Border x:Name="ImageBorderOther1"
                                             DockPanel.Dock="Left"
@@ -918,7 +914,7 @@
 
         <Button x:Name="CloseButton"
                 Style="{DynamicResource StandardButtonStyle}"
-                Margin="100,16,104,16"
+                Margin="100,66,104,66"
                 Grid.Column="1"
                 Grid.Row="0"
                 HorizontalAlignment="Left"

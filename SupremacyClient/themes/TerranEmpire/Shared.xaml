@@ -35,7 +35,7 @@
 
     <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Header Text</FontFamily>
     <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-  <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Romulan Header Text</FontFamily>
+  <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Header Text</FontFamily>
 
   <system:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</system:Double>
   <system:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</system:Double>

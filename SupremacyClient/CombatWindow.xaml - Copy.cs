@@ -45,8 +45,7 @@ namespace Supremacy.Client
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
         private CombatAssets _otherAssets;
-        private bool _targetTransports = false;
-        // CHANGE X
+      //  private bool _targetSelected = false;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
         private Civilization _onlyFireIfFiredAppone;
@@ -89,10 +88,9 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
             
-            _onlyFireIfFiredAppone = new Civilization(); // The click of "Only Return Fire" radio button by human player
+            _onlyFireIfFiredAppone = new Civilization();
             _onlyFireIfFiredAppone.ShortName = "Only Return Fire";
-            _onlyFireIfFiredAppone.CivID = 888;
-            _onlyFireIfFiredAppone.Key = "Only Return Fire";
+            _onlyFireIfFiredAppone.CivID = 8888;
             _theTargeted1Civ = new Civilization();
             _theTargeted1Civ = _onlyFireIfFiredAppone;
             _theTargeted2Civ = new Civilization();
@@ -179,9 +177,6 @@ namespace Supremacy.Client
                         soundPlayer.Play();
                 }
             }
-            SubHeader2Text.Text = String.Format(
-                ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
-                _update.Sector.Name);
 
             PopulateUnitTrees();
 
@@ -190,14 +185,14 @@ namespace Supremacy.Client
             //We need combat assets to be able to rush the opposition
             RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
             //There needs to be transports in the opposition to be able to target them
-            TransportsButton.IsEnabled = false;// (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-               // || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))));
+            TransportsButton.IsEnabled = (_update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))) ||
+                (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))); // klingon transports are combat ships
             //We need at least 3 ships to create a formation
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat
-            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0));
+            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0) || (fa.Station != null));
             //Can hail
-            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null)); //(update.RoundNumber == 1);
+            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null)); //(update.RoundNumber == 1);
 
             UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
@@ -224,18 +219,18 @@ namespace Supremacy.Client
             HostileDestroyedItems.Items.Clear();
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
-            // CHANGE X
+
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
-            GameLog.Core.CombatDetails.DebugFormat("cleared all ClearUnitTrees");
+            GameLog.Core.Combat.DebugFormat("cleared all ClearUnitTrees");
 
         }
 
         private void PopulateUnitTrees()
         {
             ClearUnitTrees();
-            // CHANGE X
+
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
 
@@ -292,6 +287,10 @@ namespace Supremacy.Client
                 }
 
             }
+
+            //Civilization onlyFireIfFiredAppone = new Civilization();
+            //onlyFireIfFiredAppone.ShortName = "Only Return Fire";
+            //onlyFireIfFiredAppone.CivID = 8888;
 
             /* Hostile (others) Assets */
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
@@ -370,7 +369,9 @@ namespace Supremacy.Client
 
             OtherCivilizationsSummaryItem1.Visibility = OtherCivilizationsSummaryItem1.HasItems ? Visibility.Visible : Visibility.Collapsed;
             FriendCivilizationsItems.Visibility = FriendCivilizationsItems.HasItems ? Visibility.Visible : Visibility.Collapsed;
+
         }
+
         private void TargetButton1_Click(object sender, RoutedEventArgs e)
         {
             RadioButton radioButton1 = (RadioButton)sender;
@@ -387,15 +388,7 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            if (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-                || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))))
-            {
-                TransportsButton.IsEnabled = true;
-            }
-            else TransportsButton.IsEnabled = false;
-
-            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
-            GameLog.Core.CombatDetails.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
+            GameLog.Core.Test.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
 
         }
 
@@ -415,13 +408,8 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            if (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-               || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))))
-            {
-                TransportsButton.IsEnabled = true;
-            }
-            else TransportsButton.IsEnabled = false;
-            GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
+
+            GameLog.Core.Test.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)
@@ -458,4 +446,3 @@ namespace Supremacy.Client
 
     }
 }
-

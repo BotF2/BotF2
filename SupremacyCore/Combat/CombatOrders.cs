@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
+using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
@@ -27,7 +28,7 @@ namespace Supremacy.Combat
         Rush,
         Transports,
         Formation
-        //Assimilate
+        //Assimilate might be an order, instead of invade system, for only the borg
     }
 
     public enum AssaultStrategy
@@ -40,13 +41,10 @@ namespace Supremacy.Combat
     public class CombatOrders : IEnumerable<CombatOrder>
     {
         private readonly int _combatId;
-        private readonly int _primeTargetCivId;
         private readonly int _ownerId;
-        private readonly int _primaryTargetCivId;
-        private readonly int _secondaryTargetCivId;
         private readonly AssaultStrategy _assaultStrategy;
         private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
-        private readonly Dictionary<int, CombatOrder> _orders;
+        private readonly Dictionary<int, CombatOrder> _orders; // Dictinary, int key is ownerID & combat order from enum
       
 
         public int CombatID
@@ -58,50 +56,25 @@ namespace Supremacy.Combat
         {
             get { return _ownerId; }
         }
-        public int PrimaryTargetCivID
-        {
-            get { return _primaryTargetCivId; }
-        }
-
-        public int SecondaryTargetCivID
-        {
-            get { return _secondaryTargetCivId; }
-        }
 
         public Civilization Owner
         {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
+            get
+            {
+                return GameContext.Current.Civilizations[_ownerId];
+            }
         }
 
-        public Civilization PrimaryTargetCiv
-        {
-            get { return GameContext.Current.Civilizations[_primaryTargetCivId]; }
-        }
-
-        public Civilization SecondaryTargetCiv
-        {
-            get { return GameContext.Current.Civilizations[_secondaryTargetCivId]; }
-        }
-
-        public CombatOrders(Civilization owner, Civilization primaryTargetCiv,
-            Civilization secondaryTargetCiv, int combatId,
+        public CombatOrders(Civilization owner, int combatId,
             AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
             InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
-            if (primaryTargetCiv == null)
-                throw new ArgumentNullException("primaryTargetCivID");
-
-            if (secondaryTargetCiv == null)
-                throw new ArgumentNullException("primaryTargetCivID");
-
             _ownerId = owner.CivID;
             _orders = new Dictionary<int, CombatOrder>();
             _combatId = combatId;
-            _primeTargetCivId = primaryTargetCiv.CivID;
-            _secondaryTargetCivId = secondaryTargetCiv.CivID;
             _assaultStrategy = assaultStrategy;
             _assaultTargetingStrategy = assaultTargetingStrategy;
         }
@@ -120,6 +93,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 throw new ArgumentNullException("source");
+            GameLog.Core.CombatDetails.DebugFormat("Set order = {1} for attacker {0}", source.Owner, order.ToString());
             _orders[source.ObjectID] = order;
         }
 
@@ -148,6 +122,9 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("source");
             if (!_orders.ContainsKey(source.ObjectID))
                 throw new ArgumentException("No order has been set for the specified source");
+
+            // works   GameLog.Core.CombatDetails.DebugFormat("GetCombatOrder source {0}", source.Name);
+
             return _orders[source.ObjectID];
         }
 

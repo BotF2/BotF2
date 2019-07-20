@@ -123,11 +123,25 @@ namespace Supremacy.Client
             catch (InvalidOperationException) {}
         }
 
-        public void EndTurn(PlayerOrdersMessage orders)
+        public void EndTurn(PlayerOrdersMessage orders) //not combat orders, see below sendCombatOrders
         {
             try { Channel.EndTurn(orders); }
             catch (FaultException) {}
+
         }
+
+        //public void EndTurn(PlayerTarget1Message target1)
+        //{
+        //    try { Channel.EndTurn(target1); }
+        //    catch (FaultException) { }
+        //}
+
+
+        //public void EndTurn(PlayerTarget2Message target2)
+        //{
+        //    try { Channel.EndTurn(target2); }
+        //    catch (FaultException) { }
+        //}
 
         public void UpdateGameOptions(GameOptions options)
         {
@@ -167,8 +181,23 @@ namespace Supremacy.Client
 
         public void SendCombatOrders(CombatOrders orders)
         {
-            try { Channel.SendCombatOrders(orders); }
-            catch (FaultException) {}
+            if (orders != null && Channel !=null)
+            {
+                try { Channel.SendCombatOrders(orders); }
+                catch (FaultException) { }
+            }
+        }
+
+        public void SendCombatTarget1(CombatTargetPrimaries target1)
+        {
+            try { Channel.SendCombatTarget1(target1); }
+            catch (FaultException) { }
+        }
+
+        public void SendCombatTarget2(CombatTargetSecondaries target2)
+        {
+            try { Channel.SendCombatTarget2(target2); }
+            catch (FaultException) { }
         }
 
         public void SendInvasionOrders(InvasionOrders orders)

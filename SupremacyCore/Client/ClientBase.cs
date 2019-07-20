@@ -40,6 +40,8 @@ namespace Supremacy.Client
 
         #region Fields
         private readonly List<Order> _orders;
+        private readonly List<Order> _target1;
+        private readonly List<Order> _target2;
         #endregion
 
         #region Events
@@ -61,6 +63,8 @@ namespace Supremacy.Client
 
         #region Properties
         public IList<Order> Orders { get { return _orders.AsReadOnly(); } }
+        public IList<Order> Target1 { get { return _target1.AsReadOnly(); } }
+        public IList<Order> Target2 { get { return _target2.AsReadOnly(); } }
         public abstract GameContext Game { get; protected set; }
         public abstract TurnPhase TurnPhase { get; protected set; }
         public abstract Player LocalPlayer { get; protected set; }
@@ -87,6 +91,9 @@ namespace Supremacy.Client
         protected ClientBase()
         {
             _orders = new List<Order>();
+            _target1 = new List<Order>();
+            _target2 = new List<Order>();
+
         }
         #endregion
 
@@ -207,6 +214,63 @@ namespace Supremacy.Client
         {
             _orders.Clear();
         }
+        public void AddTarget1(Order target1)
+        {
+            if (target1 == null)
+                return;
+
+            target1.Owner = LocalPlayer.Empire;
+            lock (_target1)
+            {
+                while ((_target1.Count > 0) && target1.Overrides(_target1[_target1.Count - 1]))
+                    _target1.RemoveAt(_target1.Count - 1);
+                _target1.Add(target1);
+            }
+        }
+
+        public bool RemoveTarget1(Order target1)
+        {
+            if (target1 == null)
+                return false;
+            lock (_target1)
+            {
+                return _target1.Remove(target1);
+            }
+        }
+
+        public void ClearTarget1()
+        {
+            _target1.Clear();
+        }
+
+        public void AddTarget2(Order target)
+        {
+            if (target == null)
+                return;
+
+            target.Owner = LocalPlayer.Empire;
+            lock (_target2)
+            {
+                while ((_target2.Count > 0) && target.Overrides(_target2[_target2.Count - 1]))
+                    _target2.RemoveAt(_target2.Count - 1);
+                _target2.Add(target);
+            }
+        }
+
+        public bool RemoveTarget2(Order target)
+        {
+            if (target == null)
+                return false;
+            lock (_target2)
+            {
+                return _target2.Remove(target);
+            }
+        }
+
+        public void ClearTarget2()
+        {
+            _target2.Clear();
+        }
 
         public abstract void HostGame(string playerName);
         public abstract void HostSinglePlayerGame(GameOptions options, int empireId);
@@ -264,7 +328,8 @@ namespace Supremacy.Client
         public abstract void SendChatMessage(Player recipient, string message);
 
         public abstract void SendCombatOrders(CombatOrders orders);
-
+        public abstract void SendCombatTarget1(CombatTargetPrimaries target1);
+        public abstract void SendCombatTarget2(CombatTargetSecondaries target2);
         public abstract void UpdateGameOptions(GameOptions options);
         public abstract void UpdateEmpireSelection(int playerId, int empireId);
 

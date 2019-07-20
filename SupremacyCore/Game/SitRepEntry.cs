@@ -205,6 +205,42 @@ namespace Supremacy.Game
     }
     #endregion
 
+    #region UnassinedTradeRoute
+    [Serializable]
+    public class UnassignedTradeRoute : SitRepEntry
+    {
+        private readonly TradeRoute _tradeRoute;
+        public TradeRoute TradeRoute
+        {
+            get{ return _tradeRoute; }
+        }
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_UNASSIGNED_TRADE_ROUTE"),
+                    TradeRoute.SourceColony, TradeRoute.SourceColony.Location);
+            }
+        }
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public UnassignedTradeRoute(TradeRoute route): base(route.SourceColony.Owner, SitRepPriority.Yellow)
+        {
+            if (route == null)
+                throw new ArgumentException("TradeRoute");
+            _tradeRoute = route;
+        }
+    }
+    #endregion
+
     #region Science Ship SitRepEntries
     [Serializable]
     public class ScienceShipResearchGainedSitRepEntry : SitRepEntry
@@ -260,7 +296,8 @@ namespace Supremacy.Game
                         StarTypeFullText = _starType.ToString();
                         break;
                 }
-
+                GameLog.Core.Research.DebugFormat("Science Ship {0} at {1}, a {2}, gained {3} research points studying this {4}.",
+                    ScienceShip.Name, Sector, StarTypeFullText, _researchGained, StarTypeFullText);
                 return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
                     ScienceShip.Name, Sector, StarTypeFullText, _researchGained, StarTypeFullText);
             }

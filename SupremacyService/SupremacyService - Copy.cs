@@ -1339,23 +1339,21 @@ namespace Supremacy.WCF
             {
                 if (_combatEngine == null || orders == null)
                     return;
-                
+
                 lock (_combatEngine.SyncLock)
                 {
-                    //if (orders.OwnerID != Player.GameHostID)
-                        _combatEngine.SubmitOrders(orders); 
+                    _combatEngine.SubmitOrders(orders);
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
                 }
-                //else TryResumeCombat(_combatEngine);
             }
             catch (Exception e)
             {
-                GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
+                GameLog.Server.Combat.DebugFormat("SendCombatOrders null reference issue #164 {0}", orders.ToString());
                 GameLog.Server.Combat.Error(e);
             }
-        } // CHANGE X TOTAL END HERE, WINDOW REMAINS
+        }
 
         public void SendCombatTarget1(CombatTargetPrimaries target1)
         {
@@ -1399,8 +1397,6 @@ namespace Supremacy.WCF
 
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
-
-            // CHANGE X HERE IS SOMETHING
             GameContext.PushThreadContext(_game);
 
             var player = _playerInfo.FromEmpireId(update.OwnerID);
@@ -1413,11 +1409,10 @@ namespace Supremacy.WCF
                 }
             }
 
-            // CHANGE X
             //No proper CombatAI, so just for now fake some orders
             else if (!engine.IsCombatOver && !update.Owner.IsHuman)
             {
-                // works   GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
+                GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
                 var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
                 var enemyAssets = update.HostileAssets.FirstOrDefault(hostileAssets => hostileAssets.Owner != update.Owner);
 
@@ -1426,10 +1421,9 @@ namespace Supremacy.WCF
                     return;
                 }
 
-                Civilization _target = new Civilization(); // The AI generates a dummy target for non-human player civ
-                _target.ShortName = "Only Return Fire";
-                _target.CivID = 888; // CHANGE X AIS default CIV for Target ONE
-                _target.Key = "Only Return Fire";
+                Civilization _target = new Civilization();
+                _target.ShortName = "DefaultHoldFireCiv";
+                _target.CivID = 999;
 
                 var blanketOrder = CombatOrder.Engage;
                 var blanketTargetOne = _target;
@@ -1439,7 +1433,7 @@ namespace Supremacy.WCF
                 if (enemyAssets.Station != null)
                     countStation = 2;  // counting value for Station = 2 ships
 
-                GameLog.Core.Combat.DebugFormat("generated blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
+                GameLog.Core.Combat.DebugFormat("blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
 
                 SendCombatTarget1(CombatHelper.GenerateBlanketTargetPrimary(ownerAssets, blanketTargetOne));
@@ -1461,7 +1455,7 @@ namespace Supremacy.WCF
                 {
                     lock (engine.SyncLock)
                     {
-                        if (engine.Ready) // CHANGE X Position 2
+                        if (engine.Ready)
                             engine.ResolveCombatRound();
                     }
 

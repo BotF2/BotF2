@@ -43,7 +43,7 @@ namespace Supremacy.Combat
                 {
                     for (int j = 0; j < fleetsAtLocation.Count; j++)
                     {
-                        if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner))
+                        if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner)) // ToDo 3+ directional scan
                         {
                             OppositionFleets.Add(fleetsAtLocation[j]);
                             OppositionFleets.Distinct();

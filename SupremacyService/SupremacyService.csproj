@@ -110,6 +110,8 @@
     <Compile Include="GameStartMessage.cs" />
     <Compile Include="ISupremacyCallback.cs" />
     <Compile Include="ISupremacyService.cs" />
+    <Compile Include="PlayerTarget2Message.cs" />
+    <Compile Include="PlayerTarget1Message.cs" />
     <Compile Include="PlayerOrdersMessage.cs" />
     <Compile Include="ServerPlayerInfoCollection.cs" />
     <Compile Include="PORDCSOB.cs" />

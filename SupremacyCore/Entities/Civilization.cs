@@ -11,8 +11,9 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-
+using Supremacy.Combat;
 using Supremacy.Game;
+using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -131,6 +132,19 @@ namespace Supremacy.Entities
             _raceId = race.Key;
             _civType = CivilizationType.MinorPower;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Civilization"/> class.
+        /// </summary>
+        /// <param name="key">The unique key.</param>
+        
+        //public Civilization(string key)
+        //{
+        //    _key = key;
+        //    _civType = CivilizationType.Empire;
+        //    _civId = 6;
+
+        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class from XML data.
@@ -710,6 +724,11 @@ namespace Supremacy.Entities
                 return true;
             return (a.Key != b.Key);
         }
+
+        //public static implicit operator CombatTargetTwo(Civilization v)
+        //{
+        //    throw new NotImplementedException();
+        //}
         #endregion
     }
 }

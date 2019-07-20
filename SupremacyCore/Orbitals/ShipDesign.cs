@@ -192,15 +192,14 @@ namespace Supremacy.Orbitals
         /// <summary>
         /// Initializes a new instance of the <see cref="ShipDesign"/> class.
         /// </summary>
-        public ShipDesign() {}
+        public ShipDesign() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShipDesign"/> class using XML data.
         /// </summary>
         /// <param name="element">The XML element.</param>
-        public ShipDesign(XmlElement element) :  base(element)
+        public ShipDesign(XmlElement element) : base(element)
         {
-
             _possibleNames = new Dictionary<string, int>();
 
             if (element["ShipType"] != null)
@@ -220,7 +219,7 @@ namespace Supremacy.Orbitals
             }
             if (element["Dilithium"] != null)
             {
-                BuildResourceCosts[ResourceType.Dilithium] = 
+                BuildResourceCosts[ResourceType.Dilithium] =
                     Number.ParseInt32(element["Dilithium"].InnerText.Trim());
                 if (BuildResourceCosts[ResourceType.Dilithium] < 1)
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: Dilithium should not be 0", Name);
@@ -253,7 +252,7 @@ namespace Supremacy.Orbitals
             if (element["Speed"] != null)
             {
                 _speed = Number.ParseByte(element["Speed"].InnerText.Trim());
-                if (_speed == 0 || _speed > 15 )
+                if (_speed == 0 || _speed > 15)
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _speed should not be {1}", Name, _speed);
             }
             if (element["FuelReserve"] != null)
@@ -261,7 +260,7 @@ namespace Supremacy.Orbitals
                 _fuelCapacity = Number.ParseByte(element["FuelReserve"].InnerText.Trim());
                 //BuildResourceCosts[ResourceType.Deuterium] = _fuelCapacity;
 
-                if (_fuelCapacity > 9)   // atm Empires have 4 and minors have a zero
+                if (_fuelCapacity > 15)   // atm Empires have 4 and minors have a zero
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _fuelCapacity should not be {1}", Name, _fuelCapacity);
             }
             if (element["InterceptAbility"] != null)
@@ -305,7 +304,7 @@ namespace Supremacy.Orbitals
                 foreach (XmlElement name in element["ShipNames"])
                 {
                     _possibleNames.Add(name.InnerText.Trim(), 0);
-                        //GameLog.Core.GameData.DebugFormat("ShipNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
+                    //GameLog.Core.GameData.DebugFormat("ShipNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
                 }
             }
         }
@@ -439,7 +438,7 @@ namespace Supremacy.Orbitals
             var shipDesign = ship.ShipDesign.Name;
 
 
-            if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true)
+            if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true && civManager.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
             {
                 GameLog.Core.GameData.DebugFormat("{0}, {1}, {2}, {3}, {4}, {5}, ship highest tech level is {6} for {7}, exceeding current Techlevel",
 
@@ -454,7 +453,7 @@ namespace Supremacy.Orbitals
                     );
             }
 
-                ship.Owner = owner;
+            ship.Owner = owner;
             //If we have any possible names for this ship class, pick one
             if (_possibleNames.Count > 0)
             {
@@ -496,7 +495,7 @@ namespace Supremacy.Orbitals
                 }
 
                 ship.Name = newShipName;
-                
+
                 _possibleNames[leastUsedName] = timesUsed + 1;
             }
             ship.Reset();
@@ -512,7 +511,7 @@ namespace Supremacy.Orbitals
                 ship.IsCamouflaged = true;
 
             GameContext.Current.Universe.Objects.Add(ship);
-            
+
             civManager.MapData.SetExplored(location, true);
             civManager.MapData.SetScanned(location, true, SensorRange);
             civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);

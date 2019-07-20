@@ -16,6 +16,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
@@ -157,7 +158,7 @@ namespace Supremacy.Tech
             var pfDesign = design as ProductionFacilityDesign;
             if (pfDesign != null && _productionFacilityDesigns.Contains(pfDesign.DesignID))
                 return true;
-        
+
             var bDesign = design as BuildingDesign;
             if (bDesign != null && _buildingDesigns.Contains(bDesign.DesignID))
                 return true;
@@ -165,7 +166,7 @@ namespace Supremacy.Tech
             var syDesign = design as ShipyardDesign;
             if (syDesign != null && _shipyardDesigns.Contains(syDesign.DesignID))
                 return true;
-            
+
             var shDesign = design as ShipDesign;
             if (shDesign != null && _shipDesigns.Contains(shDesign.DesignID))
                 return true;
@@ -353,10 +354,188 @@ namespace Supremacy.Tech
 
                 game.TechTrees.Default = defaultTechTree;
 
+
+                // CSV_Output
+
+                var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                var separator = ";";
+                var line = "";
+                StreamWriter streamWriter;
+                var file = "./lib/test_FromTechTrees.txt";
+                streamWriter = new StreamWriter(file);
+                String strHeader = "";  // first line of output files
+
+                file = pathOutputFile + "_FromTechTrees_(autoCreated).csv";
+
+                Console.WriteLine("writing {0}", file);
+
+                if (file == null)
+                    goto WriterClose;
+
+                streamWriter = new StreamWriter(file);
+
+                strHeader = "CIV;KIND;KEY;IsUniversal";  // Head line
+
+                streamWriter.WriteLine(strHeader);
+
+                // End of head line
+
+                foreach (TechObjectDesign design in db.ProductionFacilityDesigns)
+                {
+                    if (design.IsUniversallyAvailable)
+                    {
+                        line = "All" + separator + "ProdFac" + separator + design.Key + separator + "Universal";
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                foreach (TechObjectDesign design in db.BuildingDesigns)
+                {
+                    if (design.IsUniversallyAvailable)
+                    {
+                        line = "All" + separator + "Building" + separator + design.Key + separator + "Universal";
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                foreach (TechObjectDesign design in db.ShipDesigns)
+                {
+                    if (design.IsUniversallyAvailable)
+                    {
+                        line = "All" + separator + "Ship" + separator + design.Key + separator + "Universal";
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                foreach (TechObjectDesign design in db.ShipyardDesigns)
+                {
+                    if (design.IsUniversallyAvailable)
+                    {
+                        line = "All" + separator + "Shipyard" + separator + design.Key + separator + "Universal";
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                foreach (TechObjectDesign design in db.StationDesigns)
+                {
+                    if (design.IsUniversallyAvailable)
+                    {
+                        line = "All" + separator + "Station" + separator + design.Key + separator + "Universal";
+                        streamWriter.WriteLine(line);
+                    }
+                }
+                foreach (TechObjectDesign design in db.OrbitalBatteryDesigns)
+                {
+                    if (design.IsUniversallyAvailable)
+                    {
+                        line = "All" + separator + "OrbitalBattery" + separator + design.Key + separator + "Universal";
+                        streamWriter.WriteLine(line);
+                    }
+                }
+
+            WriterClose:;
+
+
+                // GameStuff
+                game.TechTrees.Default = defaultTechTree;
+
+
+
                 if (xmlDoc.DocumentElement != null)
                 {
+
+
                     foreach (var xmlTree in xmlDoc.DocumentElement.GetElementsByTagName("TechTree").Cast<XmlElement>())
                     {
+                        // first CSV_Output ... necessary to get all races incl. minors
+
+                        // second: Game Stuff
+
+                        #region TechTrees_To_CSV
+
+                        try
+                        {
+                            //var civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
+                            //if (civManager == null)
+                            //    continue;
+                            var techTree = new TechTree(xmlTree);
+
+                            bool _traceTechTrees = true;
+                            if (_traceTechTrees == true)
+                            {
+                                string owner = xmlTree.GetAttribute("Civilization");
+                                string category = "";
+
+                                foreach (var item in techTree.ProductionFacilityDesigns)
+                                {
+                                    category = "ProdFac";
+                                    string isUniversal = item.IsUniversallyAvailable.ToString();
+                                    //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
+
+                                    line = owner + separator + "ProdFac" + separator + item.ToString() + separator + isUniversal;
+                                    //Console.WriteLine("{0}", line);
+                                    streamWriter.WriteLine(line);
+                                }
+
+                                foreach (var item in techTree.BuildingDesigns)
+                                {
+                                    category = "Building";
+                                    string isUniversal = item.IsUniversallyAvailable.ToString();
+                                    //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
+
+                                    line = owner + separator + "Building" + separator + item.ToString() + separator + isUniversal;
+                                    //Console.WriteLine("{0}", line);
+                                    streamWriter.WriteLine(line);
+                                }
+                                foreach (var item in techTree.ShipDesigns)
+                                {
+                                    category = "Ship";
+                                    string isUniversal = item.IsUniversallyAvailable.ToString();
+                                    //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
+
+                                    line = owner + separator + "Ship" + separator + item.ToString() + separator + isUniversal;
+                                    //Console.WriteLine("{0}", line);
+                                    streamWriter.WriteLine(line);
+                                }
+                                foreach (var item in techTree.ShipyardDesigns)
+                                {
+                                    category = "Shipyards";
+                                    string isUniversal = item.IsUniversallyAvailable.ToString();
+                                    //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
+
+                                    line = owner + separator + "Shipyards" + separator + item.ToString() + separator + isUniversal;
+                                    //Console.WriteLine("{0}", line);
+                                    streamWriter.WriteLine(line);
+                                }
+                                foreach (var item in techTree.StationDesigns)
+                                {
+                                    category = "Station";
+                                    string isUniversal = item.IsUniversallyAvailable.ToString();
+                                    //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
+
+                                    line = owner + separator + "Station" + separator + item.ToString() + separator + isUniversal;
+                                    //Console.WriteLine("{0}", line);
+                                    streamWriter.WriteLine(line);
+                                }
+                                foreach (var item in techTree.OrbitalBatteryDesigns)
+                                {
+                                    category = "OrbitalBattery";
+                                    string isUniversal = item.IsUniversallyAvailable.ToString();
+                                    //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
+
+                                    line = owner + separator + "OrbitalBattery" + separator + item.ToString() + separator + isUniversal;
+                                    //Console.WriteLine("{0}", line);
+                                    streamWriter.WriteLine(line);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            GameLog.Core.GameData.Error("Cannot write ... _FromTechTrees_(autoCreated).csv", e);
+                        }
+
+                        // End of TechTrees_To_CSV
+                        #endregion TechTrees_To_CSV
+
+
+
+                        // Game Stuff
                         // its quite possible that the tech tree we are trying to load doesn't have a corresponding CivManager.
                         // If the civilization is not part of the current game, then we don't need it's data
                         try
@@ -371,6 +550,8 @@ namespace Supremacy.Tech
                         catch { }
                     }
                 }
+                streamWriter.Close();
+                //WriterClose2:;
             }
             finally
             {

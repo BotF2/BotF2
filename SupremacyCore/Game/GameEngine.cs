@@ -702,7 +702,6 @@ namespace Supremacy.Game
                  //.Where(p => !p.IsCamouflaged).ToList();
             foreach (var fleet in fleetsAtLocation)
             {
-
                 //if (fleet.IsCamouflaged == false)
                 //{
                 //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4}, IsCloaked = {5}",
@@ -714,7 +713,6 @@ namespace Supremacy.Game
                 //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4} (TRUE??), IsCloaked = {5}",
                 //            fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
                 //}
-
 
                 //List<Fleet> _owners = new List<Fleet>();
                 //var Owners = _owners.Where(p => p.Owner != null).GroupBy(p => p.Owner).Select(g => g.FirstOrDefault()).ToList();
@@ -741,7 +739,7 @@ namespace Supremacy.Game
             foreach (var combat in combats)
             {
                 CombatReset.Reset();
-                GameLog.Core.Combat.DebugFormat("---- COMBAT OCCURED --------------------");
+                GameLog.Core.Combat.DebugFormat("---- COMBAT OCCURED GameEngine --------------------");
                 OnCombatOccurring(combat);
                 CombatReset.WaitOne();
             }
@@ -1019,6 +1017,8 @@ namespace Supremacy.Game
                     //fleets
                     foreach (var fleet in game.Universe.FindOwned<Fleet>(civ))
                     {
+                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from FLEET {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", fleet.ObjectID, fleet.Name, 
+                        //    fleet.Owner, fleet.Location, fleet.ScanStrength, fleet.SensorRange);
                         mapData.UpgradeScanStrength(
                             fleet.Location,
                             fleet.ScanStrength,
@@ -1029,6 +1029,8 @@ namespace Supremacy.Game
                     //stations
                     foreach (var station in game.Universe.FindOwned<Station>(civ))
                     {
+                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from STATION {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", station.ObjectID, station.Name, 
+                        //    station.Owner, station.Location, station.StationDesign.ScanStrength, station.StationDesign.SensorRange);
                         mapData.UpgradeScanStrength(
                             station.Location,
                             station.StationDesign.ScanStrength,
@@ -1052,6 +1054,8 @@ namespace Supremacy.Game
                         if (scanBonuses.Any())
                             scanModifier = scanBonuses.Max();
 
+                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from COLONY {0} {1} ({2}) at  {3}, ScanStrength = {4}, Range = {5}", colony.ObjectID, colony.Name, 
+                        //    colony.Owner, colony.Location, 1 + scanModifier, 1 + scanModifier);  
                         mapData.UpgradeScanStrength(
                             colony.Location,
                             1 + scanModifier,
@@ -1136,6 +1140,7 @@ namespace Supremacy.Game
                                     sectorClaims.AddClaim(location, civ, claimWeight);
 
                                 civManager.MapData.SetScanned(location, true);
+                                //GameLog.Core.MapData.DebugFormat("{0} (Colony owner: {1}): SetScanned to -> True ", location.ToString(), colony.Owner);
                             }
                         }
                     }
@@ -1926,14 +1931,21 @@ namespace Supremacy.Game
                             foreach (var extraTradeRoute in extraTradeRoutes)
                                 colony.TradeRoutes.Remove(extraTradeRoute);
                         }
-                            
+
                         /*
                          * Iterate through the remaining trade routes and deposit the credit
                          * income into the civilization's treasury.
                          */
                         foreach (var route in colony.TradeRoutes)
+                        {
                             colony.CreditsFromTrade.AdjustCurrent(route.Credits);
-
+                            GameLog.Core.TradeRoutes.DebugFormat("trade route {0}, route is assigned ={1}", route.SourceColony.Owner, route.IsAssigned);
+                            if (!route.IsAssigned) // && civManager.SitRepEntries.Any(s=>s.Categories.ToString() == "SpecialEvent"))
+                            {
+                                GameLog.Core.TradeRoutes.DebugFormat("trade route for {0}, credti {1}=0 should add sitRep", route.SourceColony.Owner, route.SourceColony.CreditsFromTrade.BaseValue);
+                                civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
+                            }
+                        }
                         /*
                          * Apply all "+% Trade Income" and "+% Credits" bonuses at this colony.
                          */

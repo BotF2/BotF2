@@ -240,11 +240,15 @@ namespace Supremacy.Client
         private readonly ILoggerFacade _logger;
         private readonly ISupremacyCallback _clientCallback;
         private readonly IPlayerOrderService _playerOrderService;
+        //private readonly IPlayerTarget1Service _playerTarget1Service;
+        //private readonly IPlayerTarget2Service _playerTarget2Service;
         private readonly object _clientLock;
         private readonly object _eventLock;
         private readonly IScheduler _scheduler;
         private readonly DelegateCommand<ChatMessage> _sendChatMessageCommand;
         private readonly DelegateCommand<CombatOrders> _sendCombatOrdersCommand;
+        private readonly DelegateCommand<CombatTargetPrimaries> _sendCombatTarget1Command;
+        private readonly DelegateCommand<CombatTargetSecondaries> _sendCombatTarget2Command;
         private readonly DelegateCommand<InvasionOrders> _sendInvasionOrdersCommand;
         private readonly DelegateCommand<object> _endInvasionCommand;
         private readonly DelegateCommand<string> _saveGameCommand;
@@ -266,6 +270,8 @@ namespace Supremacy.Client
             [NotNull] ILoggerFacade logger, 
             [NotNull] ISupremacyCallback clientCallback, 
             [NotNull] IPlayerOrderService playerOrderService)
+            //[NotNull] IPlayerTarget1Service playerTarget1Service,
+            //[NotNull] IPlayerTarget2Service playerTarget2Service)
         {
             if (logger == null)
                 throw new ArgumentNullException("logger");
@@ -273,10 +279,16 @@ namespace Supremacy.Client
                 throw new ArgumentNullException("clientCallback");
             if (playerOrderService == null)
                 throw new ArgumentNullException("playerOrderService");
+            //if (playerTarget1Service == null)
+            //    throw new ArgumentNullException("playerTarget1Service");
+            //if (playerTarget2Service == null)
+            //    throw new ArgumentNullException("playerTarget2Service");
 
             _clientLock = new object();
             _eventLock = new object();
             _playerOrderService = playerOrderService;
+            //_playerTarget1Service = playerTarget1Service;
+            //_playerTarget2Service = playerTarget2Service;
             _logger = logger;
             _clientCallback = clientCallback;
             _scheduler = Scheduler.ClientEventLoop;
@@ -285,6 +297,8 @@ namespace Supremacy.Client
 
             _sendChatMessageCommand = new DelegateCommand<ChatMessage>(ExecuteSendChatMessageCommand) { IsActive = true };
             _sendCombatOrdersCommand = new DelegateCommand<CombatOrders>(ExecuteSendCombatOrdersCommand) { IsActive = true };
+            _sendCombatTarget1Command = new DelegateCommand<CombatTargetPrimaries>(ExecuteSendCombatTarget1Command) { IsActive = true };
+            _sendCombatTarget2Command = new DelegateCommand<CombatTargetSecondaries>(ExecuteSendCombatTarget2Command) { IsActive = true };
             _sendInvasionOrdersCommand = new DelegateCommand<InvasionOrders>(ExecuteSendInvasionOrdersCommand) { IsActive = true };
             _endInvasionCommand = new DelegateCommand<object>(ExecuteEndInvasionCommand) { IsActive = true };
             _saveGameCommand = new DelegateCommand<string>(ExecuteSaveGameCommand) { IsActive = false };
@@ -612,6 +626,8 @@ namespace Supremacy.Client
 
                 ClientCommands.SendChatMessage.RegisterCommand(_sendChatMessageCommand);
                 ClientCommands.SendCombatOrders.RegisterCommand(_sendCombatOrdersCommand);
+                ClientCommands.SendCombatTarget1.RegisterCommand(_sendCombatTarget1Command);
+                ClientCommands.SendCombatTarget2.RegisterCommand(_sendCombatTarget2Command);
                 ClientCommands.SendInvasionOrders.RegisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.RegisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.RegisterCommand(_saveGameCommand);
@@ -640,7 +656,20 @@ namespace Supremacy.Client
 
         private void ExecuteSendCombatOrdersCommand(CombatOrders orders)
         {
-            ExecuteRemoteCommand(() => _serviceClient.SendCombatOrders(orders));
+            if (orders != null && _serviceClient !=null)
+            {
+                ExecuteRemoteCommand(() => _serviceClient.SendCombatOrders(orders));
+            }
+        }
+
+        private void ExecuteSendCombatTarget1Command(CombatTargetPrimaries target1)
+        {
+            ExecuteRemoteCommand(() => _serviceClient.SendCombatTarget1(target1));
+        }
+
+        private void ExecuteSendCombatTarget2Command(CombatTargetSecondaries target2)
+        {
+            ExecuteRemoteCommand(() => _serviceClient.SendCombatTarget2(target2));
         }
 
         private void ExecuteSendInvasionOrdersCommand(InvasionOrders orders)
@@ -671,6 +700,65 @@ namespace Supremacy.Client
 
             PlayerOrderServiceOnOrdersChanged(null, null);
             _playerOrderService.OrdersChanged += PlayerOrderServiceOnOrdersChanged;
+            //PlayerTarget1ServiceOnTarget1Changed(null, null);
+            //_playerTarget1Service.Target1Changed += PlayerTarget1ServiceOnTarget1Changed;
+            //PlayerTarget2ServiceOnTarget2Changed(null, null);
+            //_playerTarget2Service.Target2Changed += PlayerTarget2ServiceOnTarget2Changed;
+        }
+
+        private void PlayerTarget1ServiceOnTarget1Changed(object sender, EventArgs eventArgs)
+        {
+            ServiceClient serviceClient;
+            lock (_clientLock)
+            {
+                if (!_isConnected)
+                    return;
+                serviceClient = Interlocked.CompareExchange(ref _serviceClient, null, null);
+            }
+            if (serviceClient == null)
+                return;
+
+            //try
+            //{
+            //    var message = new PlayerTarget1Message(_playerTarget1Service.Target1, _playerTarget1Service.AutoTurnTarget1);
+            //    //serviceClient.EndTurn(message);
+            //}
+            //catch (Exception e)
+            //{
+            //    _logger.Log(
+            //        "Exception occurred while submitting end-of-turn target1: " + e.Message,
+            //        Category.Exception,
+            //        Priority.High);
+            //    throw;
+            //}
+        }
+
+        private void PlayerTarget2ServiceOnTarget2Changed(object sender, EventArgs eventArgs)
+        {
+            ServiceClient serviceClient;
+            lock (_clientLock)
+            {
+                if (!_isConnected)
+                    return;
+                serviceClient = Interlocked.CompareExchange(ref _serviceClient, null, null);
+            }
+            if (serviceClient == null)
+                return;
+
+            //try
+            //{
+            //    var message = new PlayerTarget2Message(_playerTarget2Service.Target2, _playerTarget2Service.AutoTurnTarget2);
+            //    //serviceClient.EndTurn(message);
+            //}
+
+            //catch (Exception e)
+            //{
+            //    _logger.Log(
+            //        "Exception occurred while submitting end-of-turn target1: " + e.Message,
+            //        Category.Exception,
+            //        Priority.High);
+            //    throw;
+            //}
         }
 
         private void PlayerOrderServiceOnOrdersChanged(object sender, EventArgs eventArgs)
@@ -687,8 +775,13 @@ namespace Supremacy.Client
 
             try
             {
-                var message = new PlayerOrdersMessage(_playerOrderService.Orders, _playerOrderService.AutoTurn);
-                serviceClient.EndTurn(message);
+                var messageOrder = new PlayerOrdersMessage(_playerOrderService.Orders, _playerOrderService.AutoTurn);
+                //var messageTarget1 = new PlayerTarget1Message(_playerTarget1Service.Target1, _playerTarget1Service.AutoTurnTarget1);
+                //var messageTarget2 = new PlayerTarget2Message(_playerTarget2Service.Target2, _playerTarget2Service.AutoTurnTarget2);
+
+                serviceClient.EndTurn(messageOrder);
+                //serviceClient.EndTurn(messageTarget1);
+                //serviceClient.EndTurn(messageTarget2);
             }
             catch (Exception e)
             {
@@ -700,11 +793,19 @@ namespace Supremacy.Client
             }
         }
 
+
+
+
         private void OnAllTurnEnded(EventArgs args)
         {
             _playerOrderService.OrdersChanged -= PlayerOrderServiceOnOrdersChanged;
             _playerOrderService.ClearOrders();
+            //_playerTarget1Service.Target1Changed -= PlayerTarget1ServiceOnTarget1Changed;
+            //_playerTarget1Service.ClearTarget1();
+            //_playerTarget2Service.Target2Changed -= PlayerTarget2ServiceOnTarget2Changed;
+            //_playerTarget2Service.ClearTarget2();
         }
+
 
         private void UnhookCommandAndEventHandlers()
         {
@@ -717,6 +818,8 @@ namespace Supremacy.Client
 
                 ClientCommands.SendChatMessage.UnregisterCommand(_sendChatMessageCommand);
                 ClientCommands.SendCombatOrders.UnregisterCommand(_sendCombatOrdersCommand);
+                ClientCommands.SendCombatTarget1.UnregisterCommand(_sendCombatTarget1Command);
+                ClientCommands.SendCombatTarget2.UnregisterCommand(_sendCombatTarget2Command);
                 ClientCommands.SendInvasionOrders.UnregisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.UnregisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.UnregisterCommand(_saveGameCommand);
