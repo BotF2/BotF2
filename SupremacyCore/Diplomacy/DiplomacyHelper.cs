@@ -134,6 +134,17 @@ namespace Supremacy.Diplomacy
 
             return diplomat.SeatOfGovernment;
         }
+        //public static Ship GetOwner([NotNull] Civilization who)
+        //{
+        //    if (who == null)
+        //        throw new ArgumentNullException("who");
+
+        //    var diplomat = GameContext.Current.Diplomats[who.CivID];
+        //    if (diplomat == null)
+        //        return null;
+
+        //    return diplomat.Owner;
+        //}
 
         public static void SendWarDeclaration([NotNull] Civilization declaringCiv, [NotNull] Civilization targetCiv, Tone tone = Tone.Calm)
         {
@@ -564,17 +575,14 @@ namespace Supremacy.Diplomacy
                            where colony.OwnerID != civilization.CivID
                            select colony;
 
+            var ships = from ship in GameContext.Current.Universe.FindAt<Ship>(location)
+                          where ship.OwnerID != civilization.CivID && !otherCivs.Contains(ship.OwnerID)
+                          select ship;
+
             foreach (var item in colonies)
                 otherCivs.Add(item.OwnerID);
-
-            var fleets = from fleet in GameContext.Current.Universe.FindAt<Fleet>(location)
-                         where fleet.OwnerID != civilization.CivID && !otherCivs.Contains(fleet.OwnerID)
-                         let fleetView = FleetView.Create(civilization, fleet)
-                         where fleetView.IsOwnerKnown
-                         select fleet;
-
-            foreach (var fleet in fleets)
-                otherCivs.Add(fleet.OwnerID);
+            foreach (var item in ships)
+                otherCivs.Add(item.OwnerID);
 
             foreach (var otherCiv in otherCivs)
                 EnsureContact(civilization, GameContext.Current.Civilizations[otherCiv], location);
