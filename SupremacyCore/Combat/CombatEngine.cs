@@ -143,12 +143,13 @@ namespace Supremacy.Combat
             get
             {
                 //GameLog.Core.Combat.DebugFormat("_roundNumber = {0}", _roundNumber);
-                GameLog.Core.Combat.DebugFormat("_allSidesStandDown ={0}, IsCombatOver ={1} as HasSurvivingAssets ", _allSidesStandDown, (_assets.Count(assets => assets.HasSurvivingAssets) <= 1));
+                //GameLog.Core.Combat.DebugFormat("_allSidesStandDown ={0}, IsCombatOver ={1} as HasSurvivingAssets ", _allSidesStandDown, (_assets.Count(assets => assets.HasSurvivingAssets) <= 1));
                 if (_allSidesStandDown)
                 {
                     return true;
                 }
-                return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
+                // synch threading needed for count
+                 return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
             }
         }
 
@@ -449,7 +450,7 @@ namespace Supremacy.Combat
                                 _empireStrengths.Add(civAsset.Owner.ToString(), currentEmpireStrength);
                         }
                     }
-                    GameLog.Core.CombatDetails.DebugFormat("At CivKey ={0} add empire strength ={1}", civAsset.Owner.Key, currentEmpireStrength);
+                    GameLog.Core.CombatDetails.DebugFormat("for = {0} currentEmpireStrength = {1}", civAsset.Owner.Key, currentEmpireStrength);
                 }
                 // CHANGE X
                 foreach (var otherAsset in _assets) // _assets is all combat assest in sector while "otherAsset" is not of type "friendly" first asset

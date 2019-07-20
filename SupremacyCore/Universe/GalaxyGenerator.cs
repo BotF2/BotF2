@@ -354,6 +354,7 @@ namespace Supremacy.Universe
         {
             var system = new StarSystemDescriptor();
             StarType starType;
+            // infinity loop if we cannot get a star that does not support planets or is not a nebula
 
             while (!(starType = GetStarType()).SupportsPlanets() || (starType == StarType.Nebula))
                 continue;
@@ -916,7 +917,7 @@ namespace Supremacy.Universe
             while (!(planetSize = EnumUtilities.NextEnum<PlanetSize>()).IsHabitable())
                 continue;
 
-            if (!system.IsStarTypeDefined)
+            if (!system.IsStarTypeDefined) // null star type
             {
                 while (!(system.StarType = GetStarType()).Value.SupportsPlanets() || (system.StarType.Value == StarType.Nebula))
                     continue;
