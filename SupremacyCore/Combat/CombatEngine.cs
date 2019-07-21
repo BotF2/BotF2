@@ -148,8 +148,8 @@ namespace Supremacy.Combat
                 {
                     return true;
                 }
-                // synch threading needed for count
-                 return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
+                return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
+
             }
         }
 
@@ -219,13 +219,13 @@ namespace Supremacy.Combat
                         civAssets.Station,
                         CombatWeapon.CreateWeapons(civAssets.Station.Source));
                 }
-                foreach (CombatUnit shipStats in civAssets.CombatShips)
+                foreach (CombatUnit shipStats in civAssets.CombatShips.ToList())
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,
                         CombatWeapon.CreateWeapons(shipStats.Source)));
                 }
-                foreach (CombatUnit shipStats in civAssets.NonCombatShips)
+                foreach (CombatUnit shipStats in civAssets.NonCombatShips.ToList())
                 {
                     _combatShips.Add(new Tuple<CombatUnit, CombatWeapon[]>(
                         shipStats,

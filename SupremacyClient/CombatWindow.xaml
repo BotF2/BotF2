@@ -540,7 +540,7 @@
                     Margin="2">            
                 <TreeView x:Name="OtherCivsView" 
                           ItemsSource="{Binding OtherCivs}"
-                          BorderThickness="1"
+                          BorderThickness="0"
                           VerticalAlignment="Top"
                             Height="541"
                             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
