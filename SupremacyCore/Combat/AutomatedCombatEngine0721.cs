@@ -549,11 +549,11 @@ namespace Supremacy.Combat
                     double combatOrderBonusMalus = 0;
                     // Engage
                     if (attackerOrder == CombatOrder.Engage && (defenderOrder == CombatOrder.Rush || defenderOrder == CombatOrder.Formation))
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.15;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.18;
                     // RAID
                     if (attackerOrder == CombatOrder.Transports && defenderOrder != CombatOrder.Formation) // if Raid, and no Formation select Transportships to be targeted
                     {
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.17;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.22;
                         currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                             .Where(sc => sc.Item1.HullStrength > 0)
                             .Where(sc => sc.Item1.Source.OrbitalDesign.ShipType.Contains("Transport"))
@@ -566,7 +566,7 @@ namespace Supremacy.Combat
                             currentTarget = currentTargets.RandomElementOrDefault(); // Find non-transport opponents
                         }
                         if (attackerOrder == CombatOrder.Transports && defenderOrder == CombatOrder.Engage)
-                            combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.13; // even more weapon Bonus if defender is Engaging
+                            combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.18; // even more weapon Bonus if defender is Engaging
                     }
                     else if ((attackerOrder == CombatOrder.Transports && defenderOrder == CombatOrder.Formation && _combatStation is null)) // IF Raiding and Defender is doing combat Formating, let Frigates protect Transports
                     {
@@ -605,10 +605,10 @@ namespace Supremacy.Combat
                     }
                     // Rush
                     if (attackerOrder == CombatOrder.Rush && (defenderOrder == CombatOrder.Retreat || defenderOrder == CombatOrder.Transports))
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.12;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.17;
                     // Formation
                     if (attackerOrder == CombatOrder.Formation && (defenderOrder == CombatOrder.Transports || defenderOrder == CombatOrder.Rush))
-                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.17;
+                        combatOrderBonusMalus = combatOrderBonusMalus + AttackingShip.Item1.RemainingFirepower * 0.22;
                     Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
                     if (
@@ -770,20 +770,6 @@ namespace Supremacy.Combat
                         if (AttackingShips != null)
                         {
                             AttackingShip = AttackingShips.RandomElementOrDefault();
-                            // Update 21 july 2019, if station of same ID there, use Station as "AttackingShiP"
-                            if (_combatStation != null)
-                            {
-                                if (AttackingShip.Item1.OwnerID == _combatStation.Item1.OwnerID)
-                                    AttackingShip = _combatStation;
-                            }
-                        }
-                        else
-                        {
-                            if (_combatStation != null) // 21 july 2019
-                            {
-                                if (AttackingEmpireID == _combatStation.Item1.OwnerID)
-                                    AttackingShip = _combatStation;
-                            }
                         }
                         if (AttackingShip is null || AttackingShips.Count == 0)
                         {
@@ -916,11 +902,11 @@ namespace Supremacy.Combat
                     double combatOrderBonusMalus = 0;
                     // Engage rush formation
                     if (attackerOrder == CombatOrder.Engage && (defenderOrder == CombatOrder.Rush || defenderOrder == CombatOrder.Formation))
-                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.12;
+                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.18;
                     // RAID Transports
                     if (attackerOrder == CombatOrder.Transports && defenderOrder != CombatOrder.Formation) // if Raid, and no Formation select Transportships to be targeted
                     {
-                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.17;
+                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.22;
                         currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                             .Where(sc => sc.Item1.HullStrength > 0)
                             .Where(sc => sc.Item1.Source.OrbitalDesign.ShipType.Contains("Transport"))
@@ -936,7 +922,7 @@ namespace Supremacy.Combat
                             currentTarget = currentTargets.RandomElementOrDefault();
                         }
                         if (attackerOrder == CombatOrder.Transports && defenderOrder == CombatOrder.Engage)
-                            combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.13; // even more weapon Bonus if defender is Engaging
+                            combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.18; // even more weapon Bonus if defender is Engaging
                     }
                     else if ((attackerOrder == CombatOrder.Transports && defenderOrder == CombatOrder.Formation && _combatStation is null)) // IF Raiding and Defender is doing combat Formating, let Frigates protect Transports
                     {
@@ -975,10 +961,10 @@ namespace Supremacy.Combat
                     }
                     // Rush
                     if (attackerOrder == CombatOrder.Rush && (defenderOrder == CombatOrder.Retreat || defenderOrder == CombatOrder.Transports))
-                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.12;
+                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.17;
                     // Formation
                     if (attackerOrder == CombatOrder.Formation && (defenderOrder == CombatOrder.Transports || defenderOrder == CombatOrder.Rush))
-                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.17;
+                        combatOrderBonusMalus = combatOrderBonusMalus + applyDamage * 0.22;
 
                     Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
