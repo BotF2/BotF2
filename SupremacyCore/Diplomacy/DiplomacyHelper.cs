@@ -578,9 +578,15 @@ namespace Supremacy.Diplomacy
                           where ship.OwnerID != civilization.CivID && !otherCivs.Contains(ship.OwnerID)
                           select ship;
 
+            var stations = from station in GameContext.Current.Universe.FindAt<Station>(location)
+                        where station.OwnerID != civilization.CivID && !otherCivs.Contains(station.OwnerID)
+                        select station;
+
             foreach (var item in colonies)
                 otherCivs.Add(item.OwnerID);
             foreach (var item in ships)
+                otherCivs.Add(item.OwnerID);
+            foreach (var item in stations)
                 otherCivs.Add(item.OwnerID);
 
             foreach (var otherCiv in otherCivs)
@@ -592,11 +598,12 @@ namespace Supremacy.Diplomacy
             if (source == null)
                 throw new ArgumentNullException("source");
             if (target == null)
+                //return false;
                 throw new ArgumentNullException("target");
-            
+
             if (source == target)
                 return false;
-
+            GameLog.Core.Test.DebugFormat("source = {0} target ={1}",source.Key, target.Key);
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
         }
 
