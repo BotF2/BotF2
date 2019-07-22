@@ -982,7 +982,7 @@ namespace Supremacy.Combat
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
                     GameLog.Core.Combat.DebugFormat(" _invasionArena.ColonyShieldStrength = {0}", _invasionArena.ColonyShieldStrength);
 
-                    //weapon.Discharge(); // Update x 21 july 2019. weapons able to fire multiple rounds now
+                    weapon.Discharge();
 
                     if (maxDamage <= 0)
                         continue;
