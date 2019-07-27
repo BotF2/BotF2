@@ -31,18 +31,32 @@
     <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Cursor" Value="Hand" />
     <Setter Property="ToolTip" Value="Build a Ship" />
-    <Setter Property="Width" Value="44" />
-    <Setter Property="Height" Value="45" />
+    <Setter Property="Width" Value="45" />
+    <Setter Property="MaxHeight" Value="50" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
-          <Border>
-            <Image x:Name="ImageContent" Source="vfs:///Resources/UI/Federation/ColonyScreen/build_ship.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+          <DockPanel>
+            <Border CornerRadius="3" BorderThickness="3" DockPanel.Dock="Left" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border.Background>
+              <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.6">
+                <GradientStop Color="Black" Offset="0" />
+                <GradientStop Color="Green" Offset="1" />
+              </RadialGradientBrush>
+            </Border.Background>
+            <Border.BorderBrush>
+              <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="1">
+                <GradientStop Color="Red" Offset="0" />
+                <GradientStop Color="Red" Offset="1" />
+              </RadialGradientBrush>
+            </Border.BorderBrush>
+            <Image x:Name="ImageContent" Opacity="1" Source="vfs:///Resources/UI/Federation/ColonyScreen/build_ship.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
           </Border>
+          </DockPanel>
           <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="True">
               <Setter TargetName="ImageContent" Property="Margin" Value="0" />
-              <Setter TargetName="ImageContent" Property="Width" Value="44" />
+              <Setter TargetName="ImageContent" Property="Width" Value="45" />
               <Setter TargetName="ImageContent" Property="Height" Value="45" />
             </Trigger>
           </ControlTemplate.Triggers>
@@ -60,13 +74,13 @@
     <Setter Property="Cursor" Value="Hand" />
         <!--<Setter Property="ToolTip" Value="Build a Ship" />  Coming from around line 250 and catching Entry=BUILT_NEW_SHIP_TOOLTIP -->
     <Setter Property="Width" Value="200" />
-    <Setter Property="Height" Value="190" />
+    <Setter Property="Height" Value="200" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
             <!--image of ship under construction-->
-              <Border x:Name="ShipBorder" BorderBrush="Transparent" BorderThickness="1" CornerRadius="3" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Image x:Name="ShipImage" Width="144" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0"
+              <Border x:Name="ShipBorder" BorderBrush="Transparent" BorderThickness="1" CornerRadius="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image x:Name="ShipImage" Width="144" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
                        Cursor="Hand">
               <Image.ToolTip>
                 <MultiBinding Converter="{x:Static local:StringFormatConverter.Instance}" ConverterParameter="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_PROJECT_TOOLTIP}">
@@ -81,7 +95,7 @@
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.HasProject), Mode=OneWay}"
                          Value="True">
               <Setter TargetName="ShipBorder" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="ShipImage" Property="Source" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.ShipUnderConstructionImage), Mode=OneWay}" />
+              <Setter TargetName="ShipImage" Property="Source" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:TechObjectDesign.ShipUnderConstructionImage), Mode=OneWay}" />
             </DataTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -181,12 +195,9 @@
                 </MultiBinding>
               </Button.ToolTip>
             </Button>
-     <!--       <Button x:Name="BuildShip" Style="{StaticResource BuildShipButton}" DockPanel.Dock="Left" VerticalAlignment="Bottom" Margin="0,3,0,0">
-              
-            </Button>-->
-            <Grid x:Name="ResourcesSite" DockPanel.Dock="Right" Margin="12,0,0,0" Opacity="0.33" Visibility="Hidden">
+            <Grid x:Name="ResourcesSite" DockPanel.Dock="Right" Margin="0,0,0,0" Opacity="0.33" Visibility="Hidden">
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
               </Grid.ColumnDefinitions>
               <Grid.RowDefinitions>
@@ -197,11 +208,10 @@
               <Image Grid.Row="0" Source="vfs:///Resources/Images/Resources/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
               <Image Grid.Row="1" Source="vfs:///Resources/Images/Resources/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
               <Image Grid.Row="2" Source="{StaticResource StopwatchImage}" Width="17" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />
-
               <!-- Invisible text to avoid shifting layouts -->
-              <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0" Text="999 / 999" Visibility="Hidden" />
-              <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0" Text="999 / 999" Visibility="Hidden" />
-              <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0" Visibility="Hidden">
+              <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
+              <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Text="999 / 999" Visibility="Hidden" />
+              <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0" Visibility="Hidden">
                 <TextBlock.Text>
                   <Binding Source="999"
                            BindsDirectlyToSource="True"
@@ -209,8 +219,7 @@
                            Mode="OneTime" />
                 </TextBlock.Text>
               </TextBlock>
-
-              <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+              <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                 <TextBlock.Text>
                   <MultiBinding StringFormat="{}{0} / {1}">
                      <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[RawMaterials]" Mode="OneWay" />
@@ -218,7 +227,7 @@
                   </MultiBinding>
                 </TextBlock.Text>
               </TextBlock>
-              <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+              <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                 <TextBlock.Text>
                   <MultiBinding StringFormat="{}{0} / {1}">
                      <Binding Path="(s:BuildSlot.Project).(s:BuildProject.ResourcesInvested)[Dilithium]" Mode="OneWay" />
@@ -226,7 +235,7 @@
                   </MultiBinding>
                 </TextBlock.Text>
               </TextBlock>
-              <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+              <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="1,0,0,0">
                 <TextBlock.Text>
                   <Binding Path="(s:BuildSlot.Project).(s:BuildProject.TurnsRemaining)"
                            StringFormat="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TURNS_UNTIL_COMPLETION_FORMAT}"
@@ -234,16 +243,15 @@
                 </TextBlock.Text>
               </TextBlock>
             </Grid>
-            <Grid x:Name="ImageSite" Width="225" Opacity="0.33">
-              <Image Source="vfs:///Resources/UI/Federation/ColonyScreen/shipyard_dock.png"/>
-                <!--CancelButton: 150 to 125 is to0 big--> 
-              <Button x:Name="CancelButton" Style="{StaticResource CancelShipConstructionButton}" Width="144" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.CancelBuildProjectCommand)}" CommandParameter="{Binding Path=(s:BuildSlot.Project)}" />
-              <Button x:Name="BuildShipButton" Style="{StaticResource BuildShipButton}" Width="225" Height="270" Margin="0,10,0,0" Visibility="Hidden" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" CommandParameter="{Binding}" />
+            <Grid x:Name="ImageSite" Width="235" Height="145" Opacity="0.33">
+              <Image Source="vfs:///Resources/UI/Federation/ColonyScreen/shipyard_dock.png" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                <!--CancelButton: 150 to 125 is too big--> 
+              <Button x:Name="CancelButton" Style="{StaticResource CancelShipConstructionButton}" Width="144" Height="120" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="8,0,0,0" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.CancelBuildProjectCommand)}" CommandParameter="{Binding Path=(s:BuildSlot.Project)}" />
+              <Button x:Name="BuildShipButton" Style="{StaticResource BuildShipButton}" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" Visibility="Hidden" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" CommandParameter="{Binding}" />
             </Grid>
           </DockPanel>
 
           <ControlTemplate.Triggers>
-
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.HasProject), Mode=OneWay}"
                          Value="True">
               <Setter TargetName="CancelButton" Property="Visibility" Value="Visible" />
@@ -270,9 +278,7 @@
               <Setter TargetName="ResourcesSite" Property="Opacity" Value="1" />
               <Setter TargetName="ImageSite" Property="Opacity" Value="1" />
             </DataTrigger>
-
           </ControlTemplate.Triggers>
-
         </ControlTemplate>
       </Setter.Value>
     </Setter>
