@@ -38,18 +38,18 @@
         <ControlTemplate TargetType="{x:Type Button}">
           <DockPanel>
             <Border CornerRadius="3" BorderThickness="3" DockPanel.Dock="Left" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Border.Background>
-              <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.6">
-                <GradientStop Color="Black" Offset="0" />
-                <GradientStop Color="Green" Offset="1" />
-              </RadialGradientBrush>
-            </Border.Background>
-            <Border.BorderBrush>
-              <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="1">
-                <GradientStop Color="Red" Offset="0" />
-                <GradientStop Color="Red" Offset="1" />
-              </RadialGradientBrush>
-            </Border.BorderBrush>
+              <Border.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.6">
+                  <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                  <GradientStop Color="Black" Offset="1"/>
+                </RadialGradientBrush>
+              </Border.Background>
+              <Border.BorderBrush>
+               <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.8">
+                  <GradientStop Color="DarkGreen" Offset="0" />
+                  <GradientStop Color="LightGreen" Offset="1" />
+                </RadialGradientBrush>
+              </Border.BorderBrush>
             <Image x:Name="ImageContent" Opacity="1" Source="vfs:///Resources/UI/Federation/ColonyScreen/build_ship.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
           </Border>
           </DockPanel>
@@ -90,6 +90,26 @@
                 </MultiBinding>
               </Image.ToolTip>
             </Image>
+                <Border.Background>
+                  <DrawingBrush Stretch="None" AlignmentX="Left" AlignmentY="Top" Opacity="0.7" >
+                    <DrawingBrush.Drawing>
+                      <DrawingGroup>  
+                        <GeometryDrawing Brush="Red">
+                          <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="11.0" RadiusY="11.0" />
+                          </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="Gray">
+                          <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="9.0" RadiusY="9.0" />
+                          </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="Red"
+                          Geometry="F1 M-6.76706790924072,-5.832932472229L-5.5296311378479,-7.07036924362183 6.84473705291748,5.30399942398071 5.60730075836182,6.54143619537354 -6.76706790924072,-5.832932472229z" />
+                      </DrawingGroup>       
+                    </DrawingBrush.Drawing>
+                  </DrawingBrush>
+                </Border.Background>    
           </Border>
           <ControlTemplate.Triggers>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.HasProject), Mode=OneWay}"
