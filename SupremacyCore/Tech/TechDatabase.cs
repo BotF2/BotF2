@@ -516,7 +516,7 @@ namespace Supremacy.Tech
             }
             GameLog.Core.XMLCheck.InfoFormat("lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
             //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
-                GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 392 were fine)", successfullyLoadedShipDesignCounter);
+                GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 393 were fine)", successfullyLoadedShipDesignCounter);
 
             /************
              * Stations *
@@ -1070,8 +1070,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // Ships    
-                    file = pathOutputFile + "_FromTechObj-Ships_(autoCreated).csv";
-                    //Console.WriteLine("writing {0}", file);
+                    file = pathOutputFile + "_FromTechObj-Ships_(autoCreated).csv";   //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
                         goto WriterClose;
@@ -1099,8 +1098,7 @@ namespace Supremacy.Tech
                         "CE_HullStrength" + separator +
                         "CE_PopulationHealth" + separator +
                         "CE_IsUniversallyAvailable" + separator +
-                        "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
-                        "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
+
                         "CE_Crew" + separator +    // it's Crew
                         "CE_ScienceAbility" + separator +
                         "CE_ScanPower" + separator +
@@ -1120,26 +1118,26 @@ namespace Supremacy.Tech
                         "CE_Maneuverability" + separator +
                         "CE_EvacuationLimit" + separator +
                         "CE_WorkCapacity" + separator +
-
                         "CE_InterceptAbility" + separator +
-                        "CE_PossibleNames" + separator +
+
 
                         //"CE_PrimaryWeaponName" + separator + // not useful for current working
                         "CE_Beam Count" + separator +
-                        //"CE_PrimaryWeapon.Count" + separator +
-
                         "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
                                                             //"CE_PrimaryWeapon.Refire" + separator +
-
                         "CE_Damage" + separator +
-                        //"CE_PrimaryWeapon.Damage" + separator +
 
 
                         //"CE_SecondaryWeaponName" + separator + // not useful for current working
                         "CE_Torpedo Count" + separator +
-                        //"CE_SecondaryWeapon.Count" + separator +
-                        "CE_Damage";
+                        "CE_Damage" + separator + 
+                        
+                        "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
+                        "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
+                        "CE_PossibleNames" 
+                        ;
                     //"CE_SecondaryWeapon.Damage" + separator +
+
 
 
                     streamWriter.WriteLine(strHeader);
