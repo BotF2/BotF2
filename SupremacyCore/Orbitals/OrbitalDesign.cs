@@ -17,6 +17,7 @@ using Supremacy.Annotations;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
+using Supremacy.Game;
 
 namespace Supremacy.Orbitals
 {
@@ -199,11 +200,16 @@ namespace Supremacy.Orbitals
                 if (LocalizedText != null)
                 {
                     var value = LocalizedText.GetString(OrbitalStringKeys.PrimaryWeaponName);
+                    if (value == null)
+                        GameLog.Core.XMLCheck.WarnFormat("PrimaryWeaponName is missing... (ship/station is unknown here");
                     if (value != null)
                         return value;
+
                 }
                 if (TryEnsureObjectString())
                     return TextDatabaseEntry.Custom1;
+                if (TextDatabaseEntry.Custom1 == null)
+                    GameLog.Core.XMLCheck.WarnFormat("PrimaryWeaponName is missing... (ship/station is unknown here");
                 return String.Empty;
             }
         }
@@ -229,11 +235,16 @@ namespace Supremacy.Orbitals
                 if (LocalizedText != null)
                 {
                     var value = LocalizedText.GetString(OrbitalStringKeys.SecondaryWeaponName);
+                    if (value == null)
+                        GameLog.Core.XMLCheck.WarnFormat("SecondaryWeaponName is missing... (ship/station is unknown here");
                     if (value != null)
                         return value;
+
                 }
                 if (TryEnsureObjectString())
                     return TextDatabaseEntry.Custom2;
+                if (TextDatabaseEntry.Custom2 == null)
+                    GameLog.Core.XMLCheck.WarnFormat("SecondaryWeaponName is missing... (ship/station is unknown here");
                 return String.Empty;
             }
         }
