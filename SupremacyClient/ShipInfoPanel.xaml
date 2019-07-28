@@ -60,7 +60,7 @@
                                                Foreground="{StaticResource HeaderTextBrush}"  
                                                Margin="0,0,7,0"
                                                VerticalAlignment="Center"
-                                               Text="{s:StringResource SHIP_CLASS}"/>
+                                               Text="{s:StringResource SHIP_CLASS_DOUBLE_POINT}"/>
 
                                     <TextBox x:Name="ClassText"
                                                DockPanel.Dock="Right"

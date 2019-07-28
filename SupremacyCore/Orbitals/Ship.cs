@@ -8,7 +8,7 @@
 // All other rights reserved.
 
 using System;
-
+using Supremacy.Resources;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
@@ -70,18 +70,10 @@ namespace Supremacy.Orbitals
         /// eg "FED_SCOUT_III"
         /// </summary>
         public string ClassName
-        {
-            get { return ShipDesign.ClassName + " Class"; }
+        {           
+            get {return ShipDesign.ClassName + " " + ResourceManager.GetString("SHIP_CLASS");
+            }
         }
-
-        /// <summary>
-        /// Returns the class and level  of the design
-        /// eg "Cruiser II"
-        /// </summary>
-        //public string ClassLevel 
-        //{
-        //    get { return ShipDesign.ClassLevel; }
-        //}
 
         /// <summary>
         /// Gets the fuel reserve.
