@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 
 using Supremacy.Economy;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -18,7 +19,7 @@ namespace Supremacy.Client.Views
         {
             if (e.ClickCount < 2)
                 return;
-
+            GameLog.Client.ShipProduction.DebugFormat("this is a gamelog ={0}", e.ClickCount);
             var selectedProject = BuildList.SelectedItem as BuildProject;
             if (selectedProject == null)
                 return;
