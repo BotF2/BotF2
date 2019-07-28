@@ -60,14 +60,14 @@ namespace Supremacy.Universe
                 StarTypeDist[starType] = Number.ParseInt32(UniverseTables["StarTypeDist"][starType.ToString()][0]);
                 foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
-                    GameLog.Core.GalaxyGenerator.DebugFormat("starType ={0}", starType);
+                    //GameLog.Core.GalaxyGenerator.DebugFormat("starType ={0}", starType);
                     StarTypeModToPlanetSizeDist[new Tuple<StarType, PlanetSize>(starType, planetSize)] =
                         Number.ParseInt32(
                             UniverseTables["StarTypeModToPlanetSizeDist"][starType.ToString()][planetSize.ToString()]);
                 }
                 foreach (var planetType in EnumHelper.GetValues<PlanetType>())
                 {
-                    GameLog.Core.MapData.DebugFormat("planetType ={0}", planetType);
+                    //GameLog.Core.MapData.DebugFormat("planetType ={0}", planetType);
                     StarTypeModToPlanetTypeDist[new Tuple<StarType, PlanetType>(starType, planetType)] =
                         Number.ParseInt32(
                             UniverseTables["StarTypeModToPlanetTypeDist"][starType.ToString()][planetType.ToString()]);

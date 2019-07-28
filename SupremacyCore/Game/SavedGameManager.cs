@@ -88,7 +88,7 @@ namespace Supremacy.Game
                 else
                     fullPath = Path.Combine(SavedGameDirectory, FixFileName(fileName));
 
-                GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fullPath);
+                //GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fullPath);
 
                 SavedGameHeader header;
                 using (var fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -146,7 +146,19 @@ namespace Supremacy.Game
                     }
                 }
 
+                //gameArray = GameContext;
+
+                //foreach (sectormap item in GameContext.Current.Universe.Map)
+                //{
+
+                //}
+                //for (int j = 0; j < game.cou - 1; j++)  // reading memoryStreamArray
+                //{
+                //}
+
+                    GameLog.Core.SaveLoad.DebugFormat("loading GameTables from HDD...");
                 game.Tables = GameTables.Load();
+                GameLog.Core.SaveLoad.DebugFormat("loading ResearchMatrix from HDD...");
                 game.ResearchMatrix = ResearchMatrix.Load();
                 game.OnDeserialized();
                 timestamp = File.GetLastWriteTime(fileName);

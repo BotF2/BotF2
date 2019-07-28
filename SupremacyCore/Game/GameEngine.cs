@@ -333,12 +333,16 @@ namespace Supremacy.Game
             var fleets = objects.OfType<Fleet>().ToHashSet();
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
 
+            GameLog.Core.Test.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {
                 GameContext.PushThreadContext(game);
+                //GameLog.Core.Test.DebugFormat("item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                 try
                 {
                     item.Reset();
+                    // works well but gives hidden info
+                    //GameLog.Core.Test.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
                 }
                 catch (Exception e)
                 {
