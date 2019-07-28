@@ -17,6 +17,7 @@ using Supremacy.Universe;
 using System.Linq;
 
 using Supremacy.Collections;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -98,12 +99,13 @@ namespace Supremacy.Game
 
             if (!_claims.TryGetValue(location, out claims))
                 return null;
-
+            //GameLog.Core.Test.DebugFormat("location = {0}, asSeenBy = {1}", location.ToString(), asSeenBy.Key);
             var visibleClaimsEnumerator = claims
                 .Select(o => new { o.Owner, o.Weight })
                 .Where(o => Equals(o.Owner, asSeenBy) || DiplomacyHelper.IsContactMade(o.Owner, asSeenBy))
                 .OrderByDescending(o => o.Weight)
                 .GetEnumerator();
+            //GameLog.Core.Test.DebugFormat("GetPerceivedOwner is partly done");
 
             if (!visibleClaimsEnumerator.MoveNext())
                 return null;

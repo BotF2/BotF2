@@ -148,8 +148,19 @@ namespace Supremacy.Combat
                 {
                     return true;
                 }
-                return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
-
+                TryAgain:
+                try
+                {
+                    return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.Combat.WarnFormat("We changed _assets while counting, error message {0}", e);
+                    System.Threading.Thread.Sleep(1000); // wait for a second
+                    goto TryAgain;
+                    //throw;
+                }
+               // return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
             }
         }
 

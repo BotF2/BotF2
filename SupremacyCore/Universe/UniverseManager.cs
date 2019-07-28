@@ -591,7 +591,8 @@ namespace Supremacy.Universe
         internal void OnDeserialized()
         {
             UpdateSectors();
-            
+
+            GameLog.Core.SaveLoad.DebugFormat("Deserializing ships and fleets...");
             foreach (var item in _objects)
             {
                 item.OnDeserialized();
@@ -603,13 +604,39 @@ namespace Supremacy.Universe
                 var fleet = ship.Fleet;
                 if ((fleet != null) && !fleet.Ships.Contains(ship))
                     fleet.AddShipInternal(ship);
+
+                // Gamelog 
+                    string ownerString = "not set";
+                    try
+                    {
+                        ownerString = item.Owner.Key;
+                    }
+                    catch
+                    {
+                        ownerString = "no owner";
+                    }
+
+
+                    string locationString = "not set";
+                    try
+                    {
+                        locationString = item.Location.ToString();
+                    }
+                    catch
+                    {
+                        locationString = "no location";
+                    }
+
+                // just for testing ... should be hidden for a real game
+                // GameLog.Core.SaveLoad.DebugFormat("Deserializing item: {0} {1} ({2}) at {3}", item.ObjectID, item.Name, ownerString, locationString);
             }
 
             var colonies = _objects.OfType<Colony>();
             var systemLocationLookup = _objects.OfType<StarSystem>().ToLookup(o => o.Location);
             var buildingLocationLookup = _objects.OfType<Building>().ToLookup(o => o.Location);
 
-            GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: item=Colony;Location;Owner;Name;Population");
+            //GameLog.Core.SaveLoad.DebugFormat("-------------------------------------------------");
+            GameLog.Core.SaveLoad.DebugFormat("Deserialized: item=Colony;Location;Owner;Name;Population");
             foreach (var colony in colonies)
             {
                 var system = systemLocationLookup[colony.Location].FirstOrDefault();
@@ -618,7 +645,8 @@ namespace Supremacy.Universe
 
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
-                // working   GameLog.Core.GalaxyGenerator.DebugFormat("Deserialized: item=Colony;{0};{1};{2};{3};", colony.Location, colony.Owner, colony.Name, colony.Population);
+                // working   
+                //GameLog.Core.SaveLoad.DebugFormat("Deserialized: item=Colony;{0};{1};{2};{3};", colony.Location, colony.Owner, colony.Name, colony.Population);
 
                 foreach (var building in buildingLocationLookup[colony.Location])
                     colony.BuildingsInternal.Add(building);
@@ -632,25 +660,56 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
+                GameLog.Core.SaveLoad.DebugFormat("Deserializing stations...");
             foreach (var station in Find<Station>())
-                _map[station.Location].Station = station;
+            {
 
+                _map[station.Location].Station = station;
+                //GameLog.Core.SaveLoad.DebugFormat("Deserializing item: {0} {1} (({2}) at {3}", station.ObjectID, station.Name, station.Owner.Key, station.Location.ToString());
+            }
+
+                GameLog.Core.SaveLoad.DebugFormat("Deserializing systems...");
             foreach (var system in Find<StarSystem>())
-                _map[system.Location].System = system;            
+            {
+
+                _map[system.Location].System = system;
+                //    GameLog.Core.SaveLoad.DebugFormat("Deserializing item: {0} {1} (({2}) at {3}", system.ObjectID, system.Name, system.Owner.Key, system.Location.ToString());
+            }
         }
 
-    	public void SerializeOwnedData(SerializationWriter writer, object context)
+            public void SerializeOwnedData(SerializationWriter writer, object context)
     	{
             writer.Write((byte)_map.Width);
             writer.Write((byte)_map.Height);
             _objects.SerializeOwnedData(writer, context);
             _homeColonyLookup.SerializeOwnedData(writer, context);
+
+            GameLog.Core.SaveLoad.DebugFormat("Deserializing _objects...");
+            //foreach (var item in _objects)
+            //{
+            //    GameLog.Core.SaveLoad.DebugFormat("Serializing item: {0} {1}", item.ObjectID, item.Name/*, item.Owner.Key, item.Location.ToString()*/);
+
+            //     crashes:
+            //    GameLog.Core.SaveLoad.DebugFormat("Serializing item: {0} {1} (({2}) at {3}", item.ObjectID, item.Name, item.Owner.Key, item.Location.ToString());
+            //}
+
+            GameLog.Core.SaveLoad.DebugFormat("Deserializing _homeColonyLookup...");
+            //foreach (var item in _homeColonyLookup)
+            //{
+            //    GameLog.Core.SaveLoad.DebugFormat("Serializing item: {0} {1}", item.ObjectID, item.Name/*, item.Owner.Key, item.Location.ToString()*/);
+            //    // crashes:
+            //    //GameLog.Core.SaveLoad.DebugFormat("Serializing item: {0} {1} (({2}) at {3}", item.ObjectID, item.Name, item.Owner.Key, item.Location.ToString());
+            //}
     	}
 
     	public void DeserializeOwnedData(SerializationReader reader, object context)
     	{
             _objects = new UniverseObjectSet();
             _map = new SectorMap(reader.ReadByte(), reader.ReadByte());
+            //foreach (var item in _map)
+            //{
+            //    GameLog.Core.SaveLoad.DebugFormat("Deserializing item: {0} {1} (({2}) at {3}", item.ObjectID, item., item.Owner.Key, item.Location.ToString());
+            //}
             _homeColonyLookup = new GameObjectLookupCollection<Civilization, Colony>(
                 civilization => civilization.CivID,
                 colony => colony.OriginalOwner,
@@ -658,6 +717,60 @@ namespace Supremacy.Universe
                 id => _objects[id] as Colony);
     	    _objects.DeserializeOwnedData(reader, context);
             _homeColonyLookup.DeserializeOwnedData(reader, context);
-    	}
+
+            GameLog.Core.SaveLoad.DebugFormat("Deserializing _objects...");
+            //foreach (var item in _objects)
+            //{
+            //    string ownerString = "not set";
+            //    try
+            //    {
+            //        ownerString = item.Owner.Key;
+            //    }
+            //    catch
+            //    {
+            //        ownerString = "no owner";
+            //    }
+
+
+            //    string locationString = "not set";
+            //    try
+            //    {
+            //        locationString = item.Location.ToString();
+            //    }
+            //    catch
+            //    {
+            //        locationString = "no location";
+            //    }
+
+
+            //    GameLog.Core.SaveLoad.DebugFormat("Deserializing item: {0} {1} (({2}) at {3}", item.ObjectID, item.Name, ownerString, locationString);
+            //}
+
+            GameLog.Core.SaveLoad.DebugFormat("Deserializing _homeColonyLookup...");
+            //foreach (var item in _homeColonyLookup)
+            //{
+            //    string ownerString = "not set";
+            //    try
+            //    {
+            //        ownerString = item.Owner.Key;
+            //    }
+            //    catch
+            //    {
+            //        ownerString = "no owner";
+            //    }
+
+
+            //    string locationString = "not set";
+            //    try
+            //    {
+            //        locationString = item.Location.ToString();
+            //    }
+            //    catch
+            //    {
+            //        locationString = "no location";
+            //    }
+            //    GameLog.Core.SaveLoad.DebugFormat("Deserializing item: {0} {1} (({2}) at {3}", item.ObjectID, item.Name, ownerString, locationString);
+            //}
+        }
     }
 }
