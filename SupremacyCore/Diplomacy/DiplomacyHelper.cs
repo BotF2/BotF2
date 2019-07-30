@@ -296,13 +296,16 @@ namespace Supremacy.Diplomacy
             if (sectorOwner == null)
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
-            if (sectorOwner == null || sectorOwner == traveller)
-                return true;
-            if (sector.Owner.HomeSystemName.ToString() != null)
-                GameLog.Core.Diplomacy.DebugFormat("sector is home system ={0}", sector.Owner.HomeSystemName.ToString());
+            GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
-            GameLog.Core.Diplomacy.DebugFormat("Travel Allowed ={0} TreatyNonAggression, traveller ={1}, sector location ={2}", (!GameContext.Current.AgreementMatrix.IsAgreementActive(
-                traveller, sectorOwner, ClauseType.TreatyNonAggression)), traveller.Key, sector.Location);
+            if (sectorOwner == null || sectorOwner == traveller)
+            {
+                return true;
+            }
+            //else
+            //{
+            //    return (sectorOwner.HomeSystemName != sector.Name);
+            //}
 
             return !GameContext.Current.AgreementMatrix.IsAgreementActive(
                 traveller,
