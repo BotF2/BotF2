@@ -287,6 +287,7 @@ namespace Supremacy.Diplomacy
         /// <returns></returns>
         public static bool IsTravelAllowed(Civilization traveller, Sector sector)
         {
+            bool travel = true;
             if (traveller == null)
                 throw new ArgumentNullException("traveller");
             if (sector == null)
@@ -300,17 +301,10 @@ namespace Supremacy.Diplomacy
 
             if (sectorOwner == null || sectorOwner == traveller)
             {
-                return true;
+                travel = true;
             }
-            //else
-            //{
-            //    return (sectorOwner.HomeSystemName != sector.Name);
-            //}
-
-            return !GameContext.Current.AgreementMatrix.IsAgreementActive(
-                traveller,
-                sectorOwner,
-                ClauseType.TreatyNonAggression);
+            // leaving travel open for now, working on warning about moves that will cancel treaties, lost favor.
+            return travel;
         }
 
         /// <summary>
