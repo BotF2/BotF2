@@ -269,8 +269,7 @@ namespace Supremacy.Diplomacy
                 case ForeignPowerStatus.Self:
                     return true;
             }
-            GameLog.Core.Diplomacy.DebugFormat("Is Safe Travel ={0} Diplomatic Data ={1}, traveller ={2} sector owner ={3}, sector Name ={4} owner's homey system ={5}", (GameContext.Current.AgreementMatrix.IsAgreementActive(
-                traveller, sectorOwner, ClauseType.TreatyOpenBorders)), diplomacydata.Status.ToString(), traveller.Key, sectorOwner.Key, sector.Name, sector.Owner.HomeSystemName.ToString());
+            GameLog.Core.Diplomacy.DebugFormat("Diplomatic Data status ={0}, traveller ={1} sector owner ={2}, sector Name ={3} owner's homey system ={4}", diplomacydata.Status.ToString(), traveller.Key, sectorOwner.Key, sector.Name, sector.Owner.HomeSystemName.ToString());
 
             return GameContext.Current.AgreementMatrix.IsAgreementActive(
                 traveller,
@@ -297,7 +296,7 @@ namespace Supremacy.Diplomacy
             if (sectorOwner == null)
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
-            GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
+           // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
             if (sectorOwner == null || sectorOwner == traveller)
             {

@@ -171,9 +171,10 @@ namespace Supremacy.Combat
 
             switch (diplomacyData.Status) // see WillFightAlongside below
             {
+                case ForeignPowerStatus.Self:
                 //case ForeignPowerStatus.Peace:
-                //case ForeignPowerStatus.Friendly:
-                //case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+                case ForeignPowerStatus.Friendly:
+                case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
