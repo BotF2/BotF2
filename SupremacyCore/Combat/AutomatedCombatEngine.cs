@@ -40,7 +40,7 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
                 //  Once a ship has retreated, its important that it does not do it again..
                 var easyRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.ShipType == "Frigate") || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.Key.Contains("Frigate")) || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => !s.Item1.IsDestroyed) //  Destroyed ships cannot retreat
                     .Where(s => GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();

@@ -245,7 +245,7 @@ namespace Supremacy.Combat
             {
                 switch (diplomacyData.Status)
                 {
-                    //case ForeignPowerStatus.Affiliated:
+                    case ForeignPowerStatus.Affiliated:
                     case ForeignPowerStatus.Allied:
                     case ForeignPowerStatus.OwnerIsMember:
                     case ForeignPowerStatus.CounterpartyIsMember:

@@ -26,8 +26,7 @@ namespace Supremacy.Diplomacy
     public static class DiplomacyHelper
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
-        
-
+          
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
             if (owner == null)
@@ -212,7 +211,11 @@ namespace Supremacy.Diplomacy
                     where GameContext.Current.AgreementMatrix.IsAgreementActive(who, whoElse, ClauseType.TreatyMembership)
                     select whoElse).ToList();
         }
-
+        /// <summary>
+        /// retruns the list of civilzations any 'who' civilization is in contact with.
+        /// </summary>
+        /// <param name="who"></param>
+        /// <returns>IList<Civilization></returns>
         public static IList<Civilization> GetCivilizationsHavingContact([NotNull] Civilization who)
         {
             if (who == null)
