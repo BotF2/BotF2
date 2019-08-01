@@ -38,7 +38,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     return;
 
                 _isActive = value;
-
+                
                 IsActiveChanged.Raise(this);
             }
         }
