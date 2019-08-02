@@ -18,6 +18,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Pathfinding
 {
@@ -154,11 +155,13 @@ namespace Supremacy.Pathfinding
                     continue;
 
                 foreach (var step in segment.Skip(1))
+                {
                     route.Push(step.Location);
-
+                    GameLog.Core.Diplomacy.DebugFormat("start ={0} path step ={1}", start, step);
+                }
                 start = waypoint;
             }
-
+            //GameLog.Core.Diplomacy.DebugFormat("star fleet sector ={0}, ",start);
             route.Compact();
             return route;
         }

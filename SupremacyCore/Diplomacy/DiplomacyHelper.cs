@@ -26,8 +26,7 @@ namespace Supremacy.Diplomacy
     public static class DiplomacyHelper
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
-        
-
+          
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
             if (owner == null)
@@ -212,7 +211,11 @@ namespace Supremacy.Diplomacy
                     where GameContext.Current.AgreementMatrix.IsAgreementActive(who, whoElse, ClauseType.TreatyMembership)
                     select whoElse).ToList();
         }
-
+        /// <summary>
+        /// retruns the list of civilzations any 'who' civilization is in contact with.
+        /// </summary>
+        /// <param name="who"></param>
+        /// <returns>IList<Civilization></returns>
         public static IList<Civilization> GetCivilizationsHavingContact([NotNull] Civilization who)
         {
             if (who == null)
@@ -269,6 +272,7 @@ namespace Supremacy.Diplomacy
                 case ForeignPowerStatus.Self:
                     return true;
             }
+            GameLog.Core.Diplomacy.DebugFormat("Diplomatic Data status ={0}, traveller ={1} sector owner ={2}, sector Name ={3} owner's homey system ={4}", diplomacydata.Status.ToString(), traveller.Key, sectorOwner.Key, sector.Name, sector.Owner.HomeSystemName.ToString());
 
             return GameContext.Current.AgreementMatrix.IsAgreementActive(
                 traveller,
@@ -285,6 +289,7 @@ namespace Supremacy.Diplomacy
         /// <returns></returns>
         public static bool IsTravelAllowed(Civilization traveller, Sector sector)
         {
+            bool travel = true;
             if (traveller == null)
                 throw new ArgumentNullException("traveller");
             if (sector == null)
@@ -294,13 +299,14 @@ namespace Supremacy.Diplomacy
             if (sectorOwner == null)
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
-            if (sectorOwner == null || sectorOwner == traveller)
-                return true;
+           // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
-            return !GameContext.Current.AgreementMatrix.IsAgreementActive(
-                traveller,
-                sectorOwner,
-                ClauseType.TreatyNonAggression);
+            if (sectorOwner == null || sectorOwner == traveller)
+            {
+                travel = true;
+            }
+            // leaving travel open for now, working on warning about moves that will cancel treaties, lost favor.
+            return travel;
         }
 
         /// <summary>
