@@ -757,7 +757,7 @@ namespace Supremacy.Client.Views
                             ElementType = DiplomacyMessageElementType.TreatyWarPact
                         });
                 }
-
+                // turning off the declaration of war inside the "New Message" option, could not send the message
                 if (!DiplomacyHelper.AreAtWar(_sender, _recipient))
                 {
                     _availableElements.Add(

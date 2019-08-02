@@ -300,7 +300,8 @@
                     Grid.Column="0"
                     Grid.Row="1"
                     Orientation="Vertical">
-                    <scc:GameButton x:Name="PART_ViewButton_Overview"
+                  <!-- the overview button no longer used - looked nice and did nothing-->
+                   <!-- <scc:GameButton x:Name="PART_ViewButton_Overview"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OverviewButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
                           Command="{Binding Path=SetDisplayModeCommand}"
@@ -309,7 +310,7 @@
                         <scc:GameButton.CommandParameter>
                             <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Overview}" />
                         </scc:GameButton.CommandParameter>
-                    </scc:GameButton>
+                    </scc:GameButton>-->
                     <scc:GameButton x:Name="PART_ViewButton_Agreements"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AgreementsButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
@@ -816,7 +817,7 @@
 
                         <!--
             ================================================================================
-              Active Agreements
+              Lower left buttons 'New Message' and 'Declare War' -for lower half Active Agreements with summary button
             ================================================================================ 
             -->
                         <TabItem>
@@ -1393,7 +1394,7 @@
           Relationship Graph
         ================================================================================ 
         -->
-                <Grid Grid.Column="1"
+          <!--<Grid Grid.Column="1"
               Grid.ColumnSpan="4"
               Grid.Row="1"
               Grid.RowSpan="6"
@@ -1419,7 +1420,7 @@
                         DisplayMode="GroupedVertically"
                         Command="{Binding ResetGraphCommand}"
                         VerticalAlignment="Bottom"
-                        Margin="-28,0,2,0" />
+                        Margin="-28,0,2,0" />-->
             </Grid>
         </Border>
     </scc:GamePopupSite>

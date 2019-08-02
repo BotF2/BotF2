@@ -81,67 +81,67 @@ namespace Supremacy.Client.Views.DiplomacyScreen
         }
     }
 
-    internal class DiplomacyGraphPenSelector : INodeGraphPenSelector
-    {
-        private const double PenThickness = 2.0;
+    //internal class DiplomacyGraphPenSelector : INodeGraphPenSelector
+    //{
+    //    private const double PenThickness = 2.0;
 
-        private static readonly Pen _fallbackPen;
-        private static readonly Dictionary<ForeignPowerStatus, Pen> _pens;
+    //    private static readonly Pen _fallbackPen;
+    //    private static readonly Dictionary<ForeignPowerStatus, Pen> _pens;
 
-        private static DiplomacyGraphPenSelector _instance;
+    //    private static DiplomacyGraphPenSelector _instance;
 
-        public static DiplomacyGraphPenSelector Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new DiplomacyGraphPenSelector();
-                return _instance;
-            }
-        }
+    //    public static DiplomacyGraphPenSelector Instance
+    //    {
+    //        get
+    //        {
+    //            if (_instance == null)
+    //                _instance = new DiplomacyGraphPenSelector();
+    //            return _instance;
+    //        }
+    //    }
 
-        static DiplomacyGraphPenSelector()
-        {
-            var converter = new RelationshipStatusBrushConverter();
+    //    static DiplomacyGraphPenSelector()
+    //    {
+    //        var converter = new RelationshipStatusBrushConverter();
 
-            _pens = new Dictionary<ForeignPowerStatus, Pen>();
-            _fallbackPen = new Pen(Brushes.Gainsboro, PenThickness);
+    //        _pens = new Dictionary<ForeignPowerStatus, Pen>();
+    //        _fallbackPen = new Pen(Brushes.Gainsboro, PenThickness);
 
-            if (_fallbackPen.CanFreeze)
-                _fallbackPen.Freeze();
+    //        if (_fallbackPen.CanFreeze)
+    //            _fallbackPen.Freeze();
 
-            foreach (var status in EnumHelper.GetValues<ForeignPowerStatus>())
-            {
-                var brush = converter.Convert(status, null, null, null) as Brush;
-                if (brush == null)
-                    continue;
+    //        foreach (var status in EnumHelper.GetValues<ForeignPowerStatus>())
+    //        {
+    //            var brush = converter.Convert(status, null, null, null) as Brush;
+    //            if (brush == null)
+    //                continue;
 
-                if (brush.CanFreeze)
-                    brush.Freeze();
+    //            if (brush.CanFreeze)
+    //                brush.Freeze();
 
-                _pens[status] = new Pen(brush, PenThickness);
-                _pens[status].TryFreeze();
-            }
-        }
+    //            _pens[status] = new Pen(brush, PenThickness);
+    //            _pens[status].TryFreeze();
+    //        }
+    //    }
 
-        #region INodeGraphPenSelector Members
-        public Pen GetPen(object parentNode, object childNode)
-        {
-            var node1 = parentNode as DiplomacyGraphNode;
-            var node2 = childNode as DiplomacyGraphNode;
+    //    #region INodeGraphPenSelector Members
+    //    public Pen GetPen(object parentNode, object childNode)
+    //    {
+    //        var node1 = parentNode as DiplomacyGraphNode;
+    //        var node2 = childNode as DiplomacyGraphNode;
 
-            if (node1 == null || node2 == null)
-                return _fallbackPen;
+    //        if (node1 == null || node2 == null)
+    //            return _fallbackPen;
 
-            Pen pen;
-            IDiplomacyData data;
+    //        Pen pen;
+    //        IDiplomacyData data;
 
-            if (GameContext.Current.DiplomacyData.TryGetValue(node1.Civilization, node2.Civilization, out data))
-                return _pens.TryGetValue(data.Status, out pen) ? pen : _fallbackPen;
+    //        if (GameContext.Current.DiplomacyData.TryGetValue(node1.Civilization, node2.Civilization, out data))
+    //            return _pens.TryGetValue(data.Status, out pen) ? pen : _fallbackPen;
 
-            return _fallbackPen;
-        }
-        #endregion
-    }
+    //        return _fallbackPen;
+    //    }
+    //    #endregion
+    //}
 
 }
