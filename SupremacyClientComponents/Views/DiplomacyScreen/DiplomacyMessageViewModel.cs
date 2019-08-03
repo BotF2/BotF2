@@ -10,11 +10,13 @@ using System.Windows.Data;
 using Microsoft.Practices.ServiceLocation;
 
 using Supremacy.Annotations;
+using Supremacy.Client.Dialogs;
 using Supremacy.Client.Input;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Text;
 using Supremacy.Utility;
@@ -581,6 +583,8 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementActionCategory.Commend:
                 case DiplomacyMessageElementActionCategory.Denounce:
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
+                    string st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+                    var result = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     _statementElements.Add(element);
                     break;
             }
@@ -757,7 +761,7 @@ namespace Supremacy.Client.Views
                             ElementType = DiplomacyMessageElementType.TreatyWarPact
                         });
                 }
-
+                // add the war buttons: 1) for Declare War on lower left and 2) inside 'New Message' see declare war opption
                 if (!DiplomacyHelper.AreAtWar(_sender, _recipient))
                 {
                     _availableElements.Add(
