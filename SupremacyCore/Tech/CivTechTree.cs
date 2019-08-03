@@ -519,7 +519,7 @@ namespace Supremacy.Tech
                                     string isUniversal = item.IsUniversallyAvailable.ToString();
                                     //GameLog.Core.GameData.DebugFormat("{0}; {1}", owner, item.ToString());
 
-                                    line = owner + separator + "OrbitalBattery" + separator + item.ToString() + separator + isUniversal;
+                                    line = owner + separator + category + separator + item.ToString() + separator + isUniversal;
                                     //Console.WriteLine("{0}", line);
                                     streamWriter.WriteLine(line);
                                 }
