@@ -146,7 +146,7 @@ namespace Supremacy.Universe
 
                 foreach (XmlElement homeSystemElement in xmlRoot.GetElementsByTagName("HomeSystem"))
                 {
-                    GameLog.Core.XMLCheck.DebugFormat("HomeSystems CIV = {0}", homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant());
+                    //GameLog.Core.XMLCheck.DebugFormat("HomeSystems CIV = {0}", homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant());
 
                     string civId = homeSystemElement.GetAttribute("Civilization").Trim().ToUpperInvariant();
                     db[civId] = new StarSystemDescriptor(homeSystemElement["StarSystem"]);

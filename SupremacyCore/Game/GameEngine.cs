@@ -182,6 +182,8 @@ namespace Supremacy.Game
             if (game == null)
                 throw new ArgumentNullException("game");
 
+            GameLog.Core.Events.DebugFormat("...beginning DoTurn...");
+
             HashSet<Fleet> fleets;
 
             GameContext.PushThreadContext(game);
@@ -207,11 +209,15 @@ namespace Supremacy.Game
             }
             finally { GameContext.PopThreadContext(); }
 
+            GameLog.Core.Events.DebugFormat("...beginning PreTurnOperations...");
+
             OnTurnPhaseChanged(game, TurnPhase.PreTurnOperations);
             GameContext.PushThreadContext(game);
             try { DoPreTurnOperations(game); }       
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PreTurnOperations);
+
+            GameLog.Core.Events.DebugFormat("...beginning FleetMovement...");
 
             OnTurnPhaseChanged(game, TurnPhase.FleetMovement);
             GameContext.PushThreadContext(game);
@@ -219,11 +225,15 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.FleetMovement);
 
+            GameLog.Core.Events.DebugFormat("...beginning Diplomacy...");
+
             OnTurnPhaseChanged(game, TurnPhase.Diplomacy);
             GameContext.PushThreadContext(game);
             try { DoDiplomacy(); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Diplomacy);
+
+            GameLog.Core.Events.DebugFormat("...beginning Combat...");
 
             OnTurnPhaseChanged(game, TurnPhase.Combat);
             GameContext.PushThreadContext(game);
@@ -231,11 +241,15 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Combat);
 
+            GameLog.Core.Events.DebugFormat("...beginning PopulationGrowth...");
+
             OnTurnPhaseChanged(game, TurnPhase.PopulationGrowth);
             GameContext.PushThreadContext(game);
             try { DoPopulation(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PopulationGrowth);
+
+            GameLog.Core.Events.DebugFormat("...beginning Research...");
 
             OnTurnPhaseChanged(game, TurnPhase.Research);
             GameContext.PushThreadContext(game);
@@ -243,11 +257,15 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Research);
 
+            GameLog.Core.Events.DebugFormat("...beginning Scrapping...");
+
             OnTurnPhaseChanged(game, TurnPhase.Scrapping);
             GameContext.PushThreadContext(game);
             try { DoScrapping(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Scrapping);
+
+            GameLog.Core.Events.DebugFormat("...beginning Maintenance...");
 
             OnTurnPhaseChanged(game, TurnPhase.Maintenance);
             GameContext.PushThreadContext(game);
@@ -255,11 +273,15 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Maintenance);
 
+            GameLog.Core.Events.DebugFormat("...beginning Production...");
+
             OnTurnPhaseChanged(game, TurnPhase.Production);
             GameContext.PushThreadContext(game);
             try { DoProduction(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Production);
+
+            GameLog.Core.Events.DebugFormat("...beginning ShipProduction...");
 
             OnTurnPhaseChanged(game, TurnPhase.ShipProduction);
             GameContext.PushThreadContext(game);
@@ -267,11 +289,15 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.ShipProduction);
 
+            GameLog.Core.Events.DebugFormat("...beginning Trade...");
+
             OnTurnPhaseChanged(game, TurnPhase.Trade);
             GameContext.PushThreadContext(game);
             try { DoTrade(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Trade);
+
+            GameLog.Core.Events.DebugFormat("...beginning Intelligence...");
 
             OnTurnPhaseChanged(game, TurnPhase.Intelligence);
             GameContext.PushThreadContext(game);
@@ -279,11 +305,15 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Intelligence);
 
+            GameLog.Core.Events.DebugFormat("...beginning Morale...");
+
             OnTurnPhaseChanged(game, TurnPhase.Morale);
             GameContext.PushThreadContext(game);
             try { DoMorale(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Morale);
+
+            GameLog.Core.Events.DebugFormat("...beginning MapUpdates...");
 
             OnTurnPhaseChanged(game, TurnPhase.MapUpdates);
             GameContext.PushThreadContext(game);
@@ -291,13 +321,19 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.MapUpdates);
 
+            GameLog.Core.Events.DebugFormat("...beginning PostTurnOperations...");
+
             OnTurnPhaseChanged(game, TurnPhase.PostTurnOperations);
             GameContext.PushThreadContext(game);
             try { DoPostTurnOperations(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PostTurnOperations);
 
+            GameLog.Core.Events.DebugFormat("...beginning SendUpdates...");
+
             OnTurnPhaseChanged(game, TurnPhase.SendUpdates);
+
+            GameLog.Core.Events.DebugFormat("...beginning PushThreadContext...");
 
             GameContext.PushThreadContext(game);
             try
@@ -310,6 +346,10 @@ namespace Supremacy.Game
                    
             }
             finally { GameContext.PopThreadContext(); }
+
+
+            GameLog.Core.Events.DebugFormat("...HandleFleetLocationChanged...");
+
 
             foreach (var fleet in fleets)
                 fleet.LocationChanged -= HandleFleetLocationChanged;

@@ -156,7 +156,7 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    GameLog.GetLog("Problem occured at TotalPopulation");
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalPopulation: {0}", e);
                     return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
                 }
             }
