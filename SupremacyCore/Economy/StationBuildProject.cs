@@ -43,6 +43,7 @@ namespace Supremacy.Economy
             get { return BuildDesign as StationDesign; }
         }
 
+
         /// <summary>
         /// Gets the description of the station under construction.
         /// </summary>

@@ -134,6 +134,7 @@ namespace Supremacy.Orbitals
         /// <param name="spawnedInstance"> </param>
         public override bool TrySpawn(MapLocation location, Civilization owner, out TechObject spawnedInstance)
         {
+            GameLog.Core.Stations.DebugFormat("############# TrySpawn Station ##########");
             if (!CanSpawn(location, owner))
             {
                 spawnedInstance = null;
@@ -189,6 +190,11 @@ namespace Supremacy.Orbitals
             if (sectorOwner != null &&
                 sectorOwner != owner)
             {
+                GameLog.Core.Stations.DebugFormat("{0} cannot spawn {1} at location {2} because that sector is owned by {3}.",
+                    owner.Key,
+                    Key ?? UnknownDesignKey,
+                    location,
+                    sectorOwner.Key);
                 GameLog.Core.General.DebugFormat(
                     "{0} cannot spawn {1} at location {2} because that sector is owned by {3}.",
                     owner.Key,
@@ -226,7 +232,7 @@ namespace Supremacy.Orbitals
             civManager.MapData.SetExplored(location, true);
             civManager.MapData.SetScanned(location, true, SensorRange);
             civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
-            GameLog.Core.GameData.DebugFormat("spawnedInstance ={0}, Owner ={1}, Location ={2}" );
+            GameLog.Core.Stations.DebugFormat("spawnedInstance ={0}, Owner ={1}, Location ={2}##########" );
             spawnedInstance = station;
             return true;
         }
