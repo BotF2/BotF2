@@ -378,7 +378,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            GameLog.Client.GameData.DebugFormat("------------------------------ TURN {0} ------------------------------", TurnNumber);
+            GameLog.Client.General.InfoFormat("------------------------------ TURN {0} ------------------------------", TurnNumber);
             var handler = TurnNumberChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);

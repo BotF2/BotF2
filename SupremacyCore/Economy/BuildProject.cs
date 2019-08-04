@@ -179,8 +179,8 @@ namespace Supremacy.Economy
             {
                 if (_industryInvested < IndustryRequired)
                 {
-                    GameLog.Core.Production.DebugFormat("{0} at {1} not complete - insufficient industry invested",
-                        BuildDesign, _location);
+                    GameLog.Core.Production.DebugFormat("{0} at {1} not complete - IndustryRequired = {2}, _industryInvested ={3}",
+                        BuildDesign, _location, IndustryRequired, _industryInvested);
                     return false;
                 }
 
