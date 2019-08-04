@@ -309,6 +309,7 @@ namespace Supremacy.Orbitals
                 }
                 if (Sector.Station != null && Sector.System.Owner == Owner) // no more Else-If, both Colony and Station can work together
                 {
+
                     _shieldStrength.Reset(_shieldStrength.Maximum);
                     increase = 0.10;
                     RegenerateHull();

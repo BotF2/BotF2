@@ -147,7 +147,7 @@ namespace Supremacy.Universe
         {
             get { return (GameContext.Current.TurnNumber - _turnCreated); }
         }
-
+       
         /// <summary>
         /// Gets the galactic sector in which this <see cref="UniverseObject"/> resides.
         /// </summary>
@@ -212,6 +212,7 @@ namespace Supremacy.Universe
         /// <param name="objectId">Unique ID within scope of GameContext</param>
         protected UniverseObject(int objectId) : base(objectId)
         {
+            GameLog.Core.General.DebugFormat("TurnNumber = _turnCreated ={0}, objectID ={1}",TurnCreated, objectId);
             _turnCreated = GameContext.Current.TurnNumber;
         }
 

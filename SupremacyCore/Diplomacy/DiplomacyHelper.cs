@@ -609,7 +609,7 @@ namespace Supremacy.Diplomacy
 
             if (source == target)
                 return false;
-            GameLog.Core.Test.DebugFormat("source = {0} target ={1}",source.Key, target.Key);
+            GameLog.Core.Diplomacy.DebugFormat("source = {0} target ={1}",source.Key, target.Key);
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
         }
 

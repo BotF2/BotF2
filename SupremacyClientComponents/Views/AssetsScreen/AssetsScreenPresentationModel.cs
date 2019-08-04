@@ -151,12 +151,15 @@ namespace Supremacy.Client.Views
             {
                 try    // maybe slows down the game very much
                 {
+                    
                     var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                    GameLog.Core.Stations.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalPopulation: {0}", e);
+                    GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
+                    GameLog.Core.General.Error(e);
                     return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
                 }
             }
