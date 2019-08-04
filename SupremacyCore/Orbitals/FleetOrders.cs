@@ -1661,10 +1661,11 @@ namespace Supremacy.Orbitals
                 BuildProject.Finish();
                 _finished = true;
             }
-
+           ;
             var destroyedShip = Fleet.Ships.FirstOrDefault(o => o.ShipType == ShipType.Construction);
             if (destroyedShip != null)
                 GameContext.Current.Universe.Destroy(destroyedShip);
+            GameLog.Core.Stations.DebugFormat("Destroyed = {0}", destroyedShip);
         }
 
         public override void OnFleetMoved()
