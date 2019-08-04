@@ -151,6 +151,7 @@ namespace Supremacy.Client.Views
             {
                 try    // maybe slows down the game very much
                 {
+                    GameLog.Core.GameData.DebugFormat("TotalPopulation ={0}" );
                     var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
                     return civManager.TotalPopulation;
                 }

@@ -75,7 +75,7 @@ namespace Supremacy.Orbitals
             }
             if (element["StationNames"] == null)
             {
-                GameLog.Core.GameData.DebugFormat("StationNames missing in TechObjectDatabase.xml for {0}", Name);
+                GameLog.Core.Stations.DebugFormat("StationNames missing in TechObjectDatabase.xml for {0}", Name);
             }
             else
             {
@@ -226,7 +226,7 @@ namespace Supremacy.Orbitals
             civManager.MapData.SetExplored(location, true);
             civManager.MapData.SetScanned(location, true, SensorRange);
             civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
-
+            GameLog.Core.GameData.DebugFormat("spawnedInstance ={0}, Owner ={1}, Location ={2}" );
             spawnedInstance = station;
             return true;
         }
