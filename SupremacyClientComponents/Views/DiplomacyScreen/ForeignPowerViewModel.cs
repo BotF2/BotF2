@@ -196,6 +196,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnIncomingMessageCategoryChanged()
         {
+            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ={0}", IncomingMessage.Elements.ToString());
             IncomingMessageCategoryChanged.Raise(this);
             OnPropertyChanged("IncomingMessageCategory");
         }
@@ -261,35 +262,54 @@ namespace Supremacy.Client.Views
         {
             var viewModel = message as DiplomacyMessageViewModel;
             if (viewModel != null)
+            {
                 message = viewModel.CreateMessage();
+                GameLog.Core.Diplomacy.DebugFormat("Message Recipient ={0} Sender ={1}", viewModel.Recipient, viewModel.Sender);
+            }
 
             var proposal = message as IProposal;
             if (proposal != null)
             {
+                GameLog.Core.Diplomacy.DebugFormat("Proposal Recipient ={0} Sender ={1}", proposal.Recipient, proposal.Sender);
                 if (proposal.IsDemand())
+                {
+                    GameLog.Core.Diplomacy.DebugFormat("Message Categroy Demand");
                     return DiplomaticMessageCategory.Demand;
+                }
                 if (proposal.IsGift())
+                {
+                    GameLog.Core.Diplomacy.DebugFormat("Message Categroy Gift");
                     return DiplomaticMessageCategory.Gift;
-
+                }
                 foreach (var clause in proposal.Clauses)
                 {
                     if (!clause.ClauseType.IsTreatyClause())
                         continue;
                     if (clause.ClauseType == ClauseType.TreatyWarPact)
+                    {
+                        GameLog.Core.Diplomacy.DebugFormat("Message Categroy 1 War Pact");
                         return DiplomaticMessageCategory.WarPact;
+                    }
+                    GameLog.Core.Diplomacy.DebugFormat("Message Categroy 2 Treaty");
                     return DiplomaticMessageCategory.Treaty;
                 }
-
+                GameLog.Core.Diplomacy.DebugFormat("Message Exchange");
                 return DiplomaticMessageCategory.Exchange;
             }
 
             var response = message as IResponse;
+            
             if (response != null)
+            {
+                GameLog.Core.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
                 return DiplomaticMessageCategory.Response;
+            }
 
             var statement = message as Statement;
+            
             if (statement != null)
             {
+                GameLog.Core.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
                 switch (statement.StatementType)
                 {
                     case StatementType.CommendRelationship:
@@ -301,15 +321,17 @@ namespace Supremacy.Client.Views
                     case StatementType.DenounceAssault:
                     case StatementType.DenounceInvasion:
                     case StatementType.DenounceSabotage:
+                        GameLog.Core.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
                     
                     case StatementType.ThreatenDestroyColony:
                     case StatementType.ThreatenTradeEmbargo:
                     case StatementType.ThreatenDeclareWar:
+                        GameLog.Core.Diplomacy.DebugFormat("Message Threat");
                         return DiplomaticMessageCategory.Threat;
                 }
             }
-
+            GameLog.Core.Diplomacy.DebugFormat("Message None");
             return DiplomaticMessageCategory.None;
         }
 
