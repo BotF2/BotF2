@@ -37,7 +37,8 @@
                   TabIndex="1"
                   Style="{StaticResource LCARS_StandardButtonStyle}"
                   Command="{x:Static local:GameCommands.SaveGameCommand}"
-                  CommandParameter="{Binding ElementName=SaveGameFilename, Path=Text}">
+                  CommandParameter="{Binding ElementName=SaveGameFilename, Path=Text}"
+                  IsEnabled="True">
             <AccessText Text="{s:StringResource SAVE_GAME_DIALOG_SAVE_GAME}" />
           </Button>
           <Button x:Name="CancelButton"
@@ -46,6 +47,7 @@
                   TabIndex="2"
                   Style="{StaticResource LCARS_StandardButtonStyle}"
                   Command="{x:Static local:GenericCommands.CancelCommand}"
+                  IsEnabled="True"
                   IsCancel="True"
                   Margin="7,0,0,0">
             <AccessText Text="{s:StringResource SAVE_GAME_DIALOG_CANCEL}" />
