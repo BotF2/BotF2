@@ -36,7 +36,8 @@
                                 <scc:GameButton Command="{x:Static local:MenuScreen.LoadGameCommand}" Margin="0,2,0,0"
                                         Label="{s:StringResource MAIN_MENU_LOAD_GAME}" />
                                 <scc:GameButton Command="{x:Static local:MenuScreen.SaveGameCommand}" Margin="0,2,0,0"
-                                        Label="{s:StringResource MAIN_MENU_SAVE_GAME}" />
+                                        Label="{s:StringResource MAIN_MENU_SAVE_GAME}"
+                                                IsEnabled="True"/>
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.OptionsCommand}" Margin="0,2,0,0"
                                         Label="{s:StringResource MAIN_MENU_OPTIONS}" />
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.ShowCreditsDialog}" Margin="0,2,0,0"

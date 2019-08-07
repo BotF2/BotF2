@@ -20,7 +20,7 @@
             Header="Save Game">
   <Border CornerRadius="16"
           Background="#cc000000"
-          Height="360">
+          Height="400">
     <GroupBox Header="{s:StringResource SAVE_GAME_DIALOG_HEADER}"
               Focusable="False"
               IsTabStop="False">
@@ -52,7 +52,18 @@
                   Margin="7,0,0,0">
             <AccessText Text="{s:StringResource SAVE_GAME_DIALOG_CANCEL}" />
           </Button>
-        </StackPanel>
+        </StackPanel> 
+        <TextBlock x:Name="Hint"                 
+                   DockPanel.Dock="Top"
+                   Margin="1,0,0,10"
+                   Width="290"
+                   Focusable="True"                                     
+                   Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                   FontSize="12pt"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Text="{s:StringResource SAVE_GAME_HINT}" />       
         <TextBlock x:Name="SaveGameInfoText"
                    DockPanel.Dock="Right"
                    Margin="14,0,0,0"
@@ -94,7 +105,9 @@
                    Background="Transparent"
                    Foreground="{StaticResource LCARS_BlueTextBrush}"
                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                   FontSize="12pt" />
+                   FontSize="12pt" /> 
+
+          
         </DockPanel>
       </DockPanel>
     </GroupBox>
