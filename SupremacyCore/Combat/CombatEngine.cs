@@ -31,7 +31,7 @@ namespace Supremacy.Combat
         public readonly object SyncLockTargetOnes;
         public readonly object SyncLockTargetTwos;
         protected const double BaseChanceToRetreat = 0.50;
-        protected const double BaseChanceToAssimilate = 1;//0.05;
+        protected const double BaseChanceToAssimilate = 0.05;
         protected const double BaseChanceToRushFormation = 0.50;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
@@ -218,7 +218,8 @@ namespace Supremacy.Combat
             GameLog.Core.Combat.DebugFormat("_combatId = {0}, _roundNumber = {1}" //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
                 , _combatId
                 , _roundNumber
-
+                //, _targetOneByCiv
+                //, _targetTwoByCiv
                 ); 
 
             foreach (CombatAssets civAssets in _assets.ToList())

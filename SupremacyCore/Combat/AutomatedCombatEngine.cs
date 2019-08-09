@@ -872,7 +872,7 @@ namespace Supremacy.Combat
                     //    break;
                     //}
                     var defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
-
+                    
                     if ((_combatStation != null && currentTargets.Count != 0) && defenderOrder != CombatOrder.Formation) // Formation protects Starbase, otherwise ships are protected.
                     {
                         if (_combatStation.Item1.Source.HullStrength.CurrentValue > 0 && _combatStation.Item1.OwnerID == targetedEmpireID)
