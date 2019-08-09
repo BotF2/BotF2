@@ -218,8 +218,7 @@ namespace Supremacy.Combat
             GameLog.Core.Combat.DebugFormat("_combatId = {0}, _roundNumber = {1}" //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
                 , _combatId
                 , _roundNumber
-                //, _targetOneByCiv
-                //, _targetTwoByCiv
+
                 ); 
 
             foreach (CombatAssets civAssets in _assets.ToList())
