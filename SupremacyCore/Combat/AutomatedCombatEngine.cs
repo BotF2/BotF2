@@ -110,8 +110,9 @@ namespace Supremacy.Combat
                                 ownerAssets.EscapedShips.Add(target.Item1);
                                 ownerAssets.CombatShips.Remove(target.Item1);
                                 ownerAssets.NonCombatShips.Remove(target.Item1);
+                                ownerAssets.AssimilatedShips.Add(target.Item1);
                                 _combatShips.Remove(target);
-                                GameLog.Core.CombatDetails.DebugFormat("Assimilated ={0}", target.Item1.Name);
+                                GameLog.Core.CombatDetails.DebugFormat("Assimilated ={0} found borg ={1} assimilationSuccessful ={2}, chance to Assimiate ={3}", target.Item1.Name, foundDaBorg, assimilationSuccessful, chanceToAssimilate);
                             }
                         }
                     }

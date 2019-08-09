@@ -31,7 +31,7 @@ namespace Supremacy.Combat
         public readonly object SyncLockTargetOnes;
         public readonly object SyncLockTargetTwos;
         protected const double BaseChanceToRetreat = 0.50;
-        protected const double BaseChanceToAssimilate = 0.05;
+        protected const double BaseChanceToAssimilate = 1;//0.05;
         protected const double BaseChanceToRushFormation = 0.50;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
         protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
@@ -582,6 +582,10 @@ namespace Supremacy.Combat
             {
                 foreach (var assimilatedShip in assets.AssimilatedShips)
                 {
+                    var assimilatedCiv = assimilatedShip.Owner;
+                    CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[assimilatedCiv];
+                    var assimiltedCivHome = targetEmpire.HomeColony;
+                    int gainedResearchPoints = assimiltedCivHome.NetResearch;
                     var destination = CombatHelper.CalculateRetreatDestination(assets);
                     var ship = (Ship)assimilatedShip.Source;
                     ship.Owner = borg;
@@ -596,9 +600,10 @@ namespace Supremacy.Combat
                     ship.IsAssimilated = true;
                     ship.Scrap = false;
                     newfleet.Name = "Assimilated Assets";
+                    GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
-                    GameLog.Core.Combat.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5}",
-                        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order);
+                    GameLog.Core.Combat.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
+                        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
                 }
             }
         }
