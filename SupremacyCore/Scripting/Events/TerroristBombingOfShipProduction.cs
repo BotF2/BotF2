@@ -138,16 +138,16 @@ namespace Supremacy.Scripting.Events
                         tmpShipyards.ForEach(o => GameLog.Client.GameData.DebugFormat("TerroristBombShipyards.cs: affectedProject: {0}", target.Shipyard.BuildSlots.Count));
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
-                        game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                                new ScriptedEventSitRepEntry(
-                                 new ScriptedEventSitRepEntryData(
-                                   targetCiv,
-                                    "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT",
-                                    "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_SUMMARY_TEXT",
-                                    "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT",
-                                    "vfs:///Resources/Images/ScriptedEvents/TerroristBombingOfShipProduction.png",
-                                    "vfs:///Resources/SoundFX/ScriptedEvents/TerroristBombing.mp3",
-                                    () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                        //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                        //        new ScriptedEventSitRepEntry(
+                        //         new ScriptedEventSitRepEntryData(
+                        //           targetCiv,
+                        //            "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT",
+                        //            "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_SUMMARY_TEXT",
+                        //            "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT",
+                        //            "vfs:///Resources/Images/ScriptedEvents/TerroristBombingOfShipProduction.png",
+                        //            "vfs:///Resources/SoundFX/ScriptedEvents/TerroristBombing.mp3",
+                        //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
                     }
 
                     OnUnitTargeted(target);

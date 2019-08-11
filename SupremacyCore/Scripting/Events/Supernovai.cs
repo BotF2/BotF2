@@ -78,15 +78,15 @@ namespace Supremacy.Scripting.Events
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 4) // only when many colonies are there
                         GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: colony amount > 1 for: {0}", target.Name);
 
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add
-                        (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
-                        targetCiv,
-                            "SUPERNOVA_I_HEADER_TEXT",
-                            "SUPERNOVA_I_SUMMARY_TEXT",
-                            "SUPERNOVA_I_DETAIL_TEXT",
-                            "vfs:///Resources/Images/ScriptedEvents/Supernovai.png",
-                            "vfs:///Resources/SoundFX/ScriptedEvents/Supernovai.wav",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add
+                    //    (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
+                    //    targetCiv,
+                    //        "SUPERNOVA_I_HEADER_TEXT",
+                    //        "SUPERNOVA_I_SUMMARY_TEXT",
+                    //        "SUPERNOVA_I_DETAIL_TEXT",
+                    //        "vfs:///Resources/Images/ScriptedEvents/Supernovai.png",
+                    //        "vfs:///Resources/SoundFX/ScriptedEvents/Supernovai.wav",
+                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: HomeSystemName is: {0}", target.Name);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent( - population/6 * 3);

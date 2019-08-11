@@ -126,16 +126,16 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                        new ScriptedEventSitRepEntry(
-                            new ScriptedEventSitRepEntryData(
-                                targetCiv,
-                                "TRIBBLES_HEADER_TEXT",
-                                "TRIBBLES_SUMMARY_TEXT",
-                                "TRIBBLES_DETAIL_TEXT",
-                                "vfs:///Resources/Images/ScriptedEvents/Tribbles.png",
-                                "vfs:///Resources/SoundFX/ScriptedEvents/Tribbles.mp3",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                    //    new ScriptedEventSitRepEntry(
+                    //        new ScriptedEventSitRepEntryData(
+                    //            targetCiv,
+                    //            "TRIBBLES_HEADER_TEXT",
+                    //            "TRIBBLES_SUMMARY_TEXT",
+                    //            "TRIBBLES_DETAIL_TEXT",
+                    //            "vfs:///Resources/Images/ScriptedEvents/Tribbles.png",
+                    //            "vfs:///Resources/SoundFX/ScriptedEvents/Tribbles.mp3",
+                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameContext.Current.Universe.UpdateSectors();
 

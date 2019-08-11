@@ -163,16 +163,16 @@ namespace Supremacy.Scripting.Events
                         removeIntelligence = 0;
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                        new ScriptedEventSitRepEntry(
-                            new ScriptedEventSitRepEntryData(
-                                targetCiv,
-                                "COMET_STRIKE_HEADER_TEXT",
-                                "COMET_STRIKE_SUMMARY_TEXT",
-                                "COMET_STRIKE_DETAIL_TEXT",
-                                "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png",
-                                "vfs:///Resources/SoundFX/ScriptedEvents/AsteroidImpact.wav",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                    //    new ScriptedEventSitRepEntry(
+                    //        new ScriptedEventSitRepEntryData(
+                    //            targetCiv,
+                    //            "COMET_STRIKE_HEADER_TEXT",
+                    //            "COMET_STRIKE_SUMMARY_TEXT",
+                    //            "COMET_STRIKE_DETAIL_TEXT",
+                    //            "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png",
+                    //            "vfs:///Resources/SoundFX/ScriptedEvents/AsteroidImpact.wav",
+                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- population / 5 * 4);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();

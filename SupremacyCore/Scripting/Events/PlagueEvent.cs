@@ -82,15 +82,15 @@ namespace Supremacy.Scripting.Events
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1)
                         GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
 
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add
-                        (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
-                        targetCiv,
-                            "PLAGUE_HEADER_TEXT",
-                            "PLAGUE_SUMMARY_TEXT",
-                            "PLAGUE_DETAIL_TEXT",
-                            "vfs:///Resources/Images/ScriptedEvents/Plague.png",
-                            "vfs:///Resources/SoundFX/ScriptedEvents/Plague.mp3",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add
+                    //    (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
+                    //    targetCiv,
+                    //        "PLAGUE_HEADER_TEXT",
+                    //        "PLAGUE_SUMMARY_TEXT",
+                    //        "PLAGUE_DETAIL_TEXT",
+                    //        "vfs:///Resources/Images/ScriptedEvents/Plague.png",
+                    //        "vfs:///Resources/SoundFX/ScriptedEvents/Plague.mp3",
+                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- (population/3));
