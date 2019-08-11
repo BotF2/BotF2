@@ -167,15 +167,6 @@ namespace Supremacy.Game
         }
 
         /// <summary>
-        /// Gets the colony name string.
-        /// </summary>
-        /// <value>string colonyName</value>
-        public virtual string ColonyName
-        {
-            get { return null; }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether this <see cref="SitRepEntry"/> is a priority entry.
         /// </summary>
         /// <value>
@@ -202,16 +193,6 @@ namespace Supremacy.Game
         /// <summary>
         /// Initializes a new instance of the <see cref="SitRepEntry"/> class.
         /// </summary>
-     
-        /// <param name="priority">The priority.</param>
-        protected SitRepEntry( SitRepPriority priority)
-        {      
-            _priority = priority;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SitRepEntry"/> class.
-        /// </summary>
         /// <param name="ownerId">The owner ID.</param>
         /// <param name="priority">The priority.</param>
         protected SitRepEntry(int ownerId, SitRepPriority priority)
@@ -223,6 +204,11 @@ namespace Supremacy.Game
         }
     }
     #endregion
+
+    //protected SitRepEntry(SitRepPriority priority)
+    //{
+    //    _priority = priority;
+    //}
 
     #region UnassinedTradeRoute
     [Serializable]
@@ -259,6 +245,121 @@ namespace Supremacy.Game
         }
     }
     #endregion
+
+    #region ReligiousHoliday (new)
+    [Serializable]
+    public class ReligiousHolidaySitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+        //GameLog.Core.Research.DebugFormat("ReligiousHolidaySitRepEntry: _civManager =  {0}, _civilization = {1}, _colonyName =  {2}"
+        //    , _civManager
+        //    , _civilization
+        //    , _colonyName
+        //    );
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        //public override string DetailImage
+        //{
+        //    get { return Civilization.Image; }
+        //}
+
+        //public override string DetailText
+        //{
+        //    get { return Civilization.DiplomacyReport ?? Civilization.Race.Description; }
+        //}
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png";
+                //return (Owner == Aggressor)
+                //    ? Victim.InsigniaPath
+                //    : Aggressor.InsigniaPath;
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public ReligiousHolidaySitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for Religious Holiday");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion ReligiousHolidays(new)
+
 
     #region Science Ship SitRepEntries
     [Serializable]
