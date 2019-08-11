@@ -78,6 +78,12 @@ namespace Supremacy.Scripting.Events
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 4) // only when many colonies are there
                         GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: colony amount > 1 for: {0}", target.Name);
 
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new SupernovaiSitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+
                     //game.CivilizationManagers[targetCiv].SitRepEntries.Add
                     //    (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
                     //    targetCiv,

@@ -78,6 +78,12 @@ namespace Supremacy.Scripting.Events
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+3);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
 
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+
                     //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
                     //    new ScriptedEventSitRepEntry(
                     //        new ScriptedEventSitRepEntryData(

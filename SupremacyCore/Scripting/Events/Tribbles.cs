@@ -126,6 +126,12 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+
                     //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
                     //    new ScriptedEventSitRepEntry(
                     //        new ScriptedEventSitRepEntryData(
