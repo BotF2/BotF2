@@ -205,6 +205,11 @@ namespace Supremacy.Game
     }
     #endregion
 
+    //protected SitRepEntry(SitRepPriority priority)
+    //{
+    //    _priority = priority;
+    //}
+
     #region UnassinedTradeRoute
     [Serializable]
     public class UnassignedTradeRoute : SitRepEntry
@@ -240,6 +245,103 @@ namespace Supremacy.Game
         }
     }
     #endregion
+
+    #region ReligiousHoliday (new)
+    [Serializable]
+    public class ReligiousHolidaySitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public ReligiousHolidaySitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for Religious Holiday");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion ReligiousHolidays(new)
+
 
     #region Science Ship SitRepEntries
     [Serializable]
@@ -711,6 +813,104 @@ namespace Supremacy.Game
         }
     }
 
+
+    #region PlaqueSitRepEntry (new)
+    [Serializable]
+    public class PlaqueSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("PLAQUE_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("PLAQUE_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("PLAQUE_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/Plaque.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public PlaqueSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for Plaque");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion PlaqueSitRepEntry
+
+
     [Serializable]
     public class PlanetaryDefenceAttackAttackerSitRepEntry : SitRepEntry
     {
@@ -753,6 +953,104 @@ namespace Supremacy.Game
             _shieldHealthRemoved = shieldHealthRemoved;
         }
     }
+
+
+    #region GammaRayBurstSitRepEntry (new)
+    [Serializable]
+    public class GammaRayBurstSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("GAMMA_RAY_BURST_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("GAMMA_RAY_BURST_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("GAMMA_RAY_BURST_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public GammaRayBurstSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for GammaRayBurst");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion GammaRayBurstSitRepEntry
+
 
     [Serializable]
     public class IntelAttackFailedSitRepEntry : SitRepEntry
@@ -912,6 +1210,396 @@ namespace Supremacy.Game
             _creditsStolen = creditsStolen;
         }
     }
+
+
+    #region SupernovaiSitRepEntry (new)
+    [Serializable]
+    public class SupernovaiSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SUPERNOVA_I_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SUPERNOVA_I_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SUPERNOVA_I_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/Supernovai.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public SupernovaiSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for Supernovai");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion SupernovaiSitRepEntry
+
+
+
+    #region TerroristBombingOfShipProductionSitRepEntry (new)
+    [Serializable]
+    public class TerroristBombingOfShipProductionSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/TerroristBombingOfShipProduction.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public TerroristBombingOfShipProductionSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for TerroristBombingOfShipProduction");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion TerroristBombingOfShipProductionSitRepEntry
+
+
+    #region TerroristsCapturedSitRepEntry (new)
+    [Serializable]
+    public class TerroristsCapturedSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TERRORISTS_CAPTURED_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/TerroristsCaptured.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public TerroristsCapturedSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for TerroristsCaptured");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion TerroristsCapturedSitRepEntry
+
+
+    #region TradeGuildStrikesSitRepEntry (new)
+    [Serializable]
+    public class TradeGuildStrikesSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public TradeGuildStrikesSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for TradeGuildStrikes");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion TradeGuildStrikesSitRepEntry
+
 
     [Serializable]
     public class TradeRouteCreditsStolenAttackerSitRepEntry : SitRepEntry
@@ -1380,6 +2068,102 @@ namespace Supremacy.Game
         }
     }
 
+    #region MajorAsteroidImpactSitRepEntry (new)
+    [Serializable]
+    public class MajorAsteroidImpactSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/MajorAsteroidImpact.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public MajorAsteroidImpactSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for MajorAsteroidImpact");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion MajorAsteroidImpactSitRepEntry
+
     [Serializable]
     public class NegativeTreasurySitRepEntry : SitRepEntry
     {
@@ -1474,6 +2258,103 @@ namespace Supremacy.Game
         // ReSharper restore SuggestBaseTypeForParameter
     }
 
+
+    #region EarthquakeSitRepEntry (new)
+    [Serializable]
+    public class EarthquakeSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("EARTHQUAKE_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("EARTHQUAKE_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("EARTHQUAKE_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/Earthquake.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public EarthquakeSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for Earthquake");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion EarthquakeSitRepEntry
+
     #region Diplomatic SitRepEntries
     [Serializable]
     public class FirstContactSitRepEntry : SitRepEntry
@@ -1539,6 +2420,105 @@ namespace Supremacy.Game
             _location = location;
         }
     }
+
+
+
+    #region TribblesSitRepEntry (new)
+    [Serializable]
+    public class TribblesSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TRIBBLES_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TRIBBLES_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("TRIBBLES_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/Tribbles.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public TribblesSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for Tribbles");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion TribblesSitRepEntry
+
 
     [Serializable]
     public class WarDeclaredSitRepEntry : SitRepEntry
@@ -1944,79 +2924,91 @@ namespace Supremacy.Game
         // ReSharper restore SuggestBaseTypeForParameter
     }
 
-    [Serializable]
-    public class ScriptedEventSitRepEntry : SitRepEntry, ISerializable
-    {
-        private readonly CivString _headerText;
-        private readonly CivString _summaryText;
-        private readonly CivString _detailText;
-        private readonly string _detailImage;
-        private readonly string _soundEffect;
+    // OLD
 
-        protected ScriptedEventSitRepEntry(SerializationInfo info, StreamingContext context)
-            : base(info.GetInt32("OwnerID"), SitRepPriority.Special)
-        {
-            _headerText = (CivString)info.GetValue("_headerText", typeof(CivString));
-            _detailText = (CivString)info.GetValue("_detailText", typeof(CivString));
-            _summaryText = (CivString)info.GetValue("_summaryText", typeof(CivString));
-            _detailImage = info.GetString("_detailImage");
-            _soundEffect = info.GetString("_soundEffect");
-        }
+    //[Serializable]
+    //public class ScriptedEventSitRepEntry : SitRepEntry //ISerializable
+    //{
+    //    private readonly string _headerText;
+    //    private readonly string _summaryText;
+    //    private readonly string _detailText;
+    //    private readonly string _detailImage;
+    //    private readonly string _soundEffect;
+    //    private readonly string _colonyName;
 
-        public ScriptedEventSitRepEntry(ScriptedEventSitRepEntryData data)
-            : base(data.Owner, SitRepPriority.Special)
-        {
-            _headerText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.HeaderText);
-            _detailText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.DetailText);
-            _summaryText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.SummaryText);
-            _detailImage = data.DetailImage;
-            _soundEffect = data.SoundEffect;
-        }
+        //protected ScriptedEventSitRepEntry(SerializationInfo info, StreamingContext context, string headerText, string detailText, string summaryText, string imagePath, string soundPath, string colonyName)
+        //    : base(info.GetInt32("OwnerID"), SitRepPriority.Special)
+        //{
+        //    _headerText = ResourceManager.GetString(headerText);
+        //    _detailText = string.Format(ResourceManager.GetString(detailText), colonyName);
+        //    _summaryText = ResourceManager.GetString(summaryText);
+        //    _detailImage = imagePath;
+        //    _soundEffect = soundPath;
+        //}
 
-        public override string SoundEffect
-        {
-            get { return _soundEffect; }
-        }
+        //public ScriptedEventSitRepEntry(string headerText, string summaryText, string detailText,  string imagePath, string soundPath, string colonyName)
+        //    : base(SitRepPriority.Special)
+        //{
+        //    GameLog.Core.Diplomacy.DebugFormat("headerText ={0}, summaryText ={1}, detailText ={2}, imagePath ={3}, soundPath ={4}. colonyName ={5}", headerText, summaryText, detailText, imagePath, soundPath, colonyName);
+        //    GameLog.Core.Diplomacy.DebugFormat("ResourceM headerText ={0}, stinrg.Formate (ResourceM summaryText ={1})", ResourceManager.GetString(headerText), string.Format(ResourceManager.GetString(detailText), colonyName));
 
-        public override string HeaderText
-        {
-            get { return _headerText.Value; }
-        }
+        //    _headerText = ResourceManager.GetString(headerText);
+        //    _summaryText = ResourceManager.GetString(summaryText);
+        //    _detailText = string.Format(ResourceManager.GetString(detailText), colonyName);
+        //    _detailImage = imagePath;
+        //    _soundEffect = soundPath;
+        //    _colonyName = colonyName;
 
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.SpecialEvent; }
-        }
+        //}
 
-        public override string SummaryText
-        {
-            get { return _summaryText.Value; }
-        }
+        //public override string SoundEffect
+        //{
+        //    get { return _soundEffect; }
+        //}
 
-        public override string DetailText
-        {
-            get { return _detailText.Value; }
-        }
+        //public override string HeaderText
+        //{
+        //    get { return _headerText; }
+        //}
 
-        public override string DetailImage
-        {
-            get { return _detailImage; }
-        }
+        //public override SitRepCategory Categories
+        //{
+        //    get { return SitRepCategory.SpecialEvent; }
+        //}
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            /*info.AddValue(
-                "_parameterResolvers",
-                _parameterResolvers.Select(o => expressionSerializer.Serialize(o.CanReduce ? o.Reduce() : o).ToString(SaveOptions.DisableFormatting)).ToArray());*/
+        //public override string SummaryText
+        //{
+        //    get { return _summaryText; }
+        //}
 
-            info.AddValue("OwnerID", OwnerID);
-            info.AddValue("_headerText", _headerText);
-            info.AddValue("_summaryText", _summaryText);
-            info.AddValue("_detailText", _detailText);
-            info.AddValue("_detailImage", _detailImage);
-            info.AddValue("_soundEffect", _soundEffect);
-        }
-    }
+        //public override string DetailText
+        //{
+        //    get { return _detailText; }
+        //}
+
+        //public override string DetailImage
+        //{
+        //    get { return _detailImage; }
+        //}
+
+        //public override string ColonyName
+        //{
+        //    get { return _colonyName; }
+        //}
+        //public void GetObjectData(SerializationInfo info, StreamingContext context)
+        //{
+        //    /*info.AddValue(
+        //        "_parameterResolvers",
+        //        _parameterResolvers.Select(o => expressionSerializer.Serialize(o.CanReduce ? o.Reduce() : o).ToString(SaveOptions.DisableFormatting)).ToArray());*/
+
+        //    info.AddValue("OwnerID", OwnerID);
+        //    info.AddValue("_headerText", _headerText);
+        //    info.AddValue("_summaryText", _summaryText);
+        //    info.AddValue("_detailText", _detailText);
+        //    info.AddValue("_detailImage", _detailImage);
+        //    info.AddValue("_soundEffect", _soundEffect);
+        //}
+    //}
 
     //TODO: This needs fleshing out. Need a definite popup,
     //image with something to do with medical or death
@@ -2116,6 +3108,103 @@ namespace Supremacy.Game
         }
         
     }
+
+    #region AsteroidImpactSitRepEntry (new)
+    [Serializable]
+    public class AsteroidImpactSitRepEntry : SitRepEntry
+    {
+        private readonly CivilizationManager _civManager;
+        private readonly Civilization _civilization;
+        private readonly MapLocation _location;
+        private readonly string _colonyName;
+
+
+        public Civilization Civilization
+        {
+            get { return _civManager.Civilization; }
+        }
+
+        public CivilizationManager CivManager
+        {
+            get { return _civManager; }
+        }
+
+        public string ColonyName
+        {
+            get { return _colonyName; }
+        }
+
+        public MapLocation Location
+        {
+            get { return _location; }
+        }
+
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
+
+        public override bool HasDetails
+        {
+            get { return true; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.SpecialEvent; }
+        }
+
+        public override string HeaderText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("ASTEROID_IMPACT_HEADER_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("ASTEROID_IMPACT_SUMMARY_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("ASTEROID_IMPACT_DETAIL_TEXT"),
+                    ColonyName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png";
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public AsteroidImpactSitRepEntry(Civilization owner, string colonyName)
+            : base(owner, SitRepPriority.Yellow)
+        {
+            if (colonyName == null)
+                throw new ArgumentNullException("colonyName missing for AsteroidImpact");
+            _colonyName = colonyName;
+            //_location = location;
+        }
+    }
+    #endregion AsteroidImpactSitRepEntry
+
 
     [Serializable]
     public class BlackHoleEncounterSitRepEntry : SitRepEntry

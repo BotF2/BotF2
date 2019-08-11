@@ -118,16 +118,24 @@ namespace Supremacy.Scripting.Events
 
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                        new ScriptedEventSitRepEntry(
-                            new ScriptedEventSitRepEntryData(
-                                targetCiv,
-                                "RELIGIOUS_HOLIDAY_HEADER_TEXT",
-                                "RELIGIOUS_HOLIDAY_SUMMARY_TEXT",
-                                "RELIGIOUS_HOLIDAY_DETAIL_TEXT",
-                                "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png",
-                                "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    //Civilization civ = GameContext.Current.Civilizations[targetCiv.CivID];
+
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                    //    new ScriptedEventSitRepEntry(
+                    //        new ScriptedEventSitRepEntryData(
+                    //            targetCiv,
+                    //            "RELIGIOUS_HOLIDAY_HEADER_TEXT",
+                    //            "RELIGIOUS_HOLIDAY_SUMMARY_TEXT",
+                    //            "RELIGIOUS_HOLIDAY_DETAIL_TEXT",
+                    //            "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png",
+                    //            "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
+                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
                 }
 
                 return;

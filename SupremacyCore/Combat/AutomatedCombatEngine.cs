@@ -40,7 +40,7 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
                 //  Once a ship has retreated, its important that it does not do it again..
                 var easyRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.Key.Contains("Frigate")) || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    .Where(s => s.Item1.IsCloaked == true || (s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE")) || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     .Where(s => !s.Item1.IsDestroyed) //  Destroyed ships cannot retreat
                     .Where(s => GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
@@ -62,7 +62,7 @@ namespace Supremacy.Combat
                 }
                 // other ships with retreat order have a lesser chance to retreat
                 var hardRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked != true && (s.Item1.Source.OrbitalDesign.ShipType != "Frigate") && (s.Item1.Source.OrbitalDesign.ShipType != "Scout"))
+                    .Where(s => s.Item1.IsCloaked != true && !s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") && s.Item1.Source.OrbitalDesign.ShipType != "Scout")
                     .Where(s => !s.Item1.IsDestroyed) //  Destroyed ships cannot retreat
                     .Where(s => GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
                     .ToList();
@@ -110,8 +110,9 @@ namespace Supremacy.Combat
                                 ownerAssets.EscapedShips.Add(target.Item1);
                                 ownerAssets.CombatShips.Remove(target.Item1);
                                 ownerAssets.NonCombatShips.Remove(target.Item1);
+                                ownerAssets.AssimilatedShips.Add(target.Item1);
                                 _combatShips.Remove(target);
-                                GameLog.Core.CombatDetails.DebugFormat("Assimilated ={0}", target.Item1.Name);
+                                GameLog.Core.CombatDetails.DebugFormat("Assimilated ={0} found borg ={1} assimilationSuccessful ={2}, chance to Assimiate ={3}", target.Item1.Name, foundDaBorg, assimilationSuccessful, chanceToAssimilate);
                             }
                         }
                     }
@@ -527,24 +528,148 @@ namespace Supremacy.Combat
                         // Calculate Bonus/Malus
                         // Get Accuracy, Damage Control when fixed
                         // double sourceAccuracyTemp = 1; // used to determin whether or not it is a hit
-                        double sourceAccuracy = 1; // used to increase damage as well, if hero ship
-                    double targetDamageControl = 0.5;
-                    sourceAccuracy = AttackingShip.Item1.Source.GetAccuracyModifier();
-                    if (sourceAccuracy > 1 || sourceAccuracy < 0.1)
-                        sourceAccuracy = 1;
-                    targetDamageControl = currentTarget.Item1.Source.GetDamageControlModifier();
-                    if (targetDamageControl > 1 || targetDamageControl < 0.1)
-                        targetDamageControl = 0.5;
-                    // Hero Ship?
+                    double sourceAccuracy = 0.70; // used to increase damage as well, if hero ship
+                    double targetDamageControl = 0.55;
+
+                    // COMMAND SHIP MODFIER (ATTACKING LOOP)
+                    double commandShipModifierAccuracy = -0.15;
+                    var ammountCommandShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
+                                        .Where(sc => sc.Item1.HullStrength > 0)
+                                        .Where(sc => sc.Item1.Source.OrbitalDesign.ShipType == "Command" || sc.Item1.Source.OrbitalDesign.Key.Contains("BATTLESHIP"))
+                                        .Select(sc => sc).ToList();
+                    var totalammount = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
+                                            .Where(sc => sc.Item1.HullStrength > 0)
+                                            .Select(sc => sc).ToList();
+
+                    if (ammountCommandShips != null && totalammount != null && ammountCommandShips.Count > 0 && totalammount.Count > 0)
+                    {
+                        if (ammountCommandShips.Count > 0)
+                        {
+                            commandShipModifierAccuracy = 0.01;
+                        }
+                        if(ammountCommandShips.Count >= totalammount.Count / 10)
+                        {
+                            commandShipModifierAccuracy = 0.10;
+                        }
+                    }
+
+                    // CHECKING EXPERIENCE for accuracy and damage control (attacking loop)
+                    // Checking ship experienc ein Attacking loop for the attacking ship (station)
+                    string ShipExperience = "Unknown";
+                    ShipExperience = AttackingShip.Item1.Source.ExperienceRankString;
+                    switch (ShipExperience)
+                    {
+
+                        case "Unknown":
+                            {
+                                sourceAccuracy = 0.70;
+                                //targetDamageControl = 0.75;
+                                break;
+                            }
+                        case "Green":
+                            {
+                                sourceAccuracy = 0.50;
+                                //targetDamageControl = 0.45;
+                                break;
+                            }
+                        case "Regular":
+                            {
+                                sourceAccuracy = 0.60;
+                                //targetDamageControl = 0.50;
+                                break;
+                            }
+                        case "Veteran":
+                            {
+                                sourceAccuracy = 0.70;
+                                //targetDamageControl = 0.55;
+                                break;
+                            }
+                        case "Elite":
+                            {
+                                sourceAccuracy = 1;
+                                //targetDamageControl = 0.65;
+                                break;
+                            }
+                        case "Legendary":
+                            {
+                                sourceAccuracy = 1.1;
+                                //targetDamageControl = 0.75;
+                                break;
+                            }
+                    }
                     if (AttackingShip.Item1.Name.Contains("!"))
                     {
-                        sourceAccuracy = 1.6; // change to 160% accuracy (=60% more damage as well)
+                        sourceAccuracy = sourceAccuracy + 0.80; // If attacking ship is also a hero ship add 0.8 accuracy.
+                        
                     }
-                    // targed a Hero?                
+                    if (AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("CRUISER") || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("DESTROYER")
+                        || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") ||
+                        (AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command") && AttackingShip.Item1.Source.Owner.Name.Contains("Borg"))
+                        )
+                    {
+                        sourceAccuracy = sourceAccuracy + commandShipModifierAccuracy; // taking Command ship present or no present modfier into account.
+                    }
+                    else if (!AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command")) // Civilian Non-Command ship only get negative mod
+                    {
+                        if(commandShipModifierAccuracy < 0) // only if modifyer is negative
+                        {
+                            sourceAccuracy = sourceAccuracy + commandShipModifierAccuracy; 
+                        }
+                    }
+
+                    // update x 23 july 2019: added experience to change accuracy and damage control: Checking Target experience in Attacking Loop
+                        string TargetShipExperience = "Unknown";
+                            TargetShipExperience = currentTarget.Item1.Source.ExperienceRankString;
+                            switch (TargetShipExperience)
+                            {
+
+                                case "Unknown":
+                                    {
+                                        //sourceAccuracy = 0.75;
+                                        targetDamageControl = 0.55;
+                                        break;
+                                    }
+                                case "Green":
+                                    {
+                                        //sourceAccuracy = 0.45;
+                                        targetDamageControl = 0.40;
+                                        break;
+                                    }
+                                case "Regular":
+                                    {
+                                        //sourceAccuracy = 0.50;
+                                        targetDamageControl = 0.45;
+                                        break;
+                                    }
+                                case "Veteran":
+                                    {
+                                        //sourceAccuracy = 0.55;
+                                        targetDamageControl = 0.50;
+                                        break;
+                                    }
+                                case "Elite":
+                                    {
+                                        //sourceAccuracy = 0.65;
+                                        targetDamageControl = 0.57;
+                                        break;
+                                    }
+                                case "Legendary":
+                                    {
+                                        //sourceAccuracy = 0.75;
+                                        targetDamageControl = 0.65;
+                                        break;
+                                    }
+
+                            }
+                    if (currentTarget.Item1.Source.IsMobile == false) // Stations have higher damage control
+                        targetDamageControl = targetDamageControl + 0.55;
                     if (currentTarget.Item1.Name.Contains("!"))
                     {
-                        targetDamageControl = 1;
+                        targetDamageControl = targetDamageControl + 0.55;
                     }
+                    
+
+                   
                     //  compare Orders
                     double combatOrderBonusMalus = 0;
                     // Engage
@@ -572,7 +697,7 @@ namespace Supremacy.Combat
                     {
                         currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                             .Where(sc => sc.Item1.HullStrength > 0)
-                            .Where(sc => sc.Item1.Source.OrbitalDesign.ShipType.Contains("Frigate"))
+                            .Where(sc => sc.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE"))
                             .Select(sc => sc).ToList();
                         currentTarget = currentTargets.RandomElementOrDefault();
                         if (currentTarget is null) // If no Frigates, target Transports
@@ -773,7 +898,7 @@ namespace Supremacy.Combat
                             // Update 21 july 2019, if station of same ID there, use Station as "AttackingShiP"
                             if (_combatStation != null)
                             {
-                                if (AttackingShip.Item1.OwnerID == _combatStation.Item1.OwnerID)
+                                if (AttackingEmpireID == _combatStation.Item1.OwnerID) // 23 july bugfix null^reference for ships
                                     AttackingShip = _combatStation;
                             }
                         }
@@ -871,7 +996,7 @@ namespace Supremacy.Combat
                     //    break;
                     //}
                     var defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
-
+                    
                     if ((_combatStation != null && currentTargets.Count != 0) && defenderOrder != CombatOrder.Formation) // Formation protects Starbase, otherwise ships are protected.
                     {
                         if (_combatStation.Item1.Source.HullStrength.CurrentValue > 0 && _combatStation.Item1.OwnerID == targetedEmpireID)
@@ -894,25 +1019,150 @@ namespace Supremacy.Combat
 
                     // Calculate Bonus/Malus
                     // Get Accuracy, Damage Control when fixed
-                    //double sourceAccuracyTemp = 1; // used to determin whether or not it is a hit
-                    double sourceAccuracy = 1; // used to increase damage as well, if hero ship
-                    double targetDamageControl = 0.5;
-                    sourceAccuracy = AttackingShip.Item1.Source.GetAccuracyModifier();
-                    if (sourceAccuracy > 1 || sourceAccuracy < 0.1)
-                        sourceAccuracy = 1;
-                    targetDamageControl = currentTarget.Item1.Source.GetDamageControlModifier();
-                    if (targetDamageControl > 1 || targetDamageControl < 0.1)
-                        targetDamageControl = 0.5;
-                    // Hero Ship?
+                    double sourceAccuracy = 0.70; 
+                    double targetDamageControl = 0.55;
+
+                    // COMMAND SHIP MODFIER (retaliation loop)
+                    double commandShipModifierAccuracy = -0.15;
+                    var ammountCommandShips = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
+                                            .Where(sc => sc.Item1.HullStrength > 0)
+                                            .Where(sc => sc.Item1.Source.OrbitalDesign.ShipType == "Command" || sc.Item1.Source.OrbitalDesign.Key.Contains("BATTLESHIP"))
+                                            .Select(sc => sc).ToList();
+                    var totalammount = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == AttackingEmpireID)
+                                            .Where(sc => sc.Item1.HullStrength > 0)
+                                            .Select(sc => sc).ToList();
+
+                    if (ammountCommandShips != null && totalammount != null && ammountCommandShips.Count > 0 && totalammount.Count > 0)
+                    {
+                        if (ammountCommandShips.Count > 0)
+                        {
+                            commandShipModifierAccuracy = 0.01;
+                        }
+                        if (ammountCommandShips.Count >= totalammount.Count / 10)
+                        {
+                            commandShipModifierAccuracy = 0.10;
+                        }
+                    }
+
+
+
+                    // CHECKING EXPERIENCE for accuracy and damage control (retilation loop)
+                    // Checking ship experienc ein Retilation loop for the attacking ship (station)
+                    string ShipExperience = "Unknown";
+                    ShipExperience = AttackingShip.Item1.Source.ExperienceRankString;
+                    switch (ShipExperience)
+                    {
+
+                        case "Unknown":
+                            {
+                                sourceAccuracy = 0.70;
+                                //targetDamageControl = 0.75;
+                                break;
+                            }
+                        case "Green":
+                            {
+                                sourceAccuracy = 0.50;
+                                //targetDamageControl = 0.45;
+                                break;
+                            }
+                        case "Regular":
+                            {
+                                sourceAccuracy = 0.60;
+                                //targetDamageControl = 0.50;
+                                break;
+                            }
+                        case "Veteran":
+                            {
+                                sourceAccuracy = 0.70;
+                                //targetDamageControl = 0.55;
+                                break;
+                            }
+                        case "Elite":
+                            {
+                                sourceAccuracy = 1.00;
+                                //targetDamageControl = 0.65;
+                                break;
+                            }
+                        case "Legendary":
+                            {
+                                sourceAccuracy = 1.1;
+                                //targetDamageControl = 0.75;
+                                break;
+                            }
+                    }
                     if (AttackingShip.Item1.Name.Contains("!"))
                     {
-                        sourceAccuracy = 1.6; // change to 160% accuracy
+                        sourceAccuracy = sourceAccuracy + 0.80; // If attacking ship is also a hero ship add 0.8 accuracy.
+
                     }
-                    // targed a Hero?                
+                    // All non-command ships get bonus
+                    if (AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("CRUISER") || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("DESTROYER")
+                        || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") ||
+                        (AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command") && AttackingShip.Item1.Source.Owner.Key.Contains("BORG"))
+                        )
+                    {
+                        sourceAccuracy = sourceAccuracy + commandShipModifierAccuracy; // taking Command ship present or no present modfier into account.
+                    }
+                    else if (!AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command")) // Civilian Non-Command ship only get negative mod
+                    {
+                        if (commandShipModifierAccuracy < 0) // only if modifyer is negative
+                        {
+                            sourceAccuracy = sourceAccuracy + commandShipModifierAccuracy;
+                        }
+                    }
+
+
+                    // update x 23 july 2019: added experience to change accuracy and damage control: Checking Target experience in Retilation Loop
+                    string TargetShipExperience = "Unknown";
+                    TargetShipExperience = currentTarget.Item1.Source.ExperienceRankString;
+                    switch (TargetShipExperience)
+                    {
+
+                        case "Unknown":
+                            {
+                                //sourceAccuracy = 0.75;
+                                targetDamageControl = 0.55;
+                                break;
+                            }
+                        case "Green":
+                            {
+                                //sourceAccuracy = 0.45;
+                                targetDamageControl = 0.40;
+                                break;
+                            }
+                        case "Regular":
+                            {
+                                //sourceAccuracy = 0.50;
+                                targetDamageControl = 0.45;
+                                break;
+                            }
+                        case "Veteran":
+                            {
+                                //sourceAccuracy = 0.55;
+                                targetDamageControl = 0.50;
+                                break;
+                            }
+                        case "Elite":
+                            {
+                                //sourceAccuracy = 0.65;
+                                targetDamageControl = 0.57;
+                                break;
+                            }
+                        case "Legendary":
+                            {
+                                //sourceAccuracy = 0.75;
+                                targetDamageControl = 0.65;
+                                break;
+                            }
+
+                    }
+                    if (currentTarget.Item1.Source.IsMobile == false)
+                        targetDamageControl = targetDamageControl + 0.55;
                     if (currentTarget.Item1.Name.Contains("!"))
                     {
-                        targetDamageControl = 1;
+                        targetDamageControl = targetDamageControl + 0.55;
                     }
+
                     double combatOrderBonusMalus = 0;
                     // Engage rush formation
                     if (attackerOrder == CombatOrder.Engage && (defenderOrder == CombatOrder.Rush || defenderOrder == CombatOrder.Formation))
@@ -943,7 +1193,7 @@ namespace Supremacy.Combat
                         // HEREX
                         currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                             .Where(sc => sc.Item1.HullStrength > 0)
-                            .Where(sc => sc.Item1.Source.OrbitalDesign.ShipType.Contains("Frigate"))
+                            .Where(sc => sc.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE"))
                             .Select(sc => sc).ToList();
                         if (currentTargets != null)
                         {

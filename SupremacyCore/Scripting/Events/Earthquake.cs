@@ -162,16 +162,22 @@ namespace Supremacy.Scripting.Events
                         removeResearch = 0;
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                        new ScriptedEventSitRepEntry(
-                            new ScriptedEventSitRepEntryData(
-                                targetCiv,
-                                "EARTHQUAKE_HEADER_TEXT",
-                                "EARTHQUAKE_SUMMARY_TEXT",
-                                "EARTHQUAKE_DETAIL_TEXT",
-                                "vfs:///Resources/Images/ScriptedEvents/Earthquake.png",
-                                "vfs:///Resources/SoundFX/ScriptedEvents/Earthquake.wav",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                    //    new ScriptedEventSitRepEntry(
+                    //        new ScriptedEventSitRepEntryData(
+                    //            targetCiv,
+                    //            "EARTHQUAKE_HEADER_TEXT",
+                    //            "EARTHQUAKE_SUMMARY_TEXT",
+                    //            "EARTHQUAKE_DETAIL_TEXT",
+                    //            "vfs:///Resources/Images/ScriptedEvents/Earthquake.png",
+                    //            "vfs:///Resources/SoundFX/ScriptedEvents/Earthquake.wav",
+                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
 
                     GameContext.Current.Universe.UpdateSectors();
 

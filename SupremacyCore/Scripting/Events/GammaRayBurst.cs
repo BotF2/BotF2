@@ -82,16 +82,22 @@ namespace Supremacy.Scripting.Events
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 2) // >2
                         GameLog.Core.Events.DebugFormat("colony amount > 1 for: {0}", target.Name);
 
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add
-                        (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
-                        targetCiv,
-                            "GAMMA_RAY_BURST_HEADER_TEXT",
-                            "GAMMA_RAY_BURST_SUMMARY_TEXT",
-                            "GAMMA_RAY_BURST_DETAIL_TEXT",
-                            "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png",
-                            "vfs:///Resources/SoundFX/ScriptedEvents/GammaRayBurst.mp3",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-               // see CivStringDatabase.xml for text
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new GammaRayBurstSitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add
+                    //    (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
+                    //    targetCiv,
+                    //        "GAMMA_RAY_BURST_HEADER_TEXT",
+                    //        "GAMMA_RAY_BURST_SUMMARY_TEXT",
+                    //        "GAMMA_RAY_BURST_DETAIL_TEXT",
+                    //        "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png",
+                    //        "vfs:///Resources/SoundFX/ScriptedEvents/GammaRayBurst.mp3",
+                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    // see CivStringDatabase.xml for text
 
                     GameLog.Core.Events.DebugFormat("GammaRayBurstEvents.cs: HomeSystemName is: {0}", target.Name);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- population/3 * 2);

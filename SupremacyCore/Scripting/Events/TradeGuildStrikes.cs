@@ -119,16 +119,22 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    new ScriptedEventSitRepEntry(
-                        new ScriptedEventSitRepEntryData(
-                            targetCiv,
-                            "TRADE_GUILD_STRIKES_HEADER_TEXT",
-                            "TRADE_GUILD_STRIKES_SUMMARY_TEXT",
-                            "TRADE_GUILD_STRIKES_DETAIL_TEXT",
-                            "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png",
-                            "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
-                            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new TradeGuildStrikesSitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+
+                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
+                    //new ScriptedEventSitRepEntry(
+                    //    new ScriptedEventSitRepEntryData(
+                    //        targetCiv,
+                    //        "TRADE_GUILD_STRIKES_HEADER_TEXT",
+                    //        "TRADE_GUILD_STRIKES_SUMMARY_TEXT",
+                    //        "TRADE_GUILD_STRIKES_DETAIL_TEXT",
+                    //        "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png",
+                    //        "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
+                    //        () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
                 }
 
                 return;
