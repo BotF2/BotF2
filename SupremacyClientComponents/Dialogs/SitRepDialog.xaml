@@ -6,8 +6,8 @@
                 xmlns:dialogs="clr-namespace:Supremacy.Client.Dialogs"
                 xmlns:controls="clr-namespace:Supremacy.Client.Controls"
                 IsModal="False"
-                Height="480"
-                Width="720">
+                Height="580"
+                Width="920">
   <dialogs:Dialog.Resources>
     <DataTemplate x:Key="SitRepEntryTemplate"
                   DataType="{x:Type s:SitRepEntry}">
