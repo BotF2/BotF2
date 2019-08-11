@@ -167,6 +167,15 @@ namespace Supremacy.Game
         }
 
         /// <summary>
+        /// Gets the colony name string.
+        /// </summary>
+        /// <value>string colonyName</value>
+        public virtual string ColonyName
+        {
+            get { return null; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this <see cref="SitRepEntry"/> is a priority entry.
         /// </summary>
         /// <value>
@@ -187,6 +196,16 @@ namespace Supremacy.Game
             if (owner == null)
                 throw new ArgumentNullException("owner");
             _ownerId = owner.CivID;
+            _priority = priority;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SitRepEntry"/> class.
+        /// </summary>
+     
+        /// <param name="priority">The priority.</param>
+        protected SitRepEntry( SitRepPriority priority)
+        {      
             _priority = priority;
         }
 
@@ -1945,32 +1964,38 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class ScriptedEventSitRepEntry : SitRepEntry, ISerializable
+    public class ScriptedEventSitRepEntry : SitRepEntry //ISerializable
     {
-        private readonly CivString _headerText;
-        private readonly CivString _summaryText;
-        private readonly CivString _detailText;
+        private readonly string _headerText;
+        private readonly string _summaryText;
+        private readonly string _detailText;
         private readonly string _detailImage;
         private readonly string _soundEffect;
+        private readonly string _colonyName;
 
-        protected ScriptedEventSitRepEntry(SerializationInfo info, StreamingContext context)
-            : base(info.GetInt32("OwnerID"), SitRepPriority.Special)
-        {
-            _headerText = (CivString)info.GetValue("_headerText", typeof(CivString));
-            _detailText = (CivString)info.GetValue("_detailText", typeof(CivString));
-            _summaryText = (CivString)info.GetValue("_summaryText", typeof(CivString));
-            _detailImage = info.GetString("_detailImage");
-            _soundEffect = info.GetString("_soundEffect");
-        }
+        //protected ScriptedEventSitRepEntry(SerializationInfo info, StreamingContext context, string headerText, string detailText, string summaryText, string imagePath, string soundPath, string colonyName)
+        //    : base(info.GetInt32("OwnerID"), SitRepPriority.Special)
+        //{
+        //    _headerText = ResourceManager.GetString(headerText);
+        //    _detailText = string.Format(ResourceManager.GetString(detailText), colonyName);
+        //    _summaryText = ResourceManager.GetString(summaryText);
+        //    _detailImage = imagePath;
+        //    _soundEffect = soundPath;
+        //}
 
-        public ScriptedEventSitRepEntry(ScriptedEventSitRepEntryData data)
-            : base(data.Owner, SitRepPriority.Special)
+        public ScriptedEventSitRepEntry(string headerText, string summaryText, string detailText,  string imagePath, string soundPath, string colonyName)
+            : base(SitRepPriority.Special)
         {
-            _headerText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.HeaderText);
-            _detailText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.DetailText);
-            _summaryText = new CivString(data.Owner, CivString.ScriptedEventsCategory, data.SummaryText);
-            _detailImage = data.DetailImage;
-            _soundEffect = data.SoundEffect;
+            GameLog.Core.Diplomacy.DebugFormat("headerText ={0}, summaryText ={1}, detailText ={2}, imagePath ={3}, soundPath ={4}. colonyName ={5}", headerText, summaryText, detailText, imagePath, soundPath, colonyName);
+            GameLog.Core.Diplomacy.DebugFormat("ResourceM headerText ={0}, stinrg.Formate (ResourceM summaryText ={1})", ResourceManager.GetString(headerText), string.Format(ResourceManager.GetString(detailText), colonyName));
+
+            _headerText = ResourceManager.GetString(headerText);
+            _summaryText = ResourceManager.GetString(summaryText);
+            _detailText = string.Format(ResourceManager.GetString(detailText), colonyName);
+            _detailImage = imagePath;
+            _soundEffect = soundPath;
+            _colonyName = colonyName;
+
         }
 
         public override string SoundEffect
@@ -1980,7 +2005,7 @@ namespace Supremacy.Game
 
         public override string HeaderText
         {
-            get { return _headerText.Value; }
+            get { return _headerText; }
         }
 
         public override SitRepCategory Categories
@@ -1990,12 +2015,12 @@ namespace Supremacy.Game
 
         public override string SummaryText
         {
-            get { return _summaryText.Value; }
+            get { return _summaryText; }
         }
 
         public override string DetailText
         {
-            get { return _detailText.Value; }
+            get { return _detailText; }
         }
 
         public override string DetailImage
@@ -2003,19 +2028,23 @@ namespace Supremacy.Game
             get { return _detailImage; }
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override string ColonyName
         {
-            /*info.AddValue(
-                "_parameterResolvers",
-                _parameterResolvers.Select(o => expressionSerializer.Serialize(o.CanReduce ? o.Reduce() : o).ToString(SaveOptions.DisableFormatting)).ToArray());*/
-
-            info.AddValue("OwnerID", OwnerID);
-            info.AddValue("_headerText", _headerText);
-            info.AddValue("_summaryText", _summaryText);
-            info.AddValue("_detailText", _detailText);
-            info.AddValue("_detailImage", _detailImage);
-            info.AddValue("_soundEffect", _soundEffect);
+            get { return _colonyName; }
         }
+        //public void GetObjectData(SerializationInfo info, StreamingContext context)
+        //{
+        //    /*info.AddValue(
+        //        "_parameterResolvers",
+        //        _parameterResolvers.Select(o => expressionSerializer.Serialize(o.CanReduce ? o.Reduce() : o).ToString(SaveOptions.DisableFormatting)).ToArray());*/
+
+        //    info.AddValue("OwnerID", OwnerID);
+        //    info.AddValue("_headerText", _headerText);
+        //    info.AddValue("_summaryText", _summaryText);
+        //    info.AddValue("_detailText", _detailText);
+        //    info.AddValue("_detailImage", _detailImage);
+        //    info.AddValue("_soundEffect", _soundEffect);
+        //}
     }
 
     //TODO: This needs fleshing out. Need a definite popup,

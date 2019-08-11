@@ -118,16 +118,15 @@ namespace Supremacy.Scripting.Events
 
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
                     GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
+                    GameLog.Core.Diplomacy.DebugFormat("target colony ID ={0}", targetColonyId);
                     game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                        new ScriptedEventSitRepEntry(
-                            new ScriptedEventSitRepEntryData(
-                                targetCiv,
-                                "RELIGIOUS_HOLIDAY_HEADER_TEXT",
-                                "RELIGIOUS_HOLIDAY_SUMMARY_TEXT",
-                                "RELIGIOUS_HOLIDAY_DETAIL_TEXT",
+                        new ScriptedEventSitRepEntry(                                                       
+                                "\"RELIGIOUS_HOLIDAY_HEADER_TEXT\"",
+                                "\"RELIGIOUS_HOLIDAY_SUMMARY_TEXT\"",
+                                "\"RELIGIOUS_HOLIDAY_DETAIL_TEXT\"",
                                 "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png",
                                 "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
-                                () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                                GameContext.Current.Universe.Get<Colony>(targetColonyId).Name));
                 }
 
                 return;
