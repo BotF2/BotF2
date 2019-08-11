@@ -2164,7 +2164,6 @@ namespace Supremacy.Game
     }
     #endregion MajorAsteroidImpactSitRepEntry
 
-
     [Serializable]
     public class NegativeTreasurySitRepEntry : SitRepEntry
     {
