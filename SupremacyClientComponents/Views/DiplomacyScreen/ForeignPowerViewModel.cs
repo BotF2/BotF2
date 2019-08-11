@@ -38,15 +38,19 @@ namespace Supremacy.Client.Views
         private void UpdateIncomingMessage()
         {
             GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ...beginning");
-            if (_foreignPower.ResponseReceived == null)
-            {
-                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = null");
+            if (_foreignPower.ResponseReceived == null) // && _foreignPower.ProposalReceived == null)
+            {          
+                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.ResponseReceived or proposal = null");
                 return;
             }
-
-
-            IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage from {1} from {0}", _foreignPower.Owner, IncomingMessage);
+            //if (_foreignPower.ResponseReceived == null)
+            //{
+            //    GameLog.Core.Diplomacy.DebugFormat("IncomingMessage proposal to={0} from={1}", _foreignPower.ProposalReceived.Recipient, _foreignPower.ProposalReceived.Sender);
+            //    return;
+            //}   
+                //GameLog.Core.Diplomacy.DebugFormat("IncomingMessage Response to={0} from={1}", _foreignPower.ResponseReceived.Recipient, _foreignPower.ResponseReceived.Sender);
+                IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
+                GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ={0}", IncomingMessage.Elements.ToString());
         }
 
         private void UpdateActiveAgreements()

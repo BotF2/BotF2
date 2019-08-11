@@ -150,7 +150,7 @@ namespace Supremacy.Universe
 
             if (system.HasRawMaterialsBonus)
             {
-                _baseRawMaterials = (byte)(RandomHelper.Random(25) + 25);     // base value just in case its not customized
+                _baseRawMaterials = (byte)(RandomHelper.Random(25) + 14);  // UPDATE X 31 july 2019. Adjust base duranium generation   // base value just in case its not customized
 
                 var baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
                 if (baseResProdTable != null)
@@ -546,7 +546,7 @@ namespace Supremacy.Universe
                     }
                 }
 
-                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + NetIndustry * 3);
+                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + NetIndustry * 3.5 + 500); // UPDATE 31 july *3 to *3.5 and +500
             }
         }
 
@@ -1065,7 +1065,7 @@ namespace Supremacy.Universe
             {
                 baseValue = GetBaseResourceProduction(ResourceType.Deuterium);
             }
-            return (int)(baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus);
+            return (int)((baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus+2)); // UPDATE X 28 july 2019 reduced a bit deuterium
         }
 
         /// <summary>

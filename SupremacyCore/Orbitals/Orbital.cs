@@ -13,6 +13,7 @@ using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Orbitals
 {
@@ -239,7 +240,7 @@ namespace Supremacy.Orbitals
                 {
                     increase = 0.10;
                 }// Added that Station must be owned by ship´s owner
-                else if (Sector.Station != null && Sector.System.Owner == Owner)
+                else if (Sector.Station != null)
                 {
                     increase = 0.05;
                 }
@@ -297,6 +298,7 @@ namespace Supremacy.Orbitals
             Entities.Civilization claimingCiv = null;
             if (GameContext.Current.SectorClaims != null)
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
+            GameLog.Core.MapData.DebugFormat("claimingCiv = {0}, Sector {1}, but owner=newOwner wish to be = {2}", claimingCiv, Sector.Location.ToString(), Owner);
             if (claimingCiv == Owner)
             {
                 if ((Sector.System != null) && Sector.System.HasColony && Sector.System.Owner == Owner)
@@ -306,20 +308,19 @@ namespace Supremacy.Orbitals
                     RegenerateHull();
                     increase = 0.07;
                     HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
+                    _hullStrength.UpdateAndReset();
+                    GameLog.Core.MapData.DebugFormat("claiming: Sector has colony = {0}, Sector = {1}, Owner = {2}", Sector.System.Colony.Name, Sector.Location.ToString(), Owner);
                 }
-                if (Sector.Station != null && Sector.System.Owner == Owner) // no more Else-If, both Colony and Station can work together
+                if (Sector.Station != null) 
                 {
-
                     _shieldStrength.Reset(_shieldStrength.Maximum);
                     increase = 0.10;
                     RegenerateHull();
                     HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
+                    _hullStrength.UpdateAndReset();
+                    GameLog.Core.MapData.DebugFormat("claiming: Sector has station = {0}, Sector = {1}, Owner = {2}", Sector.Station.Name, Sector.Location.ToString(), Owner);
                 }
-
             }
-
-
-
             // no more instant-repair outcomment the following line
             //_hullStrength.UpdateAndReset();
         }
