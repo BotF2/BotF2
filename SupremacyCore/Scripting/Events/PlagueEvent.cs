@@ -82,6 +82,12 @@ namespace Supremacy.Scripting.Events
                     if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1)
                         GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
 
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                        civManager.SitRepEntries.Add(new PlaqueSitRepEntry(civManager.Civilization, target.Name));
+
+                    // OLD
+
                     //game.CivilizationManagers[targetCiv].SitRepEntries.Add
                     //    (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
                     //    targetCiv,

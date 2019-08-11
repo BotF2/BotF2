@@ -113,7 +113,6 @@ namespace Supremacy.Scripting.Events
 
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    string colonyName = target.Name;
 
                     OnUnitTargeted(target);
 
@@ -124,8 +123,9 @@ namespace Supremacy.Scripting.Events
                     //Civilization civ = GameContext.Current.Civilizations[targetCiv.CivID];
 
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, colonyName));
+                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target.Name));
 
+                    // OLD
                     //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
                     //    new ScriptedEventSitRepEntry(
                     //        new ScriptedEventSitRepEntryData(
