@@ -44,7 +44,6 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
             GameLog.Core.Diplomacy.DebugFormat("IncomingMessage from {1} from {0}", _foreignPower.Owner, IncomingMessage);
         }

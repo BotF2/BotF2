@@ -157,7 +157,7 @@ namespace Supremacy.Pathfinding
                 foreach (var step in segment.Skip(1))
                 {
                     route.Push(step.Location);
-                    GameLog.Core.Diplomacy.DebugFormat("start ={0} path step ={1}", start, step);
+                    // GameLog.Core.Diplomacy.DebugFormat("start ={0} path step ={1}", start, step);
                 }
                 start = waypoint;
             }
