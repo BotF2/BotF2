@@ -676,6 +676,8 @@ namespace Supremacy.Client.Views
             var statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
             if (statementType == StatementType.NoStatement)
                 return null;
+            if(statementType != StatementType.NoStatement)
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement sender ={0}, Recipient ={1} StatementType ={2} Tone ={3} ", _sender, _recipient, statementType.ToString(), _tone);
 
             return new Statement(_sender, _recipient, statementType, _tone);
         }
@@ -927,6 +929,7 @@ namespace Supremacy.Client.Views
 
         public static DiplomacyMessageViewModel FromReponse([NotNull] IResponse response)
         {
+            GameLog.Core.Diplomacy.DebugFormat("at FormResponse() with turnSent ={0} tone ={1}", response.TurnSent, response.Tone);
             if (response == null)
                 throw new ArgumentNullException("response");
 
@@ -970,7 +973,7 @@ namespace Supremacy.Client.Views
 
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender) ?? string.Empty);
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
-
+            GameLog.Core.Diplomacy.DebugFormat("message ={0}", message);
             return message;
         }
 

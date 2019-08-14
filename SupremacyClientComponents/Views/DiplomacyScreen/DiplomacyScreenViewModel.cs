@@ -579,10 +579,14 @@ namespace Supremacy.Client.Views
             get
             {
                 if (DisplayMode != DiplomacyScreenDisplayMode.Inbox)
+                {
+                    GameLog.Core.Diplomacy.DebugFormat("DisplayMode not DiplomacyScreenDispalyMode.Inbox" );
                     return false;
+                }
 
                 var selectedForeignPower = SelectedForeignPower;
 
+                GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower);
                 return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null && 
                        !selectedForeignPower.IncomingMessage.IsStatement;
             }

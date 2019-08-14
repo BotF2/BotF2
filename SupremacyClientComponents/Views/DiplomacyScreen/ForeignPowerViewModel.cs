@@ -36,15 +36,15 @@ namespace Supremacy.Client.Views
 
         private void UpdateIncomingMessage()
         {
-            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ...beginning");
+            GameLog.Core.Diplomacy.DebugFormat("Now Checking for UpdateIncomingMessage()");
             if (_foreignPower.ResponseReceived == null)
             {
-                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = null, return out of Update incoming message");
+                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = null so return out of Update incoming message");
                 return;
             }
 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage from {1} from {0}", _foreignPower.Owner, IncomingMessage);
+            GameLog.Core.Diplomacy.DebugFormat("Found IncomingMessage from {0}  ={1}", _foreignPower.Owner, IncomingMessage);
         }
 
         private void UpdateActiveAgreements()
@@ -221,7 +221,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnIncomingMessageCategoryChanged()
         {
-            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ={0}", IncomingMessage.Elements.ToString());
+            GameLog.Core.Diplomacy.DebugFormat("IncomingMessage category changed");
             IncomingMessageCategoryChanged.Raise(this);
             OnPropertyChanged("IncomingMessageCategory");
         }
@@ -283,12 +283,12 @@ namespace Supremacy.Client.Views
 
         #endregion
 
-        internal static DiplomaticMessageCategory ResolveMessageCategory(object message)
+        internal static DiplomaticMessageCategory ResolveMessageCategory(object message) // DiplomaticMessageCategory is enum of 1 to 9 message types
         {
             var viewModel = message as DiplomacyMessageViewModel;
             if (viewModel != null)
             {
-                message = viewModel.CreateMessage();
+                message = viewModel.CreateMessage(); // statment vs proposal
                 GameLog.Core.Diplomacy.DebugFormat("Message Recipient ={0} Sender ={1}", viewModel.Recipient, viewModel.Sender);
             }
 
@@ -356,7 +356,7 @@ namespace Supremacy.Client.Views
                         return DiplomaticMessageCategory.Threat;
                 }
             }
-            GameLog.Core.Diplomacy.DebugFormat("Message None");
+            GameLog.Core.Diplomacy.DebugFormat("Message Catagory None");
             return DiplomaticMessageCategory.None;
         }
 
