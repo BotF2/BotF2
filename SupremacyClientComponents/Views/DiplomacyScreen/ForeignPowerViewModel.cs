@@ -19,7 +19,6 @@ namespace Supremacy.Client.Views
         private readonly ForeignPower _foreignPower;
         private readonly ObservableCollection<ActiveAgreementViewModel> _activeAgreements;
         private readonly ReadOnlyObservableCollection<ActiveAgreementViewModel> _activeAgreementsView;
-
         public ForeignPowerViewModel([NotNull] ForeignPower foreignPower)
         {
             if (foreignPower == null)
@@ -40,7 +39,7 @@ namespace Supremacy.Client.Views
             GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ...beginning");
             if (_foreignPower.ResponseReceived == null)
             {
-                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = null");
+                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = null, return out of Update incoming message");
                 return;
             }
 
@@ -55,7 +54,10 @@ namespace Supremacy.Client.Views
                 return;
 
             foreach (var agreement in agreements.OrderByDescending(o => (int)o.StartTurn))
+            {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
+                GameLog.Core.Diplomacy.DebugFormat("added agrement ={0}", agreement);
+            }
         }
 
         public Civilization Counterparty
@@ -71,7 +73,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                // just "We are the Borg"     GameLog.Core.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
+                GameLog.Core.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
                 return _foreignPower.Counterparty.DiplomacyReport;
             }
         }
@@ -83,22 +85,38 @@ namespace Supremacy.Client.Views
 
         public Meter CounterpartyRegard
         {
-            get { return _foreignPower.CounterpartyDiplomacyData.Regard; }
+            get
+            {
+                GameLog.Core.Diplomacy.DebugFormat("coutnerpartyRegard ={0}", _foreignPower.CounterpartyDiplomacyData.Regard);
+                return _foreignPower.CounterpartyDiplomacyData.Regard;
+            }
         }
 
         public Meter CounterpartyTrust
         {
-            get { return _foreignPower.CounterpartyDiplomacyData.Trust; }
+            get
+            {
+                GameLog.Core.Diplomacy.DebugFormat("coutnerpartyTrust ={0}", _foreignPower.CounterpartyDiplomacyData.Trust);
+                return _foreignPower.CounterpartyDiplomacyData.Trust;
+            }
         }
 
         public RegardLevel EffectiveRegard
         {
-            get { return _foreignPower.CounterpartyDiplomacyData.EffectiveRegard; }
+            get
+            {
+                GameLog.Core.Diplomacy.DebugFormat("coutnerpartyEffectiveRegard ={0}", _foreignPower.CounterpartyDiplomacyData.EffectiveRegard);
+                return _foreignPower.CounterpartyDiplomacyData.EffectiveRegard;
+            }
         }
 
         public ForeignPowerStatus Status
         {
-            get { return _foreignPower.CounterpartyDiplomacyData.Status; }
+            get
+            {
+                GameLog.Core.Diplomacy.DebugFormat("coutnerparty status ={0}", _foreignPower.CounterpartyDiplomacyData.Status);
+                return _foreignPower.CounterpartyDiplomacyData.Status;
+            }
         }
 
         public int TurnsSinceLastStatusChange
@@ -113,7 +131,11 @@ namespace Supremacy.Client.Views
 
         public bool IsDiplomatAvailable
         {
-            get { return _foreignPower.IsDiplomatAvailable; }
+            get
+            {
+                GameLog.Core.Diplomacy.DebugFormat("Is Diplomat Available ={0}", _foreignPower.IsDiplomatAvailable);
+                return _foreignPower.IsDiplomatAvailable;
+            }
         }
 
         public ReadOnlyObservableCollection<ActiveAgreementViewModel> ActiveAgreements
@@ -130,7 +152,11 @@ namespace Supremacy.Client.Views
 
         public DiplomacyMessageViewModel IncomingMessage
         {
-            get { return _incomingMessage; }
+            get
+            {
+                GameLog.Core.Diplomacy.DebugFormat("IncomingMessage ={0}", _incomingMessage);
+                return _incomingMessage;
+            }
             set
             {
                 if (Equals(value, _incomingMessage))
