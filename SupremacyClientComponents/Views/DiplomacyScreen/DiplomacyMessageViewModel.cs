@@ -929,7 +929,7 @@ namespace Supremacy.Client.Views
 
         public static DiplomacyMessageViewModel FromReponse([NotNull] IResponse response)
         {
-            GameLog.Core.Diplomacy.DebugFormat("at FormResponse() with turnSent ={0} tone ={1}", response.TurnSent, response.Tone);
+            GameLog.Core.Diplomacy.DebugFormat("at FromResponse() with turnSent ={0} tone ={1}", response.TurnSent, response.Tone);
             if (response == null)
                 throw new ArgumentNullException("response");
 

@@ -154,7 +154,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("IncomingMessage ={0}", _incomingMessage);
+                GameLog.Client.Diplomacy.DebugFormat("get IncomingMessage ={0}", _incomingMessage);
                 return _incomingMessage;
             }
             set
@@ -163,7 +163,7 @@ namespace Supremacy.Client.Views
                     return;
 
                 _incomingMessage = value;
-                GameLog.Client.Diplomacy.DebugFormat("_incomingMessage = {0}", _incomingMessage);
+                GameLog.Client.Diplomacy.DebugFormat("set _incomingMessage = {0}", _incomingMessage);
 
                 OnIncomingMessageChanged();
             }

@@ -713,10 +713,12 @@ namespace Supremacy.Client.Views
                 var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
+                GameLog.Client.Diplomacy.DebugFormat("Added FreignPowerViewModel civ ={0} to playerEmpireID ={1}", civ.ShortName, playerEmpireId);
             }
 
             if (selectedForeignPower != null)
                 SelectedForeignPower = _foreignPowers.FirstOrDefault(o => o.Counterparty.CivID == selectedForeignPower.CivID);
+           
         }
 
         private void RefreshRelationshipGraph()
