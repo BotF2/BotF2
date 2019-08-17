@@ -609,7 +609,7 @@ namespace Supremacy.Diplomacy
 
             if (source == target)
                 return false;
-            GameLog.Core.Test.DebugFormat("source = {0} target ={1}",source.Key, target.Key);
+            //GameLog.Core.Test.DebugFormat("Diplomacy: source = {0} target = {1}",source.Key, target.Key);
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
         }
 
@@ -617,7 +617,10 @@ namespace Supremacy.Diplomacy
         {
             if (sourceId == targetId)
                 return true;
-            GameLog.Client.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
+
+            if (GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade() == true)
+                GameLog.Client.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
+
             return GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade();
         }
 

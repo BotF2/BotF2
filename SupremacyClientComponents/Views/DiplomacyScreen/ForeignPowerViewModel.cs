@@ -73,7 +73,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
+                //GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
                 return _foreignPower.Counterparty.DiplomacyReport;
             }
         }
@@ -87,7 +87,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("coutnerpartyRegard ={0}", _foreignPower.CounterpartyDiplomacyData.Regard);
+                //GameLog.Client.Diplomacy.DebugFormat("coutnerpartyRegard = {0}", _foreignPower.CounterpartyDiplomacyData.Regard);
                 return _foreignPower.CounterpartyDiplomacyData.Regard;
             }
         }
@@ -96,7 +96,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("coutnerpartyTrust ={0}", _foreignPower.CounterpartyDiplomacyData.Trust);
+                //GameLog.Client.Diplomacy.DebugFormat("coutnerpartyTrust = {0}", _foreignPower.CounterpartyDiplomacyData.Trust);
                 return _foreignPower.CounterpartyDiplomacyData.Trust;
             }
         }
@@ -133,7 +133,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}", _foreignPower.IsDiplomatAvailable);
+                //GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}", _foreignPower.IsDiplomatAvailable);
                 return _foreignPower.IsDiplomatAvailable;
             }
         }
@@ -154,7 +154,9 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("get IncomingMessage ={0}", _incomingMessage);
+                if (_incomingMessage != null && _incomingMessage.Elements.Count() > 0)
+                    GameLog.Client.Diplomacy.DebugFormat("get IncomingMessage = {0}, Count = {1}", _incomingMessage, _incomingMessage.Elements.Count());
+
                 return _incomingMessage;
             }
             set
@@ -190,7 +192,9 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage get ={0}", _outgoingMessage); // ????? only Federation can get an outgoingMessage
+                if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
+                GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage GET = {0} >> {1}, CountElem.={2}, OfferLeadInText=NOT coded", 
+                    _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString()); 
                 return _outgoingMessage;
             }
             set
@@ -201,7 +205,10 @@ namespace Supremacy.Client.Views
                 _outgoingMessage = value;
 
                 OnOutgoingMessageChanged();
-                GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage set ={0}", _outgoingMessage);
+
+                if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
+                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage SET = {0} >> {1}, CountElem.={2}, OfferLeadInText= NOT coded",
+                   _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString()); 
             }
         }
 
@@ -300,7 +307,7 @@ namespace Supremacy.Client.Views
             
             if (viewModel != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Message Recipient ={0} Sender ={1}", viewModel.Recipient, viewModel.Sender);
+                GameLog.Client.Diplomacy.DebugFormat("Message Recipient ={0} *vs* Sender ={1}", viewModel.Recipient, viewModel.Sender);
                 message = viewModel.CreateMessage(); // create statment vs create proposal
             }
 
@@ -309,7 +316,7 @@ namespace Supremacy.Client.Views
             GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
             if (proposal != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Proposal Recipient ={0} Sender ={1}", proposal.Recipient, proposal.Sender);
+                GameLog.Client.Diplomacy.DebugFormat("Proposal Recipient ={0} *vs*  Sender ={1}", proposal.Recipient, proposal.Sender);
                 if (proposal.IsDemand())
                 {
                     GameLog.Client.Diplomacy.DebugFormat("Message Categroy Demand");
