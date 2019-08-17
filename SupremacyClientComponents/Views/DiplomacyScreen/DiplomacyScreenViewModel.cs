@@ -519,7 +519,11 @@ namespace Supremacy.Client.Views
 
         public ForeignPowerViewModel SelectedForeignPower
         {
-            get { return _selectedForeignPower; }
+            get
+            {
+                GameLog.Client.Diplomacy.DebugFormat("get _selectedForeignPower ={0}", _selectedForeignPower);
+                return _selectedForeignPower;
+            }
             set
             {
                 if (Equals(value, _selectedForeignPower))
