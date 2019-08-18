@@ -58,6 +58,9 @@ namespace Supremacy.Diplomacy.Visitors
 
             var response = new Response(ResponseType.Accept, proposal);
 
+            GameLog.Core.Diplomacy.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
+                agreement.Recipient, agreement.Sender, agreement.Proposal.TurnSent, proposal.Clauses.Count, response.ResponseType.ToString());
+
             foreignPower.ResponseSent = response;
             foreignPower.UpdateStatus();
 

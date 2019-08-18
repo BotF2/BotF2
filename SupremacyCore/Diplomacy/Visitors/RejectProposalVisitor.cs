@@ -108,6 +108,7 @@ namespace Supremacy.Diplomacy.Visitors
         
         protected override void VisitTreatyNonAggressionClause(IClause clause)
         {
+            // what goes here?
         }
 
         protected override void VisitTreatyOpenBordersClause(IClause clause) { /* TODO */ }

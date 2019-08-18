@@ -572,7 +572,7 @@ namespace Supremacy.Client.Views
 
                 var selectedForeignPower = SelectedForeignPower;
 
-                GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Outbox, SelectedForeignPower ={0}", selectedForeignPower);
+                GameLog.Client.Diplomacy.DebugFormat("DisplayMode is Outbox, SelectedForeignPower ={0}", selectedForeignPower);
 
                 return selectedForeignPower != null &&
                        selectedForeignPower.OutgoingMessage != null;

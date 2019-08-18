@@ -626,16 +626,12 @@ namespace Supremacy.Game
                     {
                         GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
-                        //foreignPower.DeclareWar();
-                        //foreignPowerStatus == ForeignPowerStatus.AtWar;
                     }
 
                     if (civ2.Key == "Borg")    /// and contact is made
                     {
                         GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
-                        //foreignPower.DeclareWar();
-                        //foreignPowerStatus == ForeignPowerStatus.AtWar;
                     }
 
                     switch (foreignPower.PendingAction)

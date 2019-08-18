@@ -154,7 +154,7 @@ namespace Supremacy.Diplomacy
 
             if (declaringCiv == targetCiv)
             {
-                GameLog.Client.Diplomacy.ErrorFormat(
+                GameLog.Core.Diplomacy.ErrorFormat(
                     "Civilization {0} attempted to declare war on itself.",
                     declaringCiv.ShortName);
 
@@ -163,7 +163,7 @@ namespace Supremacy.Diplomacy
           
             if (AreAtWar(declaringCiv, targetCiv))
             {
-                GameLog.Client.Diplomacy.WarnFormat(
+                GameLog.Core.Diplomacy.WarnFormat(
                     "Civilization {0} attempted to declare war on {1}, but they were already at war.",
                     declaringCiv.ShortName,
                     targetCiv.ShortName);
@@ -619,7 +619,7 @@ namespace Supremacy.Diplomacy
                 return true;
 
             if (GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade() == true)
-                GameLog.Client.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
+                GameLog.Core.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
 
             return GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade();
         }
