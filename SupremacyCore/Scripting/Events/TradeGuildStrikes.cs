@@ -29,6 +29,7 @@ namespace Supremacy.Scripting.Events
 
         public TradeGuildStrikesEvent()
         {
+            _affectedProjects = new List<BuildProject>();
         }
 
         public override bool CanExecute

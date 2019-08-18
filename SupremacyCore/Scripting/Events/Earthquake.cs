@@ -21,37 +21,14 @@ namespace Supremacy.Scripting.Events
     {
         private bool _productionFinished;
         private bool _shipProductionFinished;
-        // Update Earthquake 2 March 2019. Likelyhood of Event is in scripedevents.xml. Small balancing changes
         private int _occurrenceChance = 100000;
         
-
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
-        protected List<BuildProject> AffectedProjects
-        {
-            get
-            {
-                if (_affectedProjects == null)
-                    _affectedProjects = new List<BuildProject>();
-                return _affectedProjects;
-            }
-        }
-
-        private List<Building> _affectedBuildings;
-        protected List<Building> AffectedBuildings
-        {
-            get
-            {
-                if (_affectedBuildings == null)
-                    _affectedBuildings = new List<Building>();
-                return _affectedBuildings;
-            }
-        }
 
         public EarthquakeEvent()
         {
             _affectedProjects = new List<BuildProject>();
-            _affectedBuildings = new List<Building>();
         }
 
         public override bool CanExecute
@@ -90,11 +67,10 @@ namespace Supremacy.Scripting.Events
             if (phase == TurnPhase.PreTurnOperations)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c =>
+                        c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
@@ -107,19 +83,17 @@ namespace Supremacy.Scripting.Events
                     var productionCenters = group.ToList();
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
-                    GameLog.Client.GameData.DebugFormat("EarthquakeEvents.cs: target.Name: {0}", target.Name);
+                    GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
-                    var affectedProjects = target.BuildSlots
-                    .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
-                    .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
-                    .Select(o => o.Project);
+                    _affectedProjects = target.BuildSlots
+                        .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
+                        .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
+                        .Select(o => o.Project)
+                        .ToList();
 
-                    foreach (var affectedProject in affectedProjects)
+                    foreach (var affectedProject in _affectedProjects)
                     {
-                        GameLog.Client.GameData.DebugFormat("EarthquakeEvents.cs: affectedProject: {0}", affectedProject.Description);
-
-
-                        AffectedProjects.Add(affectedProject);
+                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
                     var targetCiv = target.Owner;
@@ -129,61 +103,75 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(-5);
+                    target.Morale.AdjustCurrent(-5);
 
                     // Population
                     //Don't reduce the population if it is already low
                     if (population >= 65)
                     {
-                        GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-5);
+                        target.Population.AdjustCurrent(-5);
                     }
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health/6));
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
+                    target.Population.UpdateAndReset();
+                    target.Health.AdjustCurrent(-(health / 6));
+                    target.Health.UpdateAndReset();
 
                     // Facilities
                     int removeFood = 1; // If you have food 4 or more then take out 1
                     if (target.GetTotalFacilities(ProductionCategory.Food) < 4)
+                    {
                         removeFood = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Food, removeFood);
 
                     int removeIndustry = 2;  // If you have industry 8 or more then take out 2
                     if (target.GetTotalFacilities(ProductionCategory.Industry) < 8)
+                    {
                         removeIndustry = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Industry, removeIndustry);
 
                     int removeEnergy = 1; ;  // If you have energy 6 or more then take out 1
                     if (target.GetTotalFacilities(ProductionCategory.Energy) < 6)
+                    {
                         removeEnergy = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
 
                     int removeResearch = 1;   // If you have research 4 or more then take out 1
                     if (target.GetTotalFacilities(ProductionCategory.Research) < 4)
+                    {
                         removeResearch = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
+                    {
                         civManager.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
+                    }
 
                     GameContext.Current.Universe.UpdateSectors();
-
-                    return;
                 }
-
-                if (phase == TurnPhase.Production)
-                    _productionFinished = true; // turn production back on
-                else if (phase == TurnPhase.ShipProduction)
-                    _shipProductionFinished = true;
-
-                if (!_productionFinished || !_shipProductionFinished)
-                    return;
-
-                foreach (var affectedProject in AffectedProjects)
-                    affectedProject.IsPaused = false;
-
-                AffectedProjects.Clear();
             }
+
+            else if (phase == TurnPhase.Production)
+            {
+                _productionFinished = true; // turn production back on
+            }
+            else if (phase == TurnPhase.ShipProduction)
+            {
+                _shipProductionFinished = true;
+            }
+
+            if (!_productionFinished || !_shipProductionFinished)
+            {
+                return;
+            }
+
+            foreach (var affectedProject in _affectedProjects)
+                affectedProject.IsPaused = false;
+
+            _affectedProjects.Clear();
         }
     }
 }
