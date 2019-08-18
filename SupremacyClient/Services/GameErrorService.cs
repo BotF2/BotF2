@@ -1,4 +1,3 @@
-// GameErrorService.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -7,44 +6,36 @@
 //
 // All other rights reserved.
 
+using Avalon.Windows.Converters;
+using Avalon.Windows.Utility;
+using Supremacy.Annotations;
+using Supremacy.Client.Commands;
+using Supremacy.Client.Dialogs;
+using Supremacy.Resources;
+using Supremacy.Types;
+using Supremacy.Utility;
 using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-using Avalon.Windows.Converters;
-using Avalon.Windows.Utility;
-
-using Microsoft.Practices.Composite.Logging;
-
-using Supremacy.Annotations;
-using Supremacy.Client.Commands;
-using Supremacy.Client.Dialogs;
-using Supremacy.Resources;
-using Supremacy.Types;
-
 namespace Supremacy.Client.Services
 {
     public class GameErrorService : IGameErrorService
     {
         private readonly IResourceManager _resourceManager;
-        private readonly ILoggerFacade _loggerFacade;
         private readonly IDispatcherService _dispatcherService;
 
         public GameErrorService(
             [NotNull] IResourceManager resourceManager,
-            [NotNull] ILoggerFacade loggerFacade,
             [NotNull] IDispatcherService dispatcherService)
         {
             if (resourceManager == null)
                 throw new ArgumentNullException("resourceManager");
-            if (loggerFacade == null)
-                throw new ArgumentNullException("loggerFacade");
             if (dispatcherService == null)
                 throw new ArgumentNullException("dispatcherService");
             _resourceManager = resourceManager;
-            _loggerFacade = loggerFacade;
             _dispatcherService = dispatcherService;
         }
 
@@ -72,7 +63,7 @@ namespace Supremacy.Client.Services
             if (exception == null)
                 throw new ArgumentNullException("exception");
 
-            _loggerFacade.Log(BuildErrorMessage(exception), Category.Exception, Priority.High);
+            GameLog.Server.General.Error(BuildErrorMessage(exception));
 
             string header;
             string message;

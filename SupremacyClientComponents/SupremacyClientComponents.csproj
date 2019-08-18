@@ -318,8 +318,6 @@
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="IsFalseValueConverter.cs" />
     <Compile Include="ItemRoutedEventArgs.cs" />
-    <Compile Include="Logging\FilteredTextLogger.cs" />
-    <Compile Include="Logging\IFilteredLogger.cs" />
     <Compile Include="Markup\EnumValueCollectionExtension.cs" />
     <Compile Include="Markup\FalseExtension.cs" />
     <Compile Include="Markup\SharedResourceDictionary.cs" />

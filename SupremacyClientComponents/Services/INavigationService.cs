@@ -1,4 +1,3 @@
-using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Composite.Regions;
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;
@@ -10,6 +9,7 @@ using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 
 namespace Supremacy.Client.Services
@@ -26,14 +26,12 @@ namespace Supremacy.Client.Services
         private readonly IDispatcherService _dispatcherService;
         private readonly IRegionManager _regionManager;
         private readonly INavigationCommandsProxy _navigationCommands;
-        private readonly ILoggerFacade _logger;
         private readonly IAppContext _appContext;
 
         public NavigationService(
             [NotNull] IDispatcherService dispatcherService,
             [NotNull] IRegionManager regionManager,
             [NotNull] INavigationCommandsProxy navigationCommands,
-            [NotNull] ILoggerFacade logger,
             [NotNull] IAppContext appContext)
         {
             if (dispatcherService == null)
@@ -42,15 +40,12 @@ namespace Supremacy.Client.Services
                 throw new ArgumentNullException("regionManager");
             if (navigationCommands == null)
                 throw new ArgumentNullException("navigationCommands");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
 
             _dispatcherService = dispatcherService;
             _regionManager = regionManager;
             _navigationCommands = navigationCommands;
-            _logger = logger;
             _appContext = appContext;
 
             _navigationCommands.ActivateScreen.RegisterCommand(new DelegateCommand<string>(s => _dispatcherService.Invoke((Func<string, bool>)ActivateScreen, s)));
@@ -73,17 +68,11 @@ namespace Supremacy.Client.Services
             if (activatingArgs.Cancel)
                 return false;
 
-            _logger.Log(
-                string.Format("[INavigationService] Activating Screen: {0}", screenName),
-                Category.Debug,
-                Priority.None);
+            GameLog.Client.UI.DebugFormat("[INavigationService] Activating Screen: {0}", screenName);
 
             _regionManager.Regions[ClientRegions.GameScreens].Activate(view);
 
-            _logger.Log(
-                string.Format("[INavigationService] Screen Activated: {0}", screenName),
-                Category.Debug,
-                Priority.None);
+            GameLog.Client.UI.DebugFormat("[INavigationService] Screen Activated: {0}", screenName);
 
             return true;
         }
@@ -100,10 +89,7 @@ namespace Supremacy.Client.Services
             if (colony == null)
                 return;
 
-            _logger.Log(
-                string.Format("[INavigationService] Navigating to Colony: {0}", colony.Name),
-                Category.Debug,
-                Priority.None);
+            GameLog.Client.UI.DebugFormat("[INavigationService] Navigating to Colony: {0}", colony.Name);
 
             var ownedByPlayer = (colony.OwnerID == playerEmpire.CivilizationID);
 
@@ -152,7 +138,7 @@ namespace Supremacy.Client.Services
             if (confirmResult != MessageDialogResult.Yes)
                 return;
 
-            _logger.Log(string.Format("Rushing production for Colony: {0}", colony.Name), Category.Debug, Priority.None);
+            GameLog.Client.Colonies.DebugFormat("Rushing production for Colony: {0}", colony.Name);
 
             project.IsRushed = true;
             PlayerOrderService.Instance.AddOrder(new RushProductionOrder(project.ProductionCenter));

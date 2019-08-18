@@ -1,4 +1,3 @@
-// GameClient.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -7,31 +6,26 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Concurrency;
-using System.Net;
-using System.ServiceModel;
-using System.Threading;
-
-using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity.Utility;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;
+using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Combat;
 using Supremacy.Game;
 using Supremacy.Messages;
 using Supremacy.Messaging;
-using Supremacy.WCF;
-
-using System.Linq;
-
-using Scheduler = Supremacy.Threading.Scheduler;
-using Supremacy.Client.Context;
 using Supremacy.Utility;
+using Supremacy.WCF;
+using System;
+using System.Concurrency;
+using System.Linq;
+using System.Net;
+using System.ServiceModel;
+using System.Threading;
+using Scheduler = Supremacy.Threading.Scheduler;
 
 namespace Supremacy.Client
 {
@@ -237,7 +231,6 @@ namespace Supremacy.Client
         protected const string LocalEndpointAddress = "net.pipe://localhost/SupremacyService/Local";
         protected const string RemoteAddressFormat = "net.tcp://{0}:4455/SupremacyService";
 
-        private readonly ILoggerFacade _logger;
         private readonly ISupremacyCallback _clientCallback;
         private readonly IPlayerOrderService _playerOrderService;
         //private readonly IPlayerTarget1Service _playerTarget1Service;
@@ -267,29 +260,19 @@ namespace Supremacy.Client
         private bool _isDisposed;
 
         public GameClient(
-            [NotNull] ILoggerFacade logger, 
             [NotNull] ISupremacyCallback clientCallback, 
             [NotNull] IPlayerOrderService playerOrderService)
             //[NotNull] IPlayerTarget1Service playerTarget1Service,
             //[NotNull] IPlayerTarget2Service playerTarget2Service)
         {
-            if (logger == null)
-                throw new ArgumentNullException("logger");
             if (clientCallback == null)
                 throw new ArgumentNullException("clientCallback");
             if (playerOrderService == null)
                 throw new ArgumentNullException("playerOrderService");
-            //if (playerTarget1Service == null)
-            //    throw new ArgumentNullException("playerTarget1Service");
-            //if (playerTarget2Service == null)
-            //    throw new ArgumentNullException("playerTarget2Service");
 
             _clientLock = new object();
             _eventLock = new object();
             _playerOrderService = playerOrderService;
-            //_playerTarget1Service = playerTarget1Service;
-            //_playerTarget2Service = playerTarget2Service;
-            _logger = logger;
             _clientCallback = clientCallback;
             _scheduler = Scheduler.ClientEventLoop;
 
@@ -700,65 +683,6 @@ namespace Supremacy.Client
 
             PlayerOrderServiceOnOrdersChanged(null, null);
             _playerOrderService.OrdersChanged += PlayerOrderServiceOnOrdersChanged;
-            //PlayerTarget1ServiceOnTarget1Changed(null, null);
-            //_playerTarget1Service.Target1Changed += PlayerTarget1ServiceOnTarget1Changed;
-            //PlayerTarget2ServiceOnTarget2Changed(null, null);
-            //_playerTarget2Service.Target2Changed += PlayerTarget2ServiceOnTarget2Changed;
-        }
-
-        private void PlayerTarget1ServiceOnTarget1Changed(object sender, EventArgs eventArgs)
-        {
-            ServiceClient serviceClient;
-            lock (_clientLock)
-            {
-                if (!_isConnected)
-                    return;
-                serviceClient = Interlocked.CompareExchange(ref _serviceClient, null, null);
-            }
-            if (serviceClient == null)
-                return;
-
-            //try
-            //{
-            //    var message = new PlayerTarget1Message(_playerTarget1Service.Target1, _playerTarget1Service.AutoTurnTarget1);
-            //    //serviceClient.EndTurn(message);
-            //}
-            //catch (Exception e)
-            //{
-            //    _logger.Log(
-            //        "Exception occurred while submitting end-of-turn target1: " + e.Message,
-            //        Category.Exception,
-            //        Priority.High);
-            //    throw;
-            //}
-        }
-
-        private void PlayerTarget2ServiceOnTarget2Changed(object sender, EventArgs eventArgs)
-        {
-            ServiceClient serviceClient;
-            lock (_clientLock)
-            {
-                if (!_isConnected)
-                    return;
-                serviceClient = Interlocked.CompareExchange(ref _serviceClient, null, null);
-            }
-            if (serviceClient == null)
-                return;
-
-            //try
-            //{
-            //    var message = new PlayerTarget2Message(_playerTarget2Service.Target2, _playerTarget2Service.AutoTurnTarget2);
-            //    //serviceClient.EndTurn(message);
-            //}
-
-            //catch (Exception e)
-            //{
-            //    _logger.Log(
-            //        "Exception occurred while submitting end-of-turn target1: " + e.Message,
-            //        Category.Exception,
-            //        Priority.High);
-            //    throw;
-            //}
         }
 
         private void PlayerOrderServiceOnOrdersChanged(object sender, EventArgs eventArgs)
@@ -776,34 +700,19 @@ namespace Supremacy.Client
             try
             {
                 var messageOrder = new PlayerOrdersMessage(_playerOrderService.Orders, _playerOrderService.AutoTurn);
-                //var messageTarget1 = new PlayerTarget1Message(_playerTarget1Service.Target1, _playerTarget1Service.AutoTurnTarget1);
-                //var messageTarget2 = new PlayerTarget2Message(_playerTarget2Service.Target2, _playerTarget2Service.AutoTurnTarget2);
-
                 serviceClient.EndTurn(messageOrder);
-                //serviceClient.EndTurn(messageTarget1);
-                //serviceClient.EndTurn(messageTarget2);
             }
             catch (Exception e)
             {
-                _logger.Log(
-                    "Exception occurred while submitting end-of-turn orders: " + e.Message,
-                    Category.Exception,
-                    Priority.High);
+                GameLog.Client.General.ErrorFormat("Exception occurred while submitting end-of-turn orders: {0}", e.Message);
                 throw;
             }
         }
-
-
-
 
         private void OnAllTurnEnded(EventArgs args)
         {
             _playerOrderService.OrdersChanged -= PlayerOrderServiceOnOrdersChanged;
             _playerOrderService.ClearOrders();
-            //_playerTarget1Service.Target1Changed -= PlayerTarget1ServiceOnTarget1Changed;
-            //_playerTarget1Service.ClearTarget1();
-            //_playerTarget2Service.Target2Changed -= PlayerTarget2ServiceOnTarget2Changed;
-            //_playerTarget2Service.ClearTarget2();
         }
 
 
@@ -857,10 +766,7 @@ namespace Supremacy.Client
                 {
                     if (!_isConnected)
                         return;
-                    _logger.Log(
-                        "Exception occurred while responding to service heartbeat: " + e.Message,
-                        Category.Warn,
-                        Priority.Low);
+                    GameLog.Client.General.WarnFormat("Exception occurred while responding to service heartbeat: {0}");
                 }
             }
         }
