@@ -112,6 +112,7 @@
               <Button x:Name="SummaryButton"
                       Grid.Column="0"
                       Grid.Row="1"
+                      FontSize="16pt"                            
                       Style="{StaticResource LCARS_StandardButtonStyle}"
                       Content="{s:StringResource Key=BORG_INTEL_BUTTON_TEXT, Case=Upper}"
                       Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"
