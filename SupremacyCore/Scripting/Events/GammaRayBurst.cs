@@ -45,20 +45,19 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >65)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 65)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c =>
+                        c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
-                    .GroupBy(o => o.OwnerID);
+                    .GroupBy(c => c.OwnerID);
 
                 foreach (var group in targetGroups)
                 {
@@ -69,7 +68,9 @@ namespace Supremacy.Scripting.Events
                     if (GameContext.Current.TurnNumber < 290)
                     {
                         if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                        {
                             return;
+                        }
                     }
 
                     var targetCiv = target.Owner;
@@ -79,37 +80,26 @@ namespace Supremacy.Scripting.Events
 
                     GameLog.Core.Events.DebugFormat("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
 
-                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 2) // >2
+                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 2)
+                    {
                         GameLog.Core.Events.DebugFormat("colony amount > 1 for: {0}", target.Name);
+                    }
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new GammaRayBurstSitRepEntry(civManager.Civilization, target.Name));
+                    {
+                        civManager.SitRepEntries.Add(new GammaRayBurstSitRepEntry(civManager.Civilization, target));
+                    }
 
-                    // OLD
+                    GameLog.Core.Events.DebugFormat("HomeSystemName is: {0}", target.Name);
+                    target.Population.AdjustCurrent(- population / 3 * 2);
+                    target.Population.UpdateAndReset();
+                    target.Health.AdjustCurrent(-health / 3 * 2);
+                    target.Health.UpdateAndReset();
 
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add
-                    //    (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
-                    //    targetCiv,
-                    //        "GAMMA_RAY_BURST_HEADER_TEXT",
-                    //        "GAMMA_RAY_BURST_SUMMARY_TEXT",
-                    //        "GAMMA_RAY_BURST_DETAIL_TEXT",
-                    //        "vfs:///Resources/Images/ScriptedEvents/GammaRayBurst.png",
-                    //        "vfs:///Resources/SoundFX/ScriptedEvents/GammaRayBurst.mp3",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-                    // see CivStringDatabase.xml for text
-
-                    GameLog.Core.Events.DebugFormat("GammaRayBurstEvents.cs: HomeSystemName is: {0}", target.Name);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- population/3 * 2);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/3 * 2);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
-
-                    GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.CurrentValue, GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.CurrentValue);
+                    GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
 
                     GameContext.Current.Universe.UpdateSectors();
-
-                    return;
                 }
             }
         }

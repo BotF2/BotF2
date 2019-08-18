@@ -25,16 +25,6 @@ namespace Supremacy.Scripting.Events
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
 
-        protected List<BuildProject> AffectedProjects
-        {
-            get
-            {
-                if (_affectedProjects == null)
-                    _affectedProjects = new List<BuildProject>();
-                return _affectedProjects;
-            }
-        }
-
         public ReligiousHolidayEvent()
         {
             _affectedProjects = new List<BuildProject>();
@@ -76,11 +66,9 @@ namespace Supremacy.Scripting.Events
             if (phase == TurnPhase.PreTurnOperations)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c => c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
@@ -94,65 +82,56 @@ namespace Supremacy.Scripting.Events
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
-                    if (target.Owner.Name == "Borg") // Borg do not have religious holidays
+                    // Borg do not have religious holidays
+                    if (target.Owner.Name == "Borg")
+                    {
                         return;
+                    }
 
-                   // if (target.Name == "Omarion")
-                     //   return;
-
-                    var affectedProjects = target.BuildSlots
+                    _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
                         .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
-                        .Select(o => o.Project);
+                        .Select(o => o.Project)
+                        .ToList();
 
-                    foreach (var affectedProject in affectedProjects)
-                    {
-                        affectedProject.IsPaused = true;
-                        AffectedProjects.Add(affectedProject);
-                    }
+
+                    _affectedProjects.ForEach(p => p.IsPaused = true);
 
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
 
                     OnUnitTargeted(target);
 
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+5);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
+                    target.Morale.AdjustCurrent(+5);
+                    target.Morale.UpdateAndReset();
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    //Civilization civ = GameContext.Current.Civilizations[targetCiv.CivID];
+                    var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
 
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target.Name));
-
-                    // OLD
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    //    new ScriptedEventSitRepEntry(
-                    //        new ScriptedEventSitRepEntryData(
-                    //            targetCiv,
-                    //            "RELIGIOUS_HOLIDAY_HEADER_TEXT",
-                    //            "RELIGIOUS_HOLIDAY_SUMMARY_TEXT",
-                    //            "RELIGIOUS_HOLIDAY_DETAIL_TEXT",
-                    //            "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png",
-                    //            "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    {
+                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
+                    }
                 }
 
                 return;
             }
 
-            if (phase == TurnPhase.Production)
+            else if (phase == TurnPhase.Production)
+            {
                 _productionFinished = true;
+            }
             else if (phase == TurnPhase.ShipProduction)
+            {
                 _shipProductionFinished = true;
+            }
 
             if (!_productionFinished || !_shipProductionFinished)
+            {
                 return;
+            }
 
-            foreach (var affectedProject in AffectedProjects)
-                affectedProject.IsPaused = false;
-
-            AffectedProjects.Clear();
+            _affectedProjects.ForEach(p => p.IsPaused = false);
+            _affectedProjects.Clear();
         }
     }
 }

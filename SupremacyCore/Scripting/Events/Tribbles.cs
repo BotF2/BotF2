@@ -23,33 +23,8 @@ namespace Supremacy.Scripting.Events
         private bool _shipProductionFinished;
         private int _occurrenceChance = 100;
 
-        [NonSerialized]
-        private List<BuildProject> _affectedProjects;
-        protected List<BuildProject> AffectedProjects
-        {
-            get
-            {
-                if (_affectedProjects == null)
-                    _affectedProjects = new List<BuildProject>();
-                return _affectedProjects;
-            }
-        }
-
-        private List<Building> _affectedBuildings;
-        protected List<Building> AffectedBuildings
-        {
-            get
-            {
-                if (_affectedBuildings == null)
-                    _affectedBuildings = new List<Building>();
-                return _affectedBuildings;
-            }
-        }
-
         public TribblesEvent()
         {
-            _affectedProjects = new List<BuildProject>();
-            _affectedBuildings = new List<Building>();
         }
 
         public override bool CanExecute
@@ -88,80 +63,68 @@ namespace Supremacy.Scripting.Events
             if (phase == TurnPhase.PreTurnOperations)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c =>
+                        c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
-                    .GroupBy(o => o.OwnerID);
+                    .GroupBy(c => c.OwnerID);
 
                 foreach (var group in targetGroups)
                 {
                     var productionCenters = group.ToList();
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
-                    GameLog.Client.GameData.DebugFormat("Tribbles.cs: target.Name: {0}", target.Name);
-                    GameLog.Client.GameData.DebugFormat("Tribbles.cs:ProductionOutput(ProductionCategory.Food): {0}", target.GetProductionOutput(ProductionCategory.Food));
+                    GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
+                    GameLog.Client.GameData.DebugFormat("ProductionOutput(ProductionCategory.Food): {0}", target.GetProductionOutput(ProductionCategory.Food));
 
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
 
                     List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
-                    tmpBuildings.AddRange(target.Buildings.ToList());
+                    tmpBuildings.AddRange(target.Buildings);
                     tmpBuildings.ForEach(o => target.DeactivateFacility(ProductionCategory.Food));
 
-                    GameLog.Client.GameData.DebugFormat("Tribbles.cs: target.FoodReserves before : {0}", target.FoodReserves);
+                    GameLog.Client.GameData.DebugFormat("target.FoodReserves before : {0}", target.FoodReserves);
 
                     target.FoodReserves.AdjustCurrent(-1 * target.FoodReserves.CurrentValue);
                     target.FoodReserves.UpdateAndReset();
-                    GameLog.Client.GameData.DebugFormat("Tribbles.cs: target.FoodReserves after : {0}", target.FoodReserves);
-                    
+                    GameLog.Client.GameData.DebugFormat("target.FoodReserves after : {0}", target.FoodReserves);
+
                     target.DeactivateFacility(ProductionCategory.Food);
 
                     OnUnitTargeted(target);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target.Name));
-
-                    // OLD
-
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    //    new ScriptedEventSitRepEntry(
-                    //        new ScriptedEventSitRepEntryData(
-                    //            targetCiv,
-                    //            "TRIBBLES_HEADER_TEXT",
-                    //            "TRIBBLES_SUMMARY_TEXT",
-                    //            "TRIBBLES_DETAIL_TEXT",
-                    //            "vfs:///Resources/Images/ScriptedEvents/Tribbles.png",
-                    //            "vfs:///Resources/SoundFX/ScriptedEvents/Tribbles.mp3",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    {
+                        civManager.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target));
+                    }
 
                     GameContext.Current.Universe.UpdateSectors();
-
-                    return;
                 }
 
-                if (phase == TurnPhase.Production)
-                    _productionFinished = true; // turn production back on
-                else if (phase == TurnPhase.ShipProduction)
-                    _shipProductionFinished = true;
+                return;
+            }
 
-                if (!_productionFinished || !_shipProductionFinished)
-                    return;
+            else if (phase == TurnPhase.Production)
+            {
+                _productionFinished = true; // turn production back on
+            }
+            else if (phase == TurnPhase.ShipProduction)
+            {
+                _shipProductionFinished = true;
+            }
 
-                foreach (var affectedProject in AffectedProjects)
-                    affectedProject.IsPaused = false;
-
-                AffectedProjects.Clear();
+            if (!_productionFinished || !_shipProductionFinished)
+            {
+                return;
             }
         }
-
     }
 }

@@ -168,19 +168,7 @@ namespace Supremacy.Scripting.Events
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target.Name));
-
-                    // OLD
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    //    new ScriptedEventSitRepEntry(
-                    //        new ScriptedEventSitRepEntryData(
-                    //            targetCiv,
-                    //            "ASTEROID_IMPACT_HEADER_TEXT",
-                    //            "ASTEROID_IMPACT_SUMMARY_TEXT",
-                    //            "ASTEROID_IMPACT_DETAIL_TEXT",
-                    //            "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png",
-                    //            "vfs:///Resources/SoundFX/ScriptedEvents/AsteroidImpact.wav",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                        civManager.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target));
 
                     GameContext.Current.Universe.UpdateSectors();
                     return;

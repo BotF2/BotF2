@@ -5,6 +5,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Universe;
@@ -26,19 +27,8 @@ namespace Supremacy.Scripting.Events
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
 
-        protected List<BuildProject> AffectedProjects
-        {
-            get
-            {
-                if (_affectedProjects == null)
-                    _affectedProjects = new List<BuildProject>();
-                return _affectedProjects;
-            }
-        }
-
         public TradeGuildStrikesEvent()
         {
-            _affectedProjects = new List<BuildProject>();
         }
 
         public override bool CanExecute
@@ -77,17 +67,16 @@ namespace Supremacy.Scripting.Events
             if (phase == TurnPhase.PreTurnOperations)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c =>
+                        c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
-                    .GroupBy(o => o.OwnerID);
+                    .GroupBy(c => c.OwnerID);
 
                 foreach (var group in targetGroups)
                 {
@@ -95,63 +84,53 @@ namespace Supremacy.Scripting.Events
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
-                    var affectedProjects = target.BuildSlots
-                        .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
-                        .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
-                        .Select(o => o.Project);
-
-                    if (target.Owner.Name == "Borg") // Borg do not have strikes
-                            return;
-
-                    if (target.Name == "Omarion")
+                    if ((target.Owner.Name == "Borg") || target.Owner.Name == "Dominion") // Borg and Dominion don't have strikes
                         return;
 
-                    foreach (var affectedProject in affectedProjects)
+                    _affectedProjects = target.BuildSlots
+                        .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
+                        .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
+                        .Select(o => o.Project)
+                        .ToList();
+
+                    foreach (var affectedProject in _affectedProjects)
                     {
                         affectedProject.IsPaused = true;
-                        AffectedProjects.Add(affectedProject);
-                        GameLog.Client.GameData.DebugFormat("TradeGuildStrkes.cs: affectedProject: {0}", affectedProject);
+                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject);
                     }
 
                     var targetCiv = target.Owner;
-                    GameLog.Client.GameData.DebugFormat("TradeGuildStrkes.cs: target.OwnerID: {0}", target.OwnerID);
+                    GameLog.Client.GameData.DebugFormat("target.OwnerID: {0}", target.OwnerID);
                     int targetColonyId = target.ObjectID;
 
                     OnUnitTargeted(target);
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new TradeGuildStrikesSitRepEntry(civManager.Civilization, target.Name));
-
-                    // OLD
-
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    //new ScriptedEventSitRepEntry(
-                    //    new ScriptedEventSitRepEntryData(
-                    //        targetCiv,
-                    //        "TRADE_GUILD_STRIKES_HEADER_TEXT",
-                    //        "TRADE_GUILD_STRIKES_SUMMARY_TEXT",
-                    //        "TRADE_GUILD_STRIKES_DETAIL_TEXT",
-                    //        "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png",
-                    //        "vfs:///Resources/SoundFX/ScriptedEvents/ReligiousHoliday.wma",
-                    //        () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    {
+                        civManager.SitRepEntries.Add(new TradeGuildStrikesSitRepEntry(civManager.Civilization, target));
+                    }
                 }
 
                 return;
             }
 
-            if (phase == TurnPhase.Production)
+            else if (phase == TurnPhase.Production)
+            {
                 _productionFinished = true;
+            }
             else if (phase == TurnPhase.ShipProduction)
+            {
                 _shipProductionFinished = true;
+            }
 
             if (!_productionFinished || !_shipProductionFinished)
+            {
                 return;
+            }
 
-            foreach (var affectedProject in AffectedProjects)
-                affectedProject.IsPaused = false;
-
-            AffectedProjects.Clear();
+            _affectedProjects.ForEach(p => p.IsPaused = false);
+            _affectedProjects.Clear();
         }
     }
 }
