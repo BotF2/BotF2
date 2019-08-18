@@ -59,8 +59,10 @@ namespace Supremacy.Utility
         {
             int ordinal;
 
-            if (!IsDefined(enumValue, out ordinal)) { }
+            if (!IsDefined(enumValue, out ordinal))
+            {
                 return null;
+            }
 
             AttributeCollection attributes;
             if (!EnumValueAttributeCache.TryGetItem(enumValue as Enum, out attributes))

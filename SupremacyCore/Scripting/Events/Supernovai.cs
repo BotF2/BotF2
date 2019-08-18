@@ -49,17 +49,16 @@ namespace Supremacy.Scripting.Events
             if (phase == TurnPhase.PreTurnOperations)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c =>
+                        c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
-                    .GroupBy(o => o.OwnerID);
+                    .GroupBy(c => c.OwnerID);
 
                 foreach (var group in targetGroups)
                 {
@@ -68,41 +67,34 @@ namespace Supremacy.Scripting.Events
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                    {
                         return;
+                    }
 
                     var targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     var population = target.Population.CurrentValue;
                     var health = target.Health.CurrentValue;
 
-                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 4) // only when many colonies are there
-                        GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: colony amount > 1 for: {0}", target.Name);
+                    // only when many colonies are there
+                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 4)
+                    {
+                        GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
+                    }
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new SupernovaiSitRepEntry(civManager.Civilization, target.Name));
+                    {
+                        civManager.SitRepEntries.Add(new SupernovaSitRepEntry(civManager.Civilization, target));
+                    }
 
-                    // OLD
-
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add
-                    //    (new ScriptedEventSitRepEntry(new ScriptedEventSitRepEntryData(
-                    //    targetCiv,
-                    //        "SUPERNOVA_I_HEADER_TEXT",
-                    //        "SUPERNOVA_I_SUMMARY_TEXT",
-                    //        "SUPERNOVA_I_DETAIL_TEXT",
-                    //        "vfs:///Resources/Images/ScriptedEvents/Supernovai.png",
-                    //        "vfs:///Resources/SoundFX/ScriptedEvents/Supernovai.wav",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-
-                    GameLog.Client.GameData.DebugFormat("SupernovaiEvents.cs: HomeSystemName is: {0}", target.Name);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent( - population/6 * 3);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/ 5);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
+                    GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
+                    target.Population.AdjustCurrent( - population/6 * 3);
+                    target.Population.UpdateAndReset();
+                    target.Health.AdjustCurrent(-health/ 5);
+                    target.Health.UpdateAndReset();
 
                     GameContext.Current.Universe.UpdateSectors();
-
-                    return;
                 }
             }
         }

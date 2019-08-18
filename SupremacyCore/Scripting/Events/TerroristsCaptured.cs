@@ -48,12 +48,12 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations)
             {
+
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(o =>
+                        o.IsEmpire &&
+                        o.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
@@ -75,28 +75,15 @@ namespace Supremacy.Scripting.Events
                     int targetColonyId = target.ObjectID;
                     OnUnitTargeted(target);
 
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.AdjustCurrent(+3);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Morale.UpdateAndReset();
+                    target.Morale.AdjustCurrent(+3);
+                    target.Morale.UpdateAndReset();
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target.Name));
-
-                    // OLD
-
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    //    new ScriptedEventSitRepEntry(
-                    //        new ScriptedEventSitRepEntryData(
-                    //            targetCiv,
-                    //            "TERRORISTS_CAPTURED_HEADER_TEXT",
-                    //            "TERRORISTS_CAPTURED_SUMMARY_TEXT",
-                    //            "TERRORISTS_CAPTURED_DETAIL_TEXT",
-                    //            "vfs:///Resources/Images/ScriptedEvents/TerroristsCaptured.png",
-                    //            "vfs:///Resources/SoundFX/ScriptedEvents/EventGenerell.wma",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                    {
+                        civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
+                    }
                 }
-
-                return;
             }
         }
     }

@@ -164,20 +164,7 @@ namespace Supremacy.Scripting.Events
 
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
-                        civManager.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target.Name));
-
-                    // OLD
-
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    //    new ScriptedEventSitRepEntry(
-                    //        new ScriptedEventSitRepEntryData(
-                    //            targetCiv,
-                    //            "EARTHQUAKE_HEADER_TEXT",
-                    //            "EARTHQUAKE_SUMMARY_TEXT",
-                    //            "EARTHQUAKE_DETAIL_TEXT",
-                    //            "vfs:///Resources/Images/ScriptedEvents/Earthquake.png",
-                    //            "vfs:///Resources/SoundFX/ScriptedEvents/Earthquake.wav",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
+                        civManager.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
 
                     GameContext.Current.Universe.UpdateSectors();
 

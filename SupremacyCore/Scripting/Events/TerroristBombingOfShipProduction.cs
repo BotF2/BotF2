@@ -25,26 +25,9 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
-        protected List<BuildProject> AffectedProjects
-        {
-            get
-            {
-                if (_affectedProjects == null)
-                    _affectedProjects = new List<BuildProject>();
-                return _affectedProjects;
-            }
-        }
 
+        [NonSerialized]
         private List<Building> _affectedBuildings;
-        protected List<Building> AffectedBuildings
-        {
-            get
-            {
-                if (_affectedBuildings == null)
-                    _affectedBuildings = new List<Building>();
-                return _affectedBuildings;
-            }
-        }
 
         public TerroristBombingOfShipProductionEvent()
         {
@@ -85,44 +68,42 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            // Updtate 3 March 2019 Rebalancing
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >55)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 55)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c =>
+                        c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
-                    .GroupBy(o => o.OwnerID);
-
-               
+                    .GroupBy(c => c.OwnerID);
 
                 foreach (var group in targetGroups)
                 {
                     var productionCenters = group.ToList();
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
-                    GameLog.Client.GameData.DebugFormat("TerroristBombShipyards.cs: target.Name: {0}", target.Name);
+                    GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
+                    //Don't target home systems
                     if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
-                        return;
-
-                    var affectedProjects = target.BuildSlots
-                    .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
-                    .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
-                    .Select(o => o.Project);
-
-                    foreach (var affectedProject in affectedProjects)
                     {
-                        GameLog.Client.GameData.DebugFormat("TerroristBombShipyards.cs: affectedProject: {0}", affectedProject.Description);
+                        return;
+                    }
 
-                        AffectedProjects.Add(affectedProject);
+                    _affectedProjects = target.BuildSlots
+                        .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
+                        .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
+                        .Select(o => o.Project)
+                        .ToList();
+
+                    foreach (var affectedProject in _affectedProjects)
+                    {
+                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
                     var targetCiv = target.Owner;
@@ -131,51 +112,47 @@ namespace Supremacy.Scripting.Events
 
                     if (target.Shipyard != null)
                     {
-                        GameLog.Client.GameData.DebugFormat("TerroristBombShipyards.cs: {0} Shipyard: {1}, affectedProject: {2}", target.Name, target.Shipyard.Name, target.Shipyard.BuildSlots.Count);
+                        GameLog.Client.GameData.DebugFormat("{0} Shipyard: {1}, affectedProject: {2}", target.Name, target.Shipyard.Name, target.Shipyard.BuildSlots.Count);
                         List<ShipyardBuildSlot> tmpShipyards = new List<ShipyardBuildSlot>(target.Shipyard.BuildSlots.Count);
                         tmpShipyards.AddRange(target.Shipyard.BuildSlots.ToList());
                         tmpShipyards.ForEach(o => target.DeactivateShipyardBuildSlot(o));
-                        tmpShipyards.ForEach(o => GameLog.Client.GameData.DebugFormat("TerroristBombShipyards.cs: affectedProject: {0}", target.Shipyard.BuildSlots.Count));
+                        tmpShipyards.ForEach(o => GameLog.Client.GameData.DebugFormat("affectedProject: {0}", target.Shipyard.BuildSlots.Count));
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
 
                         CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                         if (civManager != null)
-                            civManager.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target.Name));
+                        {
+                            civManager.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
+                        }
 
-                        // OLD
-
-                        //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                        //        new ScriptedEventSitRepEntry(
-                        //         new ScriptedEventSitRepEntryData(
-                        //           targetCiv,
-                        //            "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT",
-                        //            "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_SUMMARY_TEXT",
-                        //            "TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT",
-                        //            "vfs:///Resources/Images/ScriptedEvents/TerroristBombingOfShipProduction.png",
-                        //            "vfs:///Resources/SoundFX/ScriptedEvents/TerroristBombing.mp3",
-                        //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
                     }
 
                     OnUnitTargeted(target);
 
                     GameContext.Current.Universe.UpdateSectors();
-
                 }
 
-                if (phase == TurnPhase.Production)
-                    _productionFinished = true; // turn production back on
-                else if (phase == TurnPhase.ShipProduction)
-                    _shipProductionFinished = true;
-
-                if (!_productionFinished || !_shipProductionFinished)
-                    return;
-
-                foreach (var affectedProject in AffectedProjects)
-                    affectedProject.IsPaused = false;
-
-                AffectedProjects.Clear();
+                return;
             }
+
+            else if (phase == TurnPhase.Production)
+            {
+                _productionFinished = true; // turn production back on
+            }
+            else if (phase == TurnPhase.ShipProduction)
+            {
+                _shipProductionFinished = true;
+            }
+
+            if (!_productionFinished || !_shipProductionFinished)
+            {
+                return;
+            }
+
+
+            _affectedProjects.ForEach(p => p.IsPaused = false);
+            _affectedProjects.Clear();
         }
     }
 }

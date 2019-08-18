@@ -17,7 +17,7 @@ using System.Linq;
 namespace Supremacy.Scripting.Events
 {
     [Serializable]
-    public class COMETSTRIKEVENT : UnitScopedEvent<Colony>
+    public class CometStrikeEvent : UnitScopedEvent<Colony>
     {
         private bool _productionFinished;
         private bool _shipProductionFinished;
@@ -25,31 +25,10 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
-        protected List<BuildProject> AffectedProjects
-        {
-            get
-            {
-                if (_affectedProjects == null)
-                    _affectedProjects = new List<BuildProject>();
-                return _affectedProjects;
-            }
-        }
 
-        private List<Building> _affectedBuildings;
-        protected List<Building> AffectedBuildings
-        {
-            get
-            {
-                if (_affectedBuildings == null)
-                    _affectedBuildings = new List<Building>();
-                return _affectedBuildings;
-            }
-        }
-
-        public COMETSTRIKEVENT()
+        public CometStrikeEvent()
         {
             _affectedProjects = new List<BuildProject>();
-            _affectedBuildings = new List<Building>();
         }
 
         public override bool CanExecute
@@ -85,43 +64,41 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            // Update 2 March 2019: CometStrike is not used
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber < -1) //
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber < -1)
             {
                 var affectedCivs = game.Civilizations
-                    .Where(
-                        o => o.IsEmpire &&
-                             o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                    .Where(c =>
+                        c.IsEmpire &&
+                        c.IsHuman &&
+                        RandomHelper.Chance(_occurrenceChance));
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
-                    .GroupBy(o => o.OwnerID);
+                    .GroupBy(c => c.OwnerID);
 
                 foreach (var group in targetGroups)
                 {
                     var productionCenters = group.ToList();
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
-                    GameLog.Client.GameData.DebugFormat("CometStrikeEvents.cs: target.Name: {0}", target.Name);
+                    GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
                     if (target.Name == "Sol" || target.Name == "Terra" || target.Name == "Cardassia" || target.Name == "Qo'nos" || target.Name == "Omarion" || target.Name == "Romulus" || target.Name == "Borg")
+                    {
                         return;
+                    }
 
-                    var affectedProjects = target.BuildSlots
+                    _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
                         .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
-                        .Select(o => o.Project);
+                        .Select(o => o.Project)
+                        .ToList();
 
-                    foreach (var affectedProject in affectedProjects)
+                    foreach (var affectedProject in _affectedProjects)
                     {
-                        GameLog.Client.GameData.DebugFormat("CometStrikeEvents.cs: affectedProject: {0}", affectedProject.Description);
-
-
-                        AffectedProjects.Add(affectedProject);
+                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
                     var targetCiv = target.Owner;
@@ -132,68 +109,72 @@ namespace Supremacy.Scripting.Events
                     OnUnitTargeted(target);
 
                     // Population
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population/5 * 4);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-health/2);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
+                    target.Population.AdjustCurrent(-population / 5 * 4);
+                    target.Population.UpdateAndReset();
+                    target.Health.AdjustCurrent(-health / 2);
+                    target.Health.UpdateAndReset();
 
                     // Facilities
                     int removeFood = target.GetTotalFacilities(ProductionCategory.Food) - 6; // Food: remaining everything up to 6
                     if (removeFood < 7)
+                    {
                         removeFood = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Food, removeFood);
 
                     int removeIndustry = target.GetTotalFacilities(ProductionCategory.Industry) - 5; // Industry: remaining everything up to 5
                     if (removeIndustry < 6)
+                    {
                         removeIndustry = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Industry, removeIndustry);
 
                     int removeEnergy = target.GetTotalFacilities(ProductionCategory.Energy) - 2;  // Energy: remaining everything up to 2
                     if (removeEnergy < 3)
+                    {
                         removeEnergy = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Energy, removeEnergy);
 
                     int removeResearch = target.GetTotalFacilities(ProductionCategory.Research) - 3;  // Research: remaining everything up to 3
                     if (removeResearch < 4)
+                    {
                         removeResearch = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Research, removeResearch);
 
                     int removeIntelligence = target.GetTotalFacilities(ProductionCategory.Intelligence) - 3;  // Research: remaining everything up to 3
                     if (removeIntelligence < 4)
+                    {
                         removeIntelligence = 0;
+                    }
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
-                    //game.CivilizationManagers[targetCiv].SitRepEntries.Add(
-                    //    new ScriptedEventSitRepEntry(
-                    //        new ScriptedEventSitRepEntryData(
-                    //            targetCiv,
-                    //            "COMET_STRIKE_HEADER_TEXT",
-                    //            "COMET_STRIKE_SUMMARY_TEXT",
-                    //            "COMET_STRIKE_DETAIL_TEXT",
-                    //            "vfs:///Resources/Images/ScriptedEvents/AsteroidImpact.png",
-                    //            "vfs:///Resources/SoundFX/ScriptedEvents/AsteroidImpact.wav",
-                    //            () => GameContext.Current.Universe.Get<Colony>(targetColonyId).Name)));
-
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(- population / 5 * 4);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-
+                    target.Population.AdjustCurrent(-population / 5 * 4);
+                    target.Population.UpdateAndReset();
                     GameContext.Current.Universe.UpdateSectors();
                     return;
                 }
 
-                if (phase == TurnPhase.Production)
-                    _productionFinished = true; // turn production back on
-                else if (phase == TurnPhase.ShipProduction)
-                    _shipProductionFinished = true;
-
-                if (!_productionFinished || !_shipProductionFinished)
-                    return;
-
-                foreach (var affectedProject in AffectedProjects)
-                    affectedProject.IsPaused = false;
-
-                AffectedProjects.Clear();
+                return;
             }
+
+            else if (phase == TurnPhase.Production)
+            {
+                _productionFinished = true; // turn production back on
+            }
+            else if (phase == TurnPhase.ShipProduction)
+            {
+                _shipProductionFinished = true;
+            }
+
+            if (!_productionFinished || !_shipProductionFinished)
+            {
+                return;
+            }
+
+            _affectedProjects.ForEach(p => p.IsPaused = false);
+            _affectedProjects.Clear();
         }
     }
 }
