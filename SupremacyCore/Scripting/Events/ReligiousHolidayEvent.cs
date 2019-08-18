@@ -73,7 +73,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >= 30)
             {
                 var affectedCivs = game.Civilizations
                     .Where(

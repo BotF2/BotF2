@@ -86,7 +86,7 @@ namespace Supremacy.Scripting.Events
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
             // Update 2 March 2019 Minor Balancing Asteroid Impacts : Start occurance on turn 40
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >=40)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >=80)
             {
                 var affectedCivs = game.Civilizations
                     .Where(

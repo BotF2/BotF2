@@ -251,7 +251,14 @@ namespace Supremacy.Client.Views
 
         public DiplomaticMessageCategory OutgoingMessageCategory
         {
-            get { return ResolveMessageCategory(OutgoingMessage); }
+            
+            get
+            {
+                if(OutgoingMessage != null)
+                GameLog.Client.Diplomacy.DebugFormat("outgoing message catagory recipient= {0} sender ={1}, elements ={2}, treaty elements ={3} editing +{4}",
+                    OutgoingMessage.Recipient, OutgoingMessage.Sender, OutgoingMessage.Elements.Count, OutgoingMessage.TreatyElements.Count, OutgoingMessage.IsEditing);
+                return ResolveMessageCategory(OutgoingMessage);
+            }
         }
 
         protected internal virtual void OnOutgoingMessageCategoryChanged()
