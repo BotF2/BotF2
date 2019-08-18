@@ -416,13 +416,74 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("Loop for finding an Target(s) for Attacking Ship starts");
                 #endregion
 
+                double FavorTheBoldAttackBonus = 1.0;
+
+                // Update X 18 august Flavor the bold modfiier
+                // Calculate and save EmpireDurability for later use in Flavor the Bold
+                int[,] EmpireTotalDurabilities;
+                EmpireTotalDurabilities = new int[12, 2];
+                
+                // Initialize Array
+                for(int i = 0; i < 12; i++ )
+                {
+                    EmpireTotalDurabilities[i, 0] = 999;
+                    EmpireTotalDurabilities[i, 1] = 999;
+
+                }
+
+                int FleetStrenghtTemp = 0;
+                for(int i = 0; i< 12; i++)
+                {
+                    // If no more empire found, break
+                    if (empiresInBattle[i, 0] == 777 ||
+                        empiresInBattle[i, 0] == 888 ||
+                            empiresInBattle[i, 0] == 999)
+                        break;
+
+                    EmpireTotalDurabilities[i, 0] = empiresInBattle[i, 0];
+                    
+                    var fleet = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == empiresInBattle[i, 0])
+                    .Select(sc => sc).ToList();
+
+                    foreach (var ship in fleet)   // only combat ships 
+                    {
+
+                        FleetStrenghtTemp = FleetStrenghtTemp + Convert.ToInt32(ship.Item1.Firepower
+                                + Convert.ToInt32(ship.Item1.ShieldStrength + ship.Item1.HullStrength)
+                                * ((1 + Convert.ToDouble(ship.Item1.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+                            );
+
+                        //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+                        //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
+                    }
+
+                    if (_combatStation != null)
+                    { 
+                    if (_combatStation.Item1.OwnerID == EmpireTotalDurabilities[i, 0])
+                    {
+                        FleetStrenghtTemp = FleetStrenghtTemp + _combatStation.Item1.Firepower + _combatStation.Item1.HullStrength + _combatStation.Item1.ShieldStrength;
+
+                    }
+                    }
+
+                    EmpireTotalDurabilities[i, 1] = FleetStrenghtTemp;
+                    FleetStrenghtTemp = 0;
+                
+                }
+                
+
+
+
                 #region attacker loop
+
+
+
 
                 // HERE STARTS ATTACKER´S LOOP LOOKING FOR TARGETS
                 GameLog.Core.CombatDetails.DebugFormat("NOW HERE ATTACKING LOOP STARTS!");
                 while (true) // Attacking Ship looks for target(s) - all c# collections can be looped
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("------------------------");
+                    GameLog.Core.CombatDetails.DebugFormat("-----------------------");
                     attackingRoundCounts += 1;
                     GameLog.Core.CombatDetails.DebugFormat("In Attacking Round {0}, the EmpireID {1} is used", attackingRoundCounts, AttackingEmpireID);
                     int rememberForDamage = 0;
@@ -447,7 +508,7 @@ namespace Supremacy.Combat
                         }
                         if (_combatStation != null)
                         {
-                            if (_combatStation.Item1.OwnerID == targetedEmpireID && _combatStation.Item1.HullStrength > 0)
+                            if (_combatStation.Item1.OwnerID == targetedEmpireID && _combatStation.Item1.HullIntegrity > 0) // Update x 18 august 2019 added ? hullstrenght >0 
                             {
                                 currentTarget = _combatStation;
                             }
@@ -484,16 +545,128 @@ namespace Supremacy.Combat
                         GameLog.Core.CombatDetails.DebugFormat("Coudn´t find a target in attacker run. BREAK");
                         break;
                     }
-                    //if (currentTarget is null || currentTargets.Count == 0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
-                    //{
-                    //    GameLog.Core.CombatDetails.DebugFormat("current Target is: (for Attacking loop) NONE, BREAK");
-                    //    break;
-                    //}
-                    //else
-                    //{
-                    //    GameLog.Core.CombatDetails.DebugFormat("current Target is: (for Attacking loop){0}", currentTarget.Item1.Name);
-                    //}
-                    var attackerOrder = GetCombatOrder(AttackingShip.Item1.Source);
+
+                    
+
+                    // FAVOR THE BOLD
+                    // UPDATE X 18 August 2019
+
+                    int AttackingDurabilityTotal = 0;
+                    int DefendingDurabilityTotal = 0;
+
+                    for (int i2 = 0; i2 < 12; i2++)                   
+                    {
+                        // If no more empire found
+                        if (EmpireTotalDurabilities[i2, 0] == 999)
+                            break;
+
+                        if (EmpireTotalDurabilities[i2,0] == Convert.ToInt32(AttackingShip.Item1.OwnerID))
+                        {
+                            AttackingDurabilityTotal = EmpireTotalDurabilities[i2, 1];
+                        }
+                        if (EmpireTotalDurabilities[i2, 0] == Convert.ToInt32(currentTarget.Item1.OwnerID))
+                        {
+                            DefendingDurabilityTotal = EmpireTotalDurabilities[i2, 1];
+                        }
+
+                    }
+
+                    if (AttackingDurabilityTotal * 2 < DefendingDurabilityTotal
+                        )
+                    {
+
+                    
+                        if (GameContext.Current.TurnNumber <10)
+                        {
+                            if (AttackingDurabilityTotal > 1000)
+                                FavorTheBoldAttackBonus = 1.1;
+                        }
+                        else if (GameContext.Current.TurnNumber >= 10)
+                        {
+                            if (AttackingDurabilityTotal > 4000)
+                                FavorTheBoldAttackBonus = 1.2;
+                            if (GameContext.Current.TurnNumber > 30)
+                            {
+                                if (AttackingDurabilityTotal > 7000)
+                                    FavorTheBoldAttackBonus = 1.3;
+                            }
+                            if (GameContext.Current.TurnNumber > 60)
+                            {
+                                if (AttackingDurabilityTotal > 14000)
+                                    FavorTheBoldAttackBonus = 1.4;
+                            }
+                            if (GameContext.Current.TurnNumber > 85)
+                            {
+                                if (AttackingDurabilityTotal > 28000)
+                                    FavorTheBoldAttackBonus = 1.5;
+                            }
+                            if (GameContext.Current.TurnNumber >120)
+                            {
+                                if (AttackingDurabilityTotal > 40000)
+                                    FavorTheBoldAttackBonus = 1.6;
+                            }
+                             if (GameContext.Current.TurnNumber > 160)
+                            {
+                                if (AttackingDurabilityTotal > 60000)
+                                 FavorTheBoldAttackBonus = 1.7;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        // If attacker outguns the targeted empire, the attacked gain less damage
+                        if(AttackingDurabilityTotal > DefendingDurabilityTotal * 2)
+                            {
+                               if (GameContext.Current.TurnNumber <20)
+                                    FavorTheBoldAttackBonus = 0.9;
+                            }
+                            else
+                            {
+                                if (GameContext.Current.TurnNumber >= 20)
+                                {
+                                    FavorTheBoldAttackBonus = 0.85;
+                                }
+                                if (GameContext.Current.TurnNumber > 60)
+                                {
+                                    FavorTheBoldAttackBonus = 0.8;
+                                }
+                                if (GameContext.Current.TurnNumber > 120)
+                                {
+                                    FavorTheBoldAttackBonus = 0.7;
+                                }
+                                if (GameContext.Current.TurnNumber > 200)
+                                {
+                                    FavorTheBoldAttackBonus = 0.6;
+                                }
+                            }
+
+                        }
+
+
+                        if (AttackingDurabilityTotal > DefendingDurabilityTotal *10)
+                        {
+
+                            FavorTheBoldAttackBonus = 1.3;
+                        }
+                        else if (DefendingDurabilityTotal > AttackingDurabilityTotal *10)
+                        {
+                            FavorTheBoldAttackBonus = 0.9;
+                        }
+
+                        /// FavorTheBoldAttackBonus needs to be used in damage
+
+
+                //if (currentTarget is null || currentTargets.Count == 0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
+                //{
+                //    GameLog.Core.CombatDetails.DebugFormat("current Target is: (for Attacking loop) NONE, BREAK");
+                //    break;
+                //}
+                //else
+                //{
+                //    GameLog.Core.CombatDetails.DebugFormat("current Target is: (for Attacking loop){0}", currentTarget.Item1.Name);
+                //}
+                var attackerOrder = GetCombatOrder(AttackingShip.Item1.Source);
                     var defenderOrder = GetCombatOrder(currentTarget.Item1.Source);
                     if (defenderOrder.ToString() == null || attackerOrder.ToString() == null)
                     {
@@ -504,7 +677,7 @@ namespace Supremacy.Combat
                     {
                         if (_combatStation.Item1.OwnerID == targetedEmpireID)
                         {
-                            if (_combatStation.Item1.HullStrength > 0) // is this how to get int our of HullStrength Meter?
+                            if (_combatStation.Item1.HullIntegrity > 0) // is this how to get int our of HullStrength Meter?
                             {
                                 currentTarget = _combatStation; // Station in _combatShips
                             }
@@ -604,12 +777,16 @@ namespace Supremacy.Combat
                     }
                     if (AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("CRUISER") || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("DESTROYER")
                         || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") ||
-                        (AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command") && AttackingShip.Item1.Source.Owner.Name.Contains("Borg"))
+                        (AttackingShip.Item1.Source.Owner.Name.Contains("Borg") &&
+                        AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("SPHERE") ||
+                        AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("DIAMOND") ||
+                        AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("CUBE")
+                        )
                         )
                     {
                         sourceAccuracy = sourceAccuracy + commandShipModifierAccuracy; // taking Command ship present or no present modfier into account.
                     }
-                    else if (!AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command")) // Civilian Non-Command ship only get negative mod
+                    else if (!AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("COMMAND")) // Civilian Non-Command ship only get negative mod
                     {
                         if(commandShipModifierAccuracy < 0) // only if modifyer is negative
                         {
@@ -821,7 +998,8 @@ namespace Supremacy.Combat
                         currentTarget.Item1.TakeDamage((int)(Convert.ToInt32(tempDamage= 
                             (rememberForDamage + Convert.ToInt32(ScissorBonus)
                             + Convert.ToDouble(combatOrderBonusMalus)
-                            * Convert.ToDouble(1.5 - targetDamageControl) 
+                            * Convert.ToDouble(1.5 - targetDamageControl)
+                            * Convert.ToDouble(FavorTheBoldAttackBonus)
                             * Convert.ToDouble(1 - currentTarget.Item1.Source.GetManeuverablility() / 0.24 / 100)
                             * sourceAccuracy * (zufall.Next(8,13)/10)
                             ))));// * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
@@ -833,6 +1011,7 @@ namespace Supremacy.Combat
                             (AttackingShip.Item1.RemainingFirepower + Convert.ToInt32(ScissorBonus)
                             + Convert.ToDouble(combatOrderBonusMalus)
                             * Convert.ToDouble(1.5 - targetDamageControl)
+                            * Convert.ToDouble(FavorTheBoldAttackBonus)
                             * Convert.ToDouble(1 - currentTarget.Item1.Source.GetManeuverablility() / 0.24 / 100)
                             * sourceAccuracy * (zufall.Next(8, 13) / 10)
                             )))); // minimal damage of 50 included
@@ -950,7 +1129,7 @@ namespace Supremacy.Combat
                         {
                             if (_combatStation != null && currentTargets.Count != 0)
                             {
-                                if (_combatStation.Item1.OwnerID == targetedEmpireID)
+                                if (_combatStation.Item1.OwnerID == targetedEmpireID && _combatStation.Item1.HullIntegrity > 0)
                                 {
                                     currentTarget = _combatStation;
                                 }
@@ -1098,12 +1277,16 @@ namespace Supremacy.Combat
                     // All non-command ships get bonus
                     if (AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("CRUISER") || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("DESTROYER")
                         || AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") ||
-                        (AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command") && AttackingShip.Item1.Source.Owner.Key.Contains("BORG"))
+                        (AttackingShip.Item1.Source.Owner.Key.Contains("BORG") &&
+                        AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("SPHERE") ||
+                        AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("DIAMOND") ||
+                        AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("CUBE") 
+                        )
                         )
                     {
                         sourceAccuracy = sourceAccuracy + commandShipModifierAccuracy; // taking Command ship present or no present modfier into account.
                     }
-                    else if (!AttackingShip.Item1.Source.OrbitalDesign.ShipType.Contains("Command")) // Civilian Non-Command ship only get negative mod
+                    else if (!AttackingShip.Item1.Source.OrbitalDesign.Key.Contains("COMMAND")) // Civilian Non-Command ship only get negative mod
                     {
                         if (commandShipModifierAccuracy < 0) // only if modifyer is negative
                         {
