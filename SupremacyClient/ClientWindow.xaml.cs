@@ -1,4 +1,16 @@
-﻿using System;
+﻿using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.ServiceLocation;
+using Supremacy.Annotations;
+using Supremacy.Client.Audio;
+using Supremacy.Client.Commands;
+using Supremacy.Client.Context;
+using Supremacy.Client.Events;
+using Supremacy.Client.Views;
+using Supremacy.Game;
+using Supremacy.Types;
+using Supremacy.Utility;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -7,27 +19,11 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
-using Microsoft.Practices.ServiceLocation;
-
-using Supremacy.Annotations;
-using Supremacy.Client.Commands;
-using Supremacy.Client.Events;
-using Supremacy.Client.Input;
-using Supremacy.Client.Views;
-using Supremacy.Game;
-using Supremacy.Types;
-using Supremacy.Utility;
-
 using Color = System.Windows.Media.Color;
 using ColorToneEffect = Microsoft.Expression.Media.Effects.ColorToneEffect;
 using Disposer = Supremacy.Types.Disposer;
 using Expression = System.Linq.Expressions.Expression;
 using Path = System.IO.Path;
-using Supremacy.Client.Audio;
-using Supremacy.Client.Context;
 
 namespace Supremacy.Client
 {
@@ -197,7 +193,7 @@ namespace Supremacy.Client
                     _navigationCommands.ActivateScreen,
                     new KeyGesture(Key.F5, ModifierKeys.None))
                 {
-                    CommandParameter = StandardGameScreens.PersonnelScreen
+                    CommandParameter = StandardGameScreens.IntelScreen
                 });
 
             InputBindings.Add(

@@ -7,23 +7,20 @@
 //
 // All other rights reserved.
 
+using Microsoft.Practices.ServiceLocation;
+using Supremacy.Annotations;
+using Supremacy.Client;
+using Supremacy.Diplomacy;
+using Supremacy.Entities;
+using Supremacy.Game;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.Xml.Linq;
-
-using Microsoft.Practices.ServiceLocation;
-
-using Supremacy.Annotations;
-using Supremacy.Entities;
-using Supremacy.Game;
-using Supremacy.Client;
-using Supremacy.Diplomacy;
-
 using System.Linq;
-using Supremacy.Utility;
+using System.Xml.Linq;
 
 namespace Supremacy.Resources
 {
@@ -34,7 +31,6 @@ namespace Supremacy.Resources
         #region Constants
         public const string DefaultCategory = null;
         public const string DiplomacyCategory = "Diplomacy";
-        public const string PersonnelCategory = "Personnel";
         public const string ScriptedEventsCategory = "ScriptedEvents";
         #endregion
 

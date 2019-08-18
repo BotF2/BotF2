@@ -1,4 +1,3 @@
-// GameEngine.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -2062,8 +2061,7 @@ namespace Supremacy.Game
                  * Reset the resource stockpile meters now that we have finished
                  * production for the each civilization.  This will update the
                  * last base value of the meters so that the net change this turn
-                 * is properly reflected.  Do the same for the personnel pool
-                 * and the credit treasury.
+                 * is properly reflected.  Do the same for the credit treasury.
                  */
                 civManager.Resources.UpdateAndReset();
                 civManager.Credits.UpdateAndReset();

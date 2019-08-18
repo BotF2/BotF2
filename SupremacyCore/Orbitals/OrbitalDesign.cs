@@ -1,4 +1,3 @@
-// OrbitalDesign.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,17 +6,15 @@
 //
 // All other rights reserved.
 
+using Supremacy.Annotations;
+using Supremacy.Tech;
+using Supremacy.Types;
+using Supremacy.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Markup;
 using System.Xml;
-using Supremacy.Orbitals;
-using Supremacy.Annotations;
-using Supremacy.Tech;
-using Supremacy.Types;
-using Supremacy.Utility;
-using Supremacy.Game;
 
 namespace Supremacy.Orbitals
 {
@@ -276,7 +273,6 @@ namespace Supremacy.Orbitals
             if (element["Crew"] != null)
             {
                 _crewSize = Number.ParseUInt16(element["Crew"].InnerText.Trim());
-                //BuildResourceCosts[ResourceType.Personnel] += _crewSize;
                 if (_crewSize != 0)
                     if (_crewSize < 1 || _crewSize > 65000)   // atm all values between x and x (or 0 for not having this ability)
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _crewSize should not be {1}", Name, _crewSize);
