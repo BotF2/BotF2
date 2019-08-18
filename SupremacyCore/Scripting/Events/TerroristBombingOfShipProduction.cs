@@ -26,13 +26,9 @@ namespace Supremacy.Scripting.Events
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
 
-        [NonSerialized]
-        private List<Building> _affectedBuildings;
-
         public TerroristBombingOfShipProductionEvent()
         {
             _affectedProjects = new List<BuildProject>();
-            _affectedBuildings = new List<Building>();
         }
 
         public override bool CanExecute
@@ -149,7 +145,6 @@ namespace Supremacy.Scripting.Events
             {
                 return;
             }
-
 
             _affectedProjects.ForEach(p => p.IsPaused = false);
             _affectedProjects.Clear();
