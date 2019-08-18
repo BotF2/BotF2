@@ -462,7 +462,6 @@
     <Compile Include="Tech\TechObjectDesignMap.cs" />
     <Compile Include="Tech\TechTreeHelper.cs" />
     <Compile Include="Economy\IBuildable.cs" />
-    <Compile Include="Economy\Personnel.cs" />
     <Compile Include="Economy\ProductionFacilityBuildProject.cs" />
     <Compile Include="Economy\ProductionFacilityDesign.cs" />
     <Compile Include="Economy\BuildProject.cs" />

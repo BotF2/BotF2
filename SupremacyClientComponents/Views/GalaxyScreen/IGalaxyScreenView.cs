@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using Supremacy.Client.Context;
+
 namespace Supremacy.Client.Views
 {
     public interface IGameScreenView<TPresentationModel> : IView
@@ -35,7 +36,7 @@ namespace Supremacy.Client.Views
 
     public interface IScienceScreenView : IGameScreenView<ScienceScreenPresentationModel> {}
 
-    public interface IPersonnelScreenView : IGameScreenView<PersonnelScreenPresentationModel> {}
+    public interface IIntelScreenView : IGameScreenView<IntelScreenPresentationModel> {}
     
     public interface ISystemAssaultScreenView : IGameScreenView<SystemAssaultScreenViewModel> {}
 }

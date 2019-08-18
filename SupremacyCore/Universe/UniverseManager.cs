@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-// UniverseManager.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,10 +5,6 @@ using System.Collections.Generic;
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 //
 // All other rights reserved.
-
-using System;
-using System.Linq;
-using System.Linq.Expressions;
 
 using Supremacy.Buildings;
 using Supremacy.Collections;
@@ -24,6 +18,10 @@ using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Supremacy.Universe
 {
@@ -420,8 +418,6 @@ namespace Supremacy.Universe
                 
                 foreach (var resource in EnumHelper.GetValues<ResourceType>())
                 {
-                    //if (resource == ResourceType.Personnel)
-                    //    continue;
                     resources[resource] = Math.Min(
                         target.Design.BuildResourceCosts[resource],
                         (int)Math.Floor(totalReclaim * resources[resource]));
@@ -434,9 +430,6 @@ namespace Supremacy.Universe
             {
                 foreach (ResourceType resource in EnumUtilities.GetValues<ResourceType>())
                 {
-                    //if (resource == ResourceType.Personnel)
-                    //    civManager.Personnel[PersonnelCategory.Officers].AdjustCurrent(resources[resource]);
-                    //else
                     civManager.Resources[resource].AdjustCurrent(resources[resource]);
                 }
             

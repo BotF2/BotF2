@@ -1,6 +1,5 @@
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Events;
 
@@ -15,7 +14,7 @@ namespace Supremacy.Client.Views
 
         protected override string ViewName
         {
-            get { return StandardGameScreens.PersonnelScreen; }
+            get { return StandardGameScreens.IntelScreen; }
         }
 
         protected override void RegisterCommandAndEventHandlers()

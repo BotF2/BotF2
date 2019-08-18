@@ -1,4 +1,3 @@
-// Order.cs
 // 
 // Copyright (c) 2011 Mike Strobel
 // 
@@ -6,10 +5,6 @@
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 // 
 // All other rights reserved.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using Supremacy.Annotations;
 using Supremacy.Buildings;
@@ -22,6 +17,9 @@ using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Game
 {
@@ -390,52 +388,6 @@ namespace Supremacy.Game
                 return false;
 
             return (otherOrder._colonyId == _colonyId);
-        }
-    }
-
-    [Serializable]
-    public sealed class SetPersonnelDistributionOrder : Order
-    {
-        private readonly DistributionGroup<PersonnelCategory> _values;
-
-        public SetPersonnelDistributionOrder(Civilization owner, DistributionGroup<PersonnelCategory> values)
-            : base(owner)
-        {
-            if (values == null)
-                throw new ArgumentNullException("values");
-            _values = values;
-        }
-
-        public override bool DoExecute()
-        {
-            var civManager = ExecutionContext.CivilizationManagers[OwnerID];
-
-            if (civManager == null)
-                return false;
-
-            foreach (PersonnelCategory category in EnumUtilities.GetValues<PersonnelCategory>())
-                civManager.Personnel.Distribution[category].IsLocked = false;
-
-            foreach (PersonnelCategory category in EnumUtilities.GetValues<PersonnelCategory>())
-            {
-                civManager.Personnel.Distribution[category].Value = _values[category].Value;
-                civManager.Personnel.Distribution[category].IsLocked = true;
-            }
-
-            foreach (PersonnelCategory category in EnumUtilities.GetValues<PersonnelCategory>())
-                civManager.Personnel.Distribution[category].IsLocked = _values[category].IsLocked;
-
-            return true;
-        }
-
-        public override bool Overrides(Order o)
-        {
-            var otherOrder = o as SetPersonnelDistributionOrder;
-
-            if (otherOrder == null)
-                return false;
-
-            return (otherOrder.OwnerID == OwnerID);
         }
     }
 

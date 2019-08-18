@@ -1,3 +1,9 @@
+using Supremacy.Annotations;
+using Supremacy.Collections;
+using Supremacy.Resources;
+using Supremacy.Types;
+using Supremacy.Utility;
+using Supremacy.VFS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,13 +12,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Markup;
 using System.Xaml;
-
-using Supremacy.Annotations;
-using Supremacy.Collections;
-using Supremacy.Resources;
-using Supremacy.Types;
-using Supremacy.Utility;
-using Supremacy.VFS;
 
 namespace Supremacy.Text
 {
@@ -178,7 +177,6 @@ namespace Supremacy.Text
         private static readonly object _assetsScreen = new StandardLocalizedTextGroupKey("AssetsScreen");
         private static readonly object _diplomacyScreen = new StandardLocalizedTextGroupKey("DiplomacyScreen");
         private static readonly object _diplomacyText = new StandardLocalizedTextGroupKey("DiplomacyText");
-        private static readonly object _personnelText = new StandardLocalizedTextGroupKey("PersonnelText");
 
         public static object GalaxyScreen
         {
@@ -208,11 +206,6 @@ namespace Supremacy.Text
         public static object DiplomacyText
         {
             get { return _diplomacyText; }
-        }
-
-        public static object PersonnelText
-        {
-            get { return _personnelText; }
         }
 
         [TypeConverter(typeof(LocalizedTextGroupKeyConverter))]

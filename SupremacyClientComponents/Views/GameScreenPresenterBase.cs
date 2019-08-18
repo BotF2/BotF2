@@ -1,19 +1,16 @@
+using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Unity;
+using Supremacy.Annotations;
+using Supremacy.Client.Commands;
+using Supremacy.Client.Context;
+using Supremacy.Client.Events;
+using Supremacy.Resources;
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Regions;
-using Microsoft.Practices.Unity;
-
-using Supremacy.Annotations;
-using Supremacy.Client.Commands;
-using Supremacy.Client.Events;
-using Supremacy.Resources;
-
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
-using Supremacy.Client.Context;
 
 namespace Supremacy.Client.Views
 {
@@ -341,20 +338,20 @@ namespace Supremacy.Client.Views
         }
     }
 
-    public class PersonnelScreenPresenter
-        : GameScreenPresenterBase<PersonnelScreenPresentationModel, IPersonnelScreenView>, IPersonnelScreenPresenter
+    public class IntelScreenPresenter
+        : GameScreenPresenterBase<IntelScreenPresentationModel, IIntelScreenView>, IIntelScreenPresenter
     {
         #region Constructors and Finalizers
-        public PersonnelScreenPresenter(
+        public IntelScreenPresenter(
             [NotNull] IUnityContainer container,
-            [NotNull] PersonnelScreenPresentationModel model,
-            [NotNull] IPersonnelScreenView view)
+            [NotNull] IntelScreenPresentationModel model,
+            [NotNull] IIntelScreenView view)
             : base(container, model, view) {}
         #endregion
 
         protected override string ViewName
         {
-            get { return StandardGameScreens.PersonnelScreen; }
+            get { return StandardGameScreens.IntelScreen; }
         }
     }
 }
