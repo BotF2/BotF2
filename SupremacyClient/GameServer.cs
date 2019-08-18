@@ -1,4 +1,3 @@
-// GameServer.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -7,16 +6,13 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Threading;
-
-using Microsoft.Practices.Composite.Logging;
-
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Types;
 using Supremacy.Utility;
 using Supremacy.WCF;
+using System;
+using System.Threading;
 
 namespace Supremacy.Client
 {
@@ -28,7 +24,6 @@ namespace Supremacy.Client
         #endregion
 
         #region Fields
-        private readonly ILoggerFacade _logger;
         private readonly object _serviceLock;
         private readonly IUnhandledExceptionHandler _unhandledExceptionHandler;
 
@@ -41,16 +36,12 @@ namespace Supremacy.Client
 
         #region Constructors and Finalizers
         public GameServer(
-            [NotNull] IUnhandledExceptionHandler unhandledExceptionHandler,
-            [NotNull] ILoggerFacade logger)
+            [NotNull] IUnhandledExceptionHandler unhandledExceptionHandler)
         {
             if (unhandledExceptionHandler == null)
                 throw new ArgumentNullException("unhandledExceptionHandler");
-            if (logger == null)
-                throw new ArgumentNullException("logger");
             _serviceLock = new object();
             _unhandledExceptionHandler = unhandledExceptionHandler;
-            _logger = logger;
         }
         #endregion
 
@@ -69,36 +60,8 @@ namespace Supremacy.Client
             {
                 if (_isServiceLoaded)
                     return;
-
                 try
                 {
-                    if (Interlocked.CompareExchange(ref _serviceDomain, null, null) == null)
-                    {
-                        //var serviceDomain = AppDomain.CreateDomain(
-                        //    ServiceDomainName,
-                        //    null,
-                        //    AppDomain.CurrentDomain.SetupInformation);
-                        //serviceDomain.UnhandledException += OnServiceDomainUnhandledException;
-                        //serviceDomain.Load("SupremacyNative");
-                        //serviceDomain.Load("SupremacyCore");
-                        //serviceDomain.Load("SupremacyService");
-                        //Interlocked.CompareExchange(ref _serviceDomain, serviceDomain, null);
-                    }
-                }
-                catch (Exception e)
-                {
-                    _logger.Log(
-                        "Exception occurred while creating WCF service AppDomain: " + e.Message,
-                        Category.Exception,
-                        Priority.High);
-                    throw new SupremacyException("Failed to create AppDomain for WCF service.", e);
-                }
-
-                try
-                {
-                    //var serviceHost = (SupremacyServiceHost)_serviceDomain.CreateInstanceAndUnwrap(
-                    //                                            "SupremacyService",
-                    //                                            "Supremacy.WCF.SupremacyServiceHost");
                     var serviceHost = new SupremacyServiceHost();
                     HookServiceHostEventHandlers(serviceHost);
                     Interlocked.CompareExchange(ref _serviceHost, serviceHost, null);
@@ -106,10 +69,7 @@ namespace Supremacy.Client
                 }
                 catch (Exception e)
                 {
-                    _logger.Log(
-                        "Exception occurred while creating WCF service host: " + e.Message,
-                        Category.Exception,
-                        Priority.High);
+                    GameLog.Server.General.ErrorFormat("Exception occurred while creating WCF service host: {0}", e.Message);
                     throw new SupremacyException("Failed to create WCF service host.", e);
                 }
             }
@@ -143,10 +103,7 @@ namespace Supremacy.Client
                 }
                 catch (Exception e)
                 {
-                    _logger.Log(
-                        "Exception occurred while stopping WCF service: " + e.Message,
-                        Category.Warn,
-                        Priority.Low);
+                    GameLog.Server.General.ErrorFormat("Exception occurred while stopping WCF service: {0}", e.Message);
                 }
                 finally
                 {
@@ -165,10 +122,7 @@ namespace Supremacy.Client
                 }
                 catch (Exception e)
                 {
-                    _logger.Log(
-                        "Exception occurred while unloading WCF service AppDomain: " + e.Message,
-                        Category.Warn,
-                        Priority.Low);
+                    GameLog.Server.General.ErrorFormat("Exception occurred while unloading WCF service AppDomain: {0}", e.Message);
                 }
             }
         }
