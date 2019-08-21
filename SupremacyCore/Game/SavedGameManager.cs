@@ -1,5 +1,3 @@
-// SavedGameManager.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,17 +5,17 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 using Supremacy.Annotations;
 using Supremacy.IO;
 using Supremacy.Messages;
 using Supremacy.Messaging;
 using Supremacy.Tech;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Supremacy.Game
 {
@@ -30,7 +28,7 @@ namespace Supremacy.Game
 
         public static string SavedGameDirectory
         {
-            get { return Path.Combine(StorageManager.UserLocalProfileFolder, "Saved Games"); }
+            get { return Path.Combine(StorageManager.UserLocalProfileFolder, "Saved Games", Assembly.GetExecutingAssembly().GetName().Version.ToString()); }
         }
 
         /// <summary>
@@ -43,7 +41,9 @@ namespace Supremacy.Game
             var path = SavedGameDirectory;
 
             if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
+            }
 
             var fileNames = Directory.GetFiles(path, "*.sav", SearchOption.TopDirectoryOnly);
 
@@ -55,7 +55,12 @@ namespace Supremacy.Game
                 {
                     var header = LoadSavedGameHeader(AutoSaveFileName);
                     if (header != null)
-                        savedGames.Add(header);
+                    {
+                        if (header.GameVersion == Assembly.GetExecutingAssembly().GetName().Version.ToString())
+                        {
+                            savedGames.Add(header);
+                        }
+                    }
                 }
             }
 
@@ -63,7 +68,12 @@ namespace Supremacy.Game
             {
                 var header = LoadSavedGameHeader(fileName);
                 if (header != null)
-                    savedGames.Add(header);
+                {
+                    if (header.GameVersion == Assembly.GetExecutingAssembly().GetName().Version.ToString())
+                    {
+                        savedGames.Add(header);
+                    }
+                }
             }
 
             return savedGames.OrderByDescending(s => s.Timestamp).ToArray();
@@ -84,11 +94,13 @@ namespace Supremacy.Game
                 string fullPath;
 
                 if (Path.IsPathRooted(fileName))
+                {
                     fullPath = fileName;
+                }
                 else
+                {
                     fullPath = Path.Combine(SavedGameDirectory, FixFileName(fileName));
-
-                //GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fullPath);
+                }
 
                 SavedGameHeader header;
                 using (var fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -97,7 +109,9 @@ namespace Supremacy.Game
                 }
 
                 if (string.Equals(Path.GetExtension(fileName), AutoSaveFileName, StringComparison.OrdinalIgnoreCase))
+                {
                     header.IsAutoSave = true;
+                }
 
                 header.FileName = header.IsAutoSave ? AutoSaveFileName : Path.GetFileNameWithoutExtension(fileName);
 
@@ -105,7 +119,6 @@ namespace Supremacy.Game
             }
             catch
             {
-                //works      GameLog.Print("loading .... jump over....for Header {0} ", fileName);
                 return null;
             }
         }
@@ -123,40 +136,35 @@ namespace Supremacy.Game
             try
             {
                 if (!Path.IsPathRooted(fileName))
+                {
                     fileName = Path.Combine(SavedGameDirectory, FixFileName(fileName));
+                }
                 GameLog.Core.General.InfoFormat("Loading saved game {0}", fileName);
 
                 using (var fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     GameLog.Core.SaveLoad.DebugFormat("beginning loading {0} ...", fileName);
                     header = SavedGameHeader.Read(fileStream);
+                    var thisGameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                    if (header.GameVersion != thisGameVersion)
+                    {
+                        throw new Exception(string.Format("Incompatible game save - {0} vs {1}", header.GameVersion, thisGameVersion));
+                    }
                     GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fileName);
                     using (var memoryStream = new MemoryStream())
                     {
                         int value;
                         while (fileStream.CanRead && ((value = fileStream.ReadByte()) != -1))
                         {
-                            // give a lot of lines ....   GameLog.Core.SaveLoad.DebugFormat("{0}",value.ToString());
                             memoryStream.WriteByte((byte)value);
                         }
                         GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileName);
-                        //GameLog.Core.SaveLoad.DebugFormat("loading {0}, Stream was read...", fileStream.ToString());
                         memoryStream.Seek(0, SeekOrigin.Begin);
                         game = StreamUtility.Read<GameContext>(memoryStream.ToArray());
                     }
                 }
 
-                //gameArray = GameContext;
-
-                //foreach (sectormap item in GameContext.Current.Universe.Map)
-                //{
-
-                //}
-                //for (int j = 0; j < game.cou - 1; j++)  // reading memoryStreamArray
-                //{
-                //}
-
-                    GameLog.Core.SaveLoad.DebugFormat("loading GameTables from HDD...");
+                GameLog.Core.SaveLoad.DebugFormat("loading GameTables from HDD...");
                 game.Tables = GameTables.Load();
                 GameLog.Core.SaveLoad.DebugFormat("loading ResearchMatrix from HDD...");
                 game.ResearchMatrix = ResearchMatrix.Load();
@@ -165,11 +173,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error(
-                    string.Format(
-                        "Error occurred loading saved game '{0}'.",
-                        fileName),
-                    e);
+                GameLog.Core.General.Error("Error occurred loading saved game", e);
 
                 header = null;
                 game = null;
@@ -183,27 +187,27 @@ namespace Supremacy.Game
         private static string FixFileName(string fileName)
         {
             if (string.Equals(Path.GetExtension(fileName), AutoSaveFileName, StringComparison.OrdinalIgnoreCase))
+            {
                 return fileName;
-            
+            }
+
             if (!string.Equals(Path.GetExtension(fileName), ".sav", StringComparison.OrdinalIgnoreCase))
+            {
                 fileName = Path.GetFileNameWithoutExtension(fileName) + ".sav";
+            }
 
             return fileName;
         }
 
         public static FileInfo GetSavedGameFile([NotNull] SavedGameHeader header)
         {
-            //works   GameLog.Print("GetSavedGameFile FileName={0} ", header.FileName);
             if (header == null)
                 throw new ArgumentNullException("header");
 
-            //works   GameLog.Print("GetSavedGameFile with header={0} ", header.EmpireNames);
-
-            return new FileInfo(
-                Path.Combine(
-                    StorageManager.UserLocalProfileFolder,
-                    SavedGameDirectory,
-                    FixFileName(header.FileName)));
+            return new FileInfo(Path.Combine(
+                StorageManager.UserLocalProfileFolder,
+                SavedGameDirectory,
+                FixFileName(header.FileName)));
         }
 
         /// <summary>
@@ -238,7 +242,9 @@ namespace Supremacy.Game
             }
 
             if (string.IsNullOrEmpty(fileName))
+            {
                 fileName = DateTime.Now.ToLongDateString();
+            }
 
             SavedGameHeader header;
 
@@ -249,12 +255,16 @@ namespace Supremacy.Game
                 fileName = Path.Combine(SavedGameDirectory, FixFileName(fileName));
 
                 if (!Directory.Exists(SavedGameDirectory))
+                {
                     Directory.CreateDirectory(SavedGameDirectory);
+                }
 
                 header = new SavedGameHeader(game, localPlayer);
 
                 if (string.Equals(fileName, AutoSaveFileName, StringComparison.OrdinalIgnoreCase))
+                {
                     header.IsAutoSave = true;
+                }
 
                 var buffer = StreamUtility.Write(game);
 
@@ -266,9 +276,7 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error(
-                    "Error saving game.",
-                    e);
+                GameLog.Core.General.Error("Error saving game", e);
 
                 return false;
             }
@@ -303,16 +311,17 @@ namespace Supremacy.Game
                 string file_autosav_one_turn_ago = SavedGameFolder + ".autosav_one_turn_ago.sav";
                 string file_autosav_two_turns_ago = SavedGameFolder + ".autosav_two_turns_ago";
 
-                //GameLog.Core.SaveLoad.InfoFormat("saved {0} + {1} + {2}", file_autosav_current, file_autosav_one_turn_ago, file_autosav_two_turns_ago);
                 GameLog.Core.General.InfoFormat("saving {0}", file_autosav_current);
-                //GameLog.Core.SaveLoad.InfoFormat("saving {0}", file_autosav_one_turn_ago);
-                //GameLog.Core.SaveLoad.InfoFormat("saving {0}", file_autosav_two_turns_ago);
 
                 if (File.Exists(file_autosav_one_turn_ago))
+                {
                     File.Copy(file_autosav_one_turn_ago, file_autosav_two_turns_ago, true);
+                }
 
                 if (File.Exists(file_autosav_current))
+                {
                     File.Copy(file_autosav_current, file_autosav_one_turn_ago, true);
+                }
 
             }
             catch
