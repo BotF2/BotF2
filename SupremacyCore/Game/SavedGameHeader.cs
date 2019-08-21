@@ -1,5 +1,3 @@
-// SavedGameHeader.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,12 +5,13 @@
 //
 // All other rights reserved.
 
-using System;
-using System.IO;
-using System.Linq;
-
 using Supremacy.Resources;
 using Supremacy.Utility;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Supremacy.Game
 {
@@ -21,36 +20,11 @@ namespace Supremacy.Game
     /// </summary>
     public sealed class SavedGameHeader
     {
-        private static readonly Lazy<string> AutoSaveGameTitle = new Lazy<string>(
-            () =>
-            {
-                const string fallback = "(Auto Save)";
-
-                //GameLog.Core.SaveLoad.Debug("just for time stamp point 1");
-
-                try
-                {
-                    var localizedTitle = ResourceManager.GetString("AUTO_SAVE_GAME_TITLE");
-
-                    if (!string.IsNullOrWhiteSpace(localizedTitle))
-                        return localizedTitle;
-
-                    return fallback;
-                }
-                catch (Exception e)
-                {
-                    GameLog.Core.SaveLoad.ErrorFormat("###### Problem with SavedGame" + Environment.NewLine + "{0}", e);
-                    return fallback;
-                }
-            });
-
         public string Title
         {
             get
             {
-                if (FileName != null)
-                    GameLog.Core.SaveLoad.DebugFormat("FileName = {0}", FileName);
-                return IsAutoSave ? AutoSaveGameTitle.Value : FileName;
+                return IsAutoSave ? ResourceManager.GetString("AUTO_SAVE_GAME_TITLE") : FileName;
             }
         }
 
@@ -90,18 +64,7 @@ namespace Supremacy.Game
         {
             get
             {
-                try
-                {
-                    return "Game";
-
-                }
-                catch
-                {
-                    // ToDo: this is just a workaround. No problem occures having all empires "playable", that means "in the game"
-                    //generates much lines of output each second !!!     
-                    GameLog.Core.General.Error("########### Problem with EmpireNames[LocalPlayerEmpireID]");
-                    return LocalPlayerEmpireName;
-                }
+                return "Game";
             }
         }
 
@@ -124,6 +87,11 @@ namespace Supremacy.Game
         public string FileName { get; set; }
 
         /// <summary>
+        /// The version of the game that this game save was made with
+        /// </summary>
+        public string GameVersion { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SavedGameHeader"/> class.
         /// </summary>
         private SavedGameHeader() { }
@@ -135,7 +103,6 @@ namespace Supremacy.Game
         /// <param name="localPlayer">The local player.</param>
         public SavedGameHeader(IGameContext game, Player localPlayer)
         {
-            //GameLog.Core.SaveLoad.Debug("just for time stamp point 2");
             if (game == null)
                 throw new ArgumentNullException("game");
             if (localPlayer == null)
@@ -147,6 +114,7 @@ namespace Supremacy.Game
             TurnNumber = game.TurnNumber;
             Options = game.Options;
             Timestamp = DateTimeOffset.Now;
+            GameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             var empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
 
@@ -162,17 +130,20 @@ namespace Supremacy.Game
             }
         }
 
+
         /// <summary>
         /// Writes this <see cref="SavedGameHeader"/> to the specified output stream.
         /// </summary>
         /// <param name="output">The output stream.</param>
+        [SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "TODO: Requires further investigation")]
         public void Write(Stream output)
         {
             if (!output.CanWrite)
+            {
                 throw new InvalidOperationException("Cannot write to stream");
+            }
 
             var writer = new BinaryWriter(output);
-
             Options.Write(writer);
             writer.Write(IsMultiplayerGame);
             writer.Write(LocalPlayerName);
@@ -180,15 +151,14 @@ namespace Supremacy.Game
             writer.Write(TurnNumber);
             writer.Write(Timestamp.Ticks);
             writer.Write(Timestamp.Offset.Ticks);
+            writer.Write(GameVersion);
 
             var empireCount = (byte)EmpireIDs.Length;
-            //GameLog.Print("empireCount={0}", empireCount);
 
             writer.Write(empireCount);
 
             for (int i = 0; i < empireCount; i++)
             {
-                // works 
                 GameLog.Core.SaveLoad.DebugFormat("Writing Empires: {0}, CivID={1}, empires in total={2}, SlotClaim={3}, Slotstatus={4}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
                 writer.Write(EmpireIDs[i]);
                 writer.Write(EmpireNames[i]);
@@ -205,13 +175,12 @@ namespace Supremacy.Game
         public static SavedGameHeader Read(Stream input)
         {
             if (!input.CanRead)
+            {
                 throw new InvalidOperationException("Cannot read from stream");
+            }
 
             var reader = new BinaryReader(input);
             var options = new GameOptions();
-
-            //GameLog.Core.SaveLoad.DebugFormat("----------------------------------------------------");
-            //GameLog.Core.SaveLoad.DebugFormat("########  reading a saved game header...");
 
             options.Read(reader);
 
@@ -222,24 +191,16 @@ namespace Supremacy.Game
                 LocalPlayerName = reader.ReadString(),
                 LocalPlayerEmpireID = reader.ReadInt32(),
                 TurnNumber = reader.ReadInt32(),
-                Timestamp = new DateTimeOffset(reader.ReadInt64(), TimeSpan.FromTicks(reader.ReadInt64()))
+                Timestamp = new DateTimeOffset(reader.ReadInt64(), TimeSpan.FromTicks(reader.ReadInt64())),
+                GameVersion = reader.ReadString()
             };
 
-            //doesn't work here
-            //GameLog.Core.SaveLoad.DebugFormat("Reading SavedGameHeader: Timestamp={0}, LocalPlayerName={1}, LocalPlayerEmpireID={2}, TurnNumber={3}, IsMultiplayerGame={4}",
-            //                            Timestamp, LocalPlayerName, LocalPlayerEmpireID, TurnNumber, IsMultiplayerGame, Options.ToString());
-
             var empireCount = reader.ReadByte();
-            //works     GameLog.GameLog.Core.SaveLoad.DebugFormat("Read empireCount={0}", empireCount);
 
             header.EmpireIDs = new int[empireCount];
             header.EmpireNames = new string[empireCount];
             header.SlotClaims = new SlotClaim[empireCount];
             header.SlotStatus = new SlotStatus[empireCount];
-
-            string gameLogString = "";
-            string AddGameLogString = "reading a saved game header... :";
-            gameLogString += AddGameLogString;
 
             for (int i = 0; i < empireCount; i++)
             {
@@ -248,19 +209,7 @@ namespace Supremacy.Game
                 header.EmpireNames[i] = reader.ReadString();
                 header.SlotClaims[i] = (SlotClaim)reader.ReadByte();
                 header.SlotStatus[i] = (SlotStatus)reader.ReadByte();
-
-                if (i == 0)
-                    gameLogString = gameLogString + " SlotClaim " + header.SlotClaims[i] + ", Slotstatus=" + header.SlotStatus[i] + "Emp: ";
-
-
-                gameLogString += header.EmpireIDs[i] + "=" + header.EmpireNames[i] + ", ";
-                //GameLog.Core.SaveLoad.DebugFormat("Reading: Empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, Empire: {0}",
-                //                        header.EmpireNames[i], header.EmpireIDs[i], empireCount, header.SlotClaims[i], header.SlotStatus[i]);
             }
-
-            // works
-            //GameLog.Core.SaveLoad.DebugFormat("{0}", gameLogString);
-            //GameLog.Core.SaveLoad.DebugFormat("----------------------------------------------------");
 
             return header;
         }
