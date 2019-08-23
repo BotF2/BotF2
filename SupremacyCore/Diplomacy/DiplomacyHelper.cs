@@ -96,31 +96,42 @@ namespace Supremacy.Diplomacy
                 }
             }
         }
+        //Regard makes crashes
 
+        public static void ApplyRegardChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int regardDelta)
+        {
+            if (civ == null)
+                throw new ArgumentNullException("civ");
 
+            var civId = civ.CivID;
 
-        // Regard makes crashes
+            foreach (var diplomat in GameContext.Current.Diplomats)
+            {
+                if (diplomat.OwnerID == civId)
+                    continue;
 
-        //public static void ApplyRegardChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int regardDelta)
-        //{
-        //    if (civ == null)
-        //        throw new ArgumentNullException("civ");
+                var foreignPower = diplomat.GetForeignPower(civ);
+                if (civId == otherPower.CivID)
+                {
+                    GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
+                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
 
-        //    var civId = civ.CivID;
-                       
-        //    foreach (var diplomat in GameContext.Current.Diplomats)
-        //    {
-        //        var foreignPower = diplomat.GetForeignPower(civ);
+                    if (foreignPower != null)
+                        foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
+                    foreignPower.DiplomacyData.Regard.UpdateAndReset();
 
-        //        if (diplomat.OwnerID == civId)
-        //            continue;
+                    GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
+                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+                }
 
-        //        if (foreignPower != null)
-        //            foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
-        //        foreignPower.DiplomacyData.Regard.UpdateAndReset();
-        //        foreignPower.UpdateRegardAndTrustMeters();
-        //    }
-        //}
+                if (foreignPower != null)
+                {
+                    foreignPower.DiplomacyData.Trust.AdjustCurrent(regardDelta);
+                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
+                    foreignPower.UpdateRegardAndTrustMeters();
+                }
+            }
+        }
 
         public static Colony GetSeatOfGovernment([NotNull] Civilization who)
         {
@@ -543,12 +554,12 @@ namespace Supremacy.Diplomacy
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 // playing 
-                var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
+                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
                 //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
                 //_soundPlayer.Play("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.mp3"); // at SitRep "Resistance is fut...."
 
                 ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                //ApplyRegardChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Regard.CurrentValue * -1);
+                ApplyRegardChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Regard.CurrentValue * -1);
 
 
                 //GameLog.Core.Diplomacy.DebugFormat("foreignPower = {3}, firstManager.Civilization.Key = {0}, second = {1}, TrustDelta {2}", 
@@ -560,16 +571,25 @@ namespace Supremacy.Diplomacy
                 foreignPower.DeclareWar();
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
-                //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
+                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
 
-                //ApplyTrustChange(secondCiv, firstCiv, ownPower.DiplomacyData.Trust.CurrentValue * -1);
                 ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                //ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
+                ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
 
                 //GameLog.Core.Diplomacy.DebugFormat("secondManager.Civilization.Key = {0}, first = {1}, TrustDelta {2}", secondManager.Civilization.Key, firstManager.Civilization.Key, trustDelta);
             }
 
+            // ToDo: check for human player so this is not done for human player
+            if (secondManager.Civilization.Traits.Contains("WarLike") == firstManager.Civilization.Traits.Contains("WarLike"))
+            {
+                foreignPower.DeclareWar();
+                firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
+
+                ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+                ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
+            }
         }
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)

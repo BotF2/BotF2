@@ -551,6 +551,7 @@ namespace Supremacy.Orbitals
 
         protected internal override void OnTurnEnding()
         {
+            // ToDo: what about nonaggression treaty and you promissed not to go into other empires space?
             //Medicate the colony
             var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10);
             if (Fleet.Sector.System.Colony is null) // currentx
