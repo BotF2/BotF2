@@ -92,8 +92,16 @@ namespace Supremacy.Entities
         private string _homeSystemName;
         private string _key;
         private string _longName;
+        private string _longNameArtCap;
+        private string _longNameArtDir;
+        private string _longNameFromThe;
+        private string _longNameOfTheGreater;
         private string _raceId;
         private string _shortName;
+        private string _shortNameArtCap;
+        private string _shortNameArtDir;
+        private string _shortNameFromThe;
+        private string _shortNameToThe;
         private string _shipPrefix;
         private float _industryToCreditsConversionRatio = 0.0f;
         private int _baseMoraleLevel = 100;
@@ -160,7 +168,15 @@ namespace Supremacy.Entities
 
             _raceId = (string)element.Element(ns + "Race");
             _shortName = (string)element.Element(ns + "ShortName");
+            _shortNameArtCap = (string)element.Element(ns + "ShortNameArtCap");
+            _shortNameArtDir = (string)element.Element(ns + "ShortNameArtDir");
+            _shortNameFromThe = (string)element.Element(ns + "ShortNameFromThe");
+            _shortNameToThe = (string)element.Element(ns + "ShortNameToThe");
             _longName = (string)element.Element(ns + "LongName");
+            _longNameArtCap = (string)element.Element(ns + "LongNameArtCap");
+            _longNameArtDir = (string)element.Element(ns + "LongNameArtDir");
+            _longNameFromThe = (string)element.Element(ns + "LongNameFromThe");
+            _longNameOfTheGreater = (string)element.Element(ns + "LongNameOfTheGreater");
             _diplomacyReport = (string)element.Element(ns + "DiplomacyReport");
             _homeSystemName = (string)element.Element(ns + "HomeSystemName");
             _color = (string)element.Element(ns + "Color");
@@ -303,6 +319,47 @@ namespace Supremacy.Entities
             set { _shortName = value; }
         }
 
+
+        /// <summary>
+        /// Gets or sets the short name ArtCap of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The short name ArtCap.</value>
+        public string ShortNameArtCap
+        {
+            get { return _shortNameArtCap; }
+            set { _shortNameArtCap = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the short name ArtDir of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The short name ArtDir.</value>
+        public string ShortNameArtDir
+        {
+            get { return _shortNameArtDir; }
+            set { _shortNameArtDir = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the short name FromThe of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The short name FromThe.</value>
+        public string ShortNameFromThe
+        {
+            get { return _shortNameFromThe; }
+            set { _shortNameFromThe = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the short name ToThe of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The short name ToThe.</value>
+        public string ShortNameToThe
+        {
+            get { return _shortNameToThe; }
+            set { _shortNameToThe = value; }
+        }
+
         /// <summary>
         /// Gets or sets the long name of this <see cref="Civilization"/>.
         /// </summary>
@@ -311,6 +368,46 @@ namespace Supremacy.Entities
         {
             get { return _longName; }
             set { _longName = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the long name ArtCap of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The long name ArtCap.</value>
+        public string LongNameArtCap
+        {
+            get { return _longNameArtCap; }
+            set { _longNameArtCap = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the long name ArtDir of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The long name ArtDir.</value>
+        public string LongNameArtDir
+        {
+            get { return _longNameArtDir; }
+            set { _longNameArtDir = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the long name FromThe of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The long name FromThe.</value>
+        public string LongNameFromThe
+        {
+            get { return _longNameFromThe; }
+            set { _longNameFromThe = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the long name OfTheGreater of this <see cref="Civilization"/>.
+        /// </summary>
+        /// <value>The long name OfTheGreater.</value>
+        public string LongNameOfTheGreater
+        {
+            get { return _longNameOfTheGreater; }
+            set { _longNameOfTheGreater = value; }
         }
 
         /// <summary>
@@ -615,7 +712,15 @@ namespace Supremacy.Entities
             writer.WriteEndAttribute();
             writer.WriteElementString("Race", RaceID);
             writer.WriteElementString("ShortName", ShortName);
+            writer.WriteElementString("ShortNameArtCap", ShortNameArtCap);
+            writer.WriteElementString("ShortNameArtDir", ShortNameArtDir);
+            writer.WriteElementString("ShortNameFromThe", ShortNameFromThe);
+            writer.WriteElementString("ShortNameToThe", ShortNameToThe);
             writer.WriteElementString("LongName", LongName);
+            writer.WriteElementString("LongNameArtCap", LongNameArtCap);
+            writer.WriteElementString("LongNameArtDir", LongNameArtDir);
+            writer.WriteElementString("LongNameFromThe", LongNameFromThe);
+            writer.WriteElementString("LongNameOfTheGreater", LongNameOfTheGreater);
             if (!String.IsNullOrEmpty(DiplomacyReport))
                 writer.WriteElementString("DiplomacyReport", DiplomacyReport);
             if (!String.IsNullOrEmpty(HomeSystemName))
@@ -645,12 +750,46 @@ namespace Supremacy.Entities
                     new XElement(
                         ns + "Race",
                         Race),
+                    
                     new XElement(
                         ns + "ShortName",
                         ShortName),
+
+                    new XElement(
+                        ns + "ShortNameArtCap",
+                        ShortNameArtCap),
+
+                    new XElement(
+                        ns + "ShortNameArtDir",
+                        ShortNameArtDir),
+
+                    new XElement(
+                        ns + "ShortNameFromThe",
+                        ShortNameFromThe),
+
+                    new XElement(
+                        ns + "ShortNameToThe",
+                        ShortNameToThe),
+
                     new XElement(
                         ns + "LongName",
                         LongName),
+
+                    new XElement(
+                        ns + "LongNameArtCap",
+                        LongNameArtCap),
+
+                    new XElement(
+                        ns + "LongNameArtDir",
+                        LongNameArtDir),
+
+                    new XElement(
+                        ns + "LongNameFromThe",
+                        LongNameFromThe),
+
+                    new XElement(
+                        ns + "LongNameOfTheGreater",
+                        LongNameOfTheGreater),
                     new XElement(
                         ns + "DiplomacyReport",
                         string.Join(
