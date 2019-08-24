@@ -579,19 +579,19 @@ namespace Supremacy.Diplomacy
                 //GameLog.Core.Diplomacy.DebugFormat("secondManager.Civilization.Key = {0}, first = {1}, TrustDelta {2}", secondManager.Civilization.Key, firstManager.Civilization.Key, trustDelta);
             }
 
-            if (!secondManager.Civilization.IsHuman || !firstManager.Civilization.IsHuman)
-            {
-                if (secondManager.Civilization.Traits.Contains("WarLike") == firstManager.Civilization.Traits.Contains("WarLike"))
-                {
-                    foreignPower.DeclareWar();
-                    firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
+            //if (!secondManager.Civilization.IsHuman || !firstManager.Civilization.IsHuman)
+            //{
+            //    if (secondManager.Civilization.Traits.Contains("WarLike") == firstManager.Civilization.Traits.Contains("WarLike"))
+            //    {
+            //        foreignPower.DeclareWar();
+            //        firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+            //        secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+            //        //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
 
-                    ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                    ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
-                }
-            }
+            //        ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+            //        ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
+            //    }
+            //}
         }
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)
