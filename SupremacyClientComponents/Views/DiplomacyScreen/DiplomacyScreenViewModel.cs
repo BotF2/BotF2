@@ -570,9 +570,10 @@ namespace Supremacy.Client.Views
                 if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
                     return false;
 
-                var selectedForeignPower = SelectedForeignPower;
+                var selectedForeignPower = SelectedForeignPower;  // if one is selected in the screen
 
-                GameLog.Client.Diplomacy.DebugFormat("DisplayMode is Outbox, SelectedForeignPower ={0}", selectedForeignPower);
+                if (selectedForeignPower != null)
+                    GameLog.Client.Diplomacy.DebugFormat("DisplayMode is Outbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
 
                 return selectedForeignPower != null &&
                        selectedForeignPower.OutgoingMessage != null;
@@ -608,7 +609,7 @@ namespace Supremacy.Client.Views
 
                 var selectedForeignPower = SelectedForeignPower;
 
-                GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower);
+                GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
                 return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null && 
                        !selectedForeignPower.IncomingMessage.IsStatement;
             }
@@ -731,7 +732,7 @@ namespace Supremacy.Client.Views
                 var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
-                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerViewModel civ ={0} to playerEmpireID ={1}= {2}", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name);
+                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerViewModel: civ {0} vs {2} (playerEmpireID {1})", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name);
             }
 
             if (selectedForeignPower != null)

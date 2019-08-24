@@ -254,6 +254,18 @@ namespace Supremacy.Diplomacy
             writer.WriteOptimized(_contactTurn);
             writer.WriteOptimized((int)_diplomacyStatus);
             writer.WriteOptimized(_lastStatusChange);
+
+            //later: do it for Saveload: GameLog.Core.SaveLoad.DebugFormat(""
+            // works fine
+            //GameLog.Core.SaveLoad.DebugFormat("_ownerId = {0}, _counterpartyId = {1}, _contactTurn = {4}, _lastStatusChange = {6}, (int)_diplomacyStatus = {5}, _regard = {2}, _trust = {3}"
+            //    , _ownerId
+            //    , _counterpartyId
+            //    , _regard
+            //    , _trust
+            //    , _contactTurn
+            //    , (int)_diplomacyStatus
+            //    , _lastStatusChange
+            //    );
         }
     }
 }

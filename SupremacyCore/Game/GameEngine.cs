@@ -619,18 +619,19 @@ namespace Supremacy.Game
 
                     var foreignPower = diplomat.GetForeignPower(civ2);
                     var foreignPowerStatus = diplomat.GetForeignPower(civ2).DiplomacyData.Status;
-                    //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                    GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus);
 
 
                     if (civ1.Key == "Borg")    /// and contact is made
                     {
-                        GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
                     }
 
                     if (civ2.Key == "Borg")    /// and contact is made
                     {
-                        GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
                     }
 
