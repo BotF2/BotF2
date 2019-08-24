@@ -313,12 +313,13 @@ namespace Supremacy.Diplomacy
 
             // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
-            // For now - you cannot go to the homeworld of other players.  ToDo: make it for (1) only with no contact and (2) only only major races
+            // You cannot go to the homeworld of other players with exception for (1) no contact and (2) declare war
             if (sector.System != null)
             {
-                if (sector.System.Owner != null)
+                if (sector.System.Owner != null) // && sector.System.Owner.IsEmpire) //not guaranteed to be safe for parallel execution.
                 {
-                    if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony) // && sectorOwner != traveller)
+                    if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
+                        DiplomacyHelper.IsContactMade(traveller, sectorOwner) && !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
                     {
                         travel = false;
                     }
@@ -587,19 +588,19 @@ namespace Supremacy.Diplomacy
                 //GameLog.Core.Diplomacy.DebugFormat("secondManager.Civilization.Key = {0}, first = {1}, TrustDelta {2}", secondManager.Civilization.Key, firstManager.Civilization.Key, trustDelta);
             }
 
-            if (!secondManager.Civilization.IsHuman || !firstManager.Civilization.IsHuman)
-            {
-                if (secondManager.Civilization.Traits.Contains("Warlike") == firstManager.Civilization.Traits.Contains("Warlike"))
-                {
-                    foreignPower.DeclareWar();
-                    firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
+            //if (!secondManager.Civilization.IsHuman || !firstManager.Civilization.IsHuman)
+            //{
+            //    if (secondManager.Civilization.Traits.Contains("Warlike") == firstManager.Civilization.Traits.Contains("Warlike"))
+            //    {
+            //        foreignPower.DeclareWar();
+            //        firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+            //        secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+            //        //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
 
-                    ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                    ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
-                }
-            }
+            //        ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+            //        ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
+            //    }
+            //}
         }
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)
