@@ -551,14 +551,14 @@ namespace Supremacy.Orbitals
 
         protected internal override void OnTurnEnding()
         {
-            // ToDo: what about nonaggression treaty and you promissed not to go into other empires space?
+            
             //Medicate the colony
             var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10);
             if (Fleet.Sector.System.Colony is null) // currentx
             {
                 //do nothing
             }
-            else
+            else if(Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
             {
                 Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
@@ -570,13 +570,21 @@ namespace Supremacy.Orbitals
             }
             else
             {
-                if (Fleet.Sector.System.Colony.Owner != Fleet.Owner)
+                if (Fleet.Sector.System.Colony.Owner != Fleet.Owner && Fleet.Ships.Any(s =>s.ShipType == ShipType.Medical))
                 {
                     DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
                     Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
                     Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
                 }
+                // Nonaggression treaty - you promissed not to go into the other empires space
+                else if (GameContext.Current.AgreementMatrix.IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
+                {
+                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -20);
+                    // ToDo; end nonaggression treaty
+                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                }
             }
+           
         }
 
         public override bool IsComplete {
