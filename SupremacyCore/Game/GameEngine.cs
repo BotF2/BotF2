@@ -740,7 +740,7 @@ namespace Supremacy.Game
             var combats = new List<List<CombatAssets>>();
             var invasions = new List<InvasionArena>();
             var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
-
+  
             foreach (var fleet in fleetsAtLocation)
             {
                 if (!combatLocations.Contains(fleet.Location)) // && (Owners.Count > 1))
