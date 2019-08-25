@@ -746,31 +746,31 @@ namespace Supremacy.Game
                 if (!combatLocations.Contains(fleet.Location)) // && (Owners.Count > 1))
                 {
                     var assets = CombatHelper.GetCombatAssets(fleet.Location);
+
                     if (assets.Count > 1)
                     {
                         combats.Add(assets);
                         combatLocations.Add(fleet.Location);
                     }
-                    if (fleet.Sector.System == null)
-                        continue;
+                    //if (fleet.Sector.System == null)
+                    //    continue;
 
-                    if (fleet.Sector.System.Owner != null) // && sector.System.Owner.IsEmpire) // ? not guaranteed to be safe for parallel execution if you add IsEmpire?
-                    {
-                        if (fleet.Sector.System.Colony == GameContext.Current.Universe.HomeColonyLookup[fleet.Sector.Owner] &&
-                            fleet.Sector.System.Colony != GameContext.Current.Universe.HomeColonyLookup[fleet.Owner] &&
-                            DiplomacyHelper.IsContactMade(fleet.Owner, fleet.Sector.Owner) &&
-                            !DiplomacyHelper.AreAtWar(fleet.Owner, fleet.Sector.Owner))
-                        {
-                            if (assets.Count > 1)
-                            {
-                                if(combats.Count >1)
-                                combats.Remove(assets);
-                                combatLocations.Add(fleet.Location);
-                            }
-                        }
-                    }
-                        
-                    
+                    //if (fleet.Sector.System.Owner != null) // && sector.System.Owner.IsEmpire) // ? not guaranteed to be safe for parallel execution if you add IsEmpire?
+                    //{
+                    //    if (fleet.Sector.System.Colony == GameContext.Current.Universe.HomeColonyLookup[fleet.Sector.Owner] &&
+                    //        fleet.Sector.System.Colony != GameContext.Current.Universe.HomeColonyLookup[fleet.Owner] &&
+                    //        DiplomacyHelper.IsContactMade(fleet.Owner, fleet.Sector.Owner) &&
+                    //        !DiplomacyHelper.AreAtWar(fleet.Owner, fleet.Sector.Owner))
+                    //    {
+                    //        if (assets.Count > 1)
+                    //        {
+                    //            if(combats.Count >1)
+                    //            combats.Remove(assets);
+                    //            combatLocations.Add(fleet.Location);
+                    //        }
+                    //    }
+                    //}
+                            
                 }
                 
                 if (!invasionLocations.Contains(fleet.Location))

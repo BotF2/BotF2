@@ -314,19 +314,19 @@ namespace Supremacy.Diplomacy
             // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
             // You cannot go to the homeworld of other civs with exception for (1) no contact and (2) declare war
-            //if (sector.System != null)
-            //{
-            //    if (sector.System.Owner != null) // && sector.System.Owner.IsEmpire) // ? not guaranteed to be safe for parallel execution if you add IsEmpire?
-            //    {
-            //        if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony && sector.System.Colony == GameContext.Current.Universe.HomeColonyLookup[sectorOwner] &&
-            //            DiplomacyHelper.IsContactMade(traveller, sectorOwner) && !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
-            //        {
-            //            travel = false;
-            //        }
-            //    }
-            //}
+            if (sector.System != null)
+            {
+                if (sector.System.Owner != null) // && sector.System.Owner.IsEmpire) // ? not guaranteed to be safe for parallel execution if you add IsEmpire?
+                {
+                    if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony && sector.System.Colony == GameContext.Current.Universe.HomeColonyLookup[sectorOwner] &&
+                        DiplomacyHelper.IsContactMade(traveller, sectorOwner) && !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
+                    {
+                        travel = false;
+                    }
+                }
+            }
 
-                return travel;
+            return travel;
         }
 
         /// <summary>
