@@ -740,33 +740,39 @@ namespace Supremacy.Game
             var combats = new List<List<CombatAssets>>();
             var invasions = new List<InvasionArena>();
             var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
-                 //.Where(p => !p.IsCamouflaged).ToList();
+
             foreach (var fleet in fleetsAtLocation)
             {
-                //if (fleet.IsCamouflaged == false)
-                //{
-                //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4}, IsCloaked = {5}",
-                //    fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
-                //}
-
-                //if (fleet.IsCamouflaged)
-                //{
-                //    GameLog.Core.Combat.DebugFormat("fleet at {2}: {0} {1} order = {3}, IsCamouflaged = {4} (TRUE??), IsCloaked = {5}",
-                //            fleet.ObjectID, fleet.Name, fleet.Location.ToString(), fleet.Order, fleet.IsCamouflaged, fleet.IsCloaked);
-                //}
-
-                //List<Fleet> _owners = new List<Fleet>();
-                //var Owners = _owners.Where(p => p.Owner != null).GroupBy(p => p.Owner).Select(g => g.FirstOrDefault()).ToList();
-
                 if (!combatLocations.Contains(fleet.Location)) // && (Owners.Count > 1))
                 {
                     var assets = CombatHelper.GetCombatAssets(fleet.Location);
                     if (assets.Count > 1)
-                        {
+                    {
                         combats.Add(assets);
                         combatLocations.Add(fleet.Location);
                     }
+                    if (fleet.Sector.System == null)
+                        continue;
+
+                    if (fleet.Sector.System.Owner != null) // && sector.System.Owner.IsEmpire) // ? not guaranteed to be safe for parallel execution if you add IsEmpire?
+                    {
+                        if (fleet.Sector.System.Colony == GameContext.Current.Universe.HomeColonyLookup[fleet.Sector.Owner] &&
+                            fleet.Sector.System.Colony != GameContext.Current.Universe.HomeColonyLookup[fleet.Owner] &&
+                            DiplomacyHelper.IsContactMade(fleet.Owner, fleet.Sector.Owner) &&
+                            !DiplomacyHelper.AreAtWar(fleet.Owner, fleet.Sector.Owner))
+                        {
+                            if (assets.Count > 1)
+                            {
+                                if(combats.Count >1)
+                                combats.Remove(assets);
+                                combatLocations.Add(fleet.Location);
+                            }
+                        }
+                    }
+                        
+                    
                 }
+                
                 if (!invasionLocations.Contains(fleet.Location))
                 {
                     if (fleet.Order is AssaultSystemOrder)
