@@ -125,6 +125,43 @@ namespace Supremacy.Combat
             }
         }
 
+        public bool IsSpy
+        {
+            get
+            {
+                if (_combatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Spy"))
+                {
+                    return true;
+                }
+
+                if (_nonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Spy"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public bool IsDiplomcatic
+        {
+            get
+            {
+                if (_combatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Diplomatic"))
+                {
+                    return true;
+                }
+
+                if (_nonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Diplomatic"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+
         public bool HasSurvivingAssets
         {
             get { return CombatShips.Any() || NonCombatShips.Any() || ((Station != null) && !Station.IsDestroyed); }

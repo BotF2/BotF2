@@ -122,6 +122,7 @@ namespace Supremacy.Combat
                     }
                 }
             }
+
             if (sector.Station != null)
             {
                 var owner = sector.Station.Owner;
@@ -132,6 +133,57 @@ namespace Supremacy.Combat
                 }
 
                 assets[owner].Station = new CombatUnit(sector.Station);
+            }
+
+            results.AddRange(assets.Values);
+
+            return results;
+        }
+
+        public static List<CombatAssets> GetCamouflageAssets(MapLocation location)
+        {
+            var assets = new Dictionary<Civilization, CombatAssets>();
+            var results = new List<CombatAssets>();
+            //var units = new Dictionary<Civilization, CombatUnit>();
+            //var sector = GameContext.Current.Universe.Map[location];
+            var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
+            //var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
+            //var oppositionFleets = ExposedAssets.OppositionFleets;
+
+            //if (sector.Station == null)
+            //{
+            //    return results;
+            //}
+
+            //else
+            //{
+                var _ships = from p in engagingFleets.SelectMany(l => l.Ships) select p;
+
+                var Ships = _ships.Distinct().ToList();
+
+                foreach (var ship in Ships)
+                {
+                    CombatUnit unit = new CombatUnit(ship);
+
+                    if (!ship.IsCamouflaged) // && (unit.CamouflagedStrength >= maxOppostionScanStrength))
+                    {
+                        continue; // skip over ships not camaouflaged better than best scan strength
+                    }
+                    if (!assets.ContainsKey(ship.Owner))
+                    {
+                        assets[ship.Owner] = new CombatAssets(ship.Owner, location);
+                    }
+                    if (ship.IsCombatant)
+                    {
+                        assets[ship.Owner].CombatShips.Add(new CombatUnit(ship));
+
+                    }
+                    else
+                    {
+                        assets[ship.Owner].NonCombatShips.Add(new CombatUnit(ship));
+                    }
+                //}
             }
 
             results.AddRange(assets.Values);

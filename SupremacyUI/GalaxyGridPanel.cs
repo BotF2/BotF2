@@ -80,7 +80,6 @@ namespace Supremacy.UI
         private static readonly Dictionary<int, SolidColorBrush> s_colonyFills;
         private static readonly Dictionary<int, BitmapImage> s_fleetIcons;
         private static readonly Brush s_fogOfWarBrush;
-        private static readonly Brush s_fogOfIntelBrush;
         private static readonly Pen s_minorRaceBorderPen;
         private static readonly SolidColorBrush s_minorRaceFill;
         private static readonly Pen s_routePen;
@@ -225,11 +224,6 @@ namespace Supremacy.UI
             var fogOfWarColor = Color.FromArgb(0x66, 0x33, 0x33, 0x33);
             s_fogOfWarBrush = new SolidColorBrush(fogOfWarColor);
             s_fogOfWarBrush.Freeze();
-
-            //Fog of Intel
-            var fogOfIntelColor = Color.FromArgb(0x66, 0x66, 0x33, 0x33);
-            s_fogOfIntelBrush = new SolidColorBrush(fogOfIntelColor);
-            s_fogOfIntelBrush.Freeze();
 
             //Load empire specific ones
             //Instead of loading the civilizations from the gamecontext,
@@ -1841,9 +1835,107 @@ namespace Supremacy.UI
                         var owner = GetPerceivedSectorOwner(sector);
                         var location = sector.Location;
 
+                        /*******************
+                         * DRAW FOG OF WAR *
+                         *******************/
+                        if (!mapData.IsScanned(location))
+                        {
+                            dc.DrawRectangle(
+                                s_fogOfWarBrush,
+                                null,
+                                new Rect(new Point(SectorSize * location.X,
+                                                   SectorSize * location.Y),
+                                         new Point(SectorSize * (location.X + 1),
+                                                   SectorSize * (location.Y + 1))));
+                            continue;
+                        }
+
+                        if (owner != null)
+                            isContactMadeWithOwner = true;
+
+                        /**************************************
+                         * DRAW SECTOR FILL FOR OWNED SECTORS *
+                         **************************************/
+                        if (((system == null) || !system.HasColony) && sectorClaims.IsDisputed(location, playerCiv))
+                        {
+                            dc.DrawRectangle(
+                                s_disputedSectorFill,
+                                null,
+                                new Rect(new Point(SectorSize * location.X,
+                                                   SectorSize * location.Y),
+                                         new Point(SectorSize * (location.X + 1),
+                                                   SectorSize * (location.Y + 1))));
+                        }
+                        else if (isContactMadeWithOwner)
+                        {
+
+                            SolidColorBrush sectorBrush;
+                            if (owner.CivilizationType == CivilizationType.Empire)
+                            {
+                                sectorBrush = s_colonyFills[owner.CivID];
+                            }
+                            else
+                            {
+                                sectorBrush = s_minorRaceFill;
+                            }
+
+                            dc.DrawRectangle(
+                                sectorBrush,
+                                null,
+                                new Rect(
+                                    new Point(
+                                        SectorSize * location.X,
+                                        SectorSize * location.Y),
+                                    new Point(
+                                        SectorSize * (location.X + 1),
+                                        SectorSize * (location.Y + 1))));
+                        }
+
+                        var scanStrength = mapData.GetScanStrength(location);
+
+                        /*************************
+                         * DRAW SCAN RANGE LINES *
+                         *************************/
+
+                        if ((scanStrength > 0) &&
+                            ((location.X == (map.Width - 1)) || (mapData.GetScanStrength(sector.GetNeighbor(MapDirection.East).Location) <= 0)))
+                        {
+                            slc.BeginFigure(new Point(SectorSize * (location.X + 1),
+                                                     SectorSize * location.Y),
+                                           false, false);
+                            slc.LineTo(new Point(SectorSize * (location.X + 1),
+                                                SectorSize * (location.Y + 1)), true,
+                                      false);
+                        }
+                        if (scanStrength > 0)
+                        {
+                            slc.BeginFigure(new Point(SectorSize * location.X,
+                                          SectorSize * location.Y),
+                                           false, false);
+                            slc.LineTo(new Point(SectorSize * location.X,
+                                          SectorSize * (location.Y + 1)), true,
+                                      false);
+                            slc.BeginFigure(new Point(SectorSize * location.X,
+                                          SectorSize * location.Y),
+                                           false, false);
+                            slc.LineTo(new Point(SectorSize * (location.X + 1),
+                                          SectorSize * location.Y), true,
+                                      false);
+                        }
+                        if ((scanStrength > 0)
+                            && ((location.Y == (map.Height - 1))
+                                || (mapData.GetScanStrength(sector.GetNeighbor(MapDirection.South).Location) <= 0)))
+                        {
+                            slc.BeginFigure(new Point(SectorSize * location.X,
+                                          SectorSize * (location.Y + 1)),
+                                           false, false);
+                            slc.LineTo(new Point(SectorSize * (location.X + 1),
+                                          SectorSize * (location.Y + 1)), true,
+                                      false);
+                        }
                         /***************************
-                          * DRAW STARS & STAR NAMES *
-                          ***************************/
+                         * DRAW STARS & STAR NAMES *
+                         ***************************/
                         if (system != null)
                         {
                             var p = new Point(SectorSize * location.X,
@@ -1944,257 +2036,6 @@ namespace Supremacy.UI
                                 }
                             }
                         }
-
-                        /*******************
-                         * DRAW FOG OF WAR *
-                         *******************/
-
-                        if (!mapData.IsScanned(location))
-                        {
-                            dc.DrawRectangle(
-                                s_fogOfWarBrush,
-                                null,
-                                new Rect(new Point(SectorSize * location.X,
-                                                   SectorSize * location.Y),
-                                         new Point(SectorSize * (location.X + 1),
-                                                   SectorSize * (location.Y + 1))));
-                            continue;
-                        }
-
-                        if (owner != null)
-                            isContactMadeWithOwner = true;
-
-                        /*******************
-                         * DRAW FOG OF INTEL *
-                         *******************/
-                        bool _isIntelSeen = false;
-
-                        var stationAtLocation = new List<Station>(GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station)).ToList();
-
-
-                        foreach (var station1 in stationAtLocation)
-                        {
-
-                            var colony = GameContext.Current.Universe.HomeColonyLookup[station1.Owner];
-                            if (location == colony.Location)
-                                _isIntelSeen = true;
-                        }
-
-                        if (_isIntelSeen)
-                        {
-
-                            dc.DrawRectangle(
-                                s_fogOfIntelBrush,
-                                null,
-                                new Rect(new Point(SectorSize * location.X,
-                                                   SectorSize * location.Y),
-                                         new Point(SectorSize * (location.X + 1),
-                                                   SectorSize * (location.Y + 1) - 25)));
-                            continue;
-                        }
-
-                        ///*******************
-                        // * DRAW FOG OF WAR *
-                        // *******************/
-
-                        //if (!mapData.IsScanned(location))
-                        //{
-                        //    dc.DrawRectangle(
-                        //        s_fogOfWarBrush,
-                        //        null,
-                        //        new Rect(new Point(SectorSize * location.X,
-                        //                           SectorSize * location.Y),
-                        //                 new Point(SectorSize * (location.X + 1),
-                        //                           SectorSize * (location.Y + 1))));
-                        //    continue;
-                        //}
-
-                        //if (owner != null)
-                        //    isContactMadeWithOwner = true;
-
-                        /**************************************
-                         * DRAW SECTOR FILL FOR OWNED SECTORS *
-                         **************************************/
-                        if (((system == null) || !system.HasColony) && sectorClaims.IsDisputed(location, playerCiv))
-                        {
-                            dc.DrawRectangle(
-                                s_disputedSectorFill,
-                                null,
-                                new Rect(new Point(SectorSize * location.X,
-                                                   SectorSize * location.Y),
-                                         new Point(SectorSize * (location.X + 1),
-                                                   SectorSize * (location.Y + 1))));
-                        }
-                        else if (isContactMadeWithOwner)
-                        {
-
-                            SolidColorBrush sectorBrush;
-                            if (owner.CivilizationType == CivilizationType.Empire)
-                            {
-                                sectorBrush = s_colonyFills[owner.CivID];
-                            }
-                            else
-                            {
-                                sectorBrush = s_minorRaceFill;
-                            }
-
-                            dc.DrawRectangle(
-                                sectorBrush,
-                                null,
-                                new Rect(
-                                    new Point(
-                                        SectorSize * location.X,
-                                        SectorSize * location.Y),
-                                    new Point(
-                                        SectorSize * (location.X + 1),
-                                        SectorSize * (location.Y + 1))));
-                        }
-
-                        var scanStrength = mapData.GetScanStrength(location);
-
-                        /*************************
-                         * DRAW SCAN RANGE LINES *
-                         *************************/
-
-                        if ((scanStrength > 0) &&
-                            ((location.X == (map.Width - 1)) || (mapData.GetScanStrength(sector.GetNeighbor(MapDirection.East).Location) <= 0)))
-                        {
-                            slc.BeginFigure(new Point(SectorSize * (location.X + 1),
-                                                     SectorSize * location.Y),
-                                           false, false);
-                            slc.LineTo(new Point(SectorSize * (location.X + 1),
-                                                SectorSize * (location.Y + 1)), true,
-                                      false);
-                        }
-                        if (scanStrength > 0)
-                        {
-                            slc.BeginFigure(new Point(SectorSize * location.X,
-                                          SectorSize * location.Y),
-                                           false, false);
-                            slc.LineTo(new Point(SectorSize * location.X,
-                                          SectorSize * (location.Y + 1)), true,
-                                      false);
-                            slc.BeginFigure(new Point(SectorSize * location.X,
-                                          SectorSize * location.Y),
-                                           false, false);
-                            slc.LineTo(new Point(SectorSize * (location.X + 1),
-                                          SectorSize * location.Y), true,
-                                      false);
-                        }
-                        if ((scanStrength > 0)
-                            && ((location.Y == (map.Height - 1))
-                                || (mapData.GetScanStrength(sector.GetNeighbor(MapDirection.South).Location) <= 0)))
-                        {
-                            slc.BeginFigure(new Point(SectorSize * location.X,
-                                          SectorSize * (location.Y + 1)),
-                                           false, false);
-                            slc.LineTo(new Point(SectorSize * (location.X + 1),
-                                          SectorSize * (location.Y + 1)), true,
-                                      false);
-                        }
-                        ///***************************
-                        // * DRAW STARS & STAR NAMES *
-                        // ***************************/
-                        //if (system != null)
-                        //{
-                        //    var p = new Point(SectorSize * location.X,
-                        //                        SectorSize * location.Y);
-                        //    double topMargin = 4;
-                        //    if (mapData.IsScanned(location))
-                        //    {
-                        //        if (UseAnimatedStars)
-                        //        {
-                        //            if (_starBrushes == null)
-                        //            {
-                        //                _starBrushes = new Dictionary<StarType, ImageBrush>();
-                        //            }
-                        //            if (_animationClocks == null)
-                        //            {
-                        //                _animationClocks = new List<Clock>();
-                        //            }
-                        //            if (!_starBrushes.ContainsKey(sector.System.StarType))
-                        //            {
-                        //                AnimationClock clock;
-                        //                var brush = new ImageBrush(s_starImages[sector.System.StarType]);
-                        //                RenderOptions.SetCacheInvalidationThresholdMinimum(brush, 0.5);
-                        //                RenderOptions.SetCacheInvalidationThresholdMaximum(brush, 2.0);
-                        //                RenderOptions.SetCachingHint(brush, CachingHint.Cache);
-                        //                if (sector.System.StarType == StarType.Nebula)
-                        //                {
-                        //                    var opacityAnim = new DoubleAnimation(
-                        //                        1.0, 0.5, new Duration(new TimeSpan(0, 0, 3)))
-                        //                    {
-                        //                        AutoReverse = true,
-                        //                        RepeatBehavior = RepeatBehavior.Forever
-                        //                    };
-                        //                    clock = opacityAnim.CreateClock();
-                        //                    _animationClocks.Add(clock);
-                        //                    if (!UseAnimatedStars && clock.Controller != null)
-                        //                        clock.Controller.Pause();
-                        //                    brush.ApplyAnimationClock(Brush.OpacityProperty, clock);
-                        //                }
-                        //                else
-                        //                {
-                        //                    if (StarHelper.SupportsPlanets(sector.System))
-                        //                    {
-                        //                        var grow = new ScaleTransform(1.0, 1.0, 0.5, 0.5);
-                        //                        var growAnimation = new DoubleAnimation(
-                        //                            0.85, 1.25, new Duration(new TimeSpan(0, 0, 2)))
-                        //                        {
-                        //                            RepeatBehavior = RepeatBehavior.Forever,
-                        //                            AutoReverse = true,
-                        //                            AccelerationRatio = 1.0
-                        //                        };
-                        //                        clock = growAnimation.CreateClock();
-                        //                        if (clock.Controller != null)
-                        //                        {
-                        //                            clock.Controller.Seek(
-                        //                                new TimeSpan(
-                        //                                    0,
-                        //                                    0,
-                        //                                    0,
-                        //                                    0,
-                        //                                    500 * (int)sector.System.StarType),
-                        //                                TimeSeekOrigin.BeginTime);
-                        //                        }
-                        //                        _animationClocks.Add(clock);
-                        //                        grow.ApplyAnimationClock(ScaleTransform.ScaleXProperty, clock);
-                        //                        grow.ApplyAnimationClock(ScaleTransform.ScaleYProperty, clock);
-                        //                        brush.RelativeTransform = grow;
-                        //                    }
-                        //                }
-                        //                _starBrushes.Add(sector.System.StarType, brush);
-                        //            }
-                        //            dc.DrawRectangle(_starBrushes[sector.System.StarType], null, new Rect(p, new Size(SectorSize, SectorSize)));
-                        //        }
-                        //        else
-                        //        {
-                        //            if (_starBrushes != null)
-                        //            {
-                        //                _starBrushes.Clear();
-                        //                _starBrushes = null;
-                        //            }
-                        //            if (_animationClocks != null)
-                        //            {
-                        //                _animationClocks.Clear();
-                        //                _animationClocks = null;
-                        //            }
-                        //            dc.DrawImage(s_starImages[system.StarType],
-                        //                         new Rect(p, new Size(SectorSize, SectorSize)));
-                        //        }
-
-                        //        if (IsStarNameVisible(system))
-                        //        {
-                        //            var starName = GetStarText(system, playerCiv);
-                        //            if (starName.Height > starName.LineHeight)
-                        //                topMargin = -2;
-                        //            dcStarNames.DrawText(
-                        //                starName,
-                        //                new Point(p.X + 3,
-                        //                          p.Y + Math.Round(SectorSize * 2.0 / 3.0) + topMargin));
-                        //        }
-                        //    }
-                        //}
                         /*************************
                          * DRAW FLEET INDICATORS *
                          *************************/
@@ -2253,12 +2094,9 @@ namespace Supremacy.UI
                         {
                             int brushId = station.OwnerID;
                             Pen sPen;
-                            if ((station.Owner != playerCiv) && !DiplomacyHelper.IsContactMade(station.Owner, playerCiv))
-                            {
+                            if ((station.Owner != playerCiv) && !DiplomacyHelper.IsContactMade(station.Owner, playerCiv)) {
                                 sPen = new Pen(Brushes.White, 1.0);
-                            }
-                            else
-                            {
+                            } else {
                                 sPen = new Pen(s_colonyNameBrushes[brushId], 1.0);
                             }
                             var sText = new FormattedText(
@@ -2293,7 +2131,7 @@ namespace Supremacy.UI
                                 tPen = new Pen(Brushes.Green, 1.0);
 
                                 int tradeRouteAvailable = sector.TradeRouteIndicator - sector.System.Colony.TradeRoutes.Count();
-                                GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", sector.Location, tradeRouteAvailable, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutes.Count());
+                                GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", sector.Location,  tradeRouteAvailable, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutes.Count());
 
                                 var tText = new FormattedText(
                                     "T:" + sector.TradeRouteIndicator.ToString(),
@@ -2315,104 +2153,6 @@ namespace Supremacy.UI
                 slc.Close();
                 dc.DrawGeometry(null, scanPen, scanLines);
             }
-            //using (DrawingContext dc = _sectors.RenderOpen())
-            //{
-            //    var scanLines = new StreamGeometry();
-            //    var slc = scanLines.Open();
-
-            //    //dc.PushGuidelineSet(_guides);
-            //    for (var x = 0; x < map.Width; x++)
-            //    {
-            //        for (var y = 0; y < map.Height; y++)
-            //        {
-            //            var isContactMadeWithOwner = false;
-            //            var sector = map[x, y];
-            //            var system = sector.System;
-            //            var owner = GetPerceivedSectorOwner(sector);
-            //            var location = sector.Location;
-
-            //            /*******************
-            //             * DRAW FOG OF INTEL *
-            //             *******************/
-            //            bool _isIntelSeen = false;
-
-            //            var stationAtLocation = new List<Station>(GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station)).ToList();
-
-
-            //            foreach (var station1 in stationAtLocation)
-            //            {
-
-            //                var colony = GameContext.Current.Universe.HomeColonyLookup[station1.Owner];
-            //                if (location == colony.Location)
-            //                    _isIntelSeen = true;
-            //            }
-
-            //            if (_isIntelSeen)
-            //            {
-
-            //                dc.DrawRectangle(
-            //                    s_fogOfIntelBrush,
-            //                    null,
-            //                    new Rect(new Point(SectorSize * location.X,
-            //                                       SectorSize * location.Y),
-            //                             new Point(SectorSize * (location.X + 1),
-            //                                       SectorSize * (location.Y + 1) - 25)));
-            //                continue;
-            //            }
-            //            /*************************
-            //             * DRAW FLEET INDICATORS *
-            //             *************************/
-            //            var fleetsAtLocation = fleetLookup[location]
-            //                .Where(f => f.IsPresenceKnown)
-            //                .GroupBy(f => f.Source.Owner)
-            //                .ToList();
-
-            //            const double maxIconsWidth = (SectorSize * MaxScaleFactor) + FleetIconSpacing;
-
-            //            var consumedWidth = 0d;
-
-            //            while (fleetsAtLocation.Count != 0)
-            //            {
-            //                FleetIconAdorner adorner;
-
-            //                if (consumedWidth + FleetIconSize > maxIconsWidth)
-            //                {
-            //                    adorner = new FleetIconAdorner(
-            //                        playerCiv,
-            //                        location,
-            //                        fleetsAtLocation.Select(o => o.Key).ToArray());
-
-            //                    fleetsAtLocation.Clear();
-            //                }
-            //                else
-            //                {
-            //                    adorner = new FleetIconAdorner(
-            //                        playerCiv,
-            //                        location,
-            //                        new[] { fleetsAtLocation[0].Key });
-
-            //                    fleetsAtLocation.RemoveAt(0);
-            //                }
-
-            //                Canvas.SetLeft(
-            //                    adorner,
-            //                    (location.X * SectorSize) + FleetIconSpacing + consumedWidth);
-
-            //                Canvas.SetTop(
-            //                    adorner,
-            //                    (location.Y * SectorSize) + FleetIconSpacing);
-
-            //                _fleetIconCanvas.Children.Add(adorner);
-            //                _fleetIconAdorners.Add(adorner);
-
-            //                consumedWidth += (FleetIconSize + FleetIconSpacing);
-            //            }
-            //        }
-            //    }
-            //    slc.Close();
-            //    dc.DrawGeometry(null, scanPen, scanLines);
-            //}
-
         }
 
         [NotNull]
