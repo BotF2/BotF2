@@ -24,7 +24,6 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
-       // public static bool borgInGame = (GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
         
         /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
@@ -49,6 +48,7 @@ namespace Supremacy.Combat
 
             return sectors.FirstOrDefault();
         }
+
 
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {
@@ -86,6 +86,16 @@ namespace Supremacy.Combat
                     {
                         continue; // skip over ships camaouflaged better than best scan strength
                     }
+
+                    if (GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony &&
+                           CombatHelper.AreNotAtWar(ship.Owner, sector.Owner))
+                    {
+                        GameLog.Core.Combat.DebugFormat("Home Colony = {0}, not at War ={1}",
+                            (GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony), CombatHelper.AreNotAtWar(ship.Owner, sector.Owner));
+                        continue; // for home worlds you need to declare war
+                    }
+
+
                     if (!assets.ContainsKey(ship.Owner))
                     {
                         assets[ship.Owner] = new CombatAssets(ship.Owner, location);
@@ -244,7 +254,7 @@ namespace Supremacy.Combat
         /// <returns></returns>
         public static bool AreNotAtWar(Civilization firstCiv, Civilization secondCiv)
         {
-
+            bool notWar = true;
             if (firstCiv == null)
             {
                 throw new ArgumentNullException("firstCiv");
@@ -255,19 +265,19 @@ namespace Supremacy.Combat
             }
             if (firstCiv == secondCiv)
             {
-                return true;
+                notWar = true;
             }
             // do not call GetTargetOne or Two here!, use in ChoseTarget
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
                 GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
-                return true;
+                notWar = true;
             }
 
             if (diplomacyData.Status == ForeignPowerStatus.AtWar)
-                return false;
-            return true;
+                notWar = false;
+           return notWar;
         }
 
         /// <summary>

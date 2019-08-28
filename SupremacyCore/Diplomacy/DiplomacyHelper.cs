@@ -326,50 +326,54 @@ namespace Supremacy.Diplomacy
                     {
                         travel = false;
                     }
-                }
+                    //if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
+                    //    GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony)
+                    //{
+                    //    var map = GameContext.Current.Universe.Map;
+                    //    List<CombatAssets> localCamouflagedShips = new List<CombatAssets>();
+                    //    List<Sector> localSectors = new List<Sector>();
+                    //    //localSectors.Add(sector);
+                    //    int xLow = sector.Location.X - 6;
+                    //    int xHigh = sector.Location.X + 6;
+                    //    if (xLow < 0)
+                    //        xLow = 0;
+                    //    if (xHigh > map.Width + 1)
+                    //        xHigh = map.Width + 1;
+                    //    int yLow = sector.Location.Y - 6;
+                    //    int yHigh = sector.Location.Y + 6;
+                    //    if (yLow < 0)
+                    //        yLow = 0;
+                    //    if (yHigh < map.Height + 1)
+                    //        yHigh = map.Height + 1;
+
+                    //    for (int x = xLow; x <= xHigh; x++)
+                    //    {
+                    //        for (int y = yLow; y <= (xHigh); y++)
+                    //        {
+                    //            var nearSector = map[x, y];
+                    //            if (nearSector != null)
+                    //            {
+                    //                localSectors.Add(nearSector);
+                    //            }
+                    //        }
+                    //    }
+
+                    //    foreach (var aSector in localSectors)
+                    //    {
+
+                    //        localCamouflagedShips.AddRange(CombatHelper.GetCamouflageAssets(aSector.Location));
+                    //        localCamouflagedShips.Distinct();
+                    //    }
+                    //    if (localCamouflagedShips.Count > 0)
+                    //    {
+                    //        // need a way to make this only for the camou ships
+                    //        travel = true;
+                    //    }
+                    //}
+                }   
             }
-            //var map = GameContext.Current.Universe.Map;
-            //List<CombatAssets> localShips = new List<CombatAssets>();
-            //List<Sector> localSectors = new List<Sector>();
-            //localSectors.Add(sector);
-            //int xLocation = sector.Location.X - 6;
-            
-            //int yLocation = sector.Location.Y - 6;
 
-            //for (int x = xLocation; x < (sector.Location.X + 6); x++)
-            //{
-            //    if (xLocation < 0 || xLocation > map.Width +1)
-            //        continue;
-            //    for (int y = yLocation; y < (sector.Location.Y + 6); y++)
-            //    {
-            //        if (yLocation < 0 || yLocation > map.Height +1)
-            //            continue;
-            //        var nearSector = map[x, y];
-            //        if (nearSector != null)
-            //        {
-            //            localSectors.Add(nearSector);
-            //        }
-
-            //    }
-            //}
-            //foreach (var aSector in localSectors)
-            //{
-            //    //if (aSector.Location != null)
-            //    //{
-            //        localShips.AddRange(CombatHelper.GetCamouflageAssets(aSector.Location));
-            //        localShips.Distinct();
-            //    //}
-            //}
-            //var camouflagedAssets = localShips
-            //        .Where(s => s.Owner == traveller)
-            //        .Where(s => s.IsSpy == true || s.IsDiplomcatic == true)
-            //        .ToList();
-            //if (camouflagedAssets.Count > 0)
-            //{
-            //    travel = true;
-            //}
-
-            return travel;
+            return true;
         }
 
         /// <summary>
