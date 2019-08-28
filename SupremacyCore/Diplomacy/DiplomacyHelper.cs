@@ -314,12 +314,15 @@ namespace Supremacy.Diplomacy
 
             // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
-            // For now - you cannot go to the homeworld of other players.  ToDo: make it for (1) only with no contact and (2) only only major races
+            // You can go to the homeworld of other players no first contact and only after that with declaration of war. ToDo let camouflage ships in
             if (sector.System != null)
             {
                 if (sector.System.Owner != null)
                 {
-                    if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony) // && sectorOwner != traveller)
+                    if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
+                        GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony &&
+                        DiplomacyHelper.IsContactMade(traveller, sectorOwner) &&
+                        !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
                     {
                         travel = false;
                     }
@@ -630,7 +633,7 @@ namespace Supremacy.Diplomacy
 
             if (!secondManager.Civilization.IsHuman || !firstManager.Civilization.IsHuman)
             {
-                if (secondManager.Civilization.Traits.Contains("Warlike") == firstManager.Civilization.Traits.Contains("Warlike"))
+                if (secondManager.Civilization.Traits.Contains("Warlike") && firstManager.Civilization.Traits.Contains("Warlike"))
                 {
                     foreignPower.DeclareWar();
                     firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
