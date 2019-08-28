@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using TvdP.Collections;
 
 namespace Supremacy.Utility
 {
@@ -297,13 +298,13 @@ namespace Supremacy.Utility
         static EnumHelper()
         {
             EnumAttributeMatchCache = new Dictionary <Tuple<Enum, Attribute>, bool>();
-            EnumValueAttributeCache = new TvdP.Collections.Cache<Enum, AttributeCollection>();
+            EnumValueAttributeCache = new Cache<Enum, AttributeCollection>();
             FieldInfoHash = Hashtable.Synchronized(new Hashtable());
             EnumSeparators = new char[] { ',' };
         }
 
         static readonly Dictionary<Tuple<Enum, Attribute>, bool> EnumAttributeMatchCache;
-        static readonly TvdP.Collections.Cache<Enum, AttributeCollection> EnumValueAttributeCache;
+        static readonly Cache<Enum, AttributeCollection> EnumValueAttributeCache;
         static readonly char[] EnumSeparators;
         static readonly Hashtable FieldInfoHash;
 
