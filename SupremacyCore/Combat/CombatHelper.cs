@@ -86,16 +86,21 @@ namespace Supremacy.Combat
                     {
                         continue; // skip over ships camaouflaged better than best scan strength
                     }
-
-                    if (GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony &&
-                           CombatHelper.AreNotAtWar(ship.Owner, sector.Owner))
+                    if (sector.System != null && ship.Owner != sector.Owner && sector.Owner != null)
                     {
-                        GameLog.Core.Combat.DebugFormat("Home Colony = {0}, not at War ={1}",
-                            (GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony), CombatHelper.AreNotAtWar(ship.Owner, sector.Owner));
-                        continue; // for home worlds you need to declare war
+                        if (sector.System.Colony != null)
+                        {
+                            if (GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony)
+                            {
+                                if (!DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner))
+                                {
+                                    GameLog.Core.Combat.DebugFormat("Home Colony = {0}, Not at war ={1}",
+                                        GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
+                                    continue; // for home worlds you need to declare war to get combat
+                                }
+                            }
+                        }
                     }
-
-
                     if (!assets.ContainsKey(ship.Owner))
                     {
                         assets[ship.Owner] = new CombatAssets(ship.Owner, location);
@@ -275,7 +280,7 @@ namespace Supremacy.Combat
                 notWar = true;
             }
 
-            if (diplomacyData.Status == ForeignPowerStatus.AtWar)
+            else if (diplomacyData.Status == ForeignPowerStatus.AtWar)
                 notWar = false;
            return notWar;
         }
