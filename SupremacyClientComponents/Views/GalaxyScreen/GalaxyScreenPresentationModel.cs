@@ -20,7 +20,8 @@ using System.IO;
 using Supremacy.Resources;
 using Supremacy.Diplomacy;
 using Supremacy.Client.Context;
-
+using Supremacy.Game;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -299,10 +300,17 @@ namespace Supremacy.Client.Views
 
         public Ship SelectedShip
         {
-            get { return _selectedShipResolved ?? _selectedShip; }
+            get
+            {
+                return _selectedShipResolved ?? _selectedShip;
+                //if (SelectedSector != null && SelectedSectorStation != null && _selectedShip.Owner != SelectedSectorStation.Sector.Owner)
+                //    return null;
+                //else
+                //    return _selectedShipResolved ?? _selectedShip;
+            }
             set
             {
-                if (Equals(_selectedShip, value) &&Equals(_selectedShipResolved, value))
+                if (Equals(_selectedShip, value) && Equals(_selectedShipResolved, value))
                     return;
                 _selectedShip = value;
                 _selectedShipResolved = value;
@@ -425,8 +433,9 @@ namespace Supremacy.Client.Views
 
             if (TaskForces != null)
             {
+                int count = 0;
                 foreach (FleetViewWrapper fleetView in TaskForces)
-                {
+                {   
                     if (fleetView.View.Source.Owner == playerCiv)
                     {
                         fleetView.InsigniaImage = GetInsigniaImage(playerCiv.InsigniaPath);
@@ -434,14 +443,31 @@ namespace Supremacy.Client.Views
                     }
                     else if (mapData.GetScanStrength(fleetView.View.Source.Location) > 0)
                     {
-                        if (DiplomacyHelper.IsContactMade(playerCiv, fleetView.View.Source.Owner))
+                        if (SelectedSector.System != null &&
+                            SelectedSector.Owner != null &&
+                            SelectedSector.System.Colony != null &&
+                            GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony)
+                        {
+                            if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner))
+                            {
+                                GameLog.Core.Combat.DebugFormat("Home Colony found = {0}, Not at war ={1}",
+                                    GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony,
+                                    !DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner));
+
+                                fleetView.IsUnknown = true;
+                                fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_Pirates.png");
+                                count++; 
+                            }
+                                                       
+                        }                   
+                        else if (DiplomacyHelper.IsContactMade(playerCiv, fleetView.View.Source.Owner))
                             fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                         else
                         {
                             fleetView.IsUnknown = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/__unknown.png");
                         }
-
+                        if (count <= 1)
                         otherVisibleList.Add(fleetView);
                     }
                 }
