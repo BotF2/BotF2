@@ -123,9 +123,6 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SoftUni.Wintellect.PowerCollections, Version=1.1.5733.22550, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SoftUni.Wintellect.PowerCollections.1.1.5733.22550\lib\net20\SoftUni.Wintellect.PowerCollections.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -173,7 +170,9 @@
     <Compile Include="AI\AIColonyHelper.cs" />
     <Compile Include="AI\DiplomatAI.cs" />
     <Compile Include="Collections\EnumValueCollection.cs" />
+    <Compile Include="Collections\ImmutableStack.cs" />
     <Compile Include="Collections\InitOnlyKeyedCollection.cs" />
+    <Compile Include="Collections\IStack.cs" />
     <Compile Include="Collections\SafeEnumerator.cs" />
     <Compile Include="Collections\StackExtensions.cs" />
     <Compile Include="Combat\CombatTargetSecondaries.cs" />
@@ -290,7 +289,6 @@
     <Compile Include="Collections\ArrayWrapper.cs" />
     <Compile Include="Collections\CollectionBase.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
-    <Compile Include="Collections\ConcurrentStack.cs" />
     <Compile Include="Collections\DelegatingIndexedCollection.cs" />
     <Compile Include="Collections\GameObjectList.cs" />
     <Compile Include="Collections\GameObjectLookupCollection.cs" />

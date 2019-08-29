@@ -1,5 +1,3 @@
-// GameContext.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -23,10 +21,10 @@ using Supremacy.Text;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 
 namespace Supremacy.Game
@@ -487,7 +485,6 @@ namespace Supremacy.Game
 
         #region Static Members
         private static readonly ConcurrentStack<GameContext> _stack = new ConcurrentStack<GameContext>();
-        private static readonly Mutex _stackLock = new Mutex();
 
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
@@ -500,16 +497,6 @@ namespace Supremacy.Game
                     _threadStack = new Stack<GameContext>();
                 return _threadStack;
             }
-        }
-
-        /// <summary>
-        /// Pushes the specified context onto the stack.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public static void Push(GameContext context)
-        {
-            _stackLock.WaitOne();
-            _stack.Push(context);
         }
 
         /// <summary>
@@ -544,9 +531,15 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool CheckAndPop(GameContext context)
         {
-            if (!_stack.CompareAndPop(context))
+            GameContext top;
+            if (!_stack.TryPeek(out top)) {
                 return false;
-            _stackLock.ReleaseMutex();
+            }
+            if (top != context)
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -559,7 +552,6 @@ namespace Supremacy.Game
             GameContext result;
             if (!_stack.TryPop(out result))
                 return null;
-            _stackLock.ReleaseMutex();
             return result;
         }
 
@@ -628,7 +620,7 @@ namespace Supremacy.Game
                 },
                 false);
 
-            Push(gameContext);
+            _stack.Push(gameContext);
 
             gameContext.TurnNumber = 1;
             var civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);

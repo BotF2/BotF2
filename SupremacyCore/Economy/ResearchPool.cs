@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
-using Wintellect.PowerCollections;
 
 namespace Supremacy.Economy
 {
@@ -375,8 +374,7 @@ namespace Supremacy.Economy
             UpdateTechLevels();
 
             var designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
-            var newDesigns = new List<TechObjectDesign>(
-                Algorithms.SetDifference(designsAfter, designsBefore));
+            var newDesigns = designsAfter.Except(designsBefore).ToList();
             
             if (civManager != null)
                 civManager.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
