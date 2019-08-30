@@ -145,36 +145,9 @@ namespace Supremacy.Orbitals
                             e);
                     }
                 }
-                return "ClassNameManually";
+                return "Scans Blocking Technology";
             }
         }
-
-        //public string ClassLevel
-        //{
-        //    get
-        //    {
-        //        //        if (_ships.Count < 2)
-        //        //        {
-        //        //            //var classLevel = Source.FirstOrDefault(o => o.);
-        //        //            //Source.Ships.Count.ToString():
-        //        //            return ClassLevel.ToString();
-
-
-        //        //        }
-
-        //        //        //if (IsNumberOfShipsKnown)
-        //        //        //    return _ships.Count + " Cloaked Ship(s)" + " Camouflaged Ship(s)";
-        //        //        //if (IsOwnerKnown)
-        //        //        //{
-        //        //        //    string ownerName = Source.Owner.ShortName;
-        //        //        //    if (ownerName.EndsWith("s"))
-        //        //        //        ownerName = ownerName.Substring(0, ownerName.Length - 1);
-        //        //        //    return ownerName + " Fleet";
-        //        //        //}
-        //        //        //return _ships.Count.ToString() + " Ships";
-        //        return _ships.Count.ToString() + " Ships ClassLevel";
-        //    }
-        //}
 
         public IIndexedCollection<ShipView> Ships
         {

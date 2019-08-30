@@ -302,11 +302,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return _selectedShipResolved ?? _selectedShip;
-                //if (SelectedSector != null && SelectedSectorStation != null && _selectedShip.Owner != SelectedSectorStation.Sector.Owner)
-                //    return null;
-                //else
-                //    return _selectedShipResolved ?? _selectedShip;
+                return _selectedShipResolved ?? _selectedShip;  
             }
             set
             {
@@ -326,6 +322,15 @@ namespace Supremacy.Client.Views
             }
             set
             {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if ( _selectedSector != null &&
+                //     _selectedSector.Station != null &&
+                //     _selectedSector.Station.Owner != localPlayer)
+                //    return;
+
+                ////_selectedShipInTaskForce = value;
+                //OnSelectedShipInTaskForceChanged();
+
                 if (Equals(_selectedShipInTaskForce, value))
                     return;
 
@@ -362,6 +367,13 @@ namespace Supremacy.Client.Views
             get { return _selectedTaskForce; }
             set
             {
+                //StationPresentationModel station = new StationPresentationModel();
+                //   Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (
+                //    _selectedSector != null && 
+                //    _selectedSector.Station != null &&
+                //    _selectedSector.Station.Owner != localPlayer) 
+                //    return;
                 if (Equals(_selectedTaskForce, value))
                     return;
                 _selectedTaskForce = value;
@@ -435,7 +447,7 @@ namespace Supremacy.Client.Views
             {
                 int count = 0;
                 foreach (FleetViewWrapper fleetView in TaskForces)
-                {   
+                {
                     if (fleetView.View.Source.Owner == playerCiv)
                     {
                         fleetView.InsigniaImage = GetInsigniaImage(playerCiv.InsigniaPath);
@@ -443,10 +455,16 @@ namespace Supremacy.Client.Views
                     }
                     else if (mapData.GetScanStrength(fleetView.View.Source.Location) > 0)
                     {
-                        if (SelectedSector.System != null &&
-                            SelectedSector.Owner != null &&
-                            SelectedSector.System.Colony != null &&
-                            GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony)
+                        if (!DiplomacyHelper.IsContactMade(playerCiv, fleetView.View.Source.Owner))
+                        {
+                            fleetView.IsUnknown = true;
+                            fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/__unknown.png");
+                            count++;
+                        }
+                        else if (SelectedSector.System != null &&
+                                SelectedSector.Owner != null &&
+                                SelectedSector.System.Colony != null &&
+                                GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony)
                         {
                             if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner))
                             {
@@ -454,19 +472,12 @@ namespace Supremacy.Client.Views
                                     GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony,
                                     !DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner));
 
-                                fleetView.IsUnknown = true;
+                                //fleetView.IsUnknown = true;
                                 fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_Pirates.png");
                                 count++; 
                             }
-                                                       
+                            else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                         }                   
-                        else if (DiplomacyHelper.IsContactMade(playerCiv, fleetView.View.Source.Owner))
-                            fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
-                        else
-                        {
-                            fleetView.IsUnknown = true;
-                            fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/__unknown.png");
-                        }
                         if (count <= 1)
                         otherVisibleList.Add(fleetView);
                     }
