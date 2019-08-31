@@ -33,12 +33,16 @@ namespace Supremacy.Orbitals
 
         public bool IsUnknown { get; set; }
 
+        public bool IsUnScannable { get; set; }
+
         public string Name
         {
             get
             {
                 if (IsUnknown)
                     return "unknown";
+                if (IsUnScannable)
+                    return "scan blocked";
                 else
                     return View.Name;
             }
@@ -50,6 +54,8 @@ namespace Supremacy.Orbitals
             {
                 if (IsUnknown)
                     return "unknown";
+                if (IsUnScannable)
+                    return "scan blocked";
                 else
                     return View.ClassName;
             }
@@ -218,7 +224,7 @@ namespace Supremacy.Orbitals
                 }
                 if (netScanStrength >= 1)
                 {
-                    isDesignKnown = DiplomacyHelper.IsContactMade(owner, fleet.Owner);
+                    isDesignKnown = (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector));
                 }
 
                 ships.Add(new ShipView(

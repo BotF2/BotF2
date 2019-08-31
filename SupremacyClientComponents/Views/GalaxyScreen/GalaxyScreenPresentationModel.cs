@@ -464,21 +464,20 @@ namespace Supremacy.Client.Views
                         else if (SelectedSector.System != null &&
                                 SelectedSector.Owner != null &&
                                 SelectedSector.System.Colony != null &&
-                                GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony)
+                                GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony &&
+                                DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
                         {
-                            if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner))
+                            if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner)) // && DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
                             {
-                                GameLog.Core.Combat.DebugFormat("Home Colony found = {0}, Not at war ={1}",
-                                    GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony,
-                                    !DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner));
+                                //GameLog.Core.Combat.DebugFormat("Home Colony found = {0}, Not at war ={1}", GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony,!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner));
 
-                                //fleetView.IsUnknown = true;
+                                fleetView.IsUnScannable = true;
                                 fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_Pirates.png");
                                 count++; 
                             }
                             else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                         }                   
-                        if (count <= 1)
+                        //if (count <= 1)
                         otherVisibleList.Add(fleetView);
                     }
                 }

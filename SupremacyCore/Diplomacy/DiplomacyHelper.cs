@@ -691,6 +691,19 @@ namespace Supremacy.Diplomacy
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
         }
 
+        public static bool IsScanBlocked(Civilization source, Sector sector)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (sector == null)
+                throw new ArgumentNullException("sector");
+
+            if (sector.System == null)
+                return false;
+            //GameLog.Core.Test.DebugFormat("Diplomacy: source = {0} target = {1}",source.Key, target.Key);
+            return GameContext.Current.Universe.HomeColonyLookup[source] != sector.System.Colony;
+        }
+
         public static bool IsContactMade(int sourceId, int targetId)
         {
             if (sourceId == targetId)
