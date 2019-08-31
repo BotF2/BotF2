@@ -225,6 +225,9 @@ namespace Supremacy.Orbitals
                 if (netScanStrength >= 1)
                 {
                     isDesignKnown = (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector));
+                    //if(DiplomacyHelper.IsScanBlocked(owner, fleet.Sector) == true)
+                    //GameLog.Client.Intel.DebugFormat("scanblocking = {0}, Contact ={1} isDesignKnown ={2}",
+                    //    DiplomacyHelper.IsScanBlocked(owner, fleet.Sector), (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector)));
                 }
 
                 ships.Add(new ShipView(

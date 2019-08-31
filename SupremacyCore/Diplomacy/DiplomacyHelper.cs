@@ -315,17 +315,17 @@ namespace Supremacy.Diplomacy
             // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
             // You can go to the homeworld of other players no first contact and only after that with declaration of war. ToDo let camouflage ships in
-            if (sector.System != null)
-            {
-                if (sector.System.Owner != null)
-                {
-                    if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
-                        GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony &&
-                        DiplomacyHelper.IsContactMade(traveller, sectorOwner) &&
-                        !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
-                    {
-                        travel = false;
-                    }
+            //if (sector.System != null)
+            //{
+            //    if (sector.System.Owner != null)
+            //    {
+            //        if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
+            //            GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony &&
+            //            DiplomacyHelper.IsContactMade(traveller, sectorOwner) &&
+            //            !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
+            //        {
+            //            travel = false;
+            //        }
                     //if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
                     //    GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony)
                     //{
@@ -370,10 +370,10 @@ namespace Supremacy.Diplomacy
                     //        travel = true;
                     //    }
                     //}
-                }   
-            }
+            //    }   
+            //}
 
-            return true;
+            return travel;
         }
 
         /// <summary>
@@ -422,11 +422,12 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("who");
             if (whoElse == null)
                 throw new ArgumentNullException("whoElse");
+            if (who == whoElse) // && !IsContactMade(who, whoElse))
+                return false;
 
             var diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
 
-            return diplomacyData != null &&
-                   diplomacyData.Status == ForeignPowerStatus.AtWar;
+            return diplomacyData.Status == ForeignPowerStatus.AtWar;
         }
 
         /// <summary>
@@ -700,7 +701,11 @@ namespace Supremacy.Diplomacy
 
             if (sector.System == null)
                 return false;
-            //GameLog.Core.Test.DebugFormat("Diplomacy: source = {0} target = {1}",source.Key, target.Key);
+
+            //if (GameContext.Current.Universe.HomeColonyLookup[source] != sector.System.Colony)
+            //GameLog.Core.Intel.DebugFormat("sector ={0}, local player ={1}, IsScanBlocked ={2}", 
+            //    sector.System.Colony.Name, source.Key ,GameContext.Current.Universe.HomeColonyLookup[source] != sector.System.Colony);
+
             return GameContext.Current.Universe.HomeColonyLookup[source] != sector.System.Colony;
         }
 
