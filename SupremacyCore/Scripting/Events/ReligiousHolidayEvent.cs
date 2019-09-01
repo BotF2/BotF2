@@ -109,7 +109,7 @@ namespace Supremacy.Scripting.Events
 
                     if (civManager != null)
                     {
-                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
+                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target.Name));
                     }
                 }
 

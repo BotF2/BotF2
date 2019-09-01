@@ -109,7 +109,7 @@ namespace Supremacy.Scripting.Events
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
                     {
-                        civManager.SitRepEntries.Add(new TradeGuildStrikesSitRepEntry(civManager.Civilization, target));
+                        civManager.SitRepEntries.Add(new TradeGuildStrikesSitRepEntry(civManager.Civilization, target.Name));
                     }
                 }
 

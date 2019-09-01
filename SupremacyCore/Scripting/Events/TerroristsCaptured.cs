@@ -81,7 +81,7 @@ namespace Supremacy.Scripting.Events
                     var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
                     {
-                        civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
+                        civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target.Name));
                     }
                 }
             }
