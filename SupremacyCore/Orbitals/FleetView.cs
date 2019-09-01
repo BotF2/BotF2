@@ -33,12 +33,16 @@ namespace Supremacy.Orbitals
 
         public bool IsUnknown { get; set; }
 
+        public bool IsUnScannable { get; set; }
+
         public string Name
         {
             get
             {
                 if (IsUnknown)
                     return "unknown";
+                if (IsUnScannable)
+                    return "scan blocked";
                 else
                     return View.Name;
             }
@@ -50,6 +54,8 @@ namespace Supremacy.Orbitals
             {
                 if (IsUnknown)
                     return "unknown";
+                if (IsUnScannable)
+                    return "scan blocked";
                 else
                     return View.ClassName;
             }
@@ -145,36 +151,9 @@ namespace Supremacy.Orbitals
                             e);
                     }
                 }
-                return "ClassNameManually";
+                return "manual className";
             }
         }
-
-        //public string ClassLevel
-        //{
-        //    get
-        //    {
-        //        //        if (_ships.Count < 2)
-        //        //        {
-        //        //            //var classLevel = Source.FirstOrDefault(o => o.);
-        //        //            //Source.Ships.Count.ToString():
-        //        //            return ClassLevel.ToString();
-
-
-        //        //        }
-
-        //        //        //if (IsNumberOfShipsKnown)
-        //        //        //    return _ships.Count + " Cloaked Ship(s)" + " Camouflaged Ship(s)";
-        //        //        //if (IsOwnerKnown)
-        //        //        //{
-        //        //        //    string ownerName = Source.Owner.ShortName;
-        //        //        //    if (ownerName.EndsWith("s"))
-        //        //        //        ownerName = ownerName.Substring(0, ownerName.Length - 1);
-        //        //        //    return ownerName + " Fleet";
-        //        //        //}
-        //        //        //return _ships.Count.ToString() + " Ships";
-        //        return _ships.Count.ToString() + " Ships ClassLevel";
-        //    }
-        //}
 
         public IIndexedCollection<ShipView> Ships
         {
@@ -245,7 +224,10 @@ namespace Supremacy.Orbitals
                 }
                 if (netScanStrength >= 1)
                 {
-                    isDesignKnown = DiplomacyHelper.IsContactMade(owner, fleet.Owner);
+                    isDesignKnown = (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector));
+                    //if(DiplomacyHelper.IsScanBlocked(owner, fleet.Sector) == true)
+                    //GameLog.Client.Intel.DebugFormat("scanblocking = {0}, Contact ={1} isDesignKnown ={2}",
+                    //    DiplomacyHelper.IsScanBlocked(owner, fleet.Sector), (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector)));
                 }
 
                 ships.Add(new ShipView(

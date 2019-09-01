@@ -181,6 +181,7 @@ namespace Supremacy.Client.Views
 
         private DiplomaticMessageCategory ResolveCategory()
         {
+            GameLog.Client.Diplomacy.DebugFormat("Proposal ={0}", _agreement.Proposal);
             return ForeignPowerViewModel.ResolveMessageCategory(_agreement.Proposal);
         }
 

@@ -36,10 +36,10 @@ namespace Supremacy.AI
                     return;
                 
                 if (foreignPower.ProposalReceived != null)
-                {
+                    {
                     // TODO: Have the AI actually consider proposals instead of blindly accepting
                     foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
-                    foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                    foreach (var clause in foreignPower.ProposalReceived.Clauses) // regard value 0 TotalWar to 5 Unified
                     {
                         if (clause.ClauseType == ClauseType.TreatyMembership && foreignPower.DiplomacyData.Regard.CurrentValue < (int)RegardValue.Unified ||
                             clause.ClauseType == ClauseType.TreatyFullAlliance && foreignPower.DiplomacyData.Regard.CurrentValue < (int)RegardValue.Allied ||

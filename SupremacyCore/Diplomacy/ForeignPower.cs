@@ -228,6 +228,37 @@ namespace Supremacy.Diplomacy
             }
         }
 
+        public void CancelTreaty()
+        {
+            if (DiplomacyData.Status == ForeignPowerStatus.Neutral)
+                return;
+
+            var activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
+            while (activeAgreements.Count > 0)
+                BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
+
+            DiplomacyData.Status = ForeignPowerStatus.Neutral;
+            CounterpartyForeignPower.DiplomacyData.Status = ForeignPowerStatus.Neutral;
+
+            var owner = Owner;
+            var counterparty = Counterparty;
+
+            //ToDo sit rep for canceling treaty
+
+            //foreach (var civ in GameContext.Current.Civilizations)
+            //{
+            //    if (civ == owner ||
+            //        DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
+            //    {
+            //        GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
+            //            new WarDeclaredSitRepEntry(
+            //                civ,
+            //                owner,
+            //                counterparty));
+            //    }
+            //}
+        }
+
         public void AddRegardEvent([NotNull] RegardEvent regardEvent)
         {
             if (regardEvent == null)

@@ -16,6 +16,7 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Utility;
 
 namespace Supremacy.Diplomacy
 {
@@ -180,6 +181,9 @@ namespace Supremacy.Diplomacy
         {
             if (proposal == null)
                 return false;
+
+            GameLog.Core.Diplomacy.DebugFormat("hasTreaty: null or clause = {0}", proposal.Clauses.ToString()/*, proposal.ToString()*/);
+
             foreach (var clause in proposal.Clauses)
             {
                 switch (clause.ClauseType)
@@ -194,6 +198,8 @@ namespace Supremacy.Diplomacy
                     case ClauseType.TreatyResearchPact:
                     case ClauseType.TreatyTradePact:
                     case ClauseType.TreatyMembership:
+                        // doesn't work
+                        //GameLog.Core.Diplomacy.DebugFormat("hasTreaty: ClauseType = {0}", clause.ClauseType.ToString()/*, proposal.ToString()*/);
                         return true;
                 }
             }
@@ -202,8 +208,12 @@ namespace Supremacy.Diplomacy
 
         public static bool HasClause(this IProposal proposal, ClauseType clause)
         {
+            GameLog.Core.Diplomacy.DebugFormat("hasClause: null or clause = {0}", clause.ToString()/*, proposal.ToString()*/);
+
             if (proposal == null)
                 return false;
+
+            //GameLog.Core.Diplomacy.DebugFormat("Visitor = {0}: Accepting proposal = {1}", visitor.ToString(), proposal.ToString());
 
             return proposal.Clauses.Any(c => c.ClauseType == clause);
         }
@@ -214,6 +224,8 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("proposal");
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
+
+            GameLog.Core.Diplomacy.DebugFormat("Visitor = {0}: Accepting proposal = {1}", visitor.ToString(), proposal.ToString());
 
             if (proposal.IsGift())
             {

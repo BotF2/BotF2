@@ -24,7 +24,6 @@ namespace Supremacy.Combat
 {
     public static class CombatHelper
     {
-       // public static bool borgInGame = (GameContext.Current.Civilizations.Where(sc => sc.ShortName == "Borg").Select(sc => sc).ToList().Any()); // any borg here?
         
         /// <summary>
         /// Calculates the best sector for the given <see cref="CombatAssets"/> to retreat to
@@ -49,6 +48,7 @@ namespace Supremacy.Combat
 
             return sectors.FirstOrDefault();
         }
+
 
         public static List<CombatAssets> GetCombatAssets(MapLocation location)
         {
@@ -86,6 +86,21 @@ namespace Supremacy.Combat
                     {
                         continue; // skip over ships camaouflaged better than best scan strength
                     }
+                    if (sector.System != null && ship.Owner != sector.Owner && sector.Owner != null)
+                    {
+                        if (sector.System.Colony != null)
+                        {
+                            if (GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony)
+                            {
+                                if (!DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner))
+                                {
+                                    GameLog.Core.Combat.DebugFormat("Home Colony = {0}, Not at war ={1}",
+                                        GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
+                                    continue; // for home worlds you need to declare war to get combat
+                                }
+                            }
+                        }
+                    }
                     if (!assets.ContainsKey(ship.Owner))
                     {
                         assets[ship.Owner] = new CombatAssets(ship.Owner, location);
@@ -122,6 +137,7 @@ namespace Supremacy.Combat
                     }
                 }
             }
+
             if (sector.Station != null)
             {
                 var owner = sector.Station.Owner;
@@ -132,6 +148,57 @@ namespace Supremacy.Combat
                 }
 
                 assets[owner].Station = new CombatUnit(sector.Station);
+            }
+
+            results.AddRange(assets.Values);
+
+            return results;
+        }
+
+        public static List<CombatAssets> GetCamouflageAssets(MapLocation location)
+        {
+            var assets = new Dictionary<Civilization, CombatAssets>();
+            var results = new List<CombatAssets>();
+            //var units = new Dictionary<Civilization, CombatUnit>();
+            //var sector = GameContext.Current.Universe.Map[location];
+            var engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
+            //var maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
+            //var oppositionFleets = ExposedAssets.OppositionFleets;
+
+            //if (sector.Station == null)
+            //{
+            //    return results;
+            //}
+
+            //else
+            //{
+                var _ships = from p in engagingFleets.SelectMany(l => l.Ships) select p;
+
+                var Ships = _ships.Distinct().ToList();
+
+                foreach (var ship in Ships)
+                {
+                    CombatUnit unit = new CombatUnit(ship);
+
+                    if (!ship.IsCamouflaged) // && (unit.CamouflagedStrength >= maxOppostionScanStrength))
+                    {
+                        continue; // skip over ships not camaouflaged better than best scan strength
+                    }
+                    if (!assets.ContainsKey(ship.Owner))
+                    {
+                        assets[ship.Owner] = new CombatAssets(ship.Owner, location);
+                    }
+                    if (ship.IsCombatant)
+                    {
+                        assets[ship.Owner].CombatShips.Add(new CombatUnit(ship));
+
+                    }
+                    else
+                    {
+                        assets[ship.Owner].NonCombatShips.Add(new CombatUnit(ship));
+                    }
+                //}
             }
 
             results.AddRange(assets.Values);
@@ -192,7 +259,7 @@ namespace Supremacy.Combat
         /// <returns></returns>
         public static bool AreNotAtWar(Civilization firstCiv, Civilization secondCiv)
         {
-
+            bool notWar = true;
             if (firstCiv == null)
             {
                 throw new ArgumentNullException("firstCiv");
@@ -203,19 +270,19 @@ namespace Supremacy.Combat
             }
             if (firstCiv == secondCiv)
             {
-                return true;
+                notWar = true;
             }
             // do not call GetTargetOne or Two here!, use in ChoseTarget
             var diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
                 GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
-                return true;
+                notWar = true;
             }
 
-            if (diplomacyData.Status == ForeignPowerStatus.AtWar)
-                return false;
-            return true;
+            else if (diplomacyData.Status == ForeignPowerStatus.AtWar)
+                notWar = false;
+           return notWar;
         }
 
         /// <summary>
