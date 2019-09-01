@@ -699,14 +699,11 @@ namespace Supremacy.Diplomacy
             if (sector == null)
                 throw new ArgumentNullException("sector");
 
-            if (sector.System == null)
-                return false;
-
-            //if (GameContext.Current.Universe.HomeColonyLookup[source] != sector.System.Colony)
-            //GameLog.Core.Intel.DebugFormat("sector ={0}, local player ={1}, IsScanBlocked ={2}", 
-            //    sector.System.Colony.Name, source.Key ,GameContext.Current.Universe.HomeColonyLookup[source] != sector.System.Colony);
-
-            return GameContext.Current.Universe.HomeColonyLookup[source] != sector.System.Colony;
+            if (sector.Station != null)
+            {
+                return source != sector.Station.Owner;
+            }
+            return false;
         }
 
         public static bool IsContactMade(int sourceId, int targetId)

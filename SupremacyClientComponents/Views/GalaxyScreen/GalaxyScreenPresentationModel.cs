@@ -383,7 +383,17 @@ namespace Supremacy.Client.Views
 
         public FleetViewWrapper SelectedTaskForce
         {
-            get { return _selectedTaskForce; }
+            get
+            {
+                StationPresentationModel station = new StationPresentationModel();
+                Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                if (
+                    _selectedSector != null &&
+                    _selectedSector.Station != null &&
+                    _selectedSector.Station.Owner != localPlayer)
+                    _selectedTaskForce = null;
+                return _selectedTaskForce;
+            }
             set
             {
                 //StationPresentationModel station = new StationPresentationModel();
@@ -493,19 +503,13 @@ namespace Supremacy.Client.Views
                             count++;
                        
                         }
-                        else if (SelectedSector.System != null &&
-                                SelectedSector.Owner != null &&
-                                SelectedSector.System.Colony != null &&
-                                GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony &&
-                                DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
+                        else if ( SelectedSector.Station != null && DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
                         { 
-                            GameLog.Client.Intel.DebugFormat("local playerCiv ={0},. fleet Owner ={1}, counter ={2}, scanblock ={3}, home colony ={4}",
-                                playerCiv, fleetView.View.Source.Owner, count, DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector), GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner].Name);
+                            GameLog.Client.Intel.DebugFormat("local playerCiv ={0},. fleet Owner ={1}, counter ={2}, scanblock ={3}",
+                                playerCiv, fleetView.View.Source.Owner, count, DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector));
                      
-                            if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner)) // && DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
+                            if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner)) 
                             {
-                                //GameLog.Core.Combat.DebugFormat("Home Colony found = {0}, Not at war ={1}", GameContext.Current.Universe.HomeColonyLookup[SelectedSector.Owner] == SelectedSector.System.Colony,!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner));
-
                                 fleetView.IsUnScannable = true;
                                 fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_Pirates.png");
                                 count++;
@@ -514,11 +518,6 @@ namespace Supremacy.Client.Views
                             else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                         }
                         else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
-                        //if (count <= 1)
-                        //{
-                        //    otherVisibleList.Add(fleetView);
-                        //    GameLog.Client.Intel.DebugFormat("otherVisibleList count ={0}", otherVisibleList.Count);
-                        //}
                     }
                     if (count <= 1)
                     {

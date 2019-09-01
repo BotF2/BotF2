@@ -151,7 +151,7 @@ namespace Supremacy.Orbitals
                             e);
                     }
                 }
-                return "Scans Blocking Technology";
+                return "manual className";
             }
         }
 
