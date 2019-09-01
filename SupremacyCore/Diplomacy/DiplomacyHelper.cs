@@ -9,7 +9,6 @@
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
-using Supremacy.Combat;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -97,42 +96,31 @@ namespace Supremacy.Diplomacy
                 }
             }
         }
-        //Regard makes crashes
 
-        public static void ApplyRegardChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int regardDelta)
-        {
-            if (civ == null)
-                throw new ArgumentNullException("civ");
 
-            var civId = civ.CivID;
 
-            foreach (var diplomat in GameContext.Current.Diplomats)
-            {
-                if (diplomat.OwnerID == civId)
-                    continue;
+        // Regard makes crashes
 
-                var foreignPower = diplomat.GetForeignPower(civ);
-                if (civId == otherPower.CivID)
-                {
-                    GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+        //public static void ApplyRegardChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int regardDelta)
+        //{
+        //    if (civ == null)
+        //        throw new ArgumentNullException("civ");
 
-                    if (foreignPower != null)
-                        foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
-                    foreignPower.DiplomacyData.Regard.UpdateAndReset();
+        //    var civId = civ.CivID;
+                       
+        //    foreach (var diplomat in GameContext.Current.Diplomats)
+        //    {
+        //        var foreignPower = diplomat.GetForeignPower(civ);
 
-                    GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
-                }
+        //        if (diplomat.OwnerID == civId)
+        //            continue;
 
-                if (foreignPower != null)
-                {
-                    foreignPower.DiplomacyData.Trust.AdjustCurrent(regardDelta);
-                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
-                    foreignPower.UpdateRegardAndTrustMeters();
-                }
-            }
-        }
+        //        if (foreignPower != null)
+        //            foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
+        //        foreignPower.DiplomacyData.Regard.UpdateAndReset();
+        //        foreignPower.UpdateRegardAndTrustMeters();
+        //    }
+        //}
 
         public static Colony GetSeatOfGovernment([NotNull] Civilization who)
         {
@@ -166,7 +154,7 @@ namespace Supremacy.Diplomacy
 
             if (declaringCiv == targetCiv)
             {
-                GameLog.Core.Diplomacy.ErrorFormat(
+                GameLog.Client.Diplomacy.ErrorFormat(
                     "Civilization {0} attempted to declare war on itself.",
                     declaringCiv.ShortName);
 
@@ -175,7 +163,7 @@ namespace Supremacy.Diplomacy
           
             if (AreAtWar(declaringCiv, targetCiv))
             {
-                GameLog.Core.Diplomacy.WarnFormat(
+                GameLog.Client.Diplomacy.WarnFormat(
                     "Civilization {0} attempted to declare war on {1}, but they were already at war.",
                     declaringCiv.ShortName,
                     targetCiv.ShortName);
@@ -307,72 +295,17 @@ namespace Supremacy.Diplomacy
             if (sector == null)
                 throw new ArgumentNullException("sector");
 
-            
             var sectorOwner = sector.Owner;
             if (sectorOwner == null)
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
-            // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
+           // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
-            // You can go to the homeworld of other players no first contact and only after that with declaration of war. ToDo let camouflage ships in
-            //if (sector.System != null)
-            //{
-            //    if (sector.System.Owner != null)
-            //    {
-            //        if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
-            //            GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony &&
-            //            DiplomacyHelper.IsContactMade(traveller, sectorOwner) &&
-            //            !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
-            //        {
-            //            travel = false;
-            //        }
-                    //if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
-                    //    GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony)
-                    //{
-                    //    var map = GameContext.Current.Universe.Map;
-                    //    List<CombatAssets> localCamouflagedShips = new List<CombatAssets>();
-                    //    List<Sector> localSectors = new List<Sector>();
-                    //    //localSectors.Add(sector);
-                    //    int xLow = sector.Location.X - 6;
-                    //    int xHigh = sector.Location.X + 6;
-                    //    if (xLow < 0)
-                    //        xLow = 0;
-                    //    if (xHigh > map.Width + 1)
-                    //        xHigh = map.Width + 1;
-                    //    int yLow = sector.Location.Y - 6;
-                    //    int yHigh = sector.Location.Y + 6;
-                    //    if (yLow < 0)
-                    //        yLow = 0;
-                    //    if (yHigh < map.Height + 1)
-                    //        yHigh = map.Height + 1;
-
-                    //    for (int x = xLow; x <= xHigh; x++)
-                    //    {
-                    //        for (int y = yLow; y <= (xHigh); y++)
-                    //        {
-                    //            var nearSector = map[x, y];
-                    //            if (nearSector != null)
-                    //            {
-                    //                localSectors.Add(nearSector);
-                    //            }
-                    //        }
-                    //    }
-
-                    //    foreach (var aSector in localSectors)
-                    //    {
-
-                    //        localCamouflagedShips.AddRange(CombatHelper.GetCamouflageAssets(aSector.Location));
-                    //        localCamouflagedShips.Distinct();
-                    //    }
-                    //    if (localCamouflagedShips.Count > 0)
-                    //    {
-                    //        // need a way to make this only for the camou ships
-                    //        travel = true;
-                    //    }
-                    //}
-            //    }   
-            //}
-
+            if (sectorOwner == null || sectorOwner == traveller)
+            {
+                travel = true;
+            }
+            // leaving travel open for now, working on warning about moves that will cancel treaties, lost favor.
             return travel;
         }
 
@@ -422,12 +355,11 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("who");
             if (whoElse == null)
                 throw new ArgumentNullException("whoElse");
-            if (who == whoElse) // && !IsContactMade(who, whoElse))
-                return false;
 
             var diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
 
-            return diplomacyData.Status == ForeignPowerStatus.AtWar;
+            return diplomacyData != null &&
+                   diplomacyData.Status == ForeignPowerStatus.AtWar;
         }
 
         /// <summary>
@@ -611,12 +543,12 @@ namespace Supremacy.Diplomacy
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 // playing 
-                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
+                var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
                 //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
                 //_soundPlayer.Play("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.mp3"); // at SitRep "Resistance is fut...."
 
                 ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                ApplyRegardChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Regard.CurrentValue * -1);
+                //ApplyRegardChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Regard.CurrentValue * -1);
 
 
                 //GameLog.Core.Diplomacy.DebugFormat("foreignPower = {3}, firstManager.Civilization.Key = {0}, second = {1}, TrustDelta {2}", 
@@ -628,27 +560,16 @@ namespace Supremacy.Diplomacy
                 foreignPower.DeclareWar();
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
+                var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
+                //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
 
+                //ApplyTrustChange(secondCiv, firstCiv, ownPower.DiplomacyData.Trust.CurrentValue * -1);
                 ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
+                //ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
 
                 //GameLog.Core.Diplomacy.DebugFormat("secondManager.Civilization.Key = {0}, first = {1}, TrustDelta {2}", secondManager.Civilization.Key, firstManager.Civilization.Key, trustDelta);
             }
 
-            if (!secondManager.Civilization.IsHuman || !firstManager.Civilization.IsHuman)
-            {
-                if (secondManager.Civilization.Traits.Contains("Warlike") && firstManager.Civilization.Traits.Contains("Warlike"))
-                {
-                    foreignPower.DeclareWar();
-                    firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
-
-                    ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                    ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
-                }
-            }
         }
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)
@@ -688,31 +609,14 @@ namespace Supremacy.Diplomacy
 
             if (source == target)
                 return false;
-            //GameLog.Core.Test.DebugFormat("Diplomacy: source = {0} target = {1}",source.Key, target.Key);
+            GameLog.Core.Diplomacy.DebugFormat("source = {0} target ={1}",source.Key, target.Key);
             return GameContext.Current.DiplomacyData[source, target].IsContactMade();
-        }
-
-        public static bool IsScanBlocked(Civilization source, Sector sector)
-        {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (sector == null)
-                throw new ArgumentNullException("sector");
-
-            if (sector.Station != null)
-            {
-                return source != sector.Station.Owner;
-            }
-            return false;
         }
 
         public static bool IsContactMade(int sourceId, int targetId)
         {
             if (sourceId == targetId)
                 return true;
-
-            if (GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade() == true)
-                GameLog.Core.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
 
             return GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade();
         }
