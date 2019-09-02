@@ -17,6 +17,7 @@ using Supremacy.Game;
 using System.Windows.Media.Imaging;
 using Supremacy.Diplomacy;
 using Supremacy.Utility;
+using Supremacy.Resources;
 
 namespace Supremacy.Orbitals
 {
@@ -40,9 +41,9 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
-                    return "unknown";
+                    return string.Format(ResourceManager.GetString("UNKNOWN"));
                 if (IsUnScannable)
-                    return "scan blocked";
+                    return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
                 else
                     return View.Name;
             }
@@ -53,25 +54,13 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
-                    return "unknown";
+                    return string.Format(ResourceManager.GetString("UNKNOWN"));
                 if (IsUnScannable)
-                    return "scan blocked";
+                    return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
                 else
                     return View.ClassName;
             }
         }
-
-        //public string ClassLevel
-        //{
-        //    get
-        //    {
-        //        if (IsUnknown)
-        //            return "unknown";
-        //        else
-        //            return View.ClassLevel;
-        //    }
-        //}
-
     }
 
     [Serializable]
@@ -130,7 +119,7 @@ namespace Supremacy.Orbitals
                         ownerName = ownerName.Substring(0, ownerName.Length - 1);
                     return ownerName + " Fleet";
                 }
-                return "Unknown Fleet";
+                return string.Format(ResourceManager.GetString("UNKNOWN_FLEET"));
             }
         }
 
@@ -225,9 +214,6 @@ namespace Supremacy.Orbitals
                 if (netScanStrength >= 1)
                 {
                     isDesignKnown = (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector));
-                    //if(DiplomacyHelper.IsScanBlocked(owner, fleet.Sector) == true)
-                    //GameLog.Client.Intel.DebugFormat("scanblocking = {0}, Contact ={1} isDesignKnown ={2}",
-                    //    DiplomacyHelper.IsScanBlocked(owner, fleet.Sector), (DiplomacyHelper.IsContactMade(owner, fleet.Owner) || DiplomacyHelper.IsScanBlocked(owner, fleet.Sector)));
                 }
 
                 ships.Add(new ShipView(

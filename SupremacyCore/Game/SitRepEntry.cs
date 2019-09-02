@@ -1857,9 +1857,9 @@ namespace Supremacy.Game
     }
     #endregion
 
-    #region PlaqueSitRepEntry (new)
+    #region PlagueSitRepEntry (new)
     [Serializable]
-    public class PlaqueSitRepEntry : SitRepEntry
+    public class PlagueSitRepEntry : SitRepEntry
     {
         private readonly CivilizationManager _civManager;
         private readonly Civilization _civilization;
@@ -1906,7 +1906,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAQUE_HEADER_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAGUE_HEADER_TEXT"),
                     ColonyName);
             }
         }
@@ -1915,7 +1915,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAQUE_SUMMARY_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAGUE_SUMMARY_TEXT"),
                     ColonyName);
             }
         }
@@ -1924,7 +1924,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAQUE_DETAIL_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAGUE_DETAIL_TEXT"),
                     ColonyName);
             }
         }
@@ -1933,7 +1933,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/Plaque.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Plague.png";
             }
         }
 
@@ -1942,16 +1942,16 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public PlaqueSitRepEntry(Civilization owner, string colonyName)
+        public PlagueSitRepEntry(Civilization owner, string colonyName)
             : base(owner, SitRepPriority.Yellow)
         {
             if (colonyName == null)
-                throw new ArgumentNullException("colonyName missing for Plaque");
+                throw new ArgumentNullException("colonyName missing for Plague");
             _colonyName = colonyName;
             //_location = location;
         }
     }
-    #endregion PlaqueSitRepEntry
+    #endregion PlagueSitRepEntry
 
     #region PopulationDiedSitRepEntry
     //TODO: This needs fleshing out a bit more - needs a definite pop up,
@@ -2463,9 +2463,9 @@ namespace Supremacy.Game
     }
     #endregion
 
-    #region SupernovaiSitRepEntry (new)
+    #region SupernovaSitRepEntry (new)
     [Serializable]
-    public class SupernovaiSitRepEntry : SitRepEntry
+    public class SupernovaSitRepEntry : SitRepEntry
     {
         private readonly CivilizationManager _civManager;
         private readonly Civilization _civilization;
@@ -2539,7 +2539,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/Supernovai.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Supernova.png";
             }
         }
 
@@ -2548,16 +2548,16 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public SupernovaiSitRepEntry(Civilization owner, string colonyName)
+        public SupernovaSitRepEntry(Civilization owner, string colonyName)
             : base(owner, SitRepPriority.Yellow)
         {
             if (colonyName == null)
-                throw new ArgumentNullException("colonyName missing for Supernovai");
+                throw new ArgumentNullException("colonyName missing for Supernova");
             _colonyName = colonyName;
             //_location = location;
         }
     }
-    #endregion SupernovaiSitRepEntry
+    #endregion SupernovaSitRepEntry
 
     #region StarvationSitRepEntry
     [Serializable]
