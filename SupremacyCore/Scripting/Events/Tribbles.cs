@@ -103,7 +103,7 @@ namespace Supremacy.Scripting.Events
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
                     {
-                        civManager.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target.Name));
+                        civManager.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target));
                     }
 
                     GameContext.Current.Universe.UpdateSectors();
