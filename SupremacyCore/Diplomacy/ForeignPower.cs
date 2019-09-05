@@ -376,6 +376,7 @@ namespace Supremacy.Diplomacy
             {
                 ownerStatus = ForeignPowerStatus.Peace;
                 counterpartyStatus = ForeignPowerStatus.Peace;
+                //ToDo: Nonaggression treaty - you promissed not to go into the other empires space - go there and trust is lost, aggrement canceled
                 return;
             }
 

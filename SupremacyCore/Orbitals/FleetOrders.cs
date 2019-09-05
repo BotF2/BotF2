@@ -580,17 +580,14 @@ namespace Supremacy.Orbitals
                     Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
                     Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
                 }
-                // Nonaggression treaty - you promissed not to go into the other empires space - go there and trust is lost, aggrement canceled
-                else if (GameContext.Current.AgreementMatrix.IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
-                {
-                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -20);
+                //// Nonaggression treaty - you promissed not to go into the other empires space - go there and trust is lost, aggrement canceled
+                //else if (GameContext.Current.AgreementMatrix.IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
+                //{
+                //    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -20);
                   
-                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
-                    foreignPower.CancelTreaty();
-                    //firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    //secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
-                }
+                //    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                //    foreignPower.CancelTreaty();
+                //}
                 
             }
            

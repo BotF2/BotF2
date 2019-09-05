@@ -2463,9 +2463,9 @@ namespace Supremacy.Game
     }
     #endregion
 
-    #region SupernovaiSitRepEntry (new)
+    #region SupernovaSitRepEntry (new)
     [Serializable]
-    public class SupernovaiSitRepEntry : SitRepEntry
+    public class SupernovaSitRepEntry : SitRepEntry
     {
         private readonly CivilizationManager _civManager;
         private readonly Civilization _civilization;
@@ -2539,7 +2539,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/Supernovai.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Supernova.png";
             }
         }
 
@@ -2548,16 +2548,16 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public SupernovaiSitRepEntry(Civilization owner, string colonyName)
+        public SupernovaSitRepEntry(Civilization owner, string colonyName)
             : base(owner, SitRepPriority.Yellow)
         {
             if (colonyName == null)
-                throw new ArgumentNullException("colonyName missing for Supernovai");
+                throw new ArgumentNullException("colonyName missing for Supernova");
             _colonyName = colonyName;
             //_location = location;
         }
     }
-    #endregion SupernovaiSitRepEntry
+    #endregion SupernovaSitRepEntry
 
     #region StarvationSitRepEntry
     [Serializable]
