@@ -15,7 +15,7 @@ using System.Linq;
 namespace Supremacy.Scripting.Events
 {
     [Serializable]
-    public class SupernovaiEvent : UnitScopedEvent<Colony>
+    public class SupernovaEvent : UnitScopedEvent<Colony>
     {
         
         private int _occurrenceChance = 200;
