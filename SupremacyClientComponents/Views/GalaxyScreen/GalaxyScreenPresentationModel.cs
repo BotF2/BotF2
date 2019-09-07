@@ -322,11 +322,26 @@ namespace Supremacy.Client.Views
         public ShipView SelectedShipInTaskForce
         {
             get
-            { 
+            {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                //     return null; // Enumerable.Empty<ShipView>();
+
                 return _selectedShipInTaskForce;
             }
             set
             {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if ( _selectedSector != null &&
+                //     _selectedSector.Station != null &&
+                //     _selectedSector.Station.Owner != localPlayer)
+                //    return;
+
+                ////_selectedShipInTaskForce = value;
+                //OnSelectedShipInTaskForceChanged();
+                //if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                //    return;            
+
                 if (Equals(_selectedShipInTaskForce, value))
                     return;
 
@@ -335,7 +350,8 @@ namespace Supremacy.Client.Views
 
                 if ((_selectedShipInTaskForce == null) || !_selectedShipInTaskForce.IsOwned)
                     return;
-
+                //if (_selectedShipInTaskForce.Source.Name.Contains("BLOCKED"))
+                //    return;
                 _selectedShipResolved = _selectedShipInTaskForce.Source;
                 OnSelectedShipChanged();
             }
@@ -345,10 +361,18 @@ namespace Supremacy.Client.Views
         {
             get
             {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                //    _selectedShipsInTaskForce = null; // Enumerable.Empty<ShipView>();
+
                  return _selectedShipsInTaskForce ?? Enumerable.Empty<ShipView>();
             }
             set
             {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                //    _selectedShipsInTaskForce = null;
+
                 if (Equals(_selectedShipInTaskForce, value))
                     return;
 
@@ -372,6 +396,13 @@ namespace Supremacy.Client.Views
             }
             set
             {
+                //StationPresentationModel station = new StationPresentationModel();
+                //   Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (
+                //    _selectedSector != null && 
+                //    _selectedSector.Station != null &&
+                //    _selectedSector.Station.Owner != localPlayer) 
+                //    return;
                 if (Equals(_selectedTaskForce, value))
                     return;
                 _selectedTaskForce = value;
@@ -396,6 +427,10 @@ namespace Supremacy.Client.Views
             get { return _taskForces; }
             set
             {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                //    _taskForces = null;
+
                 if (Equals(_taskForces, value))
                     return;
                 _taskForces = value;
@@ -419,12 +454,20 @@ namespace Supremacy.Client.Views
         {
             get 
             {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                //    _otherVisibleTaskForces = null; // Enumerable.Empty<ShipView>();
+
                 if (_localPlayerTaskForces == null)
                     return _otherVisibleTaskForces;
                 return _localPlayerTaskForces.Union(_otherVisibleTaskForces);
             }
             set
             {
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (_selectedShip != null && _selectedSector != null && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
+                //    _otherVisibleTaskForces = null; // Enumerable.Empty<ShipView>();
+
                 if (Equals(_otherVisibleTaskForces, value))
                     return;
                 _otherVisibleTaskForces = value;
@@ -468,7 +511,7 @@ namespace Supremacy.Client.Views
                             if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner)) 
                             {
                                 fleetView.IsUnScannable = true;
-                                fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_ScanBlock.png");
+                                fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_Pirates.png");
                                 count++;
                                 GameLog.Client.Intel.DebugFormat("IsUnScannable was True so got Insignia Pirate & count++ ={0}", count );
                             }

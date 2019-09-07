@@ -55,6 +55,8 @@ namespace Supremacy.WCF
         private readonly object _aiAsyncLock;
         private readonly LobbyData _lobbyData;
         private readonly Dictionary<Player, PlayerOrdersMessage> _playerOrders;
+        //private readonly Dictionary<Player, PlayerTarget1Message> _playerTarget1;
+        //private readonly Dictionary<Player, PlayerTarget2Message> _playerTarget2;
         private readonly ServerPlayerInfoCollection _playerInfo;
         private readonly IGameErrorService _errorService;
         private readonly IScheduler _scheduler;
@@ -78,6 +80,8 @@ namespace Supremacy.WCF
             _errorService = ServiceLocator.Current.GetInstance<IGameErrorService>();
             _playerInfo = new ServerPlayerInfoCollection();
             _playerOrders = new Dictionary<Player, PlayerOrdersMessage>();
+            //_playerTarget1 = new Dictionary<Player, PlayerTarget1Message>();
+            //_playerTarget2 = new Dictionary<Player, PlayerTarget2Message>();
             _lobbyData = new LobbyData
             {
                 Players = _playerInfo.Select(o => o.Player).ToArray()
