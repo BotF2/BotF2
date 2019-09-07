@@ -1857,9 +1857,9 @@ namespace Supremacy.Game
     }
     #endregion
 
-    #region PlagueSitRepEntry (new)
+    #region PlaqueSitRepEntry (new)
     [Serializable]
-    public class PlagueSitRepEntry : SitRepEntry
+    public class PlaqueSitRepEntry : SitRepEntry
     {
         private readonly CivilizationManager _civManager;
         private readonly Civilization _civilization;
@@ -1906,7 +1906,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAGUE_HEADER_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAQUE_HEADER_TEXT"),
                     ColonyName);
             }
         }
@@ -1915,7 +1915,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAGUE_SUMMARY_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAQUE_SUMMARY_TEXT"),
                     ColonyName);
             }
         }
@@ -1924,7 +1924,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAGUE_DETAIL_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAQUE_DETAIL_TEXT"),
                     ColonyName);
             }
         }
@@ -1933,7 +1933,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/Plague.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Plaque.png";
             }
         }
 
@@ -1942,16 +1942,16 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public PlagueSitRepEntry(Civilization owner, string colonyName)
+        public PlaqueSitRepEntry(Civilization owner, string colonyName)
             : base(owner, SitRepPriority.Yellow)
         {
             if (colonyName == null)
-                throw new ArgumentNullException("colonyName missing for Plague");
+                throw new ArgumentNullException("colonyName missing for Plaque");
             _colonyName = colonyName;
             //_location = location;
         }
     }
-    #endregion PlagueSitRepEntry
+    #endregion PlaqueSitRepEntry
 
     #region PopulationDiedSitRepEntry
     //TODO: This needs fleshing out a bit more - needs a definite pop up,
@@ -2463,9 +2463,9 @@ namespace Supremacy.Game
     }
     #endregion
 
-    #region SupernovaSitRepEntry (new)
+    #region SupernovaiSitRepEntry (new)
     [Serializable]
-    public class SupernovaSitRepEntry : SitRepEntry
+    public class SupernovaiSitRepEntry : SitRepEntry
     {
         private readonly CivilizationManager _civManager;
         private readonly Civilization _civilization;
@@ -2539,7 +2539,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/Supernova.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Supernovai.png";
             }
         }
 
@@ -2548,16 +2548,16 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public SupernovaSitRepEntry(Civilization owner, string colonyName)
+        public SupernovaiSitRepEntry(Civilization owner, string colonyName)
             : base(owner, SitRepPriority.Yellow)
         {
             if (colonyName == null)
-                throw new ArgumentNullException("colonyName missing for Supernova");
+                throw new ArgumentNullException("colonyName missing for Supernovai");
             _colonyName = colonyName;
             //_location = location;
         }
     }
-    #endregion SupernovaSitRepEntry
+    #endregion SupernovaiSitRepEntry
 
     #region StarvationSitRepEntry
     [Serializable]
@@ -3191,4 +3191,89 @@ namespace Supremacy.Game
     }
     #endregion
 
+    // OLD
+
+    //[Serializable]
+    //public class ScriptedEventSitRepEntry : SitRepEntry //ISerializable
+    //{
+    //    private readonly string _headerText;
+    //    private readonly string _summaryText;
+    //    private readonly string _detailText;
+    //    private readonly string _detailImage;
+    //    private readonly string _soundEffect;
+    //    private readonly string _colonyName;
+
+    //protected ScriptedEventSitRepEntry(SerializationInfo info, StreamingContext context, string headerText, string detailText, string summaryText, string imagePath, string soundPath, string colonyName)
+    //    : base(info.GetInt32("OwnerID"), SitRepPriority.Special)
+    //{
+    //    _headerText = ResourceManager.GetString(headerText);
+    //    _detailText = string.Format(ResourceManager.GetString(detailText), colonyName);
+    //    _summaryText = ResourceManager.GetString(summaryText);
+    //    _detailImage = imagePath;
+    //    _soundEffect = soundPath;
+    //}
+
+    //public ScriptedEventSitRepEntry(string headerText, string summaryText, string detailText,  string imagePath, string soundPath, string colonyName)
+    //    : base(SitRepPriority.Special)
+    //{
+    //    GameLog.Core.Diplomacy.DebugFormat("headerText ={0}, summaryText ={1}, detailText ={2}, imagePath ={3}, soundPath ={4}. colonyName ={5}", headerText, summaryText, detailText, imagePath, soundPath, colonyName);
+    //    GameLog.Core.Diplomacy.DebugFormat("ResourceM headerText ={0}, stinrg.Formate (ResourceM summaryText ={1})", ResourceManager.GetString(headerText), string.Format(ResourceManager.GetString(detailText), colonyName));
+
+    //    _headerText = ResourceManager.GetString(headerText);
+    //    _summaryText = ResourceManager.GetString(summaryText);
+    //    _detailText = string.Format(ResourceManager.GetString(detailText), colonyName);
+    //    _detailImage = imagePath;
+    //    _soundEffect = soundPath;
+    //    _colonyName = colonyName;
+
+    //}
+
+    //public override string SoundEffect
+    //{
+    //    get { return _soundEffect; }
+    //}
+
+    //public override string HeaderText
+    //{
+    //    get { return _headerText; }
+    //}
+
+    //public override SitRepCategory Categories
+    //{
+    //    get { return SitRepCategory.SpecialEvent; }
+    //}
+
+    //public override string SummaryText
+    //{
+    //    get { return _summaryText; }
+    //}
+
+    //public override string DetailText
+    //{
+    //    get { return _detailText; }
+    //}
+
+    //public override string DetailImage
+    //{
+    //    get { return _detailImage; }
+    //}
+
+    //public override string ColonyName
+    //{
+    //    get { return _colonyName; }
+    //}
+    //public void GetObjectData(SerializationInfo info, StreamingContext context)
+    //{
+    //    /*info.AddValue(
+    //        "_parameterResolvers",
+    //        _parameterResolvers.Select(o => expressionSerializer.Serialize(o.CanReduce ? o.Reduce() : o).ToString(SaveOptions.DisableFormatting)).ToArray());*/
+
+    //    info.AddValue("OwnerID", OwnerID);
+    //    info.AddValue("_headerText", _headerText);
+    //    info.AddValue("_summaryText", _summaryText);
+    //    info.AddValue("_detailText", _detailText);
+    //    info.AddValue("_detailImage", _detailImage);
+    //    info.AddValue("_soundEffect", _soundEffect);
+    //}
+    //}
 }

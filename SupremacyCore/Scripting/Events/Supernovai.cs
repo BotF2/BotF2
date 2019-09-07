@@ -15,7 +15,7 @@ using System.Linq;
 namespace Supremacy.Scripting.Events
 {
     [Serializable]
-    public class SupernovaEvent : UnitScopedEvent<Colony>
+    public class SupernovaiEvent : UnitScopedEvent<Colony>
     {
         
         private int _occurrenceChance = 200;
@@ -85,7 +85,7 @@ namespace Supremacy.Scripting.Events
                     var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
                     {
-                        civManager.SitRepEntries.Add(new SupernovaSitRepEntry(civManager.Civilization, target.Name));
+                        civManager.SitRepEntries.Add(new SupernovaiSitRepEntry(civManager.Civilization, target.Name));
                     }
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
