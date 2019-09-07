@@ -156,7 +156,7 @@ namespace Supremacy.Scripting.Events
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
                     {
-                        civManager.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target.Name));
+                        civManager.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
                     }
 
                     target.Population.UpdateAndReset();

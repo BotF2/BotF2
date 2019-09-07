@@ -1,7 +1,6 @@
+using Supremacy.Game;
 using System;
 using System.Windows;
-
-using Supremacy.Game;
 
 namespace Supremacy.Client.Dialogs
 {

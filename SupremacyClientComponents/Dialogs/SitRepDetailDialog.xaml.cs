@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Supremacy.Game;
+using Supremacy.Resources;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-
-using Supremacy.Annotations;
-using Supremacy.Game;
-using Supremacy.Resources;
 
 namespace Supremacy.Client.Dialogs
 {
@@ -17,7 +15,7 @@ namespace Supremacy.Client.Dialogs
         private readonly SitRepEntry _sitRepEntry;
         private readonly MediaPlayer _mediaPlayer;
 
-        private SitRepDetailDialog([NotNull] SitRepEntry sitRepEntry)
+        private SitRepDetailDialog(SitRepEntry sitRepEntry)
         {
             _sitRepEntry = sitRepEntry;
             if (sitRepEntry == null)
@@ -39,11 +37,10 @@ namespace Supremacy.Client.Dialogs
             Unloaded += (s, e) => _mediaPlayer.Stop();
         }
 
-        public static void Show([NotNull] SitRepEntry sitRepEntry)
+        public static void Show(SitRepEntry sitRepEntry)
         {
             if (sitRepEntry == null)
                 throw new ArgumentNullException("sitRepEntry");
-            //works, but only for DetailDialogs     GameLog.Client.GameData.DebugFormat("SitRepDetailDialog.xaml.cs: {0}", sitRepEntry.SummaryText);
             new SitRepDetailDialog(sitRepEntry).ShowDialog();
         }
 

@@ -594,7 +594,7 @@ namespace Supremacy.Game
 
                     if ((shipsDamaged > 0) || (shipsDestroyed > 0))
                     {
-                        civManager.SitRepEntries.Add(new BlackHoleEncounterSitRepEntry(fleet.Owner, fleet.Sector.System, shipsDamaged, shipsDestroyed));
+                        civManager.SitRepEntries.Add(new BlackHoleEncounterSitRepEntry(fleet.Owner, fleet.Location, shipsDamaged, shipsDestroyed));
                     }
                 }
             }
@@ -984,7 +984,7 @@ namespace Supremacy.Game
                     GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
                         scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
 
-                    GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained, starType));
+                    GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained));
                 }
                 catch (Exception e)
                 {

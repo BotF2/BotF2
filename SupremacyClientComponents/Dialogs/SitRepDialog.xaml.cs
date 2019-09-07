@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Supremacy.Client.Commands;
+using Supremacy.Client.Controls;
+using Supremacy.Game;
+using Supremacy.Orbitals;
+using Supremacy.Universe;
+using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-
-using Supremacy.Client.Controls;
-using Supremacy.Game;
-using Supremacy.Utility;
-
-using System.Linq;
-using Supremacy.Universe;
-using Supremacy.Orbitals;
-using Supremacy.Client.Commands;
 
 namespace Supremacy.Client.Dialogs
 {
@@ -145,72 +144,37 @@ namespace Supremacy.Client.Dialogs
 
         private void OnSitRepEntryDoubleClick(object sender, RoutedEventArgs e)
         {
-            SitRepEntry selection = ItemsView.SelectedItem as SitRepEntry;
+            var selection = ItemsView.SelectedItem as SitRepEntry;
             if (selection != null)
             {
-                if (selection is ResearchCompleteSitRepEntry)
+                switch(selection.Action)
                 {
-                    Close();
-                    NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen);
-                }
-                else if (selection is NewColonySitRepEntry)
-                {
-                    Close();
-                    GalaxyScreenCommands.SelectSector.Execute((selection as NewColonySitRepEntry).Colony.Sector);
-                    NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
-                }
-                else if (selection is BuildQueueEmptySitRepEntry)
-                {
-                    Close();
-                    GalaxyScreenCommands.SelectSector.Execute((selection as BuildQueueEmptySitRepEntry).Colony.Sector);
-                    NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
-                }
-                else if (selection is ItemBuiltSitRepEntry)
-                {
-                    ItemBuiltSitRepEntry entry = (ItemBuiltSitRepEntry)selection;
-                    Sector sector = GameContext.Current.Universe.Map[entry.Location];
-                    if ((entry.ItemType is ShipDesign) || (entry.ItemType is StationDesign))
-                    {
+                    case SitRepAction.ShowScienceScreen:
                         Close();
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen);
+                        break;
+
+                    case SitRepAction.ViewColony:
+                        Close();
+                        GalaxyScreenCommands.SelectSector.Execute((selection.ActionTarget as Colony).Sector);
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
+                        break;
+
+                    case SitRepAction.CenterOnSector:
+                        Close();
+                        var sector = selection.ActionTarget as Sector;
                         GalaxyScreenCommands.SelectSector.Execute(sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(sector);
+                        break;
 
-                        // TODO: Could be nice to also automatically select the new ship/station??
-                    }
-                    else if ((sector.System != null) 
-                        && sector.System.HasColony
-                        && (sector.System.Colony.Owner == entry.Owner))
-                    {
+                    case SitRepAction.SelectTaskForce:
                         Close();
-                        GalaxyScreenCommands.SelectSector.Execute(sector);
-                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
-                    }
-                }
-                else if (selection is StarvationSitRepEntry)
-                {
-                    StarvationSitRepEntry entry = (StarvationSitRepEntry)selection;
-                    if ((entry.System != null)
-                        && entry.System.HasColony
-                        && (entry.System.Colony.Owner == entry.Owner))
-                    {
-                        Close();
-                        GalaxyScreenCommands.SelectSector.Execute(entry.System.Colony.Sector);
-                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
-                    }
-                }
-                else if (selection is FirstContactSitRepEntry)
-                {
-                    FirstContactSitRepEntry sitRep = selection as FirstContactSitRepEntry;
+                        var fleet = selection.ActionTarget as Fleet;
+                        GalaxyScreenCommands.SelectSector.Execute(fleet.Sector);
+                        GalaxyScreenCommands.CenterOnSector.Execute(fleet.Sector);
+                        GalaxyScreenCommands.SelectTaskForce.Execute(fleet);
+                        break;
 
-                    Close();
-                    GalaxyScreenCommands.SelectSector.Execute(sitRep.Sector);
-                    GalaxyScreenCommands.CenterOnSector.Execute(sitRep.Sector);
-                }
-                else if (selection is UnassignedTradeRoute)
-                {
-                    UnassignedTradeRoute sitRep = selection as UnassignedTradeRoute;
-                    Close();
-                    GalaxyScreenCommands.SelectSector.Execute((selection as UnassignedTradeRoute).TradeRoute.SourceColony.Location);
                 }
             }
         }
