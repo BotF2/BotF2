@@ -512,11 +512,55 @@
         <ComboBox x:Name="lstModifierRecurringBalancing"
               Grid.Column="2"
               Grid.Row="11"
-              SelectedItem="{Binding Path=lstModifierRecurringBalancing, Mode=TwoWay}"
+              SelectedItem="{Binding Path=EmpireModifierRecurringBalancing, Mode=TwoWay}"
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
               VerticalAlignment="Center" />
+
+      <TextBlock Grid.Column="2"
+            Grid.Row="12"
+            Margin="5,7,0,0"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Text="{s:StringResource GAME_PACE}"
+            Background="DarkBlue"
+            TextAlignment="Center"
+            FontSize="14pt"
+            Height="24"
+            Width="122"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" />
+
+      <ComboBox x:Name="lstGamePace"
+            Grid.Column="2"
+            Grid.Row="13"
+            SelectedItem="{Binding Path=GamePace, Mode=TwoWay}"
+            Margin="7,2,0,0"
+            IsEditable="False"
+            IsReadOnly="True"
+            VerticalAlignment="Center" />
+
+      <TextBlock Grid.Column="2"
+            Grid.Row="14"
+            Margin="5,7,0,0"
+            Foreground="{StaticResource LCARS_ParagraphBrush}"
+            Text="{s:StringResource TURN_TIMER}"
+            Background="DarkBlue"
+            TextAlignment="Center"
+            FontSize="14pt"
+            Height="24"
+            Width="122"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" />
+
+      <ComboBox x:Name="lstTurnTimer"
+            Grid.Column="2"
+            Grid.Row="15"
+            SelectedItem="{Binding Path=TurnTimerEnum, Mode=TwoWay}"
+            Margin="7,2,0,0"
+            IsEditable="False"
+            IsReadOnly="True"
+            VerticalAlignment="Center" />
 
         <!--<Label x:Name="PlayerNameSP"
             Grid.Column="1"

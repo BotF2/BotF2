@@ -145,11 +145,30 @@ namespace Supremacy.Game
 
     public enum EmpireModifierRecurringBalancing : byte
     {
-        True = 0,
-        False
+        No = 0,
+        Yes
     }
 
-
+    public enum GamePace : byte
+    {
+        Slow = 0,
+        Normal,
+        Fast
+    }
+    public enum TurnTimerEnum : byte
+    {
+        Unlimited =0,
+        Sec25,
+        Sec50,
+        Sec75,
+        Sec100,
+        Sec150,
+        Sec200,
+        Sec250,
+        Sec300,
+        Sec360
+   
+    }
     //public string PlayerNameSP
     //{
     //    PlayerNameSP = "choice your name";
@@ -194,7 +213,9 @@ namespace Supremacy.Game
             BorgModifier = EmpireModifier.Standard;
             TerranEmpireModifier = EmpireModifier.Standard;
 
-            EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.False;
+            EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No;
+            GamePace = GamePace.Normal;
+            TurnTimerEnum = TurnTimerEnum.Unlimited;
         }
         #endregion
 
@@ -373,9 +394,22 @@ namespace Supremacy.Game
         public EmpireModifierRecurringBalancing EmpireModifierRecurringBalancing { get; set; }
 
         /// <summary>
+        /// Gets or sets GamePace
+        /// </summary>
+        /// <value> GamePace slow fast normal.</value>
+        public GamePace GamePace { get; set; }
+
+        /// <summary>
+        /// Gets or sets TurnTimerEnum
+        /// </summary>
+        /// <value> TurnTimerEnum from 25 sec ... to unlimited.</value>
+        public TurnTimerEnum TurnTimerEnum { get; set; }
+
+        /// <summary>
         /// Gets or sets the turn timer (multiplayer games only).
         /// </summary>
         /// <value>The turn timer.</value>
+        /// 
         public TimeSpan TurnTimer { get; set; }
 
         /// <summary>
@@ -427,6 +461,8 @@ namespace Supremacy.Game
             writer.Write((int)BorgModifier);
             writer.Write((int)TerranEmpireModifier);
             writer.Write((byte)EmpireModifierRecurringBalancing);
+            writer.Write((byte)GamePace);
+            writer.Write((byte)TurnTimerEnum); // project intel save game
             writer.Write(AITakeover);
             writer.Write(TurnTimer.Ticks);
             writer.Write(CombatTimer.Ticks);
@@ -497,6 +533,8 @@ namespace Supremacy.Game
             BorgModifier = (EmpireModifier)reader.ReadInt32();
             TerranEmpireModifier = (EmpireModifier)reader.ReadInt32();
             EmpireModifierRecurringBalancing = (EmpireModifierRecurringBalancing)reader.ReadByte();
+            GamePace = (GamePace)reader.ReadByte();
+            TurnTimerEnum = (TurnTimerEnum)reader.ReadByte(); // project intel read save game
 
             AITakeover = reader.ReadBoolean();
             TurnTimer = TimeSpan.FromTicks(reader.ReadInt64());

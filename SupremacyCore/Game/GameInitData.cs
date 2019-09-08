@@ -158,6 +158,8 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Options: TerranEmpireModifier = {0}", savedGameHeader.Options.TerranEmpireModifier);
 
             GameLog.Core.General.InfoFormat("Options: EmpireModifierRecurringBalancing = {0}", savedGameHeader.Options.EmpireModifierRecurringBalancing);
+            GameLog.Core.General.InfoFormat("Options: GamePace = {0}", savedGameHeader.Options.GamePace);
+            GameLog.Core.General.InfoFormat("Options: TurnTimer = {0}", savedGameHeader.Options.TurnTimerEnum);
 
 
 

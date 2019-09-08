@@ -616,7 +616,9 @@ namespace Supremacy.Game
                     BorgModifier = EmpireModifier.Standard,
                     TerranEmpireModifier = EmpireModifier.Standard,
 
-                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.False,
+                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No,
+                    GamePace = GamePace.Normal,
+                    TurnTimerEnum = TurnTimerEnum.Unlimited,
                 },
                 false);
 

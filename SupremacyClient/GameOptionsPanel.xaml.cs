@@ -51,7 +51,9 @@ namespace Supremacy.Client
             lstBorgPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstTerranEmpirePlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
 
-            //lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
+            lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
+            lstGamePace.ItemsSource = EnumHelper.GetValues<GamePace>();
+            lstTurnTimer.ItemsSource = EnumHelper.GetValues<TurnTimerEnum>();
 
             lstFederationModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
             lstRomulanModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
@@ -77,6 +79,10 @@ namespace Supremacy.Client
             lstDominionPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstBorgPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstTerranEmpirePlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+
+            lstModifierRecurringBalancing.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            lstGamePace.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            lstTurnTimer.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
 
             lstFederationModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstRomulanModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
