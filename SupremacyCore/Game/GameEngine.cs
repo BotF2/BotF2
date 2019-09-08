@@ -488,6 +488,7 @@ namespace Supremacy.Game
 
             GameLog.Core.General.InfoFormat("Options: EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
             GameLog.Core.General.InfoFormat("Options: GamePace = {0}", GameContext.Current.Options.GamePace);
+            GameLog.Core.General.InfoFormat("Options: TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
 
             game.TurnNumber = 1;
         }
