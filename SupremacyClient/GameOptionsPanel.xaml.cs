@@ -51,7 +51,7 @@ namespace Supremacy.Client
             lstBorgPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstTerranEmpirePlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
 
-            lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
+            //lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
 
             lstFederationModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
             lstRomulanModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();

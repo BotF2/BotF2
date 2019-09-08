@@ -2487,7 +2487,7 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class SupernovaSitRepEntry : SitRepEntry
+    public class SupernovaSitRepEntry : SitRepEntry // not Supernovai
     {
         private readonly int _colonyID;
 
@@ -2547,7 +2547,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/Supernovai.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Supernova.png";
             }
         }
 
@@ -2560,7 +2560,7 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Yellow)
         {
             if (colony == null)
-                throw new ArgumentNullException("colony missing for Supernovai");
+                throw new ArgumentNullException("colony missing for Supernova");
             _colonyID = colony.ObjectID;
         }
     }
