@@ -2487,7 +2487,7 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class SupernovaSitRepEntry : SitRepEntry
+    public class SupernovaSitRepEntry : SitRepEntry // not Supernovai
     {
         private readonly int _colonyID;
 
