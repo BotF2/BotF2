@@ -2539,7 +2539,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/supernova.png";
+                return "vfs:///Resources/Images/ScriptedEvents/supernovai.png";
             }
         }
 
@@ -2552,7 +2552,7 @@ namespace Supremacy.Game
             : base(owner, SitRepPriority.Yellow)
         {
             if (colonyName == null)
-                throw new ArgumentNullException("colonyName missing for supernovai");
+                throw new ArgumentNullException("colonyName missing for Supernovai");
             _colonyName = colonyName;
             //_location = location;
         }
