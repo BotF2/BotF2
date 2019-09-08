@@ -2539,7 +2539,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/supernovai.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Supernovai.png";
             }
         }
 
