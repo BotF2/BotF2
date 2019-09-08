@@ -2463,101 +2463,101 @@ namespace Supremacy.Game
     }
     #endregion
 
-    #region SupernovaSitRepEntry (new)
-    [Serializable]
-    public class SupernovaSitRepEntry : SitRepEntry
-    {
-        private readonly CivilizationManager _civManager;
-        private readonly Civilization _civilization;
-        private readonly MapLocation _location;
-        private readonly string _colonyName;
+    //#region supernovaiSitRepEntry (new)
+    //[Serializable]
+    //public class supernovaiSitRepEntry : SitRepEntry
+    //{
+    //    private readonly CivilizationManager _civManager;
+    //    private readonly Civilization _civilization;
+    //    private readonly MapLocation _location;
+    //    private readonly string _colonyName;
 
 
-        public Civilization Civilization
-        {
-            get { return _civManager.Civilization; }
-        }
+    //    public Civilization Civilization
+    //    {
+    //        get { return _civManager.Civilization; }
+    //    }
 
-        public CivilizationManager CivManager
-        {
-            get { return _civManager; }
-        }
+    //    public CivilizationManager CivManager
+    //    {
+    //        get { return _civManager; }
+    //    }
 
-        public string ColonyName
-        {
-            get { return _colonyName; }
-        }
+    //    public string ColonyName
+    //    {
+    //        get { return _colonyName; }
+    //    }
 
-        public MapLocation Location
-        {
-            get { return _location; }
-        }
+    //    public MapLocation Location
+    //    {
+    //        get { return _location; }
+    //    }
 
-        //public Sector Sector
-        //{
-        //    get { return GameContext.Current.Universe.Map[Location]; }
-        //}
+    //    //public Sector Sector
+    //    //{
+    //    //    get { return GameContext.Current.Universe.Map[Location]; }
+    //    //}
 
-        public override bool HasDetails
-        {
-            get { return true; }
-        }
+    //    public override bool HasDetails
+    //    {
+    //        get { return true; }
+    //    }
 
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.SpecialEvent; }
-        }
+    //    public override SitRepCategory Categories
+    //    {
+    //        get { return SitRepCategory.SpecialEvent; }
+    //    }
 
-        public override string HeaderText
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("SUPERNOVA_I_HEADER_TEXT"),
-                    ColonyName);
-            }
-        }
+    //    public override string HeaderText
+    //    {
+    //        get
+    //        {
+    //            return string.Format(ResourceManager.GetString("SUPERNOVA_I_HEADER_TEXT"),
+    //                ColonyName);
+    //        }
+    //    }
 
-        public override string SummaryText
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("SUPERNOVA_I_SUMMARY_TEXT"),
-                    ColonyName);
-            }
-        }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            return string.Format(ResourceManager.GetString("SUPERNOVA_I_SUMMARY_TEXT"),
+    //                ColonyName);
+    //        }
+    //    }
 
-        public override string DetailText
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("SUPERNOVA_I_DETAIL_TEXT"),
-                    ColonyName);
-            }
-        }
+    //    public override string DetailText
+    //    {
+    //        get
+    //        {
+    //            return string.Format(ResourceManager.GetString("SUPERNOVA_I_DETAIL_TEXT"),
+    //                ColonyName);
+    //        }
+    //    }
 
-        public override string DetailImage
-        {
-            get
-            {
-                return "vfs:///Resources/Images/ScriptedEvents/Supernova.png";
-            }
-        }
+    //    public override string DetailImage
+    //    {
+    //        get
+    //        {
+    //            return "vfs:///Resources/Images/ScriptedEvents/supernovai.png";
+    //        }
+    //    }
 
-        public override bool IsPriority
-        {
-            get { return true; }
-        }
+    //    public override bool IsPriority
+    //    {
+    //        get { return true; }
+    //    }
 
-        public SupernovaSitRepEntry(Civilization owner, string colonyName)
-            : base(owner, SitRepPriority.Yellow)
-        {
-            if (colonyName == null)
-                throw new ArgumentNullException("colonyName missing for Supernova");
-            _colonyName = colonyName;
-            //_location = location;
-        }
-    }
-    #endregion SupernovaSitRepEntry
+    //    public supernovaiSitRepEntry(Civilization owner, string colonyName)
+    //        : base(owner, SitRepPriority.Yellow)
+    //    {
+    //        if (colonyName == null)
+    //            throw new ArgumentNullException("colonyName missing for supernovai");
+    //        _colonyName = colonyName;
+    //        //_location = location;
+    //    }
+    //}
+    //#endregion supernovaiSitRepEntry
 
     #region StarvationSitRepEntry
     [Serializable]
