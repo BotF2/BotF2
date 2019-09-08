@@ -213,7 +213,7 @@
     <Compile Include="Scripting\Events\Earthquake.cs" />
     <Compile Include="Scripting\Events\GammaRayBurst.cs" />
     <Compile Include="Scripting\Events\PlagueEvent.cs" />
-    <Compile Include="Scripting\Events\Supernova.cs" />
+    <Compile Include="Scripting\Events\Supernovai.cs" />
     <Compile Include="Scripting\Events\TerroristBombingOfShipProduction.cs" />
     <Compile Include="Scripting\Events\TradeGuildStrikes.cs" />
     <Compile Include="Scripting\Events\Tribbles.cs" />

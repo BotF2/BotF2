@@ -82,11 +82,11 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
                     }
 
-                    //var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    //if (civManager != null)
-                    //{
-                    //    civManager.SitRepEntries.Add(new SupernovaSitRepEntry(civManager.Civilization, target.Name));
-                    //}
+                    var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    if (civManager != null)
+                    {
+                        civManager.SitRepEntries.Add(new SupernovaiSitRepEntry(civManager.Civilization, target.Name));
+                    }
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
                     target.Population.AdjustCurrent( - population/6 * 3);

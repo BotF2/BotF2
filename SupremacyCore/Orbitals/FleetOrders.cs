@@ -584,7 +584,6 @@ namespace Supremacy.Orbitals
                 else if (GameContext.Current.AgreementMatrix.IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
                 {
                     DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -20);
-
                     Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
                     foreignPower.CancelTreaty();
                 }
@@ -592,7 +591,6 @@ namespace Supremacy.Orbitals
             }
            
         }
-
         public override bool IsComplete {
             get { return Fleet.Sector.System.Colony.Health.CurrentValue >= 100; }
         }
