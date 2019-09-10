@@ -161,8 +161,6 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Options: GamePace = {0}", savedGameHeader.Options.GamePace);
             GameLog.Core.General.InfoFormat("Options: TurnTimer = {0}", savedGameHeader.Options.TurnTimerEnum);
 
-
-
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - UseHomeQuadrants;{0}", savedGameHeader.Options.UseHomeQuadrants);
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - TurnTimer;{0}", savedGameHeader.Options.TurnTimer);
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - CombatTimer;{0}", savedGameHeader.Options.CombatTimer);
