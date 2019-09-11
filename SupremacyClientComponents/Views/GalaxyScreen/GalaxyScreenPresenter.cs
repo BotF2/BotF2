@@ -667,7 +667,7 @@ namespace Supremacy.Client.Views
                         GameLog.Client.Intel.DebugFormat("local player ownedship.Name = {0}", ownedShip.Name);
 
                     availableShips = ownedShipsAtLocation.Where(
-                        ship => !selectedTaskForce.View.Ships.Any(o => Equals(o.Source, ship))); 
+                        ship => !selectedTaskForce.View.Ships.Any(o => Equals(o.Source, ship))); //?? your ships that are not selected, just available
 
                     foreach (var availableShip in availableShips)
                         GameLog.Client.Intel.DebugFormat("availableShip.Name = {0}", availableShip.Name);

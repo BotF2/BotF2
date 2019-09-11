@@ -699,7 +699,7 @@ namespace Supremacy.Diplomacy
             if (sector == null)
                 throw new ArgumentNullException("sector");
 
-            if (sector.Station != null)
+            if ( sector!= null && sector.Station != null && source != null)
             {
                 return source != sector.Station.Owner;
             }
