@@ -25,31 +25,10 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
-        protected List<BuildProject> AffectedProjects
-        {
-            get
-            {
-                if (_affectedProjects == null)
-                    _affectedProjects = new List<BuildProject>();
-                return _affectedProjects;
-            }
-        }
-
-        private List<Building> _affectedBuildings;
-        protected List<Building> AffectedBuildings
-        {
-            get
-            {
-                if (_affectedBuildings == null)
-                    _affectedBuildings = new List<Building>();
-                return _affectedBuildings;
-            }
-        }
 
         public AsteroidImpactEvent()
         {
             _affectedProjects = new List<BuildProject>();
-            _affectedBuildings = new List<Building>();
         }
 
         public override bool CanExecute
@@ -85,15 +64,14 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            // Update 2 March 2019 Minor Balancing Asteroid Impacts : Start occurance on turn 40
             if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >=80)
             {
                 var affectedCivs = game.Civilizations
                     .Where(
                         o => o.IsEmpire &&
                              o.IsHuman &&
-                             RandomHelper.Chance(_occurrenceChance))
-                    .ToList();
+                             RandomHelper.Chance(_occurrenceChance));
+                    //.ToList();
 
                 var targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
@@ -106,17 +84,18 @@ namespace Supremacy.Scripting.Events
                     var productionCenters = group.ToList();
 
                     var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
-                    GameLog.Client.GameData.DebugFormat("AsteroidImpactEvents.cs: target.Name: {0}", target.Name);
+                    GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
-                    var affectedProjects = target.BuildSlots
+                    var _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
                         .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
-                        .Select(o => o.Project);
+                        .Select(o => o.Project)
+                        .ToList();
+                        //;
 
-                    foreach (var affectedProject in affectedProjects)
+                    foreach (var affectedProject in _affectedProjects)
                     {
-                        GameLog.Client.GameData.DebugFormat("AsteroidImpactEvents.cs: affectedProject: {0}", affectedProject.Description);
-                        AffectedProjects.Add(affectedProject);
+                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
                     var targetCiv = target.Owner;
@@ -131,10 +110,10 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.AdjustCurrent(-population / 5);
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Population.UpdateAndReset();
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.AdjustCurrent(-(health / 5));
-                    GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
+                    target.Population.AdjustCurrent(-population / 5);
+                    target.Population.UpdateAndReset();
+                    target.Health.AdjustCurrent(-(health / 5));
+                    //GameContext.Current.Universe.Get<Colony>(targetColonyId).Health.UpdateAndReset();
 
                     int removeFood = 2; // If you have food 4 or more then take out 2
                     if (target.GetTotalFacilities(ProductionCategory.Food) < 4)
@@ -174,18 +153,10 @@ namespace Supremacy.Scripting.Events
                     return;
                 }
 
-                if (phase == TurnPhase.Production)
-                    _productionFinished = true; // turn production back on
-                else if (phase == TurnPhase.ShipProduction)
-                    _shipProductionFinished = true;
-
-                if (!_productionFinished || !_shipProductionFinished)
-                    return;
-
-                foreach (var affectedProject in AffectedProjects)
+                foreach (var affectedProject in _affectedProjects)
                     affectedProject.IsPaused = false;
 
-                AffectedProjects.Clear();
+                _affectedProjects.Clear();
             }
         }
     }

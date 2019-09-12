@@ -353,13 +353,16 @@ namespace Supremacy.Client
 
             foreach (var sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries)
             {
-                // got a null ref from this gamelog. Are we missing a sitRepEntry.SummaryText?
-                // GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
+                if (sitRepEntry != null)
+                {
+                    // got a null ref from this gamelog. Are we missing a sitRepEntry.SummaryText?
+                    // GameLog.Client.General.DebugFormat("###################### SUMMARY: {0}", sitRepEntry.SummaryText);
 
-                if ((ClientSettings.Current != null) && sitRepEntry.HasDetails && ClientSettings.Current.EnableCombatScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
+                    if ((ClientSettings.Current != null) && sitRepEntry.HasDetails && ClientSettings.Current.EnableCombatScreen)   // only show Detail_Dialog if also CombatScreen are shown (if not, a quicker game is possible)
                     {
-                    SitRepDetailDialog.Show(sitRepEntry);
+                        SitRepDetailDialog.Show(sitRepEntry);
                     }
+                }
             }
 
             ShowSummary(false);
