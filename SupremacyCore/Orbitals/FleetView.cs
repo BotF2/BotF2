@@ -17,6 +17,7 @@ using Supremacy.Game;
 using System.Windows.Media.Imaging;
 using Supremacy.Diplomacy;
 using Supremacy.Utility;
+using Supremacy.Resources;
 
 namespace Supremacy.Orbitals
 {
@@ -40,9 +41,11 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
-                    return "unknown";
+                    //return "unknown";
+                    return string.Format(ResourceManager.GetString("UNKNOWN"));
                 if (IsUnScannable)
-                    return "scan blocked";
+                    //return "scan blocked";
+                    return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
                 else
                     return View.Name;
             }
@@ -53,25 +56,15 @@ namespace Supremacy.Orbitals
             get
             {
                 if (IsUnknown)
-                    return "unknown";
+                    // return "unknown";
+                return string.Format(ResourceManager.GetString("UNKNOWN"));
                 if (IsUnScannable)
-                    return "scan blocked";
+                    return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
+                    //return "scan blocked";
                 else
                     return View.ClassName;
             }
         }
-
-        //public string ClassLevel
-        //{
-        //    get
-        //    {
-        //        if (IsUnknown)
-        //            return "unknown";
-        //        else
-        //            return View.ClassLevel;
-        //    }
-        //}
-
     }
 
     [Serializable]
@@ -122,7 +115,7 @@ namespace Supremacy.Orbitals
                 if (IsOwned || IsDesignOfShipsKnown)
                     return Source.Name;
                 if (IsNumberOfShipsKnown)
-                    return _ships.Count + " Cloaked Ship(s)" + " Camouflaged Ship(s)";
+                    return _ships.Count + "+ ? Cloaked or Camouflaged";
                 if (IsOwnerKnown)
                 {
                     string ownerName = Source.Owner.ShortName;
@@ -130,7 +123,7 @@ namespace Supremacy.Orbitals
                         ownerName = ownerName.Substring(0, ownerName.Length - 1);
                     return ownerName + " Fleet";
                 }
-                return "Unknown Fleet";
+                return string.Format(ResourceManager.GetString("UNKNOWN_FLEET")); //"Unknown Fleet";
             }
         }
 
@@ -151,7 +144,7 @@ namespace Supremacy.Orbitals
                             e);
                     }
                 }
-                return "manual className";
+                return "Class Name Unknown";
             }
         }
 
