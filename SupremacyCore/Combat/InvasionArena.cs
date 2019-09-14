@@ -1,4 +1,4 @@
-﻿  using Supremacy.Annotations;
+﻿using Supremacy.Annotations;
 using Supremacy.Buildings;
 using Supremacy.Collections;
 using Supremacy.Economy;
@@ -694,7 +694,7 @@ namespace Supremacy.Combat
             var accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
             _experienceAccuracy = new Dictionary<ExperienceRank, double>();
             foreach (var rank in EnumHelper.GetValues<ExperienceRank>())
-            { 
+            {
                 // _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
                 double modifier;
                 if (Double.TryParse(accuracyTable[rank.ToString()][0], out modifier))
@@ -855,8 +855,8 @@ namespace Supremacy.Combat
                     invader,
                     colony.Location,
                     ((Ship)transport.Source).ShipDesign.WorkCapacity);
-                    GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
-                            transportCombatStrength);
+                GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength BEFORE random = {0}",
+                        transportCombatStrength);
 
                 int randomResult = RandomProvider.Shared.Next(1, 21);   //  limits random to 20 %
                 transportCombatStrength = transportCombatStrength - (transportCombatStrength * randomResult / 100);
@@ -865,7 +865,7 @@ namespace Supremacy.Combat
                         defenderCombatStrength, transports.Count);
 
                 GameLog.Core.Combat.DebugFormat("GroundCombat - LandingTroops - transportCombatStrength AFTER random = {0}, random in Percent = {1}",
-                    transportCombatStrength, randomResult );
+                    transportCombatStrength, randomResult);
 
                 defenderCombatStrength -= transportCombatStrength;
 
@@ -939,7 +939,7 @@ namespace Supremacy.Combat
                         break;
 
                     var maxDamage = weapon.MaxDamage.CurrentValue;
-                  
+
 
                     if (ship.ShipType != ShipType.StrikeCruiser) //any non-strike Cruiser
                     {
@@ -971,13 +971,13 @@ namespace Supremacy.Combat
                         maxDamage = Convert.ToInt32(weapon.MaxDamage.CurrentValue * 0.10);
                     }
 
-                    if (ship.Design.Key.Contains("CARD_AUTOMATED_MISSILE")) 
+                    if (ship.Design.Key.Contains("CARD_AUTOMATED_MISSILE"))
                     {
                         // Change damage to kill the colony and destroy the cardassian automated missile
-                        
-                            maxDamage = 100000;
-                            //GameLog.Core.Combat.DebugFormat("CARD_AUTOMATED_MISSILE: maxDamage = {0}", maxDamage);
-                            //ship.Destroy();   // don't destroy it here
+
+                        maxDamage = 100000;
+                        //GameLog.Core.Combat.DebugFormat("CARD_AUTOMATED_MISSILE: maxDamage = {0}", maxDamage);
+                        //ship.Destroy();   // don't destroy it here
                     }
                     maxDamage -= _invasionArena.ColonyShieldStrength.AdjustCurrent(-maxDamage);
                     GameLog.Core.Combat.DebugFormat(" _invasionArena.ColonyShieldStrength = {0}", _invasionArena.ColonyShieldStrength);
@@ -1123,7 +1123,7 @@ namespace Supremacy.Combat
                 .Where(o => !o.Design.Key.Contains("ORBITAL"))
                 .Where(o => o.Weapons.Any(w => w.CanFire)).ToList();
             unitsAbleToAttackInv.RandomizeInPlace();
-            
+
             var z = 0; // inserted and initialized
 
             while (z < 1) // only one rounds now,Orbitals vs. Ships
@@ -1243,7 +1243,7 @@ namespace Supremacy.Combat
                         else
                         {
                             accuracyThreshold = 1d - ship.GetAccuracyModifier(); // why -4? for ships...
-                        }                        
+                        }
                     }
 
                     var maxDamage = weapon.MaxDamage.CurrentValue;

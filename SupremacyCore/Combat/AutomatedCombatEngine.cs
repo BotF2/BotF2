@@ -15,6 +15,8 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
+
 namespace Supremacy.Combat
 {
     public sealed class AutomatedCombatEngine : CombatEngine
@@ -35,7 +37,7 @@ namespace Supremacy.Combat
             GameLog.Core.CombatDetails.DebugFormat("_combatShips.Count: {0}", _combatShips.Count());
             bool activeBattle = true; // false when less than two civs remaining
             // Scouts, Frigate and cloaked ships have a special chance of retreating BEFORE round 3
-            if (_roundNumber < 7) // multiplayer starts at round 5
+            if (_roundNumber < 7) // multiplayer starts at round 5 // always true
             {
                 GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
                 //  Once a ship has retreated, its important that it does not do it again..
@@ -46,7 +48,7 @@ namespace Supremacy.Combat
                     .ToList();
                 foreach (var ship in easyRetreatShips)
                 {
-                    if (!RandomHelper.Chance(10) && (ship.Item1 != null)) // 90% to reatreat
+                    if (!RandomHelper.Chance(5) && (ship.Item1 != null)) // 25% to reatreat // Project Minichange
                     {
                         var ownerAssets = GetAssets(ship.Item1.Owner);
                         if (!ownerAssets.EscapedShips.Contains(ship.Item1)) // escaped ships cannot escape again
@@ -327,6 +329,21 @@ namespace Supremacy.Combat
             //}
             int AttackingEmpireID = 999;
             int targetedEmpireID = 999;
+            // Project Focus
+            // Initialize varibale for last turns target
+            var lastTurnAttackerTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
+                                        .Where(sc => sc.Item1.HullStrength > 0).Select(sc => sc).ToList();
+    
+                var lastTurnAttackerTarget = lastTurnAttackerTargets.FirstOrDefault();
+                // in first turn its null. May be something if already fired on a target but is not destroyed
+                lastTurnAttackerTarget = null;
+            var lastTurnRetaliationTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
+                                      .Where(sc => sc.Item1.HullStrength > 0).Select(sc => sc).ToList();
+
+            var lastTurnRetaliationTarget = lastTurnAttackerTargets.FirstOrDefault();
+            // in first turn its null. May be something if already fired on a target but is not destroyed
+            lastTurnRetaliationTarget = null;
+
 
 
             while (activeBattle == true)
@@ -470,14 +487,13 @@ namespace Supremacy.Combat
                     FleetStrenghtTemp = 0;
                 
                 }
-                
+
 
 
 
                 #region attacker loop
 
-
-
+               
 
                 // HERE STARTS ATTACKER´S LOOP LOOKING FOR TARGETS
                 GameLog.Core.CombatDetails.DebugFormat("NOW HERE ATTACKING LOOP STARTS!");
@@ -496,10 +512,37 @@ namespace Supremacy.Combat
                     var currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
                                             .Where(sc => sc.Item1.HullStrength > 0).Select(sc => sc).ToList();
                     var currentTarget = currentTargets.FirstOrDefault(); // Also make it distinct
-                    if (currentTargets != null && currentTargets.Count >0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
+
+                    if (currentTargets != null && currentTargets.Count > 0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
                     {
                         currentTarget = currentTargets.RandomElementOrDefault();
                     }
+
+
+
+                    // Project Focus Attacking Loop
+                    if (lastTurnAttackerTarget !=null) // Project Focus
+                    {
+                        if (lastTurnAttackerTarget.Item1.ShieldStrength > 250 && !RandomHelper.Chance(4)) // 2/3rd
+                        {
+                            currentTarget = lastTurnAttackerTarget;
+                        }
+                        else if(lastTurnAttackerTarget.Item1.HullStrength > 150 && !RandomHelper.Chance(2)) // 50%
+                        {
+                            currentTarget = lastTurnAttackerTarget;
+                        }
+                        if((lastTurnAttackerTarget.Item1.ShieldIntegrity > 0.5) && RandomHelper.Chance(3)) // another 1/3rd chance to get target
+                        {
+                            currentTarget = lastTurnAttackerTarget;
+                        }
+                        if(lastTurnAttackerTarget.Item1.OwnerID == 6 && !RandomHelper.Chance(20)) // If borg 95% chance to stay on target
+                        {
+                            currentTarget = lastTurnAttackerTarget;
+                        }
+                    }
+
+
+
                     if (currentTarget == null || currentTargets.Count == 0) // UPDATE 07 july 2019 make sure it does not crash, use count >0
                     {
                         if (attackingRoundCounts == 1)
@@ -548,7 +591,7 @@ namespace Supremacy.Combat
 
                     
 
-                    // FAVOR THE BOLD
+                    // FAVOR THE BOLD Attacking Loop
                     // UPDATE X 18 August 2019
 
                     int AttackingDurabilityTotal = 0;
@@ -570,21 +613,22 @@ namespace Supremacy.Combat
                         }
 
                     }
+                 
 
-                    if (AttackingDurabilityTotal * 2 < DefendingDurabilityTotal
-                        )
+                    if (AttackingDurabilityTotal * 2 < DefendingDurabilityTotal && !(AttackingDurabilityTotal *10 < DefendingDurabilityTotal)
+                        ) // Favor the bold: If Attacker outgunned by at least 2:1 but not 10:1 increase its damage dealt.
                     {
 
                     
                         if (GameContext.Current.TurnNumber <10)
                         {
                             if (AttackingDurabilityTotal > 1000)
-                                FavorTheBoldAttackBonus = 1.1;
+                                FavorTheBoldAttackBonus = 1.15;
                         }
                         else if (GameContext.Current.TurnNumber >= 10)
                         {
                             if (AttackingDurabilityTotal > 4000)
-                                FavorTheBoldAttackBonus = 1.2;
+                                FavorTheBoldAttackBonus = 1.25;
                             if (GameContext.Current.TurnNumber > 30)
                             {
                                 if (AttackingDurabilityTotal > 7000)
@@ -615,29 +659,30 @@ namespace Supremacy.Combat
                     }
                     else
                     {
+                        // Attacker is not outgunned 2:1 or is outgunned by 10:1+ (no favor the bold)
                         // If attacker outguns the targeted empire, the attacked gain less damage
-                        if(AttackingDurabilityTotal > DefendingDurabilityTotal * 2)
+                        if(DefendingDurabilityTotal * 2 < AttackingDurabilityTotal && !(DefendingDurabilityTotal * 10 < AttackingDurabilityTotal)) // the defender is outgunned by 2:1 and not by 10:1+
                             {
                                if (GameContext.Current.TurnNumber <20)
-                                    FavorTheBoldAttackBonus = 0.9;
+                                    FavorTheBoldAttackBonus = 0.80;
                             }
                             else
                             {
                                 if (GameContext.Current.TurnNumber >= 20)
                                 {
-                                    FavorTheBoldAttackBonus = 0.85;
+                                    FavorTheBoldAttackBonus = 0.70;
                                 }
                                 if (GameContext.Current.TurnNumber > 60)
                                 {
-                                    FavorTheBoldAttackBonus = 0.8;
+                                    FavorTheBoldAttackBonus = 0.65;
                                 }
                                 if (GameContext.Current.TurnNumber > 120)
                                 {
-                                    FavorTheBoldAttackBonus = 0.7;
+                                    FavorTheBoldAttackBonus = 0.66;
                                 }
                                 if (GameContext.Current.TurnNumber > 200)
                                 {
-                                    FavorTheBoldAttackBonus = 0.6;
+                                    FavorTheBoldAttackBonus = 0.45;
                                 }
                             }
 
@@ -990,6 +1035,20 @@ namespace Supremacy.Combat
                             GameLog.Core.CombatDetails.DebugFormat("its the first run on a target, an weapons remain RemainingFirepowerInWhile == {0}", remainingFirepowerInWhile);
                         }
                     }
+                    // Project Pace and Empire Power Attacking Loop
+                    TranslatePaceAndEmpirePower PaceInstance = new TranslatePaceAndEmpirePower();
+                    double targetmodifier = PaceInstance.getEmpirePowerModifier(currentTarget.Item1.OwnerID, false);
+                    double attackermodifier = PaceInstance.getEmpirePowerModifier(AttackingShip.Item1.OwnerID, true);
+                    double stationPaceMod = 1;
+                    if (!currentTarget.Item1.Source.IsMobile)
+                        stationPaceMod = PaceInstance.getGamePaceStationModifier();
+
+                    // Project Dominion better pentrate shields of minors
+                    double dominionMod = 1;
+                    if (AttackingShip.Item1.OwnerID == 5 && currentTarget.Item1.OwnerID > 6)
+                        dominionMod = 2.0;
+
+
                     // Fire Weapons, inflict damage. Either with all calculated bonus/malus. Or if this was done last turn, use remainingFirepower (if any)
                     Random zufall = new Random();
                     double tempDamage = 0;
@@ -998,10 +1057,14 @@ namespace Supremacy.Combat
                         currentTarget.Item1.TakeDamage((int)(Convert.ToInt32(tempDamage= 
                             (rememberForDamage + Convert.ToInt32(ScissorBonus)
                             + Convert.ToDouble(combatOrderBonusMalus)
+                            * targetmodifier
+                            * dominionMod
+                            * attackermodifier
+                            * stationPaceMod
                             * Convert.ToDouble(1.5 - targetDamageControl)
                             * Convert.ToDouble(FavorTheBoldAttackBonus)
                             * Convert.ToDouble(1 - currentTarget.Item1.Source.GetManeuverablility() / 0.24 / 100)
-                            * sourceAccuracy * (zufall.Next(8,13)/10)
+                            * sourceAccuracy *  (zufall.Next(8,13)/10)
                             ))));// * sourceAccuracy + Convert.ToInt32(ScissorBonus) + Convert.ToInt32(combatOrderBonusMalus)
                         AttackingShip.Item1.RemainingFirepower = 0;
                     }
@@ -1010,6 +1073,10 @@ namespace Supremacy.Combat
                         currentTarget.Item1.TakeDamage((int)(Convert.ToInt32(tempDamage =
                             (AttackingShip.Item1.RemainingFirepower + Convert.ToInt32(ScissorBonus)
                             + Convert.ToDouble(combatOrderBonusMalus)
+                            * targetmodifier
+                            * dominionMod
+                            * attackermodifier
+                            * stationPaceMod
                             * Convert.ToDouble(1.5 - targetDamageControl)
                             * Convert.ToDouble(FavorTheBoldAttackBonus)
                             * Convert.ToDouble(1 - currentTarget.Item1.Source.GetManeuverablility() / 0.24 / 100)
@@ -1018,6 +1085,15 @@ namespace Supremacy.Combat
                         AttackingShip.Item1.RemainingFirepower = remainingFirepowerInWhile;
 
                     }
+                    // Project Focus on same target
+                    if (currentTarget != null)
+                    {
+                        if (currentTarget.Item1.HullStrength > 0)
+                            lastTurnAttackerTarget = currentTarget;
+                        else
+                            lastTurnAttackerTarget = null;
+                    }
+
                     GameLog.Core.CombatDetails.DebugFormat("In Attacking Round {0}, the EmpireID {1} just fired", attackingRoundCounts, AttackingEmpireID);
                     GameLog.Core.CombatDetails.DebugFormat("now damage has just been applies either full weapons  (excluding bonus)  {0} OR lower damage if ship can only absorb that {1}", tempDamage, tempDamage);
                     GameLog.Core.CombatDetails.DebugFormat("Target has hull left {0}", currentTarget.Item1.HullStrength);
@@ -1362,6 +1438,24 @@ namespace Supremacy.Combat
                         {
                             currentTarget = currentTargets.RandomElementOrDefault();
                         }
+
+
+                        // Project Focus Retaliation Loop
+                        if (lastTurnRetaliationTarget != null) // Project Focus
+                        {
+                            if (lastTurnRetaliationTarget.Item1.ShieldStrength > 0 && !RandomHelper.Chance(6))
+                            {
+                                currentTarget = lastTurnRetaliationTarget;
+                            }
+                            else if (!RandomHelper.Chance(3))
+                            {
+                                currentTarget = lastTurnRetaliationTarget;
+                            }
+                        }
+
+
+
+
                         if (currentTarget is null)
                         {
                             currentTargets = _combatShipsTemp.Where(sc => sc.Item1.OwnerID == targetedEmpireID)
@@ -1539,12 +1633,32 @@ namespace Supremacy.Combat
                     // APPLY DAMAGE 
 
                     double tempDamageInRetaliation = 0;
-                   
+
+                    // Project Pace and Empire Power Retaliation Loop
+                    TranslatePaceAndEmpirePower PaceInstance = new TranslatePaceAndEmpirePower();
+                    double targetmodifier = PaceInstance.getEmpirePowerModifier(currentTarget.Item1.OwnerID, false);
+                    double attackermodifier = PaceInstance.getEmpirePowerModifier(AttackingShip.Item1.OwnerID, true);
+                    double stationPaceMod = 1;
+                    if (!currentTarget.Item1.Source.IsMobile)
+                        stationPaceMod = PaceInstance.getGamePaceStationModifier();
+
                     currentTarget.Item1.TakeDamage((int)(Convert.ToInt32(tempDamageInRetaliation =
                         Convert.ToDouble((applyDamage + (ScissorBonus) + (combatOrderBonusMalus))
                         * Convert.ToDouble(1- currentTarget.Item1.Source.GetManeuverablility() /0.24 / 100))
-                            * Convert.ToDouble(1.5 - targetDamageControl) * 
+                            * Convert.ToDouble(1.5 - targetDamageControl) * targetmodifier
+                            * attackermodifier * stationPaceMod *
                             (zufall.Next(8, 13)/10) * sourceAccuracy ))); // minimal damage of 50 included
+
+
+                    // Project Focus Retaliation Loop save last target
+                    // Project Focus on same target
+                    if (currentTarget != null)
+                    {
+                        if (currentTarget.Item1.HullStrength > 0)
+                            lastTurnRetaliationTarget = currentTarget;
+                        else
+                            lastTurnRetaliationTarget = null;
+                    }
 
 
                     GameLog.Core.CombatDetails.DebugFormat("target ship in retaliation: {0} suffered damage: {1} +bonus-randum. it has hull left: {2}", currentTarget.Item1.Name, tempDamageInRetaliation, currentTarget.Item1.HullStrength);

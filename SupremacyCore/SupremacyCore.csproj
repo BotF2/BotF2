@@ -204,6 +204,7 @@
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
     <Compile Include="Markup\TechObjectTextGroupExtension.cs" />
     <Compile Include="Orbitals\OrbitalHelper.cs" />
+    <Compile Include="PaceAndEmpirePower\PaceAndEmpirePower.cs" />
     <Compile Include="Resources\MasterResources.cs" />
     <Compile Include="Scripting\CivilizationScopedEvent.cs" />
     <Compile Include="Scripting\EventDefinition.cs" />
