@@ -139,6 +139,7 @@ namespace Supremacy.Client.Views
         private IEnumerable<ShipView> _selectedShipsInTaskForce;
         private Ship _selectedShipResolved;
         private FleetViewWrapper _selectedTaskForce;
+        private List<FleetViewWrapper> _iSpyShips;
         private TradeRoute _selectedTradeRoute;
         private IEnumerable<FleetViewWrapper> _taskForces;
         private IEnumerable<FleetViewWrapper> _localPlayerTaskForces;
@@ -385,6 +386,12 @@ namespace Supremacy.Client.Views
             }
         }
 
+        public List<FleetViewWrapper> ISpyShips
+        {
+            get { return _iSpyShips; }
+            set { _iSpyShips = value; }
+        }
+
         public TradeRoute SelectedTradeRoute
         {
             get { return _selectedTradeRoute; }
@@ -466,6 +473,7 @@ namespace Supremacy.Client.Views
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_ScanBlock.png");
                             count++;
                             GameLog.Client.Intel.DebugFormat("IsUnScannable was True so got Insignia _ScanBlock & count++ ={0}", count);
+                            _iSpyShips.Add(fleetView);
                         }
                         else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                     }
@@ -496,7 +504,7 @@ namespace Supremacy.Client.Views
         public BitmapImage GetInsigniaImage(string insigniaPath)
         {
             Uri imageUri;
-            var imagePath = insigniaPath.ToLowerInvariant();
+            var imagePath =   insigniaPath.ToLowerInvariant();
 
             if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
                 imageUri = ResourceManager.GetResourceUri(insigniaPath);
