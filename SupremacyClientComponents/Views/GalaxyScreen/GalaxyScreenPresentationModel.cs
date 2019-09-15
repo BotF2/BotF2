@@ -25,11 +25,10 @@ using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
-    public class StationPresentationModel
+    public class StationPresentationModel : PresentationModelBase
     {
         private Sector _sector = null;
         private Civilization _playerCiv = null;
-
         private string _stationName = "";
         private string _stationStatus = "";
         private BitmapImage _stationImage = null;
@@ -46,7 +45,10 @@ namespace Supremacy.Client.Views
 
         public Civilization PlayerCiv
         {
-            get { return _playerCiv; }
+            get
+            {
+                Civilization _playerCiv = AppContext.LocalPlayer.Empire;
+                return _playerCiv; }
             set 
             { 
                 _playerCiv = value;
@@ -69,12 +71,26 @@ namespace Supremacy.Client.Views
             get { return _stationImage; }
         }
 
+        public StationPresentationModel([NotNull] IAppContext appContext)
+         : base(appContext)
+        {
+            //_empirePlayers = new EmpirePlayerStatusCollection();
+
+            //_empirePlayers.AddRange(
+            //    from civ in appContext.CurrentGame.Civilizations
+            //    where civ.IsEmpire
+            //    select new EmpirePlayerStatus(appContext, civ)
+            //    {
+            //        Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
+            //    }
+            //    );
+        }
+
         private void Update()
         {
             _stationImage = null;
-            _stationName = "Unknown";
+            _stationName = "Unknown in station";
             _stationStatus = "";
-
             if (Sector == null || PlayerCiv == null)
                 return;
 
@@ -247,7 +263,10 @@ namespace Supremacy.Client.Views
 
         public StationPresentationModel SelectedSectorStation
         {
-            get { return _selectedSectorStation; }
+            get
+            {
+                return _selectedSectorStation;
+            }
         }
 
         public Sector HoveredSector
@@ -447,7 +466,6 @@ namespace Supremacy.Client.Views
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
             var mapData = AppContext.LocalPlayerEmpire.MapData;
-
             List<FleetViewWrapper> playerList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> otherVisibleList = new List<FleetViewWrapper>();
 
