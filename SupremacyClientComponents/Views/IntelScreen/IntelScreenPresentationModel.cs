@@ -78,7 +78,7 @@ namespace Supremacy.Client.Views.IntelScreen
                 }
                 );
 
-            _selectedSectorStation = new StationPresentationModel();
+            _selectedSectorStation = new StationPresentationModel(appContext);
         }
         #endregion
 
