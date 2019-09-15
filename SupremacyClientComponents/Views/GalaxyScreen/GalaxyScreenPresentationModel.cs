@@ -184,6 +184,7 @@ namespace Supremacy.Client.Views
                 );
 
             _selectedSectorStation = new StationPresentationModel();
+            _iSpyShips = new List<FleetViewWrapper>();
         }
         #endregion
 
@@ -442,8 +443,7 @@ namespace Supremacy.Client.Views
                 _otherVisibleTaskForces = value;
                 OnVisibleTaskForcesChanged();
             }
-        }
-
+        }        
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
             var mapData = AppContext.LocalPlayerEmpire.MapData;
