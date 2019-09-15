@@ -12,7 +12,6 @@ using Supremacy.Collections;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
-using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
 using System;
@@ -70,7 +69,7 @@ namespace Supremacy.Economy
             if (application == null)
                 throw new ArgumentNullException("application");
             _applicationId = application.ApplicationID;
-            _progress = new Meter(0, 0, application.IntelCost);
+            _progress = new Meter(0, 0, application.InitialIntelValue);
         }
     }
 
@@ -81,7 +80,7 @@ namespace Supremacy.Economy
     public class IntelPool : INotifyPropertyChanged
     {
         private readonly int _ownerId;
-        private readonly int[] _techLevels;
+        private readonly int[] _intelLevels;
         private readonly DistributionGroup<int> _distributions;
         private readonly IntelPoolValueCollection _values;
         private readonly IntelBonusCollection _bonuses;
@@ -178,28 +177,28 @@ namespace Supremacy.Economy
         }
 
         /// <summary>
-        /// Gets the current tech level of the specified field.
+        /// Gets the current intel level of the specified field.
         /// </summary>
         /// <param name="field">The field.</param>
-        /// <returns>The tech level.</returns>
-        public int GetTechLevel(IntelField field)
+        /// <returns>The intel level.</returns>
+        public int GetIntelLevel(IntelField field)
         {
             if (field == null)
                 throw new ArgumentNullException("field");
-            return GetTechLevel(field.FieldID);
+            return GetIntelLevel(field.FieldID);
         }
 
         /// <summary>
-        /// Gets the current tech level of the specified tech category.
+        /// Gets the current intel level of the specified intel category.
         /// </summary>
-        /// <param name="category">The tech category.</param>
-        /// <returns>The tech level.</returns>
-        public int GetTechLevel(IntelCategory category)
+        /// <param name="category">The intel category.</param>
+        /// <returns>The intel level.</returns>
+        public int GetIntelLevel(IntelCategory category)
         {
             var levels = new List<int>();
             foreach (var field in GameContext.Current.IntelMatrix.Fields.Where(o => o.IntelCategory == category))
             {
-                levels.Add(GetTechLevel(field));
+                levels.Add(GetIntelLevel(field));
             }
             if (levels.Count == 0)
                 return 0;
@@ -207,13 +206,13 @@ namespace Supremacy.Economy
         }
 
         /// <summary>
-        /// Gets the current tech level of the specified field.
+        /// Gets the current intel level of the specified field.
         /// </summary>
         /// <param name="fieldId">The field ID.</param>
-        /// <returns>The tech level.</returns>
-        public int GetTechLevel(int fieldId)
+        /// <returns>The intel level.</returns>
+        public int GetIntelLevel(int fieldId)
         {
-            return _techLevels[fieldId];
+            return _intelLevels[fieldId];
         }
 
 
@@ -248,12 +247,12 @@ namespace Supremacy.Economy
             _ownerId = owner.CivID;
             _values = new IntelPoolValueCollection();
             _bonuses = new IntelBonusCollection(owner);
-            _techLevels = new int[matrix.Fields.Count];
+            _intelLevels = new int[matrix.Fields.Count];
             _queue = new List<IntelProject>[matrix.Fields.Count];
             _cumulativePoints = new Meter(0, int.MaxValue);
 
-            var startingTechLevelsTable = GameContext.Current.Tables.GameOptionTables["StartingTechLevels"];
-            var startingTechLevel = GameContext.Current.Options.StartingTechLevel;
+            var startingIntelLevelsTable = GameContext.Current.Tables.GameOptionTables["StartingIntelLevels"];
+            var startingIntelLevel = GameContext.Current.Options.StartingTechLevel; // taking level from TechLevel !!
 
             Dictionary<IntelCategory, int> initialFieldLevelValues = null;
 
@@ -261,23 +260,23 @@ namespace Supremacy.Economy
             if (ownerIsEmpire)
             {
                 initialFieldLevelValues = EnumHelper.GetValues<IntelCategory>().ToDictionary(
-                    techCategory => techCategory,
-                    techCategory =>
-                    Number.ParseInt32(startingTechLevelsTable[startingTechLevel.ToString()][techCategory.ToString()]));
+                    intelCategory => intelCategory,
+                    intelCategory =>
+                    Number.ParseInt32(startingIntelLevelsTable[startingIntelLevel.ToString()][intelCategory.ToString()]));
             }
 
             foreach (var field in matrix.Fields)
             {
                 fieldIds.Add(field.FieldID);
-                _techLevels[field.FieldID] = ownerIsEmpire ? initialFieldLevelValues[field.IntelCategory] : 1;
+                _intelLevels[field.FieldID] = ownerIsEmpire ? initialFieldLevelValues[field.IntelCategory] : 1;
                 _queue[field.FieldID] = new List<IntelProject>();
                 foreach (var application in field.Applications)
                 {
-                    if (application.Level > GetTechLevel(field))
+                    if (application.Level > GetIntelLevel(field))
                         _queue[field.FieldID].Add(new IntelProject(application));
                     else
                     {
-                        _cumulativePoints.BaseValue += application.IntelCost;
+                        _cumulativePoints.BaseValue += application.InitialIntelValue;
 
                         // Make sure the current and last values match so to not show any deltas
                         _cumulativePoints.Reset();
@@ -368,13 +367,13 @@ namespace Supremacy.Economy
         {
             var finishedApp = _queue[fieldId][queueIndex].Application;
             var civManager = GameContext.Current.CivilizationManagers[Owner];
-            var designsBefore = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
+            //var designsBefore = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
 
             _queue[fieldId].RemoveAt(queueIndex);
-            UpdateTechLevels();
+            UpdateIntelLevels();
 
-            var designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
-            var newDesigns = designsAfter.Except(designsBefore).ToList();
+            //var designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
+            //var newDesigns = designsAfter.Except(designsBefore).ToList();
 
             // ToDo: Sitrep
             //if (civManager != null)
@@ -382,19 +381,19 @@ namespace Supremacy.Economy
         }
 
         /// <summary>
-        /// Updates the current tech levels based on new intel completed.
+        /// Updates the current intel levels based on new intel completed.
         /// </summary>
-        protected void UpdateTechLevels()
+        protected void UpdateIntelLevels()
         {
             foreach (IntelField field in GameContext.Current.IntelMatrix.Fields)
             {
-                int nextTechLevel = _techLevels[field.FieldID];
+                int nextIntelLevel = _intelLevels[field.FieldID];
 
                 if (GetCurrentProject(field) != null)
-                    nextTechLevel = GetCurrentProject(field).Application.Level;
+                    nextIntelLevel = GetCurrentProject(field).Application.Level;
 
-                if (nextTechLevel > _techLevels[field.FieldID])
-                    _techLevels[field.FieldID] = nextTechLevel - 1;
+                if (nextIntelLevel > _intelLevels[field.FieldID])
+                    _intelLevels[field.FieldID] = nextIntelLevel - 1;
             }
         }
 

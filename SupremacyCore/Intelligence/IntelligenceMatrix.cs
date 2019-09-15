@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
-
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Types;
@@ -32,27 +31,27 @@ namespace Supremacy.Economy
         /// <summary>
         /// Bio-Intel
         /// </summary>
-        BioTech = 0,
+        Military = 0,
         /// <summary>
         /// Energy
         /// </summary>
-        Energy,
+        Economy,
         /// <summary>
         /// Computers
         /// </summary>
-        Computers,
+        Bribe,
         /// <summary>
         /// Propulsion
         /// </summary>
-        Propulsion,
+        Research,
         /// <summary>
         /// Construction
         /// </summary>
-        Construction,
+        Reputation,
         /// <summary>
         /// Weapons
         /// </summary>
-        Weapons
+        //Weapons
     }
 
     /// <summary>
@@ -140,6 +139,7 @@ namespace Supremacy.Economy
                     element["Fields"].GetElementsByTagName("Field"))
                 {
                     _fields.Add(new IntelField(fieldElement));
+                    GameLog.Core.Intel.DebugFormat("added intelligence field: {0}", fieldElement.Name);
                 }
             }
         }
@@ -190,9 +190,10 @@ namespace Supremacy.Economy
 
             XmlElement xmlFields;
 
-            schemas.Add(
-                "Supremacy:Supremacy.xsd",
-                ResourceManager.GetResourcePath("Resources/Data/Supremacy.xsd"));
+            // the check against Supremacy.xsd goes still to TechCategroy... why??
+            //schemas.Add(
+            //    "Supremacy:Supremacy.xsd",
+            //    ResourceManager.GetResourcePath("Resources/Data/Supremacy.xsd"));
             schemas.Add(
                 "Supremacy:IntelMatrix.xsd",
                 ResourceManager.GetResourcePath("Resources/Data/IntelMatrix.xsd"));
@@ -206,6 +207,8 @@ namespace Supremacy.Economy
             foreach (XmlElement xmlField in xmlFields.GetElementsByTagName("Field"))
             {
                 matrix._fields.Add(new IntelField(xmlField));
+                GameLog.Core.Intel.DebugFormat("added xmlField: {0}", 
+                    xmlField.FirstChild.Name);
             }
 
             foreach (IntelField field in matrix.Fields)
@@ -216,6 +219,15 @@ namespace Supremacy.Economy
                     application.ApplicationID = nextApplicationId++;
                     application.Field = field;
                     matrix._applicationMap[application.ApplicationID] = application;
+                    GameLog.Core.Intel.DebugFormat("adding: {0};{1};{2};{3};{4}  for StartingLevel={5}={6}" 
+                        , application.ApplicationID
+                        , field.IntelCategory
+                        , field.Name
+                        , application.Name
+                        , application.InitialIntelValue
+                        , application.Level
+                        , application.Description
+                        );
                 }
             }
 
@@ -231,7 +243,7 @@ namespace Supremacy.Economy
         /// </param>
         private static void ValidateXml(object sender, ValidationEventArgs e)
         {
-            XmlHelper.ValidateXml(XmlFilePath, e);
+            //XmlHelper.ValidateXml(XmlFilePath, e);
         }
     }
 
@@ -380,7 +392,7 @@ namespace Supremacy.Economy
                             return 1;
                         if (left.Level != right.Level)
                             return left.Level.CompareTo(right.Level);
-                        return left.IntelCost.CompareTo(right.IntelCost);
+                        return left.InitialIntelValue.CompareTo(right.InitialIntelValue);
                     });
             }
         }
@@ -469,7 +481,7 @@ namespace Supremacy.Economy
         private byte _level;
         private string _name;
         private string _description;
-        private int _intelCost;
+        private int _initialIntelValue;
 
         /// <summary>
         /// Gets or sets the unique ID of this <see cref="IntelApplication"/>.
@@ -536,10 +548,10 @@ namespace Supremacy.Economy
         /// Gets or sets the intelligence cost of this <see cref="IntelApplication"/>.
         /// </summary>
         /// <value>The intelligence cost.</value>
-        public int IntelCost
+        public int InitialIntelValue
         {
-            get { return _intelCost; }
-            set { _intelCost = value; }
+            get { return _initialIntelValue; }
+            set { _initialIntelValue = value; }
         }
 
         /// <summary>
@@ -568,9 +580,9 @@ namespace Supremacy.Economy
             {
                 _level = Number.ParseByte(element["Level"].InnerText.Trim());
             }
-            if (element["IntelCost"] != null)
+            if (element["InitialIntelValue"] != null)
             {
-                _intelCost = Number.ParseInt32(element["IntelCost"].InnerText.Trim());
+                _initialIntelValue = Number.ParseInt32(element["InitialIntelValue"].InnerText.Trim());
             }
         }
 
@@ -667,7 +679,7 @@ namespace Supremacy.Economy
             item._level = _level;
             item._name = _name;
             item._description = _description;
-            item._intelCost = _intelCost;
+            item._initialIntelValue = _initialIntelValue;
             return item;
         }
         #endregion
