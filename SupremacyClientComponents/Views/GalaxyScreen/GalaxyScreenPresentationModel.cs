@@ -56,11 +56,6 @@ namespace Supremacy.Client.Views
             }
         }
 
-        //public IEmpirePlayerStatusCollection EmpirePlayers
-        //{
-        //    get { return _empirePlayers; }
-        //}
-
         public string StationName
         {
             get { return _stationName; }
