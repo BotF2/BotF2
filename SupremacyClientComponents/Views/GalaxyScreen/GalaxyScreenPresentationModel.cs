@@ -199,7 +199,7 @@ namespace Supremacy.Client.Views
                        }
                 );
 
-            _selectedSectorStation = new StationPresentationModel();
+            _selectedSectorStation = new StationPresentationModel(appContext);
             _iSpyShips = new List<FleetViewWrapper>();
         }
         #endregion
