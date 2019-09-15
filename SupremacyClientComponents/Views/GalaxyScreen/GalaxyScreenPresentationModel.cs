@@ -22,16 +22,13 @@ using Supremacy.Diplomacy;
 using Supremacy.Client.Context;
 using Supremacy.Game;
 using Supremacy.Utility;
-//using AppContext = System.AppContext;
-//using AppContext = Supremacy.Client.Context.AppContext;
 
 namespace Supremacy.Client.Views
 {
-    public class StationPresentationModel
+    public class StationPresentationModel : PresentationModelBase
     {
         private Sector _sector = null;
         private Civilization _playerCiv = null;
-
         private string _stationName = "";
         private string _stationStatus = "";
         private BitmapImage _stationImage = null;
@@ -50,7 +47,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //Civilization _playerCiv = ClientBase.Current.LocalPlayer.Empire;
+                Civilization _playerCiv = AppContext.LocalPlayer.Empire;
                 return _playerCiv; }
             set 
             { 
@@ -58,6 +55,11 @@ namespace Supremacy.Client.Views
                 Update();
             }
         }
+
+        //public IEmpirePlayerStatusCollection EmpirePlayers
+        //{
+        //    get { return _empirePlayers; }
+        //}
 
         public string StationName
         {
@@ -74,12 +76,26 @@ namespace Supremacy.Client.Views
             get { return _stationImage; }
         }
 
+        public StationPresentationModel([NotNull] IAppContext appContext)
+         : base(appContext)
+        {
+            //_empirePlayers = new EmpirePlayerStatusCollection();
+
+            //_empirePlayers.AddRange(
+            //    from civ in appContext.CurrentGame.Civilizations
+            //    where civ.IsEmpire
+            //    select new EmpirePlayerStatus(appContext, civ)
+            //    {
+            //        Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
+            //    }
+            //    );
+        }
+
         private void Update()
         {
             _stationImage = null;
             _stationName = "Unknown in station";
             _stationStatus = "";
-            //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
             if (Sector == null || PlayerCiv == null)
                 return;
 
@@ -188,7 +204,7 @@ namespace Supremacy.Client.Views
                        }
                 );
 
-            _selectedSectorStation = new StationPresentationModel();
+            _selectedSectorStation = new StationPresentationModel(appContext);
         }
         #endregion
 
@@ -253,15 +269,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //StationPresentationModel station = new StationPresentationModel();
-                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
-                //if (localPlayer == _selectedSector.Owner)
-                //{
-                //    station.StationName = //_selectedSector.Station.Name;
-                //    _stationStatus = "Operational";
-                //    imagePath = Sector.Station.Design.Image;
-                //    return
-                //}
                 return _selectedSectorStation;
             }
         }
@@ -458,7 +465,6 @@ namespace Supremacy.Client.Views
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
             var mapData = AppContext.LocalPlayerEmpire.MapData;
-            //StationPresentationModel station = new StationPresentationModel();
             List<FleetViewWrapper> playerList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> otherVisibleList = new List<FleetViewWrapper>();
 
