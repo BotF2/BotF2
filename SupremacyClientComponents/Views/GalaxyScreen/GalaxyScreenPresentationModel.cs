@@ -22,6 +22,8 @@ using Supremacy.Diplomacy;
 using Supremacy.Client.Context;
 using Supremacy.Game;
 using Supremacy.Utility;
+//using AppContext = System.AppContext;
+//using AppContext = Supremacy.Client.Context.AppContext;
 
 namespace Supremacy.Client.Views
 {
@@ -46,7 +48,10 @@ namespace Supremacy.Client.Views
 
         public Civilization PlayerCiv
         {
-            get { return _playerCiv; }
+            get
+            {
+                //Civilization _playerCiv = ClientBase.Current.LocalPlayer.Empire;
+                return _playerCiv; }
             set 
             { 
                 _playerCiv = value;
@@ -72,9 +77,9 @@ namespace Supremacy.Client.Views
         private void Update()
         {
             _stationImage = null;
-            _stationName = "Unknown";
+            _stationName = "Unknown in station";
             _stationStatus = "";
-
+            //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
             if (Sector == null || PlayerCiv == null)
                 return;
 
@@ -246,7 +251,19 @@ namespace Supremacy.Client.Views
 
         public StationPresentationModel SelectedSectorStation
         {
-            get { return _selectedSectorStation; }
+            get
+            {
+                //StationPresentationModel station = new StationPresentationModel();
+                //Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+                //if (localPlayer == _selectedSector.Owner)
+                //{
+                //    station.StationName = //_selectedSector.Station.Name;
+                //    _stationStatus = "Operational";
+                //    imagePath = Sector.Station.Design.Image;
+                //    return
+                //}
+                return _selectedSectorStation;
+            }
         }
 
         public Sector HoveredSector
@@ -441,7 +458,7 @@ namespace Supremacy.Client.Views
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
             var mapData = AppContext.LocalPlayerEmpire.MapData;
-
+            //StationPresentationModel station = new StationPresentationModel();
             List<FleetViewWrapper> playerList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> otherVisibleList = new List<FleetViewWrapper>();
 
