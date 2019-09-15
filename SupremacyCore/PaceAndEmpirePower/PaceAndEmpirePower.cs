@@ -49,6 +49,25 @@ namespace Supremacy.PaceAndEmpirePower
             return universalPowerModifier;
         }
 
+        public double getGamePaceShipCombatModifier()
+        {
+            // Depending on the Game Pace, the Damage to Ship Combat is reduced or increased.
+            double xGamePaceShip = 1;
+            switch (Convert.ToInt16(GameContext.Current.Options.GamePace))
+            {
+                case 0:
+                    xGamePaceShip = 0.75; // Slow
+                    break;
+                case 1:
+                    xGamePaceShip = 1.45; // Normal Pace
+                    break;
+                case 2:
+                    xGamePaceShip = 2.0; // fast
+                    break;
+
+            }
+            return xGamePaceShip;
+        }
 
         // bonusMalus is called from getEmpirePowerModifier not from outside PaceAndEmpirePower.cs
         public double bonusMalus(int minus5toplus5, bool BonusEqualsBigger)
