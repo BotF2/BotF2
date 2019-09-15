@@ -204,6 +204,7 @@
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
     <Compile Include="Markup\TechObjectTextGroupExtension.cs" />
     <Compile Include="Orbitals\OrbitalHelper.cs" />
+    <Compile Include="PaceAndEmpirePower\PaceAndEmpirePower.cs" />
     <Compile Include="Resources\MasterResources.cs" />
     <Compile Include="Scripting\CivilizationScopedEvent.cs" />
     <Compile Include="Scripting\EventDefinition.cs" />
@@ -335,7 +336,9 @@
     <Compile Include="Effects\DynamicProperty.cs" />
     <Compile Include="Effects\ItemStructList.cs" />
     <Compile Include="Collections\IndexedCollection.cs" />
-    <Compile Include="Combat\AutomatedCombatEngine.cs" />
+    <Compile Include="..\..\NewFromChris\AutomatedCombatEngine.cs">
+      <Link>Combat\AutomatedCombatEngine.cs</Link>
+    </Compile>
     <Compile Include="Combat\CombatAssets.cs" />
     <Compile Include="Combat\CombatEngine.cs" />
     <Compile Include="Combat\CombatHelper.cs" />

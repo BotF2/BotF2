@@ -197,17 +197,17 @@ namespace Supremacy.Game
                 GameLog.Core.SaveLoad.DebugFormat("--------------------------------------------------");
                 GameLog.Core.SaveLoad.DebugFormat("########### Deserialising GameContext...");
                 IsMultiplayerGame = reader.ReadBoolean();
-                    GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
+                GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
                 _nextObjectId = reader.ReadOptimizedInt32();
                 _turnNumber = reader.ReadOptimizedUInt16();
-                    GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
+                GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
                 _options = reader.Read<GameOptions>();
                 _gameMod = reader.Read<GameMod>();
                 _civilizations = reader.Read<CivDatabase>();
                 _civManagers = reader.Read<CivilizationManagerMap>();
                 _races = reader.Read<RaceDatabase>();
                 _universe = reader.Read<UniverseManager>();
-                    GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
+                GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
                 _techDatabase = reader.Read<TechDatabase>();
                 _researchMatrix = reader.Read<ResearchMatrix>();
                 _sectorClaims = reader.Read<SectorClaimGrid>();
@@ -532,7 +532,8 @@ namespace Supremacy.Game
         public static bool CheckAndPop(GameContext context)
         {
             GameContext top;
-            if (!_stack.TryPeek(out top)) {
+            if (!_stack.TryPeek(out top))
+            {
                 return false;
             }
             if (top != context)
