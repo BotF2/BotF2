@@ -1,13 +1,4 @@
-// GalaxyScreenPresentationModel.cs
-//
-// Copyright (c) 2009 Mike Strobel
-//
-// This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
-// For details, see <http://www.opensource.org/licenses/ms-rl.html>.
-//
-// All other rights reserved.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,113 +13,17 @@ using Supremacy.Diplomacy;
 using Supremacy.Client.Context;
 using Supremacy.Game;
 using Supremacy.Utility;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace Supremacy.Client.Views
+namespace Supremacy.Client.Views.IntelScreen
 {
-    public class StationPresentationModel
-    {
-        private Sector _sector = null;
-        private Civilization _playerCiv = null;
-
-        private string _stationName = "";
-        private string _stationStatus = "";
-        private BitmapImage _stationImage = null;
-
-        public Sector Sector
-        {
-            get { return _sector; }
-            set 
-            { 
-                _sector = value;
-                Update();
-            }
-        }
-
-        public Civilization PlayerCiv
-        {
-            get { return _playerCiv; }
-            set 
-            { 
-                _playerCiv = value;
-                Update();
-            }
-        }
-
-        public string StationName
-        {
-            get { return _stationName; }
-        }
-
-        public string StationStatus
-        {
-            get { return _stationStatus; }
-        }
-
-        public BitmapImage StationImage
-        {
-            get { return _stationImage; }
-        }
-
-        private void Update()
-        {
-            _stationImage = null;
-            _stationName = "Unknown";
-            _stationStatus = "";
-
-            if (Sector == null || PlayerCiv == null)
-                return;
-
-            if (Sector.Station == null)
-                return;
-
-            string imagePath = "";
-
-            if ((Sector.Station.Owner == PlayerCiv) || DiplomacyHelper.IsContactMade(PlayerCiv, Sector.Station.Owner))
-            {
-                _stationName = Sector.Station.Name;
-                _stationStatus = "Operational";
-                imagePath = Sector.Station.Design.Image;
-            }
-
-            if (string.IsNullOrEmpty(imagePath))
-                imagePath = "Resources/Images/Insignias/__unknown.png";
-
-            Uri uri;
-            if (!Uri.TryCreate(imagePath, UriKind.Absolute, out uri))
-            {
-                string tmpPath = ResourceManager.GetResourcePath(imagePath);
-                if (!File.Exists(tmpPath))
-                {
-                    tmpPath = ResourceManager.GetResourcePath(@"Resources\Images\__image_missing.png");
-                    if (!File.Exists(tmpPath))
-                        return;
-                }
-
-                uri = ResourceManager.GetResourceUri(tmpPath);
-            }
-            _stationImage = ImageCache.Current.Get(uri);
-        }
-
-        private BitmapImage GetImage(string insigniaPath)
-        {
-            Uri imageUri;
-            var imagePath = insigniaPath.ToLowerInvariant();
-
-            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
-                imageUri = ResourceManager.GetResourceUri(insigniaPath);
-            else
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
-
-            return ImageCache.Current.Get(imageUri);
-        }
-    }
-
-    public class GalaxyScreenPresentationModel : PresentationModelBase
+    public class IntelScreenPresentationModel : PresentationModelBase
     {
         #region Fields
         private IEnumerable<Ship> _availableShips;
-        private GalaxyScreenInputMode _inputMode;
-        private GalaxyScreenOverviewMode _overviewMode;
+        //private GalaxyScreenInputMode _inputMode;
+        //private GalaxyScreenOverviewMode _overviewMode;
         private Sector _selectedSector;
         private Sector _hoveredSector;
         private string _selectedSectorAllegiance;
@@ -169,18 +64,18 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Constructors and Finalizers
-        public GalaxyScreenPresentationModel([NotNull] IAppContext appContext)
+        public IntelScreenPresentationModel([NotNull] IAppContext appContext)
             : base(appContext)
         {
             _empirePlayers = new EmpirePlayerStatusCollection();
-            
+
             _empirePlayers.AddRange(
                 from civ in appContext.CurrentGame.Civilizations
                 where civ.IsEmpire
                 select new EmpirePlayerStatus(appContext, civ)
-                       {
-                           Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
-                       }
+                {
+                    Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
+                }
                 );
 
             _selectedSectorStation = new StationPresentationModel();
@@ -205,29 +100,29 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public GalaxyScreenInputMode InputMode
-        {
-            get { return _inputMode; }
-            set
-            {
-                if (Equals(_inputMode, value))
-                    return;
-                _inputMode = value;
-                OnInputModeChanged();
-            }
-        }
+        //public GalaxyScreenInputMode InputMode
+        //{
+        //    get { return _inputMode; }
+        //    set
+        //    {
+        //        if (Equals(_inputMode, value))
+        //            return;
+        //        _inputMode = value;
+        //        OnInputModeChanged();
+        //    }
+        //}
 
-        public GalaxyScreenOverviewMode OverviewMode
-        {
-            get { return _overviewMode; }
-            set
-            {
-                if (Equals(_overviewMode, value))
-                    return;
-                _overviewMode = value;
-                OnOverviewModeChanged();
-            }
-        }
+        //public GalaxyScreenOverviewMode OverviewMode
+        //{
+        //    get { return _overviewMode; }
+        //    set
+        //    {
+        //        if (Equals(_overviewMode, value))
+        //            return;
+        //        _overviewMode = value;
+        //        OnOverviewModeChanged();
+        //    }
+        //}
 
         public Sector SelectedSector
         {
@@ -302,7 +197,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return _selectedShipResolved ?? _selectedShip;  
+                return _selectedShipResolved ?? _selectedShip;
             }
             set
             {
@@ -336,7 +231,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public IEnumerable<ShipView> SelectedShipsInTaskForce 
+        public IEnumerable<ShipView> SelectedShipsInTaskForce
         {
             get
             {
@@ -360,7 +255,7 @@ namespace Supremacy.Client.Views
         public FleetViewWrapper SelectedTaskForce
         {
             get
-            {           
+            {
                 if (_selectedSector != null && _selectedTaskForce != null)
                 {
 
@@ -429,7 +324,7 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> VisibleTaskForces
         {
-            get 
+            get
             {
                 if (_localPlayerTaskForces == null)
                     return _otherVisibleTaskForces;
@@ -483,7 +378,7 @@ namespace Supremacy.Client.Views
                             fleetView.IsUnknown = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/__unknown.png");
                             count++;
-                       
+
                         }
                         else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                     }
@@ -503,7 +398,7 @@ namespace Supremacy.Client.Views
         public BitmapImage GetInsigniaImage(string insigniaPath)
         {
             Uri imageUri;
-            var imagePath =   insigniaPath.ToLowerInvariant();
+            var imagePath = insigniaPath.ToLowerInvariant();
 
             if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
                 imageUri = ResourceManager.GetResourceUri(insigniaPath);
@@ -533,7 +428,7 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        
+
         private void OnInputModeChanged()
         {
             var handler = InputModeChanged;
@@ -589,7 +484,7 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        
+
         private void OnSelectedShipInTaskForceChanged()
         {
             var handler = SelectedShipInTaskForceChanged;
@@ -638,7 +533,7 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        
+
         private void OnTradeRoutesChanged()
         {
             var handler = TradeRoutesChanged;
@@ -648,3 +543,4 @@ namespace Supremacy.Client.Views
         #endregion
     }
 }
+

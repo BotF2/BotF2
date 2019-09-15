@@ -389,6 +389,7 @@
     <Compile Include="Views\GameScreenView.cs" />
     <Compile Include="Views\IGameScreenPresenter.cs" />
     <Compile Include="Views\ILobbyScreenView.cs" />
+    <Compile Include="Views\IntelScreen\IntelScreenPresentationModel.cs" />
     <Compile Include="Views\IPresentationModel.cs" />
     <Compile Include="Views\PresentationModelBase.cs" />
     <Compile Include="Views\SystemAssaultScreen\SystemAssaultScreenViewModel.cs" />
@@ -506,6 +507,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

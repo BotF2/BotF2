@@ -991,7 +991,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntelScreen.cs" />
+    <Compile Include="Views\IntelScreen\IntelScreen.cs" />
     <Compile Include="ChatPanel.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>ChatPanel.xaml</DependentUpon>
