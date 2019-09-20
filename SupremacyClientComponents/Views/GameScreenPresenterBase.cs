@@ -26,8 +26,6 @@ namespace Supremacy.Client.Views
         private readonly IResourceManager _resourceManager;
         private readonly INavigationCommandsProxy _navigationCommands;
         private readonly IPlayerOrderService _playerOrderService;
-        //private readonly IPlayerTarget1Service _playerTarget1Service;
-        //private readonly IPlayerTarget2Service _playerTarget2Service;
         private readonly TView _view;
         private readonly EventHandler _commandManagerInvalidateRequeryHandler;
         #endregion
@@ -66,16 +64,6 @@ namespace Supremacy.Client.Views
         {
             get { return _playerOrderService; }
         }
-
-        //protected IPlayerTarget1Service PlayerTarget1Service
-        //{
-        //    get { return _playerTarget1Service; }
-        //}
-
-        //protected IPlayerTarget2Service PlayerTarget2Service
-        //{
-        //    get { return _playerTarget2Service; }
-        //}
 
         [NotNull]
         protected INavigationCommandsProxy NavigationCommands

@@ -72,22 +72,6 @@ namespace Supremacy.WCF
             Action = "http://Supremacy.WPF/ISupremacyService/EndTurn")]
         void EndTurn(PlayerOrdersMessage orders); // not combat orders, see combatorders below
 
-        //[OperationContract(
-        //    IsOneWay = true,
-        //    Name = "EndTurnTarget1",
-        //    IsInitiating = false,
-        //    IsTerminating = false,
-        //    Action = "http://Supremacy.WPF/ISupremacyService/EndTurnTarget1")]
-        //void EndTurn(PlayerTarget1Message target1);
-
-        //[OperationContract(
-        //    IsOneWay = true,
-        //    Name = "EndTurnTarget2",
-        //    IsInitiating = false,
-        //    IsTerminating = false,
-        //    Action = "http://Supremacy.WPF/ISupremacyService/EndTurnTarget2")]
-        //void EndTurn(PlayerTarget2Message target2);
-
         [OperationContract(
             IsOneWay = true,
             IsInitiating = false,

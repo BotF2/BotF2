@@ -130,19 +130,6 @@ namespace Supremacy.Client
 
         }
 
-        //public void EndTurn(PlayerTarget1Message target1)
-        //{
-        //    try { Channel.EndTurn(target1); }
-        //    catch (FaultException) { }
-        //}
-
-
-        //public void EndTurn(PlayerTarget2Message target2)
-        //{
-        //    try { Channel.EndTurn(target2); }
-        //    catch (FaultException) { }
-        //}
-
         public void UpdateGameOptions(GameOptions options)
         {
             try { Channel.UpdateGameOptions(options); }

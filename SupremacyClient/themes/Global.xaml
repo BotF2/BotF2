@@ -36,12 +36,10 @@
 
 
     <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="Converters.xaml" />
-    
-    <ResourceDictionary Source="pack://siteoforigin:,,,/Resources/Images/Resources/Icons.xaml" />
+        <ResourceDictionary Source="Converters.xaml" />
+        <!-- <ResourceDictionary Source="pack://siteoforigin:,,,/Resources/Images/Resources/Icons.xaml" /> -->
 
-    
-  </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary.MergedDictionaries>
   
   <ObjectDataProvider x:Key="Settings"
                       ObjectInstance="{x:Static propeties:Settings.Default}" />
