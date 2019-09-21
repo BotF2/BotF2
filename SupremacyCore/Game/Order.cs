@@ -392,6 +392,52 @@ namespace Supremacy.Game
     }
 
     [Serializable]
+    public sealed class SetPersonnelDistributionOrder : Order
+    {
+        private readonly DistributionGroup<PersonnelCategory> _values;
+
+        public SetPersonnelDistributionOrder(Civilization owner, DistributionGroup<PersonnelCategory> values)
+            : base(owner)
+        {
+            if (values == null)
+                throw new ArgumentNullException("values");
+            _values = values;
+        }
+
+        public override bool DoExecute()
+        {
+            var civManager = ExecutionContext.CivilizationManagers[OwnerID];
+
+            if (civManager == null)
+                return false;
+
+            foreach (PersonnelCategory category in EnumUtilities.GetValues<PersonnelCategory>())
+                civManager.Personnel.Distribution[category].IsLocked = false;
+
+            foreach (PersonnelCategory category in EnumUtilities.GetValues<PersonnelCategory>())
+            {
+                civManager.Personnel.Distribution[category].Value = _values[category].Value;
+                civManager.Personnel.Distribution[category].IsLocked = true;
+            }
+
+            foreach (PersonnelCategory category in EnumUtilities.GetValues<PersonnelCategory>())
+                civManager.Personnel.Distribution[category].IsLocked = _values[category].IsLocked;
+
+            return true;
+        }
+
+        public override bool Overrides(Order o)
+        {
+            var otherOrder = o as SetPersonnelDistributionOrder;
+
+            if (otherOrder == null)
+                return false;
+
+            return (otherOrder.OwnerID == OwnerID);
+        }
+    }
+
+    [Serializable]
     public sealed class UpdateProductionOrder : Order
     {
         private int _sourceId;

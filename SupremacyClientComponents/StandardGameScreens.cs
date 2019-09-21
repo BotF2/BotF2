@@ -17,7 +17,7 @@ namespace Supremacy.Client
         public const string ColonyScreen = "ColonyScreen";
         public const string DiplomacyScreen = "DiplomacyScreen";
         public const string ScienceScreen = "ScienceScreen";
-        public const string IntelScreen = "IntelScreen";
+        public const string PersonnelScreen = "PersonnelScreen";
         public const string SystemAssaultScreen = "SystemAssaultScreen";
     }
 }

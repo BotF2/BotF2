@@ -14,7 +14,7 @@ namespace Supremacy.Client.Views
 
         protected override string ViewName
         {
-            get { return StandardGameScreens.IntelScreen; }
+            get { return StandardGameScreens.PersonnelScreen; }
         }
 
         protected override void RegisterCommandAndEventHandlers()

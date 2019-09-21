@@ -201,7 +201,7 @@
                         Canvas.Left="131"
                         Canvas.Top="162"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
+                        CommandParameter="{x:Static scc:StandardGameScreens.PersonnelScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">

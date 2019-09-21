@@ -30,6 +30,9 @@ namespace Supremacy.Client.Views
             Colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
             var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
 
+            //ScanBlockedSectors = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
+            //var AllScanBlockedSectors = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
+
             // need a list of colonies infiltrated by local player, add colony to list on being infiltrated.
 
             //InfiltratedColonies = DesignTimeAppContext.Instance.LocalPalyerEmpire.InfiltratedColonies;

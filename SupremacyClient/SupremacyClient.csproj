@@ -257,6 +257,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AffairsScreen.cs" />
     <Compile Include="OptionsPages\TracesOptionsPage.xaml.cs">
       <DependentUpon>TracesOptionsPage.xaml</DependentUpon>
     </Compile>
@@ -991,7 +992,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\IntelScreen\IntelScreen.cs" />
     <Compile Include="ChatPanel.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>ChatPanel.xaml</DependentUpon>

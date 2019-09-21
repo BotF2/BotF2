@@ -17,7 +17,7 @@
                     xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
 
-  <Style TargetType="{x:Type local:IntelScreen}">
+    <Style TargetType="{x:Type local:AffairsScreen}">
     <Setter Property="TextBlock.FontFamily"
             Value="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"/>
     <Setter Property="TextBlock.FontSize"
@@ -26,7 +26,7 @@
             Value="{DynamicResource DefaultTextBrush}"/>
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="{x:Type local:IntelScreen}">
+                <ControlTemplate TargetType="{x:Type local:AffairsScreen}">
           <Border Background="#66000000"
                   Padding="6">
             <DockPanel LastChildFill="True">

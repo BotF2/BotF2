@@ -31,6 +31,7 @@ namespace Supremacy.Resources
         #region Constants
         public const string DefaultCategory = null;
         public const string DiplomacyCategory = "Diplomacy";
+        public const string PersonnelCategory = "Personnel";
         public const string ScriptedEventsCategory = "ScriptedEvents";
         #endregion
 

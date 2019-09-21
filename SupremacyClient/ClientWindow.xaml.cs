@@ -193,7 +193,8 @@ namespace Supremacy.Client
                     _navigationCommands.ActivateScreen,
                     new KeyGesture(Key.F5, ModifierKeys.None))
                 {
-                    CommandParameter = StandardGameScreens.IntelScreen
+                    CommandParameter = StandardGameScreens.PersonnelScreen
+
                 });
 
             InputBindings.Add(

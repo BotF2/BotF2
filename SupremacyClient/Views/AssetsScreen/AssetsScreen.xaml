@@ -133,10 +133,10 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                </Grid>
-            
-                <!--<v:ShipsList Grid.Row="2" DataContext="{Binding Path=Colonies}" />-->
-                
+            <!--</Grid>-->
+
+            <v:ShipsList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
+
             <!--<Button x:Name="SummaryButton"
                         Grid.Row="0"
                         VerticalAlignment="Top"
@@ -151,7 +151,7 @@
                         Foreground="Black"
                         Margin="0,0,0,0"
                         Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
-            <!--</Grid>-->
+            </Grid>
         </TabItem>
 
 <!--TAB for STATIONS-->

@@ -33,6 +33,7 @@ namespace Supremacy.Game
         private readonly Meter _credits;
         private readonly List<Bonus> _globalBonuses;
         private readonly CivilizationMapData _mapData;
+        private readonly PersonnelPool _personnel;
         private readonly ResearchPool _research;
         private readonly ResourcePool _resources;
         private readonly List<SitRepEntry> _sitRepEntries;
@@ -91,6 +92,7 @@ namespace Supremacy.Game
 
             _civId = civilization.CivID;
             _research = new ResearchPool(civilization, game.ResearchMatrix);
+            _personnel = new PersonnelPool(civilization);
         }
         #endregion
 
@@ -147,6 +149,16 @@ namespace Supremacy.Game
         public ResourcePool Resources
         {
             get { return _resources; }
+        }
+
+        /// <summary>
+        /// Gets the civilization's personnel pool.
+        /// </summary>
+        /// <value>The personnel pool.</value>
+        [NotNull]
+        public PersonnelPool Personnel
+        {
+            get { return _personnel; }
         }
 
         /// <summary>
