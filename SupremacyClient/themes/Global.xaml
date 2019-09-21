@@ -67,11 +67,11 @@
   <Cursor x:Key="DefaultCursor">vfs:///Resources/Cursors/cursor.cur</Cursor>
 
   <!-- FONTS -->
-  <sys:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">24</sys:Double>
+  <sys:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">20</sys:Double>
   <sys:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">16</sys:Double>
-  <sys:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">18.666666666666666666666666666667</sys:Double>
+  <sys:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">18</sys:Double>
 
-  <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
+    <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Bold</FontWeight>
   <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
   <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Bold</FontWeight>
 
@@ -79,7 +79,7 @@
   <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">Helvetica LT Std Ultra Compressed</FontFamily>
   <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">Square721 Cn BT</FontFamily>
 -->
-  <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Header Text</FontFamily>
+  <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
   <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
   <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Header Text</FontFamily>
   
