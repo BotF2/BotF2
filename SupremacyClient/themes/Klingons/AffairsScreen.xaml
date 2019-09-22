@@ -15,9 +15,9 @@
                     xmlns:local="clr-namespace:Supremacy.Client"
                     xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
-                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"/>
 
-  <Style TargetType="{x:Type local:IntelScreen}">
+<!-- <Style TargetType="{x:Type local:IntelScreen}">
     <Setter Property="TextBlock.FontFamily"
             Value="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"/>
     <Setter Property="TextBlock.FontSize"
@@ -143,8 +143,8 @@
                       <StackPanel Grid.Row="0"
                                   VerticalAlignment="Top"
                                   Orientation="Vertical">
-                        <!-- OFFICERS -->
-                        <DockPanel LastChildFill="True">
+                      OFFICERS 
+                  <DockPanel LastChildFill="True">
                           <Border DockPanel.Dock="Left"
                                   BorderBrush="White"
                                   BorderThickness="2"
@@ -204,8 +204,8 @@
                         </DockPanel>
                       </StackPanel>
 
-                      <!-- INTERNAL AFFAIRS -->
-                      <StackPanel Grid.Row="1"
+                       INTERNAL AFFAIRS 
+                    <StackPanel Grid.Row="1"
                                   VerticalAlignment="Top"
                                   Orientation="Vertical">
                         <DockPanel LastChildFill="True"
@@ -269,8 +269,8 @@
                         </DockPanel>
                       </StackPanel>
 
-                      <!-- EXTERNAL AFFAIRS -->
-                      <StackPanel Grid.Row="2"
+                    
+                    <StackPanel Grid.Row="2"
                                   VerticalAlignment="Top"
                                   Orientation="Vertical">
                         <DockPanel LastChildFill="True"
@@ -344,4 +344,4 @@
     </Setter>
   </Style>
 
-</ResourceDictionary>
+</ResourceDictionary>-->

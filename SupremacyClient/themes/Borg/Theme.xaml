@@ -22,7 +22,6 @@
     <ResourceDictionary Source="ResearchScreen.xaml"/>
     <ResourceDictionary Source="SystemScreen.xaml"/>
     <ResourceDictionary Source="GalaxyScreenView.xaml" />
-    <!--<ResourceDictionary Source="NewDiplomacyScreen.xaml" />-->
     <ResourceDictionary Source="AffairsScreen.xaml"/>
     <ResourceDictionary Source="Dialogs.xaml" />
   </ResourceDictionary.MergedDictionaries>

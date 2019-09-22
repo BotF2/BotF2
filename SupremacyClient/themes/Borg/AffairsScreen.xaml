@@ -15,9 +15,9 @@
                     xmlns:local="clr-namespace:Supremacy.Client"
                     xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
-                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"/>
 
-  <Style TargetType="{x:Type local:IntelScreen}">
+<!-- <Style TargetType="{x:Type local:IntelScreen}">
     <Setter Property="TextBlock.FontFamily"
             Value="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"/>
     <Setter Property="TextBlock.FontSize"
@@ -143,9 +143,9 @@
                       <StackPanel Grid.Row="0"
                                   VerticalAlignment="Top"
                                   Orientation="Vertical">
-                        <!-- OFFICERS -->
-                        <DockPanel LastChildFill="True">
-                          <Border DockPanel.Dock="Left"
+                         OFFICERS 
+<DockPanel LastChildFill="True">
+    <Border DockPanel.Dock="Left"
                                   BorderBrush="White"
                                   BorderThickness="2"
                                   CornerRadius="8"
@@ -153,58 +153,58 @@
                                   Height="80"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top">
-                            <Border.Background>
-                              <ImageBrush>
-                                <ImageBrush.ImageSource>
-                                  <BitmapImage UriSource="vfs:///Resources/UI/Borg/AffairsScreen/Officers.png"/>
-                                </ImageBrush.ImageSource>
-                              </ImageBrush>
-                            </Border.Background>
-                          </Border>
-                          <StackPanel Orientation="Vertical"
+        <Border.Background>
+            <ImageBrush>
+                <ImageBrush.ImageSource>
+                    <BitmapImage UriSource="vfs:///Resources/UI/Klingons/AffairsScreen/Officers.png"/>
+                </ImageBrush.ImageSource>
+            </ImageBrush>
+        </Border.Background>
+    </Border>
+    <StackPanel Orientation="Vertical"
                                       Margin="12,0,0,0">
-                            <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                        FontSize="20pt"
                                        Foreground="{DynamicResource HeaderTextBrush}"
                                        Text="{s:StringResource Key=OFFICERS, Case=Upper}"/>
-                            <TextBlock Margin="0,12,0,0"
+        <TextBlock Margin="0,12,0,0"
                                        TextWrapping="Wrap"
                                        Text="{Binding Source={s:StringResource OFFICERS_DESCRIPTION}}"/>
-                          </StackPanel>
-                        </DockPanel>
-                        <DockPanel LastChildFill="True"
+    </StackPanel>
+</DockPanel>
+<DockPanel LastChildFill="True"
                                    Margin="0,12,0,0">
-                          <ToggleButton DockPanel.Dock="Left"
+    <ToggleButton DockPanel.Dock="Left"
                                         Focusable="False"
                                         IsTabStop="False"
                                         Margin="0,0,12,0"
                                         Style="{DynamicResource LockToggleButtonStyle}"
                                         IsChecked="{Binding Path=Distribution[Officers].IsLocked, Mode=TwoWay}"/>
-                          <RepeatButton DockPanel.Dock="Left"
+    <RepeatButton DockPanel.Dock="Left"
                                         Margin="0,0,4,0"
                                         Command="{x:Static ui:BlockBar.DecrementCommand}"
                                         CommandTarget="{Binding ElementName=OfficersBlockBar}"
                                         Style="{StaticResource BlockBarDecrementButtonStyle}"/>
-                          <TextBlock DockPanel.Dock="Right"
+    <TextBlock DockPanel.Dock="Right"
                                      FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                      FontSize="20pt"
                                      Width="50"
                                      TextAlignment="Right"
                                      Text="{Binding Path=Distribution[Officers].Value}"/>
-                          <RepeatButton DockPanel.Dock="Right"
+    <RepeatButton DockPanel.Dock="Right"
                                         Margin="4,0,0,0"
                                         Command="{x:Static ui:BlockBar.IncrementCommand}"
                                         CommandTarget="{Binding ElementName=OfficersBlockBar}"
                                         Style="{StaticResource BlockBarIncrementButtonStyle}"/>
-                          <ui:BlockBar x:Name="OfficersBlockBar"
+    <ui:BlockBar x:Name="OfficersBlockBar"
                                        Height="28" 
                                        BlockCount="48"
                                        BlockMargin="4"
                                        Value="{Binding Path=Distribution[Officers].Value, Mode=TwoWay}"/>
-                        </DockPanel>
-                      </StackPanel>
+</DockPanel>
 
-                      <!-- INTERNAL AFFAIRS -->
+
+ INTERNAL AFFAIRS 
                       <StackPanel Grid.Row="1"
                                   VerticalAlignment="Top"
                                   Orientation="Vertical">
@@ -221,7 +221,7 @@
                             <Border.Background>
                               <ImageBrush>
                                 <ImageBrush.ImageSource>
-                                  <BitmapImage UriSource="vfs:///Resources/UI/Borg/AffairsScreen/InternalAffairs.png"/>
+                                  <BitmapImage UriSource="vfs:///Resources/UI/Klingons/AffairsScreen/InternalAffairs.png"/>
                                 </ImageBrush.ImageSource>
                               </ImageBrush>
                             </Border.Background>
@@ -269,7 +269,7 @@
                         </DockPanel>
                       </StackPanel>
 
-                      <!-- EXTERNAL AFFAIRS -->
+                       EXTERNAL AFFAIRS 
                       <StackPanel Grid.Row="2"
                                   VerticalAlignment="Top"
                                   Orientation="Vertical">
@@ -286,7 +286,7 @@
                             <Border.Background>
                               <ImageBrush>
                                 <ImageBrush.ImageSource>
-                                  <BitmapImage UriSource="vfs:///Resources/UI/Borg/AffairsScreen/ExternalAffairs.png"/>
+                                  <BitmapImage UriSource="vfs:///Resources/UI/Klingons/AffairsScreen/ExternalAffairs.png"/>
                                 </ImageBrush.ImageSource>
                               </ImageBrush>
                             </Border.Background>
@@ -342,6 +342,4 @@
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-  </Style>
-
-</ResourceDictionary>
+  </Style>-->
