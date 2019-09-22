@@ -5,9 +5,9 @@
                     xmlns:cal="http://www.codeplex.com/CompositeWPF"
                     xmlns:local="clr-namespace:Supremacy.Client">
 
-    <ResourceDictionary.MergedDictionaries>
+<!--    <ResourceDictionary.MergedDictionaries>
     <scc:SharedResourceDictionary Source="/SupremacyClient;Component/themes/Cardassians/Shared.xaml" />
-  </ResourceDictionary.MergedDictionaries>
+  </ResourceDictionary.MergedDictionaries> -->
 
   <s:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter" />
 

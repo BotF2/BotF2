@@ -4,9 +4,9 @@
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
                     xmlns:cal="http://www.codeplex.com/CompositeWPF"
                     xmlns:local="clr-namespace:Supremacy.Client">
-    <ResourceDictionary.MergedDictionaries>
+ <!--   <ResourceDictionary.MergedDictionaries>
     <scc:SharedResourceDictionary Source="/SupremacyClient;Component/themes/Borg/Shared.xaml" />
-  </ResourceDictionary.MergedDictionaries>  
+  </ResourceDictionary.MergedDictionaries>  -->
   <s:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter" />
   
 
