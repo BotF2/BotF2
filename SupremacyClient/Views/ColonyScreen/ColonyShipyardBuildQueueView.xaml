@@ -145,7 +145,7 @@
                   Property="Visibility"
                   Value="Visible" />
         </DataTrigger>
-        <DataTrigger Binding="{Binding Path=Model.SelectedColony.Shipyard.IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type scc:ColonyScreenView}}}"
+        <DataTrigger Binding="{Binding Path=Model.SelectedColony.BuildSlots.IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type scc:ColonyScreenView}}}"
                      Value="False">
           <Setter TargetName="StatusText"
                   Property="Visibility"
