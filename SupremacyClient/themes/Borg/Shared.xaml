@@ -17,9 +17,9 @@
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
                     xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"> 
 
-    <!--Usage: {StaticResource HeaderTextBrush}-->
+        <!--Usage: {StaticResource HeaderTextBrush}-->
     <SolidColorBrush x:Key="BorderBrush"
                    Color="YellowGreen" />
 
