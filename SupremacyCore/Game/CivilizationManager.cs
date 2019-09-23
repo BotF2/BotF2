@@ -10,7 +10,6 @@ using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Entities;
-using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -52,15 +51,8 @@ namespace Supremacy.Game
         /// </summary>
         private CivilizationManager()
         {
-            const int BaseStartingCredits = 5000;
-            const int BaseStartingDeuterium = 100;
-            const int BaseStartingDilithium = 10;
-            const int BaseStartingRawMaterials = 1000;
-            int startingModifier = (byte)GameContext.Current.Options.StartingTechLevel + 1;
-
-            int startingCredits = BaseStartingCredits * startingModifier;
-            _credits = new Meter(startingCredits, Meter.MinValue, Meter.MaxValue);
-            _treasury = new Treasury(startingCredits);
+            _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
+            _treasury = new Treasury(5000);
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
             _infiltratedColonies = new UniverseObjectList<Colony>();
@@ -74,11 +66,11 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
 
-            _resources.Deuterium.BaseValue = BaseStartingDeuterium * startingModifier;
+            _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
-            _resources.Dilithium.BaseValue = BaseStartingDilithium * startingModifier;
+            _resources.Dilithium.BaseValue = 10;
             _resources.Dilithium.Reset();
-            _resources.RawMaterials.BaseValue = BaseStartingRawMaterials * startingModifier;
+            _resources.RawMaterials.BaseValue = 1000;
             _resources.RawMaterials.Reset();
             _resources.UpdateAndReset();
         }
@@ -362,7 +354,6 @@ namespace Supremacy.Game
             foreach (var colony in Colonies)
             {
                 colony.Morale.AdjustCurrent((int)(multiplier * change));
-                //GameLog.Client.GameData.DebugFormat("Colony={0}, Change in Morale={1}", colony.Location, (int)(multiplier * change));
             }
         }
 
