@@ -1,6 +1,4 @@
-﻿// SinglePlayerStartScreen.xaml.cs
-//
-// Copyright (c) 2007-2008 Mike Strobel
+﻿// Copyright (c) 2007-2008 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
@@ -53,14 +51,7 @@ namespace Supremacy.Client
 
                 //Select Federation to begin with
                 List<Civilization> tmp = (List<Civilization>)DataContext;
-                if (tmp[0].ShortName == "Intro")
-                {
-                    CivSelector.SelectedIndex = 1;
-                }
-                else
-                {
-                    CivSelector.SelectedIndex = 0;
-                }
+                CivSelector.SelectedIndex = 0;
             }
             finally
             {
@@ -131,67 +122,66 @@ namespace Supremacy.Client
             {
                 switch (CivSelector.SelectedValue.ToString())
                 {
-                    case "Intro":
-                        if (Options.IntroPlayable == EmpirePlayable.No)
-                        {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_0_NOT_IN GAME"), MessageDialogButtons.Ok);
-                            return;
-                        }
-                        break;
                     case "Federation":
                         if (Options.FederationPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            MessageDialog.Show(
+                                ResourceManager.GetString("CIV_1_NOT_IN GAME"),
+                                MessageDialogButtons.Ok);
                             return;
                         }
                         break;
                     case "Terran Empire":
                         if (Options.TerranEmpirePlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            MessageDialog.Show(
+                                ResourceManager.GetString("CIV_2_NOT_IN GAME"),
+                                MessageDialogButtons.Ok);
                             return;
                         }
                         break;
                     case "Romulans":
                         if (Options.RomulanPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            MessageDialog.Show(
+                                ResourceManager.GetString("CIV_3_NOT_IN GAME"),
+                                MessageDialogButtons.Ok);
                             return;
                         }
                         break;
                     case "Klingons":
                         if (Options.KlingonPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            MessageDialog.Show(
+                                ResourceManager.GetString("CIV_4_NOT_IN GAME"),
+                                MessageDialogButtons.Ok);
                             return;
                         }
                         break;
                     case "Cardassians":
                         if (Options.CardassianPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            MessageDialog.Show(
+                                ResourceManager.GetString("CIV_5_NOT_IN GAME"),
+                                MessageDialogButtons.Ok);
                             return;
                         }
                         break;
                     case "Dominion":
                         if (Options.DominionPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            MessageDialog.Show(
+                                ResourceManager.GetString("CIV_6_NOT_IN GAME"),
+                                MessageDialogButtons.Ok);
                             return;
                         }
                         break;
                     case "Borg":
                         if (Options.BorgPlayable == EmpirePlayable.No)
                         {
-                            MessageDialog.Show(Environment.NewLine +
-                                ResourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
+                            MessageDialog.Show(
+                                ResourceManager.GetString("CIV_7_NOT_IN GAME"),
+                                MessageDialogButtons.Ok);
                             return;
                         }
                         break;

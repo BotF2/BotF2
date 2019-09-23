@@ -1,5 +1,3 @@
-// GameOptionsPanel.xaml.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -71,7 +69,6 @@ namespace Supremacy.Client
             lstMinorRaces.SelectionChanged += (sender, args) => OnOptionsChanged();
             lstGalaxyCanon.SelectionChanged += (sender, args) => OnOptionsChanged();
             lstTechLevel.SelectionChanged += (sender, args) => OnOptionsChanged();
-            //lstIntroPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstFederationPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstRomulanPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstKlingonPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };

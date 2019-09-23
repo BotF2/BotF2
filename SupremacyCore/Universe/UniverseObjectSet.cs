@@ -1,5 +1,3 @@
-// UniverseObjectSet.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,13 +5,11 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
+using Supremacy.IO.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Supremacy.Collections;
-using Supremacy.Game;
-using Supremacy.IO.Serialization;
 
 namespace Supremacy.Universe
 {

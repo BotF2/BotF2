@@ -1,5 +1,3 @@
-// GalaxyScreenPresenter.cs
-//
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,15 +5,9 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Utility;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
@@ -32,6 +24,10 @@ using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
 namespace Supremacy.Client.Views
@@ -154,7 +150,6 @@ namespace Supremacy.Client.Views
             ClientEvents.TurnStarted.Subscribe(OnTurnStarted, ThreadOption.UIThread);
             ClientEvents.AllTurnEnded.Subscribe(OnAllTurnEnded, ThreadOption.UIThread);
             ClientEvents.LobbyUpdated.Subscribe(OnLobbyUpdated, ThreadOption.UIThread);
-            //ClientEvents.PlayerTurnFinished.Subscribe(OnPlayerTurnFinished, ThreadOption.UIThread);
             PlayerActionEvents.FleetRouteUpdated.Subscribe(OnFleetRouteUpdated, ThreadOption.UIThread);
             GameEvents.TradeRouteEstablished.Subscribe(OnTradeRouteChanged, ThreadOption.UIThread);
             GameEvents.TradeRouteCancelled.Subscribe(OnTradeRouteChanged, ThreadOption.UIThread);
@@ -197,7 +192,6 @@ namespace Supremacy.Client.Views
             ClientEvents.TurnStarted.Unsubscribe(OnTurnStarted);
             ClientEvents.AllTurnEnded.Unsubscribe(OnAllTurnEnded);
             ClientEvents.LobbyUpdated.Unsubscribe(OnLobbyUpdated);
-            //ClientEvents.PlayerTurnFinished.Unsubscribe(OnPlayerTurnFinished);
             PlayerActionEvents.FleetRouteUpdated.Unsubscribe(OnFleetRouteUpdated);
             GameEvents.TradeRouteEstablished.Unsubscribe(OnTradeRouteChanged);
             GameEvents.TradeRouteCancelled.Unsubscribe(OnTradeRouteChanged);
@@ -214,15 +208,12 @@ namespace Supremacy.Client.Views
         #region Private Methods
         private bool CanExecuteAddShipToTaskForceCommand(RedeployShipCommandArgs args)
         {
-            //if (this.Model.InputMode != GalaxyScreenInputMode.RedeployShips)
-            //    return false;
             if (args == null)
                 return false;
             if (args.Ship.OwnerID != AppContext.LocalPlayer.EmpireID)
                 return false;
             if (Model.SelectedTaskForce == null)
                 return false;
-            //GameLog.Print("CanExecuteAddShipToTaskForceCommand - Model.SelectedTaskForce = {0}", Model.SelectedTaskForce.Name);
             if (!Model.SelectedTaskForce.View.Ships.Any(o => Equals(o.Source, o)))
                 return false;
             return true;
@@ -230,15 +221,12 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteRemoveShipFromTaskForceCommand(RedeployShipCommandArgs args)
         {
-            //if (this.Model.InputMode != GalaxyScreenInputMode.RedeployShips)
-            //    return false;
             if (args == null)
                 return false;
             if (args.Ship.OwnerID != AppContext.LocalPlayer.EmpireID)
                 return false;
             if (Model.SelectedTaskForce == null)
                 return false;
-            //GameLog.Print("CanExecuteRemoveShipFromTaskForceCommand - Model.SelectedTaskForce = {0}", Model.SelectedTaskForce.Name);
             if (!Model.SelectedTaskForce.View.Ships.Any(o => Equals(o.Source, o)))
                 return false;
             return true;
@@ -256,8 +244,6 @@ namespace Supremacy.Client.Views
                 return;
 
             Model.SelectedTaskForce = Model.TaskForces.FirstOrDefault(o => Equals(o.View.Source, args.Ship.Fleet));
-
-            //GameLog.Print("ExecuteAddShipToTaskForceCommand - Model.SelectedTaskForce = {0}", Model.SelectedTaskForce.Name);
         }
 
         private void ExecuteRemoveShipFromTaskForceCommand(RedeployShipCommandArgs args)
@@ -278,12 +264,10 @@ namespace Supremacy.Client.Views
             if (selectedTaskForce.Ships.Any())
             {
                 Model.SelectedTaskForce = Model.TaskForces.FirstOrDefault(o => Equals(o.View.Source, selectedTaskForce));
-                //GameLog.Print("ExecuteRemoveShipFromTaskForceCommand - selectedTaskForce = {0}", Model.SelectedTaskForce.Name);
             }
             else
             {
                 Model.SelectedTaskForce = Model.TaskForces.FirstOrDefault(o => Equals(o.View.Source, args.Ship.Fleet));
-                //GameLog.Print("ExecuteRemoveShipFromTaskForceCommand - args.Ship.Fleet = {0}", Model.SelectedTaskForce.Name);
             }
         }
 
@@ -380,7 +364,6 @@ namespace Supremacy.Client.Views
 
                         order.Target = target;
                         PlayerOperations.SetFleetOrder(fleetView.Source, order);
-                        //_soundPlayer.PlayAny("TaskForceOrders");
                     }
                 }
                 else
@@ -393,7 +376,6 @@ namespace Supremacy.Client.Views
                         updateTaskForces = true;
 
                     PlayerOperations.SetFleetOrder(fleetView.Source, order);
-                    //_soundPlayer.PlayAny("TaskForceOrders");
 
 
                     if (order != null && order is AssaultSystemOrder)
@@ -450,7 +432,6 @@ namespace Supremacy.Client.Views
 
         private IEnumerable<FleetViewWrapper> GenerateFleetViews(MapLocation location)
         {
-            //GameLog.Print("LocalPlayerEmpire Homesystem = {0} ", AppContext.LocalPlayerEmpire.HomeSystem );
             if (!AppContext.LocalPlayerEmpire.MapData.IsScanned(location))
                 return null;
 
@@ -462,11 +443,7 @@ namespace Supremacy.Client.Views
             List<FleetViewWrapper> wrapperList = new List<FleetViewWrapper>();
             foreach (FleetView fleet in fleets)
             {
-                //if (fleet.Source.IsScience || fleet.Source.IsMedical || fleet.Source.IsDiplomatic || fleet.Source.IsScout || fleet.Source.IsSpy) // will hide ships in task force window
-                //    continue;
                 wrapperList.Add(new FleetViewWrapper(fleet));
-                //GameLog.Print("wrapperList.Add - fleet.Name = {0}", fleet.Name);
-                //GameLog.Print("wrapperList.Add - fleet.Count = {0}", fleet.Ships.Count);
             }
             return wrapperList;
         }
@@ -530,10 +507,8 @@ namespace Supremacy.Client.Views
         private void OnSelectedSectorChanged(object sender, EventArgs e)
         {
             var selectedSector = Model.SelectedSector;
-            //GameLog.Core.UI.DebugFormat("selectedSector = {0}", selectedSector);
             if (selectedSector == null)
             {
-                //GameLog.Core.UI.DebugFormat("selectedSector = NULL");
                 Model.TaskForces = Enumerable.Empty<FleetViewWrapper>();
                 Model.TradeRoutes = Enumerable.Empty<TradeRoute>();
                 Model.SelectedSectorAllegiance = null;
@@ -551,8 +526,6 @@ namespace Supremacy.Client.Views
                 if (starSystem != null)
                 {
                     colony = starSystem.Colony;
-                    //if (colony != null)
-                    //    GameLog.Client.UI.DebugFormat("selected {0} {1}", colony.Location, colony.Name);
                     if (colony != null && colony.OwnerID == playerEmpire.CivilizationID)
                         tradeRoutes = colony.TradeRoutes;
                 }
@@ -566,7 +539,6 @@ namespace Supremacy.Client.Views
                     if (playerEmpire.MapData.IsExplored(selectedSector.Location))
                         selectedSectorInhabitants = owner.ShortName;
                     selectedSectorAllegiance = owner.ShortName;
-                    //GameLog.Client.UI.DebugFormat("isExplored {0} {1}", selectedSector.Location, selectedSector.Name);
                 }
 
                 Model.TradeRoutes = tradeRoutes;
@@ -577,15 +549,9 @@ namespace Supremacy.Client.Views
 
                 var planetsViewRegion = CompositeRegionManager.GetRegionManager((DependencyObject)View).Regions[CommonGameScreenRegions.PlanetsView];
                 planetsViewRegion.Context = selectedSector;
-                //GameLog.Client.UI.DebugFormat("isExplored {0} {1}, planetsViewRegion.Context = {2}", selectedSector.Location, selectedSector.Name, planetsViewRegion.Context.ToString());
 
-                //GameLog.Core.UI.DebugFormat("planetsViewRegion.Context = {0}", planetsViewRegion.Context);
                 if ((colony != null) && Equals(colony.OwnerID, playerEmpire.CivilizationID))
                 {
-                    //GameLog.Core.UI.InfoFormat("colony.OwnerID = {0}, playerEmpire.CivilizationID = {1}, " +
-                    //    "playerEmpire.Civilization= {2}, colony.Name = {3}, colony.Location = {4}", 
-                    //    colony.OwnerID, playerEmpire.CivilizationID, playerEmpire.Civilization, colony.Name, colony.Location);
-
                     GalaxyScreenCommands.SelectSector.Execute(colony.Sector);
                 }
             }
@@ -659,9 +625,8 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    var ownedShipsAtLocation = AppContext.CurrentGame.Universe.FindAt<Ship>(
-                        Model.SelectedSector.Location,
-                        ship => ship.OwnerID == AppContext.LocalPlayer.EmpireID);
+                    var ownedShipsAtLocation = AppContext.CurrentGame.Universe.FindAt<Ship>(Model.SelectedSector.Location)
+                        .Where(s => s.OwnerID == AppContext.LocalPlayer.EmpireID);
 
                     foreach (var ownedShip in ownedShipsAtLocation)
                         GameLog.Client.Intel.DebugFormat("local player ownedship.Name = {0}", ownedShip.Name);
@@ -676,11 +641,11 @@ namespace Supremacy.Client.Views
                 var selectedShip = Model.SelectedShip;
 
                 if ((selectedShip != null) && selectedTaskForce.View.Ships.Select(o => o.Source).Contains(selectedShip))
-                    {
-                        selectedShipInTaskForce = selectedTaskForce.View.Ships.FirstOrDefault(o => o.Source == selectedShip);
+                {
+                    selectedShipInTaskForce = selectedTaskForce.View.Ships.FirstOrDefault(o => o.Source == selectedShip);
 
-                        GameLog.Client.Intel.DebugFormat("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
-                    }                
+                    GameLog.Client.Intel.DebugFormat("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
+                }                
                 else
                 {
                     selectedShipInTaskForce = Model.SelectedShipInTaskForce;

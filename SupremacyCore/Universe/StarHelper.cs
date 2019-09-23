@@ -1,20 +1,17 @@
-﻿// StarSystemHelper.cs
-//
-// Copyright (c) 2007 Mike Strobel
+﻿// Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Game;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Universe
 {
@@ -240,7 +237,6 @@ namespace Supremacy.Universe
         public static int MaxNumberOfPlanets(StarType starType)
         {
             var supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
-            //GameLog.Core.UI.DebugFormat("current star type = {0}, supportsPlanetsAttribute = {1}", starType.ToString(), supportsPlanetsAttribute);
             if (supportsPlanetsAttribute != null)
                 return supportsPlanetsAttribute.MaxNumberOfPlanets;
 
@@ -259,8 +255,6 @@ namespace Supremacy.Universe
         {
             if (starSystem == null)
                 return false;
-            //GameLog.Client.UI.DebugFormat("SupportsPlanets for {0}, x = {1} planets", starSystem.Name, starSystem.Planets.Count);
-            //GameLog.Core.UI.DebugFormat("current star type = {0}, supportsPlanetsAttribute = {1}", starSystem.StarType, SupportsPlanets(starSystem.StarType));
 
             switch (starSystem.StarType)
             {
@@ -273,31 +267,7 @@ namespace Supremacy.Universe
                     return true;
                 default:
                     return false;
-                    //break;
-                //case StarType.Wormhole:
-                //    break;
-                //case StarType.NeutronStar:
-                //    break;
-                //case StarType.RadioPulsar:
-                //    break;
-                //case StarType.XRayPulsar:
-                //    break;
-                //case StarType.Quasar:
-                //    break;
-                //case StarType.BlackHole:
-                //    break;
-
-                    //break;
             }
-
-            //return SupportsPlanets(starSystem.StarType);
-        }
-
-        public static bool SupportsPlanets(Sector sector)
-        {
-            if (sector == null)
-                return false;
-            return SupportsPlanets(sector.System);
         }
 
         public static bool CanPlaceStar(
@@ -331,7 +301,6 @@ namespace Supremacy.Universe
 
         public static bool SupportsPlanets(this StarType starType)
         {
-            //GameLog.Client.UI.DebugFormat("SupportsPlanets = {0}", starType.MatchAttribute(SupportsPlanetsAttribute.Default));
             return starType.MatchAttribute(SupportsPlanetsAttribute.Default);
         }
 

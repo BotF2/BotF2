@@ -599,7 +599,6 @@ namespace Supremacy.Game
                     GalaxyCanon = GalaxyCanon.Canon,
                     StartingTechLevel = StartingTechLevel.Developed,
 
-                    //IntroPlayable = EmpirePlayable.No,
                     FederationPlayable = EmpirePlayable.Yes,
                     RomulanPlayable = EmpirePlayable.Yes,
                     KlingonPlayable = EmpirePlayable.Yes,

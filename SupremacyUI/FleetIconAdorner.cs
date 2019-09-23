@@ -1,24 +1,21 @@
+using Supremacy.Annotations;
+using Supremacy.Client;
+using Supremacy.Client.Views;
+using Supremacy.Collections;
+using Supremacy.Diplomacy;
+using Supremacy.Entities;
+using Supremacy.Game;
+using Supremacy.Orbitals;
+using Supremacy.Resources;
+using Supremacy.Universe;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-
-using Supremacy.Annotations;
-using Supremacy.Client;
-using Supremacy.Client.Views;
-using Supremacy.Entities;
-using Supremacy.Game;
-using Supremacy.Orbitals;
-
-using System.Linq;
-
-using Supremacy.Resources;
-using Supremacy.Universe;
-using Supremacy.Collections;
-using Supremacy.Diplomacy;
 
 namespace Supremacy.UI
 {
@@ -79,10 +76,10 @@ namespace Supremacy.UI
 
         private void RefreshFleets()
         {
-            var fleetViews = GameContext.Current.Universe
-                .FindAt<Fleet>(_location, o => _owners.Contains(o.Owner));
+            var fleetViews = GameContext.Current.Universe.FindAt<Fleet>(_location)
+                .Where(o => _owners.Contains(o.Owner));
 
-            _fleets = new List<FleetView>(fleetViews.Count);
+            _fleets = new List<FleetView>(fleetViews.Count());
 
             fleetViews.Select(o => FleetView.Create(_playerCiv, o)).CopyTo(_fleets);
         }

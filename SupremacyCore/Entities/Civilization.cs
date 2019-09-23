@@ -1,5 +1,3 @@
-// Civilization.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,17 +5,15 @@
 //
 // All other rights reserved.
 
-using System;
-using System.IO;
-using System.Xml;
-using System.Xml.Linq;
-using Supremacy.Combat;
 using Supremacy.Game;
-using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Supremacy.Entities
 {
@@ -142,19 +138,6 @@ namespace Supremacy.Entities
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Civilization"/> class.
-        /// </summary>
-        /// <param name="key">The unique key.</param>
-        
-        //public Civilization(string key)
-        //{
-        //    _key = key;
-        //    _civType = CivilizationType.Empire;
-        //    _civId = 6;
-
-        //}
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class from XML data.
         /// </summary>
         /// <param name="element">The XML element.</param>
@@ -163,9 +146,6 @@ namespace Supremacy.Entities
             var ns = element.Document.Root.Name.Namespace;
 
             _key = (string)element.Attribute("Key");
-
-            //GameLog.Core.GameData.DebugFormat("reading Civilizations.xml for {0}", _key);
-
             _raceId = (string)element.Element(ns + "Race");
             _shortName = (string)element.Element(ns + "ShortName");
             _shortNameArtCap = (string)element.Element(ns + "ShortNameArtCap");
@@ -200,85 +180,54 @@ namespace Supremacy.Entities
                     _industryToCreditsConversionRatio = (float)convRatio / 100.0f;
             }
 
-            // new Traits
-
             _traits = (string)element.Element(ns + "Traits");
-
             _traits = _traits.Trim();
 
-            //works   GameLog.Core.Diplomacy.DebugFormat("reading Civilizations.xml for Quadrant {1}: {0} - Traits are: {2}", _key, _homeQuadrant, _traits);
-
-
-
-            //EnumHelper.TryParse((string)element.Element(ns + "Traits"), out _traits);
-
-            //string traitsElement = (string)element.Element(ns + "Traits");
-            ////var traitsElement = element.OwnerDocument.CreateElement("Bonuses");
-            //if (!string.IsNullOrEmpty(traitsElement))
-            //{
-            //    EnumHelper.TryParse((string)element.Element(ns + "TechCurve"), out _techCurve);
-            //    var traitElement = systemElement.OwnerDocument.CreateElement("Bonus");
-            //    bonusElement.SetAttribute("Type", SystemBonus.NoBonus.ToString());
-            //    traitsElement.AppendChild(bonusElement);
-            //}
-            //else
-            //{
-            //    foreach (SystemBonus bonus in EnumUtilities.GetValues<SystemBonus>())
-            //    {
-            //        if ((bonus != SystemBonus.NoBonus) && HasBonus(bonus))
-            //        {
-            //            EnumHelper.TryParse((string)element.Element(ns + "TechCurve"), out _techCurve);
-            //            var bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
-            //            bonusElement.SetAttribute("Type", bonus.ToString());
-            //            traitsElement.AppendChild(bonusElement);
-            //        }
-            //    }
-            //}
-            //systemElement.AppendChild(traitsElement);
 
             // When starting a game, options is null
+            //TODO: This should be in with the code to start the game
             if (GameContext.Current.Options != null)
             {
                 if ((_key == "FEDERATION") && (GameContext.Current.Options.FederationPlayable == EmpirePlayable.No))
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
 
                 if ((_key == "ROMULANS") && (GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No))
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
 
                 if ((_key == "KLINGONS") && (GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No))
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
 
                 if ((_key == "CARDASSIANS") && (GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No))
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
 
                 if ((_key == "DOMINION") && (GameContext.Current.Options.DominionPlayable == EmpirePlayable.No))
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
 
                 if ((_key == "BORG") && (GameContext.Current.Options.BorgPlayable == EmpirePlayable.No))
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
 
                 if ((_key == "TERRANEMPIRE") && (GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No))
                 {
                     _civType = CivilizationType.ExpandingPower;
-                    GameLog.Client.GameData.DebugFormat("Civilization.cs: _raceId={0} is turned to ExpandingPower, _civType: {1}", _raceId, _civType);
+                    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
             }
 

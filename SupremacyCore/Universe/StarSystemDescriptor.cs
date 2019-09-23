@@ -1,12 +1,13 @@
-﻿// StarSystemDescriptor.cs
-//
-// Copyright (c) 2007 Mike Strobel
+﻿// Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
 //
 // All other rights reserved.
 
+using Supremacy.Game;
+using Supremacy.Resources;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,10 +15,6 @@ using System.IO;
 using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Schema;
-
-using Supremacy.Resources;
-using Supremacy.Utility;
-using Supremacy.Game;
 
 namespace Supremacy.Universe
 {
@@ -936,7 +933,6 @@ namespace Supremacy.Universe
                                     }
 
                                     string shipDesign = ship.InnerText.Trim().ToUpperInvariant();
-                                    //GameLog.Client.GameData.DebugFormat("HomeSystems.xml-shipDesign={0}, Count={1}", shipDesign, shipCount);
                                     for (int i = 0; i < shipCount; i++)
                                         _startingShips.Add(shipDesign);
                                 }
@@ -948,13 +944,6 @@ namespace Supremacy.Universe
                             {
                                 foreach (XmlElement shipyard in startingShipyards)
                                 {
-                                    //GameLog.Print("{0}, playable={1}", this.Name == "Qo'noS", GameContext.Current.Options.KlingonPlayable.ToString());
-                                    if (Name == "Qo'noS" && GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No)
-                                    {
-                                        GameLog.Core.GameData.DebugFormat("{0}, playable={1}", Name, GameContext.Current.Options.KlingonPlayable.ToString());
-                                        break;
-                                    }
-
                                     _startingShipyards.Add(shipyard.InnerText.Trim().ToUpperInvariant());
                                 }
                             }
@@ -976,7 +965,6 @@ namespace Supremacy.Universe
                                 foreach (XmlElement outpost in startingOutposts)
                                 {
                                     _startingOutposts.Add(outpost.InnerText.Trim().ToUpperInvariant());
-                                    //GameLog.Client.GameData.DebugFormat("HomeSystems.xml-SpaceStation={0}", techLevel.GetElementsByTagName("SpaceStation"));
                                 }
                             }
 

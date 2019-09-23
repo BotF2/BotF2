@@ -1,5 +1,3 @@
-// Sector.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,22 +5,19 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
-
 using Supremacy.Annotations;
 using Supremacy.Collections;
+using Supremacy.Data;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
-
-using System.Linq;
-
-using Supremacy.Utility;
-using Supremacy.Data;
 using Supremacy.Types;
+using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
 
 namespace Supremacy.Universe
 {
@@ -56,9 +51,6 @@ namespace Supremacy.Universe
         [NonSerialized]
         private Lazy<Station> _station;
 
-        //[NonSerialized]
-        //private Lazy<TradeRoute> _tradeRouteIndicator;
-
         /// <summary>
         /// Gets the map location of this <see cref="Sector"/>.
         /// </summary>
@@ -83,7 +75,6 @@ namespace Supremacy.Universe
                 OnPropertyChanged("Name");
                 OnPropertyChanged("Owner");
                 OnPropertyChanged("IsOwned");
-                //GameLog.Client.General.DebugFormat("Sector _system = {0}_system.value = {1}",_system, _system.Value);
             }
         }
 
@@ -104,26 +95,16 @@ namespace Supremacy.Universe
             }
         }
 
-        //public bool Equals(Sector sector)
-        //{
-        //    return Location == _location && System == _system.Value && Station == _station.Value;
-        //}
-
         public int TradeRouteIndicator
         {
             get
             {
-                //Colony ColonyTR = new Colony;
-                //return ColonyTR.ColonyTradeRoutes;
-
                 if (System == null || System.Colony == null)
                     return 99;
 
                 Table popReqTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopReq"];
                 Table popModTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
 
-                //if ((Sector.TradeRoute.Owner == PlayerCiv) || DiplomacyHelper.IsContactMade(PlayerCiv, Sector.TradeRoute.Owner))
-                //{
                 int popForTradeRoute;
 
                 var civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
@@ -144,9 +125,6 @@ namespace Supremacy.Universe
             }
         }
 
-       
-
-
         /// <summary>
         /// Gets the name of this <see cref="Sector"/>.
         /// </summary>
@@ -159,10 +137,7 @@ namespace Supremacy.Universe
                 if (system != null)
                     return system.Name;
 
-                return String.Format(
-                    "({0}, {1})",
-                    _location.X,
-                    _location.Y);
+                return string.Format("({0}, {1})", _location.X, _location.Y);
             }
         }
 
@@ -193,30 +168,17 @@ namespace Supremacy.Universe
             _location = location;
             _system = new Lazy<StarSystem>(FindSystem, LazyThreadSafetyMode.PublicationOnly);
             _station = new Lazy<Station>(FindStation, LazyThreadSafetyMode.PublicationOnly);
-            //_tradeRoute = new Lazy<TradeRoute>(FindTradeRoute, LazyThreadSafetyMode.PublicationOnly);
         }
 
         private StarSystem FindSystem()
         {
-            //if (GameContext.Current.Universe.FindFirst<StarSystem>(o => o.Location == _location) != null)
-            //    GameLog.Client.GameData.DebugFormat("FindSystem={0}", GameContext.Current.Universe.FindFirst<StarSystem>(o => o.Location == _location));
             return GameContext.Current.Universe.FindFirst<StarSystem>(o => o.Location == _location);
         }
 
         private Station FindStation()
         {
-            //if (GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location) != null)
-            //    GameLog.Client.GameData.DebugFormat("FindStation={0}", GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location));
             return GameContext.Current.Universe.FindFirst<Station>(o => o.Location == _location);
         }
-
-        //private TradeRoute FindTradeRoute()
-        //{
-        //    GameLog.Core.General.DebugFormat("FindTradeRoute (empty atm");
-        //    //return GameContext.Current.Universe.FindFirst<TradeRoute>(o => o.SourceColony.Location == _location);
-        //    //var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-        //    return;
-        //}
 
         public void Reset()
         {
@@ -458,45 +420,8 @@ namespace Supremacy.Universe
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
-            return GameContext.Current.Universe.FindAt<Fleet>(sector.Location, f => f.Owner == civ);
-        }
-
-        public static bool ContainsPlanet([NotNull] this Sector sector, PlanetType planetType)
-        {
-            if (sector == null)
-                throw new ArgumentNullException("sector");
-
-            var system = sector.System;
-            if (system == null)
-                return false;
-
-            return system.Planets.Any(o => o.PlanetType == planetType);
-        }
-
-        public static bool ContainsPlanet([NotNull] this Sector sector, PlanetSize planetSize)
-        {
-            if (sector == null)
-                throw new ArgumentNullException("sector");
-
-            var system = sector.System;
-            if (system == null)
-                return false;
-
-            return system.Planets.Any(o => o.PlanetSize == planetSize);
-        }
-
-        public static bool ContainsPlanet([NotNull] this Sector sector, PlanetType planetType, PlanetSize planetSize)
-        {
-            if (sector == null)
-                throw new ArgumentNullException("sector");
-
-            var system = sector.System;
-            if (system == null)
-                return false;
-
-            return system.Planets.Any(
-                o => o.PlanetType == planetType &&
-                     o.PlanetSize == planetSize);
+            return GameContext.Current.Universe.FindAt<Fleet>(sector.Location)
+                .Where(f => f.Owner == civ);
         }
     }
 }

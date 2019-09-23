@@ -1,5 +1,3 @@
-// GameOptions.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -127,7 +125,6 @@ namespace Supremacy.Game
     /// Gives an Empire a bonus or a malus
     /// </summary>
     /// 
-
     public enum EmpireModifier : int
     {
         Handicape_Biggest = -5,
@@ -155,9 +152,10 @@ namespace Supremacy.Game
         Normal,
         Fast
     }
+
     public enum TurnTimerEnum : byte
     {
-        Unlimited =0,
+        Unlimited = 0,
         Sec25,
         Sec50,
         Sec75,
@@ -167,13 +165,12 @@ namespace Supremacy.Game
         Sec250,
         Sec300,
         Sec360
-   
     }
+
     //public string PlayerNameSP
     //{
     //    PlayerNameSP = "choice your name";
     //}
-
 
     /// <summary>
     /// Defines the options available at the beginning of a game.
@@ -195,8 +192,7 @@ namespace Supremacy.Game
             MinorRaceFrequency = MinorRaceFrequency.Many;
             GalaxyCanon = GalaxyCanon.Canon;
             StartingTechLevel = StartingTechLevel.Developed;
-            //PlayerNameSP = "choice your name";
-            IntroPlayable = EmpirePlayable.No;  // just place holder
+            //PlayerNameSP = "Choose your name";
             FederationPlayable = EmpirePlayable.Yes;
             RomulanPlayable = EmpirePlayable.Yes;
             KlingonPlayable = EmpirePlayable.Yes;
@@ -294,13 +290,6 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The starting tech level.</value>
         //public PlayerNameSP PlayerNameSP { get; set; }
-
-
-        /// <summary>
-        /// Gets or sets IntroPlayable.   // just a place holder
-        /// </summary>
-        /// <value> Federation playable yes or no.</value>
-        public EmpirePlayable IntroPlayable { get; set; }
 
         /// <summary>
         /// Gets or sets FederationPlayable.
@@ -445,7 +434,6 @@ namespace Supremacy.Game
             writer.Write((byte)MinorRaceFrequency);
             writer.Write((byte)GalaxyCanon);
             writer.Write((byte)StartingTechLevel);
-            writer.Write((byte)IntroPlayable);
             writer.Write((byte)FederationPlayable);
             writer.Write((byte)RomulanPlayable);
             writer.Write((byte)KlingonPlayable);
@@ -467,31 +455,6 @@ namespace Supremacy.Game
             writer.Write(TurnTimer.Ticks);
             writer.Write(CombatTimer.Ticks);
 
-            /*
-            GameLog.Print("GameOptions writing: IsFrozen={0}", this.IsFrozen);
-            //var modIdBytesLength = reader.ReadInt32();
-            GameLog.Print("GameOptions writing: ModID={0}", this.ModID);
-            GameLog.Print("GameOptions writing: AIMode={0}", this.AIMode);
-            GameLog.Print("GameOptions writing: AITakeover={0}", this.AITakeover);
-            GameLog.Print("GameOptions writing: CombatTimer={0}", this.CombatTimer);
-            GameLog.Print("GameOptions writing: GalaxyShape={0}", this.GalaxyShape);
-            GameLog.Print("GameOptions writing: GalaxySize={0}", this.GalaxySize);
-            GameLog.Print("GameOptions writing: PlanetDensity={0}", this.PlanetDensity);
-            GameLog.Print("GameOptions writing: StarDensity={0}", this.StarDensity);
-            GameLog.Print("GameOptions writing: MinorRaceFrequency={0}", this.MinorRaceFrequency);
-            GameLog.Print("GameOptions writing: StartingTechLevel={0}", this.StartingTechLevel);
-            GameLog.Print("GameOptions writing: IntroPlayable={0}", this.IntroPlayable);
-            GameLog.Print("GameOptions writing: FederationPlayable={0}", this.FederationPlayable);
-            GameLog.Print("GameOptions writing: RomulanPlayable={0}", this.RomulanPlayable);
-            GameLog.Print("GameOptions writing: KlingonPlayable={0}", this.KlingonPlayable);
-            GameLog.Print("GameOptions writing: CardassianPlayable={0}", this.CardassianPlayable);
-            GameLog.Print("GameOptions writing: DominionPlayable={0}", this.DominionPlayable);
-            GameLog.Print("GameOptions writing: BorgPlayable={0}", this.BorgPlayable);
-            GameLog.Print("GameOptions writing: TerranEmpirePlayable={0}", this.TerranEmpirePlayable);
-
-            GameLog.Print("GameOptions writing: TurnTimer={0}", this.TurnTimer);
-            */
-
         }
 
         public void Read([NotNull] BinaryReader reader)
@@ -509,14 +472,11 @@ namespace Supremacy.Game
             GalaxySize = (GalaxySize)reader.ReadByte();
 
             PlanetDensity = (PlanetDensity)reader.ReadByte();
-            //GameLog.Print("PlanetDensity from file = {0}", this.PlanetDensity);
-            //this.PlanetDensity = PlanetDensity.Medium;   // enables "Loading a game"
 
             StarDensity = (StarDensity)reader.ReadByte();
             MinorRaceFrequency = (MinorRaceFrequency)reader.ReadByte();
             GalaxyCanon = (GalaxyCanon)reader.ReadByte();
             StartingTechLevel = (StartingTechLevel)reader.ReadByte();
-            IntroPlayable = (EmpirePlayable)reader.ReadByte();
             FederationPlayable = (EmpirePlayable)reader.ReadByte();
             RomulanPlayable = (EmpirePlayable)reader.ReadByte();
             KlingonPlayable = (EmpirePlayable)reader.ReadByte();
@@ -539,32 +499,6 @@ namespace Supremacy.Game
             AITakeover = reader.ReadBoolean();
             TurnTimer = TimeSpan.FromTicks(reader.ReadInt64());
             CombatTimer = TimeSpan.FromTicks(reader.ReadInt64());
-
-            /*
-            GameLog.Print("GameOptions reading: IsFrozen={0}", this.IsFrozen);
-            //var modIdBytesLength = reader.ReadInt32();
-            GameLog.Print("GameOptions reading: ModID={0}", this.ModID);
-            GameLog.Print("GameOptions reading: AIMode={0}", this.AIMode);
-            GameLog.Print("GameOptions reading: AITakeover={0}", this.AITakeover);
-            GameLog.Print("GameOptions reading: CombatTimer={0}", this.CombatTimer);
-            GameLog.Print("GameOptions reading: GalaxyShape={0}", this.GalaxyShape);
-            GameLog.Print("GameOptions reading: GalaxySize={0}", this.GalaxySize);
-            GameLog.Print("GameOptions reading: PlanetDensity={0}", this.PlanetDensity);
-            GameLog.Print("GameOptions reading: StarDensity={0}", this.StarDensity);
-            GameLog.Print("GameOptions reading: MinorRaceFrequency={0}", this.MinorRaceFrequency);
-            GameLog.Print("GameOptions reading: StartingTechLevel={0}", this.StartingTechLevel);
-            GameLog.Print("GameOptions reading: IntroPlayable={0}", this.IntroPlayable);
-            GameLog.Print("GameOptions reading: FederationPlayable={0}", this.FederationPlayable);
-            GameLog.Print("GameOptions reading: RomulanPlayable={0}", this.RomulanPlayable);
-            GameLog.Print("GameOptions reading: KlingonPlayable={0}", this.KlingonPlayable);
-            GameLog.Print("GameOptions reading: CardassianPlayable={0}", this.CardassianPlayable);
-            GameLog.Print("GameOptions reading: DominionPlayable={0}", this.DominionPlayable);
-            GameLog.Print("GameOptions reading: BorgPlayable={0}", this.BorgPlayable);
-            GameLog.Print("GameOptions reading: TerranEmpirePlayable={0}", this.TerranEmpirePlayable);
-
-            GameLog.Print("GameOptions reading: TurnTimer={0}", this.TurnTimer);
-            */
-
         }
 
         internal static bool Validate(GameOptions options)
@@ -583,8 +517,6 @@ namespace Supremacy.Game
                 return false;
             if (!Enum.IsDefined(typeof(GalaxyCanon), options.GalaxyCanon))
                 return false;
-            //if (!Enum.IsDefined(typeof(BorgPlayable), options.BorgPlayable))
-            //    return false;
 
             return true;
         }

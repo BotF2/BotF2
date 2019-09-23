@@ -1,4 +1,3 @@
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -39,7 +38,6 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        private readonly UniverseObjectList<Ship> _shipsList;
         private readonly UniverseObjectList<Colony> _infiltratedColonies;
 
         private int _homeColonyId;
@@ -54,8 +52,15 @@ namespace Supremacy.Game
         /// </summary>
         private CivilizationManager()
         {
-            _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
-            _treasury = new Treasury(5000);
+            const int BaseStartingCredits = 5000;
+            const int BaseStartingDeuterium = 100;
+            const int BaseStartingDilithium = 10;
+            const int BaseStartingRawMaterials = 1000;
+            int startingModifier = (byte)GameContext.Current.Options.StartingTechLevel + 1;
+
+            int startingCredits = BaseStartingCredits * startingModifier;
+            _credits = new Meter(startingCredits, Meter.MinValue, Meter.MaxValue);
+            _treasury = new Treasury(startingCredits);
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
             _infiltratedColonies = new UniverseObjectList<Colony>();
@@ -69,13 +74,12 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
 
-            _resources.Deuterium.BaseValue = 100;
+            _resources.Deuterium.BaseValue = BaseStartingDeuterium * startingModifier;
             _resources.Deuterium.Reset();
-            _resources.Dilithium.BaseValue = 10;
+            _resources.Dilithium.BaseValue = BaseStartingDilithium * startingModifier;
             _resources.Dilithium.Reset();
-            _resources.RawMaterials.BaseValue = 1000;
+            _resources.RawMaterials.BaseValue = BaseStartingRawMaterials * startingModifier;
             _resources.RawMaterials.Reset();
-            _resources.UpdateAndReset();
             _resources.UpdateAndReset();
         }
 
@@ -167,16 +171,6 @@ namespace Supremacy.Game
         public UniverseObjectList<Colony> Colonies
         {
             get { return _colonies; }
-        }
-
-        /// <summary>
-        /// Gets a list of the civilization's colonies.
-        /// </summary>
-        /// <value>The colonies.</value>
-        [NotNull]
-        public UniverseObjectList<Ship> ShipsList
-        {
-            get { return _shipsList; }
         }
 
         /// <summary>
