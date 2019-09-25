@@ -1,5 +1,3 @@
-// ClientModule.cs
-//
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -172,7 +170,7 @@ namespace Supremacy.Client
 
             //MessageDialog.Show(creditsPage, MessageDialogButtons.Close);
 
-            var result = MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+            MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
         }
 
         private void ExecuteHostMultiplayerGameCommand(string playerName)
@@ -202,22 +200,19 @@ namespace Supremacy.Client
 
         private void ExecuteLogTxtCommand(object obj)
         {
-            var folder = ResourceManager.GetResourcePath("");
-            var logfile = Path.Combine(
-                folder,
+            var logFile = Path.Combine(
+                ResourceManager.GetResourcePath(""),
                 "Log.txt");
-            // maybe not working ->    GameLog.Client.General.DebugFormat("Logfile at {0}", logfile);
 
-            if (logfile != null) //&& resourceFile.Exists)
+            if (!string.IsNullOrEmpty(logFile) && File.Exists(logFile))
             {
-                var p = new Process();
-                ProcessStartInfo pi = new ProcessStartInfo();
-                pi.UseShellExecute = true;
-                pi.FileName = logfile;
-                p.StartInfo = pi;
+                ProcessStartInfo processStartInfo = new ProcessStartInfo();
+                processStartInfo.UseShellExecute = true;
+                processStartInfo.FileName = logFile;
+
                 try
                 {
-                    p.Start();
+                    Process.Start(processStartInfo);
                 }
                 catch 
                 {
@@ -228,24 +223,26 @@ namespace Supremacy.Client
 
         private void ExecuteErrorTxtCommand(object obj)
         {
-            var folder = ResourceManager.GetResourcePath("");
-            var errorfile = Path.Combine(
-                folder,
+            var errorFile = Path.Combine(
+                ResourceManager.GetResourcePath(""),
                 "Error.txt");
-            // maybe not working ->    GameLog.Client.General.DebugFormat("Logfile at {0}", errorfile);
 
-            double fileSize = new FileInfo(errorfile).Length;
-            if (File.Exists(errorfile) && fileSize > 0)
+            if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
-                var p = new Process();
-                ProcessStartInfo pi = new ProcessStartInfo();
-                pi.UseShellExecute = true;
-                pi.FileName = errorfile;
-                p.StartInfo = pi;
+                double fileSize = new FileInfo(errorFile).Length;
+                if (fileSize <= 0)
+                {
+                    MessageBox.Show("Could not load Error.txt");
+                    return;
+                }
+
+                ProcessStartInfo processStartInfo = new ProcessStartInfo();
+                processStartInfo.UseShellExecute = true;
+                processStartInfo.FileName = errorFile;
                     
                 try
                 {
-                    p.Start();
+                    Process.Start(processStartInfo);
                 }
                 catch
                 {
@@ -582,9 +579,7 @@ namespace Supremacy.Client
 
             if (_appContext.IsGameInPlay)
             {
-                if (_appContext.LocalPlayer.Empire.Key == "INTRO")
-                    LoadTheme("Intro");
-                else if (_appContext.LocalPlayer.Empire.Key == "FEDERATION")
+                if (_appContext.LocalPlayer.Empire.Key == "FEDERATION")
                     LoadTheme("Federation");
                 else if (_appContext.LocalPlayer.Empire.Key == "ROMULANS")
                     LoadTheme("Romulans");

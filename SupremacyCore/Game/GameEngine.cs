@@ -1,4 +1,3 @@
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -21,6 +20,7 @@ using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -434,7 +434,7 @@ namespace Supremacy.Game
         #region DoPreGameSetup() Method
         public void DoPreGameSetup(GameContext game)
         {
-            var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
+            var errors = new ConcurrentStack<Exception>();
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
@@ -849,13 +849,6 @@ namespace Supremacy.Game
                         foodDeficit = Math.Min(colony.FoodReserves.CurrentValue - colony.Population.CurrentValue, 0);
                         colony.FoodReserves.AdjustCurrent(-1 * colony.Population.CurrentValue);
                         colony.FoodReserves.UpdateAndReset();
-
-                        if (colony.Name == "Companion" && colony.Owner.ShortName.ToString() == "Intro")
-                        {
-                            colony.Population.AdjustCurrent(-1 * colony.Population.CurrentValue);
-                            colony.Population.UpdateAndReset();
-                            colony.Reset();
-                        }
 
                         /*
                          * If there is not enough food to feed the population, we need to kill off some of the

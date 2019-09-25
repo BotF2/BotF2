@@ -1,5 +1,3 @@
-// Planet.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -182,7 +180,7 @@ namespace Supremacy.Universe
         /// </value>
         public bool HasFoodBonus
         {
-            get { return ((_bonuses & PlanetBonus.Food) == PlanetBonus.Food); }
+            get { return (_bonuses & PlanetBonus.Food) == PlanetBonus.Food; }
         }
 
         /// <summary>
@@ -193,7 +191,7 @@ namespace Supremacy.Universe
         /// </value>
         public bool HasEnergyBonus
         {
-            get { return ((_bonuses & PlanetBonus.Energy) == PlanetBonus.Energy); }
+            get { return (_bonuses & PlanetBonus.Energy) == PlanetBonus.Energy; }
         }
         #endregion
 
@@ -312,7 +310,7 @@ namespace Supremacy.Universe
         /// </returns>
         public bool HasBonus(PlanetBonus bonus)
         {
-            return ((_bonuses & bonus) == bonus);
+            return (_bonuses & bonus) == bonus;
         }
 
         /// <summary>
@@ -324,7 +322,7 @@ namespace Supremacy.Universe
         /// </returns>
         public bool IsHabitable(PlanetType homePlanetType)
         {
-            return (GetEnvironment(homePlanetType) != PlanetEnvironment.Uninhabitable);
+            return GetEnvironment(homePlanetType) != PlanetEnvironment.Uninhabitable;
         }
 
         /// <summary>
@@ -336,7 +334,7 @@ namespace Supremacy.Universe
         /// </returns>
         public bool IsHabitable(Race race)
         {
-            return (GetEnvironment(race) != PlanetEnvironment.Uninhabitable);
+            return GetEnvironment(race) != PlanetEnvironment.Uninhabitable;
         }
 
         /// <summary>

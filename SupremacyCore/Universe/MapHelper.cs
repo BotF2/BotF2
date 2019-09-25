@@ -1,5 +1,3 @@
-// MapHelper.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,11 +5,10 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-
 using Supremacy.Game;
 using Supremacy.Orbitals;
+using System;
+using System.Collections.Generic;
 
 namespace Supremacy.Universe
 {

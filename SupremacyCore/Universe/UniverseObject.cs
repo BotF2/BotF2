@@ -1,5 +1,3 @@
-// UniverseObject.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,18 +5,17 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Diagnostics;
-
 using Supremacy.Annotations;
+using Supremacy.Collections;
 using Supremacy.Effects;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Resources;
-using Supremacy.Collections;
 using Supremacy.Types;
 using Supremacy.Utility;
+using System;
+using System.Diagnostics;
 
 namespace Supremacy.Universe
 {
@@ -423,7 +420,7 @@ namespace Supremacy.Universe
                 }
                 catch (Exception e)
                 {
-                    // doesn't work - only crashes when using Life Visual Tree directly in Visual Studio - then just click on Continue - use F5 to continue
+                    // doesn't work - only crashes when using Live Visual Tree directly in Visual Studio - then just click on Continue - use F5 to continue
                     GameLog.Core.General.Error(e);
                     return _effectBindings.Value;
                 }

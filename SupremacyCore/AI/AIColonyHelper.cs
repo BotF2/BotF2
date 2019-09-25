@@ -1,5 +1,3 @@
-// ColonyHelper.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,13 +5,13 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-
 using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.AI
 {
@@ -37,9 +35,9 @@ namespace Supremacy.AI
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
-            return GameContext.Current.Universe.FindAt(
-                colony.Location,
-                (Orbital orbital) => (orbital.Owner == colony.Owner));
+            return GameContext.Current.Universe.FindAt<Orbital>(colony.Location)
+                .Where(o => o.Owner == colony.Owner).ToList();
+                
         }
 
         public static int GetProjectedPopulation(Colony colony, int numberOfTurns)

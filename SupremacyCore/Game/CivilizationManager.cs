@@ -1,4 +1,3 @@
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -11,7 +10,6 @@ using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Entities;
-using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -39,7 +37,6 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        private readonly UniverseObjectList<Ship> _shipsList;
         private readonly UniverseObjectList<Colony> _infiltratedColonies;
 
         private int _homeColonyId;
@@ -75,7 +72,6 @@ namespace Supremacy.Game
             _resources.Dilithium.Reset();
             _resources.RawMaterials.BaseValue = 1000;
             _resources.RawMaterials.Reset();
-            _resources.UpdateAndReset();
             _resources.UpdateAndReset();
         }
 
@@ -167,16 +163,6 @@ namespace Supremacy.Game
         public UniverseObjectList<Colony> Colonies
         {
             get { return _colonies; }
-        }
-
-        /// <summary>
-        /// Gets a list of the civilization's colonies.
-        /// </summary>
-        /// <value>The colonies.</value>
-        [NotNull]
-        public UniverseObjectList<Ship> ShipsList
-        {
-            get { return _shipsList; }
         }
 
         /// <summary>
@@ -368,7 +354,6 @@ namespace Supremacy.Game
             foreach (var colony in Colonies)
             {
                 colony.Morale.AdjustCurrent((int)(multiplier * change));
-                //GameLog.Client.GameData.DebugFormat("Colony={0}, Change in Morale={1}", colony.Location, (int)(multiplier * change));
             }
         }
 

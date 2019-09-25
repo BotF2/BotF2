@@ -1,5 +1,3 @@
-// TechTreeHelper.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -18,7 +16,6 @@ using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
-using Supremacy.Scripting;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -424,7 +421,6 @@ namespace Supremacy.Tech
                        !IsBuildingObsolete(colony, design) &&
                        MeetsPrerequisites(colony, design)
                  select design).ToHashSet();
-            //GameLog.Client.GameData.DebugFormat("TechHelpercs: colony, buildingDesigns: {0} - {1}", colony, buildingDesigns.Union(GameContext.Current.TechTrees[originalOwner].BuildingDesigns));
 
             buildableStructures.ExceptWith(results.Select(o => o.BuildDesign).OfType<BuildingDesign>());
 
@@ -881,11 +877,6 @@ namespace Supremacy.Tech
                 if (system.StarType != StarType.Blue)
                     return false;
             }
-            //if ((design.Restriction & BuildRestriction.GreenStar) == BuildRestriction.GreenStar)
-            //{
-            //    if (system.StarType != StarType.Green)
-            //        return false;
-            //}
             if ((design.Restriction & BuildRestriction.RedStar) == BuildRestriction.RedStar)
             {
                 if (system.StarType != StarType.Red)
@@ -1081,12 +1072,10 @@ namespace Supremacy.Tech
             var shipDesign = design as ShipDesign;
             if (shipDesign != null)
             {
-                var ships = GameContext.Current.Universe.FindAt<Ship>(
-                    colony.Location,
-                    ship => ship.OwnerID == colony.OwnerID &&
-                            ship.Design == design);
+                var ships = GameContext.Current.Universe.FindAt<Ship>(colony.Location)
+                    .Where(s => s.OwnerID == colony.OwnerID && s.Design == design);
 
-                return count + ships.Count;
+                return count + ships.Count();
             }
 
             return count;

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supremacy.Universe
 {
@@ -60,7 +56,7 @@ namespace Supremacy.Universe
 
         public override string ToString()
         {
-            return String.Format("({0}, {1})", _x, _y);
+            return string.Format("({0}, {1})", _x, _y);
         }
 
         public override int GetHashCode()
@@ -70,7 +66,7 @@ namespace Supremacy.Universe
 
         public bool Equals(MapLocation other)
         {
-            return ((other._x == _x) && (other._y == _y));
+            return (other._x == _x) && (other._y == _y);
         }
 
         public override bool Equals(Object obj)
@@ -78,7 +74,7 @@ namespace Supremacy.Universe
             MapLocation other = (MapLocation)obj;
             if (other != null)
             {
-                return ((other._x == _x) && (other._y == _y));
+                return (other._x == _x) && (other._y == _y);
             }
             return false;
         }
@@ -86,17 +82,17 @@ namespace Supremacy.Universe
         public int CompareTo(MapLocation other)
         {
             int major = _x.CompareTo(other._x);
-            return ((major != 0) ? major : _y.CompareTo(other._y));
+            return (major != 0) ? major : _y.CompareTo(other._y);
         }
 
         public static bool operator ==(MapLocation a, MapLocation b)
         {
-            return ((a._x == b._x) && (a._y == b._y));
+            return (a._x == b._x) && (a._y == b._y);
         }
 
         public static bool operator !=(MapLocation a, MapLocation b)
         {
-            return ((a._x != b._x) || (a._y != b._y));
+            return (a._x != b._x) || (a._y != b._y);
         }
     }
 }

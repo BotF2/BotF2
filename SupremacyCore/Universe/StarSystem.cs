@@ -1,5 +1,3 @@
-// StarSystem.cs
-//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -7,14 +5,13 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Supremacy.Collections;
 using Supremacy.Entities;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Universe
 {
@@ -347,7 +344,6 @@ namespace Supremacy.Universe
         {
             base.SerializeOwnedData(writer, context);
             writer.Write((byte)_bonuses);
-            //writer.WriteObject(_colony);
             writer.WriteOptimized(_planets.Values);
             writer.Write((byte)_starType);
         }
@@ -356,7 +352,6 @@ namespace Supremacy.Universe
         {
             base.DeserializeOwnedData(reader, context);
             _bonuses = (SystemBonus)reader.ReadByte();
-            //_colony = reader.Read<Colony>();
             _planets = new ArrayWrapper<Planet>((Planet[])reader.ReadOptimizedObjectArray(typeof(Planet)));
             _starType = (StarType)reader.ReadByte();
         }
