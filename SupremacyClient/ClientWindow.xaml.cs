@@ -557,7 +557,7 @@ namespace Supremacy.Client
 
         private void OnTurnStarted(ClientEventArgs e)
         {
-            _soundPlayer.PlayFile("Resources/SoundFX/NewTurn.wav");
+            _soundPlayer.PlayFile("Resources/SoundFX/NewTurn.ogg");
         }
 
         private void OnChatMessageReceived(ClientDataEventArgs<ChatMessage> e)
