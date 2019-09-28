@@ -270,7 +270,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ContextMenu.Opened">
                 <EventTrigger.Actions>
-                    <SoundPlayerAction Source="vfs:///Resources/UI/Borg/Sounds/GameContextMenu.ogg" />
+                    <SoundPlayerAction Source="vfs:///Resources/UI/Borg/Sounds/GameContextMenu.wav" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </Style.Triggers>

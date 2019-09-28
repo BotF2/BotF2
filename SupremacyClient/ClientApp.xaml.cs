@@ -383,9 +383,11 @@ namespace Supremacy.Client
                     var _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.ogg";
                     if (File.Exists(_soundfileSplashScreen))
                     {
-                        GameLog.Client.General.Debug("Playing LoadingSplash.ogg");
+                        GameLog.Client.General.Debug("Playing LoadingSplash.wav");
+                        //var soundPlayer = new SoundPlayer("Resources/SoundFX/Menu/LoadingSplash.ogg");
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
-                        player.Play();
+                        if (File.Exists("Resources/SoundFX/Menu/LoadingSplash.wav"))
+                            player.Play();
                     }
                       
                     if (File.Exists("Resources\\Data\\Civilizations.xml"))
