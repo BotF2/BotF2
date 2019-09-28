@@ -639,6 +639,7 @@
                                                     </Border>
                            <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+                                       FontSize="14"                                       
                                        Text="{Binding Path=SelectedSectorStation.StationName, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
                             <LineBreak />
                             <TextBlock x:Name="StationStatusText"
