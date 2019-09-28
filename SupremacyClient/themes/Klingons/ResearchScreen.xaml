@@ -67,7 +67,7 @@
                             Property="Background"
                             Value="{DynamicResource LCARS_KlingRedGradient_Left_Right}"/>
                     <Trigger.EnterActions>
-                                            <SoundPlayerAction Source="vfs:///Resources/UI/Klingons/Sounds/ButtonClick.wav"/>
+                                            <SoundPlayerAction Source="vfs:///Resources/UI/Klingons/Sounds/ButtonClick.ogg"/>
                     </Trigger.EnterActions>
                   </Trigger>
                 </ControlTemplate.Triggers>
@@ -102,7 +102,7 @@
                             Property="Background"
                             Value="{DynamicResource LCARS_KlingKlingRedGradient_Left_Right}"/>
                     <Trigger.EnterActions>
-                                            <SoundPlayerAction Source="vfs:///Resources/UI/Klingons/Sounds/ButtonClick.wav"/>
+                                            <SoundPlayerAction Source="vfs:///Resources/UI/Klingons/Sounds/ButtonClick.ogg"/>
                     </Trigger.EnterActions>
                   </Trigger>
                 </ControlTemplate.Triggers>

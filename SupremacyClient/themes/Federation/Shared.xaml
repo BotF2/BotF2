@@ -90,7 +90,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.ogg', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>

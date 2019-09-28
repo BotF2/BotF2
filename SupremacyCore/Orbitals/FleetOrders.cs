@@ -589,7 +589,7 @@ namespace Supremacy.Orbitals
                     foreignPower.CancelTreaty();
                     //firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                     //secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
+                    ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
                 }
                 
             }

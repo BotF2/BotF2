@@ -67,11 +67,11 @@
   <Cursor x:Key="DefaultCursor">vfs:///Resources/Cursors/cursor.cur</Cursor>
 
   <!-- FONTS -->
-  <sys:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">24</sys:Double>
-  <sys:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">16</sys:Double>
-  <sys:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">18.666666666666666666666666666667</sys:Double>
+    <sys:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</sys:Double>
+  <sys:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</sys:Double>
+  <sys:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</sys:Double>
 
-  <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
+    <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
   <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
   <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Bold</FontWeight>
 
@@ -79,9 +79,9 @@
   <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">Helvetica LT Std Ultra Compressed</FontFamily>
   <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">Square721 Cn BT</FontFamily>
 -->
-  <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Header Text</FontFamily>
+  <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
   <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-  <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Header Text</FontFamily>
+  <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
   
   <!-- GEOMETRY -->
   <Geometry x:Key="LCARS_Corner_TopLeft_Tall" PresentationOptions:Freeze="True">F1 M 2.16166e-005,16.0001L 2.16166e-005,16.0002C 2.16166e-005,7.16357 7.16344,0.000183105 16,0.000183105L 22,6.10352e-005L 22,28.0002L 22,28.0002C 14.268,28.0002 8.00001,32.2681 8.00001,40.0002L 1.14441e-005,40.0002L 2.16166e-005,16.0001 Z</Geometry>
@@ -2617,7 +2617,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="Button.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={DynamicResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.ogg', Converter={DynamicResource PathToUriConverter}}" />
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>
@@ -2806,7 +2806,7 @@
     <Style.Triggers>
       <EventTrigger RoutedEvent="ToggleButton.Click">
         <!--<EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.ogg', Converter={StaticResource PathToUriConverter}}" />
         </EventTrigger.Actions>-->
       </EventTrigger>
     </Style.Triggers>
@@ -5981,7 +5981,7 @@
                       Property="Background"
                       Value="{StaticResource LCARS_PurpleGradient_Left_Right}" />
               <!--<Trigger.EnterActions>
-                <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+                <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.ogg', Converter={StaticResource PathToUriConverter}}" />
               </Trigger.EnterActions>-->
             </Trigger>
           </ControlTemplate.Triggers>
@@ -6020,7 +6020,7 @@
                       Property="Background"
                       Value="{StaticResource LCARS_PurpleGradient_Left_Right}" />
               <!--<Trigger.EnterActions>
-                <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+                <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.ogg', Converter={StaticResource PathToUriConverter}}" />
               </Trigger.EnterActions>-->
             </Trigger>
           </ControlTemplate.Triggers>

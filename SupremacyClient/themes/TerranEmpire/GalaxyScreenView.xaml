@@ -102,7 +102,7 @@
                     <Style.Triggers>
                       <!--<EventTrigger RoutedEvent="Button.Click">
                         <EventTrigger.Actions>
-                          <SoundPlayerAction Source="Resources/UI/TerranEmpire/Sounds/Turn.wav" />
+                          <SoundPlayerAction Source="Resources/UI/TerranEmpire/Sounds/Turn.ogg" />
                         </EventTrigger.Actions>
                       </EventTrigger>-->
                     </Style.Triggers>
@@ -554,6 +554,7 @@
                           </Border>
                           <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+                                       FontSize="14"                                       
                                        Text="{Binding Path=SelectedSectorStation.StationName, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
                             <LineBreak />
                             <TextBlock x:Name="StationStatusText"

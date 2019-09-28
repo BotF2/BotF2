@@ -47,9 +47,9 @@ namespace Supremacy.Client.Views
 
             this[player.Empire].IsReady = true;
 //Plays a "click" sound when turn button is pressed. Sound plays on all machines in Multiplayer.
-            //var soundPlayer = new SoundPlayer("Resources/SoundFX/ChatMessage.wav");
+            //var soundPlayer = new SoundPlayer("Resources/SoundFX/ChatMessage.ogg");
             //{
-            //    if (File.Exists("Resources/SoundFX/ChatMessage.wav"));
+            //    if (File.Exists("Resources/SoundFX/ChatMessage.ogg"));
             //    soundPlayer.Play();
             //}  
         }

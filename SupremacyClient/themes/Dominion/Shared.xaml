@@ -41,9 +41,9 @@
   <system:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</system:Double>
   <system:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</system:Double>
 
-  <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Bold</FontWeight>
+    <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
   <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
-  <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Bold</FontWeight>
+    <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Normal</FontWeight>
 
   <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
                    Color="#ff000000" />
@@ -195,7 +195,7 @@
         <Style.Triggers>
             <EventTrigger RoutedEvent="ToggleButton.Click">
                 <!--<EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}" />
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Federation/Sounds/ButtonClick.ogg', Converter={StaticResource PathToUriConverter}}" />
         </EventTrigger.Actions>-->
             </EventTrigger>
         </Style.Triggers>
@@ -954,7 +954,7 @@
     <Style.Triggers>
       <!--<EventTrigger RoutedEvent="ToggleButton.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="{Binding Source='Resources/UI/Dominion/Sounds/ButtonClick.wav', Converter={StaticResource PathToUriConverter}}"/>
+          <SoundPlayerAction Source="{Binding Source='Resources/UI/Dominion/Sounds/ButtonClick.ogg', Converter={StaticResource PathToUriConverter}}"/>
         </EventTrigger.Actions>
       </EventTrigger>-->
     </Style.Triggers>

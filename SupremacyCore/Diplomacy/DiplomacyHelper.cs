@@ -611,7 +611,7 @@ namespace Supremacy.Diplomacy
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 // playing 
-                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
+                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.ogg");  // ToDo - not working yet
                 //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
                 //_soundPlayer.Play("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.mp3"); // at SitRep "Resistance is fut...."
 
@@ -628,7 +628,7 @@ namespace Supremacy.Diplomacy
                 foreignPower.DeclareWar();
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.wav");  // ToDo - not working yet
+                //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.ogg");  // ToDo - not working yet
 
                 ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
                 ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
@@ -643,7 +643,7 @@ namespace Supremacy.Diplomacy
                     foreignPower.DeclareWar();
                     firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                     secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.wav"); ToDo - not working yet
+                    //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
 
                     ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
                     ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
