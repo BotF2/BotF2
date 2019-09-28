@@ -173,7 +173,15 @@ namespace Supremacy.Universe
 
             // Ensure empireCount has a positive value to avoid a divide-by-zero error.
             var empireCount = Math.Max(1, GameContext.Current.Civilizations.Count(o => o.IsEmpire));
+
+            // new 2019-09-28: try to avoid crashes at TINY galaxies
             var minDistance = size / empireCount;
+
+            if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
+            {
+                minDistance = minDistance - 1;
+                if (minDistance < 1) minDistance = 1;
+            }
             GameLog.Core.GalaxyGenerator.DebugFormat("GalaxySize = {0}, EmpireCount = {1}, MinDistanceBetweenHomeworlds = {2}", size, empireCount, minDistance);
             return minDistance;
         }
@@ -532,19 +540,37 @@ namespace Supremacy.Universe
                     //Ensure that The Dominion is in the top left of the Gamma quadrant
                     if (empireCivs[index].Key == "DOMINION")
                     {
+                        //GameLog.Core.GalaxyGenerator.DebugFormat("dom_Location-LIMITS are up to {0} and to {1}",
+                        //        GameContext.Current.Universe.Map.Width / 4,
+                        //        (GameContext.Current.Universe.Map.Height / 2) - 3
+                        //        );
+
                         iPosition = positions.FirstIndexWhere((l) =>
-                        {
-                            return (l.X < (GameContext.Current.Universe.Map.Width / 8)) &&
-                            (l.Y < (GameContext.Current.Universe.Map.Height / 8));
-                        });
+                        { 
+                            return (l.X < (GameContext.Current.Universe.Map.Width / 4)) &&
+                            (l.Y <= ((GameContext.Current.Universe.Map.Height / 2) + 3));
+                            //}
+                            //catch
+                            //{
+                            //    dom_Location = (GameContext.Current.Universe.Map.Width / 8),
+                            //            GameContext.Current.Universe.Map.Height / 2) + 3));
+                            //    positions.Add(dom_Location);
+                            //}
+                        }
+                        );
+
+                        if (iPosition == -1)
+                            iPosition = 0;  // first system at all
+
+
                     }
                     //Ensure that The Borg is in the top right of the Delta quadrant
                     else if (empireCivs[index].Key == "BORG")
                     {
                         iPosition = positions.FirstIndexWhere((l) =>
                         {
-                            return (l.X > ((GameContext.Current.Universe.Map.Width / 8) * 7)) &&
-                            (l.Y < (GameContext.Current.Universe.Map.Height / 8));
+                            return (l.X > ((GameContext.Current.Universe.Map.Width / 4) * 3)) &&
+                            (l.Y <= (GameContext.Current.Universe.Map.Height / 2 - 3));
                         });
                     }
                     //For everybody else just ensure they are in the right quadrant
