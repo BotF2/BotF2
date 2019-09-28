@@ -376,7 +376,7 @@ namespace Supremacy.Game
             ParallelForEach(objects, item =>
             {
                 GameContext.PushThreadContext(game);
-                GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
+                //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                 try
                 {
                     GameLog.Core.Stations.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
