@@ -207,27 +207,33 @@ namespace Supremacy.Economy
             foreach (XmlElement xmlField in xmlFields.GetElementsByTagName("Field"))
             {
                 matrix._fields.Add(new IntelField(xmlField));
-                GameLog.Core.Intel.DebugFormat("added xmlField: {0}", 
-                    xmlField.FirstChild.Name);
+                //GameLog.Core.Intel.DebugFormat("added xmlField: {0}", 
+                //    xmlField.FirstChild.Name);
             }
 
             foreach (IntelField field in matrix.Fields)
             {
                 field.FieldID = nextFieldId++;
+                //GameLog.Core.Intel.DebugFormat("----------------------");
                 foreach (IntelApplication application in field.Applications)
                 {
-                    application.ApplicationID = nextApplicationId++;
-                    application.Field = field;
-                    matrix._applicationMap[application.ApplicationID] = application;
-                    GameLog.Core.Intel.DebugFormat("adding: {0};{1};{2};{3};{4}  for StartingLevel={5}={6}" 
-                        , application.ApplicationID
-                        , field.IntelCategory
-                        , field.Name
-                        , application.Name
-                        , application.InitialIntelValue
-                        , application.Level
-                        , application.Description
-                        );
+                    var techLevel = GameContext.Current.Options.StartingTechLevel;
+                    //GameLog.Core.Intel.DebugFormat("Level {0} = equal to {1} ??", application.Description.ToString(), techLevel.ToString().ToUpper());
+                    if (application.Description.ToString() == techLevel.ToString().ToUpper())  // just the current Intel level (EARLY etc.)
+                    {
+                        application.ApplicationID = nextApplicationId++;
+                        application.Field = field;
+                        matrix._applicationMap[application.ApplicationID] = application;
+                        GameLog.Core.Intel.DebugFormat("adding: {0};{1};{2};{3};{4}  for StartingLevel={5}={6}"
+                            , application.ApplicationID
+                            , field.IntelCategory
+                            , field.Name
+                            , application.Name
+                            , application.InitialIntelValue
+                            , application.Level
+                            , application.Description
+                            );
+                    }
                 }
             }
 
