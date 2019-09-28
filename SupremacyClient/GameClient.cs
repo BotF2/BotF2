@@ -675,9 +675,9 @@ namespace Supremacy.Client
 
         private void OnTurnEnded(EventArgs args)
         {
-            //var soundPlayer = new SoundPlayer("Resources/SoundFX/Turn.wav");
+            //var soundPlayer = new SoundPlayer("Resources/SoundFX/Turn.ogg");
             //{
-            //    if (File.Exists("Resources/SoundFX/Turn.wav"));
+            //    if (File.Exists("Resources/SoundFX/Turn.ogg"));
             //    soundPlayer.Play();
             //}  
 

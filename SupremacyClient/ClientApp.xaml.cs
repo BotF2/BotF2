@@ -380,10 +380,10 @@ namespace Supremacy.Client
                 {
                     ShowSplashScreen();
 
-                    var _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
+                    var _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.ogg";
                     if (File.Exists(_soundfileSplashScreen))
                     {
-                        GameLog.Client.General.Debug("Playing LoadingSplash.wav");
+                        GameLog.Client.General.Debug("Playing LoadingSplash.ogg");
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
                         player.Play();
                     }

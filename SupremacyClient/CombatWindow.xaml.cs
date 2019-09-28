@@ -173,9 +173,9 @@ namespace Supremacy.Client
                 SubHeaderText.Text = String.Format(
                     ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
                     _update.Sector.Name);
-                var soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
+                var soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.ogg");
                 {
-                    if (File.Exists("Resources/SoundFX/REDALERT.wav"))
+                    if (File.Exists("Resources/SoundFX/REDALERT.ogg"))
                         soundPlayer.Play();
                 }
             }
