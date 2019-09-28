@@ -509,7 +509,7 @@ namespace Supremacy.Client.Views
                     if (count <= 1)
                     {
                         otherVisibleList.Add(fleetView);
-                        GameLog.Client.Intel.DebugFormat("otherVisibleList count ={0}", otherVisibleList.Count);
+                        //GameLog.Client.Intel.DebugFormat("otherVisibleList count ={0}", otherVisibleList.Count);
                     }
                 }
             }
