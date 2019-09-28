@@ -22,7 +22,7 @@
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="MenuItem.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="vfs:///Resources/UI/TerranEmpire/Sounds/GameContextMenuItem.wav" />
+          <SoundPlayerAction Source="vfs:///Resources/UI/TerranEmpire/Sounds/GameContextMenuItem.ogg" />
         </EventTrigger.Actions>
       </EventTrigger>-->
         </Style.Triggers>

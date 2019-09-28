@@ -22,7 +22,7 @@
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="MenuItem.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="vfs:///Resources/UI/Dominion/Sounds/GameContextMenuItem.wav" />
+          <SoundPlayerAction Source="vfs:///Resources/UI/Dominion/Sounds/GameContextMenuItem.ogg" />
         </EventTrigger.Actions>
       </EventTrigger>-->
         </Style.Triggers>
