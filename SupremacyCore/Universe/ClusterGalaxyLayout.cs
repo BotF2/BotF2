@@ -128,7 +128,19 @@ namespace Supremacy.Universe
                     continue;
                 }
 
-                positions.Add(newNode);
+                var dominionLocation = new MapLocation(3, 3);
+                var dominionNode = new MapLocationQuadtreeNode(dominionLocation);
+                positions.Add(dominionNode);
+
+                int borgX = width - (width / 8);
+                int borgY = (height / 8);
+                var borgLocation = new MapLocation(borgX, borgY);
+                var borgNode = new MapLocationQuadtreeNode(borgLocation);
+
+                positions.Add(borgNode);
+
+                if (newNode.Location != dominionLocation && newNode.Location != borgLocation)
+                    positions.Add(newNode);
 
                 attempts = 0;
             }

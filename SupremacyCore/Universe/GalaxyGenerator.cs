@@ -140,9 +140,9 @@ namespace Supremacy.Universe
                 ResourceManager.GetResourcePath("Resources/Tables/NebulaNames.txt"),
                 FileMode.Open,
                 FileAccess.Read);
-            
+
             var names = new List<string>();
-            
+
             using (var reader = new StreamReader(file))
             {
                 while (!reader.EndOfStream)
@@ -161,7 +161,7 @@ namespace Supremacy.Universe
         private static int GetMinDistanceBetweenHomeworlds()
         {
             var size = Math.Min(GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            
+
             // If its an MP game, we want the different Empires to be sufficiently far away from each others
             // TODO Disabled this for now as it turns out that it is still able to fail to place homeworlds.
             // Tried to rework the loop so that either it restarted the placement process or tried to re-place
@@ -185,7 +185,7 @@ namespace Supremacy.Universe
             GameLog.Core.GalaxyGenerator.DebugFormat("GalaxySize = {0}, EmpireCount = {1}, MinDistanceBetweenHomeworlds = {2}", size, empireCount, minDistance);
             return minDistance;
         }
-        
+
         public static void GenerateGalaxy(GameContext game)
         {
             GameContext.PushThreadContext(game);
@@ -382,7 +382,7 @@ namespace Supremacy.Universe
                 }
             }
         }
-        
+
         private static int GetIdealSlot(StarSystemDescriptor system, PlanetDescriptor planet)
         {
             var bestScore = 0;
@@ -408,8 +408,8 @@ namespace Supremacy.Universe
         }
 
         private static void FinalizaHomeworldPlacement(IList<string> starNames,
-            HomeSystemsDatabase homeSystemDatabase, 
-            Civilization civ, 
+            HomeSystemsDatabase homeSystemDatabase,
+            Civilization civ,
             MapLocation location)
         {
             var civManager = new CivilizationManager(GameContext.Current, civ);
@@ -526,7 +526,7 @@ namespace Supremacy.Universe
             CollectionBase<MapLocation> empireHomeLocations,
             List<Civilization> chosenCivs,
             bool mustRespectQuadrants)
-           
+
         {
             var minHomeDistance = GetMinDistanceBetweenHomeworlds();
 
@@ -541,37 +541,38 @@ namespace Supremacy.Universe
                     if (empireCivs[index].Key == "DOMINION")
                     {
                         //GameLog.Core.GalaxyGenerator.DebugFormat("dom_Location-LIMITS are up to {0} and to {1}",
-                        //        GameContext.Current.Universe.Map.Width / 4,
-                        //        (GameContext.Current.Universe.Map.Height / 2) - 3
-                        //        );
-
-                        iPosition = positions.FirstIndexWhere((l) =>
-                        { 
-                            return (l.X < (GameContext.Current.Universe.Map.Width / 4)) &&
-                            (l.Y <= ((GameContext.Current.Universe.Map.Height / 2) + 3));
-                            //}
-                            //catch
-                            //{
-                            //    dom_Location = (GameContext.Current.Universe.Map.Width / 8),
-                            //            GameContext.Current.Universe.Map.Height / 2) + 3));
-                            //    positions.Add(dom_Location);
-                            //}
+                        if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
+                        {
+                            iPosition = positions.FirstIndexWhere((d) => { return (d.X <= 3 && d.Y <= 3); });
                         }
-                        );
-
-                        if (iPosition == -1)
-                            iPosition = 0;  // first system at all
-
-
+                        else
+                        {
+                            iPosition = positions.FirstIndexWhere((l) =>
+                            {
+                                return (l.X < (GameContext.Current.Universe.Map.Width / 4)) &&
+                                (l.Y <= ((GameContext.Current.Universe.Map.Height / 2) - 3));
+                            }
+                            );
+                        }
                     }
                     //Ensure that The Borg is in the top right of the Delta quadrant
                     else if (empireCivs[index].Key == "BORG")
                     {
-                        iPosition = positions.FirstIndexWhere((l) =>
+                        if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
+
                         {
-                            return (l.X > ((GameContext.Current.Universe.Map.Width / 4) * 3)) &&
-                            (l.Y <= (GameContext.Current.Universe.Map.Height / 2 - 3));
-                        });
+                            int borgX = GameContext.Current.Universe.Map.Width - (GameContext.Current.Universe.Map.Width / 8);
+                            int borgY = (GameContext.Current.Universe.Map.Height / 8);
+                            iPosition = positions.FirstIndexWhere((d) => { return (d.X >= borgX && d.Y <= borgY); });
+                        }
+                        else
+                        {
+                            iPosition = positions.FirstIndexWhere((l) =>
+                            {
+                                return (l.X > ((GameContext.Current.Universe.Map.Width / 4) * 3)) &&
+                                (l.Y <= (GameContext.Current.Universe.Map.Height / 2 - 3));
+                            });
+                        }
                     }
                     //For everybody else just ensure they are in the right quadrant
                     else
@@ -601,6 +602,9 @@ namespace Supremacy.Universe
                 }
 
                 //We have a valid position
+
+                    
+
                 empireHomeLocations.Add(positions[iPosition]);
                 chosenCivs.Add(empireCivs[index]);
                 GameLog.Core.GalaxyGenerator.DebugFormat("Civilization {0} placed at {1} as {2}", empireCivs[index].Name, positions[iPosition], empireCivs[index].CivilizationType);
