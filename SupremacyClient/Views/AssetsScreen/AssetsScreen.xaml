@@ -88,7 +88,7 @@
                         FontSize="12pt"/>
                     </Grid>
                     <v:ShipsList Grid.Row="2" DataContext="{Binding Path=ISpyedShips}" />
-                    <Button x:Name="SummaryButton"
+                    <!--<Button x:Name="SummaryButton"
                         Grid.Row="0"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Right"
@@ -101,7 +101,7 @@
                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                         Foreground="Black"
                         Margin="0,0,0,0"
-                        Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
+                        Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
                 </Grid>
             </TabItem>
 
