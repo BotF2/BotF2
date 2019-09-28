@@ -6,6 +6,7 @@ using Supremacy.Collections;
 using Supremacy.Universe;
 using Supremacy.Game;
 using Supremacy.Client.Audio;
+using Supremacy.Orbitals;
 
 namespace Supremacy.Client.Context
 {
@@ -220,6 +221,11 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
         }
+
+        //public static IEnumerable<List<FleetViewWrapper>> ISpyedShips
+        //{
+        //    get { return DesignTimeAppContext.Instance.LocalPlayerEmpire.; }
+        //}
 
         public static IEnumerable<Colony> InfiltratedColonies
         {

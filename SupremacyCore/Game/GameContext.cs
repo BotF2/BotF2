@@ -155,6 +155,7 @@ namespace Supremacy.Game
         [NonSerialized]
         private GameTables _tables;
         private ResearchMatrix _researchMatrix;
+        private IntelMatrix _intelMatrix;
         private SectorClaimGrid _sectorClaims;
         private TechTreeMap _techTrees;
         private CivilizationPairedMap<IDiplomacyData> _diplomacyData;
@@ -413,6 +414,16 @@ namespace Supremacy.Game
         {
             get { return _researchMatrix; }
             internal set { _researchMatrix = value; }
+        }
+
+        /// <summary>
+        /// Gets the intel matrix for the current game.
+        /// </summary>
+        /// <value>The intel matrix.</value>
+        public IntelMatrix IntelMatrix
+        {
+            get { return _intelMatrix; }
+            internal set { _intelMatrix = value; }
         }
 
         /// <summary>
@@ -761,6 +772,8 @@ namespace Supremacy.Game
                 GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
                 _researchMatrix = ResearchMatrix.Load();
                 GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
+                _intelMatrix = IntelMatrix.Load();
+                GameLog.Client.GameData.DebugFormat("IntelMatrix loaded");
                 _techTrees = new TechTreeMap();
                 GameLog.Client.GameData.DebugFormat("TechTree loaded");
                 _strategyDatabase = StrategyDatabase.Load();

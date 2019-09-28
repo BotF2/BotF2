@@ -9,7 +9,7 @@
                        mc:Ignorable="d"
                        d:DesignWidth="1024"
                        d:DesignHeight="768"
-                       d:DataContext="{x:Static scc:DesignTimeObjects.Colonies}"
+                       d:DataContext="{x:Static scc:DesignTimeObjects.ISpyedShips}"
                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                        FontWeight="{DynamicResource {x:Static scc:ClientResources.DefaultFontWeightKey}}"
@@ -24,7 +24,7 @@
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="{x:Type s:Colony}">
+            <DataTemplate DataType="{x:Type s:Ship}">
                 <v:SystemListItem />
             </DataTemplate>
         </ItemsControl.ItemTemplate>
