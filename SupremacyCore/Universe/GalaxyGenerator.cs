@@ -126,7 +126,7 @@ namespace Supremacy.Universe
                     var line = reader.ReadLine();
                     if (line == null)
                         break;
-                    GameLog.Core.GalaxyGenerator.DebugFormat("Star Name = {0}", line);
+                    //GameLog.Core.GalaxyGenerator.DebugFormat("Star Name = {0}", line);
                     names.Add(line.Trim());
                 }
             }
@@ -150,7 +150,7 @@ namespace Supremacy.Universe
                     var line = reader.ReadLine();
                     if (line == null)
                         break;
-                    GameLog.Core.GalaxyGenerator.DebugFormat("Nebula Name = {0}", line);
+                    //GameLog.Core.GalaxyGenerator.DebugFormat("Nebula Name = {0}", line);
                     names.Add(line.Trim());
                 }
             }
