@@ -182,7 +182,7 @@
                                VerticalAlignment="Top"
                                 Margin="5,0,10,0"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                FontSize="20pt" 
+                                FontSize="16pt" 
                                 Text="{Binding Path=ShortName}" />
                 </Grid>
             </StackPanel>
@@ -209,7 +209,7 @@
                                VerticalAlignment="Top"
                                 Margin="5,0,10,0"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                FontSize="20pt" 
+                                FontSize="16pt" 
                                 Text="{Binding Path=ShortName}" />
 
                     <TextBlock 
@@ -295,7 +295,7 @@
     </FrameworkElement.Resources>
     <Grid 
         Height="750"
-        Width="1195">
+        Width="1275">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
