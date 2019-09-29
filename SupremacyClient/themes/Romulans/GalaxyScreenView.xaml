@@ -557,6 +557,7 @@
                           Grid.Row="3"
                           Margin="3,0,0,0"
                           Height="28"
+                          FontSize="16"
                           Style="{StaticResource LCARS_SimpleButtonStyle}"
                           CommandParameter="{x:Static scc:GalaxyScreenInputMode.RedeployShips}"
                           Command="{x:Static scc:GalaxyScreenCommands.SetInputMode}"
