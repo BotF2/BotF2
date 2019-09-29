@@ -79,15 +79,23 @@ namespace Supremacy.Client.Views
 
             ScrapMenuItem.CommandParameter = new ScrapCommandArgs(selectedShips);
 
-            ScrapMenuItem.SetBinding(
-                MenuItem.IsCheckedProperty,
-                new Binding
+            foreach (var ship in selectedShips)
+            {
+                if (ship.OwnerID == presentationModel.AppContext.LocalPlayer.CivID)
                 {
-                    Source = ScrapMenuItem.CommandParameter,
-                    Path = new PropertyPath("IsChecked"),
-                    Mode = BindingMode.TwoWay,
-                    FallbackValue = false
-                });
+                    ScrapMenuItem.CommandParameter = new ScrapCommandArgs(selectedShips);
+
+                    ScrapMenuItem.SetBinding(
+                        MenuItem.IsCheckedProperty,
+                        new Binding
+                        {
+                            Source = ScrapMenuItem.CommandParameter,
+                            Path = new PropertyPath("IsChecked"),
+                            Mode = BindingMode.TwoWay,
+                            FallbackValue = false
+                        });
+                }
+            }
 
             base.OnContextMenuOpening(e);
         }
