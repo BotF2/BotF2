@@ -46,7 +46,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-
         <TextBlock Grid.Column="0"
             Grid.ColumnSpan="2"
             Grid.Row="0"
@@ -184,15 +183,6 @@
             Background="YellowGreen"
             VerticalAlignment="Center" />
 
-
-        <!--<TextBlock Grid.Column="0"
-            Grid.Row="8"
-            Margin="5,6,0,0"
-            Text="Playable=NO -> Federation will be started"
-            Foreground="Red"
-            VerticalAlignment="Center" />-->
-
-        <!--Row 8 is GalaxyImage (Preview Image)"-->
         <Border Grid.Column="1"
             Grid.Row="9"
             HorizontalAlignment="Center"
@@ -297,19 +287,6 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center" />
 
-        <!--<TextBlock Grid.Column="0"
-            Grid.Row="16"
-            Margin="5,7,0,0"
-            Foreground="Black"
-            Text="{s:StringResource MP_SETUP_PLAYER_NAME}"
-            Background="DodgerBlue"
-            TextAlignment="Right"
-            FontSize="14pt"
-            Height="24"
-            Width="119"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center" />-->
-
         <!--ComboBoxes-->
         <ComboBox x:Name="lstFederationPlayable"
               Grid.Column="1"
@@ -318,7 +295,18 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" >
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt"
+                                        Text="{s:StringResource MAJOR_MINOR_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
         <ComboBox x:Name="lstTerranEmpirePlayable"
               Grid.Column="1"
               Grid.Row="3"
@@ -326,7 +314,18 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" >
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt"
+                                        Text="{s:StringResource MAJOR_MINOR_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
         <ComboBox x:Name="lstRomulanPlayable"
               Grid.Column="1"
               Grid.Row="4"
@@ -334,7 +333,18 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" >
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt"
+                                        Text="{s:StringResource MAJOR_MINOR_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
         <ComboBox x:Name="lstKlingonPlayable"
               Grid.Column="1"
               Grid.Row="5"
@@ -342,7 +352,18 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" >
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt"
+                                        Text="{s:StringResource MAJOR_MINOR_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
         <ComboBox x:Name="lstCardassianPlayable"
               Grid.Column="1"
               Grid.Row="6"
@@ -350,7 +371,18 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" >
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt"
+                                        Text="{s:StringResource MAJOR_MINOR_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
         <ComboBox x:Name="lstDominionPlayable"
               Grid.Column="1"
               Grid.Row="7"
@@ -358,7 +390,18 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" >
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt"
+                                        Text="{s:StringResource MAJOR_MINOR_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
         <ComboBox x:Name="lstBorgPlayable"
               Grid.Column="1"
               Grid.Row="8"
@@ -366,7 +409,18 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" >
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt"
+                                        Text="{s:StringResource MAJOR_MINOR_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
 
 
         <!--Row 8 is GalaxyImage (Preview Image)"-->
@@ -417,7 +471,18 @@
               Margin="7,7,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center"/>
+              VerticalAlignment="Center">
+            <ComboBox.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="16pt"
+                                   Text="{s:StringResource CANON_MAP_TOOLTIP}">
+                        </TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </ComboBox.ToolTip>
+        </ComboBox>
         <ComboBox x:Name="lstTechLevel"
               Grid.Column="1"
               Grid.Row="16"
