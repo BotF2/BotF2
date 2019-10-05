@@ -168,10 +168,11 @@ namespace Supremacy.Scripting.Events
                 return;
             }
 
-            foreach (var affectedProject in _affectedProjects)
-                affectedProject.IsPaused = false;
-
-            _affectedProjects.Clear();
+            if (_affectedProjects != null)
+            {
+                _affectedProjects.ForEach(p => p.IsPaused = false);
+                _affectedProjects.Clear();
+            }
         }
     }
 }
