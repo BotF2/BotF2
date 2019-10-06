@@ -22,6 +22,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Client.Context;
 using Supremacy.Game;
 using Supremacy.Utility;
+using Supremacy.Combat;
 
 namespace Supremacy.Client.Views
 {
@@ -484,7 +485,7 @@ namespace Supremacy.Client.Views
                         GameLog.Client.Intel.DebugFormat("local playerCiv ={0},. fleet Owner ={1}, counter ={2}, scanblock ={3}",
                             playerCiv, fleetView.View.Source.Owner, count, DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector));
 
-                        if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner))
+                        if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner) && !CombatHelper.WillFightAlongside(playerCiv, SelectedSector.Owner))
                         {
                             fleetView.IsUnScannable = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_ScanBlock.png");
