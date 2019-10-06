@@ -1429,8 +1429,11 @@ namespace Supremacy.WCF
                 var blanketTargetTwo = _target;
 
                 int countStation = 0;
-                if (enemyAssets.Station != null)
-                    countStation = 2;  // counting value for Station = 2 ships
+                if (enemyAssets != null)
+                { 
+                    if (enemyAssets.Station != null)
+                        countStation = 2;  // counting value for Station = 2 ships
+                }
 
                 GameLog.Core.Combat.DebugFormat("generated blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
                    ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
