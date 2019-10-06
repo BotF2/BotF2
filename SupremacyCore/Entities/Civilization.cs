@@ -34,12 +34,12 @@ namespace Supremacy.Entities
     /// </summary>
     public enum TechCurve : byte
     {
-        TechCurve1 = 0,
-        TechCurve2,
-        TechCurve3,
-        TechCurve4,
-        TechCurve5,
-        TechCurve6
+        TecCurve1 = 0,
+        TecCurve2,
+        TecCurve3,
+        TecCurve4,
+        TecCurve5,
+        TecCurve6
     }
 
     public enum CivTraits : ushort
