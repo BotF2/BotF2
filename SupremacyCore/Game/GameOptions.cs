@@ -167,10 +167,6 @@ namespace Supremacy.Game
         Sec360
     }
 
-    //public string PlayerNameSP
-    //{
-    //    PlayerNameSP = "choice your name";
-    //}
 
     /// <summary>
     /// Defines the options available at the beginning of a game.
@@ -192,7 +188,6 @@ namespace Supremacy.Game
             MinorRaceFrequency = MinorRaceFrequency.Many;
             GalaxyCanon = GalaxyCanon.Canon;
             StartingTechLevel = StartingTechLevel.Developed;
-            //PlayerNameSP = "Choose your name";
             FederationPlayable = EmpirePlayable.Yes;
             RomulanPlayable = EmpirePlayable.Yes;
             KlingonPlayable = EmpirePlayable.Yes;
@@ -284,12 +279,6 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The starting tech level.</value>
         public StartingTechLevel StartingTechLevel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the starting tech level.
-        /// </summary>
-        /// <value>The starting tech level.</value>
-        //public PlayerNameSP PlayerNameSP { get; set; }
 
         /// <summary>
         /// Gets or sets FederationPlayable.
