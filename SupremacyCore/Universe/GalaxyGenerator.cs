@@ -684,6 +684,8 @@ namespace Supremacy.Universe
                 //If we are respecting the quadrants
                 if (mustRespectQuadrants)
                 {
+                    if (minorRaceCivs[index].CivID < 7)
+                        continue;
                     //Ensure that the Bajorans are in the bottom left of the Alpha quadrant
                     if (minorRaceCivs[index].Key == "BAJORANS")
                     {
