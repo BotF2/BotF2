@@ -36,7 +36,7 @@ namespace Supremacy.Client.Views
 
     public interface IScienceScreenView : IGameScreenView<ScienceScreenPresentationModel> {}
 
-    public interface IIntelScreenView : IGameScreenView<IntelScreenPresentationModel> {}
+    //public interface IIntelScreenView : IGameScreenView<IntelScreenPresentationModel> {}
     
     public interface ISystemAssaultScreenView : IGameScreenView<SystemAssaultScreenViewModel> {}
 }

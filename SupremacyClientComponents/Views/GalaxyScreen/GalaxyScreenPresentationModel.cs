@@ -155,11 +155,11 @@ namespace Supremacy.Client.Views
         private IEnumerable<ShipView> _selectedShipsInTaskForce;
         private Ship _selectedShipResolved;
         private FleetViewWrapper _selectedTaskForce;
-        private List<FleetViewWrapper> _iSpyShips;
         private TradeRoute _selectedTradeRoute;
         private IEnumerable<FleetViewWrapper> _taskForces;
         private IEnumerable<FleetViewWrapper> _localPlayerTaskForces;
         private IEnumerable<FleetViewWrapper> _otherVisibleTaskForces;
+        private IEnumerable<FleetViewWrapper> _iSpyTaskForces;
         private IEnumerable<TradeRoute> _tradeRoutes;
         private readonly EmpirePlayerStatusCollection _empirePlayers;
         private StationPresentationModel _selectedSectorStation;
@@ -201,7 +201,6 @@ namespace Supremacy.Client.Views
                 );
 
             _selectedSectorStation = new StationPresentationModel(appContext);
-            _iSpyShips = new List<FleetViewWrapper>();
         }
         #endregion
 
@@ -406,12 +405,6 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public List<FleetViewWrapper> ISpyShips
-        {
-            get { return _iSpyShips; }
-            set { _iSpyShips = value; }
-        }
-
         public TradeRoute SelectedTradeRoute
         {
             get { return _selectedTradeRoute; }
@@ -463,12 +456,26 @@ namespace Supremacy.Client.Views
                 _otherVisibleTaskForces = value;
                 OnVisibleTaskForcesChanged();
             }
-        }        
+        }
+
+        public IEnumerable<FleetViewWrapper> ISpyTaskForces
+        {
+            get { return _iSpyTaskForces; } // do we need to union this to _localPlayerTaskFoces like above?
+            set
+            {
+                if (Equals(_iSpyTaskForces, value))
+                    return;
+                _iSpyTaskForces = value;
+                OnISpyTaskForcesChanged();
+            }
+        }
+        
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
             var mapData = AppContext.LocalPlayerEmpire.MapData;
             List<FleetViewWrapper> playerList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> otherVisibleList = new List<FleetViewWrapper>();
+            List<FleetViewWrapper> iSpyList = new List<FleetViewWrapper>();
 
             if (TaskForces != null)
             {
@@ -491,7 +498,7 @@ namespace Supremacy.Client.Views
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_ScanBlock.png");
                             count++;
                             GameLog.Client.Intel.DebugFormat("IsUnScannable was True so got Insignia _ScanBlock & count++ ={0}", count);
-                            _iSpyShips.Add(fleetView);
+                            iSpyList.Add(fleetView);
                         }
                         else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                     }
@@ -517,6 +524,7 @@ namespace Supremacy.Client.Views
 
             LocalPlayerTaskForces = playerList;
             VisibleTaskForces = otherVisibleList;
+            ISpyTaskForces = iSpyList;
         }
 
         public BitmapImage GetInsigniaImage(string insigniaPath)
@@ -657,7 +665,14 @@ namespace Supremacy.Client.Views
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-        
+
+        private void OnISpyTaskForcesChanged()
+        {
+            var handler = VisibleTaskForcesChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
         private void OnTradeRoutesChanged()
         {
             var handler = TradeRoutesChanged;
