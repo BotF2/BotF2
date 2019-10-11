@@ -745,36 +745,24 @@ namespace Supremacy.Game
   
             foreach (var fleet in fleetsAtLocation)
             {
-                if (!combatLocations.Contains(fleet.Location)) // && (Owners.Count > 1))
+                if (!combatLocations.Contains(fleet.Location))
                 {
-                    var assets = CombatHelper.GetCombatAssets(fleet.Location);
+                        var assets = CombatHelper.GetCombatAssets(fleet.Location);
+                        var fleetsOwners = fleetsAtLocation
+                            .Select(o => o.Owner)
+                            .Distinct()
+                            .ToList();
 
-                    if (assets.Count > 1)
+                    if (assets.Count > 1 && fleetsOwners.Count > 1)
                     {
-                        combats.Add(assets);
-                        combatLocations.Add(fleet.Location);
+                        foreach (var nextFleet in fleetsAtLocation)
+                            if (fleet.Owner == nextFleet.Owner || CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner))
+                                continue;
+                            combats.Add(assets);
+                            combatLocations.Add(fleet.Location);
+                        //}                        
                     }
-                    //if (fleet.Sector.System == null)
-                    //    continue;
-
-                    //if (fleet.Sector.System.Owner != null) // && sector.System.Owner.IsEmpire) // ? not guaranteed to be safe for parallel execution if you add IsEmpire?
-                    //{
-                    //    if (fleet.Sector.System.Colony == GameContext.Current.Universe.HomeColonyLookup[fleet.Sector.Owner] &&
-                    //        fleet.Sector.System.Colony != GameContext.Current.Universe.HomeColonyLookup[fleet.Owner] &&
-                    //        DiplomacyHelper.IsContactMade(fleet.Owner, fleet.Sector.Owner) &&
-                    //        !DiplomacyHelper.AreAtWar(fleet.Owner, fleet.Sector.Owner))
-                    //    {
-                    //        if (assets.Count > 1)
-                    //        {
-                    //            if(combats.Count >1)
-                    //            combats.Remove(assets);
-                    //            combatLocations.Add(fleet.Location);
-                    //        }
-                    //    }
-                    //}
-                            
                 }
-                
                 if (!invasionLocations.Contains(fleet.Location))
                 {
                     if (fleet.Order is AssaultSystemOrder)

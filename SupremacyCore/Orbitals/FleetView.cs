@@ -115,7 +115,7 @@ namespace Supremacy.Orbitals
                 if (IsOwned || IsDesignOfShipsKnown)
                     return Source.Name;
                 if (IsNumberOfShipsKnown)
-                    return _ships.Count + "+ ? Cloaked or Camouflaged";
+                    return _ships.Count + " in Nebula, Cloaked or Camouflaged";
                 if (IsOwnerKnown)
                 {
                     string ownerName = Source.Owner.ShortName;

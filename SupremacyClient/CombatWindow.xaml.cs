@@ -45,8 +45,6 @@ namespace Supremacy.Client
         private CombatUpdate _update;
         private CombatAssets _playerAssets;
         private CombatAssets _otherAssets;
-        private bool _targetTransports = false;
-        // CHANGE X
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
         private Civilization _onlyFireIfFiredAppone;
@@ -114,27 +112,21 @@ namespace Supremacy.Client
             {
                 if (assets.Owner == _appContext.LocalPlayer.Empire)
                 {
-                    // _playerAssetsCount = update.FriendlyAssets.Count();
                     _playerAssets = assets;
-                    //_playerCivilization = assets.Owner;
                     break;
                 }
                 else
                 {
-                    //  _playerAssetsCount = update.HostileAssets.Count();
                     _otherAssets = assets;
-                    //_playerCivilization = assets.Owner;
                 }
             }
             if (_playerAssets == null)
             {
                 _playerAssets = update.FriendlyAssets[0];
-                // _playerCivilization = update.Owner[0];
             }
             if (_otherAssets == null)
             {
                 _otherAssets = update.HostileAssets[0];
-                // _playerCivilization = update.Owner[0];
             }
             DataContext = _update;
 
@@ -190,8 +182,7 @@ namespace Supremacy.Client
             //We need combat assets to be able to rush the opposition
             RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
             //There needs to be transports in the opposition to be able to target them
-            TransportsButton.IsEnabled = false;// (_update.HostileAssets.Any(ha => (ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-               // || _update.HostileAssets.Any(ha => (ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))));
+            TransportsButton.IsEnabled = false;
             //We need at least 3 ships to create a formation
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat
@@ -224,7 +215,6 @@ namespace Supremacy.Client
             HostileDestroyedItems.Items.Clear();
             HostileAssimilatedItems.Items.Clear();
             HostileEscapedItems.Items.Clear();
-            // CHANGE X
             OtherCivilizationsSummaryItem1.Items.Clear();
             FriendCivilizationsItems.Items.Clear();
 
@@ -235,7 +225,6 @@ namespace Supremacy.Client
         private void PopulateUnitTrees()
         {
             ClearUnitTrees();
-            // CHANGE X
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
 
@@ -452,7 +441,6 @@ namespace Supremacy.Client
 
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)
         {
-            //base.DialogResult = true;
             DialogResult = true;
         }
 

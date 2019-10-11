@@ -1335,13 +1335,11 @@ namespace Supremacy.WCF
                 
                 lock (_combatEngine.SyncLock)
                 {
-                    //if (orders.OwnerID != Player.GameHostID)
                         _combatEngine.SubmitOrders(orders); 
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
                 }
-                //else TryResumeCombat(_combatEngine);
             }
             catch (Exception e)
             {
@@ -1405,8 +1403,6 @@ namespace Supremacy.WCF
                     callback.NotifyCombatUpdate(update);
                 }
             }
-
-            // CHANGE X
             //No proper CombatAI, so just for now fake some orders
             else if (!engine.IsCombatOver && !update.Owner.IsHuman)
             {
@@ -1421,19 +1417,23 @@ namespace Supremacy.WCF
 
                 Civilization _target = new Civilization(); // The AI generates a dummy target for non-human player civ
                 _target.ShortName = "Only Return Fire";
-                _target.CivID = 888; // CHANGE X AIS default CIV for Target ONE
+                _target.CivID = 888; 
                 _target.Key = "Only Return Fire";
 
                 var blanketOrder = CombatOrder.Engage;
                 var blanketTargetOne = _target;
                 var blanketTargetTwo = _target;
 
-                int countStation = 0;
-                if (enemyAssets.Station != null)
-                    countStation = 2;  // counting value for Station = 2 ships
-
-                GameLog.Core.Combat.DebugFormat("generated blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
-                   ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
+                //int countStation = 0;
+                //if (enemyAssets != null)
+                //{
+                //    if (enemyAssets.Station != null)
+                //    {
+                //        countStation = 2;  // counting value for Station = 2 ships
+                //        GameLog.Core.Combat.DebugFormat("generated blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
+                //        ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
+                //    }
+                //}
 
                 SendCombatTarget1(CombatHelper.GenerateBlanketTargetPrimary(ownerAssets, blanketTargetOne));
                 SendCombatTarget2(CombatHelper.GenerateBlanketTargetSecondary(ownerAssets, blanketTargetTwo));
@@ -1454,7 +1454,7 @@ namespace Supremacy.WCF
                 {
                     lock (engine.SyncLock)
                     {
-                        if (engine.Ready) // CHANGE X Position 2
+                        if (engine.Ready)
                             engine.ResolveCombatRound();
                     }
 

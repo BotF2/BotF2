@@ -56,6 +56,6 @@ namespace Supremacy.Client.Views
 
     public interface IDiplomacyScreenPresenter : IGameScreenPresenter<DiplomacyScreenPresentationModel, IDiplomacyScreenView> {}
     public interface IScienceScreenPresenter : IGameScreenPresenter<ScienceScreenPresentationModel, IScienceScreenView> {}
-    public interface IIntelScreenPresenter : IGameScreenPresenter<IntelScreenPresentationModel, IIntelScreenView> {}
+    //public interface IIntelScreenPresenter : IGameScreenPresenter<IntelScreenPresentationModel, IIntelScreenView> {}
     public interface IAssetsScreenPresenter : IGameScreenPresenter<AssetsScreenPresentationModel, IAssetsScreenView> {}
 }

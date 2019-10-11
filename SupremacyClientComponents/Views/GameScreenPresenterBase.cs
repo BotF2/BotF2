@@ -326,20 +326,20 @@ namespace Supremacy.Client.Views
         }
     }
 
-    public class IntelScreenPresenter
-        : GameScreenPresenterBase<IntelScreenPresentationModel, IIntelScreenView>, IIntelScreenPresenter
-    {
-        #region Constructors and Finalizers
-        public IntelScreenPresenter(
-            [NotNull] IUnityContainer container,
-            [NotNull] IntelScreenPresentationModel model,
-            [NotNull] IIntelScreenView view)
-            : base(container, model, view) {}
-        #endregion
+    //public class IntelScreenPresenter
+    //    : GameScreenPresenterBase<IntelScreenPresentationModel, IIntelScreenView>, IIntelScreenPresenter
+    //{
+    //    #region Constructors and Finalizers
+    //    public IntelScreenPresenter(
+    //        [NotNull] IUnityContainer container,
+    //        [NotNull] IntelScreenPresentationModel model,
+    //        [NotNull] IIntelScreenView view)
+    //        : base(container, model, view) {}
+    //    #endregion
 
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.IntelScreen; }
-        }
-    }
+    //    protected override string ViewName
+    //    {
+    //        get { return StandardGameScreens.IntelScreen; }
+    //    }
+    //}
 }
