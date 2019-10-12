@@ -61,8 +61,8 @@
             </Grid>
         </TabItem>
 
-        <!--TAB for SHIPS-->
-        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPS_TAB_HEADER}">
+        <!--TAB for Spyed Colonies-->
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
             <!--Grid just for Head line-->
                 <Grid>
                     <Grid.RowDefinitions>
@@ -87,7 +87,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     </Grid>
-                    <v:ShipsList Grid.Row="2" DataContext="{Binding Path=ISpyedShips}" />
+                <v:SpyColonyList Grid.Row="2" DataContext="{Binding Path=SpyColonies}" />
                     <!--<Button x:Name="SummaryButton"
                         Grid.Row="0"
                         VerticalAlignment="Top"
@@ -186,7 +186,7 @@
                 </Grid>
             </TabItem>
         <!--TAB for Spy Ship Report of colony-->
-        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPS_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
