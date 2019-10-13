@@ -415,7 +415,18 @@ namespace Supremacy.Client
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GeneralOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
 
+           // _regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.SpyList, typeof(SpyListView)); // keep it simple for now
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.EmpireOverview, typeof(EmpireInfoView));
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.EmpireResources, typeof(EmpireResourcesView));
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.GalaxyGrid, typeof(GalaxyGridView));
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.TradeRouteList, typeof(TradeRouteListView));
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.TaskForceList, typeof(TaskForceListView));
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.AssignedShipList, typeof(AssignedShipListView));
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.AvailableShipList, typeof(AvailableShipListView));
+            //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.ShipStats, typeof(ShipInfoPanel));
+
             _regionViewRegistry.RegisterViewWithRegion(CommonGameScreenRegions.PlanetsView, typeof(StarSystemPanel));
+           // _regionViewRegistry.RegisterViewWithRegion(CommonGameScreenRegions.SpyListView, typeof(SpyListView));
 
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.EmpireOverview, typeof(EmpireInfoView));
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.EmpireResources, typeof(EmpireResourcesView));

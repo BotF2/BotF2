@@ -26,8 +26,9 @@ namespace Supremacy.Client.Views
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
-
+           
             Colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
+            SpyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
             var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
 
             // need a list of colonies infiltrated by local player, add colony to list on being infiltrated.
@@ -40,9 +41,15 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
 
+        public event EventHandler SpyColoniesChanged;
+
         public event EventHandler TotalPopulationChanged;
 
+        public event EventHandler SpyTotalPopulationChanged;
+
         private IEnumerable<Colony> _colonies;
+
+        private IEnumerable<Colony> _spyColonies;
 
         private IEnumerable<Colony> _infiltratedColonies;
 
@@ -59,6 +66,22 @@ namespace Supremacy.Client.Views
                 OnColoniesChanged();
 
                 OnTotalPopulationChanged();
+            }
+        }
+
+        public IEnumerable<Colony> SpyColonies
+        {
+            get { return _spyColonies; }
+            set
+            {
+                if (Equals(value, _spyColonies))
+                    return;
+
+                _spyColonies = value;
+
+                OnSpyColoniesChanged();
+
+                OnSpyTotalPopulationChanged();
             }
         }
 
@@ -82,65 +105,26 @@ namespace Supremacy.Client.Views
         {
             ColoniesChanged.Raise(this);
             OnPropertyChanged("Colonies");
+           
         }
 
+        protected virtual void OnSpyColoniesChanged()
+        {
+            SpyColoniesChanged.Raise(this);
+            OnPropertyChanged("SpyColonies");
+        }
         #endregion Colonies Property
-
-        #region ShipsList Property
-
-        [field: NonSerialized]
-        public event EventHandler ShipsListChanged;
-
-        //public event EventHandler TotalPopulationChanged;
-
-        private IEnumerable<Ship> _shipsList;
-
-        //private IEnumerable<Colony> _infiltratedColonies;
-
-        public IEnumerable<Ship> ShipsList
-        {
-            get { return _shipsList; }
-            set
-            {
-                if (Equals(value, _shipsList))
-                    return;
-
-                _shipsList = value;
-
-                OnShipsListChanged();
-
-                //OnTotalPopulationChanged();
-            }
-        }
-
-        //public IEnumerable<Colony> InfiltratedColonies
-        //{
-        //    get { return _infiltratedColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _infiltratedColonies))
-        //            return;
-
-        //        _infiltratedColonies = value;
-
-        //        OnColoniesChanged();
-
-        //        OnTotalPopulationChanged();
-        //    }
-        //}
-
-        protected virtual void OnShipsListChanged()
-        {
-            ShipsListChanged.Raise(this);
-            OnPropertyChanged("ShipsList");
-        }
-
-        #endregion ShipsList Property
 
         protected virtual void OnTotalPopulationChanged()
         {
             TotalPopulationChanged.Raise(this);
             OnPropertyChanged("TotalPopulation");
+        }
+
+        protected virtual void OnSpyTotalPopulationChanged()
+        {
+            SpyTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpyTotalPopulation");
         }
 
         #region TotalPopulation Empire
@@ -149,18 +133,40 @@ namespace Supremacy.Client.Views
         {
             get
             {
+                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
                 try    // maybe slows down the game very much
                 {
-                    
-                    var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                    GameLog.Core.Stations.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
                 {
                     GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
+                    return civManager.TotalPopulation;
+                }
+            }
+        }
+        #endregion
+
+
+        #region SpyTotalPopulation Empire
+
+        public Meter SpyTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.SpyCivilizationManager;
+                try    // maybe slows down the game very much
+                {
+                    GameLog.Core.Intel.DebugFormat("SpyTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpyTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return civManager.TotalPopulation;
                 }
             }
         }

@@ -1,6 +1,7 @@
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
+using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 
 namespace Supremacy.Client.Views
@@ -37,6 +38,7 @@ namespace Supremacy.Client.Views
         {
             base.TerminateOverride();
             Model.Colonies = null;
+            Model.SpyColonies = null;
         }
 
         #endregion
@@ -51,7 +53,10 @@ namespace Supremacy.Client.Views
         private void Update()
         {
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
+            Model.SpyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
         }
+
+
 
         #endregion
     }

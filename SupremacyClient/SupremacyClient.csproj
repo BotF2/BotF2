@@ -273,11 +273,11 @@
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
       <DependentUpon>AssetsScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AssetsScreen\SpyColonyList.xaml.cs">
+      <DependentUpon>SpyColonyList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AssetsScreen\ColonyList.xaml.cs">
       <DependentUpon>ColonyList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AssetsScreen\ShipsList.xaml.cs">
-      <DependentUpon>ShipsList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AssetsScreen\SystemListItem.xaml.cs">
       <DependentUpon>SystemListItem.xaml</DependentUpon>
@@ -829,11 +829,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AssetsScreen\ColonyList.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\AssetsScreen\SpyColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AssetsScreen\ShipsList.xaml">
+    <Page Include="Views\AssetsScreen\ColonyList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -345,6 +345,7 @@
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Views\AssetsScreen\AssetsScreenPresentationModel.cs" />
     <Compile Include="Views\AssetsScreen\AssetsScreenPresenter.cs" />
+    <Compile Include="Views\AssetsScreen\AssetsScreenRegions.cs" />
     <Compile Include="Views\ClientRegions.cs" />
     <Compile Include="Views\ColonyScreen\ColonyScreenCommands.cs" />
     <Compile Include="Views\ColonyScreen\ColonyScreenPresentationModel.cs" />

@@ -1,12 +1,11 @@
+using Supremacy.Client.Audio;
+using Supremacy.Collections;
+using Supremacy.Game;
+using Supremacy.Universe;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Supremacy.Collections;
-using Supremacy.Universe;
-using Supremacy.Game;
-using Supremacy.Client.Audio;
-using Supremacy.Orbitals;
 
 namespace Supremacy.Client.Context
 {
@@ -167,11 +166,6 @@ namespace Supremacy.Client.Context
             get { return PlayerContext.Current.Players[0]; }
         }
 
-        //public IPlayer NotLocalPlayer
-        //{
-        //    get { return PlayerContext.Current.Players; }
-        //}
-
         public ILobbyData LobbyData
         {
             get { return _lobbyData; }
@@ -182,10 +176,10 @@ namespace Supremacy.Client.Context
             get { return GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID]; }
         }
 
-        //public IEnumerable<IPlayer> NotLocalPlayerEmpire
-        //{
-        //    get { return Enumerable.Empty<IPlayer>(); ; }
-        //}
+        public CivilizationManager SpyEmpire
+        {
+            get { return GameContext.Current.CivilizationManagers[DesignTimeObjects.SpyCivilizationManager.CivilizationID]; }
+        }
 
         public IEnumerable<IPlayer> RemotePlayers
         {
@@ -204,9 +198,9 @@ namespace Supremacy.Client.Context
 
         #endregion
     }
-
     public static class DesignTimeObjects
     {
+        
         public static CivilizationManager CivilizationManager
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
@@ -222,14 +216,51 @@ namespace Supremacy.Client.Context
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
         }
 
-        //public static IEnumerable<List<FleetViewWrapper>> ISpyedShips
-        //{
-        //    get { return DesignTimeAppContext.Instance.LocalPlayerEmpire.; }
-        //}
-
-        public static IEnumerable<Colony> InfiltratedColonies
+        public static CivilizationManager SpyCivilizationManager
         {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.InfiltratedColonies); } 
+            get
+            {
+                var empires = GameContext.Current.CivilizationManagers;
+                CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
+
+                foreach (var aCivManager in empires)
+                {
+
+                    if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayerEmpire.CivilizationID)
+                    {
+                        otherMajorEmpires.Add(aCivManager);
+                    }
+                }
+                return otherMajorEmpires.FirstOrDefault(); // hope we get one major empire that is not local player
+            }
+        }
+
+        public static Colony SpyColony
+        {
+            get { return SpyCivilizationManager.HomeColony; }
+        }
+
+        public static IEnumerable<Colony> SpyColonies
+        {
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
+        }
+        public static CivilizationManagerMap OtherCivilizationManagers
+        {
+            get
+            {
+                var empires = GameContext.Current.CivilizationManagers;
+                CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
+
+                foreach (var aCivManager in empires)
+                {
+
+                    if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayerEmpire.CivilizationID)
+                    {
+                        otherMajorEmpires.Add(aCivManager);
+                    }
+                }
+                return otherMajorEmpires; // hope we get one major empire that is not local player
+            }
         }
 
         public static IEnumerable<StarSystem> StarSystems
