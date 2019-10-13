@@ -169,7 +169,6 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-
         public static string SpyCivName
         {
             get { return DesignTimeObjects.SpyCivilizationManager.Civilization.Name; }
