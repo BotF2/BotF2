@@ -1,5 +1,6 @@
 using Supremacy.Client.Audio;
 using Supremacy.Collections;
+using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Universe;
 using System;
@@ -199,8 +200,7 @@ namespace Supremacy.Client.Context
         #endregion
     }
     public static class DesignTimeObjects
-    {
-        
+    {       
         public static CivilizationManager CivilizationManager
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
@@ -231,7 +231,7 @@ namespace Supremacy.Client.Context
                         otherMajorEmpires.Add(aCivManager);
                     }
                 }
-                return otherMajorEmpires.FirstOrDefault(); // hope we get one major empire that is not local player
+                return otherMajorEmpires.RandomElement(); // hope we get one major empire that is not local player
             }
         }
 

@@ -149,8 +149,7 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-
-        #region SpyTotalPopulation Empire
+        #region SpyTotalPopulation and Name
 
         public Meter SpyTotalPopulation
         {
@@ -170,6 +169,11 @@ namespace Supremacy.Client.Views
                 }
             }
         }
+
+        public static string SpyCivName
+        {
+            get { return DesignTimeObjects.SpyCivilizationManager.Civilization.Name; }
+        }
         #endregion
 
         #region Credits Empire
@@ -182,8 +186,7 @@ namespace Supremacy.Client.Views
                 //{
                 var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
                 return civManager.Credits;
-
-                
+ 
                 //}
                 //catch (Exception e)
                 //{
