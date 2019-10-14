@@ -1,3 +1,4 @@
+using Microsoft.Practices.Unity;
 using Supremacy.Client.Audio;
 using Supremacy.Collections;
 using Supremacy.Entities;
@@ -41,6 +42,7 @@ namespace Supremacy.Client.Context
         #region Construction & Lifetime
         public DesignTimeAppContext()
         {
+            
             if (PlayerContext.Current == null ||
                 PlayerContext.Current.Players.Count == 0)
             {
@@ -202,10 +204,13 @@ namespace Supremacy.Client.Context
     public static class DesignTimeObjects
     {
         private static readonly CivilizationManager _spyCivilizationManager;
+        //private static readonly IAppContext _appContext;
+        //private static readonly IUnityContainer _container;
 
         static DesignTimeObjects()
         {
             _spyCivilizationManager = GetSpiedCivilization() ;
+           // _appContext = _container.Resolve<IAppContext>();
         }
 
         public static CivilizationManager CivilizationManager
@@ -248,7 +253,6 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.Universe.Find<StarSystem>(); }
         }
-
         public static IEnumerable<StarSystem> ControlledSystems
         {
             get
@@ -265,7 +269,6 @@ namespace Supremacy.Client.Context
 
             foreach (var aCivManager in empires)
             {
-
                 if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayer.CivID)
                 {
                     otherMajorEmpires.Add(aCivManager);
