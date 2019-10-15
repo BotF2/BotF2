@@ -1608,12 +1608,14 @@ namespace Supremacy.Game
                         //That they have actually met
                         .Where(t => DiplomacyHelper.IsContactMade(civ, t));
 
+                   
                     GameLog.Core.Intel.DebugFormat("Available intel targets for {0}: {1}", civ.Name, targets.Count());
 
                     //Double check that we have viable targets
                     if (targets.Count() == 0)
                         return;
 
+                    // ToDo: let player chose a target
                     //Select one at random
                     CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[targets.RandomElement()];
                     GameLog.Core.Intel.DebugFormat("{0} is targeting empire {1}...", civ.Name, targetEmpire.Civilization.Name);
@@ -1845,6 +1847,7 @@ namespace Supremacy.Game
                         }
 
                         //Other possibilties...
+                        //Uncover who attacked us and blaming others 
                         //Destroy orbiting space station
                         //Assasination
                         //Target individual buildings

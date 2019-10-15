@@ -27,9 +27,9 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
            
-            Colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
-            SpyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
-            var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
+            _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
+            _spyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
+           // var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
 
             // need a list of colonies infiltrated by local player, add colony to list on being infiltrated.
 
@@ -149,8 +149,7 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-
-        #region SpyTotalPopulation Empire
+        #region SpyTotalPopulation and Name
 
         public Meter SpyTotalPopulation
         {
@@ -170,6 +169,10 @@ namespace Supremacy.Client.Views
                 }
             }
         }
+        public static string SpyCivName
+        {
+            get { return DesignTimeObjects.SpyCivilizationManager.Civilization.Name; }
+        }
         #endregion
 
         #region Credits Empire
@@ -182,8 +185,7 @@ namespace Supremacy.Client.Views
                 //{
                 var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
                 return civManager.Credits;
-
-                
+ 
                 //}
                 //catch (Exception e)
                 //{
@@ -215,7 +217,6 @@ namespace Supremacy.Client.Views
             }
         }
         #endregion TotalIntelligence Empire
-
 
         #region Implementation of INotifyPropertyChanged
 

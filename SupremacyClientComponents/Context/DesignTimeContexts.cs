@@ -1,5 +1,7 @@
+using Microsoft.Practices.Unity;
 using Supremacy.Client.Audio;
 using Supremacy.Collections;
+using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Universe;
 using System;
@@ -40,6 +42,7 @@ namespace Supremacy.Client.Context
         #region Construction & Lifetime
         public DesignTimeAppContext()
         {
+            
             if (PlayerContext.Current == null ||
                 PlayerContext.Current.Players.Count == 0)
             {
@@ -200,7 +203,16 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        
+        private static readonly CivilizationManager _spyCivilizationManager;
+        //private static readonly IAppContext _appContext;
+        //private static readonly IUnityContainer _container;
+
+        static DesignTimeObjects()
+        {
+            _spyCivilizationManager = GetSpiedCivilization() ;
+           // _appContext = _container.Resolve<IAppContext>();
+        }
+
         public static CivilizationManager CivilizationManager
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
@@ -208,7 +220,10 @@ namespace Supremacy.Client.Context
 
         public static Colony Colony
         {
-            get { return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony; }
+            get
+            {
+                return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
+            }
         }
 
         public static IEnumerable<Colony> Colonies
@@ -220,18 +235,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var empires = GameContext.Current.CivilizationManagers;
-                CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
-
-                foreach (var aCivManager in empires)
-                {
-
-                    if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayerEmpire.CivilizationID)
-                    {
-                        otherMajorEmpires.Add(aCivManager);
-                    }
-                }
-                return otherMajorEmpires.FirstOrDefault(); // hope we get one major empire that is not local player
+                return _spyCivilizationManager;
             }
         }
 
@@ -242,32 +246,13 @@ namespace Supremacy.Client.Context
 
         public static IEnumerable<Colony> SpyColonies
         {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
-        }
-        public static CivilizationManagerMap OtherCivilizationManagers
-        {
-            get
-            {
-                var empires = GameContext.Current.CivilizationManagers;
-                CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
-
-                foreach (var aCivManager in empires)
-                {
-
-                    if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayerEmpire.CivilizationID)
-                    {
-                        otherMajorEmpires.Add(aCivManager);
-                    }
-                }
-                return otherMajorEmpires; // hope we get one major empire that is not local player
-            }
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpyCivilizationManager.CivilizationID); }
         }
 
         public static IEnumerable<StarSystem> StarSystems
         {
             get { return GameContext.Current.Universe.Find<StarSystem>(); }
         }
-
         public static IEnumerable<StarSystem> ControlledSystems
         {
             get
@@ -276,6 +261,20 @@ namespace Supremacy.Client.Context
                 var owner = CivilizationManager.Civilization;
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
+        }
+        public static CivilizationManager GetSpiedCivilization()
+        {
+            var empires = GameContext.Current.CivilizationManagers;
+            CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
+
+            foreach (var aCivManager in empires)
+            {
+                if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayer.CivID)
+                {
+                    otherMajorEmpires.Add(aCivManager);
+                }
+            }
+            return otherMajorEmpires.RandomElement(); // hope we get one major empire that is not local player
         }
     }
 }

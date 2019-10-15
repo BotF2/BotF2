@@ -37,6 +37,7 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
+       //private readonly UniverseObjectList<Colony> _spyColonies;
        // private readonly UniverseObjectList<Colony> _infiltratedColonies; // Should this not be a feature of a colony and not a new Universe Object?
 
         private int _homeColonyId;
@@ -55,6 +56,7 @@ namespace Supremacy.Game
             _treasury = new Treasury(5000);
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
+            //_spyColonies = new UniverseObjectList<Colony>();
             //_infiltratedColonies = new UniverseObjectList<Colony>();
 
             _globalBonuses = new List<Bonus>();
@@ -164,6 +166,16 @@ namespace Supremacy.Game
         {
             get { return _colonies; }
         }
+
+        ///// <summary>
+        ///// Gets a list of the spied civilization's colonies.
+        ///// </summary>
+        ///// <value>The colonies.</value>
+        //[NotNull]
+        //public UniverseObjectList<Colony> SpyColonies
+        //{
+        //    get { return _spyColonies; }
+        //}
 
         /// <summary>
         /// Gets a list of the civilization's infiltrated colonies.

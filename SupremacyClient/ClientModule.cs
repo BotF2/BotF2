@@ -392,14 +392,14 @@ namespace Supremacy.Client
             _container.RegisterType<IColonyScreenView, ColonyScreenView>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<INewDiplomacyScreenView, NewDiplomacyScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IScienceScreenView, ResearchScreen>(new ExternallyControlledLifetimeManager());
-            //_container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
+           // _container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenView, AssetsScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ILobbyScreenView, MultiplayerLobby>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISystemAssaultScreenView, SystemAssaultScreen>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IGalaxyScreenPresenter, GalaxyScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IColonyScreenPresenter, ColonyScreenPresenter>(new ExternallyControlledLifetimeManager());
-            //_container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IScienceScreenPresenter, ScienceScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenPresenter, AssetsScreenPresenter>(new ExternallyControlledLifetimeManager());
 
