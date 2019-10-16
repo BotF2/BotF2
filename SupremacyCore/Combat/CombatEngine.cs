@@ -39,8 +39,6 @@ namespace Supremacy.Combat
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         protected readonly Dictionary<int, Civilization> _targetOneData;
         private readonly int _combatId;
-        //private int _zeroFirePowers;
-
         protected int _roundNumber;
         private bool _running;
         private bool _runningTargetOne;
@@ -160,7 +158,6 @@ namespace Supremacy.Combat
                     goto TryAgain;
                     //throw;
                 }
-               // return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
             }
         }
 
@@ -202,7 +199,6 @@ namespace Supremacy.Combat
             _allSidesStandDown = false;
             _combatId = GameContext.Current.GenerateID();
             _roundNumber = 1;
-            //_zeroFirePowers = 0;
             _assets = assets;
             _updateCallback = updateCallback;
             _combatEndedCallback = combatEndedCallback;
@@ -218,8 +214,6 @@ namespace Supremacy.Combat
             GameLog.Core.Combat.DebugFormat("_combatId = {0}, _roundNumber = {1}" //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
                 , _combatId
                 , _roundNumber
-                //, _targetOneByCiv
-                //, _targetTwoByCiv
                 ); 
 
             foreach (CombatAssets civAssets in _assets.ToList())
@@ -343,13 +337,9 @@ namespace Supremacy.Combat
                 _assets.ForEach(a => a.CombatID = _combatId); // assign combatID for each asset _assets
                 CalculateEmpireStrengths();
                 GameLog.Core.Combat.DebugFormat("_roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
-                //if ((_roundNumber>1) || AllSidesStandDown()) 
-                //{
                     RechargeWeapons();
                     ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
-                    // CHANGE X FIRST AFTER BATTLE
-                    //RemoveDefeatedPlayers(); 
-                //}
+
                 if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
                 {
                     PerformAssimilation();
@@ -463,7 +453,6 @@ namespace Supremacy.Combat
                     }
                     GameLog.Core.CombatDetails.DebugFormat("for = {0} currentEmpireStrength = {1}", civAsset.Owner.Key, currentEmpireStrength);
                 }
-                // CHANGE X
                 foreach (var otherAsset in _assets) // _assets is all combat assest in sector while "otherAsset" is not of type "friendly" first asset
                 {
                     if (otherAsset == playerAsset)
@@ -681,7 +670,6 @@ namespace Supremacy.Combat
 
             if (_targetOneByCiv.Keys.Contains(source.OwnerID))
             {
-                // _targetOneByCiv is dictionary key = ownerID and value = CombatTargetPrimaries
                 GameLog.Core.CombatDetails.DebugFormat("GetTargetOne ={0}", _targetOneByCiv[source.OwnerID].GetTargetOne(source));//if (targetCiv == null)                                                                                                                                                                                                                                                                                                        //if(source !=null)
                 var _targetOne = _targetOneByCiv[source.OwnerID].GetTargetOne(source);
                 return _targetOne;

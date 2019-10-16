@@ -204,13 +204,10 @@ namespace Supremacy.Client.Context
     public static class DesignTimeObjects
     {
         private static readonly CivilizationManager _spyCivilizationManager;
-        //private static readonly IAppContext _appContext;
-        //private static readonly IUnityContainer _container;
 
         static DesignTimeObjects()
         {
             _spyCivilizationManager = GetSpiedCivilization() ;
-           // _appContext = _container.Resolve<IAppContext>();
         }
 
         public static CivilizationManager CivilizationManager
