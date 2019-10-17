@@ -3,6 +3,7 @@ using Supremacy.Client.Audio;
 using Supremacy.Collections;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Universe;
 using System;
 using System.Collections.Generic;
@@ -203,11 +204,16 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        private static readonly CivilizationManager _spyCivilizationManager;
+        //private static readonly CivilizationManager _spyCivilizationManager;
+        //private static readonly CivilizationManagerMap _spyCivManagersMap;
+
 
         static DesignTimeObjects()
         {
-            _spyCivilizationManager = GetSpiedCivilization() ;
+            //_spyCivilizationManager = GetSpiedCivilization(); // turn off single civManager when we send the spy civ list
+            //_spyCivManagersMap = GetSpiedCivilizations();
+            IntelHelper.SendSpiedCivilizations(SpyCivilizationManagers);
+            IntelHelper.SendLocalPlayer(CivilizationManager);
         }
 
         public static CivilizationManager CivilizationManager
@@ -232,7 +238,14 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                return _spyCivilizationManager;
+                return GetSpiedCivilization();
+            }
+        }
+        public static CivilizationManagerMap SpyCivilizationManagers
+        {
+            get
+            {
+                return GetSpiedCivilizations();
             }
         }
 
@@ -259,7 +272,22 @@ namespace Supremacy.Client.Context
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }
-        public static CivilizationManager GetSpiedCivilization()
+        private static CivilizationManagerMap GetSpiedCivilizations()
+        {
+            var allCivManagers = GameContext.Current.CivilizationManagers;
+            CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
+
+            foreach (var aCivManager in allCivManagers)
+            {
+                if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayer.CivID)
+                {
+                    otherMajorEmpires.Add(aCivManager);
+                }
+            }
+            return otherMajorEmpires; // hope we get all major civs that are not local player
+        }
+
+        private static CivilizationManager GetSpiedCivilization()
         {
             var empires = GameContext.Current.CivilizationManagers;
             CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();

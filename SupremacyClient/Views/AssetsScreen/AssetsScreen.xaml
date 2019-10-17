@@ -15,9 +15,127 @@
                        Background="#66000000"
                        UseLayoutRounding="True"
                        Margin="6,6,6,6">
+    
+    
     <TabControl>
-       
 
+        <!--Left side COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
+        <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
+                  Foreground="Ivory"
+                  Background="Black"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                  VerticalAlignment="Top"
+                  Height="620"
+                  MaxHeight ="620"
+                    Width="Auto"            
+                    Margin="2">
+            <TreeView x:Name="FriendlyAssetsTree"
+                    ItemsSource="{Binding FriendlyCivs}"
+                    BorderThickness="0"
+                    VerticalAlignment="Top"
+                    Height="541"
+                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    FontSize="10pt"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Border x:Name="FriendsBorder"
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        DockPanel.Dock="Top"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="0,4,4,10"
+                        Width="180"
+                        Height="auto"
+                        BorderBrush="Gray"
+                        BorderThickness="4"
+                        CornerRadius="8">
+                    <ListBox x:Name="SpyCivilizationsItems"  
+                            IsSynchronizedWithCurrentItem="True"
+                            ItemsSource="{Binding}"
+                            ItemTemplate="{StaticResource FriendTreeTemplate}"
+                            Grid.Column="0"
+                            Grid.Row="1"     
+                            BorderThickness="0" 
+                            VerticalAlignment="Top"
+                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                            FontSize="14pt">
+                    </ListBox>
+                </Border>
+                <StackPanel 
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
+                    <Border x:Name="ImageBorderFriend"
+                                DockPanel.Dock="Left"
+                                VerticalAlignment="Top"
+                                Width="55"
+                                Height="52"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                CornerRadius="8">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
+                                Stretch="UniformToFill"/>
+                        </Border.Background>
+                    </Border>
+                    <StackPanel 
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Orientation="Vertical"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left">
+                        <StackPanel 
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="4,0,0,0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left">
+                            <TextBlock  Foreground="White"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt" 
+                                        Text="{s:StringResource COMBAT_FRIENDLY_FIREPOWER}"/>
+                            <TextBlock Foreground="White"
+                                       Margin="4,0,0,0"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt" 
+                                        Text="{Binding Path=FriendlyEmpireStrength, StringFormat='#,#\\'}"/>
+                        </StackPanel>
+                        <StackPanel 
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Margin="4,0,0,0"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left">
+                            <TextBlock Foreground="DarkOrange"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        FontSize="16pt" 
+                                        Text="{s:StringResource COMBAT_OTHERS_FIREPOWER}"/>
+                            <TextBlock Foreground="Red" 
+                                        Margin="4,0,0,0"
+                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"                                      
+                                        FontSize="16pt" 
+                                        Text="{Binding Path=AllHostileEmpireStrength, StringFormat='#,#\\'}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <TreeViewItem Name="FriendlyStationItem"/>
+                <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyNonCombatantItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyDestroyedItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
+                <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
+            </TreeView>
+        </GroupBox>
         <!--TAB for Spyed Colonies-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
             <!--Grid just for Head line-->

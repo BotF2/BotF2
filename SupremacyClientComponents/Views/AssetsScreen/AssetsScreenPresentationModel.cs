@@ -29,6 +29,7 @@ namespace Supremacy.Client.Views
            
             _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
             _spyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
+            //_localPlayer = DesignTimeAppContext.Instance.LocalPlayer;
            // var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
 
             // need a list of colonies infiltrated by local player, add colony to list on being infiltrated.
@@ -50,6 +51,8 @@ namespace Supremacy.Client.Views
         private IEnumerable<Colony> _colonies;
 
         private IEnumerable<Colony> _spyColonies;
+
+        //private IPlayer _localPlayer;
 
         private IEnumerable<Colony> _infiltratedColonies;
 
@@ -84,6 +87,23 @@ namespace Supremacy.Client.Views
                 OnSpyTotalPopulationChanged();
             }
         }
+
+        //public IPlayer LocalPlayer
+        //{
+        //    get { return _localPlayer; }
+        //    set
+        //    {
+        //        if (Equals(value, _localPlayer))
+        //            return;
+
+        //        _localPlayer = value;
+
+        //        //OnSpyColoniesChanged();
+
+        //        //OnSpyTotalPopulationChanged();
+        //    }
+
+        //}
 
         public IEnumerable<Colony> InfiltratedColonies
         {
