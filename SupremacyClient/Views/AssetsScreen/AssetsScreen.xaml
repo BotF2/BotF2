@@ -20,7 +20,7 @@
     <TabControl>
 
         <!--Left side COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
-        <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
+        <!--<GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
                   Foreground="Ivory"
                   Background="Black"
                     Grid.Column="0"
@@ -135,7 +135,7 @@
                 <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
                 <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
             </TreeView>
-        </GroupBox>
+        </GroupBox>-->
         <!--TAB for Spyed Colonies-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
             <!--Grid just for Head line-->
