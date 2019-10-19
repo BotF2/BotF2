@@ -27,6 +27,7 @@ namespace Supremacy.Game
         private TableMap _shipTables;
         private TableMap _diplomacyTables;
         private TableMap _gameOptionTables;
+        private TableMap _strengthTables;
 
         /// <summary>
         /// Gets the game option tables.
@@ -92,6 +93,15 @@ namespace Supremacy.Game
         }
 
         /// <summary>
+        /// Gets the strength tables.
+        /// </summary>
+        /// <value>The strength tables.</value>
+        public TableMap StrengthTables
+        {
+            get { return _strengthTables; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GameTables"/> class.
         /// </summary>
         private GameTables() { }
@@ -119,8 +129,10 @@ namespace Supremacy.Game
                              _diplomacyTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "DiplomacyTables.txt")),
                              _gameOptionTables = TableMap.ReadFromFile(
-                                 ResourceManager.GetResourcePath(tablesPath + "GameOptionTables.txt"))
-                         };
+                                 ResourceManager.GetResourcePath(tablesPath + "GameOptionTables.txt")),
+                              _strengthTables = TableMap.ReadFromFile(
+                                 ResourceManager.GetResourcePath(tablesPath + "StrengthTables.txt"))
+            };
 
             return tables;
         }
