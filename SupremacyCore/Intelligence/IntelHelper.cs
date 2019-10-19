@@ -41,5 +41,10 @@ namespace Supremacy.Intelligence
             _localPlayer = localPlayer;
             return localPlayer; // hope we get one major empire that is not local player
         }
+
+        //public static CivilizationManagerMap GetSpiedCivilizations()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

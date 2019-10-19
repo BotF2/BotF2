@@ -253,7 +253,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                return GetSpiedCivilizations();
+                return DesignTimeAppContext.Instance.SpyEmpires;
             }
         }
 
@@ -280,20 +280,20 @@ namespace Supremacy.Client.Context
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }
-        private static CivilizationManagerMap GetSpiedCivilizations()
-        {
-            var allCivManagers = GameContext.Current.CivilizationManagers;
-            CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
+        //private static CivilizationManagerMap GetSpiedCivilizations()
+        //{
+        //    var allCivManagers = GameContext.Current.CivilizationManagers;
+        //    CivilizationManagerMap otherMajorEmpires = new CivilizationManagerMap();
 
-            foreach (var aCivManager in allCivManagers)
-            {
-                if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayer.CivID)
-                {
-                    otherMajorEmpires.Add(aCivManager);
-                }
-            }
-            return otherMajorEmpires; // hope we get all major civs that are not local player
-        }
+        //    foreach (var aCivManager in allCivManagers)
+        //    {
+        //        if (aCivManager.CivilizationID < 7 && aCivManager.CivilizationID != DesignTimeAppContext.Instance.LocalPlayer.CivID)
+        //        {
+        //            otherMajorEmpires.Add(aCivManager);
+        //        }
+        //    }
+        //    return otherMajorEmpires; // hope we get all major civs that are not local player
+        //}
 
         private static CivilizationManager GetSpiedCivilization()
         {
