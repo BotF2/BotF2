@@ -185,6 +185,14 @@ namespace Supremacy.Client.Context
             get { return GameContext.Current.CivilizationManagers[DesignTimeObjects.SpyCivilizationManager.CivilizationID]; }
         }
 
+        public CivilizationManagerMap SpyEmpires
+        {
+            get
+            { 
+                return GameContext.Current.CivilizationManagers; 
+            }
+        }
+
         public IEnumerable<IPlayer> RemotePlayers
         {
             get { return Enumerable.Empty<IPlayer>(); }
