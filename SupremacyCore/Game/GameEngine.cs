@@ -490,7 +490,9 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Options: GamePace = {0}", GameContext.Current.Options.GamePace);
             GameLog.Core.General.InfoFormat("Options: TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
 
-
+            /* With StrengthModifier it is possible to increase some stuff or to decrease */
+            /* default value is 1.0 - range shall be 0.1 to 1.9 */
+            /* all modifier are working in generell, not race-speficic */
             Table strengthTable = GameContext.Current.Tables.StrengthTables["StrengthModifier"];
             float EspionageMod = Number.ParseSingle(strengthTable["EspionageMod"][0]);
             float SabotageMod = Number.ParseSingle(strengthTable["SabotageMod"][0]);
