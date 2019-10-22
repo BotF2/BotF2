@@ -54,7 +54,8 @@ namespace Supremacy.Client.Views
         {
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
             Model.SpyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
-            Model.SpyCivManagers = DesignTimeAppContext.Instance.SpyEmpires;
+            //Model.SpyCivManagers = DesignTimeAppContext.Instance.SpyEmpires;
+            //Model.  for scan blocked ships, and the rest
         }
 
 

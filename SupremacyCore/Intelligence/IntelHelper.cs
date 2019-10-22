@@ -11,14 +11,28 @@ namespace Supremacy.Intelligence
     public static class IntelHelper
     {
         private static CivilizationManager _localPlayer;
-        private static CivilizationManagerMap _spyedCivs;
+        private static CivilizationManagerMap _spyedCivManagers;
+        // static CivilizationManagerMap _spiedCivManagers;
+
+        //static IntelHelper()
+        //{
+        //    _spiedCivManager
+        //}
+
+        public static CivilizationManagerMap SpiedCivManagers
+        {
+            get
+            {
+                return _spyedCivManagers;
+            }
+        }
 
         public static List<Civilization> SpyCivs
         {
             get 
             {
                 List<Civilization> myCivs = new List<Civilization>();
-                foreach (CivilizationManager civManager in _spyedCivs)
+                foreach (CivilizationManager civManager in _spyedCivManagers)
                 {
                     myCivs.Add(civManager.Civilization);
                 }
@@ -33,7 +47,7 @@ namespace Supremacy.Intelligence
 
         public static CivilizationManagerMap SendSpiedCivilizations(CivilizationManagerMap civManageList)
         {
-            _spyedCivs = civManageList;// hope we get one major empire that is not local player
+            _spyedCivManagers = civManageList;// hope we get one major empire that is not local player
             return  civManageList; 
         }
         public static CivilizationManager SendLocalPlayer(CivilizationManager localPlayer)

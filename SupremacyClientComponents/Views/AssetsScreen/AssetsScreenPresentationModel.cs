@@ -12,6 +12,7 @@ using Supremacy.Orbitals;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
 using Supremacy.Types;
+using Supremacy.Intelligence;
 
 namespace Supremacy.Client.Views
 {
@@ -29,7 +30,7 @@ namespace Supremacy.Client.Views
            
             _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
             _spyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
-            _spyCivManagers = DesignTimeAppContext.Instance.SpyEmpires;
+            _spyCivManagers = IntelHelper.SpiedCivManagers;
             _localPlayer = DesignTimeAppContext.Instance.LocalPlayer;
            // var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
 
