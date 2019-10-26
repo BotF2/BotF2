@@ -232,8 +232,9 @@ namespace Supremacy.Orbitals
             civManager.MapData.SetExplored(location, true);
             civManager.MapData.SetScanned(location, true, SensorRange);
             civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
-            GameLog.Core.Stations.DebugFormat("spawnedInstance ={0}, Owner ={1}, Location ={2}##########" );
+
             spawnedInstance = station;
+            GameLog.Core.Stations.DebugFormat("spawnedInstance = {0} {1}, Owner = {2}, Location = {3} ##########", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location); 
             return true;
         }
 
