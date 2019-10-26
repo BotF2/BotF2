@@ -15,130 +15,13 @@
                        Background="#66000000"
                        UseLayoutRounding="True"
                        Margin="6,6,6,6">
-    
-    
+
+
     <TabControl>
 
-        <!--Left side COMBAT_FRIENDLY_UNITS source path & items name to DataTemple in .cs  +-->
-        <GroupBox Header="{s:StringResource COMBAT_FRIENDLY_UNITS}"
-                  Foreground="Ivory"
-                  Background="Black"
-                    Grid.Column="0"
-                    Grid.Row="1"
-                  VerticalAlignment="Top"
-                  Height="620"
-                  MaxHeight ="620"
-                    Width="Auto"            
-                    Margin="2">
-            <TreeView x:Name="FriendlyAssetsTree"
-                    ItemsSource="{Binding FriendlyCivs}"
-                    BorderThickness="0"
-                    VerticalAlignment="Top"
-                    Height="541"
-                    FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                    FontSize="10pt"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <Border x:Name="FriendsBorder"
-                        Grid.Column="0"
-                        Grid.Row="1"
-                        DockPanel.Dock="Top"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Left"
-                        Margin="0,4,4,10"
-                        Width="180"
-                        Height="auto"
-                        BorderBrush="Gray"
-                        BorderThickness="4"
-                        CornerRadius="8">
-                    <ListBox x:Name="SpyCivilizationsItems"  
-                            IsSynchronizedWithCurrentItem="True"
-                            ItemsSource="{Binding}"
-                            ItemTemplate="{StaticResource FriendTreeTemplate}"
-                            Grid.Column="0"
-                            Grid.Row="1"     
-                            BorderThickness="0" 
-                            VerticalAlignment="Top"
-                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                            FontSize="14pt">
-                    </ListBox>
-                </Border>
-                <StackPanel 
-                            Grid.Column="0"
-                            Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left">
-                    <Border x:Name="ImageBorderFriend"
-                                DockPanel.Dock="Left"
-                                VerticalAlignment="Top"
-                                Width="55"
-                                Height="52"
-                                BorderBrush="White"
-                                BorderThickness="2"
-                                CornerRadius="8">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding Path=Owner, Converter={StaticResource CivInsigniaConverter}}"
-                                Stretch="UniformToFill"/>
-                        </Border.Background>
-                    </Border>
-                    <StackPanel 
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Orientation="Vertical"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Left">
-                        <StackPanel 
-                                    Grid.Column="0"
-                                    Grid.Row="1"
-                                    Grid.ColumnSpan="2"
-                                    Margin="4,0,0,0"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Top"
-                                    HorizontalAlignment="Left">
-                            <TextBlock  Foreground="White"
-                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                        FontSize="16pt" 
-                                        Text="{s:StringResource COMBAT_FRIENDLY_FIREPOWER}"/>
-                            <TextBlock Foreground="White"
-                                       Margin="4,0,0,0"
-                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                        FontSize="16pt" 
-                                        Text="{Binding Path=FriendlyEmpireStrength, StringFormat='#,#\\'}"/>
-                        </StackPanel>
-                        <StackPanel 
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Margin="4,0,0,0"
-                                Orientation="Horizontal"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Left">
-                            <TextBlock Foreground="DarkOrange"
-                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                        FontSize="16pt" 
-                                        Text="{s:StringResource COMBAT_OTHERS_FIREPOWER}"/>
-                            <TextBlock Foreground="Red" 
-                                        Margin="4,0,0,0"
-                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"                                      
-                                        FontSize="16pt" 
-                                        Text="{Binding Path=AllHostileEmpireStrength, StringFormat='#,#\\'}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-                <TreeViewItem Name="FriendlyStationItem"/>
-                <TreeViewItem Name="FriendlyCombatantItems" IsExpanded="True"/>
-                <TreeViewItem Name="FriendlyNonCombatantItems" IsExpanded="True"/>
-                <TreeViewItem Name="FriendlyDestroyedItems" IsExpanded="True"/>
-                <TreeViewItem Name="FriendlyAssimilatedItems" IsExpanded="True"/>
-                <TreeViewItem Name="FriendlyEscapedItems" IsExpanded="True"/>
-            </TreeView>
-        </GroupBox>
-        <!--TAB for Spyed Colonies-->
-        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
-            <!--Grid just for Head line-->
+        <!--TAB for Spied Colonies-->
+        <!--<TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
@@ -156,14 +39,13 @@
                         Grid.Row="0"  
                         VerticalAlignment="Top"
                         Text="Civilization"
-
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock
                         Grid.Column="2" 
                         Grid.Row="0"
-                        Text="{Binding Path=SpyCivName}" 
+                        Text="{Binding Path=SpiedOneCivName}" 
                         VerticalAlignment="Top"
                         Foreground="Crimson"
                         FontStyle="Oblique"
@@ -179,13 +61,78 @@
                     <TextBlock 
                         Grid.Column="2" 
                         Grid.Row="0"
-                        Text="{Binding Path=SpyTotalPopulation}" 
+                        Text="{Binding Path=SpiedOneTotalPopulation}" 
                         VerticalAlignment="Bottom"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                 </Grid>
-                <v:SpyColonyList Grid.Row="2" DataContext="{Binding Path=SpyColonies}" />
+                <v:SpiedOneColonyList Grid.Row="2" DataContext="{Binding Path=SpiedOneColonies}" />
+                <Button x:Name="SummaryButton"
+                        Grid.Row="0"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Width="250"
+                        Height="30"
+                        Style="{StaticResource LCARS_StandardButtonStyle}"
+                        Content="Click for Summary"
+                        FontSize="14pt"
+                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                        Foreground="Black"
+                        Margin="0,0,0,0"
+                        Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
+            </Grid>
+        </TabItem>--> 
+        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
+           <!-- Grid just for Head line -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0"
+                        Grid.Row="0"  
+                        VerticalAlignment="Top"
+                        Text="Civilization"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                <!--    <TextBlock
+                        Grid.Column="2" 
+                        Grid.Row="0"
+                        Text="{Binding Path=SpiedOneCivName}" 
+                        VerticalAlignment="Top"
+                        Foreground="Crimson"
+                        FontStyle="Oblique"
+                        FontSize="12pt"/> -->
+                    <TextBlock 
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        VerticalAlignment="Bottom"
+                        Text="Total Empire Population"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <!--<TextBlock 
+                        Grid.Column="2" 
+                        Grid.Row="0"
+                        Text="{Binding Path=SpiedOneTotalPopulation}" 
+                        VerticalAlignment="Bottom"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>-->
+                </Grid>
+                <v:SpiedOneColonyList Grid.Row="2" DataContext="{Binding Path=SpiedOneColonies}" />
+                <v:SpiedTwoColonyList Grid.Row="3" DataContext="{Binding Path=SpiedTwoColonies}" />
                 <Button x:Name="SummaryButton"
                         Grid.Row="0"
                         VerticalAlignment="Top"
@@ -201,12 +148,14 @@
                         Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
             </Grid>
         </TabItem>
+
         <!--TAB for COLONIES-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=COLONIES_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
@@ -227,7 +176,9 @@
                         FontSize="12pt"/>
                 </Grid>
                 <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
+                <!--<v:SpyColonyList Grid.Row="3" DataContext="{Binding Path=SpiedOneColonies}" /> -->
             </Grid>
+
         </TabItem>
         <!--TAB for STATIONS-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=STATIONS_TAB_HEADER}">

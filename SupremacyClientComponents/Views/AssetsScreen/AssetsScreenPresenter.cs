@@ -38,7 +38,13 @@ namespace Supremacy.Client.Views
         {
             base.TerminateOverride();
             Model.Colonies = null;
-            Model.SpyColonies = null;
+            //Model.SpyColonies = null;
+            Model.SpiedOneColonies = null;
+            Model.SpiedTwoColonies = null;
+            //Model.SpiedThreeColonies = null;
+            //Model.SpiedFourColonies = null;
+            //Model.SpiedFiveColonies = null;
+            //Model.SpiedSixColonies = null;
         }
 
         #endregion
@@ -53,11 +59,13 @@ namespace Supremacy.Client.Views
         private void Update()
         {
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
-            Model.SpyColonies = DesignTimeAppContext.Instance.SpyEmpire.Colonies;
+             Model.SpiedOneColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
+            Model.SpiedTwoColonies = DesignTimeAppContext.Instance.SpiedTwoEmpire.Colonies;
+            //Model.SpiedThreeColonies = DesignTimeAppContext.Instance.SpiedThreeEmpire.Colonies;
+            //Model.SpiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
+            //Model.SpiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
+            //Model.SpiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
         }
-
-
-
         #endregion
     }
 }
