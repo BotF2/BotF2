@@ -16,6 +16,7 @@ using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
+using Supremacy.Scripting;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -834,8 +835,17 @@ namespace Supremacy.Tech
             var buildCondition = design.BuildCondition;
             if (buildCondition != null)
             {
-                //TODO
-                return true;
+                // used e.g. for MARTIAL LAW which is just appearing at low morale level
+
+               var result = buildCondition.Evaluate<bool>(
+                   new RuntimeScriptParameters
+                   {
+                        new RuntimeScriptParameter(buildCondition.Parameters[0], colony),
+                        new RuntimeScriptParameter(buildCondition.Parameters[1], design)
+                   });
+
+                if (!result)
+                    return false;
             }
 
             var system = colony.System;
