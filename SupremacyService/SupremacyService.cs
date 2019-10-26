@@ -496,8 +496,18 @@ namespace Supremacy.WCF
                 GameLog.Server.General.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
 
                 stopwatch.Restart();
+                OH:
+                try
+                { 
+                    await DoTurnCore().ConfigureAwait(false);
+                }
+                catch (Exception)
+                {
+                    GameLog.Core.General.DebugFormat("Hit await, ************** issue #398 *******************");
+                    Thread.Sleep(0050);
+                    goto OH;      
+                }
 
-                await DoTurnCore().ConfigureAwait(false);
 
                 GameLog.Server.General.InfoFormat("Turn processing time: {0}", stopwatch.Elapsed);
 
