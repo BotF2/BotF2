@@ -2,17 +2,13 @@
 
 namespace Supremacy.Client.Views
 {
-    public partial class ColonyList
+    public partial class SpiedOneColonyList
     {
-        public ColonyList()
+        public SpiedOneColonyList()
         {
             InitializeComponent();
         }
 
-        //public SpiedOneColonyList()
-        //{
-        //    InitializeComponent();
-        //}
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return null;

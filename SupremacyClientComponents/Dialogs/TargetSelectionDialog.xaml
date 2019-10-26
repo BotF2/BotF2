@@ -52,7 +52,7 @@
             <TextBlock Grid.ColumnSpan="1"
                FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-               FontSize="24pt"
+               FontSize="16pt"
                Text="{scc:StringResource Key=DOUBLE_CLICK}" />
                 <!-- OK button not working -->
       <!--<Button Margin="3,0,3,0"

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation.Peers;
-
 using Supremacy.Utility;
 using Supremacy.Client.Context;
 
