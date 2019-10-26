@@ -130,49 +130,52 @@ namespace Supremacy.Client
 
             GameLog.Client.General.DebugFormat("EmpireID-Selected={0} ", AppContext.LocalPlayer.EmpireID);
 
+
+            // at this point LocalPlayer has a defined EmpireID = an int, but no Empire !!
+
             //Federation
-            if ((AppContext.LocalPlayer.Empire.Key == "FEDERATION") && (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No)) {
+            if ((AppContext.LocalPlayer.EmpireID == 0) && (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No)) {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Terran Empire":
-            if ((AppContext.LocalPlayer.Empire.Key == "TERRANEMPIRE") && (OptionsPanel.Options.TerranEmpirePlayable == EmpirePlayable.No))
+            if ((AppContext.LocalPlayer.EmpireID == 1) && (OptionsPanel.Options.TerranEmpirePlayable == EmpirePlayable.No))
             {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_2_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Romulans":
-            if ((AppContext.LocalPlayer.Empire.Key == "ROMULANS") && (OptionsPanel.Options.RomulanPlayable == EmpirePlayable.No))
+            if ((AppContext.LocalPlayer.EmpireID == 2) && (OptionsPanel.Options.RomulanPlayable == EmpirePlayable.No))
             {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
             
             //"Klingons":
-            if ((AppContext.LocalPlayer.Empire.Key == "KLINGONS") && (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No))
+            if ((AppContext.LocalPlayer.EmpireID == 3) && (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No))
             {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
             
             //"Cardassians":
-            if ((AppContext.LocalPlayer.Empire.Key == "CARDASSIANS") && (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No))
+            if ((AppContext.LocalPlayer.EmpireID == 4) && (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No))
             {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_5_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Dominion":
-            if ((AppContext.LocalPlayer.Empire.Key == "DOMINION") && (OptionsPanel.Options.DominionPlayable == EmpirePlayable.No))
+            if ((AppContext.LocalPlayer.EmpireID == 5) && (OptionsPanel.Options.DominionPlayable == EmpirePlayable.No))
             {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_6_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
 
             //"Borg":
-            if ((AppContext.LocalPlayer.Empire.Key == "BORG") && (OptionsPanel.Options.BorgPlayable == EmpirePlayable.No))
+            if ((AppContext.LocalPlayer.EmpireID == 6) && (OptionsPanel.Options.BorgPlayable == EmpirePlayable.No))
             {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_7_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
