@@ -982,7 +982,12 @@ namespace Supremacy.Tech
         /// <value>The build cost.</value>
         public int BuildCost
         {
-            get { return _buildCost; }
+            get 
+            {
+                if (_buildCost == 0)
+                    _buildCost = 1;  // e.g. MARTIAL LAW  // a zero causes a crash if it is devided by _buildCosts for calculating percentage
+                return _buildCost; 
+            }
             set { _buildCost = Math.Max(value, 0); }
         }
 
