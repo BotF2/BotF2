@@ -823,8 +823,7 @@ namespace Supremacy.Game
                                 !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
                                 continue;
                         combats.Add(assets);
-                            combatLocations.Add(fleet.Location);
-                        //}                        
+                            combatLocations.Add(fleet.Location);                     
                     }
                 }
                 if (!invasionLocations.Contains(fleet.Location))
