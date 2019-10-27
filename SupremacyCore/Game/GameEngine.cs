@@ -490,6 +490,68 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Options: GamePace = {0}", GameContext.Current.Options.GamePace);
             GameLog.Core.General.InfoFormat("Options: TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
 
+            /* With StrengthModifier it is possible to increase some stuff or to decrease */
+            /* default value is 1.0 - range shall be 0.1 to 1.9 */
+            /* all modifier are working in generell, not race-speficic */
+            Table strengthTable = GameContext.Current.Tables.StrengthTables["StrengthModifier"];
+            float EspionageMod = Number.ParseSingle(strengthTable["EspionageMod"][0]);
+            float SabotageMod = Number.ParseSingle(strengthTable["SabotageMod"][0]);
+            float InternalSecurityMod = Number.ParseSingle(strengthTable["InternalSecurityMod"][0]);
+            float ShipProductionMod = Number.ParseSingle(strengthTable["ShipProductionMod"][0]);
+            float ScienceSpeedMod = Number.ParseSingle(strengthTable["ScienceSpeedMod"][0]);
+            float MinorPowerMod = Number.ParseSingle(strengthTable["MinorPowerMod"][0]);
+            float MiningMod = Number.ParseSingle(strengthTable["MiningMod"][0]);
+            float CreditsMod = Number.ParseSingle(strengthTable["CreditsMod"][0]);
+            float DiplomacyTrustMod = Number.ParseSingle(strengthTable["DiplomacyTrustMod"][0]);
+            float DiplomacyRegardMod = Number.ParseSingle(strengthTable["DiplomacyRegardMod"][0]);
+            float FoodProductionMod = Number.ParseSingle(strengthTable["FoodProductionMod"][0]);
+            float RaidingMod = Number.ParseSingle(strengthTable["RaidingMod"][0]);
+            float ShipVisibilityMod = Number.ParseSingle(strengthTable["ShipVisibilityMod"][0]);
+            float StationsStrenghtMod = Number.ParseSingle(strengthTable["StationsStrenghtMod"][0]);
+            float OrbitalBatteryStrenghtMod = Number.ParseSingle(strengthTable["OrbitalBatteryStrenghtMod"][0]);
+            float TroopTransportStrenghtMod = Number.ParseSingle(strengthTable["TroopTransportStrenghtMod"][0]);
+            float ColonyTroopStrenghtMod = Number.ParseSingle(strengthTable["ColonyTroopStrenghtMod"][0]);
+
+            var newline = Environment.NewLine;
+            GameLog.Core.GameInitData.DebugFormat("StrengthModifier: " + newline +
+                "EspionageMod = {0}" + newline +
+                "SabotageMod = {1}" + newline + 
+                "InternalSecurityMod = {2}" + newline +
+                "ShipProductionMod = {3}" + newline +
+                "ScienceSpeedMod = {4}" + newline +
+                "MinorPowerMod = {5}" + newline +
+                "MiningMod = {6}" + newline +
+                "CreditsMod = {7}" + newline + 
+                "DiplomacyTrustMod = {8}" + newline +
+                "DiplomacyRegardMod = {9}" + newline +
+                "FoodProductionMod = {10}" + newline +
+                "RaidingMod = {11}" + newline +
+                "ShipVisibilityMod = {12}" + newline +
+                "StationsStrenghtMod = {13}" + newline +
+                "OrbitalBatteryStrenghtMod = {14}" + newline +
+                "TroopTransportStrenghtMod = {15}" + newline +
+                "ColonyTroopStrenghtMod = {16}" + newline 
+                , EspionageMod
+                , SabotageMod
+                , InternalSecurityMod
+                , ShipProductionMod
+                , ScienceSpeedMod
+                , MinorPowerMod
+                , MiningMod
+                , CreditsMod
+                , DiplomacyTrustMod
+                , DiplomacyRegardMod
+                , FoodProductionMod
+                , RaidingMod
+                , ShipVisibilityMod
+                , StationsStrenghtMod
+                , OrbitalBatteryStrenghtMod
+                , TroopTransportStrenghtMod
+                , ColonyTroopStrenghtMod
+                );
+
+
+
             game.TurnNumber = 1;
         }
         #endregion

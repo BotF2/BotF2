@@ -77,6 +77,8 @@
         <TextBlock Grid.Row="23" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F11 = Cheat Menu (not in MultiPlayer)</TextBlock>
         <TextBlock Grid.Row="25" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > F12 = nothing</TextBlock>
         <TextBlock Grid.Row="27" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > ESC = just try</TextBlock>
+        <TextBlock Grid.Row="31" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > look at \Resources\Tables to make some modifying</TextBlock>
+        <TextBlock Grid.Row="33" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" > > esp.: StrengthTables.txt - adapt to your preferences 0.1 to 1.9</TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > ALT + F12 = toggles window and full screen (on laptops also use FN-Key), ALT + ENTER while running Visual Studio</TextBlock>
         <TextBlock Grid.Row="19" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use arrow keys right or left in System screen</TextBlock>
         <TextBlock Grid.Row="17" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" > > use CTRL for REDEPLOY more than one ship</TextBlock>
