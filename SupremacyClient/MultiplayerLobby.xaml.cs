@@ -133,7 +133,7 @@ namespace Supremacy.Client
 
             // at this point LocalPlayer has a defined EmpireID = an int, but no Empire !!
 
-            //Federation !!! Do not chagne Key to EmpireID. ID is not set at this stage and will crash multiplayer games in the lobby
+            //Federation !!! Do not change EmpireID key. Key is not set at this stage and will crash multiplayer games at the lobby
             if ((AppContext.LocalPlayer.EmpireID == 0) && (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No)) {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
