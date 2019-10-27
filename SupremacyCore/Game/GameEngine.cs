@@ -818,9 +818,11 @@ namespace Supremacy.Game
                     if (assets.Count > 1 && fleetsOwners.Count > 1)
                     {
                         foreach (var nextFleet in fleetsAtLocation)
-                            if (fleet.Owner == nextFleet.Owner || CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner))
+                            if (fleet.Owner == nextFleet.Owner ||
+                                CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner) ||
+                                !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
                                 continue;
-                            combats.Add(assets);
+                        combats.Add(assets);
                             combatLocations.Add(fleet.Location);
                         //}                        
                     }
