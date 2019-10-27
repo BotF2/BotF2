@@ -73,20 +73,19 @@ namespace Supremacy.Client
                     savedGame.IsMultiplayerGame ? multiplayerDescription : singlePlayerDescription);
             }
 
-            Application.Current.Dispatcher.Invoke(
+            object v = _ = Application.Current.Dispatcher.Invoke(
                 DispatcherPriority.Background,
                 (Action)
                 (() =>
-                 {
-                     if (jumpListCreated)
-                     {
-                         JumpList.SetJumpList(
-                             Application.Current,
-                             jumpList);
-                     }
-
-                     jumpList.Apply();
-                 }));
+                {
+                    if (jumpListCreated)
+                    {
+                        JumpList.SetJumpList(
+                            Application.Current,
+                            jumpList);
+                    }
+                    jumpList.Apply();
+                }));
         }
 
         private static void AddToJumpList(
