@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using Microsoft.Practices.ServiceLocation;
+using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
@@ -430,7 +431,7 @@ namespace Supremacy.Combat
                     //GameLog.Core.CombatDetails.DebugFormat("beginning calculating empireStrengths for {0}", //, current value =  for {0} {1} ({2}) = {3}", civ.Owner.Key);
 
                     int currentEmpireStrength = 0;
-                   
+
                     foreach (var cs in _assets)  // only combat ships
                     {
                         //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
@@ -468,6 +469,28 @@ namespace Supremacy.Combat
                         hostileAssets.Add(otherAsset);
                         hostileAssets.Distinct().ToList();
                         GameLog.Core.Combat.DebugFormat("asset for {0} added to hostilies", otherAsset.Owner.Key);
+                    }
+                }
+                List<CombatAssets> leftOutAssets = new List<CombatAssets>();
+                foreach (var missedAsset1 in _assets)
+                {
+                    if (!friendlyAssets.Contains(missedAsset1) && !hostileAssets.Contains(missedAsset1))
+                    {
+                        leftOutAssets.Add(missedAsset1);
+                    }
+                }
+                foreach (var friendlyAsset in friendlyAssets)
+                {
+                    foreach (var missedAsset2 in leftOutAssets)
+                    {
+                        var diplomacyData = GameContext.Current.DiplomacyData[missedAsset2.Owner, friendlyAsset.Owner];
+                        if(diplomacyData.Status == ForeignPowerStatus.OwnerIsMember ||
+                            diplomacyData.Status == ForeignPowerStatus.CounterpartyIsMember ||
+                            diplomacyData.Status == ForeignPowerStatus.Allied)
+                            {
+                            friendlyAssets.Add(missedAsset2);
+                            }
+
                     }
                 }
                 var update = new CombatUpdate(
