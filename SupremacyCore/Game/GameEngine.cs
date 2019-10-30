@@ -677,34 +677,50 @@ namespace Supremacy.Game
                 {
                     if (civ1 == civ2)
                         continue;
+
+                    if (civ1.Key == "Borg")
+                    {
+                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        continue; // Borg don't accept anything
+                    }
+                    if (civ2.Key == "Borg")
+                    {
+                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        continue; // Borg don't accept anything
+                    }
+                   
+                    if (civ2.CivID > 6 && civ1.CivID < 7) // only a minor vs a major
+                    {
+                        foreach (Civilization otherCiv in GameContext.Current.Civilizations)
+                        {
+                            var diplomatOther = Diplomat.Get(otherCiv);
+                            var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                            if (otherForeignPowerStatus == ForeignPowerStatus.OwnerIsMember)
+                            {
+                                continue;
+                            }
+                        }                 
+                    }
+                    if (civ2.CivID < 7 && civ1.CivID > 6) // only a major vs a minor
+                    {
+                        foreach (Civilization otherCiv in GameContext.Current.Civilizations)
+                        {
+                            var diplomatOther = Diplomat.Get(otherCiv);
+                            var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                            if (otherForeignPowerStatus == ForeignPowerStatus.OwnerIsMember)
+                            {
+                                continue;
+                            }
+                        }
+                    }
                     var diplomat1 = Diplomat.Get(civ1);
-                    var diplomat2 = Diplomat.Get(civ2);
-                    var firstForeignPowerStatus = diplomat2.GetForeignPower(civ1).DiplomacyData.Status;
                     var secondForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-
-                    if (secondForeignPowerStatus == ForeignPowerStatus.OwnerIsMember ||
-                        secondForeignPowerStatus == ForeignPowerStatus.Allied ||
-                        firstForeignPowerStatus == ForeignPowerStatus.OwnerIsMember ||
-                        firstForeignPowerStatus == ForeignPowerStatus.Allied)
-                        continue;
-
                     var diplomacyData = GameContext.Current.DiplomacyData[civ1, civ2];
                     var secondForeignPower = diplomat1.GetForeignPower(civ2);
 
                     GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, firstForeignPowerStatus);
+                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, secondForeignPowerStatus);
 
-                    if (civ1.Key == "Borg")   
-                    {
-                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                        continue; // Borg don't accept anything
-                    }
-
-                    if (civ2.Key == "Borg")    
-                    {
-                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                        continue; // Borg don't accept anything
-                    }
 
                     switch (secondForeignPower.PendingAction)
                     {
