@@ -673,15 +673,16 @@ namespace Supremacy.Game
              */
             foreach (var civ1 in GameContext.Current.Civilizations)
             {
-
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
+                    if (civ1 == civ2)
+                        continue;
                     var diplomat1 = Diplomat.Get(civ1);
                     var diplomat2 = Diplomat.Get(civ2);
                     var firstForeignPowerStatus = diplomat2.GetForeignPower(civ1).DiplomacyData.Status;
                     var secondForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
 
-                    if (civ1 == civ2 || secondForeignPowerStatus == ForeignPowerStatus.OwnerIsMember ||
+                    if (secondForeignPowerStatus == ForeignPowerStatus.OwnerIsMember ||
                         secondForeignPowerStatus == ForeignPowerStatus.Allied ||
                         firstForeignPowerStatus == ForeignPowerStatus.OwnerIsMember ||
                         firstForeignPowerStatus == ForeignPowerStatus.Allied)
@@ -693,13 +694,13 @@ namespace Supremacy.Game
                     GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, firstForeignPowerStatus);
 
-                    if (civ1.Key == "Borg")    /// and contact is made
+                    if (civ1.Key == "Borg")   
                     {
                         //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
                     }
 
-                    if (civ2.Key == "Borg")    /// and contact is made
+                    if (civ2.Key == "Borg")    
                     {
                         //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
