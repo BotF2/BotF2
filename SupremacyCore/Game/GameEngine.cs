@@ -673,18 +673,25 @@ namespace Supremacy.Game
              */
             foreach (var civ1 in GameContext.Current.Civilizations)
             {
-                var diplomat = Diplomat.Get(civ1);
 
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
-                    if (civ1 == civ2)
+                    var diplomat1 = Diplomat.Get(civ1);
+                    var diplomat2 = Diplomat.Get(civ2);
+                    var firstForeignPowerStatus = diplomat2.GetForeignPower(civ1).DiplomacyData.Status;
+                    var secondForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+
+                    if (civ1 == civ2 || secondForeignPowerStatus == ForeignPowerStatus.OwnerIsMember ||
+                        secondForeignPowerStatus == ForeignPowerStatus.Allied ||
+                        firstForeignPowerStatus == ForeignPowerStatus.OwnerIsMember ||
+                        firstForeignPowerStatus == ForeignPowerStatus.Allied)
                         continue;
 
-                    var foreignPower = diplomat.GetForeignPower(civ2);
-                    var foreignPowerStatus = diplomat.GetForeignPower(civ2).DiplomacyData.Status;
-                    GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus);
+                    var diplomacyData = GameContext.Current.DiplomacyData[civ1, civ2];
+                    var secondForeignPower = diplomat1.GetForeignPower(civ2);
 
+                    GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, firstForeignPowerStatus);
 
                     if (civ1.Key == "Borg")    /// and contact is made
                     {
@@ -697,24 +704,20 @@ namespace Supremacy.Game
                         //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
                     }
-                    if (civ1.)
-                    {
-                        continue;
-                    }
 
-                    switch (foreignPower.PendingAction)
+                    switch (secondForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                            if (foreignPower.LastProposalReceived != null)
-                                AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                            if (secondForeignPower.LastProposalReceived != null)
+                                AcceptProposalVisitor.Visit(secondForeignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
-                            if (foreignPower.LastProposalReceived != null)
-                                RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
+                            if (secondForeignPower.LastProposalReceived != null)
+                                RejectProposalVisitor.Visit(secondForeignPower.LastProposalReceived);                            
                             break;
                     }
 
-                    foreignPower.PendingAction = PendingDiplomacyAction.None;
+                    secondForeignPower.PendingAction = PendingDiplomacyAction.None;
                 }
             }
 
