@@ -79,11 +79,6 @@ namespace Supremacy.Intelligence
         {
             get { return _spiedCivSix; }
         }
-        //public static CivilizationManagerMap SendSpiedCivilizations(CivilizationManagerMap civManageList) // turn off when 1 to 6 works
-        //{
-        //    _spyedCivs = civManageList;
-        //    return civManageList;
-        //}
         public static CivilizationManager SendLocalPlayer(CivilizationManager localPlayer)
         {
             _localPlayer = localPlayer;
