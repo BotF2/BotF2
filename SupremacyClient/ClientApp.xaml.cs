@@ -390,6 +390,18 @@ namespace Supremacy.Client
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
                         if (File.Exists("Resources/SoundFX/Menu/LoadingSplash.wav"))
                             player.Play();
+                        else
+                        {
+                            GameLog.Client.Audio.InfoFormat("Resources/SoundFX/Menu/LoadingSplash.wav not found...");
+
+                            /*Important*/
+                            GameLog.Client.Audio.WarnFormat("wav format is needed for several files which are played by System.Media (out of WPF = xaml files), not by the code's own sound player: ");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for LoadingSplash.wav");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for REDALERT.WAV");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for ButtonClick.wav");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for GameContextMenu.wav");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for GameContextMenuItem.wav (if used)");
+                        }
                     }
                       
                     if (File.Exists("Resources\\Data\\Civilizations.xml"))
