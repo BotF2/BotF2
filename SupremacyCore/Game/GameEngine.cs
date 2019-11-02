@@ -688,34 +688,50 @@ namespace Supremacy.Game
                         //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
                     }
-
+                    var diplomat1 = Diplomat.Get(civ1);
+                    var diplomat2 = Diplomat.Get(civ2);
                     if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
                     {
-                        var diplomat2 = Diplomat.Get(civ2);
-                        foreach (Civilization aMajorCiv in GameContext.Current.Civilizations)
+                        if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
                         {
-                            if (aMajorCiv.IsEmpire && aMajorCiv != civ1)
+                            continue;
+                        }
+                        else
+                        {
+                            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
                             {
-                                var otherForeignPowerStatus = diplomat2.GetForeignPower(aMajorCiv).DiplomacyData.Status;
-                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                if (aCiv.IsEmpire && aCiv != civ1)
                                 {
-                                    continue;
+                                    var diplomatOther = Diplomat.Get(aCiv);
+                                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                    {
+                                        continue;
+                                    }
                                 }
                             }
-                        }                 
+                        }
+                        
                     }
-                    var diplomat1 = Diplomat.Get(civ1);
 
                     if (!civ1.IsEmpire && civ2.IsEmpire)
                     {
-                        foreach (Civilization aMajorCiv in GameContext.Current.Civilizations)
+                        if (diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
                         {
-                            if (aMajorCiv.IsEmpire && aMajorCiv != civ2)
+                            continue;
+                        }
+                        else
+                        {
+                            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
                             {
-                                var otherForeignPowerStatus = diplomat1.GetForeignPower(aMajorCiv).DiplomacyData.Status;
-                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                if (aCiv.IsEmpire && aCiv != civ2)
                                 {
-                                    continue;
+                                    var diplomatOther = Diplomat.Get(aCiv);
+                                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                    {
+                                        continue;
+                                    }
                                 }
                             }
                         }
