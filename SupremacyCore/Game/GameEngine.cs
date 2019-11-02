@@ -865,8 +865,8 @@ namespace Supremacy.Game
                                 CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner) ||
                                 !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
                                 continue;
-                        combats.Add(assets);
-                            combatLocations.Add(fleet.Location);                     
+                        combats.Add(assets); // we add all the ships at this location if there is any combat. Combat decides who is in and on what side
+                        combatLocations.Add(fleet.Location);                     
                     }
                 }
                 if (!invasionLocations.Contains(fleet.Location))

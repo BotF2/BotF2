@@ -241,7 +241,7 @@ namespace Supremacy.Combat
                 case ForeignPowerStatus.Self:
                 //case ForeignPowerStatus.Peace:
                 case ForeignPowerStatus.Friendly:
-                case ForeignPowerStatus.Affiliated:  //try this diplomatic level for not opening the combat window
+                case ForeignPowerStatus.Affiliated:  
                 case ForeignPowerStatus.Allied:
                 case ForeignPowerStatus.OwnerIsMember:
                 case ForeignPowerStatus.CounterpartyIsMember:
