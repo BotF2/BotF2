@@ -673,45 +673,88 @@ namespace Supremacy.Game
              */
             foreach (var civ1 in GameContext.Current.Civilizations)
             {
-                var diplomat = Diplomat.Get(civ1);
-
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
                     if (civ1 == civ2)
                         continue;
 
+                    if (civ1.CivID == 6)
+                    {
+                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        continue; // Borg don't accept anything
+                    }
+                    if (civ2.CivID == 6)
+                    {
+                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        continue; // Borg don't accept anything
+                    }
+                    var diplomat1 = Diplomat.Get(civ1);
+                    var diplomat2 = Diplomat.Get(civ2);
+                    if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
+                    {
+                        if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                            {
+                                if (aCiv.IsEmpire && aCiv != civ1)
+                                {
+                                    var diplomatOther = Diplomat.Get(aCiv);
+                                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
 
-                    var foreignPower = diplomat.GetForeignPower(civ2);
-                    var foreignPowerStatus = diplomat.GetForeignPower(civ2).DiplomacyData.Status;
+                    if (!civ1.IsEmpire && civ2.IsEmpire)
+                    {
+                        if (diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                            {
+                                if (aCiv.IsEmpire && aCiv != civ2)
+                                {
+                                    var diplomatOther = Diplomat.Get(aCiv);
+                                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    var ForeignPower = diplomat1.GetForeignPower(civ2);
+                    var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus);
+                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
-
-                    if (civ1.Key == "Borg")    /// and contact is made
-                    {
-                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                        continue; // Borg don't accept anything
-                    }
-
-                    if (civ2.Key == "Borg")    /// and contact is made
-                    {
-                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                        continue; // Borg don't accept anything
-                    }
-
-                    switch (foreignPower.PendingAction)
+                    switch (ForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                            if (foreignPower.LastProposalReceived != null)
-                                AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                            if (ForeignPower.LastProposalReceived != null)
+                                AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
-                            if (foreignPower.LastProposalReceived != null)
-                                RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
+                            if (ForeignPower.LastProposalReceived != null)
+                                RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
                     }
 
-                    foreignPower.PendingAction = PendingDiplomacyAction.None;
+                    ForeignPower.PendingAction = PendingDiplomacyAction.None;
                 }
             }
 
