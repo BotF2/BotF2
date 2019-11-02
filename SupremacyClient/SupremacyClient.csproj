@@ -273,6 +273,18 @@
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
       <DependentUpon>AssetsScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AssetsScreen\SpiedSixColonyList.xaml.cs">
+      <DependentUpon>SpiedSixColonyList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AssetsScreen\SpiedFiveColonyList.xaml.cs">
+      <DependentUpon>SpiedFiveColonyList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AssetsScreen\SpiedFourColonyList.xaml.cs">
+      <DependentUpon>SpiedFourColonyList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AssetsScreen\SpiedThreeColonyList.xaml.cs">
+      <DependentUpon>SpiedThreeColonyList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AssetsScreen\SpiedTwoColonyList.xaml.cs">
       <DependentUpon>SpiedTwoColonyList.xaml</DependentUpon>
     </Compile>
@@ -831,6 +843,22 @@
     <Page Include="Views\AssetsScreen\AssetsScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AssetsScreen\SpiedSixColonyList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AssetsScreen\SpiedFiveColonyList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AssetsScreen\SpiedFourColonyList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AssetsScreen\SpiedThreeColonyList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AssetsScreen\SpiedTwoColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>

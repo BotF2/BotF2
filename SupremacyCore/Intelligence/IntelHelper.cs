@@ -11,8 +11,6 @@ namespace Supremacy.Intelligence
     public static class IntelHelper
     {
         private static CivilizationManager _localPlayer;
-        //private static CivilizationManagerMap _spyedCivs; 
-        private static CivilizationManager _spyCiv;
         private static CivilizationManager _spiedCivOne;
         private static CivilizationManager _spiedCivTwo;
         private static CivilizationManager _spiedCivThree;
@@ -20,39 +18,9 @@ namespace Supremacy.Intelligence
         private static CivilizationManager _spiedCivFive;
         private static CivilizationManager _spiedCivSix;
 
-        //public static List<Civilization> SpyCivs
-        //{
-        //    get
-        //    {
-        //        List<Civilization> myCivs = new List<Civilization>();
-        //        foreach (CivilizationManager civManager in _spyedCivs)
-        //        {
-        //            myCivs.Add(civManager.Civilization);
-        //        }
-        //        return myCivs;
-        //    }
-        //}
-
-        //public static CivilizationManagerMap SpyCivsMap // turn off when 1 to 6 works
-        //{
-        //    get
-        //    {
-        //        CivilizationManagerMap myCivs = new CivilizationManagerMap();
-        //        foreach (CivilizationManager civManager in _spyedCivs)
-        //        {
-        //            myCivs.Add(civManager);
-        //        }
-        //        return myCivs;
-        //    }
-        //}
-
         public static CivilizationManager LocalPlayerCivManager
         {
             get { return _localPlayer; }
-        }
-        public static CivilizationManager SpyCivManager
-        {
-            get { return _spyCiv; }
         }
         public static CivilizationManager SpiedOneCivManager
         {
@@ -79,20 +47,10 @@ namespace Supremacy.Intelligence
         {
             get { return _spiedCivSix; }
         }
-        //public static CivilizationManagerMap SendSpiedCivilizations(CivilizationManagerMap civManageList) // turn off when 1 to 6 works
-        //{
-        //    _spyedCivs = civManageList;
-        //    return civManageList;
-        //}
         public static CivilizationManager SendLocalPlayer(CivilizationManager localPlayer)
         {
             _localPlayer = localPlayer;
             return localPlayer; 
-        }
-        public static CivilizationManager SendSpyCiv(CivilizationManager spyCiv)
-        {
-            _spyCiv = spyCiv;
-            return spyCiv;
         }
         public static CivilizationManager SendSpiedCivOne(CivilizationManager spiedCivOne)
         { 

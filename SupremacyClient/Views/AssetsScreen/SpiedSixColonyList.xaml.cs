@@ -2,9 +2,9 @@
 
 namespace Supremacy.Client.Views
 {
-    public partial class ColonyList
+    public partial class SpiedSixColonyList
     {
-        public ColonyList()
+        public SpiedSixColonyList()
         {
             InitializeComponent();
         }
