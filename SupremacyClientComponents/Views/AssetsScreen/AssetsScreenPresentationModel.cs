@@ -35,16 +35,8 @@ namespace Supremacy.Client.Views
             _spiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
             _spiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
             _spiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
-            //_spyColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
-
-            //_spiedTwoColonies = IntelHelper.SpiedTwoCivManager.Colonies;
-            //_spiedThreeColonies = IntelHelper.SpiedThreeCivManager.Colonies;
-            //_spiedFourColonies = IntelHelper.SpiedFourCivManager.Colonies;
-            //_spiedFiveColonies = IntelHelper.SpiedFiveCivManager.Colonies;
-            //_spiedSixColonies = IntelHelper.SpiedSixCivManager.Colonies;
-            //_localPlayer = DesignTimeAppContext.Instance.LocalPlayer;
-            // var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
-
+            //local player
+            //list of spied civs
             //InfiltratedColonies = DesignTimeAppContext.Instance.LocalPalyerEmpire.InfiltratedColonies;
         }
 
@@ -52,8 +44,6 @@ namespace Supremacy.Client.Views
 
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
-
-        //public event EventHandler SpyColoniesChanged; // turn off
 
         public event EventHandler SpiedOneColoniesChanged;
 
@@ -81,11 +71,7 @@ namespace Supremacy.Client.Views
 
         public event EventHandler SpiedSixTotalPopulationChanged;
 
-        //public event EventHandler SpyTotalPopulationChanged; // turn off
-
         private IEnumerable<Colony> _colonies;
-
-        //private IEnumerable<Colony> _spyColonies;
 
         private IEnumerable<Colony> _spiedOneColonies;
 
@@ -212,40 +198,7 @@ namespace Supremacy.Client.Views
                 OnSpiedSixTotalPopulationChanged();
             }
         }
-
-        //public IEnumerable<Colony> SpyColonies
-        //{
-        //    get { return _spyColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _spyColonies))
-        //            return;
-
-        //        _spyColonies = value;
-
-        //        OnSpyColoniesChanged();
-
-        //        OnSpyTotalPopulationChanged();
-        //    }
-        //}
-
-        //public IPlayer LocalPlayer
-        //{
-        //    get { return _localPlayer; }
-        //    set
-        //    {
-        //        if (Equals(value, _localPlayer))
-        //            return;
-
-        //        _localPlayer = value;
-
-        //        //OnSpyColoniesChanged();
-
-        //        //OnSpyTotalPopulationChanged();
-        //    }
-
-        //}
-
+ 
         public IEnumerable<Colony> InfiltratedColonies
         {
             get { return _infiltratedColonies; }

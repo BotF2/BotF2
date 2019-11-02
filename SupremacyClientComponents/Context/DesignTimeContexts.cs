@@ -328,27 +328,33 @@ namespace Supremacy.Client.Context
             return spiedCivMangers;
         }
         public static CivilizationManager GetSpiedCivilizationOne()
-        {            
-            return _otherMajorEmpires [0];
+        {
+            IntelHelper.SendLocalPlayer(_otherMajorEmpires[0]);
+            return _otherMajorEmpires[0];
         }
         public static CivilizationManager GetSpiedCivilizationTwo()
         {
+            IntelHelper.SendLocalPlayer(_otherMajorEmpires[1]);
             return _otherMajorEmpires[1];
         }
         public static CivilizationManager GetSpiedCivilizationThree()
         {
+            IntelHelper.SendLocalPlayer(_otherMajorEmpires[2]);
             return _otherMajorEmpires[2];
         }
         public static CivilizationManager GetSpiedCivilizationFour()
         {
+            IntelHelper.SendLocalPlayer(_otherMajorEmpires[3]);
             return _otherMajorEmpires[3];
         }
         public static CivilizationManager GetSpiedCivilizationFive()
         {
+            IntelHelper.SendLocalPlayer(_otherMajorEmpires[4]);
             return _otherMajorEmpires[4];
         }
         public static CivilizationManager GetSpiedCivilizationSix()
         {
+            IntelHelper.SendLocalPlayer(_otherMajorEmpires[5]);
             return _otherMajorEmpires[5];
         }
     }
