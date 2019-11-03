@@ -1,5 +1,6 @@
 ﻿using Supremacy.Game;
 using Supremacy.Resources;
+using Supremacy.Utility;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -20,6 +21,7 @@ namespace Supremacy.Client.Dialogs
             _sitRepEntry = sitRepEntry;
             if (sitRepEntry == null)
                 throw new ArgumentNullException("sitRepEntry");
+            GameLog.Core.Events.DebugFormat("Sitrep for {0} (sound = {2}): {1} ", sitRepEntry.Owner, sitRepEntry.HeaderText, sitRepEntry.HasSoundEffect);
             
             DataContext = sitRepEntry;
             InitializeComponent();
@@ -40,7 +42,10 @@ namespace Supremacy.Client.Dialogs
         public static void Show(SitRepEntry sitRepEntry)
         {
             if (sitRepEntry == null)
+            {
+                GameLog.Core.Events.DebugFormat("##### problem at Sitrep for {0}: {1}, sound = {2}", sitRepEntry.Owner, sitRepEntry.HeaderText, sitRepEntry.HasSoundEffect);
                 throw new ArgumentNullException("sitRepEntry");
+            }
             new SitRepDetailDialog(sitRepEntry).ShowDialog();
         }
 

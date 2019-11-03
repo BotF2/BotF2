@@ -766,7 +766,7 @@ namespace Supremacy.Client
                 {
                     if (!_isConnected)
                         return;
-                    GameLog.Client.General.WarnFormat("Exception occurred while responding to service heartbeat: {0}");
+                    GameLog.Client.General.WarnFormat("Exception occurred while responding to service heartbeat: {0}", e);
                 }
             }
         }

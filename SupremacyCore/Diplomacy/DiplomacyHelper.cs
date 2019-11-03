@@ -711,8 +711,8 @@ namespace Supremacy.Diplomacy
             if (sourceId == targetId)
                 return true;
 
-            if (GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade() == true)
-                GameLog.Core.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
+            //if (GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade() == true)
+            //    GameLog.Core.Diplomacy.DebugFormat("Is Contact Made ={0} sourceId ={1} targetID ={2}", GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade(), sourceId, targetId);
 
             return GameContext.Current.DiplomacyData[sourceId, targetId].IsContactMade();
         }
