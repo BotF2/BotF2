@@ -678,65 +678,85 @@ namespace Supremacy.Game
                     if (civ1 == civ2)
                         continue;
 
-                    if (civ1.CivID == 6)
+                    if (civ1.CivID == 6 || civ1.Key == "BORG")
                     {
                         //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
                     }
-                    if (civ2.CivID == 6)
+                    if (civ2.CivID == 6 || civ2.Key == "BORG")
                     {
-                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
                         continue; // Borg don't accept anything
                     }
                     var diplomat1 = Diplomat.Get(civ1);
                     var diplomat2 = Diplomat.Get(civ2);
+                    if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
+                        diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+                        {
+                            continue;
+                        }
                     if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
                     {
-                        if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
                             {
-                                if (aCiv.IsEmpire && aCiv != civ1)
+                                //GameLog.Client.Test.DebugFormat("I** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember) // || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
                                 {
-                                    var diplomatOther = Diplomat.Get(aCiv);
-                                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
-                                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
-                                    {
-                                        continue;
-                                    }
+                                    continue;
                                 }
                             }
                         }
-                        
+                          
                     }
-
                     if (!civ1.IsEmpire && civ2.IsEmpire)
                     {
-                        if (diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
                             {
-                                if (aCiv.IsEmpire && aCiv != civ2)
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
                                 {
-                                    var diplomatOther = Diplomat.Get(aCiv);
-                                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
-                                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
-                                    {
-                                        continue;
-                                    }
+                                    continue;
                                 }
                             }
                         }
                     }
-
+                    if (civ2.IsEmpire && civ2.IsHuman && civ1.IsEmpire) // only a minor vs a major
+                    {
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        {
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
+                            {
+                               // GameLog.Client.Test.DebugFormat("C** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied) 
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    if (civ1.IsEmpire && civ1.IsHuman && civ2.IsEmpire) // only a minor vs a major
+                    {
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        {
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
+                            {
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
                     var ForeignPower = diplomat1.GetForeignPower(civ2);
                     var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
@@ -865,8 +885,8 @@ namespace Supremacy.Game
                                 CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner) ||
                                 !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
                                 continue;
-                        combats.Add(assets);
-                            combatLocations.Add(fleet.Location);                     
+                        combats.Add(assets); // we add all the ships at this location if there is any combat. Combat decides who is in and on what side
+                        combatLocations.Add(fleet.Location);                     
                     }
                 }
                 if (!invasionLocations.Contains(fleet.Location))
