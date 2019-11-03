@@ -319,12 +319,22 @@ namespace Supremacy.Client.Context
             var allCivs = GameContext.Current.CivilizationManagers;
             var localCiv = GameContext.Current.CivilizationManagers[DesignTimeAppContext.Instance.LocalPlayerEmpire.CivilizationID];
             List<CivilizationManager> spiedCivMangers = new List<CivilizationManager>();
+
+            Civilization Dummy = new Civilization();
+            CivilizationManager Dummy1 = new CivilizationManager(GameContext.Current, Dummy);
+
             foreach (var aCiv in allCivs)
             {
                 if (aCiv.Civilization.IsEmpire)
                     spiedCivMangers.Add(aCiv);
             }
             spiedCivMangers.Remove(localCiv);
+
+            while (6 - spiedCivMangers.Count > 0)
+            {
+                spiedCivMangers.Add(Dummy1);
+            }
+
             return spiedCivMangers;
         }
         public static CivilizationManager GetSpiedCivilizationOne()

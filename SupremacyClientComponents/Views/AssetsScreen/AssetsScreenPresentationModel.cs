@@ -336,7 +336,19 @@ namespace Supremacy.Client.Views
         }
         public static string SpiedOneCivName
         {
-            get { return DesignTimeObjects.GetSpiedCivilizationOne().Civilization.Name; ; }
+            get
+            {
+                string sp1Name = "Empty";
+                try
+                {
+                    sp1Name = DesignTimeObjects.GetSpiedCivilizationOne().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp1Name;
+            }
         }
 
         public Meter SpiedTwoTotalPopulation
@@ -359,7 +371,19 @@ namespace Supremacy.Client.Views
         }
         public static string SpiedTwoCivName
         {
-            get { return DesignTimeObjects.GetSpiedCivilizationTwo().Civilization.Name; }
+            get
+            {
+                string sp2Name = "Empty";
+                try
+                {
+                    sp2Name = DesignTimeObjects.GetSpiedCivilizationTwo().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp2Name;
+            }
         }
 
         public Meter SpiedThreeTotalPopulation
@@ -383,7 +407,19 @@ namespace Supremacy.Client.Views
 
         public static string SpiedThreeCivName
         {
-            get { return DesignTimeObjects.GetSpiedCivilizationThree().Civilization.Name; }
+            get 
+            {
+                string sp3Name = "Empty";
+                try
+                {
+                    sp3Name = DesignTimeObjects.GetSpiedCivilizationThree().Civilization.Name;
+                }
+                catch
+                {
+
+                }
+                return sp3Name; 
+            }
         }
 
         public Meter SpiedFourTotalPopulation
@@ -406,7 +442,19 @@ namespace Supremacy.Client.Views
         }
         public static string SpiedFourCivName
         {
-            get { return DesignTimeObjects.GetSpiedCivilizationFour().Civilization.Name; }
+            get
+            {
+                string sp4Name = "Empty";
+                try
+                {
+                    sp4Name = DesignTimeObjects.GetSpiedCivilizationFour().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp4Name;
+            }
         }
 
         public Meter SpiedFiveTotalPopulation
@@ -429,7 +477,19 @@ namespace Supremacy.Client.Views
         }
         public static string SpiedFiveCivName
         {
-            get { return DesignTimeObjects.GetSpiedCivilizationFive().Civilization.Name; }
+            get
+            {
+                string sp5Name = "Empty";
+                try
+                {
+                    sp5Name = DesignTimeObjects.GetSpiedCivilizationFive().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp5Name;
+            }
         }
 
         public Meter SpiedSixTotalPopulation
@@ -452,7 +512,19 @@ namespace Supremacy.Client.Views
         }
         public static string SpiedSixCivName
         {
-            get { return DesignTimeObjects.GetSpiedCivilizationSix().Civilization.Name; }
+            get
+            {
+                string sp6Name = "Empty";
+                try
+                {
+                    sp6Name = DesignTimeObjects.GetSpiedCivilizationSix().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp6Name;
+            }
         }
         #endregion
 
