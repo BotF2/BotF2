@@ -367,10 +367,10 @@ namespace Supremacy.Client
                 if (!CheckNetFxVersion())
                 {
                     MessageBox.Show(
-                            "Birth of the Federation 2 requires Microsoft .NET Framework 4.6.2 or greater"
+                            "Rise of the UFP requires Microsoft .NET Framework 4.6.2 or greater"
                             + Environment.NewLine
                             + "It must be installed before running the game.",
-                            "Birth of the Federation 2",
+                            "Rise of the UFP",
                             MessageBoxButton.OK,
                             MessageBoxImage.Hand);
                     return;
