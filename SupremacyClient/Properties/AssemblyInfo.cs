@@ -9,9 +9,9 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("SupremacyClient")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Birth of the Federation 2 Team")]
-[assembly: AssemblyProduct("Birth of the Federation 2")]
-[assembly: AssemblyCopyright("Copyright (c) 2018 Birth of the Federation 2 Team")]
+[assembly: AssemblyCompany("Rise of the UFP Team")]
+[assembly: AssemblyProduct("Rise of the UFP")]
+[assembly: AssemblyCopyright("Copyright (c) 2020 Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -47,8 +47,8 @@ using System.Windows.Markup;
 
 
     // seems Version is affecting the available list of saved games
-[assembly: AssemblyVersion("2018.12.24.0")]
-[assembly: AssemblyFileVersion("2018.12.24.0")]
+[assembly: AssemblyVersion("2019.11.03.0")]
+[assembly: AssemblyFileVersion("2019.11.03.0")]
 
 [assembly: Dependency("WindowsBase,", LoadHint.Always)]
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]
