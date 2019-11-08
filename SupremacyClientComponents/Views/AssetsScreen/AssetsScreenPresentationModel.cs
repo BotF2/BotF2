@@ -8,12 +8,10 @@ using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Universe;
-using Supremacy.Orbitals;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
 using Supremacy.Types;
-//using Supremacy.Intelligence;
-//using Supremacy.Diplomacy;
+using Supremacy.Entities;
 
 namespace Supremacy.Client.Views
 {
@@ -296,7 +294,7 @@ namespace Supremacy.Client.Views
             get
             {
                 var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                try    // maybe slows down the game very much
+                try  
                 {
                     GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
@@ -314,6 +312,14 @@ namespace Supremacy.Client.Views
             get
             {
                 return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].Civilization.Name;        
+            }
+        }
+        public static Civilization Local
+        {
+            get
+            {
+                var localCiv = GameContext.Current.CivilizationManagers[DesignTimeObjects.GetCivLocalPlayer()];
+                return localCiv.Civilization;
             }
         }
 
@@ -353,6 +359,14 @@ namespace Supremacy.Client.Views
             }
         }
 
+        public static Civilization SpiedOneCiv
+        {
+            get
+            { var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationOne();
+                return SpiedCiv.Civilization;
+            }
+        }
+
         public Meter SpiedTwoTotalPopulation
         {
             get
@@ -386,6 +400,14 @@ namespace Supremacy.Client.Views
                     //
                 }
                 return sp2Name;
+            }
+        }
+        public static Civilization SpiedTwoCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationTwo();
+                return SpiedCiv.Civilization;
             }
         }
 
@@ -425,6 +447,14 @@ namespace Supremacy.Client.Views
                 return sp3Name; 
             }
         }
+        public static Civilization SpiedThreeCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationThree();
+                return SpiedCiv.Civilization;
+            }
+        }
 
         public Meter SpiedFourTotalPopulation
         {
@@ -459,6 +489,14 @@ namespace Supremacy.Client.Views
                     //
                 }
                 return sp4Name;
+            }
+        }
+        public static Civilization SpiedFourCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationFour();
+                return SpiedCiv.Civilization;
             }
         }
 
@@ -497,6 +535,14 @@ namespace Supremacy.Client.Views
                 return sp5Name;
             }
         }
+        public static Civilization SpiedFiveCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationFive();
+                return SpiedCiv.Civilization;
+            }
+        }
 
         public Meter SpiedSixTotalPopulation
         {
@@ -531,6 +577,14 @@ namespace Supremacy.Client.Views
                     //
                 }
                 return sp6Name;
+            }
+        }
+        public static Civilization SpiedSixCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationSix();
+                return SpiedCiv.Civilization;
             }
         }
         #endregion

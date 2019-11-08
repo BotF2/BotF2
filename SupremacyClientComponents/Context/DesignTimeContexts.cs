@@ -337,6 +337,10 @@ namespace Supremacy.Client.Context
 
             return spiedCivMangers;
         }
+        public static CivilizationManager GetCivLocalPlayer()
+        {
+            return DesignTimeAppContext.Instance.LocalPlayerEmpire;
+        }
         public static CivilizationManager GetSpiedCivilizationOne()
         {
             IntelHelper.SendSpiedCivOne(_otherMajorEmpires[0]);

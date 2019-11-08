@@ -1,4 +1,5 @@
 ﻿using Supremacy.Diplomacy;
+using Supremacy.Entities;
 //using Supremacy.Entities;
 using Supremacy.Game;
 //using System;
@@ -83,5 +84,9 @@ namespace Supremacy.Intelligence
             _spiedCivSix = spiedCivSix;
             return _spiedCivSix; 
         }
+        //public static bool IsContactedMade(Civilization otherCiv)
+        //{
+        //    return DiplomacyHelper.IsContactMade(_localPlayer.Civilization, otherCiv);
+        //}
     }
 }
