@@ -42,8 +42,8 @@
                     FlowDirection="RightToLeft"
                     HorizontalAlignment="left">
                     <StackPanel Height="1400">
-                        <Expander Name="EmpireExpander" Background="Black" FlowDirection="LeftToRight" IsExpanded="True"  Style="{x:Null}" BorderThickness="2" BorderBrush="Red" >
-                            <Grid Name="EmpireGrid" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
+                        <Expander x:Name="EmpireExpanderOne" Background="Black" FlowDirection="LeftToRight" IsExpanded="True"  Style="{x:Null}" BorderThickness="2" BorderBrush="Red" >
+                            <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="40" />

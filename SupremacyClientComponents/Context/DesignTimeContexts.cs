@@ -320,8 +320,8 @@ namespace Supremacy.Client.Context
             var localCiv = GameContext.Current.CivilizationManagers[DesignTimeAppContext.Instance.LocalPlayerEmpire.CivilizationID];
             List<CivilizationManager> spiedCivMangers = new List<CivilizationManager>();
 
-            Civilization Dummy = new Civilization();
-            CivilizationManager Dummy1 = new CivilizationManager(GameContext.Current, Dummy);
+            Civilization DummyCiv = new Civilization();          
+            CivilizationManager DummyManager= new CivilizationManager(GameContext.Current, DummyCiv);
 
             foreach (var aCiv in allCivs)
             {
@@ -332,39 +332,39 @@ namespace Supremacy.Client.Context
 
             while (6 - spiedCivMangers.Count > 0)
             {
-                spiedCivMangers.Add(Dummy1);
+                spiedCivMangers.Add(DummyManager);
             }
 
             return spiedCivMangers;
         }
         public static CivilizationManager GetSpiedCivilizationOne()
         {
-            IntelHelper.SendLocalPlayer(_otherMajorEmpires[0]);
+            IntelHelper.SendSpiedCivOne(_otherMajorEmpires[0]);
             return _otherMajorEmpires[0];
         }
         public static CivilizationManager GetSpiedCivilizationTwo()
         {
-            IntelHelper.SendLocalPlayer(_otherMajorEmpires[1]);
+            IntelHelper.SendSpiedCivTwo(_otherMajorEmpires[1]);
             return _otherMajorEmpires[1];
         }
         public static CivilizationManager GetSpiedCivilizationThree()
         {
-            IntelHelper.SendLocalPlayer(_otherMajorEmpires[2]);
+            IntelHelper.SendSpiedCivThree(_otherMajorEmpires[2]);
             return _otherMajorEmpires[2];
         }
         public static CivilizationManager GetSpiedCivilizationFour()
         {
-            IntelHelper.SendLocalPlayer(_otherMajorEmpires[3]);
+            IntelHelper.SendSpiedCivFour(_otherMajorEmpires[3]);
             return _otherMajorEmpires[3];
         }
         public static CivilizationManager GetSpiedCivilizationFive()
         {
-            IntelHelper.SendLocalPlayer(_otherMajorEmpires[4]);
+            IntelHelper.SendSpiedCivFive(_otherMajorEmpires[4]);
             return _otherMajorEmpires[4];
         }
         public static CivilizationManager GetSpiedCivilizationSix()
         {
-            IntelHelper.SendLocalPlayer(_otherMajorEmpires[5]);
+            IntelHelper.SendSpiedCivSix(_otherMajorEmpires[5]);
             return _otherMajorEmpires[5];
         }
     }

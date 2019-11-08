@@ -12,7 +12,8 @@ using Supremacy.Orbitals;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
 using Supremacy.Types;
-using Supremacy.Intelligence;
+//using Supremacy.Intelligence;
+//using Supremacy.Diplomacy;
 
 namespace Supremacy.Client.Views
 {
@@ -328,9 +329,10 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
+                    Meter zero = new Meter(0, 0, 0);
                     GameLog.Core.Intel.WarnFormat("Problem occured at SpiedOneTotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    return zero;
                 }
             }
         }
@@ -363,9 +365,10 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
+                    Meter zero = new Meter(0,0,0);
                     GameLog.Core.Intel.WarnFormat("Problem occured at SpiedTwoTotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    return zero; 
                 }
             }
         }
@@ -398,9 +401,10 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
+                    Meter zero = new Meter(0, 0, 0);
                     GameLog.Core.Intel.WarnFormat("Problem occured at SpiedThreeTotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    return zero;
                 }
             }
         }
@@ -434,9 +438,10 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
+                    Meter zero = new Meter(0, 0, 0);
                     GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFourTotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    return zero;
                 }
             }
         }
@@ -469,9 +474,10 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
+                    Meter zero = new Meter(0, 0, 0);
                     GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFiveTotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    return zero;
                 }
             }
         }
@@ -504,9 +510,10 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
+                    Meter zero = new Meter(0, 0, 0);
                     GameLog.Core.Intel.WarnFormat("Problem occured at SpiedSixTotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    return zero;
                 }
             }
         }
