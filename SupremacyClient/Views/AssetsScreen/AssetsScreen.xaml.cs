@@ -16,7 +16,44 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
+
+            if (AssetsScreenPresentationModel.SpiedOneCivName != "Empty")
+            {
+                EmpireExpanderOne.Visibility = Visibility.Visible;
+            }
+            else { EmpireExpanderOne.Visibility = Visibility.Collapsed; }
+
+            if (AssetsScreenPresentationModel.SpiedTwoCivName != "Empty")
+            {
+                EmpireExpanderTwo.Visibility = Visibility.Visible;
+            }
+            else { EmpireExpanderTwo.Visibility = Visibility.Collapsed; }
+
+            if (AssetsScreenPresentationModel.SpiedThreeCivName != "Empty")
+            {
+                EmpireExpanderThree.Visibility = Visibility.Visible;
+            }
+            else { EmpireExpanderThree.Visibility = Visibility.Collapsed; }
+
+            if (AssetsScreenPresentationModel.SpiedFourCivName != "Empty")
+            {
+                EmpireExpanderFour.Visibility = Visibility.Visible;
+            }
+            else { EmpireExpanderFour.Visibility = Visibility.Collapsed; }
+
+            if (AssetsScreenPresentationModel.SpiedFiveCivName != "Empty")
+            {
+                EmpireExpanderFive.Visibility = Visibility.Visible;
+            }
+            else { EmpireExpanderFive.Visibility = Visibility.Collapsed; }
+
+            if (AssetsScreenPresentationModel.SpiedSixCivName != "Empty")
+            {
+                EmpireExpanderSix.Visibility = Visibility.Visible;
+            }
+            else { EmpireExpanderSix.Visibility = Visibility.Collapsed; }
         }
+
 
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -116,5 +153,5 @@ namespace Supremacy.Client.Views
         }
 
         #endregion
-    }
+    } 
 }

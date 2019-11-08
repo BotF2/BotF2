@@ -1,10 +1,11 @@
-﻿using Supremacy.Entities;
+﻿using Supremacy.Diplomacy;
+//using Supremacy.Entities;
 using Supremacy.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
 namespace Supremacy.Intelligence
 {
