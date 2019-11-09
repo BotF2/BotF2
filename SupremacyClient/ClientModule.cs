@@ -510,20 +510,21 @@ namespace Supremacy.Client
             var statusWindow = _container.Resolve<StatusWindow>();
             //statusWindow.Header = _resourceManager.GetString("LOADING_GAME_MESSAGE");
             statusWindow.Header = " ***     Loading Game . . .      ***  " +Environment.NewLine;
-                //"----------------------------"; // + Environment.NewLine +
 
-                statusWindow.Content =
-                //"----------------------------" + Environment.NewLine +
-                "- For more information on game play please read the manual." + Environment.NewLine +
-                "----------------------------" + Environment.NewLine +
 
-                "Star Trek and it's related images and characters are solely owned " + Environment.NewLine +
-                "by CBS Studios and Paramount Pictures. " + Environment.NewLine +
-                "----------------------------" + Environment.NewLine +
-                "This fan game is not endorsed or affiliated with them. " + Environment.NewLine +
-                "It is a non-commercial, free, unfunded, amateur game for " + Environment.NewLine +
-                "recreational use only. No commercial exhibition is permitted.";
+            statusWindow.Content =  "For more information on game play please read the manual." 
+            + Environment.NewLine + "-------------------------------------------------------------------------------------------------------------------------------"
+            + Environment.NewLine + "Star Trek and all related marks, logos and characters are solely owned by CBS Studios Inc."
+            + Environment.NewLine + "This fan production is not endorsed by, sponsored by, nor affiliated with CBS, Paramount Pictures, or"
+            + Environment.NewLine + "any other Star Trek franchise, and is a non - commercial fan - made game intended for recreational use."
+            + Environment.NewLine + "No commercial exhibition or distribution is permitted.No alleged independent rights will be asserted"
+            + Environment.NewLine + "against CBS or Paramount Pictures."
+            + Environment.NewLine + "-------------------------------------------------------------------------------------------------------------------------------"
+            + Environment.NewLine + "This work is licensed under the Creative Commons"
+            + Environment.NewLine + "Attribution - NonCommercial - ShareAlike 4.0 International (CC BY - NC - SA 4.0)"
+            ;
 
+   
 
 
             // Hints screen will not show for host of a multiplayer game so is excluded here, the host cannot progress to the loaded game.

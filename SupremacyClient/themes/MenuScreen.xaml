@@ -63,11 +63,11 @@
                             FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="12"
                             Margin="16"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             SnapsToDevicePixels="True">
                             <TextBlock.Text>
-                                <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="Version {0}" />
+                                <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="                                                                                              Version {0}" />
                             </TextBlock.Text>
                         </TextBlock>
                     </Grid>
