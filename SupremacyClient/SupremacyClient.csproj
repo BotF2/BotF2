@@ -270,6 +270,7 @@
       <DependentUpon>PopupTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShellIntegration.cs" />
+    <Compile Include="Views\AssetsHelper.cs" />
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
       <DependentUpon>AssetsScreen.xaml</DependentUpon>
     </Compile>

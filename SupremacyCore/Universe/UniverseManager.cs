@@ -124,12 +124,14 @@ namespace Supremacy.Universe
 
         public HashSet<UniverseObject> Find(UniverseObjectType objectType)
         {
+            GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
             return _objects.Where(o => o.ObjectType == objectType).ToHashSet();
         }
 
         public HashSet<T> Find<T>(UniverseObjectType objectType)
             where T : UniverseObject
         {
+            GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
             return _objects.Where(o => o.ObjectType == objectType).OfType<T>().ToHashSet();
         }
 
@@ -248,6 +250,13 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             var ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
+            GameLog.Core.General.DebugFormat("Find Nearist Location {0}, Owner {1}", source, owner);
+            var result = _objects
+                .Where(o => o.OwnerID == ownerId)
+                .OfType<T>()
+                .Where(o => includeSource || o.Location != source)
+                .MinElement(o => MapLocation.GetDistance(source, o.Location));
+            GameLog.Core.General.DebugFormat("Find Nearist Location {0}, Owner {1} objects {2}", source, owner, result);
             return _objects
                 .Where(o => o.OwnerID == ownerId)
                 .OfType<T>()
