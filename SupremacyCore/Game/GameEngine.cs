@@ -379,13 +379,14 @@ namespace Supremacy.Game
                 //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                 try
                 {
-                    GameLog.Core.Stations.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
                     item.Reset();
                     // works well but gives hidden info
-                    GameLog.Core.Stations.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
                 }
                 catch (Exception e)
                 {
+                    GameLog.Core.General.ErrorFormat("***** catch error e item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                     errors.Push(e);
                 }
                 finally

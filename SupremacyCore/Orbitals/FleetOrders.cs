@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Client;
 using Supremacy.Pathfinding;
 using Supremacy.Resources;
 using Supremacy.Tech;
@@ -600,6 +601,168 @@ namespace Supremacy.Orbitals
             get { return Fleet.Sector.System.Colony.Health.CurrentValue >= 100; }
         }
     }
+    #endregion
+
+    #region SpyOnOrder
+
+    [Serializable]
+    public sealed class SpyOnOrder : FleetOrder
+    {
+        private readonly bool _isComplete;
+
+        public override string OrderName
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_SPYON"); }
+        }
+
+        public override string Status
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_SPYON"); }
+        }
+
+        public override FleetOrder Create()
+        {
+            return new SpyOnOrder();
+        }
+
+        public override bool IsComplete
+        {
+            get { return _isComplete; }
+        }
+
+        public override bool IsCancelledOnRouteChange
+        {
+            get { return true; }
+        }
+
+        public override bool IsRouteCancelledOnAssign
+        {
+            get { return true; }
+        }
+
+        public override bool WillEngageHostiles
+        {
+            get { return false; }
+        }
+
+        public SpyOnOrder()
+        {
+            _isComplete = false;
+        }
+
+        private Ship FindBestSpyOnShip()
+        {
+            Ship bestShip = null;
+            foreach (Ship ship in Fleet.Ships)
+            {
+                if (ship.ShipType == ShipType.Spy)
+                {
+                    if ((bestShip == null)
+                        || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
+                    {
+                        bestShip = ship;
+                    }
+                }
+            }
+            return bestShip;
+        }
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            if (!base.IsValidOrder(fleet))
+                return false;
+            if (fleet.Sector.System == null)
+                return false;
+            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+                return false;
+            foreach (var ship in fleet.Ships)
+            {
+                if (ship.ShipType == ShipType.Spy)
+                    return true;
+            }
+            return false;
+        }
+
+        protected internal override void OnTurnBeginning()
+        {
+            base.OnTurnBeginning();
+            if (_isComplete)
+                return;
+            var SpyOnShip = FindBestSpyOnShip();
+            if (SpyOnShip == null)
+                return;
+            CreateSpyOn(
+                Fleet.Owner,
+                Fleet.Sector.System);
+            //GameContext.Current.Universe.Destroy(SpyOnShip);
+        }
+
+        protected internal override void OnOrderAssigned()
+        {
+            base.OnOrderAssigned();
+            if (!Fleet.Route.IsEmpty)
+                Fleet.Route = TravelRoute.Empty;
+        }
+
+        private static void CreateSpyOn(Civilization civ, StarSystem system)
+        {
+            var SpyOndCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
+            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+
+            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            if (defenseIntelligence - 1 < 0.1)
+                defenseIntelligence = 2;
+
+            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            if (attackingIntelligence - 1 < 0.1)
+                attackingIntelligence = 1;
+
+            int ratio = attackingIntelligence / defenseIntelligence;
+            //max ratio for no exceeding gaining points
+            if (ratio > 10)
+                ratio = 10;
+
+            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SpyOnD by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
+                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+
+
+            GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (SpyOnd): Energy={3} out of facilities={4}, in total={5}",
+                system.Owner, system.Name, system.Location,
+                system.Colony.GetEnergyUsage(),
+                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
+                system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities before={1}",
+                system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+
+            //Effect of sabatoge
+            //AssetsHelper.
+            //int removeEnergyFacilities = 0;
+            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            //{
+            //    removeEnergyFacilities = 1;
+            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
+            //}
+
+            //// if ratio > 2 than remove one more  EnergyFacility
+            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            //{
+            //    removeEnergyFacilities = 3;  //  2 and one from before
+            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
+            //}
+
+            //// if ratio > 3 than remove one more  EnergyFacility
+            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            //{
+            //    removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one SpyOn ship
+            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
+            //}
+
+            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            //civManager.SitRepEntries.Add(new NewSpyOnSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+
+        }
+    }
+
     #endregion
 
     #region RaidOrder

@@ -234,7 +234,7 @@ namespace Supremacy.Client.Context
         {
             _otherMajorEmpires = SpiedCivManagers();
         }
-
+        public static List<CivilizationManager> OtherMajorEmpires { get; set; }
         public static CivilizationManager CivilizationManager
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }

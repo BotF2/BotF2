@@ -1,12 +1,10 @@
 ﻿using Supremacy.Diplomacy;
 using Supremacy.Entities;
-//using Supremacy.Entities;
 using Supremacy.Game;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+using Supremacy.Universe;
+using System;
+using System.Collections.Generic;
+
 
 namespace Supremacy.Intelligence
 {
@@ -49,44 +47,81 @@ namespace Supremacy.Intelligence
         {
             get { return _spiedCivSix; }
         }
+
+        //        public static Dictionary<Civilization, List<Colony>> SpiedOneInfiltrated
+        //        {
+        //            get { return SpiedOneCivManager.InfiltratedColonies; }
+        //        }
+        //        public static Dictionary<Civilization, List<Colony>> SpiedTwoInfiltrated
+        //        {
+        //            get { return SpiedTwoCivManager.InfiltratedColonies; }
+        //        }
+        //        public static Dictionary<Civilization, List<Colony>> SpiedThreeInfiltrated
+        //        {
+        //            get { return SpiedThreeCivManager.InfiltratedColonies; }
+        //        }
+        //        public static Dictionary<Civilization, List<Colony>> SpiedFourInfiltrated
+        //        {
+        //            get { return SpiedFourCivManager.InfiltratedColonies; }
+        //        }
+        //        public static Dictionary<Civilization, List<Colony>> SpiedFiveInfiltrated
+        //        {
+        //            get { return SpiedFiveCivManager.InfiltratedColonies; }
+        //        }
+        //        public static Dictionary<Civilization, List<Colony>> SpiedSixInfiltrated
+        //        {
+        //            get { return SpiedSixCivManager.InfiltratedColonies; }
+        //        }
+
         public static CivilizationManager SendLocalPlayer(CivilizationManager localPlayer)
         {
             _localPlayer = localPlayer;
-            return localPlayer; 
+            return localPlayer;
         }
         public static CivilizationManager SendSpiedCivOne(CivilizationManager spiedCivOne)
-        { 
+        {
             _spiedCivOne = spiedCivOne;
-            return _spiedCivOne; 
+            return _spiedCivOne;
         }
         public static CivilizationManager SendSpiedCivTwo(CivilizationManager spiedCivTwo)
         {
             _spiedCivTwo = spiedCivTwo;
-            return _spiedCivTwo; 
+            return _spiedCivTwo;
         }
         public static CivilizationManager SendSpiedCivThree(CivilizationManager spiedCivThree)
         {
             _spiedCivThree = spiedCivThree;
-            return _spiedCivThree; 
+            return _spiedCivThree;
         }
-       public static CivilizationManager SendSpiedCivFour(CivilizationManager spiedCivFour)
+        public static CivilizationManager SendSpiedCivFour(CivilizationManager spiedCivFour)
         {
             _spiedCivFour = spiedCivFour;
-            return _spiedCivFour; 
+            return _spiedCivFour;
         }
         public static CivilizationManager SendSpiedCivFive(CivilizationManager spiedCivFive)
         {
             _spiedCivFive = spiedCivFive;
-            return _spiedCivFive; 
+            return _spiedCivFive;
         }
         public static CivilizationManager SendSpiedCivSix(CivilizationManager spiedCivSix)
         {
             _spiedCivSix = spiedCivSix;
-            return _spiedCivSix; 
+            return _spiedCivSix;
         }
-        //public static bool IsContactedMade(Civilization otherCiv)
-        //{
-        //    return DiplomacyHelper.IsContactMade(_localPlayer.Civilization, otherCiv);
-        //}
+        //        //public static bool IsInfiltrated(Civilization source, Civilization target)
+        //        //{
+        //        //    if (source == null)
+        //        //        throw new ArgumentNullException("source");
+        //        //    if (target == null)
+        //        //        //return false;
+        //        //        throw new ArgumentNullException("target");
+
+        //        //    if (source == target)
+        //        //        return false;
+        //        //    var infiltrated = AssetsScreenPresentationModel;
+        //        //    //GameLog.Core.Test.DebugFormat("Diplomacy: source = {0} target = {1}",source.Key, target.Key);
+        //        //    GameContext.Current.DiplomacyData[source, target].IsContactMade()
+        //        //    return ;
+        //        //}
     }
 }

@@ -34,9 +34,7 @@ namespace Supremacy.Client.Views
             _spiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
             _spiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
             _spiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
-            //local player
-            //list of spied civs
-            //InfiltratedColonies = DesignTimeAppContext.Instance.LocalPalyerEmpire.InfiltratedColonies;
+           // _infiltratedColonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.InfiltratedColonies;
         }
 
         #region Colonies Property
