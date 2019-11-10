@@ -200,7 +200,7 @@ namespace Supremacy.Orbitals
         {
             get { return null; }
             // ReSharper disable ValueParameterNotUsed
-            set {}
+            set { }
             // ReSharper restore ValueParameterNotUsed
         }
 
@@ -270,7 +270,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected internal FleetOrder() {}
+        protected internal FleetOrder() { }
 
         /// <summary>
         /// Generates a list of possible targets for this <see cref="FleetOrder"/> (if applicable).
@@ -402,7 +402,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected internal virtual void OnTurnEnding() {}
+        protected internal virtual void OnTurnEnding() { }
 
         /// <summary>
         /// Creates an instance of this <see cref="FleetOrder"/>.

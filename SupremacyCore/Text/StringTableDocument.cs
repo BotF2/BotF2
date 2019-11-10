@@ -168,6 +168,6 @@ namespace Supremacy.Text
     [Serializable]
     public sealed class StringTableEntryCollection : Collections.KeyedCollectionBase<string, StringTableEntry>
     {
-        public StringTableEntryCollection() : base(o => o.Key) {}
+        public StringTableEntryCollection() : base(o => o.Key) { }
     }
 }

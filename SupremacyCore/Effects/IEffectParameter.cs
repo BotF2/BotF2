@@ -22,7 +22,7 @@ namespace Supremacy.Effects
         private bool _isRequired;
         private object _defaultValue;
 
-        public EffectParameter() {}
+        public EffectParameter() { }
 
         public EffectParameter(
             [NotNull] string name,

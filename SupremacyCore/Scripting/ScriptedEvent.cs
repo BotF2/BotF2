@@ -121,12 +121,12 @@ namespace Supremacy.Scripting
             InitializeOverride(options);
         }
 
-        protected virtual void InitializeOverride(IDictionary<string, object> options) {}
+        protected virtual void InitializeOverride(IDictionary<string, object> options) { }
 
-        protected virtual void OnTurnStartedOverride(GameContext game) {}
-        protected virtual void OnTurnPhaseStartedOverride(GameContext game, TurnPhase phase) {}
-        protected virtual void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase) {}
-        protected virtual void OnTurnFinishedOverride(GameContext game) {}
+        protected virtual void OnTurnStartedOverride(GameContext game) { }
+        protected virtual void OnTurnPhaseStartedOverride(GameContext game, TurnPhase phase) { }
+        protected virtual void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase) { }
+        protected virtual void OnTurnFinishedOverride(GameContext game) { }
 
         public void Dispose()
         {
@@ -137,7 +137,7 @@ namespace Supremacy.Scripting
             finally { _isDisposed = true; }
         }
 
-        protected virtual void DisposeOverride() {}
+        protected virtual void DisposeOverride() { }
 
         #region Implementation of IGameTurnListener
         public void OnTurnStarted(GameContext game)

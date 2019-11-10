@@ -20,6 +20,6 @@ namespace Supremacy.Tech
     public sealed class TechObjectDesignMap<T> : Collections.KeyedCollectionBase<int, T>
         where T : TechObjectDesign
     {
-        public TechObjectDesignMap() : base(o => o.DesignID) {}
+        public TechObjectDesignMap() : base(o => o.DesignID) { }
     }
 }

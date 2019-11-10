@@ -42,14 +42,14 @@ namespace Supremacy.Tech
     /// Represents a group of equivalent tech object designs, any one of which
     /// fulfills a prerequisite for the construction of another tech object design.
     /// </summary>
-    public interface IPrerequisiteGroup : IList<TechObjectDesign> {}
+    public interface IPrerequisiteGroup : IList<TechObjectDesign> { }
 
     /// <summary>
     /// Represents a group of equivalent tech object designs, any one of which
     /// fulfills a prerequisite for the construction of another tech object design.
     /// </summary>
     [Serializable]
-    public class PrerequisiteGroup : CollectionBase<TechObjectDesign>, IPrerequisiteGroup {}
+    public class PrerequisiteGroup : CollectionBase<TechObjectDesign>, IPrerequisiteGroup { }
 
     /// <summary>
     /// Represents a collection of prerequisites required for the construction of a
@@ -57,7 +57,7 @@ namespace Supremacy.Tech
     /// "equivalent" prerequisites (a sub-collection), and any single item in a
     /// prerequisite group satisfies the prerequisite.
     /// </summary>
-    public interface IPrerequisiteCollection : IList<PrerequisiteGroup> {}
+    public interface IPrerequisiteCollection : IList<PrerequisiteGroup> { }
 
     /// <summary>
     /// Represents a collection of prerequisites required for the construction of a
@@ -66,7 +66,7 @@ namespace Supremacy.Tech
     /// prerequisite group satisfies the prerequisite.
     /// </summary>
     [Serializable]
-    public class PrerequisiteCollection : CollectionBase<PrerequisiteGroup>, IPrerequisiteCollection {}
+    public class PrerequisiteCollection : CollectionBase<PrerequisiteGroup>, IPrerequisiteCollection { }
 
     [Serializable]
     [TypeConverter(typeof(TechObjectTextGroupKeyConverter))]

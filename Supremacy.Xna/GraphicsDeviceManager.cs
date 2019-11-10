@@ -181,7 +181,7 @@ namespace Supremacy.Xna
                                 foundDevices);
                         }
                     }
-                    catch (DeviceNotSupportedException) {}
+                    catch (DeviceNotSupportedException) { }
                 }
             }
         }
@@ -443,7 +443,7 @@ namespace Supremacy.Xna
 
                 _device.DeviceResetting += HandleDeviceResetting;
                 _device.DeviceReset += HandleDeviceReset;
-                _device.DeviceLost += delegate {};
+                _device.DeviceLost += delegate { };
                 _device.Disposing += HandleDisposing;
             }
             catch (DeviceNotSupportedException exception)

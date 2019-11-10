@@ -50,12 +50,12 @@ namespace Supremacy.Client.Views
         TPresentationModel Model { get; }
     }
 
-    public class DiplomacyScreenPresentationModel {}
-    public class ScienceScreenPresentationModel {}
-    public class IntelScreenPresentationModel {}
+    public class DiplomacyScreenPresentationModel { }
+    public class ScienceScreenPresentationModel { }
+    public class IntelScreenPresentationModel { }
 
-    public interface IDiplomacyScreenPresenter : IGameScreenPresenter<DiplomacyScreenPresentationModel, IDiplomacyScreenView> {}
-    public interface IScienceScreenPresenter : IGameScreenPresenter<ScienceScreenPresentationModel, IScienceScreenView> {}
-    //public interface IIntelScreenPresenter : IGameScreenPresenter<IntelScreenPresentationModel, IIntelScreenView> {}
-    public interface IAssetsScreenPresenter : IGameScreenPresenter<AssetsScreenPresentationModel, IAssetsScreenView> {}
+    public interface IDiplomacyScreenPresenter : IGameScreenPresenter<DiplomacyScreenPresentationModel, IDiplomacyScreenView> { }
+    public interface IScienceScreenPresenter : IGameScreenPresenter<ScienceScreenPresentationModel, IScienceScreenView> { }
+    //public interface IIntelScreenPresenter : IGameScreenPresenter<IntelScreenPresentationModel, IIntelScreenView> { }
+    public interface IAssetsScreenPresenter : IGameScreenPresenter<AssetsScreenPresentationModel, IAssetsScreenView> { }
 }

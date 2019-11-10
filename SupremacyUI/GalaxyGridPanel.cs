@@ -378,7 +378,7 @@ namespace Supremacy.UI
         }
 
         public GalaxyGridPanel()
-            : this(GameContext.Current.Universe.Map, ServiceLocator.Current.GetInstance<ISoundPlayer>()) {}
+            : this(GameContext.Current.Universe.Map, ServiceLocator.Current.GetInstance<ISoundPlayer>()) { }
 
         public GalaxyGridPanel(SectorMap galaxy, [NotNull] ISoundPlayer soundPlayer)
         {

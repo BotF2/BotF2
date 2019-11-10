@@ -36,7 +36,7 @@ namespace Supremacy.Game
         private SlotStatus[] _slotStatus;
         #endregion
 
-        protected GameInitData() {}
+        protected GameInitData() { }
 
         public static GameInitData CreateSinglePlayerGame([NotNull] GameOptions options, int localPlayerEmpireID)
         {

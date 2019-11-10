@@ -208,13 +208,13 @@ namespace Supremacy.IO.Serialization
         /// <summary>
         /// Creates a FastSerializer with the Default Capacity (1kb)
         /// </summary>
-        public SerializationWriter() : this(new MemoryStream(DefaultCapacity)) {}
+        public SerializationWriter() : this(new MemoryStream(DefaultCapacity)) { }
 
         /// <summary>
         /// Creates a FastSerializer with the specified capacity
         /// </summary>
         /// <param name="capacity"></param>
-        public SerializationWriter(int capacity) : this(new MemoryStream(capacity)) {}
+        public SerializationWriter(int capacity) : this(new MemoryStream(capacity)) { }
 
         /// <summary>
         /// Creates a FastSerializer around the specified stream
@@ -3284,7 +3284,7 @@ namespace Supremacy.IO.Serialization
         /// A MemoryStream is used to access the data without making a copy of it.
         /// </summary>
         /// <param name="data">The byte[] containining serialized data.</param>
-        public SerializationReader(byte[] data) : this(new MemoryStream(data)) {}
+        public SerializationReader(byte[] data) : this(new MemoryStream(data)) { }
 
         /// <summary>
         /// Creates a SerializationReader based on the passed Stream.
@@ -5166,7 +5166,7 @@ namespace Supremacy.IO.Serialization
     public class OptimizationException : Exception
     {
         #region Constructors
-        public OptimizationException(string message) : base(message) {}
+        public OptimizationException(string message) : base(message) { }
         #endregion
     }
 
@@ -5174,7 +5174,7 @@ namespace Supremacy.IO.Serialization
     /// Allows a class to specify that it can be recreated during deserialization using a default constructor
     /// and then calling DeserializeOwnedData()
     /// </summary>
-    public interface IOwnedDataSerializableAndRecreatable : IOwnedDataSerializable {}
+    public interface IOwnedDataSerializableAndRecreatable : IOwnedDataSerializable { }
 
     /// <summary>
     /// Allows a class to save/retrieve their internal data to/from an existing SerializationWriter/SerializationReader.

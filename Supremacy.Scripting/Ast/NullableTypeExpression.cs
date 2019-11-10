@@ -35,7 +35,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public NullableTypeExpression(Type type, SourceSpan loc)
-            : this(new TypeExpression(type, loc), loc) {}
+            : this(new TypeExpression(type, loc), loc) { }
 
         protected override TypeExpression DoResolveAsTypeStep(ParseContext ec)
         {

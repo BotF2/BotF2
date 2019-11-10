@@ -91,10 +91,10 @@ namespace Supremacy.Types
         /// <param name="minValue">Minimum boundary</param>
         /// <param name="maxValue">Maximum boundary</param>
         public Meter(int minValue, int maxValue)
-            : this(0, minValue, maxValue) {}
+            : this(0, minValue, maxValue) { }
 
         public Meter()
-            : this(MinValue, MaxValue) {}
+            : this(MinValue, MaxValue) { }
         #endregion
 
         #region Properties

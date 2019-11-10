@@ -123,7 +123,7 @@ namespace Supremacy.Collections
     }
 
     public interface IObservableIndexedCollection<T> 
-        : IIndexedCollection<T>, INotifyCollectionChanged {}
+        : IIndexedCollection<T>, INotifyCollectionChanged { }
 
     [ContractClassFor(typeof(IIndexedCollection<>))]
     internal sealed class IndexedCollectionContracts<T> : IIndexedCollection<T>
@@ -237,7 +237,7 @@ namespace Supremacy.Collections
     [ContractClass(typeof(IndexedKeyedCollectionContracts<,>))]
     public interface IIndexedKeyedCollection<TKey, TValue>
         : IKeyedCollection<TKey, TValue>,
-          IObservableIndexedCollection<TValue> {}
+          IObservableIndexedCollection<TValue> { }
 
     [ContractClassFor(typeof(IIndexedKeyedCollection<,>))]
     internal sealed class IndexedKeyedCollectionContracts<TKey, TValue> : IIndexedKeyedCollection<TKey, TValue>
@@ -314,8 +314,8 @@ namespace Supremacy.Collections
         #region Implementation of INotifyCollectionChanged
         event NotifyCollectionChangedEventHandler INotifyCollectionChanged.CollectionChanged
         {
-            add {}
-            remove {}
+            add { }
+            remove { }
         }
         #endregion
     }

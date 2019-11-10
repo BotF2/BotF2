@@ -7,7 +7,7 @@ namespace Supremacy.Scripting.Ast
     {
         private readonly NamespaceTracker _tracker;
 
-        public NamespaceExpression(NamespaceTracker tracker) : this(tracker, SourceSpan.None) {}
+        public NamespaceExpression(NamespaceTracker tracker) : this(tracker, SourceSpan.None) { }
 
         public NamespaceExpression(NamespaceTracker tracker, SourceSpan span)
         {

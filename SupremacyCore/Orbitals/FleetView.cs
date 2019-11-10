@@ -79,7 +79,7 @@ namespace Supremacy.Orbitals
         #endregion
 
         #region Constructors and Finalizers
-        private FleetView() {}
+        private FleetView() { }
         #endregion
 
         #region Properties and Indexers

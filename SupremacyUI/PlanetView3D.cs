@@ -887,7 +887,7 @@ namespace Supremacy.UI
                 _grid.Children.Add(_moons);
         }
 
-        public static void PreloadImages() {}
+        public static void PreloadImages() { }
 
         public void Rotate()
         {

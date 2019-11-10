@@ -23,7 +23,7 @@ namespace Supremacy.Client.Views
     internal class EmpirePlayerStatusCollection : KeyedCollectionBase<Civilization, EmpirePlayerStatus>, IEmpirePlayerStatusCollection
     {
         public EmpirePlayerStatusCollection()
-            : base(o => o.Empire) {}
+            : base(o => o.Empire) { }
 
         public void Update([NotNull] ILobbyData lobbyData)
         {

@@ -158,9 +158,9 @@ namespace Supremacy.Client.Views
             InvalidateCommands();
         }
 
-        protected virtual void InvalidateCommands() {}
-        protected virtual void RegisterCommandAndEventHandlers() {}
-        protected virtual void UnregisterCommandAndEventHandlers() {}
+        protected virtual void InvalidateCommands() { }
+        protected virtual void RegisterCommandAndEventHandlers() { }
+        protected virtual void UnregisterCommandAndEventHandlers() { }
 
         private void OnViewIsActiveChanged(object sender, EventArgs args)
         {
@@ -173,8 +173,8 @@ namespace Supremacy.Client.Views
             ClientEvents.ScreenActivated.Publish(new ScreenActivatedEventArgs(ViewName));
         }
 
-        protected virtual void OnViewActivating() {}
-        protected virtual void OnViewDeactivating() {}
+        protected virtual void OnViewActivating() { }
+        protected virtual void OnViewDeactivating() { }
 
         public void Terminate()
         {
@@ -239,8 +239,8 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Public and Protected Methods
-        protected virtual void RunOverride() {}
-        protected virtual void TerminateOverride() {}
+        protected virtual void RunOverride() { }
+        protected virtual void TerminateOverride() { }
 
         protected void ShowEndOfTurnSummary()
         {
@@ -300,7 +300,7 @@ namespace Supremacy.Client.Views
             [NotNull] IUnityContainer container,
             [NotNull] DiplomacyScreenPresentationModel model,
             [NotNull] IDiplomacyScreenView view)
-            : base(container, model, view) {}
+            : base(container, model, view) { }
         #endregion
 
         protected override string ViewName
@@ -317,7 +317,7 @@ namespace Supremacy.Client.Views
             [NotNull] IUnityContainer container,
             [NotNull] ScienceScreenPresentationModel model,
             [NotNull] IScienceScreenView view)
-            : base(container, model, view) {}
+            : base(container, model, view) { }
         #endregion
 
         protected override string ViewName
@@ -334,7 +334,7 @@ namespace Supremacy.Client.Views
     //        [NotNull] IUnityContainer container,
     //        [NotNull] IntelScreenPresentationModel model,
     //        [NotNull] IIntelScreenView view)
-    //        : base(container, model, view) {}
+    //        : base(container, model, view) { }
     //    #endregion
 
     //    protected override string ViewName

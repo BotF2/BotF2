@@ -43,7 +43,7 @@ namespace Supremacy.Scripting.Ast
             Type = destinationType.Type;
         }
 
-        public CastExpression() {}
+        public CastExpression() { }
 
         public Type UnderlyingType
         {

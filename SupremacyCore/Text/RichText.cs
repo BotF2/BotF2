@@ -99,10 +99,10 @@ namespace Supremacy.Text
         }
 
         public RichText(string text)
-            : this(text, TextStyle.Default) {}
+            : this(text, TextStyle.Default) { }
 
         public RichText()
-            : this("", TextStyle.Default) {}
+            : this("", TextStyle.Default) { }
 
         private RichText(string text, ICollection<RichString> parts)
         {

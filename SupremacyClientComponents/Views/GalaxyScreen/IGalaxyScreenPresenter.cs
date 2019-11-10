@@ -9,5 +9,5 @@
 
 namespace Supremacy.Client.Views
 {
-    public interface IGalaxyScreenPresenter : IGameScreenPresenter<GalaxyScreenPresentationModel, IGalaxyScreenView> {}
+    public interface IGalaxyScreenPresenter : IGameScreenPresenter<GalaxyScreenPresentationModel, IGalaxyScreenView> { }
 }

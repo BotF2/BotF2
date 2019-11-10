@@ -209,11 +209,11 @@ namespace Supremacy.Annotations
     /// <code>
     /// [BaseTypeRequired(typeof(IComponent)] // Specify requirement
     /// internal class ComponentAttribute : Attribute 
-    /// {}
+    /// { }
     /// 
     /// [Component] // ComponentAttribute requires implementing IComponent interface
     /// internal class MyComponent : IComponent
-    /// {}
+    /// { }
     /// </code>
     /// </example>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]

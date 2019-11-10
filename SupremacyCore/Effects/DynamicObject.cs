@@ -23,9 +23,9 @@ namespace Supremacy.Effects
         [NonSerialized] private DynamicObjectType _dType;
         [NonSerialized] private FrugalMap _dynamicPropertyValues;
 
-        public DynamicObject() {}
+        public DynamicObject() { }
 
-        public DynamicObject(int objectId) : base(objectId) {}
+        public DynamicObject(int objectId) : base(objectId) { }
 
         public DynamicObjectType DynamicObjectType
         {

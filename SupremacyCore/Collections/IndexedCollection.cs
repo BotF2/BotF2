@@ -93,16 +93,16 @@ namespace Supremacy.Collections
         }
 
         public IndexedCollection()
-            : this(InfiniteMaxKeyCount) {}
+            : this(InfiniteMaxKeyCount) { }
 
         public IndexedCollection(int maxKeyCount)
-            : this(maxKeyCount, (IList<T>)null) {}
+            : this(maxKeyCount, (IList<T>)null) { }
 
         public IndexedCollection([CanBeNull] IIndexedEnumerable<T> initialContents)
-            : this(DefaultMaxKeyCount, initialContents) {}
+            : this(DefaultMaxKeyCount, initialContents) { }
 
         public IndexedCollection(int maxKeyCount, [CanBeNull] IIndexedEnumerable<T> initialContents) 
-            : this(maxKeyCount, initialContents, EqualityComparer<T>.Default) {}
+            : this(maxKeyCount, initialContents, EqualityComparer<T>.Default) { }
 
         public IndexedCollection(int maxKeyCount, [CanBeNull] IIndexedEnumerable<T> initialContents, [NotNull] IEqualityComparer<T> comparer)
         {
@@ -733,7 +733,7 @@ namespace Supremacy.Collections
         {
             InsertItem(index, item, false);
         }
-        void IList<T>.RemoveAt(int index) {}
+        void IList<T>.RemoveAt(int index) { }
 
         T IList<T>.this[int index]
         {

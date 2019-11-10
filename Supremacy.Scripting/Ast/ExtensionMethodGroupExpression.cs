@@ -12,8 +12,8 @@ namespace Supremacy.Scripting.Ast
         private Argument _extensionArgument;
         private Expression _extensionExpression;
 
-        public ExtensionMethodGroupExpression(MemberInfo[] members, Type type, SourceSpan span, bool inacessibleCandidatesOnly) : base(members, type, span, inacessibleCandidatesOnly) {}
-        public ExtensionMethodGroupExpression(MemberInfo[] members, Type type, SourceSpan span) : base(members, type, span) {}
+        public ExtensionMethodGroupExpression(MemberInfo[] members, Type type, SourceSpan span, bool inacessibleCandidatesOnly) : base(members, type, span, inacessibleCandidatesOnly) { }
+        public ExtensionMethodGroupExpression(MemberInfo[] members, Type type, SourceSpan span) : base(members, type, span) { }
 
         internal ExtensionMethodGroupExpression()
         {

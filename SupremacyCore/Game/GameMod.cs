@@ -47,10 +47,10 @@ namespace Supremacy.Game
             internal set { _rootPath = value; }
         }
 
-        public GameMod() {}
+        public GameMod() { }
 
         public GameMod(string uniqueIdentifier, string name, string version, string rootPath)
-            : this(new Guid(uniqueIdentifier), name, new Version(version), rootPath) {}
+            : this(new Guid(uniqueIdentifier), name, new Version(version), rootPath) { }
 
         public GameMod(Guid uniqueIdentifier, string name, Version version, string rootPath)
         {

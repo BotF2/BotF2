@@ -195,7 +195,7 @@ namespace Supremacy.Client.Controls
                 new FrameworkPropertyMetadata((o, args) => ((GameButton)o).UpdateStyleForVisualStudioBug()));
         }
 
-        public GameButton() {}
+        public GameButton() { }
 
         public GameButton(ICommand command)
             : this()

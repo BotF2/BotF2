@@ -43,7 +43,7 @@ namespace Supremacy.Client.Views
 
         [InjectionConstructor]
         public ColonyScreenPresentationModel(IAppContext appContext)
-            : base(appContext) {}
+            : base(appContext) { }
 
         #region Colony Property
         public event EventHandler SelectedColonyChanged;

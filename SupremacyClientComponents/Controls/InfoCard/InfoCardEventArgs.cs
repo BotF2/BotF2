@@ -13,14 +13,14 @@ namespace Supremacy.Client.Controls
         /// Initializes a new instance of the <c>InfoCardEventArgs</c> class.
         /// </summary>
         /// <param name="infoCard">The <see cref="InfoCard"/> that is the focus of this event.</param>
-        public InfoCardEventArgs(InfoCard infoCard) : this(infoCard, null, null) {}
+        public InfoCardEventArgs(InfoCard infoCard) : this(infoCard, null, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>InfoCardEventArgs</c> class.
         /// </summary>
         /// <param name="infoCard">The <see cref="InfoCard"/> that is the focus of this event.</param>
         /// <param name="routedEvent">The routed event identifier for this event arguments instance.</param>
-        public InfoCardEventArgs(InfoCard infoCard, RoutedEvent routedEvent) : this(infoCard, routedEvent, null) {}
+        public InfoCardEventArgs(InfoCard infoCard, RoutedEvent routedEvent) : this(infoCard, routedEvent, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>InfoCardEventArgs</c> class. 

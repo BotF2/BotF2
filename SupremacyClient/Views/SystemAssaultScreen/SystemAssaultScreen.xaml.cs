@@ -212,9 +212,9 @@ namespace Supremacy.Client.Views
 
         #endregion
 
-        public void OnCreated() {}
+        public void OnCreated() { }
 
-        public void OnDestroyed() {}
+        public void OnDestroyed() { }
 
         private void OnChangeOrdersButtonClick(object sender, ExecuteRoutedEventArgs e)
         {
@@ -565,7 +565,7 @@ namespace Supremacy.Client.Views
             return data;
         }
 
-        public void FinishDrag(UIElement draggedElement, DragDropEffects finalEffects) {}
+        public void FinishDrag(UIElement draggedElement, DragDropEffects finalEffects) { }
 
         public bool IsDraggable(UIElement draggedElement)
         {

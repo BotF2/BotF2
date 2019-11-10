@@ -11,7 +11,7 @@ namespace Supremacy.Scripting.Ast
     {
         public ConditionalLogicalOperator(MethodGroupExpression operMethod, Arguments arguments, SourceSpan loc)
             : base(operMethod, arguments, loc)
-        {}
+        { }
 
         internal ConditionalLogicalOperator()
         {

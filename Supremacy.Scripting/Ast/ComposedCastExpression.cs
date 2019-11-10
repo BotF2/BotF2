@@ -15,10 +15,10 @@ namespace Supremacy.Scripting.Ast
     {
         private FullNamedExpression _left;
 
-        public ComposedCastExpression() {}
+        public ComposedCastExpression() { }
 
         public ComposedCastExpression(FullNamedExpression left, string dimensionSpecifier)
-            : this(left, dimensionSpecifier, left.Span) {}
+            : this(left, dimensionSpecifier, left.Span) { }
 
         public ComposedCastExpression(FullNamedExpression left, string dimensionSpecifier, SourceSpan span)
         {

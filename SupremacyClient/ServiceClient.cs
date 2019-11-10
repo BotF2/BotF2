@@ -85,13 +85,13 @@ namespace Supremacy.Client
         public void SaveGame(string fileName)
         {
             try { Channel.SaveGame(fileName); }
-            catch (FaultException) {}
+            catch (FaultException) { }
         }
 
         public void SendChatMessage(string message, int recipientId)
         {
             try { Channel.SendChatMessage(message, recipientId); }
-            catch (FaultException) {}
+            catch (FaultException) { }
         }
 
         public bool IsClosing
@@ -112,21 +112,21 @@ namespace Supremacy.Client
                     return;
                 Channel.Pong(pingId);
             }
-            catch (CommunicationException) {}
-            catch (InvalidOperationException) {}
+            catch (CommunicationException) { }
+            catch (InvalidOperationException) { }
         }
 
         public void Disconnect()
         {
             try { Channel.Disconnect(); }
-            catch (FaultException) {}
-            catch (InvalidOperationException) {}
+            catch (FaultException) { }
+            catch (InvalidOperationException) { }
         }
 
         public void EndTurn(PlayerOrdersMessage orders) //not combat orders, see below sendCombatOrders
         {
             try { Channel.EndTurn(orders); }
-            catch (FaultException) {}
+            catch (FaultException) { }
 
         }
 
@@ -139,25 +139,25 @@ namespace Supremacy.Client
         public void ClearPlayerSlot(int slotId)
         {
             try { Channel.ClearPlayerSlot(slotId); }
-            catch (FaultException) {}
+            catch (FaultException) { }
         }
 
         public void ClosePlayerSlot(int slotId)
         {
             try { Channel.ClosePlayerSlot(slotId); }
-            catch (FaultException) {}
+            catch (FaultException) { }
         }
 
         public void AssignPlayerSlot(int slotId, int playerId)
         {
             try { Channel.AssignPlayerSlot(slotId, playerId); }
-            catch (FaultException) {}
+            catch (FaultException) { }
         }
 
         public void StartGame()
         {
             try { Channel.StartGame(); }
-            catch (FaultException) {}
+            catch (FaultException) { }
         }
 
         public int GetNewObjectID()
@@ -190,7 +190,7 @@ namespace Supremacy.Client
         public void SendInvasionOrders(InvasionOrders orders)
         {
             try { Channel.SendInvasionOrders(orders); }
-            catch (FaultException) {}
+            catch (FaultException) { }
         }
 
         public void NotifyInvasionScreenReady()

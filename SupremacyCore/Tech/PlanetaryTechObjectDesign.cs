@@ -19,10 +19,10 @@ namespace Supremacy.Tech
         private byte _buildLimit;
         private BuildRestriction _restriction;
 
-        protected PlanetaryTechObjectDesign() {}
+        protected PlanetaryTechObjectDesign() { }
 
         protected PlanetaryTechObjectDesign(string key)
-            : base(key) {}
+            : base(key) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildingDesign"/> class from XML data.

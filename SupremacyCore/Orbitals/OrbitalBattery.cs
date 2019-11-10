@@ -14,7 +14,7 @@ namespace Supremacy.Orbitals
     [Serializable]
     public class OrbitalBatteryDesign : OrbitalDesign
     {
-        public OrbitalBatteryDesign() {}
+        public OrbitalBatteryDesign() { }
 
         public OrbitalBatteryDesign(XmlElement element)
             : base(element)
@@ -94,7 +94,7 @@ namespace Supremacy.Orbitals
     [Serializable]
     public class OrbitalBattery : Orbital
     {
-        public OrbitalBattery() {}
+        public OrbitalBattery() { }
 
         // ReSharper disable RedundantOverridenMember
         public override void SerializeOwnedData(SerializationWriter writer, object context)
@@ -111,7 +111,7 @@ namespace Supremacy.Orbitals
         // ReSharper restore RedundantOverridenMember
 
         public OrbitalBattery(OrbitalBatteryDesign design)
-            : base(design) {}
+            : base(design) { }
 
         public new OrbitalBatteryDesign Design
         {

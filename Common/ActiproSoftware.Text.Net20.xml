@@ -3695,7 +3695,7 @@
             </remarks></member><member name="P:ActiproSoftware.Text.Implementation.DefaultWordBreakFinder.WordStandaloneCharacters"><summary>
             Gets or sets the set of characters that are intended to be single character words.
             </summary><value>The set of characters that are intended to be single character words.</value><remarks>
-            The default value is the set of <c>.,()&lt;&gt;[]{}?!\/:;'"</c> characters.
+            The default value is the set of <c>.,()&lt;&gt;[]{ }?!\/:;'"</c> characters.
             </remarks></member><member name="T:ActiproSoftware.Text.RegularExpressions.CharClass"><summary>
             Stores information about a character class.
             </summary></member><member name="M:ActiproSoftware.Text.RegularExpressions.CharClass.Add(System.Char)"><summary>

@@ -95,7 +95,7 @@ namespace Supremacy.Diplomacy
 
         #region Constructors
 
-        public DiplomacyState() {}
+        public DiplomacyState() { }
 
         private DiplomacyState(DiplomacyState parentState)
         {

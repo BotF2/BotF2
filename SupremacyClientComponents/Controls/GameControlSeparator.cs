@@ -133,7 +133,7 @@ namespace Supremacy.Client.Controls
                 new FrameworkPropertyMetadata(false));
         }
 
-        public GameControlSeparator() {}
+        public GameControlSeparator() { }
 
         public GameControlSeparator(string label)
             : this()

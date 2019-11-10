@@ -33,7 +33,7 @@ namespace Supremacy.Client.Input
         public event EventHandler IsActiveChanged;
 
         public DelegateCommand(Action executeMethod)
-            : this(executeMethod, null) {}
+            : this(executeMethod, null) { }
 
         public DelegateCommand(Action executeMethod, Func<bool> canExecuteMethod)
         {
@@ -125,7 +125,7 @@ namespace Supremacy.Client.Input
         public event EventHandler IsActiveChanged;
 
         public DelegateCommand(Action<T> executeMethod)
-            : this(executeMethod, null) {}
+            : this(executeMethod, null) { }
 
         public DelegateCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)
         {

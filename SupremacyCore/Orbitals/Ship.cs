@@ -300,7 +300,7 @@ namespace Supremacy.Orbitals
         }
         #endregion
 
-        public Ship() {}
+        public Ship() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ship"/> class.

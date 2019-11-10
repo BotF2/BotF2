@@ -90,7 +90,7 @@ namespace Supremacy.Scripting.Runtime
             private readonly Options _oldValue;
 
             public FlagsHandle(ParseContext context, Options flagsToSet)
-                : this(context, flagsToSet, flagsToSet) {}
+                : this(context, flagsToSet, flagsToSet) { }
 
             internal FlagsHandle(ParseContext context, Options mask, Options val)
             {

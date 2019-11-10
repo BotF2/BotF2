@@ -199,7 +199,7 @@ namespace Supremacy.Diplomacy
         private readonly IsSetFlag _isDataInitialized;
         private int _duration = ImmediateDuration;
 
-        public Clause() {}
+        public Clause() { }
 
         public Clause(ClauseType clauseType)
         {

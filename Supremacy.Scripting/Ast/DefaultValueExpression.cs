@@ -13,7 +13,7 @@ namespace Supremacy.Scripting.Ast
         private Expression _typeExpression;
         private Type _resolvedType;
 
-        public DefaultValueExpression() {}
+        public DefaultValueExpression() { }
 
         public DefaultValueExpression([NotNull] Expression typeExpression)
         {

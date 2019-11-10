@@ -124,7 +124,7 @@ namespace Supremacy.Effects
             internal set { SetFlag(Flags.IsSealed, value); }
         }
 
-        protected virtual void OnApply(DynamicProperty<TValue> property, Type targetType) {}
+        protected virtual void OnApply(DynamicProperty<TValue> property, Type targetType) { }
 
         internal void Merge(DynamicPropertyMetadata<TValue> baseMetadata, DynamicProperty<TValue> property)
         {

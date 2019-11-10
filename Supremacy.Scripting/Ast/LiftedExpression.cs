@@ -20,7 +20,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public LiftedExpression(Expression child, Expression unwrap, Type type)
-            : this(child, unwrap as Unwrap, type) {}
+            : this(child, unwrap as Unwrap, type) { }
 
         public override System.Linq.Expressions.Expression TransformCore(ScriptGenerator generator)
         {

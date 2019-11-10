@@ -2,5 +2,5 @@
 
 namespace Supremacy.Client.Views
 {
-    public interface IView : IActiveAware {}
+    public interface IView : IActiveAware { }
 }

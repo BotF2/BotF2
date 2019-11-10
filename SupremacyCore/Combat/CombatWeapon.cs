@@ -21,7 +21,7 @@ namespace Supremacy.Combat
         private WeaponDeliveryType _weaponType;
         private Percentage _recharge;
 
-        private CombatWeapon() {}
+        private CombatWeapon() { }
 
         public Meter MaxDamage
         {

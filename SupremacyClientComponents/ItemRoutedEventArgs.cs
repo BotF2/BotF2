@@ -12,14 +12,14 @@ namespace Supremacy.Client
         /// Initializes a new instance of the <c>ItemRoutedEventArgs</c> class.
         /// </summary>
         /// <param name="item">The item that is the focus of this event.</param>
-        public ItemRoutedEventArgs(T item) : this(item, null, null) {}
+        public ItemRoutedEventArgs(T item) : this(item, null, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>ItemRoutedEventArgs</c> class.
         /// </summary>
         /// <param name="item">The item that is the focus of this event.</param>
         /// <param name="routedEvent">The routed event identifier for this event arguments instance.</param>
-        public ItemRoutedEventArgs(T item, RoutedEvent routedEvent) : this(item, routedEvent, null) {}
+        public ItemRoutedEventArgs(T item, RoutedEvent routedEvent) : this(item, routedEvent, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>ItemRoutedEventArgs</c> class. 

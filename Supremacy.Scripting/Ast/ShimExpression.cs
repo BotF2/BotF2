@@ -9,7 +9,7 @@ namespace Supremacy.Scripting.Ast
     {
         private Expression _expression;
 
-        public ShimExpression() {}
+        public ShimExpression() { }
 
         public ShimExpression([NotNull] Expression expression)
         {

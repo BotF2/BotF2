@@ -24,19 +24,19 @@ namespace Supremacy.Client.Views
         #endregion
     }
 
-    public interface IGalaxyScreenView : IGameScreenView<GalaxyScreenPresentationModel> {}
+    public interface IGalaxyScreenView : IGameScreenView<GalaxyScreenPresentationModel> { }
 
-    public interface IColonyScreenView : IGameScreenView<ColonyScreenPresentationModel> {}
+    public interface IColonyScreenView : IGameScreenView<ColonyScreenPresentationModel> { }
 
-    public interface IAssetsScreenView : IGameScreenView<AssetsScreenPresentationModel> {}
+    public interface IAssetsScreenView : IGameScreenView<AssetsScreenPresentationModel> { }
 
-    public interface IDiplomacyScreenView : IGameScreenView<DiplomacyScreenPresentationModel> {}
+    public interface IDiplomacyScreenView : IGameScreenView<DiplomacyScreenPresentationModel> { }
 
-    public interface INewDiplomacyScreenView : IGameScreenView<DiplomacyScreenViewModel> {}
+    public interface INewDiplomacyScreenView : IGameScreenView<DiplomacyScreenViewModel> { }
 
-    public interface IScienceScreenView : IGameScreenView<ScienceScreenPresentationModel> {}
+    public interface IScienceScreenView : IGameScreenView<ScienceScreenPresentationModel> { }
 
-    //public interface IIntelScreenView : IGameScreenView<IntelScreenPresentationModel> {}
+    //public interface IIntelScreenView : IGameScreenView<IntelScreenPresentationModel> { }
     
-    public interface ISystemAssaultScreenView : IGameScreenView<SystemAssaultScreenViewModel> {}
+    public interface ISystemAssaultScreenView : IGameScreenView<SystemAssaultScreenViewModel> { }
 }

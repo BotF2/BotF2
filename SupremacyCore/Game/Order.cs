@@ -273,7 +273,7 @@ namespace Supremacy.Game
         private readonly int _targetFleetId;
 
         public RedeployShipOrder(Civilization owner, Ship ship)
-            : this(owner, ship, ship.Fleet) {}
+            : this(owner, ship, ship.Fleet) { }
 
         public RedeployShipOrder(Civilization owner, Ship ship, Fleet targetFleet)
             : base(owner)
@@ -287,7 +287,7 @@ namespace Supremacy.Game
         }
 
         public RedeployShipOrder(Ship ship)
-            : this(ship, ship.Fleet) {}
+            : this(ship, ship.Fleet) { }
 
         public RedeployShipOrder(Ship ship, Fleet targetFleet)
             : base(ship.Owner)
@@ -991,7 +991,7 @@ namespace Supremacy.Game
         }
 
         public ScrapOrder(TechObject target)
-            : this(true, target) {}
+            : this(true, target) { }
 
         public ScrapOrder(bool scrap, TechObject target)
             : base(target.Owner)

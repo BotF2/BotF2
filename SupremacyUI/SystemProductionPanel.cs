@@ -562,7 +562,7 @@ namespace Supremacy.UI
             UpdateImages();
         }
 
-        private static void ScrapFacilityCommand_Executed(object sender, ExecutedRoutedEventArgs e) {}
+        private static void ScrapFacilityCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
 
         private void slider_ActiveUnitsChanged(object sender, DependencyPropertyChangedEventArgs<int> e)
         {
