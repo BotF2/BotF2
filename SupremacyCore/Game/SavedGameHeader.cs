@@ -159,7 +159,7 @@ namespace Supremacy.Game
 
             for (int i = 0; i < empireCount; i++)
             {
-                GameLog.Core.SaveLoad.DebugFormat("Writing Empires: {0}, CivID={1}, empires in total={2}, SlotClaim={3}, Slotstatus={4}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
+                GameLog.Core.SaveLoad.DebugFormat("Writing Empires: empires in total={2}, SlotClaim={3}, Slotstatus={4}, CivID={1}, {0}", EmpireNames[i], EmpireIDs[i], empireCount, SlotClaims[i], SlotStatus[i]);
                 writer.Write(EmpireIDs[i]);
                 writer.Write(EmpireNames[i]);
                 writer.Write((byte)SlotClaims[i]);

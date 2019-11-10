@@ -311,7 +311,7 @@ namespace Supremacy.Orbitals
                     increase = 0.07;
                     HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
                     _hullStrength.UpdateAndReset();
-                    GameLog.Core.MapData.DebugFormat("claiming: Sector has colony = {0}, Sector = {1}, Owner = {2}", Sector.System.Colony.Name, Sector.Location.ToString(), Owner);
+                    //GameLog.Core.MapData.DebugFormat("claiming: Sector has colony = {0}, Sector = {1}, Owner = {2}", Sector.System.Colony.Name, Sector.Location.ToString(), Owner);
                 }
                 if (Sector.Station != null) 
                 {
@@ -320,7 +320,7 @@ namespace Supremacy.Orbitals
                     RegenerateHull();
                     HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
                     _hullStrength.UpdateAndReset();
-                    GameLog.Core.MapData.DebugFormat("claiming: Sector has station = {0}, Sector = {1}, Owner = {2}", Sector.Station.Name, Sector.Location.ToString(), Owner);
+                    //GameLog.Core.MapData.DebugFormat("claiming: Sector has station = {0}, Sector = {1}, Owner = {2}", Sector.Station.Name, Sector.Location.ToString(), Owner);
                 }
             }
             // no more instant-repair outcomment the following line
