@@ -162,7 +162,7 @@ namespace Supremacy.Scripting.Ast
             Walk(ref _next, prefix, postfix);
         }
 
-        internal class QueryExpressionAccess : MemberAccessExpression {}
+        internal class QueryExpressionAccess : MemberAccessExpression { }
 
         internal class QueryExpressionInvocation : InvokeExpression, MethodGroupExpression.IErrorHandler
         {

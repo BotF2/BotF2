@@ -59,10 +59,10 @@ namespace Supremacy.Diplomacy
         }
 
         public RelationshipMemory(MemoryType memoryType, int value)
-            : this(memoryType, value, null) {}
+            : this(memoryType, value, null) { }
 
         public RelationshipMemory(MemoryType memoryType, int value, object parameter)
-            : this(memoryType, GameContext.Current.TurnNumber, value, parameter) {}
+            : this(memoryType, GameContext.Current.TurnNumber, value, parameter) { }
 
         public RelationshipMemory(MemoryType memoryType, int turnCreated, int value, object parameter)
         {

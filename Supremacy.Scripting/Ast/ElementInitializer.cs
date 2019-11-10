@@ -23,7 +23,7 @@ namespace Supremacy.Scripting.Ast
             set { _value = value; }
         }
 
-        public ElementInitializer() {}
+        public ElementInitializer() { }
 
         public ElementInitializer(string name, Expression value, SourceSpan span)
         {

@@ -12,7 +12,7 @@ namespace Supremacy.Scripting.Ast
             set { Expression = value; }
         }
 
-        public SelectManyClause() {}
+        public SelectManyClause() { }
 
         public SelectManyClause(TopLevelScope scope, RangeDeclaration lt, Expression expr)
             : base(scope, expr)

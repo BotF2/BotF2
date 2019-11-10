@@ -304,7 +304,7 @@ namespace Supremacy.Effects
         protected EffectBinding(
             [NotNull] Effect effect,
             [NotNull] EffectGroupBinding effectGroupBinding,
-            [NotNull] IEffectTarget target) : base(effect, effectGroupBinding, target) {}
+            [NotNull] IEffectTarget target) : base(effect, effectGroupBinding, target) { }
 
         protected IEffectParameterBindingCollection GetMergedParameterBindings(TParameterBindingContext bindingContext)
         {

@@ -108,7 +108,7 @@ namespace Supremacy.Client.Views
             set { DataContext = value; }
         }
 
-        public void OnCreated() {}
+        public void OnCreated() { }
 
         public void OnDestroyed()
         {

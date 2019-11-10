@@ -36,7 +36,7 @@ namespace Supremacy.AI
 
         protected ulong[,] _values;
 
-        public InfluenceMap() : this(GameContext.Current) {}
+        public InfluenceMap() : this(GameContext.Current) { }
 
         public InfluenceMap(GameContext game)
         {

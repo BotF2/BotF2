@@ -16,7 +16,7 @@ namespace Supremacy.Client.Controls
     public class VariantSizeConverter : EnumConverter {
 
         public VariantSizeConverter()
-            : base(typeof(VariantSize)) {}
+            : base(typeof(VariantSize)) { }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {

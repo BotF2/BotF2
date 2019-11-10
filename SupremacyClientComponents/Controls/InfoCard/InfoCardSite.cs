@@ -479,12 +479,12 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region Protected Methods
-        protected virtual void OnInfoCardActivated(InfoCardEventArgs e) {}
-        protected virtual void OnInfoCardClosed(InfoCardEventArgs e) {}
-        protected virtual void OnInfoCardClosing(InfoCardEventArgs e) {}
-        protected virtual void OnInfoCardDeactivated(InfoCardEventArgs e) {}
-        protected virtual void OnInfoCardOpened(InfoCardEventArgs e) {}
-        protected virtual void OnInfoCardOpening(InfoCardEventArgs e) {}
+        protected virtual void OnInfoCardActivated(InfoCardEventArgs e) { }
+        protected virtual void OnInfoCardClosed(InfoCardEventArgs e) { }
+        protected virtual void OnInfoCardClosing(InfoCardEventArgs e) { }
+        protected virtual void OnInfoCardDeactivated(InfoCardEventArgs e) { }
+        protected virtual void OnInfoCardOpened(InfoCardEventArgs e) { }
+        protected virtual void OnInfoCardOpening(InfoCardEventArgs e) { }
 
         protected virtual void OnActiveInfoCardChanged(InfoCard oldValue, InfoCard newValue)
         {

@@ -20,7 +20,7 @@ namespace Supremacy.Client.Views
     {
         [InjectionConstructor]
         public AssetsScreenPresentationModel([NotNull] IAppContext appContext)
-            : base(appContext) {}
+            : base(appContext) { }
 
         public AssetsScreenPresentationModel()
             : base(DesignTimeAppContext.Instance)

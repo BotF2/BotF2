@@ -364,7 +364,7 @@ namespace Supremacy.Client.Controls
         {
             // OBJECT
 
-            public FindInfoCardEventArgs() : base(FindInfoCardEvent) {}
+            public FindInfoCardEventArgs() : base(FindInfoCardEvent) { }
 
             // PUBLIC PROCEDURES
 

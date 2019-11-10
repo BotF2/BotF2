@@ -193,9 +193,9 @@ namespace Supremacy.Client
             OnShow();
         }
 
-        protected virtual void OnHide() {}
+        protected virtual void OnHide() { }
 
-        protected virtual void OnShow() {}
+        protected virtual void OnShow() { }
 
         private void StopDescendantAnimations()
         {
@@ -256,9 +256,9 @@ namespace Supremacy.Client
             RaiseEvent(new RoutedEventArgs(ChatMessageReceivedEvent, this));
         }
 
-        protected internal virtual void OnClosing(object sender, CancelEventArgs e) {}
+        protected internal virtual void OnClosing(object sender, CancelEventArgs e) { }
 
-        public virtual void RefreshScreen() {}
+        public virtual void RefreshScreen() { }
 
         #region Implementation of IActiveAware
         public event EventHandler IsActiveChanged;
@@ -284,13 +284,13 @@ namespace Supremacy.Client
         #region Implementation of IGameScreenView
         public TPresentationModel Model { get; set; }
 
-        public virtual void OnCreated() {}
-        public virtual void OnDestroyed() {}
+        public virtual void OnCreated() { }
+        public virtual void OnDestroyed() { }
         #endregion
     }
 
     public class PriorityGameScreen<TPresentationModel> : GameScreen<TPresentationModel>
     {
-        public PriorityGameScreen([NotNull] IUnityContainer container) : base(container) {}
+        public PriorityGameScreen([NotNull] IUnityContainer container) : base(container) { }
     }
 }

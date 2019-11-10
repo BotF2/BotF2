@@ -9,7 +9,7 @@
 
 namespace Supremacy.Client.Views
 {
-    public interface ILobbyScreenPresenter : IGameScreenPresenter<object, ILobbyScreenView> {}
+    public interface ILobbyScreenPresenter : IGameScreenPresenter<object, ILobbyScreenView> { }
 
-    public interface ILobbyScreenView : IGameScreenView<object> {}
+    public interface ILobbyScreenView : IGameScreenView<object> { }
 }

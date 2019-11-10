@@ -8,7 +8,7 @@ namespace Supremacy.Client.Controls
     {
         private const int InvalidIndex = -1;
 
-        public ReadOnlyInfoCardCollection(ObservableCollection<InfoCard> list) : base(list) {}
+        public ReadOnlyInfoCardCollection(ObservableCollection<InfoCard> list) : base(list) { }
 
         public bool Contains(Guid uniqueId)
         {

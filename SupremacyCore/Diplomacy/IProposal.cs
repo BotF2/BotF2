@@ -36,13 +36,13 @@ namespace Supremacy.Diplomacy
         private readonly CollectionBase<IClause> _clauses;
 
         public NewProposal(Civilization sender, Civilization recipient, params IClause[] clauses)
-            : this(GameContext.Current.TurnNumber, sender, recipient, (IEnumerable<IClause>)clauses) {}
+            : this(GameContext.Current.TurnNumber, sender, recipient, (IEnumerable<IClause>)clauses) { }
 
         public NewProposal(Civilization sender, Civilization recipient, IEnumerable<IClause> clauses)
-            : this(GameContext.Current.TurnNumber, sender, recipient, clauses) {}
+            : this(GameContext.Current.TurnNumber, sender, recipient, clauses) { }
 
         public NewProposal(int turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] params IClause[] clauses)
-            : this(turnSent, sender, recipient, (IEnumerable<IClause>)clauses) {}
+            : this(turnSent, sender, recipient, (IEnumerable<IClause>)clauses) { }
 
         public NewProposal(int turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] IEnumerable<IClause> clauses)
         {

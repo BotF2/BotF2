@@ -10,33 +10,33 @@ namespace Supremacy.Client
         /// <summary>
         /// Initializes a new instance of the <c>CancelRoutedEventArgs</c> class with the <see cref="Cancel"/> property set to <c>false</c>. 
         /// </summary>
-        public CancelRoutedEventArgs() : this(false, null, null) {}
+        public CancelRoutedEventArgs() : this(false, null, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>CancelRoutedEventArgs</c> class with the <see cref="Cancel"/> property set to <c>false</c>. 
         /// </summary>
         /// <param name="routedEvent">The routed event identifier for this event arguments instance.</param>
-        public CancelRoutedEventArgs(RoutedEvent routedEvent) : this(false, routedEvent, null) {}
+        public CancelRoutedEventArgs(RoutedEvent routedEvent) : this(false, routedEvent, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>CancelRoutedEventArgs</c> class with the <see cref="Cancel"/> property set to <c>false</c>. 
         /// </summary>
         /// <param name="routedEvent">The routed event identifier for this event arguments instance.</param>
         /// <param name="source">An alternate source that will be reported when the event is handled.</param>
-        public CancelRoutedEventArgs(RoutedEvent routedEvent, object source) : this(false, routedEvent, source) {}
+        public CancelRoutedEventArgs(RoutedEvent routedEvent, object source) : this(false, routedEvent, source) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>CancelRoutedEventArgs</c> class with the <see cref="Cancel"/> property set to the given value. 
         /// </summary>
         /// <param name="cancel"><c>true</c> to cancel the event; otherwise, <c>false</c>.</param>
-        public CancelRoutedEventArgs(bool cancel) : this(cancel, null, null) {}
+        public CancelRoutedEventArgs(bool cancel) : this(cancel, null, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>CancelRoutedEventArgs</c> class with the <see cref="Cancel"/> property set to the given value. 
         /// </summary>
         /// <param name="cancel"><c>true</c> to cancel the event; otherwise, <c>false</c>.</param>
         /// <param name="routedEvent">The routed event identifier for this event arguments instance.</param>
-        public CancelRoutedEventArgs(bool cancel, RoutedEvent routedEvent) : this(cancel, routedEvent, null) {}
+        public CancelRoutedEventArgs(bool cancel, RoutedEvent routedEvent) : this(cancel, routedEvent, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <c>CancelRoutedEventArgs</c> class with the <see cref="Cancel"/> property set to the given value. 

@@ -25,8 +25,8 @@ namespace Supremacy.Client.Views
             _appContext = appContext;
         }
 
-        protected virtual void OnLoaded() {}
-        protected virtual void OnUnloaded() {}
+        protected virtual void OnLoaded() { }
+        protected virtual void OnUnloaded() { }
 
         #region Implementation of IPresentationModel
 

@@ -32,7 +32,7 @@ namespace Supremacy.Universe
         /// <summary>
         /// Initializes a new instance of the <see cref="TravelRoute"/> class.
         /// </summary>
-        public TravelRoute() {}
+        public TravelRoute() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TravelRoute"/> class.

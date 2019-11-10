@@ -29,7 +29,7 @@ namespace Supremacy.Game
         }
 
         public SectorClaim(ICivIdentity owner, MapLocation location, int weight)
-            : this(Guard.ArgumentNotNull(owner, "owner").CivID, location, weight) {}
+            : this(Guard.ArgumentNotNull(owner, "owner").CivID, location, weight) { }
 
         public SectorClaim(int ownerId, MapLocation location, int weight)
         {

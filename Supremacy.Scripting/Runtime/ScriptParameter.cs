@@ -92,7 +92,7 @@ namespace Supremacy.Scripting
                     baseValue = convertedValue;
                     return true;
                 }
-                //catch {} //ToDo: think how to add Supremacy.Utility namespace here, maybe move utility into seperate sub-project?
+                //catch { } //ToDo: think how to add Supremacy.Utility namespace here, maybe move utility into seperate sub-project?
             }
 
             targetConverter = TypeDescriptor.GetConverter(sourceType);
@@ -105,7 +105,7 @@ namespace Supremacy.Scripting
                     baseValue = convertedValue;
                     return true;
                 }
-                //catch {} //ToDo: think how to add Supremacy.Utility namespace here, maybe move utility into seperate sub-project?
+                //catch { } //ToDo: think how to add Supremacy.Utility namespace here, maybe move utility into seperate sub-project?
             }
 
             return false;
@@ -191,7 +191,7 @@ namespace Supremacy.Scripting
         #endregion
 
         #region Implementation of ISupportInitialize
-        public void BeginInit() {}
+        public void BeginInit() { }
 
         public void EndInit()
         {

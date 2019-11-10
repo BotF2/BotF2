@@ -59,7 +59,7 @@ namespace Supremacy.Economy
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductionFacilityDesign"/> class.
         /// </summary>
-        public ProductionFacilityDesign() {}
+        public ProductionFacilityDesign() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductionFacilityDesign"/> class using XML data.

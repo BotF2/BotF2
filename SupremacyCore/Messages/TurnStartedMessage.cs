@@ -1,4 +1,4 @@
 namespace Supremacy.Messages
 {
-    public class TurnStartedMessage {}
+    public class TurnStartedMessage { }
 }

@@ -166,7 +166,7 @@ namespace Supremacy.Text
     public sealed class LocalizedTextGroupCollection : KeyedCollectionBase<object, LocalizedTextGroup>
     {
         public LocalizedTextGroupCollection()
-            : base(o => o.Key) {}
+            : base(o => o.Key) { }
     }
 
     public static class LocalizedTextGroups

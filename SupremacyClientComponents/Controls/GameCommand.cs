@@ -15,16 +15,16 @@ namespace Supremacy.Client.Controls
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public GameCommand() {}
+        public GameCommand() { }
 
         public GameCommand(string name, Type ownerType)
-            : this(name, ownerType, null, null, (ImageSource)null, null) {}
+            : this(name, ownerType, null, null, (ImageSource)null, null) { }
 
         public GameCommand(string name, Type ownerType, string label)
-            : this(name, ownerType, label, null, (ImageSource)null, null) {}
+            : this(name, ownerType, label, null, (ImageSource)null, null) { }
 
         public GameCommand(string name, Type ownerType, string label, string imageSourceLarge, string imageSourceSmall)
-            : this(name, ownerType, label, imageSourceLarge, imageSourceSmall, null) {}
+            : this(name, ownerType, label, imageSourceLarge, imageSourceSmall, null) { }
 
         public GameCommand(
             string name,
@@ -42,7 +42,7 @@ namespace Supremacy.Client.Controls
                      (!string.IsNullOrEmpty(imageSourceSmall)
                           ? new BitmapImage(new Uri(imageSourceSmall, UriKind.RelativeOrAbsolute))
                           : null),
-                     inputGestures) {}
+                     inputGestures) { }
 
         public GameCommand(
             string name, 
@@ -50,7 +50,7 @@ namespace Supremacy.Client.Controls
             string label, 
             ImageSource imageSourceLarge, 
             ImageSource imageSourceSmall)
-            : this(name, ownerType, label,imageSourceLarge,imageSourceSmall, null) {}
+            : this(name, ownerType, label,imageSourceLarge,imageSourceSmall, null) { }
 
         public GameCommand(
             string name, 

@@ -52,7 +52,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public Shipyard() {}
+        public Shipyard() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Shipyard"/> class using the specified design.

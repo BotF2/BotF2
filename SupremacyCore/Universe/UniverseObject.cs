@@ -220,7 +220,7 @@ namespace Supremacy.Universe
         /// that should be reset or modified at the end of each turn, perform
         /// those operations here.
         /// </summary>
-        protected internal virtual void Reset() {}
+        protected internal virtual void Reset() { }
 
         /// <summary>
         /// Called when the location of this <see cref="UniverseObject"/> changes.

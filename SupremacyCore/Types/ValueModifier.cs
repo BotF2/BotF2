@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 namespace Supremacy.Types
 {
     [Serializable]
-    public class ValueModifier : ValueModifier<int> {}
+    public class ValueModifier : ValueModifier<int> { }
 
     [Serializable]
     public class ValueModifier<T> where T : IConvertible
@@ -135,7 +135,7 @@ namespace Supremacy.Types
         }
 
         public ValueModifier()
-            : this(0, 1.0f) {}
+            : this(0, 1.0f) { }
 
         public ValueModifier(int offset, Percentage efficiency)
         {

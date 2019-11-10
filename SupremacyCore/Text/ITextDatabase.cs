@@ -358,8 +358,8 @@ namespace Supremacy.Text
 
             public event NotifyCollectionChangedEventHandler CollectionChanged
             {
-                add {}
-                remove {}
+                add { }
+                remove { }
             }
 
             public void BeginEdit() { throw new NotSupportedException(); }
@@ -501,8 +501,8 @@ namespace Supremacy.Text
 
             public event NotifyCollectionChangedEventHandler CollectionChanged
             {
-                add {}
-                remove {}
+                add { }
+                remove { }
             }
             
             public void BeginEdit() { throw new NotSupportedException(); }
@@ -511,8 +511,8 @@ namespace Supremacy.Text
 
             public event EventHandler Changed
             {
-                add {}
-                remove {}
+                add { }
+                remove { }
             } 
         }
         #endregion

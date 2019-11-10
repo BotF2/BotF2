@@ -34,7 +34,7 @@ namespace Supremacy.Pathfinding
             TotalCost = totalCost;
         }
 
-        public Path(TNode start) : this(start, null, 0) {}
+        public Path(TNode start) : this(start, null, 0) { }
         #endregion
 
         #region Properties and Indexers

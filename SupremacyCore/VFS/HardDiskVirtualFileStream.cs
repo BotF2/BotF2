@@ -15,6 +15,6 @@ namespace Supremacy.VFS
         /// <param name="access">The file access level.</param>
         /// <param name="share">The file sharing level.</param>
         public HardDiskVirtualFileStream(string resolvedPath, Stream baseStream, FileAccess access, FileShare share)
-            : base(resolvedPath, baseStream, access, share) {}
+            : base(resolvedPath, baseStream, access, share) { }
     }
 }

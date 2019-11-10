@@ -273,7 +273,7 @@ namespace Supremacy.Types
             Values = new DistributionValueCollection(this);
         }
 
-        public DistributionGroup(params TKey[] initialKeys) : this((IEnumerable<TKey>)initialKeys) {}
+        public DistributionGroup(params TKey[] initialKeys) : this((IEnumerable<TKey>)initialKeys) { }
 
         public DistributionGroup(IEnumerable<TKey> initialKeys) : this()
         {
