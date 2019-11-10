@@ -298,7 +298,9 @@ namespace Supremacy.Orbitals
             Entities.Civilization claimingCiv = null;
             if (GameContext.Current.SectorClaims != null)
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
-            GameLog.Core.MapData.DebugFormat("claimingCiv = {0}, Sector {1}, but owner=newOwner wish to be = {2}", claimingCiv, Sector.Location.ToString(), Owner);
+
+            //GameLog.Core.MapData.DebugFormat("claimingCiv = {0}, Sector {1}, but owner=newOwner wish to be = {2}", claimingCiv, Sector.Location.ToString(), Owner);
+            
             if (claimingCiv == Owner)
             {
                 if ((Sector.System != null) && Sector.System.HasColony && Sector.System.Owner == Owner)
