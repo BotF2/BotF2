@@ -642,11 +642,16 @@ namespace Supremacy.Xna
             if (!_beginDrawOk || _device == null)
                 return;
 
+            NewMethod();
+        }
+
+        private void NewMethod()
+        {
             try { _device.Present(); }
-            catch (InvalidOperationException) {}
-            catch (DeviceLostException) {}
-            catch (DeviceNotResetException) {}
-            catch (DriverInternalErrorException) {}
+            catch (InvalidOperationException) { }
+            catch (DeviceLostException) { }
+            catch (DeviceNotResetException) { }
+            catch (DriverInternalErrorException) { }
         }
 
         protected virtual void OnDeviceCreated(object sender, EventArgs args)

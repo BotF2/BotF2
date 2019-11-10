@@ -500,7 +500,7 @@ namespace Supremacy.Client
             var app = new ClientApp();
             app.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             app.InitializeComponent();
-            app.Run();
+            _ = app.Run();
         }
 
         private static void ShowSplashScreen()
