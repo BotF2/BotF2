@@ -7,7 +7,7 @@
         xmlns:Client="clr-namespace:Supremacy.Client"
         FocusManager.IsFocusScope="True"
         Background="Black"
-        Title="{res:StringResource GAME_NAME}"
+        Title="Rise of the UFP: A free, open-source, non-commerical Star Trek Fan Game"
         MinHeight="768"
         MinWidth="1024"
         Height="768"
