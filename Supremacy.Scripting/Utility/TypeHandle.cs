@@ -179,7 +179,7 @@ namespace Supremacy.Scripting.Utility
 
     internal class PtrHashtable : Hashtable
     {
-        public PtrHashtable() : base(PtrComparer.Instance) {}
+        public PtrHashtable() : base(PtrComparer.Instance) { }
 
         //
         // Workaround System.InvalidOperationException for enums
@@ -197,7 +197,7 @@ namespace Supremacy.Scripting.Utility
         private sealed class PtrComparer : IComparer, IEqualityComparer
         {
             public static readonly PtrComparer Instance = new PtrComparer();
-            private PtrComparer() {}
+            private PtrComparer() { }
 
             #region IComparer Members
             public int Compare(object x, object y)

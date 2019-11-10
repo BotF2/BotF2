@@ -175,7 +175,7 @@ namespace Supremacy.Effects
         }
 
         // DynamicObjectType may not be constructed outside of FromSystemType
-        private DynamicObjectType() {}
+        private DynamicObjectType() { }
 
         private int _id;
         private Type _systemType;

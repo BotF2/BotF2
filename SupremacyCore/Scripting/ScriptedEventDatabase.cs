@@ -23,7 +23,7 @@ namespace Supremacy.Scripting
     public sealed class ScriptedEventDatabase : KeyedCollectionBase<string, EventDefinition>
     {
         public ScriptedEventDatabase()
-            : base(o => o.EventID, StringComparer.OrdinalIgnoreCase) {}
+            : base(o => o.EventID, StringComparer.OrdinalIgnoreCase) { }
 
         public static ScriptedEventDatabase Load()
         {

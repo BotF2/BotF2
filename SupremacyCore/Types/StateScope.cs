@@ -71,7 +71,7 @@ namespace Supremacy.Types
         /// <summary>
         /// Initializes a new instance of the <see cref="StateScope"/> class.
         /// </summary>
-        public StateScope() {}
+        public StateScope() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateScope"/> class.

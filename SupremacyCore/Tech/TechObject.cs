@@ -82,7 +82,7 @@ namespace Supremacy.Tech
             set { _designId = (value != null) ? value.DesignID : TechObjectDesign.InvalidDesignID; }
         }
 
-        public TechObject() {}
+        public TechObject() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TechObject"/> class using the specified design.

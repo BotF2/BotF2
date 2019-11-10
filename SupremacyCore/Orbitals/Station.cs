@@ -48,7 +48,7 @@ namespace Supremacy.Orbitals
             set { Design = value; }
         }
 
-        public Station() {}
+        public Station() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Station"/> class using the specified design.
@@ -95,7 +95,7 @@ namespace Supremacy.Orbitals
         /// Remove any completed projects from the build slots and dequeue new projects
         /// as slots become available.
         /// </summary>
-        public void ProcessQueue() {}
+        public void ProcessQueue() { }
         #endregion
 
 		public override void SerializeOwnedData(SerializationWriter writer, object context)

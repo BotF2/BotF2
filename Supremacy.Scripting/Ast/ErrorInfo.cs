@@ -13,7 +13,7 @@ namespace Supremacy.Scripting.Ast
         private readonly Severity _severity;
 
         public ErrorInfo(int code, [NotNull] string message)
-         : this(code, message, Severity.Error) {}
+         : this(code, message, Severity.Error) { }
 
         public ErrorInfo(int code, [NotNull] string message, Severity severity)
         {

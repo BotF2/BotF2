@@ -144,7 +144,7 @@ namespace Supremacy.UI
         #endregion
 
         #region Methods
-        public static void PreloadImages() {}
+        public static void PreloadImages() { }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {

@@ -197,7 +197,7 @@ namespace Supremacy.Client.Controls
             base.OnItemsChanged(e);
         }
 
-        protected virtual void OnValidateItems(IList items) {}
+        protected virtual void OnValidateItems(IList items) { }
 
         protected virtual void OnVariantSizeChanged(VariantSize oldVariantSize, VariantSize newVariantSize)
         {

@@ -2075,7 +2075,7 @@ namespace Supremacy.Universe
         }
     }
 
-    public interface IContactCenter {}
+    public interface IContactCenter { }
 
     [Serializable]
     public sealed class ColonyFacilitiesAccessor

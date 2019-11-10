@@ -21,7 +21,7 @@ namespace Supremacy.Data
     [Serializable]
     public sealed class TableColumn
     {
-        public TableColumn(string name) : this(name, typeof(string)) {}
+        public TableColumn(string name) : this(name, typeof(string)) { }
 
         public TableColumn([NotNull] string name, [NotNull] Type valueType)
         {
@@ -96,7 +96,7 @@ namespace Supremacy.Data
             ColumnsInternal = baseTable.ColumnsInternal;
             RowsInternal = baseTable.RowsInternal; 
         }
-        public Table(string name) : base(name) {}
+        public Table(string name) : base(name) { }
     }
 
     [Serializable]

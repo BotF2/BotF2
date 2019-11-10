@@ -30,10 +30,10 @@ namespace Supremacy.Client
     [UsedImplicitly]
     internal sealed class GameScreenStackRegionAdapter :RegionAdapterBase<GameScreenStack>
     {
-        public GameScreenStackRegionAdapter(IRegionBehaviorFactory defaultBehaviors) : base(defaultBehaviors) {}
+        public GameScreenStackRegionAdapter(IRegionBehaviorFactory defaultBehaviors) : base(defaultBehaviors) { }
 
         #region Overrides of RegionAdapterBase<GameScreenStack>
-        protected override void Adapt(IRegion region, GameScreenStack regionTarget) {}
+        protected override void Adapt(IRegion region, GameScreenStack regionTarget) { }
 
         protected override void AttachBehaviors(IRegion region, GameScreenStack regionTarget)
         {

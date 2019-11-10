@@ -464,7 +464,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public ParametersCompiled(IEnumerable<Parameter> parameters)
-            : this(parameters.ToArray()) {}
+            : this(parameters.ToArray()) { }
 
         public CallingConventions CallingConvention
         {

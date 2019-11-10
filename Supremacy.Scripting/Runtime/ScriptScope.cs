@@ -24,7 +24,7 @@ namespace Supremacy.Scripting.Runtime
         }
 
         public ScriptScope(ScriptScope parent, SymbolDocumentInfo document)
-            : this(parent, null, document) {}
+            : this(parent, null, document) { }
 
         public ScriptScope(ScriptScope parent, string name, SymbolDocumentInfo document)
         {

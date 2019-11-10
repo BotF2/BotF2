@@ -18,7 +18,7 @@ namespace Supremacy.Scripting.Ast
             get { return true; }
         }
 
-        protected TypeExpression() {}
+        protected TypeExpression() { }
 
         public TypeExpression(Type type)
         {

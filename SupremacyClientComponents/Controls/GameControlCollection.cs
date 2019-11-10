@@ -10,7 +10,7 @@ namespace Supremacy.Client.Controls
         private VariantSize? _itemVariantSize;
         private readonly object _owner;
 
-        public GameControlCollection() {}
+        public GameControlCollection() { }
 
         public GameControlCollection(object owner, GameControlContext context)
             : this()
@@ -108,7 +108,7 @@ namespace Supremacy.Client.Controls
             {
                 base.OnCollectionChanged(e);
             }
-            catch (ArgumentOutOfRangeException) {}
+            catch (ArgumentOutOfRangeException) { }
         }
 
         public object Owner

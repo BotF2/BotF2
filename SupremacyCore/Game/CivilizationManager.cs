@@ -499,7 +499,7 @@ namespace Supremacy.Game
         #region Constructors
 
         public CivilizationKeyedMap(Func<TValue, int> keyRetriever)
-            : base(keyRetriever) {}
+            : base(keyRetriever) { }
 
         #endregion
 
@@ -573,7 +573,7 @@ namespace Supremacy.Game
         #region Constructors
 
         public CivilizationManagerMap()
-            : base(o => o.CivilizationID) {}
+            : base(o => o.CivilizationID) { }
 
         #endregion
     }
@@ -587,7 +587,7 @@ namespace Supremacy.Game
         #region Constructors
 
         public ColonyMap()
-            : base(o => o.ObjectID) {}
+            : base(o => o.ObjectID) { }
 
         #endregion
     }

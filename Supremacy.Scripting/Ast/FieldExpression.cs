@@ -29,7 +29,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public FieldExpression(FieldInfo fieldInfo, SourceSpan span)
-            : this(null, fieldInfo, span) {}
+            : this(null, fieldInfo, span) { }
 
         public FieldExpression(Type containerType, FieldInfo fieldInfo, SourceSpan span)
         {

@@ -84,7 +84,7 @@ namespace Supremacy.Scripting.Ast
 
         private Expression _resolved;
 
-        public MemberAccessExpression() {}
+        public MemberAccessExpression() { }
 
         public MemberAccessExpression(Expression left, string name, SourceSpan span)
         {

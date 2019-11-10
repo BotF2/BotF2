@@ -181,14 +181,14 @@ namespace Supremacy.IO.Compression
 						byte* pos = ip - (ip - dict[index]);
 						if(pos < input || (offset = (uint) (ip - pos)) <= 0 || offset > M4_MAX_OFFSET)
 							literal = true;
-						else if(offset <= M2_MAX_OFFSET || pos[3] == ip[3]) {}
+						else if(offset <= M2_MAX_OFFSET || pos[3] == ip[3]) { }
 						else
 						{
 							index = D_INDEX2(index);
 							pos = ip - (ip - dict[index]);
 							if(pos < input || (offset = (uint) (ip - pos)) <= 0 || offset > M4_MAX_OFFSET)
 								literal = true;
-							else if(offset <= M2_MAX_OFFSET || pos[3] == ip[3]) {}
+							else if(offset <= M2_MAX_OFFSET || pos[3] == ip[3]) { }
 							else
 								literal = true;
 						}

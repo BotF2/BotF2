@@ -41,12 +41,12 @@ namespace Supremacy.Client.Views
 
         public bool IsRunning { get; private set; }
 
-        protected internal virtual void RegisterViewWithRegion() {}
-        protected internal virtual void UnregisterViewWithRegion() {}
+        protected internal virtual void RegisterViewWithRegion() { }
+        protected internal virtual void UnregisterViewWithRegion() { }
 
-        protected virtual void InvalidateCommands() {}
-        protected virtual void RegisterCommandAndEventHandlers() {}
-        protected virtual void UnregisterCommandAndEventHandlers() {}
+        protected virtual void InvalidateCommands() { }
+        protected virtual void RegisterCommandAndEventHandlers() { }
+        protected virtual void UnregisterCommandAndEventHandlers() { }
 
         public void Run()
         {
@@ -78,8 +78,8 @@ namespace Supremacy.Client.Views
             IsRunning = false;
         }
 
-        protected virtual void RunOverride() {}
-        protected virtual void TerminateOverride() {}
+        protected virtual void RunOverride() { }
+        protected virtual void TerminateOverride() { }
 
         private void OnCommandManagerRequerySuggested(object sender, EventArgs e)
         {

@@ -108,13 +108,13 @@ namespace Supremacy.Resources
         public class StringTableParseException : SupremacyException
         {
             public StringTableParseException()
-            {}
+            { }
 
             public StringTableParseException(string message)
-                : base(message) {}
+                : base(message) { }
 
             public StringTableParseException(string message, Exception innerException)
-                : base(message, innerException) {}
+                : base(message, innerException) { }
         }
     }
 }

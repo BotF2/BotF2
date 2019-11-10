@@ -13,7 +13,7 @@ namespace Supremacy.Collections
         }
 
         protected WeakReference(T target)
-            : base(target, false) {}
+            : base(target, false) { }
 
         public new T Target
         {

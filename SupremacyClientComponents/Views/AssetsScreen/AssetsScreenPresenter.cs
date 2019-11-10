@@ -9,7 +9,7 @@ namespace Supremacy.Client.Views
     public class AssetsScreenPresenter : GameScreenPresenterBase<AssetsScreenPresentationModel, IAssetsScreenView>, IAssetsScreenPresenter
     {
         public AssetsScreenPresenter([NotNull] IUnityContainer container, [NotNull] AssetsScreenPresentationModel model, [NotNull] IAssetsScreenView view)
-            : base(container, model, view) {}
+            : base(container, model, view) { }
 
         #region Overrides of GameScreenPresenterBase<AssetsScreenPresentationModel,IAssetsScreenView>
 

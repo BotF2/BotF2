@@ -23,7 +23,7 @@ namespace Supremacy.Scripting
             [NotNull] string summaryText,
             [NotNull] string detailText,
             params Expression<Func<object>>[] detailTextParameterResolvers)
-            : this(owner, headerText, summaryText, detailText, null, null, detailTextParameterResolvers) {}
+            : this(owner, headerText, summaryText, detailText, null, null, detailTextParameterResolvers) { }
 
         public ScriptedEventSitRepEntryData(
             [NotNull] Civilization owner,
@@ -32,7 +32,7 @@ namespace Supremacy.Scripting
             [NotNull] string detailText,
             [CanBeNull] string detailImage,
             params Expression<Func<object>>[] detailTextParameterResolvers)
-            : this(owner, headerText, summaryText, detailText, detailImage, null, detailTextParameterResolvers) {}
+            : this(owner, headerText, summaryText, detailText, detailImage, null, detailTextParameterResolvers) { }
 
         public ScriptedEventSitRepEntryData(
             [NotNull] Civilization owner,

@@ -314,7 +314,7 @@ namespace Supremacy.Client.Controls
             GameCommand.ExecuteCommandSource(this);
         }
 
-        protected virtual void OnCommandChanged(ICommand oldCommand, ICommand newCommand) {}
+        protected virtual void OnCommandChanged(ICommand oldCommand, ICommand newCommand) { }
 
         protected virtual void OnCommandParameterChanged(object oldValue, object newValue)
         {
@@ -351,8 +351,8 @@ namespace Supremacy.Client.Controls
             base.OnPropertyChanged(e);
         }
 
-        protected virtual void OnVariantSizeChanged(VariantSize oldVariantSize, VariantSize newVariantSize) {}
-        protected virtual void OnContextChanged(GameControlContext oldContext, GameControlContext newContext) {}
+        protected virtual void OnVariantSizeChanged(VariantSize oldVariantSize, VariantSize newVariantSize) { }
+        protected virtual void OnContextChanged(GameControlContext oldContext, GameControlContext newContext) { }
 
         public void RaiseClickEvent(ExecuteRoutedEventArgs e)
         {

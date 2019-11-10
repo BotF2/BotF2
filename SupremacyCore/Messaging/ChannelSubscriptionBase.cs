@@ -30,7 +30,7 @@ namespace Supremacy.Messaging
         #endregion
 
         #region Overridable
-        protected virtual void Dispose(bool disposing) {}
+        protected virtual void Dispose(bool disposing) { }
         #endregion
     }
 }

@@ -545,7 +545,7 @@ namespace Supremacy.Tech
         /// <summary>
         /// Initializes a new instance of the <see cref="ResearchApplication"/> class.
         /// </summary>
-        public ResearchApplication() {}
+        public ResearchApplication() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResearchApplication"/> class from XML data.

@@ -31,7 +31,7 @@ namespace Supremacy.Combat
         private readonly List<CombatUnit> _assimilatedShips;
         private CombatUnit _station;
 
-        public CombatAssets(Civilization owner, MapLocation location) : this(-1, owner, location) {}
+        public CombatAssets(Civilization owner, MapLocation location) : this(-1, owner, location) { }
 
         public CombatAssets(int combatId, Civilization owner, MapLocation location)
         {

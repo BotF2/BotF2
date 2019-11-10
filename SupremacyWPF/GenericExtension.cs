@@ -91,7 +91,7 @@ namespace Supremacy.Client
         }
 
         // Constructors
-        public GenericTypeExtension() {}
+        public GenericTypeExtension() { }
 
         public GenericTypeExtension(string typeName)
         {

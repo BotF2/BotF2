@@ -27,7 +27,7 @@ namespace Supremacy.Game
         /// <param name="sender">The sender.</param>
         /// <param name="message">The message.</param>
         public ChatMessage(IPlayer sender, string message)
-            : this(sender, message, null) {}
+            : this(sender, message, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChatMessage"/> class.

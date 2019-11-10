@@ -22,9 +22,9 @@ namespace Supremacy.Scripting.Ast
             get { return _operand; }
         }
 
-        public ConvertExpression() {}
+        public ConvertExpression() { }
 
-        public ConvertExpression([NotNull] FullNamedExpression targetType, [NotNull] Expression operand) : this(targetType, operand, operand.Span) {}
+        public ConvertExpression([NotNull] FullNamedExpression targetType, [NotNull] Expression operand) : this(targetType, operand, operand.Span) { }
 
         public ConvertExpression([NotNull] FullNamedExpression targetType, [NotNull] Expression operand, SourceSpan span)
         {

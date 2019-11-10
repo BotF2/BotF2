@@ -178,7 +178,7 @@ namespace Supremacy.Orbitals
             get { return false; }
         }
 
-        public Orbital() {}
+        public Orbital() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Orbital"/> class using the specified design.

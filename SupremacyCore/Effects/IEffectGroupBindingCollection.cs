@@ -7,5 +7,5 @@ namespace Supremacy.Effects
     public interface IEffectGroupBindingCollection : IIndexedCollection<EffectGroupBinding> { }
 
     [Serializable]
-    public sealed class EffectGroupBindingCollection : CollectionBase<EffectGroupBinding>, IEffectGroupBindingCollection {}
+    public sealed class EffectGroupBindingCollection : CollectionBase<EffectGroupBinding>, IEffectGroupBindingCollection { }
 }

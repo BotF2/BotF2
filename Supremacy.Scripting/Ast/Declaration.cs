@@ -10,7 +10,7 @@ namespace Supremacy.Scripting.Ast
         {
             // ReSharper disable ValueParameterNotUsed
             get { return null; }
-            set {}
+            set { }
             // ReSharper restore ValueParameterNotUsed
         }
 

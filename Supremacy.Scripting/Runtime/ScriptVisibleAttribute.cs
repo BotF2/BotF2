@@ -12,7 +12,7 @@ namespace Supremacy.Scripting.Runtime
         AttributeTargets.Enum,
         AllowMultiple = false,
         Inherited = true)]
-    public class ScriptVisibleAttribute : Attribute {}
+    public class ScriptVisibleAttribute : Attribute { }
 
     [AttributeUsage(
         AttributeTargets.Assembly,

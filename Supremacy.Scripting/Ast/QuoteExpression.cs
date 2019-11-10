@@ -8,7 +8,7 @@ namespace Supremacy.Scripting.Ast
     	internal class QuoteExpression : ShimExpression
 		{
             public QuoteExpression(LambdaExpression expression)
-                : base(expression) {}
+                : base(expression) { }
 
     	    public override MSAst.Expression TransformCore(ScriptGenerator generator)
 			{

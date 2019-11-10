@@ -2,32 +2,32 @@ namespace Supremacy.Diplomacy.Visitors
 {
     public abstract class ClauseVisitor : IClauseVisitor
     {
-        protected virtual void VisitOfferWithdrawTroopsClause(IClause clause) {}
-        protected virtual void VisitRequestWithdrawTroopsClause(IClause clause) {}
-        protected virtual void VisitOfferStopPiracyClause(IClause clause) {}
-        protected virtual void VisitRequestStopPiracyClause(IClause clause) {}
-        protected virtual void VisitOfferBreakAgreementClause(IClause clause) {}
-        protected virtual void VisitRequestBreakAgreementClause(IClause clause) {}
-        protected virtual void VisitOfferGiveCreditsClause(IClause clause) {}
-        protected virtual void VisitRequestGiveCreditsClause(IClause clause) {}
-        protected virtual void VisitOfferGiveResourcesClause(IClause clause) {}
-        protected virtual void VisitRequestGiveResourcesClause(IClause clause) {}
-        protected virtual void VisitOfferMapDataClause(IClause clause) {}
-        protected virtual void VisitRequestMapDataClause(IClause clause) {}
-        protected virtual void VisitOfferHonorMilitaryAgreementClause(IClause clause) {}
-        protected virtual void VisitRequestHonorMilitaryAgreementClause(IClause clause) {}
-        protected virtual void VisitOfferEndEmbargoClause(IClause clause) {}
-        protected virtual void VisitRequestEndEmbargoClause(IClause clause) {}
-        protected virtual void VisitWarPactClause(IClause clause) {}
-        protected virtual void VisitTreatyCeaseFireClause(IClause clause) {}
-        protected virtual void VisitTreatyNonAggressionClause(IClause clause) {}
-        protected virtual void VisitTreatyOpenBordersClause(IClause clause) {}
-        protected virtual void VisitTreatyTradePactClause(IClause clause) {}
-        protected virtual void VisitTreatyResearchPactClause(IClause clause) {}
-        protected virtual void VisitTreatyAffiliationClause(IClause clause) {}
-        protected virtual void VisitTreatyDefensiveAllianceClause(IClause clause) {}
-        protected virtual void VisitTreatyFullAllianceClause(IClause clause) {}
-        protected virtual void VisitTreatyMembershipClause(IClause clause) {}
+        protected virtual void VisitOfferWithdrawTroopsClause(IClause clause) { }
+        protected virtual void VisitRequestWithdrawTroopsClause(IClause clause) { }
+        protected virtual void VisitOfferStopPiracyClause(IClause clause) { }
+        protected virtual void VisitRequestStopPiracyClause(IClause clause) { }
+        protected virtual void VisitOfferBreakAgreementClause(IClause clause) { }
+        protected virtual void VisitRequestBreakAgreementClause(IClause clause) { }
+        protected virtual void VisitOfferGiveCreditsClause(IClause clause) { }
+        protected virtual void VisitRequestGiveCreditsClause(IClause clause) { }
+        protected virtual void VisitOfferGiveResourcesClause(IClause clause) { }
+        protected virtual void VisitRequestGiveResourcesClause(IClause clause) { }
+        protected virtual void VisitOfferMapDataClause(IClause clause) { }
+        protected virtual void VisitRequestMapDataClause(IClause clause) { }
+        protected virtual void VisitOfferHonorMilitaryAgreementClause(IClause clause) { }
+        protected virtual void VisitRequestHonorMilitaryAgreementClause(IClause clause) { }
+        protected virtual void VisitOfferEndEmbargoClause(IClause clause) { }
+        protected virtual void VisitRequestEndEmbargoClause(IClause clause) { }
+        protected virtual void VisitWarPactClause(IClause clause) { }
+        protected virtual void VisitTreatyCeaseFireClause(IClause clause) { }
+        protected virtual void VisitTreatyNonAggressionClause(IClause clause) { }
+        protected virtual void VisitTreatyOpenBordersClause(IClause clause) { }
+        protected virtual void VisitTreatyTradePactClause(IClause clause) { }
+        protected virtual void VisitTreatyResearchPactClause(IClause clause) { }
+        protected virtual void VisitTreatyAffiliationClause(IClause clause) { }
+        protected virtual void VisitTreatyDefensiveAllianceClause(IClause clause) { }
+        protected virtual void VisitTreatyFullAllianceClause(IClause clause) { }
+        protected virtual void VisitTreatyMembershipClause(IClause clause) { }
 
         #region Implementation of IClauseVisitor
 

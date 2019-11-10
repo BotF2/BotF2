@@ -22,7 +22,7 @@ namespace Supremacy.Scripting.Ast
                 TypeArguments = args;
         }
 
-        public MemberName() : this(null) {}
+        public MemberName() : this(null) { }
 
         public MemberName(string name)
             : this(name, SourceSpan.None)

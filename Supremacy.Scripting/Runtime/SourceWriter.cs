@@ -20,7 +20,7 @@ namespace Supremacy.Scripting.Runtime
         private int _writerIndex;
 
         public SourceWriter(TextWriter writer)
-            : this(writer, "    ") {}
+            : this(writer, "    ") { }
 
         public SourceWriter(TextWriter writer, string tabString)
         {

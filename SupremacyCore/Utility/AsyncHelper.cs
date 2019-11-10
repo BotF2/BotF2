@@ -45,8 +45,8 @@ namespace Supremacy.Utility
                 var callbackData = (AsyncCallbackData)state;
                 callbackData.Target.DynamicInvoke(callbackData.Args);
             }
-            catch (ThreadAbortException) {}
-            catch (AppDomainUnloadedException) {}
+            catch (ThreadAbortException) { }
+            catch (AppDomainUnloadedException) { }
         }
         #endregion
 

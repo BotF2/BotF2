@@ -15,7 +15,7 @@ namespace Supremacy.Scripting.Ast
 
         private object _value;
 
-        protected internal ConstantExpression() {}
+        protected internal ConstantExpression() { }
 
         public ConstantExpression([NotNull] Type type, object value)
         {
@@ -216,7 +216,7 @@ namespace Supremacy.Scripting.Ast
     public class ConstantExpression<T> : ConstantExpression
     {
         public ConstantExpression(T value)
-            : base(typeof(T), value) {}
+            : base(typeof(T), value) { }
 
         public ConstantExpression(T value, SourceSpan span)
             : this(value)
