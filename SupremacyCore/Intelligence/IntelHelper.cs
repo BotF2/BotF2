@@ -1,7 +1,9 @@
-﻿using Supremacy.Diplomacy;
+﻿using Supremacy.Collections;
+using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -11,41 +13,48 @@ namespace Supremacy.Intelligence
     public static class IntelHelper
     {
         private static CivilizationManager _localPlayer;
-        private static CivilizationManager _spiedCivOne;
-        private static CivilizationManager _spiedCivTwo;
-        private static CivilizationManager _spiedCivThree;
-        private static CivilizationManager _spiedCivFour;
-        private static CivilizationManager _spiedCivFive;
-        private static CivilizationManager _spiedCivSix;
-
+        private static CivilizationManager _spiedCivManagerOne;
+        private static CivilizationManager _spiedCivManagerTwo;
+        private static CivilizationManager _spiedCivManagerThree;
+        private static CivilizationManager _spiedCivManagerFour;
+        private static CivilizationManager _spiedCivManagerFive;
+        private static CivilizationManager _spiedCivManagerSix;
+        private static Civilization _newTargetCiv;
+        private static Civilization _newSpyCiv;
+        private static UniverseObjectList<Colony> _newSpiedColonies;
+        //private static Civilization _spiedCivTwo;
+        //private static Civilization _spiedCivThree;
+        //private static Civilization _spiedCivFour;
+        //private static Civilization _spiedCivFive;
+        //private static Civilization _spiedCivSix;
         public static CivilizationManager LocalPlayerCivManager
         {
             get { return _localPlayer; }
         }
         public static CivilizationManager SpiedOneCivManager
         {
-            get { return _spiedCivOne; }
+            get { return _spiedCivManagerOne; }
         }
         public static CivilizationManager SpiedTwoCivManager
         {
-            get { return _spiedCivTwo; }
+            get { return _spiedCivManagerTwo; }
         }
         public static CivilizationManager SpiedThreeCivManager
         {
-            get { return _spiedCivThree; }
+            get { return _spiedCivManagerThree; }
         }
 
         public static CivilizationManager SpiedFourCivManager
         {
-            get { return _spiedCivFour; }
+            get { return _spiedCivManagerFour; }
         }
         public static CivilizationManager SpiedFiveCivManager
         {
-            get { return _spiedCivFive; }
+            get { return _spiedCivManagerFive; }
         }
         public static CivilizationManager SpiedSixCivManager
         {
-            get { return _spiedCivSix; }
+            get { return _spiedCivManagerSix; }
         }
 
         //        public static Dictionary<Civilization, List<Colony>> SpiedOneInfiltrated
@@ -80,33 +89,33 @@ namespace Supremacy.Intelligence
         }
         public static CivilizationManager SendSpiedCivOne(CivilizationManager spiedCivOne)
         {
-            _spiedCivOne = spiedCivOne;
-            return _spiedCivOne;
+            _spiedCivManagerOne = spiedCivOne;
+            return _spiedCivManagerOne;
         }
         public static CivilizationManager SendSpiedCivTwo(CivilizationManager spiedCivTwo)
         {
-            _spiedCivTwo = spiedCivTwo;
-            return _spiedCivTwo;
+            _spiedCivManagerTwo = spiedCivTwo;
+            return _spiedCivManagerTwo;
         }
         public static CivilizationManager SendSpiedCivThree(CivilizationManager spiedCivThree)
         {
-            _spiedCivThree = spiedCivThree;
-            return _spiedCivThree;
+            _spiedCivManagerThree = spiedCivThree;
+            return _spiedCivManagerThree;
         }
         public static CivilizationManager SendSpiedCivFour(CivilizationManager spiedCivFour)
         {
-            _spiedCivFour = spiedCivFour;
-            return _spiedCivFour;
+            _spiedCivManagerFour = spiedCivFour;
+            return _spiedCivManagerFour;
         }
         public static CivilizationManager SendSpiedCivFive(CivilizationManager spiedCivFive)
         {
-            _spiedCivFive = spiedCivFive;
-            return _spiedCivFive;
+            _spiedCivManagerFive = spiedCivFive;
+            return _spiedCivManagerFive;
         }
         public static CivilizationManager SendSpiedCivSix(CivilizationManager spiedCivSix)
         {
-            _spiedCivSix = spiedCivSix;
-            return _spiedCivSix;
+            _spiedCivManagerSix = spiedCivSix;
+            return _spiedCivManagerSix;
         }
         //        //public static bool IsInfiltrated(Civilization source, Civilization target)
         //        //{
@@ -116,12 +125,29 @@ namespace Supremacy.Intelligence
         //        //        //return false;
         //        //        throw new ArgumentNullException("target");
 
-        //        //    if (source == target)
-        //        //        return false;
-        //        //    var infiltrated = AssetsScreenPresentationModel;
-        //        //    //GameLog.Core.Test.DebugFormat("Diplomacy: source = {0} target = {1}",source.Key, target.Key);
-        //        //    GameContext.Current.DiplomacyData[source, target].IsContactMade()
-        //        //    return ;
-        //        //}
+        public static UniverseObjectList<Colony> NewSpiedColonies
+        {
+            get { return _newSpiedColonies; }
+        }
+        public static Civilization NewSpyCiv
+        {
+            get { return _newSpyCiv; }
+        }
+        public static Civilization NewTargetCiv
+        {
+            get { return _newTargetCiv; }
+        }
+
+        public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
+        {      
+            if (spyCiv == null)
+                throw new ArgumentNullException("spyCiv");
+            if (spiedCiv == null)  
+                throw new ArgumentNullException("spiedCiv");
+
+            _newSpyCiv = spyCiv;
+            _newTargetCiv = spiedCiv;
+            _newSpiedColonies = colonies;
+        }
     }
 }

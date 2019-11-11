@@ -336,10 +336,10 @@ namespace Supremacy.Client
 
         private void ProcessSitRepEntries()
         {
-            if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0)
+            if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
                 return;
 
-            foreach (var sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries)
+            foreach (var sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
             {
                 if (sitRepEntry != null)
                 {

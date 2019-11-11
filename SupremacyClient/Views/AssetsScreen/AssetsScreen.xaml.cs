@@ -1,5 +1,7 @@
 ﻿using Supremacy.Client.Context;
 using Supremacy.Diplomacy;
+using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Utility;
 using System;
 using System.Linq;
@@ -13,94 +15,54 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
-       //private int[] _restSpiedColonyVisible = new int[] { 0,1,2,3,4,5,6 };
         public AssetsScreen()
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
-
-            if ((AssetsScreenPresentationModel.SpiedOneCivName != "Empty") && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedOneCiv, AssetsScreenPresentationModel.Local))
-            {
-                EmpireExpanderOne.Visibility = Visibility.Visible;
-            }
-            else { EmpireExpanderOne.Visibility = Visibility.Collapsed; }
-
-            if ((AssetsScreenPresentationModel.SpiedTwoCivName != "Empty") && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedTwoCiv, AssetsScreenPresentationModel.Local))
-            {
-                EmpireExpanderTwo.Visibility = Visibility.Visible;
-            }
-            else { EmpireExpanderTwo.Visibility = Visibility.Collapsed; }
-
-            if ((AssetsScreenPresentationModel.SpiedThreeCivName != "Empty") && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedThreeCiv, AssetsScreenPresentationModel.Local))
-            {
-                EmpireExpanderThree.Visibility = Visibility.Visible;
-            }
-            else { EmpireExpanderThree.Visibility = Visibility.Collapsed; }
-
-            if ((AssetsScreenPresentationModel.SpiedFourCivName != "Empty") && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedFourCiv, AssetsScreenPresentationModel.Local))
-            {
-                EmpireExpanderFour.Visibility = Visibility.Visible;
-            }
-            else { EmpireExpanderFour.Visibility = Visibility.Collapsed; }
-
-            if ((AssetsScreenPresentationModel.SpiedFiveCivName != "Empty") && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedFiveCiv, AssetsScreenPresentationModel.Local))
-            {
-                EmpireExpanderFive.Visibility = Visibility.Visible;
-            }
-            else { EmpireExpanderFive.Visibility = Visibility.Collapsed; }
-
-            if ((AssetsScreenPresentationModel.SpiedSixCivName != "Empty") && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedSixCiv, AssetsScreenPresentationModel.Local))
-            {
-                EmpireExpanderSix.Visibility = Visibility.Visible;
-            }
-            else { EmpireExpanderSix.Visibility = Visibility.Collapsed; }
-
+            EmpireExpanderOne.Visibility = Visibility.Collapsed;
+            EmpireExpanderTwo.Visibility = Visibility.Collapsed;
+            EmpireExpanderThree.Visibility = Visibility.Collapsed;
+            EmpireExpanderFour.Visibility = Visibility.Collapsed;
+            EmpireExpanderFive.Visibility = Visibility.Collapsed;
+            EmpireExpanderSix.Visibility = Visibility.Collapsed;
         }
-
-
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (IsVisible)
             {
                 ResumeAnimations();
 
-                var local = AssetsScreenPresentationModel.Local;
-                bool oneNoDummy = AssetsScreenPresentationModel.SpiedOneCivName != "Empty";
-                bool twoNoDummy = AssetsScreenPresentationModel.SpiedTwoCivName != "Empty";
-                bool threeNoDummy = AssetsScreenPresentationModel.SpiedThreeCivName != "Empty";
-                bool fourNoDummy = AssetsScreenPresentationModel.SpiedFourCivName != "Empty";
+                //var local = AssetsScreenPresentationModel.Local;
+                bool oneNoDummy = DesignTimeObjects.GetSpiedCivilizationOne().Civilization.CivID != -1; //CivilizationManager.Civilization.CivID != -1; //AssetsScreenPresentationModel.SpiedOneCivName != "Empty"; //IntelHelper.SpiedOneCivManager.Civilization.Name != "Empty";
+                bool twoNoDummy = DesignTimeObjects.CivilizationManager.Civilization.CivID != -1; //AssetsScreenPresentationModel.SpiedTwoCivName != "Empty";
+                bool threeNoDummy = DesignTimeObjects.CivilizationManager.Civilization.CivID != -1; //AssetsScreenPresentationModel.SpiedThreeCivName != "Empty";
+                bool fourNoDummy = AssetsScreenPresentationModel.SpiedFourCivName != "Empty"; //DesignTimeAppContext.Instance.SpiedThreeEmpire.Civilization.Name != "Empty";
                 bool fiveNoDummy = AssetsScreenPresentationModel.SpiedFiveCivName != "Empty";
                 bool sixNoDummy = AssetsScreenPresentationModel.SpiedSixCivName != "Empty";
 
-                if (oneNoDummy && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedOneCiv, local)) //_restSpiedColonyVisible[0] != 8 && 
+                if (oneNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv))
                 {
                     EmpireExpanderOne.Visibility = Visibility.Visible;
-                    //_restSpiedColonyVisible[0] = 8;
                 }
-                if (twoNoDummy && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedTwoCiv, local)) //_restSpiedColonyVisible[1] != 9 &&
+                if (twoNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedTwoCiv))
                 {
                     EmpireExpanderTwo.Visibility = Visibility.Visible;
-                    //_restSpiedColonyVisible[1] = 9;
                 }
-                if (threeNoDummy && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedThreeCiv, local)) //_restSpiedColonyVisible[2] != 10 &&
+                if (threeNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedThreeCiv))
                 {
                     EmpireExpanderThree.Visibility = Visibility.Visible;
-                    //_restSpiedColonyVisible[2] = 10;
                 }
-                if (fourNoDummy &&DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedFourCiv, local)) //_restSpiedColonyVisible[3] != 11 &&
+                if (fourNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFourCiv))
                 {
-                    EmpireExpanderFour.Visibility = Visibility.Visible;
-                    //_restSpiedColonyVisible[3] = 11;
+                    EmpireExpanderFour.Visibility = Visibility.Visible;;
                 }
-                if (fiveNoDummy && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedFiveCiv, local)) //_restSpiedColonyVisible[4] != 12 &&
+                if (fiveNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
                 {
                     EmpireExpanderFive.Visibility = Visibility.Visible;
-                    //_restSpiedColonyVisible[4] = 12;
                 }
-                if (sixNoDummy && DiplomacyHelper.IsContactMade(AssetsScreenPresentationModel.SpiedSixCiv, local)) //_restSpiedColonyVisible[5] != 13 &&
+                if (sixNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
                 {
                     EmpireExpanderSix.Visibility = Visibility.Visible;
-                    //_restSpiedColonyVisible[5] = 13;
                 }
             }
             else
