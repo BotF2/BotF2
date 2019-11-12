@@ -643,10 +643,10 @@ namespace Supremacy.Xna
                 return;
 
             try { _device.Present(); }
-            catch (InvalidOperationException) {}
-            catch (DeviceLostException) {}
-            catch (DeviceNotResetException) {}
-            catch (DriverInternalErrorException) {}
+            catch (InvalidOperationException) { }
+            catch (DeviceLostException) { }
+            catch (DeviceNotResetException) { }
+            catch (DriverInternalErrorException) { }
         }
 
         protected virtual void OnDeviceCreated(object sender, EventArgs args)
