@@ -31,14 +31,44 @@ namespace Supremacy.Client.Views
             if (IsVisible)
             {
                 ResumeAnimations();
+                bool oneNoDummy = false;
+                bool twoNoDummy = false;
+                bool threeNoDummy = false;
+                bool fourNoDummy = false;
+                bool fiveNoDummy = false;
+                bool sixNoDummy = false;
 
-                //var local = AssetsScreenPresentationModel.Local;
-                bool oneNoDummy = DesignTimeObjects.GetSpiedCivilizationOne().Civilization.CivID != -1; //CivilizationManager.Civilization.CivID != -1; //AssetsScreenPresentationModel.SpiedOneCivName != "Empty"; //IntelHelper.SpiedOneCivManager.Civilization.Name != "Empty";
-                bool twoNoDummy = DesignTimeObjects.CivilizationManager.Civilization.CivID != -1; //AssetsScreenPresentationModel.SpiedTwoCivName != "Empty";
-                bool threeNoDummy = DesignTimeObjects.CivilizationManager.Civilization.CivID != -1; //AssetsScreenPresentationModel.SpiedThreeCivName != "Empty";
-                bool fourNoDummy = AssetsScreenPresentationModel.SpiedFourCivName != "Empty"; //DesignTimeAppContext.Instance.SpiedThreeEmpire.Civilization.Name != "Empty";
-                bool fiveNoDummy = AssetsScreenPresentationModel.SpiedFiveCivName != "Empty";
-                bool sixNoDummy = AssetsScreenPresentationModel.SpiedSixCivName != "Empty";
+
+                var oneCivManager = DesignTimeObjects.GetSpiedCivilizationOne();
+                if (oneCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != oneCivManager)
+                {
+                    oneNoDummy = true;
+                }
+                var twoCivManager = DesignTimeObjects.GetSpiedCivilizationTwo();
+                if (twoCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != twoCivManager)
+                {
+                    twoNoDummy = true;
+                }    
+                var threeCivManager = DesignTimeObjects.GetSpiedCivilizationThree();
+                if (threeCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != threeCivManager)
+                {
+                    threeNoDummy = true;
+                }
+                var fourCivManager = DesignTimeObjects.GetSpiedCivilizationFour();
+                if (fourCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
+                {
+                    fourNoDummy = true;
+                }
+                var fiveCivManager = DesignTimeObjects.GetSpiedCivilizationFive();
+                if (fiveCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
+                {
+                    fiveNoDummy = true;
+                }
+                var sixCivManager = DesignTimeObjects.GetSpiedCivilizationSix();
+                if (sixCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != sixCivManager)
+                {
+                    sixNoDummy = true;
+                }
 
                 if (oneNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv))
                 {
@@ -68,7 +98,6 @@ namespace Supremacy.Client.Views
             else
                 PauseAnimations();
         }
-
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return null;

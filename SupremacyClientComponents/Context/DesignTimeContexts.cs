@@ -229,10 +229,16 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        //private static List<CivilizationManager> _otherMajorEmpires;
+
         static DesignTimeObjects()
         {
             SpiedCivManagers();
+            GetSpiedCivilizationOne();
+            GetSpiedCivilizationTwo();
+            GetSpiedCivilizationThree();
+            GetSpiedCivilizationFour();
+            GetSpiedCivilizationFive();
+            GetSpiedCivilizationSix();
         }
         public static List<CivilizationManager> OtherMajorEmpires
         { 
@@ -250,31 +256,6 @@ namespace Supremacy.Client.Context
             {
                 return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
             }
-        }
-        public static Colony SpiedOneColony
-        {
-            get { return GetSpiedCivilizationOne().HomeColony; }
-        }
-
-        public static Colony SpiedTwoColony
-        {
-            get { return GetSpiedCivilizationTwo().HomeColony; }
-        }
-        public static Colony SpiedThreeColony
-        {
-            get { return GetSpiedCivilizationThree().HomeColony; }
-        }
-        public static Colony SpiedFourColony
-        {
-            get { return GetSpiedCivilizationFour().HomeColony; }
-        }
-        public static Colony SpiedFiveColony
-        {
-            get { return GetSpiedCivilizationFive().HomeColony; }
-        }
-        public static Colony SpiedSixColony
-        {
-            get { return GetSpiedCivilizationSix().HomeColony; }
         }
 
         public static IEnumerable<Colony> Colonies
@@ -328,7 +309,11 @@ namespace Supremacy.Client.Context
 
             Civilization DummyCiv = new Civilization();
             DummyCiv.CivID = -1;
+            //DummyCiv.Key = "Dummy";
+            //DummyCiv.HomeSystemName = "DummyLand";
+            
             CivilizationManager DummyManager= new CivilizationManager(GameContext.Current, DummyCiv);
+            
             Dictionary<int, CivilizationManager> DummyDictionary = new Dictionary<int, CivilizationManager>();
             for (int i = 0; i < 7; i++)
             {
@@ -336,7 +321,7 @@ namespace Supremacy.Client.Context
             }
             foreach (var aCiv in allCivs)
             {
-                if (aCiv.Civilization.IsEmpire && aCiv != localCiv)
+                if (aCiv.Civilization.IsEmpire)// && aCiv != localCiv)
                     empireCivManagers.Add(aCiv);
             }
             foreach (var aCivManager in empireCivManagers)
@@ -348,26 +333,9 @@ namespace Supremacy.Client.Context
 
             foreach (var aCivManager in DummyDictionary.Values)
             {
+                if(aCivManager != localCiv)
                 spiedCivManagers.Add(aCivManager);
             }
-            //foreach (var aCivManager in empireDictionary)
-            //{
-            //   spiedCivMangers.Add(aCivManager.Value);
-            //}
-            //foreach (var aCiv in allCivs)
-            //{
-            //    if (aCiv.Civilization.IsEmpire)
-            //        spiedCivMangers.Add(aCiv);
-            //}
-            foreach (var aCivManager in spiedCivManagers)
-            {
-                GameLog.Client.Intel.DebugFormat("Others, empireCivManager = {0}", aCivManager.Civilization.Name);
-            }
-            //while (6 - spiedCivMangers.Count > 0)
-            //{
-            //    spiedCivMangers.Add(DummyManager);
-            //}
-
             return spiedCivManagers;
         }
         public static CivilizationManager GetCivLocalPlayer()
@@ -376,32 +344,27 @@ namespace Supremacy.Client.Context
         }
         public static CivilizationManager GetSpiedCivilizationOne()
         {
-            IntelHelper.SendSpiedCivOne(OtherMajorEmpires[0]);
+            //GameLog.Client.Intel.DebugFormat("otherMajorEmpire[0] id ={0} key ={1}", OtherMajorEmpires[0].CivilizationID);
             return OtherMajorEmpires[0];
         }
         public static CivilizationManager GetSpiedCivilizationTwo()
         {
-            IntelHelper.SendSpiedCivTwo(OtherMajorEmpires[1]);
             return OtherMajorEmpires[1];
         }
         public static CivilizationManager GetSpiedCivilizationThree()
         {
-            IntelHelper.SendSpiedCivThree(OtherMajorEmpires[2]);
             return OtherMajorEmpires[2];
         }
         public static CivilizationManager GetSpiedCivilizationFour()
         {
-            IntelHelper.SendSpiedCivFour(OtherMajorEmpires[3]);
             return OtherMajorEmpires[3];
         }
         public static CivilizationManager GetSpiedCivilizationFive()
         {
-            IntelHelper.SendSpiedCivFive(OtherMajorEmpires[4]);
             return OtherMajorEmpires[4];
         }
         public static CivilizationManager GetSpiedCivilizationSix()
         {
-            IntelHelper.SendSpiedCivSix(OtherMajorEmpires[5]);
             return OtherMajorEmpires[5];
         }
     }

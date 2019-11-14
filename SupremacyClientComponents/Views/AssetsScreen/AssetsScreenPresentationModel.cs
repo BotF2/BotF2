@@ -34,7 +34,6 @@ namespace Supremacy.Client.Views
             _spiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
             _spiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
             _spiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
-           // _infiltratedColonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.InfiltratedColonies;
         }
 
         #region Colonies Property
@@ -301,7 +300,9 @@ namespace Supremacy.Client.Views
                 {
                     GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    Meter zero = new Meter(0, 0, 0);
+                    return zero; //civManager.TotalPopulation;
+                    
                 }
             }
         }
@@ -593,8 +594,17 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                return civManager.Credits;
+                try
+                {
+                    var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                    return civManager.Credits;
+                }
+                catch 
+                {
+                    GameLog.Core.Intel.WarnFormat("Problem occured at CreditsEmpire:");
+                    Meter zero = new Meter(0, 0, 0);
+                    return zero;
+                }
             }
         }
         #endregion Credits Empire
@@ -605,10 +615,21 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                return civManager.TotalIntelligence;
+                try
+                {
+                    var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization]; 
+                    return civManager.TotalIntelligence;
+
+                }
+                catch
+                {
+                    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligence:");
+                    return 0;
+                }
+
 
             }
+
         }
         #endregion TotalIntelligence Empire
 
