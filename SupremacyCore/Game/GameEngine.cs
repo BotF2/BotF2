@@ -1045,8 +1045,8 @@ namespace Supremacy.Game
                 {
                     return;
                 }
-                GameLog.Core.Research.DebugFormat("{0} {1} is conducting research in {2}...",
-                    scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
+                //GameLog.Core.Research.DebugFormat("{0} {1} is conducting research in {2}...",
+                //    scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
 
                 try
                 {
@@ -1054,8 +1054,8 @@ namespace Supremacy.Game
                     var starType = scienceShip.Sector.System.StarType;
 
                     int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
-                    GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
-                        scienceShip.ObjectID, scienceShip.Name, researchGained);
+                    //GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
+                    //    scienceShip.ObjectID, scienceShip.Name, researchGained);
 
                     switch (starType)
                     {
@@ -1092,7 +1092,7 @@ namespace Supremacy.Game
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
                     GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
-                        scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
+                        scienceShip.ObjectID, scienceShip.Name, researchGained, owner.Civilization.Key, starType, scienceShip.Sector);
 
                     GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained));
                 }
@@ -1374,6 +1374,7 @@ namespace Supremacy.Game
              */
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
+                GameLog.Core.Production.DebugFormat("#####################################################");
                 GameLog.Core.Production.DebugFormat("DoProduction for Civilization {0}", civ.Name);
 
                 GameContext.PushThreadContext(game);
@@ -1416,6 +1417,7 @@ namespace Supremacy.Game
                     /* Iterate through each colony */
                     foreach (Colony colony in colonies)
                     {
+                        GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
                         GameLog.Core.Production.DebugFormat("DoProduction for Colony {0}", colony.Name, civ.Name, civManager.Credits);
 
                         //See if there is actually anything to build for this colony

@@ -28,7 +28,8 @@ namespace Supremacy.Client.Markup
             {
                 _sourceUri = value;
 
-                GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
+                //works 
+                //GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
 
                 ResourceDictionary sharedDictionary;
 
