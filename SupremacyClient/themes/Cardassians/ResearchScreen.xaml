@@ -67,7 +67,7 @@
                             Property="Background"
                             Value="{DynamicResource LCARS_CardGoldenrodGradient_Left_Right}"/>
                     <Trigger.EnterActions>
-                                            <SoundPlayerAction Source="vfs:///Resources/UI/Cardassians/Sounds/ButtonClick.ogg"/>
+                                            <SoundPlayerAction Source="vfs:///Resources/UI/Cardassians/Sounds/ButtonClick.wav"/>
                     </Trigger.EnterActions>
                   </Trigger>
                 </ControlTemplate.Triggers>
@@ -102,7 +102,7 @@
                             Property="Background"
                             Value="{DynamicResource LCARS_CardGoldenrodGradient_Left_Right}"/>
                     <Trigger.EnterActions>
-                                            <SoundPlayerAction Source="vfs:///Resources/UI/Cardassians/Sounds/ButtonClick.ogg"/>
+                                            <SoundPlayerAction Source="vfs:///Resources/UI/Cardassians/Sounds/ButtonClick.wav"/>
                     </Trigger.EnterActions>
                   </Trigger>
                 </ControlTemplate.Triggers>
