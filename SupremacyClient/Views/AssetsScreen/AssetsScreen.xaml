@@ -26,10 +26,35 @@
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
             <!-- Grid just for Head line -->
             <StackPanel>
-                <Button x:Name="SummaryButton"
-                        Grid.Row="0"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0" Text="Total Empire Intelligence"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="1" Text=" = "
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="2" Text="{Binding Path=TotalIntelligence}" 
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <Button x:Name="SummaryButton"
+                        Grid.Column="3"
                         VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Right"
                         Width="250"
                         Height="32"
                         Style="{StaticResource LCARS_StandardButtonStyle}"
@@ -39,7 +64,8 @@
                         Foreground="Black"
                         Margin="0,0,0,4"
                         Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}">
-                </Button>
+                    </Button>
+                </Grid>
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Visible"
                     Margin="5,0,0,0"

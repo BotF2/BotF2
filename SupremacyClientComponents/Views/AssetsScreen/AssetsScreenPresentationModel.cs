@@ -53,6 +53,8 @@ namespace Supremacy.Client.Views
 
         public event EventHandler SpiedSixColoniesChanged;
 
+        public event EventHandler TotalIntelligenceChanged;
+
         public event EventHandler TotalPopulationChanged;
 
         public event EventHandler SpiedOneTotalPopulationChanged;
@@ -98,6 +100,8 @@ namespace Supremacy.Client.Views
                 OnColoniesChanged();
 
                 OnTotalPopulationChanged();
+
+                OnTotalIntelligenceChanged();
             }
         }
 
@@ -254,6 +258,11 @@ namespace Supremacy.Client.Views
             TotalPopulationChanged.Raise(this);
             OnPropertyChanged("TotalPopulation");
         }
+        protected virtual void OnTotalIntelligenceChanged()
+        {
+            TotalIntelligenceChanged.Raise(this);
+            OnPropertyChanged("TotalIntelligence");
+        }
         protected virtual void OnSpiedOneTotalPopulationChanged()
         {
             SpiedOneTotalPopulationChanged.Raise(this);
@@ -306,6 +315,26 @@ namespace Supremacy.Client.Views
                 }
             }
         }
+        //public Meter TotalIntel
+        //{
+        //    get
+        //    {
+        //        var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+        //        try
+        //        {
+        //            GameLog.Core.Intel.DebugFormat("TotalIntel ={0}", civManager.Civilization.);
+        //            return civManager.TotalPopulation;
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
+        //            GameLog.Core.General.Error(e);
+        //            Meter zero = new Meter(0, 0, 0);
+        //            return zero; //civManager.TotalPopulation;
+
+        //        }
+        //    }
+        //}
         public string LocalCivName
         {
             get
