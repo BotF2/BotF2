@@ -1,9 +1,11 @@
 ﻿using Supremacy.Client.Context;
+using Supremacy.Client.Views;
+using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
-//using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,133 +13,108 @@ using System.Linq;
 namespace Supremacy.Intelligence
 {
     public static class AssetsHelper
-    {
-        private static CivilizationManager _localPlayer;
-        private static CivilizationManager _spiedCivOne;
-        private static CivilizationManager _spiedCivTwo;
-        private static CivilizationManager _spiedCivThree;
-        private static CivilizationManager _spiedCivFour;
-        private static CivilizationManager _spiedCivFive;
-        private static CivilizationManager _spiedCivSix;
+    {  
+        public static Dictionary<Civilization, UniverseObjectList<Colony>> Spied = new Dictionary<Civilization, UniverseObjectList<Colony>>();
 
-        public static CivilizationManager LocalPlayerCivManager
+        public static bool IsSpiedOn(Civilization targetFromScreen)
         {
-            get { return _localPlayer; }
-        }
-        public static CivilizationManager SpiedOneCivManager
-        {
-            get { return _spiedCivOne; }
-        }
-        public static CivilizationManager SpiedTwoCivManager
-        {
-            get { return _spiedCivTwo; }
-        }
-        public static CivilizationManager SpiedThreeCivManager
-        {
-            get { return _spiedCivThree; }
-        }
 
-        public static CivilizationManager SpiedFourCivManager
-        {
-            get { return _spiedCivFour; }
-        }
-        public static CivilizationManager SpiedFiveCivManager
-        {
-            get { return _spiedCivFive; }
-        }
-        public static CivilizationManager SpiedSixCivManager
-        {
-            get { return _spiedCivSix; }
-        }
-
-        public static Dictionary<Civilization, List<Colony>> SpiedOneInfiltrated
-        {
-            get { return SpiedOneCivManager.InfiltratedColonies; }
-        }
-        public static Dictionary<Civilization, List<Colony>> SpiedTwoInfiltrated
-        {
-            get { return SpiedTwoCivManager.InfiltratedColonies; }
-        }
-        public static Dictionary<Civilization, List<Colony>> SpiedThreeInfiltrated
-        {
-            get { return SpiedThreeCivManager.InfiltratedColonies; }
-        }
-        public static Dictionary<Civilization, List<Colony>> SpiedFourInfiltrated
-        {
-            get { return SpiedFourCivManager.InfiltratedColonies; }
-        }
-        public static Dictionary<Civilization, List<Colony>> SpiedFiveInfiltrated
-        {
-            get { return SpiedFiveCivManager.InfiltratedColonies; }
-        }
-        public static Dictionary<Civilization, List<Colony>> SpiedSixInfiltrated
-        {
-            get { return SpiedSixCivManager.InfiltratedColonies; }
-        }
-
-        //public static CivilizationManager SendLocalPlayer(CivilizationManager localPlayer)
-        //{
-        //    _localPlayer = localPlayer;
-        //    return localPlayer;
-        //}
-        //public static CivilizationManager SendSpiedCivOne(CivilizationManager spiedCivOne)
-        //{
-        //    _spiedCivOne = spiedCivOne;
-        //    return _spiedCivOne;
-        //}
-        //public static CivilizationManager SendSpiedCivTwo(CivilizationManager spiedCivTwo)
-        //{
-        //    _spiedCivTwo = spiedCivTwo;
-        //    return _spiedCivTwo;
-        //}
-        //public static CivilizationManager SendSpiedCivThree(CivilizationManager spiedCivThree)
-        //{
-        //    _spiedCivThree = spiedCivThree;
-        //    return _spiedCivThree;
-        //}
-        //public static CivilizationManager SendSpiedCivFour(CivilizationManager spiedCivFour)
-        //{
-        //    _spiedCivFour = spiedCivFour;
-        //    return _spiedCivFour;
-        //}
-        //public static CivilizationManager SendSpiedCivFive(CivilizationManager spiedCivFive)
-        //{
-        //    _spiedCivFive = spiedCivFive;
-        //    return _spiedCivFive;
-        //}
-        //public static CivilizationManager SendSpiedCivSix(CivilizationManager spiedCivSix)
-        //{
-        //    _spiedCivSix = spiedCivSix;
-        //    return _spiedCivSix;
-        //}
-        public static bool IsInfiltrated(Civilization source, Civilization target)
-        {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (target == null)
-                //return false;
-                throw new ArgumentNullException("target");
-
-            if (source == target)
+            if (IntelHelper.NewSpyCiv == null)
                 return false;
+            else if (true)
+              { 
+                var newSpyCiv = IntelHelper.NewSpyCiv;
+                var newTargetCiv = IntelHelper.NewTargetCiv;
+                var newSpiedColonies = IntelHelper.NewSpiedColonies;
 
-            //var spiedCivManagers = DesignTimeObjects.OtherMajorEmpires;
-            //List<Civilization> listSpiedCivs = new List<Civilization>();
-            //foreach (var CivManager in spiedCivManagers)
-            //{
-            //    listSpiedCivs.Add(CivManager.Civilization);
-            //}
-            List<Dictionary<Civilization, List<Colony>>> spiedDictionaries = new List<Dictionary<Civilization, List<Colony>>>();
-            spiedDictionaries.Add(SpiedOneInfiltrated);
-            spiedDictionaries.Add(SpiedTwoInfiltrated);
-            spiedDictionaries.Add(SpiedThreeInfiltrated);
-            spiedDictionaries.Add(SpiedFourInfiltrated);
-            spiedDictionaries.Add(SpiedFiveInfiltrated);
-            spiedDictionaries.Add(SpiedSixInfiltrated);
+                Civilization civOne = new Civilization();
+                Civilization civTwo = new Civilization();
+                Civilization civThree = new Civilization();
+                Civilization civFour = new Civilization(); 
+                Civilization civFive = new Civilization();
+                Civilization civSix = new Civilization();
 
-            var anySpied = spiedDictionaries.Where(s =>s.Keys.Contains(target)).Any();
+                if (true)
+                {
+                    try { civOne = DesignTimeObjects.GetSpiedCivilizationOne().Civilization; }
+                    catch { civOne = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                }
+                if (true)
+                {
+                    try { civTwo = DesignTimeObjects.GetSpiedCivilizationTwo().Civilization; }
+                    catch { civTwo = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                }
+                if (true)
+                {
+                    try { civThree = DesignTimeObjects.GetSpiedCivilizationThree().Civilization; }
+                    catch { civThree = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                }
+                if (true)
+                {
+                    try { civFour = DesignTimeObjects.GetSpiedCivilizationFour().Civilization; }
+                    catch { civFour = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                }
+                if (true)
+                {
+                    try { civFive = DesignTimeObjects.GetSpiedCivilizationFive().Civilization; }
+                    catch { civFive = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                }
+                if (true)
+                {
+                    try { civSix = DesignTimeObjects.GetSpiedCivilizationSix().Civilization; }
+                    catch { civSix = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                }
 
-            return anySpied;
+                if (newSpyCiv == DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization)//helper.)// (Civilization)DesignTimeAppContext.Instance.LocalPlayer)//_localPlayer.Civilization)
+                {
+                    //int[] counter = new int[6] { 0, 0, 0, 0, 0, 0 };
+                    if (civOne.CivID != -1 && civOne == IntelHelper.NewTargetCiv)
+                    {
+                        if (!Spied.Where(o => o.Key == civOne).Any())
+                        {
+                            Spied.Add(civOne, newSpiedColonies);
+                        }
+                    }
+                    if (civTwo.CivID != -1 && civTwo == IntelHelper.NewTargetCiv)
+                    {
+                        if (!Spied.Where(o => o.Key == civTwo).Any())
+                        {
+                            Spied.Add(civTwo, newSpiedColonies);
+                        }
+                    }
+                    if (civThree.CivID != -1 && civThree == IntelHelper.NewTargetCiv)
+                    {
+                        if (!Spied.Where(o => o.Key == civThree).Any())
+                        {
+                            Spied.Add(civThree, newSpiedColonies);
+                        }
+                    }
+                    if (civFour.CivID != -1 && civFour == IntelHelper.NewTargetCiv)
+                    {
+                        if (!Spied.Where(o => o.Key == civFour).Any())
+                        {
+                            Spied.Add(civFour, newSpiedColonies);
+                        }
+                    }
+                    if (civFive.CivID !=-1 && civFive == IntelHelper.NewTargetCiv)
+                    {
+                        if (!Spied.Where(o => o.Key == civFive).Any())
+                        {
+                            Spied.Add(civFive, newSpiedColonies);
+                        }
+                    }
+                    if (civSix.CivID != -1 && civSix == IntelHelper.NewTargetCiv)
+                    {
+                        if (!Spied.Where(o => o.Key == civSix).Any())
+                        {
+                            Spied.Add(civSix, newSpiedColonies);
+                        }
+                    }
+                    var anySpied = Spied.Where(s => s.Key == targetFromScreen).Any();
+                    return anySpied;
+                }
+            }
+            return false;
         }
     }
 }

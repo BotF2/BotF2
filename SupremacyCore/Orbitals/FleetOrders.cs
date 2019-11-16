@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Supremacy.Intelligence;
 
 namespace Supremacy.Orbitals
 {
@@ -40,6 +41,7 @@ namespace Supremacy.Orbitals
         public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
         public static readonly MedicalOrder MedicalOrder;
+        public static readonly SpyOnOrder SpyOnOrder;
         public static readonly TowOrder TowOrder;
         public static readonly WormholeOrder WormholeOrder;
         public static readonly CollectDeuteriumOrder CollectDeuteriumOrder;
@@ -60,6 +62,7 @@ namespace Supremacy.Orbitals
             SabotageOrder = new SabotageOrder();
             InfluenceOrder = new InfluenceOrder();
             MedicalOrder = new MedicalOrder();
+            SpyOnOrder = new SpyOnOrder();
             TowOrder = new TowOrder();
             WormholeOrder = new WormholeOrder();
             CollectDeuteriumOrder = new CollectDeuteriumOrder();
@@ -78,6 +81,7 @@ namespace Supremacy.Orbitals
                           SabotageOrder,
                           InfluenceOrder,
                           MedicalOrder,
+                          SpyOnOrder,
                           //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
@@ -612,12 +616,12 @@ namespace Supremacy.Orbitals
 
         public override string OrderName
         {
-            get { return ResourceManager.GetString("FLEET_ORDER_SPYON"); }
+            get { return ResourceManager.GetString("FLEET_ORDER_SPY_ON"); }
         }
 
         public override string Status
         {
-            get { return ResourceManager.GetString("FLEET_ORDER_SPYON"); }
+            get { return ResourceManager.GetString("FLEET_ORDER_SPY_ON"); }
         }
 
         public override FleetOrder Create()
@@ -706,59 +710,25 @@ namespace Supremacy.Orbitals
 
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
-            var SpyOndCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
+            var colonies = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
-            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
-            if (defenseIntelligence - 1 < 0.1)
-                defenseIntelligence = 2;
+            //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            //if (defenseIntelligence - 1 < 0.1)
+            //    defenseIntelligence = 2;
 
-            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
-            if (attackingIntelligence - 1 < 0.1)
-                attackingIntelligence = 1;
+            //int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            //if (attackingIntelligence - 1 < 0.1)
+            //    attackingIntelligence = 1;
 
-            int ratio = attackingIntelligence / defenseIntelligence;
-            //max ratio for no exceeding gaining points
-            if (ratio > 10)
-                ratio = 10;
+            //int ratio = attackingIntelligence / defenseIntelligence;
+            ////max ratio for no exceeding gaining points
+            //if (ratio > 10)
+            //    ratio = 10;
 
-            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SpyOnD by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);
 
-
-            GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (SpyOnd): Energy={3} out of facilities={4}, in total={5}",
-                system.Owner, system.Name, system.Location,
-                system.Colony.GetEnergyUsage(),
-                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
-                system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities before={1}",
-                system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-
-            //Effect of sabatoge
-            //AssetsHelper.
-            //int removeEnergyFacilities = 0;
-            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            //{
-            //    removeEnergyFacilities = 1;
-            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
-            //}
-
-            //// if ratio > 2 than remove one more  EnergyFacility
-            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            //{
-            //    removeEnergyFacilities = 3;  //  2 and one from before
-            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
-            //}
-
-            //// if ratio > 3 than remove one more  EnergyFacility
-            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            //{
-            //    removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one SpyOn ship
-            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
-            //}
-
-            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            //civManager.SitRepEntries.Add(new NewSpyOnSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+           GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
 
         }
     }
