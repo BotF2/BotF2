@@ -11,6 +11,7 @@ using System;
 
 using Supremacy.Data;
 using Supremacy.Resources;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -113,6 +114,8 @@ namespace Supremacy.Game
         public static GameTables Load()
         {
             const string tablesPath = @"Resources\Tables\";
+
+            GameLog.Client.GameInitData.DebugFormat("... no Output for often used Tables: MessageDialogButtons, TechCategory, SitRepCategory");
 
             var tables = new GameTables
                          {
