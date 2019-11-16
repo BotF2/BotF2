@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Data
 {
@@ -323,6 +324,7 @@ namespace Supremacy.Data
             Table<TRowKey> table = null;
             ReadState state = ReadState.TableStart;
             string line;
+            string tableOut = "";
 
             if (reader == null)
             {
@@ -357,6 +359,7 @@ namespace Supremacy.Data
                         if (TableNameRegex.IsMatch(tokens[1]))
                         {
                             tableName = tokens[1];
+                            tableOut += tableName + ": ";
                         }
                         else
                         {
@@ -397,6 +400,7 @@ namespace Supremacy.Data
                                 if (match.Groups[2].Success)
                                     columnType = Type.GetType(match.Groups[2].Value);
                                 table.ColumnsInternal.Add(new TableColumn(match.Groups[1].Value, columnType));
+                                //tableOut += "Columns: " + new TableColumn(match.Groups[1].Value, columnType).ToString()
                             }
                             else
                             {
@@ -461,6 +465,7 @@ namespace Supremacy.Data
                         for (int i = 1; i < tokens.Length; i++)
                         {
                             row.Values.Add(tokens[i]);
+                            tableOut += tokens[i];
                         }
                         break;
                 }
@@ -468,6 +473,30 @@ namespace Supremacy.Data
                 if (state == ReadState.TableEnd)
                     break;
             }
+
+            //GameLog.Client.GameInitData.DebugFormat(tableOut);
+            string _values = "";
+            string tableString = "";
+            try
+            {
+                if (table != null)
+                foreach (var row in table.Rows)
+                {
+
+                    foreach (var column in row.Values)
+                    {
+                        _values += column + ";";
+                    }
+                    tableString = table.Name + ";" + _values;
+                }
+            }
+            catch
+            {
+                if (table != null)
+                    GameLog.Client.GameInitData.DebugFormat("not able to log into Log.txt for {0}", table.Name);
+            }
+            if (tableString.Length > 60) tableString = tableString.Substring(0, 60) + "...";
+            GameLog.Client.GameInitData.DebugFormat(tableString);
 
             return table;
         }
