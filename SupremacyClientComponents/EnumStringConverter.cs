@@ -37,7 +37,7 @@ namespace Supremacy.Client
             EnumTables = TableMap.ReadFromFile(
                 Path.Combine(
                     PathHelper.GetWorkingDirectory(),
-                    @"Resources\Tables\EnumStrings.txt"));
+                    @"Resources\Data\EnumStrings.txt"));
         }
         #endregion
 
@@ -165,14 +165,14 @@ namespace Supremacy.Client
                 _enumTables = TableMap.ReadFromFile(
                     Path.Combine(
                         PathHelper.GetWorkingDirectory(),
-                        @"Resources\Tables\EnumStrings.txt"));
+                        @"Resources\Data\EnumStrings.txt"));
             }
             else
             {
                 _enumTables = TableMap.ReadFromFile(
                     Path.Combine(
                         Environment.CurrentDirectory,
-                        @"Resources\Tables\EnumStrings.txt"));
+                        @"Resources\Data\EnumStrings.txt"));
             }
         }
         #endregion

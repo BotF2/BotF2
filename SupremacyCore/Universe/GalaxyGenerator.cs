@@ -113,7 +113,7 @@ namespace Supremacy.Universe
         private static CollectionBase<string> GetStarNames()
         {
             var file = new FileStream(
-                ResourceManager.GetResourcePath("Resources/Tables/StarNames.txt"),
+                ResourceManager.GetResourcePath("Resources/Data/StarNames.txt"),
                 FileMode.Open,
                 FileAccess.Read);
 
@@ -154,7 +154,7 @@ namespace Supremacy.Universe
         private static IList<string> GetNebulaNames()
         {
             var file = new FileStream(
-                ResourceManager.GetResourcePath("Resources/Tables/NebulaNames.txt"),
+                ResourceManager.GetResourcePath("Resources/Data/NebulaNames.txt"),
                 FileMode.Open,
                 FileAccess.Read);
 
@@ -233,7 +233,7 @@ namespace Supremacy.Universe
                      * fall back to using UniverseManager.Tables later on.
                      */
                     UniverseTables = TableMap.ReadFromFile(
-                        ResourceManager.GetResourcePath("Resources/Tables/UniverseTables.txt"));
+                        ResourceManager.GetResourcePath("Resources/Data/UniverseTables.txt"));
 
                     var galaxySizes = UniverseTables["GalaxySizes"];
 

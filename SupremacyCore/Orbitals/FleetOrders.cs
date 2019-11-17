@@ -1127,7 +1127,7 @@ namespace Supremacy.Orbitals
 
             // plan is: 
             // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
-            // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Tables\DiplomacyTables.txt Line 1 RegardLevels
+            // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Data\DiplomacyTables.txt Line 1 RegardLevels
 
             // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
             if (Fleet.Sector.System.Owner == Fleet.Owner)

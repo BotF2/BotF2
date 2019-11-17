@@ -91,7 +91,7 @@ namespace Supremacy.Text
             var fileNames =
                 (
                     from source in vfsService.Sources
-                    from fileName in source.GetFiles(@"Resources\Text", true, "*.xaml")
+                    from fileName in source.GetFiles(@"Resources\Data", true, "*.xaml")
                     select fileName
                 ).Distinct();
 
