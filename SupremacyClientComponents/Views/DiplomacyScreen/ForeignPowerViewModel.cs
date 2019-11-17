@@ -28,7 +28,7 @@ namespace Supremacy.Client.Views
             _activeAgreements = new ObservableCollection<ActiveAgreementViewModel>();
             _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
-            GameLog.Client.Diplomacy.DebugFormat("foreignPower = {0}", foreignPower.Owner);
+            //GameLog.Client.Diplomacy.DebugFormat("foreignPower = {0}", foreignPower.Owner);
 
             UpdateIncomingMessage();
             UpdateActiveAgreements();
@@ -39,7 +39,7 @@ namespace Supremacy.Client.Views
             //GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage...");
             if (_foreignPower.ResponseReceived == null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = no incoming message yet");
+                //GameLog.Client.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = no incoming message yet");
                 return;
             }
 
@@ -217,7 +217,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnOutgoingMessageChanged()
         {
-            GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingMessageChanged() - call OnPropertyChanged");
+            //GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingMessageChanged() - call OnPropertyChanged");
             OutgoingMessageChanged.Raise(this);
             OnPropertyChanged("OutgoingMessage");
             OnOutgoingMessageCategoryChanged();
@@ -311,22 +311,26 @@ namespace Supremacy.Client.Views
 
         internal static DiplomaticMessageCategory ResolveMessageCategory(object message) // DiplomaticMessageCategory is enum of 1 to 9 message types
         {
-            GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
+            //GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
 
             var viewModel = message as DiplomacyMessageViewModel;
-            
+
+            var proposal = message as IProposal;
+
             if (viewModel != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
+                // worksGameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
+                //GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0} - Category {2}", viewModel.Recipient, viewModel.Sender, proposal.ToString());
                 message = viewModel.CreateMessage(); // create statment vs create proposal
             }
 
-            var proposal = message as IProposal;
+            //var proposal = message as IProposal;
 
             //GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
             if (proposal != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0}", proposal.Recipient, proposal.Sender);
+                //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} ", proposal.Recipient, proposal.Sender);
+                //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} - Category {2}", proposal.Recipient, proposal.Sender, proposal.ToString());
                 if (proposal.IsDemand())
                 {
                     GameLog.Client.Diplomacy.DebugFormat("Message Category Demand");
@@ -387,7 +391,7 @@ namespace Supremacy.Client.Views
                         return DiplomaticMessageCategory.Threat;
                 }
             }
-            GameLog.Client.Diplomacy.DebugFormat("Message Category None");
+            // a lot of times hitted without giving an info ... GameLog.Client.Diplomacy.DebugFormat("Message Category None");
             return DiplomaticMessageCategory.None;
         }
 

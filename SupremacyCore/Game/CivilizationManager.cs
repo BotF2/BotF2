@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Supremacy.Orbitals;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -204,7 +205,15 @@ namespace Supremacy.Game
         [NotNull]
         public IList<SitRepEntry> SitRepEntries
         {
-            get { return _sitRepEntries; }
+            get 
+            {
+                foreach (var rep in _sitRepEntries)
+                {
+                    GameLog.Core.General.DebugFormat("SitRep Cat={2} Action {3} for {1}: {0}", rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
+                }
+                
+                return _sitRepEntries; 
+            }
         }
 
         /// <summary>
