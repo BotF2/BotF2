@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Diplomacy.Visitors
 {
@@ -38,21 +39,25 @@ namespace Supremacy.Diplomacy.Visitors
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
 
-            //var visitor = new RejectProposalVisitor(proposal);
+
+            var visitor = new RejectProposalVisitor(proposal);
+
+            turnAccepted = GameContext.Current.TurnNumber;
 
             //proposal.Accept(visitor);
 
-            //var agreement = new NewAgreement(
-            //    proposal,
-            //    turnAccepted.IsUndefined ? GameContext.Current.TurnNumber : turnAccepted,
-            //    visitor._agreementData);
+            var agreement = new NewAgreement(
+                proposal,
+                turnAccepted,
+                visitor._agreementData);
 
             var diplomat = Diplomat.Get(proposal.Recipient);
             var foreignPower = diplomat.GetForeignPower(proposal.Sender);
 
-            //GameContext.Current.AgreementMatrix.AddAgreement(agreement);
+            GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
             var response = new Response(ResponseType.Reject, proposal);
+            GameLog.Core.Diplomacy.DebugFormat("RejectProposal from {1} to {0}", diplomat, foreignPower, agreement.Data.ToString());
 
             foreignPower.ResponseSent = response;
             foreignPower.UpdateStatus();
