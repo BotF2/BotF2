@@ -113,7 +113,7 @@ namespace Supremacy.Game
         /// <returns>A new <see cref="GameTables"/> instance.</returns>
         public static GameTables Load()
         {
-            const string tablesPath = @"Resources\Tables\";
+            const string tablesPath = @"Resources\Data\";
 
             GameLog.Client.GameInitData.DebugFormat("... no Output for often used Tables: MessageDialogButtons, TechCategory, SitRepCategory");
 
