@@ -51,7 +51,7 @@ namespace Supremacy.Universe
         static UniverseManager()
         {
             s_tables = TableMap.ReadFromFile(
-                ResourceManager.GetResourcePath("Resources/Tables/UniverseTables.txt"));
+                ResourceManager.GetResourcePath("Resources/Data/UniverseTables.txt"));
         }
         #endregion
 
