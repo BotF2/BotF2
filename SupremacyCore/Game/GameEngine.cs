@@ -1398,7 +1398,7 @@ namespace Supremacy.Game
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);
 
-                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added to {4}",
+                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added from all colonies to {4} ",
                         newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization);
 
                     //Get the resources available for the civilization
@@ -1406,6 +1406,13 @@ namespace Supremacy.Game
                     totalResourcesAvailable[ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue;
                     totalResourcesAvailable[ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue;
                     totalResourcesAvailable[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
+
+                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials available in total for {4}"
+                        , civManager.Credits.CurrentValue
+                        , civManager.Resources.Deuterium.CurrentValue
+                        , civManager.Resources.Dilithium.CurrentValue
+                        , civManager.Resources.RawMaterials.CurrentValue
+                        , civManager.Civilization);
 
                     /* 
                      * Shuffle the colonies so they are processed in random order.  This
@@ -1453,10 +1460,12 @@ namespace Supremacy.Game
                             if (colony.BuildSlots[0].Project.IsPaused) { }
                                 //TODO: Not sure how to handle this
 
-                            GameLog.Core.Production.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
+                            GameLog.Core.Production.DebugFormat("Deuterium={5}, Dilithium={6}, RawMaterials={7} available for {0} before construction of {1} on {2} - Income Tax = {3}, Income TradeRoute = {4}: ",
                                 civ.Name,
                                 colony.BuildSlots[0].Project.BuildDesign.Name,
                                 colony.Name,
+                                colony.TaxCredits,
+                                colony.CreditsFromTrade,
                                 totalResourcesAvailable[ResourceType.Deuterium],
                                 totalResourcesAvailable[ResourceType.Dilithium],
                                 totalResourcesAvailable[ResourceType.RawMaterials]);
