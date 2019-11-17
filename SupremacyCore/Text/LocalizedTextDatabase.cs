@@ -144,10 +144,21 @@ namespace Supremacy.Text
                         continue;
                     }
 
+                    // all files *.xaml of the old folder \Text were available for LocalizedText
+
+                    // in new folder \Data at the moment two files *.xaml are present (and not necessary to be Localized)
+                    // DiplomacyDatabase.xaml + ScriptedEvents.xaml
+                    if (file.LocalPath.Contains("ScriptedEvents.xaml") ||
+                        file.LocalPath.Contains("DiplomacyDatabase.xaml"))
+                    {
+                        continue;
+                    }
+
                     GameLog.Client.GameData.WarnFormat(
                         "Could not determine the content type of text file '{0}'.  " +
-                        "The file will be ignored.",
+                        "The file will be ignored for LocalizedText tasks.",
                         file);
+                        
                 }
                 catch (Exception e)
                 {

@@ -3041,6 +3041,11 @@ namespace Supremacy.Game
             get { return SitRepCategory.SpecialEvent; }
         }
 
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
+        }
+
         public override string SummaryText
         {
             get

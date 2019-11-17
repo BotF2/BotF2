@@ -436,7 +436,7 @@ namespace Supremacy.Economy
 
             if (newEntry == null)
             {
-                GameLog.Core.Production.DebugFormat("{0} built by {1} at {2}", BuildDesign, Builder, Location);
+                GameLog.Core.Production.DebugFormat("BuildProject.Finished: ##########  {0} built by {1} at {2}", BuildDesign, Builder, Location);
                 newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location);
             }
 
