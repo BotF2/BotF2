@@ -295,6 +295,9 @@
     <Compile Include="Views\AssetsScreen\ColonyList.xaml.cs">
       <DependentUpon>ColonyList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AssetsScreen\SpyReportListItem.xaml.cs">
+      <DependentUpon>SpyReportListItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AssetsScreen\SystemListItem.xaml.cs">
       <DependentUpon>SystemListItem.xaml</DependentUpon>
     </Compile>
@@ -870,6 +873,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AssetsScreen\ColonyList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AssetsScreen\SpyReportListItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
