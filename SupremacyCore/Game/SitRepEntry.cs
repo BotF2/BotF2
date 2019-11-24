@@ -67,6 +67,8 @@ namespace Supremacy.Game
         ViewColony,
         CenterOnSector,
         ShowScienceScreen,
+        ShowDiploScreen,
+        ShowIntelScreen,
         SelectTaskForce
     }
 
@@ -334,6 +336,11 @@ namespace Supremacy.Game
     public class BuildingBuiltSitRepEntry : ItemBuiltSitRepEntry
     {
         private readonly bool _isActive;
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.ViewColony; }
+        }
 
         public override string SummaryText
         {
@@ -916,6 +923,11 @@ namespace Supremacy.Game
     {
         private readonly int _civilizationID;
         private readonly MapLocation _location;
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.ShowDiploScreen; }
+        }
 
         public Civilization Civilization
         {
@@ -2572,17 +2584,17 @@ namespace Supremacy.Game
 
         public StarSystem System
         {
-            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
+            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); } 
         }
 
         public override SitRepAction Action
         {
-            get { return SitRepAction.CenterOnSector; }
+            get { return SitRepAction.ViewColony; }
         }
 
         public override object ActionTarget
         {
-            get { return System.Sector; }
+            get { return System.Colony; }
         }
 
         public override SitRepCategory Categories
@@ -2595,7 +2607,7 @@ namespace Supremacy.Game
             get
             {
                 return string.Format(ResourceManager.GetString("SITREP_STARVATION"),
-                    System.Name);
+                    System.Colony.Name);
             }
         }
 
@@ -2609,7 +2621,7 @@ namespace Supremacy.Game
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
-            _systemId = colony.System.ObjectID;
+            _systemId = System.ObjectID;
         }
     }
 
@@ -3032,6 +3044,14 @@ namespace Supremacy.Game
     public class UnassignedTradeRoute : SitRepEntry
     {
         private readonly TradeRoute _tradeRoute;
+
+        private readonly int _systemId;
+        private readonly int _colonyId;
+
+        public StarSystem System
+        {
+            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }  
+        }
         public TradeRoute TradeRoute
         {
             get { return _tradeRoute; }
@@ -3044,6 +3064,10 @@ namespace Supremacy.Game
         public override SitRepAction Action
         {
             get { return SitRepAction.CenterOnSector; }
+        }
+        public override object ActionTarget
+        {
+            get { return TradeRoute.SourceColony.Sector; }
         }
 
         public override string SummaryText
@@ -3063,6 +3087,7 @@ namespace Supremacy.Game
         {
             if (route == null)
                 throw new ArgumentException("TradeRoute");
+            _systemId = TradeRoute.SourceColony.ObjectID;
             _tradeRoute = route;
         }
     }
@@ -3077,6 +3102,11 @@ namespace Supremacy.Game
         public override SitRepCategory Categories
         {
             get { return SitRepCategory.Diplomacy | SitRepCategory.Military; }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
         }
 
         public override string SummaryText
