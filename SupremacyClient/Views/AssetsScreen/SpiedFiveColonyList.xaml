@@ -25,8 +25,8 @@
     </ItemsControl.ItemsPanel>
 		<ItemsControl.ItemTemplate>
 			<DataTemplate DataType="{x:Type s:Colony}">
-        <v:SystemListItem />
-			</DataTemplate>
+                <v:SpyReportListItem />
+            </DataTemplate>
 		</ItemsControl.ItemTemplate>
 	</ItemsControl>
 </scc:ThemedUserControl>

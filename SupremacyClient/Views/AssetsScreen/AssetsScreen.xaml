@@ -69,17 +69,17 @@
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Visible"
                     Margin="5,0,0,0"
-                    Width="1170"
+                    Width="Auto"
                     Height="800"
                     FlowDirection="RightToLeft"
                     HorizontalAlignment="left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
                         <Expander x:Name="EmpireExpanderOne" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top">
+                                 IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
@@ -88,36 +88,18 @@
                                             <ColumnDefinition Width="20"/>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock 
-                                            Grid.Column="0"
-                                            Grid.Row="0"
-                                            Margin="10,0,0,0"    
-                                            VerticalAlignment="Bottom"
-                                            Text="Total Empire Population"
-                                            Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
-                                        <TextBlock 
-                                            Grid.Column="2" 
-                                            Grid.Row="0"
-                                            Text="{Binding Path=SpiedOneTotalPopulation}" 
-                                            Foreground="Orange"
-                                            FontStyle="Oblique"
-                                            VerticalAlignment="Bottom"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
                                     </Grid>
-                                    <v:SpiedOneColonyList Grid.Row="1" DataContext="{Binding Path=SpiedOneColonies}" Margin="10,0,0,0" />
+                                    <v:SpiedOneColonyList Grid.Row="1" DataContext="{Binding Path=SpiedOneColonies}" VerticalAlignment="Bottom" Margin="10,50,0,0" />
                                 </Grid>
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
                         <Expander x:Name="EmpireExpanderTwo" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedTwoCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top">
+                                 IsExpanded="True" Header="{Binding Path=SpiedTwoCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridTwo" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
@@ -126,24 +108,6 @@
                                             <ColumnDefinition Width="20"/>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock 
-                                            Grid.Column="0"
-                                            Grid.Row="5"    
-                                            Margin="10,0,0,0"    
-                                            VerticalAlignment="Bottom"
-                                            Text="Total Empire Population"
-                                            Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
-                                        <TextBlock 
-                                            Grid.Column="2" 
-                                            Grid.Row="5"
-                                            Text="{Binding Path=SpiedTwoTotalPopulation}" 
-                                            Foreground="Orange"
-                                            FontStyle="Oblique"
-                                            VerticalAlignment="Bottom"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
                                     </Grid>
                                     <v:SpiedTwoColonyList Grid.Row="6" DataContext="{Binding Path=SpiedTwoColonies}" Margin="10,0,0,0"  />
                                 </Grid>
@@ -151,11 +115,11 @@
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
                         <Expander x:Name="EmpireExpanderThree" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedThreeCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top">
+                                 IsExpanded="True" Header="{Binding Path=SpiedThreeCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridThree" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
@@ -164,24 +128,6 @@
                                             <ColumnDefinition Width="20"/>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock 
-                                            Grid.Column="0"
-                                            Grid.Row="0"
-                                            Margin="10,0,0,0"    
-                                            VerticalAlignment="Bottom"
-                                            Text="Total Empire Population"
-                                            Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
-                                        <TextBlock 
-                                            Grid.Column="2" 
-                                            Grid.Row="10"
-                                            Text="{Binding Path=SpiedThreeTotalPopulation}" 
-                                            Foreground="Orange"
-                                            FontStyle="Oblique"
-                                            VerticalAlignment="Bottom"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
                                     </Grid>
                                     <v:SpiedTwoColonyList Grid.Row="11" DataContext="{Binding Path=SpiedThreeColonies}" Margin="10,0,0,0" />
                                 </Grid>
@@ -189,49 +135,55 @@
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
                         <Expander x:Name="EmpireExpanderFour" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top">
+                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridFour" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="20"/>
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock 
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0"
                                             Grid.Column="0"
-                                            Grid.Row="0"
-                                            Margin="10,0,0,0"    
-                                            VerticalAlignment="Bottom"
-                                            Text="Total Empire Population"
-                                            Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
-                                        <TextBlock 
-                                            Grid.Column="2" 
-                                            Grid.Row="15"
-                                            Text="{Binding Path=SpiedFourTotalPopulation}" 
-                                            Foreground="Orange"
-                                            FontStyle="Oblique"
-                                            VerticalAlignment="Bottom"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
-                                    </Grid>
-                                    <v:SpiedTwoColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
+                                            Grid.ColumnSpan="2"
+                                            BorderThickness="1"
+                                            Margin="0,0,0,0"
+                                            BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               FontWeight="DemiBold"  
+                                               Text="Sabotage: " />
+                                    <scc:GameButton 
+                                                Name="SabotageEngeryFour"      
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                DisplayMode="Tiny"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Label="Energy"
+                                                Foreground="Black"
+                                                Background="Transparent"
+                                                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                BorderThickness="2"
+                                                Click = "OnButtonClick"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <v:SpiedTwoColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
+                                    </StackPanel>    
                                 </Grid>
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
                         <Expander x:Name="EmpireExpanderFive" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top">
+                                 IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridFive" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
@@ -240,24 +192,6 @@
                                             <ColumnDefinition Width="20"/>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock 
-                                            Grid.Column="0"
-                                            Grid.Row="0"
-                                            Margin="10,0,0,0"    
-                                            VerticalAlignment="Bottom"
-                                            Text="Total Empire Population"
-                                            Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
-                                        <TextBlock 
-                                            Grid.Column="2" 
-                                            Grid.Row="20"
-                                            Text="{Binding Path=SpiedFiveTotalPopulation}" 
-                                            Foreground="Orange"
-                                            FontStyle="Oblique"
-                                            VerticalAlignment="Bottom"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
                                     </Grid>
                                     <v:SpiedTwoColonyList Grid.Row="21" DataContext="{Binding Path=SpiedFiveColonies}" Margin="10,0,0,0" />
                                 </Grid>
@@ -265,11 +199,11 @@
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
                         <Expander x:Name="EmpireExpanderSix" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top">
+                                 IsExpanded="True" Header="{Binding Path=SpiedCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridSix" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
@@ -278,24 +212,6 @@
                                             <ColumnDefinition Width="20"/>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock 
-                                            Grid.Column="0"
-                                            Grid.Row="25"
-                                            Margin="10,0,0,0"
-                                            VerticalAlignment="Bottom"
-                                            Text="Total Empire Population"
-                                            Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
-                                        <TextBlock 
-                                            Grid.Column="2" 
-                                            Grid.Row="25"
-                                            Text="{Binding Path=SpiedSixTotalPopulation}" 
-                                            Foreground="Orange"
-                                            FontStyle="Oblique"
-                                            VerticalAlignment="Bottom"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="12pt"/>
                                     </Grid>
                                     <v:SpiedTwoColonyList Grid.Row="26" DataContext="{Binding Path=SpiedSixColonies}"  Margin="10,0,0,0"/>
                                 </Grid>
@@ -305,7 +221,6 @@
                 </ScrollViewer>
             </StackPanel>
         </TabItem>
-
         <!--TAB for COLONIES-->
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=COLONIES_TAB_HEADER}">
             <Grid>
@@ -333,7 +248,6 @@
                         FontSize="12pt"/>
                 </Grid>
                 <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
-                <!--<v:SpyColonyList Grid.Row="3" DataContext="{Binding Path=SpiedOneColonies}" /> -->
             </Grid>
 
         </TabItem>
@@ -470,6 +384,5 @@
                 </Grid>
             </Grid>
         </TabItem>
-
     </TabControl>
 </scc:ThemedUserControl>
