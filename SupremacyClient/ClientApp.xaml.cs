@@ -367,10 +367,10 @@ namespace Supremacy.Client
                 if (!CheckNetFxVersion())
                 {
                     MessageBox.Show(
-                            "Birth of the Federation 2 requires Microsoft .NET Framework 4.6.2 or greater"
+                            "Rise of the UFP requires Microsoft .NET Framework 4.6.2 or greater"
                             + Environment.NewLine
                             + "It must be installed before running the game.",
-                            "Birth of the Federation 2",
+                            "Rise of the UFP",
                             MessageBoxButton.OK,
                             MessageBoxImage.Hand);
                     return;
@@ -390,6 +390,18 @@ namespace Supremacy.Client
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfileSplashScreen);
                         if (File.Exists("Resources/SoundFX/Menu/LoadingSplash.wav"))
                             player.Play();
+                        else
+                        {
+                            GameLog.Client.Audio.InfoFormat("Resources/SoundFX/Menu/LoadingSplash.wav not found...");
+
+                            /*Important*/
+                            GameLog.Client.Audio.WarnFormat("wav format is needed for several files which are played by System.Media (out of WPF = xaml files), not by the code's own sound player: ");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for LoadingSplash.wav");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for REDALERT.WAV");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for ButtonClick.wav");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for GameContextMenu.wav");
+                            GameLog.Client.Audio.InfoFormat("wav format is needed for GameContextMenuItem.wav (if used)");
+                        }
                     }
                       
                     if (File.Exists("Resources\\Data\\Civilizations.xml"))
@@ -500,7 +512,7 @@ namespace Supremacy.Client
             var app = new ClientApp();
             app.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             app.InitializeComponent();
-            app.Run();
+            _ = app.Run();
         }
 
         private static void ShowSplashScreen()

@@ -1639,7 +1639,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnActivated(RoutedEventArgs e) {}
+        protected virtual void OnActivated(RoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked whenever application code or internal processes call <see cref="FrameworkElement.ApplyTemplate"/>.
@@ -1678,7 +1678,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnClosed(RoutedEventArgs e) {}
+        protected virtual void OnClosed(RoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="Closing"/> attached event reaches an element in its route that is derived from this class.
@@ -1690,7 +1690,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnClosing(CancelRoutedEventArgs e) {}
+        protected virtual void OnClosing(CancelRoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="Deactivated"/> attached event reaches an element in its route that is derived from this class.
@@ -1702,7 +1702,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnDeactivated(RoutedEventArgs e) {}
+        protected virtual void OnDeactivated(RoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="DragMoved"/> attached event reaches an element in its route that is derived from this class.
@@ -1714,7 +1714,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnDragMoved(RoutedEventArgs e) {}
+        protected virtual void OnDragMoved(RoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="DragMoving"/> attached event reaches an element in its route that is derived from this class.
@@ -1726,7 +1726,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnDragMoving(CancelRoutedEventArgs e) {}
+        protected virtual void OnDragMoving(CancelRoutedEventArgs e) { }
 
         /// <summary>
         /// Reports that the <c>IsKeyboardFocusWithin</c> property changed. 
@@ -1752,7 +1752,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnLocationChanged(RoutedEventArgs e) {}
+        protected virtual void OnLocationChanged(RoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="Mouse.LostMouseCaptureEvent"/> attached event reaches an element in its route 
@@ -1827,7 +1827,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnOpened(RoutedEventArgs e) {}
+        protected virtual void OnOpened(RoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="UIElement.PreviewMouseLeftButtonDown"/> attached event is raised on this element. 
@@ -1908,7 +1908,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnStateChanged(RoutedEventArgs e) {}
+        protected virtual void OnStateChanged(RoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="TitleBarContextMenuOpening"/> attached event reaches an element in its route that is derived from this class.
@@ -1920,7 +1920,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnTitleBarContextMenuOpening(ContextMenuItemRoutedEventArgs e) {}
+        protected virtual void OnTitleBarContextMenuOpening(ContextMenuItemRoutedEventArgs e) { }
 
         /// <summary>
         /// Invoked when an unhandled <see cref="TitleBarDoubleClick"/> attached event reaches an element in its route that is derived from this class.
@@ -1932,7 +1932,7 @@ namespace Supremacy.Client.Controls
         /// Because an intermediate class in the inheritance might implement this method, 
         /// we recommend that you call the base implementation in your implementation.
         /// </remarks>
-        protected virtual void OnTitleBarDoubleClick(CancelRoutedEventArgs e) {}
+        protected virtual void OnTitleBarDoubleClick(CancelRoutedEventArgs e) { }
 
         /// <summary>
         /// Gets a <see cref="Rect"/> indicating the size and location of a window before being either minimized or maximized.

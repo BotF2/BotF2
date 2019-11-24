@@ -1,128 +1,44 @@
-﻿using Supremacy.Entities;
+﻿using Supremacy.Collections;
+using Supremacy.Diplomacy;
+using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Supremacy.Intelligence
 {
     public static class IntelHelper
     {
-        private static CivilizationManager _localPlayer;
-        //private static CivilizationManagerMap _spyedCivs; 
-        private static CivilizationManager _spyCiv;
-        private static CivilizationManager _spiedCivOne;
-        private static CivilizationManager _spiedCivTwo;
-        private static CivilizationManager _spiedCivThree;
-        private static CivilizationManager _spiedCivFour;
-        private static CivilizationManager _spiedCivFive;
-        private static CivilizationManager _spiedCivSix;
+        private static Civilization _newTargetCiv;
+        private static Civilization _newSpyCiv;
+        private static UniverseObjectList<Colony> _newSpiedColonies;
 
-        //public static List<Civilization> SpyCivs
-        //{
-        //    get
-        //    {
-        //        List<Civilization> myCivs = new List<Civilization>();
-        //        foreach (CivilizationManager civManager in _spyedCivs)
-        //        {
-        //            myCivs.Add(civManager.Civilization);
-        //        }
-        //        return myCivs;
-        //    }
-        //}
-
-        //public static CivilizationManagerMap SpyCivsMap // turn off when 1 to 6 works
-        //{
-        //    get
-        //    {
-        //        CivilizationManagerMap myCivs = new CivilizationManagerMap();
-        //        foreach (CivilizationManager civManager in _spyedCivs)
-        //        {
-        //            myCivs.Add(civManager);
-        //        }
-        //        return myCivs;
-        //    }
-        //}
-
-        public static CivilizationManager LocalPlayerCivManager
+        public static UniverseObjectList<Colony> NewSpiedColonies
         {
-            get { return _localPlayer; }
+            get { return _newSpiedColonies; }
         }
-        public static CivilizationManager SpyCivManager
+        public static Civilization NewSpyCiv
         {
-            get { return _spyCiv; }
+            get { return _newSpyCiv; }
         }
-        public static CivilizationManager SpiedOneCivManager
+        public static Civilization NewTargetCiv
         {
-            get { return _spiedCivOne; }
-        }
-        public static CivilizationManager SpiedTwoCivManager
-        {
-            get { return _spiedCivTwo; }
-        }
-        public static CivilizationManager SpiedThreeCivManager
-        {
-            get { return _spiedCivThree; }
+            get { return _newTargetCiv; }
         }
 
-        public static CivilizationManager SpiedFourCivManager
-        {
-            get { return _spiedCivFour; }
-        }
-        public static CivilizationManager SpiedFiveCivManager
-        {
-            get { return _spiedCivFive; }
-        }
-        public static CivilizationManager SpiedSixCivManager
-        {
-            get { return _spiedCivSix; }
-        }
-        //public static CivilizationManagerMap SendSpiedCivilizations(CivilizationManagerMap civManageList) // turn off when 1 to 6 works
-        //{
-        //    _spyedCivs = civManageList;
-        //    return civManageList;
-        //}
-        public static CivilizationManager SendLocalPlayer(CivilizationManager localPlayer)
-        {
-            _localPlayer = localPlayer;
-            return localPlayer; 
-        }
-        public static CivilizationManager SendSpyCiv(CivilizationManager spyCiv)
-        {
-            _spyCiv = spyCiv;
-            return spyCiv;
-        }
-        public static CivilizationManager SendSpiedCivOne(CivilizationManager spiedCivOne)
-        { 
-            _spiedCivOne = spiedCivOne;
-            return _spiedCivOne; 
-        }
-        public static CivilizationManager SendSpiedCivTwo(CivilizationManager spiedCivTwo)
-        {
-            _spiedCivTwo = spiedCivTwo;
-            return _spiedCivTwo; 
-        }
-        public static CivilizationManager SendSpiedCivThree(CivilizationManager spiedCivThree)
-        {
-            _spiedCivThree = spiedCivThree;
-            return _spiedCivThree; 
-        }
-       public static CivilizationManager SendSpiedCivFour(CivilizationManager spiedCivFour)
-        {
-            _spiedCivFour = spiedCivFour;
-            return _spiedCivFour; 
-        }
-        public static CivilizationManager SendSpiedCivFive(CivilizationManager spiedCivFive)
-        {
-            _spiedCivFive = spiedCivFive;
-            return _spiedCivFive; 
-        }
-        public static CivilizationManager SendSpiedCivSix(CivilizationManager spiedCivSix)
-        {
-            _spiedCivSix = spiedCivSix;
-            return _spiedCivSix; 
+        public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
+        {      
+            if (spyCiv == null)
+                throw new ArgumentNullException("spyCiv");
+            if (spiedCiv == null)  
+                throw new ArgumentNullException("spiedCiv");
+
+            _newSpyCiv = spyCiv;
+            _newTargetCiv = spiedCiv;
+            _newSpiedColonies = colonies;
         }
     }
 }

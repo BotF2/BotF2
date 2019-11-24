@@ -72,7 +72,7 @@ namespace Supremacy.Economy
             OnPropertyChanged("TurnsRemaining");
         }
 
-        public BuildQueueItem() {}
+        public BuildQueueItem() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildQueueItem"/> class.

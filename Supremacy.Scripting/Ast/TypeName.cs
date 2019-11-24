@@ -12,7 +12,7 @@ namespace Supremacy.Scripting.Ast
     {
         private int _genericArity = -1;
 
-        public TypeName() {}
+        public TypeName() { }
 
         public TypeName(BuiltinType builtinType)
             : this()

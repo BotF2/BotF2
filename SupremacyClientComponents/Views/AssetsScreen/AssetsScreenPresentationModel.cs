@@ -8,11 +8,10 @@ using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Universe;
-using Supremacy.Orbitals;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
 using Supremacy.Types;
-using Supremacy.Intelligence;
+using Supremacy.Entities;
 
 namespace Supremacy.Client.Views
 {
@@ -20,7 +19,7 @@ namespace Supremacy.Client.Views
     {
         [InjectionConstructor]
         public AssetsScreenPresentationModel([NotNull] IAppContext appContext)
-            : base(appContext) {}
+            : base(appContext) { }
 
         public AssetsScreenPresentationModel()
             : base(DesignTimeAppContext.Instance)
@@ -31,21 +30,10 @@ namespace Supremacy.Client.Views
             _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
             _spiedOneColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
             _spiedTwoColonies = DesignTimeAppContext.Instance.SpiedTwoEmpire.Colonies;
-            //_spiedThreeColonies = DesignTimeAppContext.Instance.SpiedThreeEmpire.Colonies;
-            //_spiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
-            //_spiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
-            //_spiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
-            //_spyColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
-
-            //_spiedTwoColonies = IntelHelper.SpiedTwoCivManager.Colonies;
-            //_spiedThreeColonies = IntelHelper.SpiedThreeCivManager.Colonies;
-            //_spiedFourColonies = IntelHelper.SpiedFourCivManager.Colonies;
-            //_spiedFiveColonies = IntelHelper.SpiedFiveCivManager.Colonies;
-            //_spiedSixColonies = IntelHelper.SpiedSixCivManager.Colonies;
-            //_localPlayer = DesignTimeAppContext.Instance.LocalPlayer;
-            // var AllColonies = GameContext.Current.Universe.Find<Colony>(UniverseObjectType.Colony);
-
-            //InfiltratedColonies = DesignTimeAppContext.Instance.LocalPalyerEmpire.InfiltratedColonies;
+            _spiedThreeColonies = DesignTimeAppContext.Instance.SpiedThreeEmpire.Colonies;
+            _spiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
+            _spiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
+            _spiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
         }
 
         #region Colonies Property
@@ -53,19 +41,19 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
 
-        //public event EventHandler SpyColoniesChanged; // turn off
-
         public event EventHandler SpiedOneColoniesChanged;
 
         public event EventHandler SpiedTwoColoniesChanged;
 
-        //public event EventHandler SpiedThreeColoniesChanged;
+        public event EventHandler SpiedThreeColoniesChanged;
 
-        //public event EventHandler SpiedFourColoniesChanged;
+        public event EventHandler SpiedFourColoniesChanged;
 
-        //public event EventHandler SpiedFiveColoniesChanged;
+        public event EventHandler SpiedFiveColoniesChanged;
 
-        //public event EventHandler SpiedSixColoniesChanged;
+        public event EventHandler SpiedSixColoniesChanged;
+
+        public event EventHandler TotalIntelligenceChanged;
 
         public event EventHandler TotalPopulationChanged;
 
@@ -73,31 +61,27 @@ namespace Supremacy.Client.Views
 
         public event EventHandler SpiedTwoTotalPopulationChanged;
 
-        //public event EventHandler SpiedThreeTotalPopulationChanged;
+        public event EventHandler SpiedThreeTotalPopulationChanged;
 
-        //public event EventHandler SpiedFourTotalPopulationChanged;
+        public event EventHandler SpiedFourTotalPopulationChanged;
 
-        //public event EventHandler SpiedFiveTotalPopulationChanged;
+        public event EventHandler SpiedFiveTotalPopulationChanged;
 
-        //public event EventHandler SpiedSixTotalPopulationChanged;
-
-        //public event EventHandler SpyTotalPopulationChanged; // turn off
+        public event EventHandler SpiedSixTotalPopulationChanged;
 
         private IEnumerable<Colony> _colonies;
-
-        //private IEnumerable<Colony> _spyColonies;
 
         private IEnumerable<Colony> _spiedOneColonies;
 
         private IEnumerable<Colony> _spiedTwoColonies;
 
-        //private IEnumerable<Colony> _spiedThreeColonies;
+        private IEnumerable<Colony> _spiedThreeColonies;
 
-        //private IEnumerable<Colony> _spiedFourColonies;
+        private IEnumerable<Colony> _spiedFourColonies;
 
-        //private IEnumerable<Colony> _spiedFiveColonies;
+        private IEnumerable<Colony> _spiedFiveColonies;
 
-        //private IEnumerable<Colony> _spiedSixColonies;
+        private IEnumerable<Colony> _spiedSixColonies;
 
         //private IPlayer _localPlayer;
 
@@ -116,6 +100,8 @@ namespace Supremacy.Client.Views
                 OnColoniesChanged();
 
                 OnTotalPopulationChanged();
+
+                OnTotalIntelligenceChanged();
             }
         }
 
@@ -150,102 +136,69 @@ namespace Supremacy.Client.Views
             }
         }
 
-        //public IEnumerable<Colony> SpiedThreeColonies
-        //{
-        //    get { return _spiedThreeColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _spiedThreeColonies))
-        //            return;
+        public IEnumerable<Colony> SpiedThreeColonies
+        {
+            get { return _spiedThreeColonies; }
+            set
+            {
+                if (Equals(value, _spiedThreeColonies))
+                    return;
 
-        //        _spiedThreeColonies = value;
+                _spiedThreeColonies = value;
 
-        //        OnSpiedThreeColoniesChanged();
+                OnSpiedThreeColoniesChanged();
 
-        //        OnSpiedThreeTotalPopulationChanged();
-        //    }
-        //}
+                OnSpiedThreeTotalPopulationChanged();
+            }
+        }
 
-        //public IEnumerable<Colony> SpiedFourColonies
-        //{
-        //    get { return _spiedFourColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _spiedFourColonies))
-        //            return;
+        public IEnumerable<Colony> SpiedFourColonies
+        {
+            get { return _spiedFourColonies; }
+            set
+            {
+                if (Equals(value, _spiedFourColonies))
+                    return;
 
-        //        _spiedFourColonies = value;
+                _spiedFourColonies = value;
 
-        //        OnSpiedFourColoniesChanged();
+                OnSpiedFourColoniesChanged();
 
-        //        OnSpiedFourTotalPopulationChanged();
-        //    }
-        //}
+                OnSpiedFourTotalPopulationChanged();
+            }
+        }
 
-        //public IEnumerable<Colony> SpiedFiveColonies
-        //{
-        //    get { return _spiedFiveColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _spiedFiveColonies))
-        //            return;
+        public IEnumerable<Colony> SpiedFiveColonies
+        {
+            get { return _spiedFiveColonies; }
+            set
+            {
+                if (Equals(value, _spiedFiveColonies))
+                    return;
 
-        //        _spiedFiveColonies = value;
+                _spiedFiveColonies = value;
 
-        //        OnSpiedFiveColoniesChanged();
+                OnSpiedFiveColoniesChanged();
 
-        //        OnSpiedFiveTotalPopulationChanged();
-        //    }
-        //}
-        //public IEnumerable<Colony> SpiedSixColonies
-        //{
-        //    get { return _spiedSixColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _spiedSixColonies))
-        //            return;
+                OnSpiedFiveTotalPopulationChanged();
+            }
+        }
+        public IEnumerable<Colony> SpiedSixColonies
+        {
+            get { return _spiedSixColonies; }
+            set
+            {
+                if (Equals(value, _spiedSixColonies))
+                    return;
 
-        //        _spiedSixColonies = value;
+                _spiedSixColonies = value;
 
-        //        OnSpiedSixColoniesChanged();
+                OnSpiedSixColoniesChanged();
 
-        //        OnSpiedSixTotalPopulationChanged();
-        //    }
-        //}
-
-        //public IEnumerable<Colony> SpyColonies
-        //{
-        //    get { return _spyColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _spyColonies))
-        //            return;
-
-        //        _spyColonies = value;
-
-        //        OnSpyColoniesChanged();
-
-        //        OnSpyTotalPopulationChanged();
-        //    }
-        //}
-
-        //public IPlayer LocalPlayer
-        //{
-        //    get { return _localPlayer; }
-        //    set
-        //    {
-        //        if (Equals(value, _localPlayer))
-        //            return;
-
-        //        _localPlayer = value;
-
-        //        //OnSpyColoniesChanged();
-
-        //        //OnSpyTotalPopulationChanged();
-        //    }
-
-        //}
-
+                OnSpiedSixTotalPopulationChanged();
+            }
+        }
+ 
         public IEnumerable<Colony> InfiltratedColonies
         {
             get { return _infiltratedColonies; }
@@ -278,37 +231,37 @@ namespace Supremacy.Client.Views
             SpiedTwoColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedTwoColonies");
         }
-        //protected virtual void OnSpiedThreeColoniesChanged()
-        //{
-        //    SpiedThreeColoniesChanged.Raise(this);
-        //    OnPropertyChanged("SpiedThreeColonies");
-        //}
-        //protected virtual void OnSpiedFourColoniesChanged()
-        //{
-        //    SpiedFourColoniesChanged.Raise(this);
-        //    OnPropertyChanged("SpiedFourColonies");
-        //}
-        //protected virtual void OnSpiedFiveColoniesChanged()
-        //{
-        //    SpiedFiveColoniesChanged.Raise(this);
-        //    OnPropertyChanged("SpiedFiveColonies");
-        //}
-        //protected virtual void OnSpiedSixColoniesChanged()
-        //{
-        //    SpiedSixColoniesChanged.Raise(this);
-        //    OnPropertyChanged("SpiedSixColonies");
-        //}
-        //protected virtual void OnSpyColoniesChanged() // to be turned off
-        //{
-        //    SpyColoniesChanged.Raise(this);
-        //    OnPropertyChanged("SpyColonies");
-        //}
+        protected virtual void OnSpiedThreeColoniesChanged()
+        {
+            SpiedThreeColoniesChanged.Raise(this);
+            OnPropertyChanged("SpiedThreeColonies");
+        }
+        protected virtual void OnSpiedFourColoniesChanged()
+        {
+            SpiedFourColoniesChanged.Raise(this);
+            OnPropertyChanged("SpiedFourColonies");
+        }
+        protected virtual void OnSpiedFiveColoniesChanged()
+        {
+            SpiedFiveColoniesChanged.Raise(this);
+            OnPropertyChanged("SpiedFiveColonies");
+        }
+        protected virtual void OnSpiedSixColoniesChanged()
+        {
+            SpiedSixColoniesChanged.Raise(this);
+            OnPropertyChanged("SpiedSixColonies");
+        }
         #endregion Colonies Property
 
         protected virtual void OnTotalPopulationChanged()
         {
             TotalPopulationChanged.Raise(this);
             OnPropertyChanged("TotalPopulation");
+        }
+        protected virtual void OnTotalIntelligenceChanged()
+        {
+            TotalIntelligenceChanged.Raise(this);
+            OnPropertyChanged("TotalIntelligence");
         }
         protected virtual void OnSpiedOneTotalPopulationChanged()
         {
@@ -320,26 +273,26 @@ namespace Supremacy.Client.Views
             SpiedTwoTotalPopulationChanged.Raise(this);
             OnPropertyChanged("SpiedTwoTotalPopulation");
         }
-        //protected virtual void OnSpiedThreeTotalPopulationChanged()
-        //{
-        //    SpiedThreeTotalPopulationChanged.Raise(this);
-        //    OnPropertyChanged("SpiedThreeTotalPopulation");
-        //}
-        //protected virtual void OnSpiedFourTotalPopulationChanged()
-        //{
-        //    SpiedFourTotalPopulationChanged.Raise(this);
-        //    OnPropertyChanged("SpiedFourTotalPopulation");
-        //}
-        //protected virtual void OnSpiedFiveTotalPopulationChanged()
-        //{
-        //    SpiedFiveTotalPopulationChanged.Raise(this);
-        //    OnPropertyChanged("SpiedFiveTotalPopulation");
-        //}
-        //protected virtual void OnSpiedSixTotalPopulationChanged()
-        //{
-        //    SpiedSixTotalPopulationChanged.Raise(this);
-        //    OnPropertyChanged("SpiedSixTotalPopulation");
-        //}
+        protected virtual void OnSpiedThreeTotalPopulationChanged()
+        {
+            SpiedThreeTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedThreeTotalPopulation");
+        }
+        protected virtual void OnSpiedFourTotalPopulationChanged()
+        {
+            SpiedFourTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedFourTotalPopulation");
+        }
+        protected virtual void OnSpiedFiveTotalPopulationChanged()
+        {
+            SpiedFiveTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedFiveTotalPopulation");
+        }
+        protected virtual void OnSpiedSixTotalPopulationChanged()
+        {
+            SpiedSixTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedSixTotalPopulation");
+        }
         #region TotalPopulations and Empire Names
 
         public Meter TotalPopulation
@@ -347,7 +300,7 @@ namespace Supremacy.Client.Views
             get
             {
                 var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                try    // maybe slows down the game very much
+                try  
                 {
                     GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
@@ -356,10 +309,32 @@ namespace Supremacy.Client.Views
                 {
                     GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
                     GameLog.Core.General.Error(e);
-                    return civManager.TotalPopulation;
+                    Meter zero = new Meter(0, 0, 0);
+                    return zero; //civManager.TotalPopulation;
+                    
                 }
             }
         }
+        //public Meter TotalIntel
+        //{
+        //    get
+        //    {
+        //        var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+        //        try
+        //        {
+        //            GameLog.Core.Intel.DebugFormat("TotalIntel ={0}", civManager.Civilization.);
+        //            return civManager.TotalPopulation;
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
+        //            GameLog.Core.General.Error(e);
+        //            Meter zero = new Meter(0, 0, 0);
+        //            return zero; //civManager.TotalPopulation;
+
+        //        }
+        //    }
+        //}
         public string LocalCivName
         {
             get
@@ -367,145 +342,279 @@ namespace Supremacy.Client.Views
                 return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].Civilization.Name;        
             }
         }
+        public static Civilization Local
+        {
+            get
+            {
+                var localCiv = GameContext.Current.CivilizationManagers[DesignTimeObjects.GetCivLocalPlayer()];
+                return localCiv.Civilization;
+            }
+        }
 
-        //public static Meter SpiedOneTotalPopulation
-        //{
-        //    get
-        //    {
-        //        var civManager = DesignTimeObjects.GetSpiedCivilizationOne();
-        //        try
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("SpiedOneTotalPopulation ={0}", civManager.TotalPopulation);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Intel.WarnFormat("Problem occured at SpiedOneTotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            return civManager.TotalPopulation;
-        //        }
-        //    }
-        //}
-        //public static string SpiedOneCivName
-        //{
-        //    get { return IntelHelper.SpiedOneCivManager.Civilization.Name; }
-        //}
+        public static Meter SpiedOneTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.GetSpiedCivilizationOne();
+                try
+                {
+                    GameLog.Core.Intel.DebugFormat("SpiedOneTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    Meter zero = new Meter(0, 0, 0);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedOneTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return zero;
+                }
+            }
+        }
+        public static string SpiedOneCivName
+        {
+            get
+            {
+                string sp1Name = "Empty";
+                try
+                {
+                    sp1Name = DesignTimeObjects.GetSpiedCivilizationOne().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp1Name;
+            }
+        }
 
-        //public Meter SpiedTwoTotalPopulation
-        //{
-        //    get
-        //    {
-        //        var civManager = DesignTimeObjects.GetSpiedCivilizationTwo();
-        //        try   
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("SpiedTwoTotalPopulation ={0}", civManager.TotalPopulation);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Intel.WarnFormat("Problem occured at SpiedTwoTotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            return civManager.TotalPopulation;
-        //        }
-        //    }
-        //}
-        //public static string SpiedTwoCivName
-        //{
-        //    get { return DesignTimeObjects.GetSpiedCivilizationTwo().Civilization.Name; }
-        //}
+        public static Civilization SpiedOneCiv
+        {
+            get
+            { var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationOne();
+                return SpiedCiv.Civilization;
+            }
+        }
 
-        //public Meter SpiedThreeTotalPopulation
-        //{
-        //    get
-        //    {
-        //        var civManager = DesignTimeObjects.GetSpiedCivilizationThree();
-        //        try
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("SpiedThreeTotalPopulation ={0}", civManager.TotalPopulation);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Intel.WarnFormat("Problem occured at SpiedThreeTotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            return civManager.TotalPopulation;
-        //        }
-        //    }
-        //}
+        public Meter SpiedTwoTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.GetSpiedCivilizationTwo();
+                try
+                {
+                    GameLog.Core.Intel.DebugFormat("SpiedTwoTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    Meter zero = new Meter(0,0,0);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedTwoTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return zero; 
+                }
+            }
+        }
+        public static string SpiedTwoCivName
+        {
+            get
+            {
+                string sp2Name = "Empty";
+                try
+                {
+                    sp2Name = DesignTimeObjects.GetSpiedCivilizationTwo().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp2Name;
+            }
+        }
+        public static Civilization SpiedTwoCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationTwo();
+                return SpiedCiv.Civilization;
+            }
+        }
 
-        //public static string SpiedThreeCivName
-        //{
-        //    get { return DesignTimeObjects.GetSpiedCivilizationThree().Civilization.Name; }
-        //}
+        public Meter SpiedThreeTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.GetSpiedCivilizationThree();
+                try
+                {
+                    GameLog.Core.Intel.DebugFormat("SpiedThreeTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    Meter zero = new Meter(0, 0, 0);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedThreeTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return zero;
+                }
+            }
+        }
 
-        //public Meter SpiedFourTotalPopulation
-        //{
-        //    get
-        //    {
-        //        var civManager = DesignTimeObjects.GetSpiedCivilizationFour();
-        //        try
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("SpiedFourTotalPopulation ={0}", civManager.TotalPopulation);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFourTotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            return civManager.TotalPopulation;
-        //        }
-        //    }
-        //}
-        //public static string SpiedFourCivName
-        //{
-        //    get { return DesignTimeObjects.GetSpiedCivilizationFour().Civilization.Name; }
-        //}
+        public static string SpiedThreeCivName
+        {
+            get 
+            {
+                string sp3Name = "Empty";
+                try
+                {
+                    sp3Name = DesignTimeObjects.GetSpiedCivilizationThree().Civilization.Name;
+                }
+                catch
+                {
 
-        //public Meter SpiedFiveTotalPopulation
-        //{
-        //    get
-        //    {
-        //        var civManager = DesignTimeObjects.GetSpiedCivilizationFive();
-        //        try
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("SpiedFiveTotalPopulation ={0}", civManager.TotalPopulation);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFiveTotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            return civManager.TotalPopulation;
-        //        }
-        //    }
-        //}
-        //public static string SpiedFiveCivName
-        //{
-        //    get { return DesignTimeObjects.GetSpiedCivilizationFive().Civilization.Name; }
-        //}
+                }
+                return sp3Name; 
+            }
+        }
+        public static Civilization SpiedThreeCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationThree();
+                return SpiedCiv.Civilization;
+            }
+        }
 
-        //public Meter SpiedSixTotalPopulation
-        //{
-        //    get
-        //    {
-        //        var civManager = DesignTimeObjects.GetSpiedCivilizationSix();
-        //        try
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("SpiedSixTotalPopulation ={0}", civManager.TotalPopulation);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Intel.WarnFormat("Problem occured at SpiedSixTotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            return civManager.TotalPopulation;
-        //        }
-        //    }
-        //}
-        //public static string SpiedSixCivName
-        //{
-        //    get { return DesignTimeObjects.GetSpiedCivilizationSix().Civilization.Name; }
-        //}
+        public Meter SpiedFourTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.GetSpiedCivilizationFour();
+                try
+                {
+                    GameLog.Core.Intel.DebugFormat("SpiedFourTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    Meter zero = new Meter(0, 0, 0);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFourTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return zero;
+                }
+            }
+        }
+        public static string SpiedFourCivName
+        {
+            get
+            {
+                string sp4Name = "Empty";
+                try
+                {
+                    sp4Name = DesignTimeObjects.GetSpiedCivilizationFour().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp4Name;
+            }
+        }
+        public static Civilization SpiedFourCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationFour();
+                return SpiedCiv.Civilization;
+            }
+        }
+
+        public Meter SpiedFiveTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.GetSpiedCivilizationFive();
+                try
+                {
+                    GameLog.Core.Intel.DebugFormat("SpiedFiveTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    Meter zero = new Meter(0, 0, 0);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedFiveTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return zero;
+                }
+            }
+        }
+        public static string SpiedFiveCivName
+        {
+            get
+            {
+                string sp5Name = "Empty";
+                try
+                {
+                    sp5Name = DesignTimeObjects.GetSpiedCivilizationFive().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp5Name;
+            }
+        }
+        public static Civilization SpiedFiveCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationFive();
+                return SpiedCiv.Civilization;
+            }
+        }
+
+        public Meter SpiedSixTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.GetSpiedCivilizationSix();
+                try
+                {
+                    GameLog.Core.Intel.DebugFormat("SpiedSixTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    Meter zero = new Meter(0, 0, 0);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedSixTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return zero;
+                }
+            }
+        }
+        public static string SpiedSixCivName
+        {
+            get
+            {
+                string sp6Name = "Empty";
+                try
+                {
+                    sp6Name = DesignTimeObjects.GetSpiedCivilizationSix().Civilization.Name;
+                }
+                catch
+                {
+                    //
+                }
+                return sp6Name;
+            }
+        }
+        public static Civilization SpiedSixCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationSix();
+                return SpiedCiv.Civilization;
+            }
+        }
         #endregion
 
         #region Credits Empire
@@ -514,17 +623,17 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //try    // maybe slows down the game very much
-                //{
-                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                return civManager.Credits;
- 
-                //}
-                //catch (Exception e)
-                //{
-                //    GameLog.Print("Problem occured at TotalPopulation");
-                //    return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
-                //}
+                try
+                {
+                    var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                    return civManager.Credits;
+                }
+                catch 
+                {
+                    GameLog.Core.Intel.WarnFormat("Problem occured at CreditsEmpire:");
+                    Meter zero = new Meter(0, 0, 0);
+                    return zero;
+                }
             }
         }
         #endregion Credits Empire
@@ -535,19 +644,21 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //try    // maybe slows down the game very much
-                //{
-                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                return civManager.TotalIntelligence;
+                try
+                {
+                    var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization]; 
+                    return civManager.TotalIntelligence;
+
+                }
+                catch
+                {
+                    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligence:");
+                    return 0;
+                }
 
 
-                //}
-                //catch (Exception e)
-                //{
-                //    GameLog.Print("Problem occured at TotalPopulation");
-                //    return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].TotalPopulation;
-                //}
             }
+
         }
         #endregion TotalIntelligence Empire
 

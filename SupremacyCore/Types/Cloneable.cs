@@ -316,10 +316,10 @@ namespace Supremacy.Types
             public object UserContext
             {
                 get { return null; }
-                set {}
+                set { }
             }
 
-            public void AddMapping<T>(T source, T target) where T : class {}
+            public void AddMapping<T>(T source, T target) where T : class { }
 
             public bool TryRemap<T>(T source, out T target) where T : class
             {

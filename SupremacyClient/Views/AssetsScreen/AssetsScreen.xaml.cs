@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Supremacy.Client.Context;
+using Supremacy.Diplomacy;
+using Supremacy.Game;
+using Supremacy.Intelligence;
+using Supremacy.Utility;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation.Peers;
-using Supremacy.Utility;
-using Supremacy.Client.Context;
 
 namespace Supremacy.Client.Views
 {
@@ -16,16 +19,85 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
+            EmpireExpanderOne.Visibility = Visibility.Collapsed;
+            EmpireExpanderTwo.Visibility = Visibility.Collapsed;
+            EmpireExpanderThree.Visibility = Visibility.Collapsed;
+            EmpireExpanderFour.Visibility = Visibility.Collapsed;
+            EmpireExpanderFive.Visibility = Visibility.Collapsed;
+            EmpireExpanderSix.Visibility = Visibility.Collapsed;
         }
-
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (IsVisible)
+            {
                 ResumeAnimations();
+                bool oneNoDummy = false;
+                bool twoNoDummy = false;
+                bool threeNoDummy = false;
+                bool fourNoDummy = false;
+                bool fiveNoDummy = false;
+                bool sixNoDummy = false;
+
+
+                var oneCivManager = DesignTimeObjects.GetSpiedCivilizationOne();
+                if (oneCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != oneCivManager)
+                {
+                    oneNoDummy = true;
+                }
+                var twoCivManager = DesignTimeObjects.GetSpiedCivilizationTwo();
+                if (twoCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != twoCivManager)
+                {
+                    twoNoDummy = true;
+                }    
+                var threeCivManager = DesignTimeObjects.GetSpiedCivilizationThree();
+                if (threeCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != threeCivManager)
+                {
+                    threeNoDummy = true;
+                }
+                var fourCivManager = DesignTimeObjects.GetSpiedCivilizationFour();
+                if (fourCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
+                {
+                    fourNoDummy = true;
+                }
+                var fiveCivManager = DesignTimeObjects.GetSpiedCivilizationFive();
+                if (fiveCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
+                {
+                    fiveNoDummy = true;
+                }
+                var sixCivManager = DesignTimeObjects.GetSpiedCivilizationSix();
+                if (sixCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != sixCivManager)
+                {
+                    sixNoDummy = true;
+                }
+
+                if (oneNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv))
+                {
+                    EmpireExpanderOne.Visibility = Visibility.Visible;
+                }
+                if (twoNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedTwoCiv))
+                {
+                    EmpireExpanderTwo.Visibility = Visibility.Visible;
+                }
+                if (threeNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedThreeCiv))
+                {
+                    EmpireExpanderThree.Visibility = Visibility.Visible;
+                }
+                if (fourNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFourCiv))
+                {
+                    EmpireExpanderFour.Visibility = Visibility.Visible;;
+                }
+                if (fiveNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
+                {
+                    EmpireExpanderFive.Visibility = Visibility.Visible;
+                }
+                if (sixNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
+                {
+                    EmpireExpanderSix.Visibility = Visibility.Visible;
+                }
+            }
             else
                 PauseAnimations();
         }
-
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return null;
@@ -108,7 +180,7 @@ namespace Supremacy.Client.Views
             set { DataContext = value; }
         }
 
-        public void OnCreated() {}
+        public void OnCreated() { }
 
         public void OnDestroyed()
         {
@@ -116,5 +188,5 @@ namespace Supremacy.Client.Views
         }
 
         #endregion
-    }
+    } 
 }

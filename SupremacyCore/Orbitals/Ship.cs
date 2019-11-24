@@ -108,8 +108,8 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                if ((Fleet != null) && (Fleet.IsInTow || (Fleet.Order is TowOrder)))
-                    return 1;
+                //if ((Fleet != null) && (Fleet.IsInTow || (Fleet.Order is TowOrder)))
+                //    return 1;
                 return _speed;
             }
             set
@@ -300,7 +300,7 @@ namespace Supremacy.Orbitals
         }
         #endregion
 
-        public Ship() {}
+        public Ship() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ship"/> class.

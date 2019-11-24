@@ -25,7 +25,7 @@ namespace Supremacy.Xna
         private TimeSpan _timeToNextProjectile = TimeSpan.Zero;
 
         public BombardmentOverlay()
-            : base(true, false, false) {}
+            : base(true, false, false) { }
 
         protected internal TimeSpan TimeToNextProjectile
         {
@@ -181,7 +181,7 @@ namespace Supremacy.Xna
     public sealed class BombardmentOverlayRenderer : XnaComponentRenderer
     {
         public BombardmentOverlayRenderer()
-            : base(new BombardmentOverlay()) {}
+            : base(new BombardmentOverlay()) { }
 
         public new BombardmentOverlay Component
         {

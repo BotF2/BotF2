@@ -42,12 +42,12 @@
                                         Label="{s:StringResource MAIN_MENU_OPTIONS}" />
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.ShowCreditsDialog}" Margin="0,2,0,0"
                                         Label="{s:StringResource MAIN_MENU_CREDITS}" />
-                                <scc:GameButton Command="{x:Static scc:ClientCommands.EndGame}" Margin="0,2,0,0"
-                                        Label="{s:StringResource MAIN_MENU_RETIRE}">
-                                    <scc:GameButton.CommandParameter>
+                                <!--<scc:GameButton Command="{x:Static scc:ClientCommands.EndGame}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_RETIRE}">-->
+                                    <!--<scc:GameButton.CommandParameter>
                                         <sys:Boolean>True</sys:Boolean>
                                     </scc:GameButton.CommandParameter>
-                                </scc:GameButton>
+                                </scc:GameButton>-->
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.Exit}" Margin="0,2,0,0"
                                         Label="{s:StringResource MAIN_MENU_EXIT}">
                                     <scc:GameButton.CommandParameter>
@@ -63,11 +63,11 @@
                             FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="12"
                             Margin="16"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             SnapsToDevicePixels="True">
                             <TextBlock.Text>
-                                <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="Version {0}" />
+                                <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="                                                                                              Version {0}" />
                             </TextBlock.Text>
                         </TextBlock>
                     </Grid>

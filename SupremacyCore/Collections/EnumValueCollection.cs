@@ -38,7 +38,7 @@ namespace Supremacy.Collections
         }
 
         public EnumValueCollection()
-            : this((T[])Enum.GetValues(typeof(T))) {}
+            : this((T[])Enum.GetValues(typeof(T))) { }
 
         public T[] Values
         {
@@ -237,7 +237,7 @@ namespace Supremacy.Collections
                 _current = default(T);
             }
 
-            public void Dispose() {}
+            public void Dispose() { }
 
             public bool MoveNext()
             {

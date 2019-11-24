@@ -379,13 +379,14 @@ namespace Supremacy.Game
                 //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                 try
                 {
-                    GameLog.Core.Stations.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
                     item.Reset();
                     // works well but gives hidden info
-                    GameLog.Core.Stations.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
                 }
                 catch (Exception e)
                 {
+                    GameLog.Core.General.ErrorFormat("***** catch error e item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                     errors.Push(e);
                 }
                 finally
@@ -673,45 +674,108 @@ namespace Supremacy.Game
              */
             foreach (var civ1 in GameContext.Current.Civilizations)
             {
-                var diplomat = Diplomat.Get(civ1);
-
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
                     if (civ1 == civ2)
                         continue;
 
-
-                    var foreignPower = diplomat.GetForeignPower(civ2);
-                    var foreignPowerStatus = diplomat.GetForeignPower(civ2).DiplomacyData.Status;
+                    if (civ1.CivID == 6 || civ1.Key == "BORG")
+                    {
+                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        continue; // Borg don't accept anything
+                    }
+                    if (civ2.CivID == 6 || civ2.Key == "BORG")
+                    {
+                        continue; // Borg don't accept anything
+                    }
+                    var diplomat1 = Diplomat.Get(civ1);
+                    var diplomat2 = Diplomat.Get(civ2);
+                    if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
+                        diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+                        {
+                            continue;
+                        }
+                    if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
+                    {
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        {
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
+                            {
+                                //GameLog.Client.Test.DebugFormat("I** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember) // || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                          
+                    }
+                    if (!civ1.IsEmpire && civ2.IsEmpire)
+                    {
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        {
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
+                            {
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    if (civ2.IsEmpire && civ2.IsHuman && civ1.IsEmpire) // only a minor vs a major
+                    {
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        {
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
+                            {
+                               // GameLog.Client.Test.DebugFormat("C** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied) 
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    if (civ1.IsEmpire && civ1.IsHuman && civ2.IsEmpire) // only a minor vs a major
+                    {
+                        foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        {
+                            if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
+                            {
+                                var diplomatOther = Diplomat.Get(aCiv);
+                                var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                                if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    var ForeignPower = diplomat1.GetForeignPower(civ2);
+                    var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus);
+                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
-
-                    if (civ1.Key == "Borg")    /// and contact is made
-                    {
-                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                        continue; // Borg don't accept anything
-                    }
-
-                    if (civ2.Key == "Borg")    /// and contact is made
-                    {
-                        //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                        continue; // Borg don't accept anything
-                    }
-
-                    switch (foreignPower.PendingAction)
+                    switch (ForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                            if (foreignPower.LastProposalReceived != null)
-                                AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                            if (ForeignPower.LastProposalReceived != null)
+                                AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
-                            if (foreignPower.LastProposalReceived != null)
-                                RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
+                            if (ForeignPower.LastProposalReceived != null)
+                                RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
                     }
 
-                    foreignPower.PendingAction = PendingDiplomacyAction.None;
+                    ForeignPower.PendingAction = PendingDiplomacyAction.None;
                 }
             }
 
@@ -822,8 +886,8 @@ namespace Supremacy.Game
                                 CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner) ||
                                 !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
                                 continue;
-                        combats.Add(assets);
-                            combatLocations.Add(fleet.Location);                     
+                        combats.Add(assets); // we add all the ships at this location if there is any combat. Combat decides who is in and on what side
+                        combatLocations.Add(fleet.Location);                     
                     }
                 }
                 if (!invasionLocations.Contains(fleet.Location))
@@ -981,8 +1045,8 @@ namespace Supremacy.Game
                 {
                     return;
                 }
-                GameLog.Core.Research.DebugFormat("{0} {1} is conducting research in {2}...",
-                    scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
+                //GameLog.Core.Research.DebugFormat("{0} {1} is conducting research in {2}...",
+                //    scienceShip.ObjectID, scienceShip.Name, scienceShip.Sector);
 
                 try
                 {
@@ -990,8 +1054,8 @@ namespace Supremacy.Game
                     var starType = scienceShip.Sector.System.StarType;
 
                     int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
-                    GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
-                        scienceShip.ObjectID, scienceShip.Name, researchGained);
+                    //GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
+                    //    scienceShip.ObjectID, scienceShip.Name, researchGained);
 
                     switch (starType)
                     {
@@ -1028,7 +1092,7 @@ namespace Supremacy.Game
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
                     GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
-                        scienceShip.ObjectID, scienceShip.Name, researchGained, owner, starType, scienceShip.Sector);
+                        scienceShip.ObjectID, scienceShip.Name, researchGained, owner.Civilization.Key, starType, scienceShip.Sector);
 
                     GameContext.Current.CivilizationManagers[owner].SitRepEntries.Add(new ScienceShipResearchGainedSitRepEntry(owner.Civilization, scienceShip, researchGained));
                 }
@@ -1310,6 +1374,7 @@ namespace Supremacy.Game
              */
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
+                GameLog.Core.Production.DebugFormat("#####################################################");
                 GameLog.Core.Production.DebugFormat("DoProduction for Civilization {0}", civ.Name);
 
                 GameContext.PushThreadContext(game);
@@ -1333,7 +1398,7 @@ namespace Supremacy.Game
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);
 
-                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added to {4}",
+                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added from all colonies to {4} ",
                         newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization);
 
                     //Get the resources available for the civilization
@@ -1341,6 +1406,13 @@ namespace Supremacy.Game
                     totalResourcesAvailable[ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue;
                     totalResourcesAvailable[ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue;
                     totalResourcesAvailable[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
+
+                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials available in total for {4}"
+                        , civManager.Credits.CurrentValue
+                        , civManager.Resources.Deuterium.CurrentValue
+                        , civManager.Resources.Dilithium.CurrentValue
+                        , civManager.Resources.RawMaterials.CurrentValue
+                        , civManager.Civilization);
 
                     /* 
                      * Shuffle the colonies so they are processed in random order.  This
@@ -1352,6 +1424,7 @@ namespace Supremacy.Game
                     /* Iterate through each colony */
                     foreach (Colony colony in colonies)
                     {
+                        GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
                         GameLog.Core.Production.DebugFormat("DoProduction for Colony {0}", colony.Name, civ.Name, civManager.Credits);
 
                         //See if there is actually anything to build for this colony
@@ -1387,10 +1460,12 @@ namespace Supremacy.Game
                             if (colony.BuildSlots[0].Project.IsPaused) { }
                                 //TODO: Not sure how to handle this
 
-                            GameLog.Core.Production.DebugFormat("Resources available for {0} before construction of {1} on {2}: Deuterium={3}, Dilithium={4}, RawMaterials={5}",
+                            GameLog.Core.Production.DebugFormat("Deuterium={5}, Dilithium={6}, RawMaterials={7} available for {0} before construction of {1} on {2} - Income Tax = {3}, Income TradeRoute = {4}: ",
                                 civ.Name,
                                 colony.BuildSlots[0].Project.BuildDesign.Name,
                                 colony.Name,
+                                colony.TaxCredits,
+                                colony.CreditsFromTrade,
                                 totalResourcesAvailable[ResourceType.Deuterium],
                                 totalResourcesAvailable[ResourceType.Dilithium],
                                 totalResourcesAvailable[ResourceType.RawMaterials]);

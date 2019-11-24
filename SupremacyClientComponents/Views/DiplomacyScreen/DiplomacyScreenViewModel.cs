@@ -167,7 +167,7 @@ namespace Supremacy.Client.Views
             foreignPower.OutgoingMessage = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
             foreignPower.OutgoingMessage.Edit();
 
-            GameLog.Core.Diplomacy.DebugFormat("OutgoingMessage from {0}", foreignPower.Owner);
+            //GameLog.Core.Diplomacy.DebugFormat("OutgoingMessage from {0}", foreignPower.Owner);
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
@@ -572,8 +572,9 @@ namespace Supremacy.Client.Views
 
                 var selectedForeignPower = SelectedForeignPower;  // if one is selected in the screen
 
-                if (selectedForeignPower != null)
-                    GameLog.Client.Diplomacy.DebugFormat("DisplayMode is Outbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
+                // works
+                //if (selectedForeignPower != null)
+                //    GameLog.Client.Diplomacy.DebugFormat("DisplayMode is Outbox, SelectedForeignPower = {0}", selectedForeignPower.Counterparty.Key);
 
                 return selectedForeignPower != null &&
                        selectedForeignPower.OutgoingMessage != null;
@@ -609,7 +610,9 @@ namespace Supremacy.Client.Views
 
                 var selectedForeignPower = SelectedForeignPower;
 
+                if (selectedForeignPower != null)
                 GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
+
                 return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null && 
                        !selectedForeignPower.IncomingMessage.IsStatement;
             }

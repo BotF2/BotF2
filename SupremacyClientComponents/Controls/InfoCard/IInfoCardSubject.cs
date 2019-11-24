@@ -40,7 +40,7 @@ namespace Supremacy.Client.Controls
             DataResolver = dataResolver;
         }
 
-        protected InfoCardSubject() {}
+        protected InfoCardSubject() { }
         #endregion
 
         #region Properties
@@ -147,7 +147,7 @@ namespace Supremacy.Client.Controls
             Target = target;
         }
 
-        public UniverseObjectInfoCardSubject() {}
+        public UniverseObjectInfoCardSubject() { }
 
         protected static Func<object> CreateDataResolver(UniverseObject target)
         {

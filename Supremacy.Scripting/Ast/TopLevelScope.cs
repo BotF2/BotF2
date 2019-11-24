@@ -6,7 +6,7 @@ namespace Supremacy.Scripting.Ast
     public class TopLevelScope : ExplicitScope
     {
         public TopLevelScope(CompilerContext ctx, ParametersCompiled parameters, SourceLocation start)
-            : this(ctx, null, parameters, start) {}
+            : this(ctx, null, parameters, start) { }
 
         // We use 'Parent' to hook up to the containing Scope, but don't want to register the current Scope as a child.
         // So, we use a two-stage setup -- first pass a null parent to the base constructor, and then override 'Parent'.
@@ -25,7 +25,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public TopLevelScope(CompilerContext ctx, SourceLocation loc)
-            : this(ctx, null, ParametersCompiled.EmptyReadOnlyParameters, loc) {}
+            : this(ctx, null, ParametersCompiled.EmptyReadOnlyParameters, loc) { }
 
         public ParametersCompiled Parameters { get; set; }
 

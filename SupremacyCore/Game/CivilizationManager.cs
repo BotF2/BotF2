@@ -13,10 +13,13 @@ using Supremacy.Entities;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
+using Supremacy.Game;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Supremacy.Orbitals;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -37,9 +40,7 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-       //private readonly UniverseObjectList<Colony> _spyColonies;
-       // private readonly UniverseObjectList<Colony> _infiltratedColonies; // Should this not be a feature of a colony and not a new Universe Object?
-
+        private Dictionary<Civilization, List<Colony>> _infiltratedColonies;
         private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
@@ -56,8 +57,6 @@ namespace Supremacy.Game
             _treasury = new Treasury(5000);
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
-            //_spyColonies = new UniverseObjectList<Colony>();
-            //_infiltratedColonies = new UniverseObjectList<Colony>();
 
             _globalBonuses = new List<Bonus>();
             _mapData = new CivilizationMapData(
@@ -181,11 +180,12 @@ namespace Supremacy.Game
         /// Gets a list of the civilization's infiltrated colonies.
         /// </summary>
         /// <value>The infiltrated colonies.</value>
-        //[NotNull]
-        //public UniverseObjectList<Colony> InfiltratedColonies
-        //{
-        //    get { return _infiltratedColonies; }
-        //}
+        [NotNull]
+        public Dictionary<Civilization, List<Colony>> InfiltratedColonies
+        {
+            get { return _infiltratedColonies; }
+            // set{ alksdjf = value}
+        }
 
         public Colony SeatOfGovernment
         {
@@ -205,7 +205,15 @@ namespace Supremacy.Game
         [NotNull]
         public IList<SitRepEntry> SitRepEntries
         {
-            get { return _sitRepEntries; }
+            get 
+            {
+                foreach (var rep in _sitRepEntries)
+                {
+                    GameLog.Core.General.DebugFormat("SitRep Cat={2} Action {3} for {1}: {0}", rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
+                }
+                
+                return _sitRepEntries; 
+            }
         }
 
         /// <summary>
@@ -375,7 +383,7 @@ namespace Supremacy.Game
         public void Compact()
         {
             _colonies.TrimExcess();
-           // _infiltratedColonies.TrimExcess();
+            //_infiltratedColonies.TrimExcess();
             _globalBonuses.TrimExcess();
             _sitRepEntries.TrimExcess();
         }
@@ -502,7 +510,7 @@ namespace Supremacy.Game
         #region Constructors
 
         public CivilizationKeyedMap(Func<TValue, int> keyRetriever)
-            : base(keyRetriever) {}
+            : base(keyRetriever) { }
 
         #endregion
 
@@ -576,7 +584,7 @@ namespace Supremacy.Game
         #region Constructors
 
         public CivilizationManagerMap()
-            : base(o => o.CivilizationID) {}
+            : base(o => o.CivilizationID) { }
 
         #endregion
     }
@@ -590,7 +598,7 @@ namespace Supremacy.Game
         #region Constructors
 
         public ColonyMap()
-            : base(o => o.ObjectID) {}
+            : base(o => o.ObjectID) { }
 
         #endregion
     }

@@ -29,7 +29,7 @@ namespace Supremacy.Types
             set { _efficiency = value; }
         }
 
-        public OutputModifier() : this(0, 0f) {}
+        public OutputModifier() : this(0, 0f) { }
 
         public OutputModifier(int bonus, Percentage efficiency)
         {

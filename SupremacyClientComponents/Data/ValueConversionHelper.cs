@@ -177,7 +177,7 @@ namespace Supremacy.Client.Data
                 _cachedBaseUri = null;
             }
 
-            public void OnComponentChanged() {}
+            public void OnComponentChanged() { }
 
             public bool OnComponentChanging()
             {
@@ -379,7 +379,7 @@ namespace Supremacy.Client.Data
                             result = mi.Invoke(null, new object[] { stringValue });
                         }
                     }
-                    catch (TargetInvocationException) {}
+                    catch (TargetInvocationException) { }
                 }
 
                 return result;
@@ -462,7 +462,7 @@ namespace Supremacy.Client.Data
                 Type targetType,
                 bool shouldConvertFrom,
                 bool shouldConvertTo)
-                : base(typeConverter, sourceType, targetType, shouldConvertFrom, shouldConvertTo) {}
+                : base(typeConverter, sourceType, targetType, shouldConvertFrom, shouldConvertTo) { }
 
             object IValueConverter.Convert(object o, Type type, object parameter, CultureInfo culture)
             {
@@ -487,7 +487,7 @@ namespace Supremacy.Client.Data
                 Type targetType,
                 bool shouldConvertFrom,
                 bool shouldConvertTo)
-                : base(typeConverter, sourceType, targetType, shouldConvertFrom, shouldConvertTo) {}
+                : base(typeConverter, sourceType, targetType, shouldConvertFrom, shouldConvertTo) { }
 
             object IValueConverter.Convert(object o, Type type, object parameter, CultureInfo culture)
             {
@@ -540,7 +540,7 @@ namespace Supremacy.Client.Data
         private sealed class ObjectSourceConverter : DefaultValueConverter, IValueConverter
         {
             public ObjectSourceConverter(Type targetType)
-                : base(null, typeof(object), targetType, true, false) {}
+                : base(null, typeof(object), targetType, true, false) { }
 
             object IValueConverter.Convert(object o, Type type, object parameter, CultureInfo culture)
             {

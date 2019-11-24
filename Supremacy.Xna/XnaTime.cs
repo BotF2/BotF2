@@ -4,10 +4,10 @@ namespace Supremacy.Xna
 {
     public class XnaTime
     {
-        public XnaTime() {}
+        public XnaTime() { }
 
         public XnaTime(TimeSpan totalRealTime, TimeSpan elapsedRealTime, TimeSpan totalGameTime, TimeSpan elapsedGameTime)
-            : this(totalRealTime, elapsedRealTime, totalGameTime, elapsedGameTime, false) {}
+            : this(totalRealTime, elapsedRealTime, totalGameTime, elapsedGameTime, false) { }
 
         public XnaTime(TimeSpan totalRealTime, TimeSpan elapsedRealTime, TimeSpan totalGameTime, TimeSpan elapsedGameTime, bool isRunningSlowly)
         {

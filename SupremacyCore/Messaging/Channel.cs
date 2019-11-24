@@ -18,7 +18,7 @@ namespace Supremacy.Messaging
             _invokers = new Dictionary<Type, ChannelInvoker>();
         }
 
-        internal Channel() {}
+        internal Channel() { }
 
         #region Publish Related 
         public static void Publish(Type channelType, Object payload)

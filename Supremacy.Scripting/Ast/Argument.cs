@@ -18,7 +18,7 @@ namespace Supremacy.Scripting.Ast
     {
         private Expression _value = EmptyExpression.Null;
 
-        public Argument() {}
+        public Argument() { }
 
         public Argument(Expression value)
         {

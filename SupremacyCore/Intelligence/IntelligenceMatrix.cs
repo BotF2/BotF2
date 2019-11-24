@@ -224,15 +224,17 @@ namespace Supremacy.Economy
                         application.ApplicationID = nextApplicationId++;
                         application.Field = field;
                         matrix._applicationMap[application.ApplicationID] = application;
-                        GameLog.Core.Intel.DebugFormat("adding: {0};{1};{2};{3};{4}  for StartingLevel={5}={6}"
-                            , application.ApplicationID
-                            , field.IntelCategory
-                            , field.Name
-                            , application.Name
-                            , application.InitialIntelValue
-                            , application.Level
-                            , application.Description
-                            );
+                        
+                        // IntelMatrix isn't usedd anyway at the moment
+                        //GameLog.Core.Intel.DebugFormat("adding: {0};{1};{2};{3};{4}  for StartingLevel={5}={6}"
+                        //    , application.ApplicationID
+                        //    , field.IntelCategory
+                        //    , field.Name
+                        //    , application.Name
+                        //    , application.InitialIntelValue
+                        //    , application.Level
+                        //    , application.Description
+                        //    );
                     }
                 }
             }

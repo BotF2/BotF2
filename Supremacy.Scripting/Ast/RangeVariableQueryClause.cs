@@ -31,7 +31,7 @@ namespace Supremacy.Scripting.Ast
             }
         }
 
-        protected RangeVariableQueryClause() {}
+        protected RangeVariableQueryClause() { }
 
         protected RangeVariableQueryClause(TopLevelScope scope, Expression baseExpression)
         {

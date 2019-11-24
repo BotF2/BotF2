@@ -117,7 +117,8 @@ namespace Supremacy.Universe
             
             get
             {
-                GameLog.Core.TradeRoutes.DebugFormat("IsAssinged ={0}", (TargetColony != null)); //, TargetColony.Owner);
+                // works
+                // GameLog.Core.TradeRoutes.DebugFormat("IsAssigned ={0}", (TargetColony != null)); //, TargetColony.Owner);
                 return TargetColony != null;
             }
         }

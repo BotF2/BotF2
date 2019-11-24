@@ -191,7 +191,15 @@ namespace Supremacy.Game
         /// <value>The selected empire.</value>
         public Civilization Empire
         {
-            get { return GameContext.Current.Civilizations[EmpireID]; }
+            get
+            {
+                if (GameContext.Current != null)
+                    return GameContext.Current.Civilizations[EmpireID];
+                else
+                    return PlayerContext.Current.Players[0].Empire;
+
+                // ToDo: solve the crashes out of Multi Player Start
+            }
             set
             {
                 if (value == null)

@@ -10,7 +10,7 @@ namespace Supremacy.AI
     [Serializable]
     public sealed class StrategyDatabase : KeyedCollectionBase<string, Strategy>
     {
-        private StrategyDatabase() : base(o => o.Key) {}
+        private StrategyDatabase() : base(o => o.Key) { }
 
         public static StrategyDatabase Load()
         {

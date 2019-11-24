@@ -69,7 +69,7 @@ namespace Supremacy.Client.Events
             AppContext = appContext;
         }
 
-        public ClientCancelEventArgs() : this(ServiceLocator.Current.GetInstance<IAppContext>()) {}
+        public ClientCancelEventArgs() : this(ServiceLocator.Current.GetInstance<IAppContext>()) { }
     }
 
     public class ClientEventArgs : EventArgs
@@ -110,7 +110,7 @@ namespace Supremacy.Client.Events
             AppContext = appContext;
         }
 
-        public ClientDataEventArgs(TData value) : this(ServiceLocator.Current.GetInstance<IAppContext>(), value) {}
+        public ClientDataEventArgs(TData value) : this(ServiceLocator.Current.GetInstance<IAppContext>(), value) { }
     }
 
     public sealed class LocalPlayerJoinedEventArgs : ClientEventArgs
@@ -126,7 +126,7 @@ namespace Supremacy.Client.Events
         }
 
         public LocalPlayerJoinedEventArgs([NotNull] IPlayer player, [NotNull] ILobbyData lobbyData) 
-            : this(ServiceLocator.Current.GetInstance<IAppContext>(), player, lobbyData) {}
+            : this(ServiceLocator.Current.GetInstance<IAppContext>(), player, lobbyData) { }
 
         public IPlayer Player { get; private set; }
         public ILobbyData LobbyData { get; private set; }
@@ -197,35 +197,35 @@ namespace Supremacy.Client.Events
         }
     }
 
-    public sealed class ServerInitializationFailedEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class ClientInitializationFailedEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class ClientConnectedEvent : CompositePresentationEvent<ClientConnectedEventArgs> {}
-    public sealed class ClientConnectionFailedEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class ClientConnectionBrokenEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class ClientDisconnectedEvent : CompositePresentationEvent<ClientDataEventArgs<ClientDisconnectReason>> {}
-    public sealed class CombatUpdateReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<CombatUpdate>> {}
-    public sealed class InvasionUpdateReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<InvasionArena>> {}
-    public sealed class LocalPlayerJoinedEvent : CompositePresentationEvent<LocalPlayerJoinedEventArgs> {}
-    public sealed class PlayerJoinedEvent : CompositePresentationEvent<ClientDataEventArgs<IPlayer>> {}
-    public sealed class PlayerExitedEvent : CompositePresentationEvent<ClientDataEventArgs<IPlayer>> {}
-    public sealed class LobbyUpdatedEvent : CompositePresentationEvent<ClientDataEventArgs<ILobbyData>> {}
-    public sealed class GameStartingEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class GameStartedEvent : CompositePresentationEvent<ClientDataEventArgs<GameStartData>> {}
-    public sealed class GameEndedEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class GameEndingEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class TurnStartedEvent : CompositePresentationEvent<GameContextEventArgs> {}
-    public sealed class TurnEndedEvent : CompositePresentationEvent<ClientEventArgs> {}
+    public sealed class ServerInitializationFailedEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class ClientInitializationFailedEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class ClientConnectedEvent : CompositePresentationEvent<ClientConnectedEventArgs> { }
+    public sealed class ClientConnectionFailedEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class ClientConnectionBrokenEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class ClientDisconnectedEvent : CompositePresentationEvent<ClientDataEventArgs<ClientDisconnectReason>> { }
+    public sealed class CombatUpdateReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<CombatUpdate>> { }
+    public sealed class InvasionUpdateReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<InvasionArena>> { }
+    public sealed class LocalPlayerJoinedEvent : CompositePresentationEvent<LocalPlayerJoinedEventArgs> { }
+    public sealed class PlayerJoinedEvent : CompositePresentationEvent<ClientDataEventArgs<IPlayer>> { }
+    public sealed class PlayerExitedEvent : CompositePresentationEvent<ClientDataEventArgs<IPlayer>> { }
+    public sealed class LobbyUpdatedEvent : CompositePresentationEvent<ClientDataEventArgs<ILobbyData>> { }
+    public sealed class GameStartingEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class GameStartedEvent : CompositePresentationEvent<ClientDataEventArgs<GameStartData>> { }
+    public sealed class GameEndedEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class GameEndingEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class TurnStartedEvent : CompositePresentationEvent<GameContextEventArgs> { }
+    public sealed class TurnEndedEvent : CompositePresentationEvent<ClientEventArgs> { }
     public sealed class AllTurnEndedEvent : CompositePresentationEvent<ClientEventArgs> { }
     public sealed class ServerHeartbeatEvent : CompositePresentationEvent<ClientEventArgs> { }
-    public sealed class TurnPhaseChangedEvent : CompositePresentationEvent<ClientDataEventArgs<TurnPhase>> {}
-    public sealed class GameUpdateDataReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<GameUpdateData>> {}
-    public sealed class ChatMessageSentEvent : CompositePresentationEvent<ClientDataEventArgs<ChatMessage>> {}
-    public sealed class ChatMessageReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<ChatMessage>> {}
-    public sealed class ScreenRefreshRequiredEvent : CompositePresentationEvent<ClientEventArgs> {}
-    public sealed class ViewActivatingEvent : CompositePresentationEvent<ViewActivatingEventArgs> {}
-    public sealed class GameObjectIDRequestedEvent : CompositePresentationEvent<GameObjectIDRequestEventArgs> {}
-    public sealed class ScreenActivatedEvent : CompositePresentationEvent<ScreenActivatedEventArgs> {}
-    public sealed class PlayerTurnFinishedEvent : CompositePresentationEvent<ClientDataEventArgs<IPlayer>> {}
+    public sealed class TurnPhaseChangedEvent : CompositePresentationEvent<ClientDataEventArgs<TurnPhase>> { }
+    public sealed class GameUpdateDataReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<GameUpdateData>> { }
+    public sealed class ChatMessageSentEvent : CompositePresentationEvent<ClientDataEventArgs<ChatMessage>> { }
+    public sealed class ChatMessageReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<ChatMessage>> { }
+    public sealed class ScreenRefreshRequiredEvent : CompositePresentationEvent<ClientEventArgs> { }
+    public sealed class ViewActivatingEvent : CompositePresentationEvent<ViewActivatingEventArgs> { }
+    public sealed class GameObjectIDRequestedEvent : CompositePresentationEvent<GameObjectIDRequestEventArgs> { }
+    public sealed class ScreenActivatedEvent : CompositePresentationEvent<ScreenActivatedEventArgs> { }
+    public sealed class PlayerTurnFinishedEvent : CompositePresentationEvent<ClientDataEventArgs<IPlayer>> { }
 
     public static class ClientEvents
     {

@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Client;
 using Supremacy.Pathfinding;
 using Supremacy.Resources;
 using Supremacy.Tech;
@@ -25,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Supremacy.Intelligence;
 
 namespace Supremacy.Orbitals
 {
@@ -39,6 +41,7 @@ namespace Supremacy.Orbitals
         public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
         public static readonly MedicalOrder MedicalOrder;
+        public static readonly SpyOnOrder SpyOnOrder;
         public static readonly TowOrder TowOrder;
         public static readonly WormholeOrder WormholeOrder;
         public static readonly CollectDeuteriumOrder CollectDeuteriumOrder;
@@ -59,6 +62,7 @@ namespace Supremacy.Orbitals
             SabotageOrder = new SabotageOrder();
             InfluenceOrder = new InfluenceOrder();
             MedicalOrder = new MedicalOrder();
+            SpyOnOrder = new SpyOnOrder();
             TowOrder = new TowOrder();
             WormholeOrder = new WormholeOrder();
             CollectDeuteriumOrder = new CollectDeuteriumOrder();
@@ -77,6 +81,7 @@ namespace Supremacy.Orbitals
                           SabotageOrder,
                           InfluenceOrder,
                           MedicalOrder,
+                          SpyOnOrder,
                           //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
@@ -602,6 +607,134 @@ namespace Supremacy.Orbitals
     }
     #endregion
 
+    #region SpyOnOrder
+
+    [Serializable]
+    public sealed class SpyOnOrder : FleetOrder
+    {
+        private readonly bool _isComplete;
+
+        public override string OrderName
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_SPY_ON"); }
+        }
+
+        public override string Status
+        {
+            get { return ResourceManager.GetString("FLEET_ORDER_SPY_ON"); }
+        }
+
+        public override FleetOrder Create()
+        {
+            return new SpyOnOrder();
+        }
+
+        public override bool IsComplete
+        {
+            get { return _isComplete; }
+        }
+
+        public override bool IsCancelledOnRouteChange
+        {
+            get { return true; }
+        }
+
+        public override bool IsRouteCancelledOnAssign
+        {
+            get { return true; }
+        }
+
+        public override bool WillEngageHostiles
+        {
+            get { return false; }
+        }
+
+        public SpyOnOrder()
+        {
+            _isComplete = false;
+        }
+
+        private Ship FindBestSpyOnShip()
+        {
+            Ship bestShip = null;
+            foreach (Ship ship in Fleet.Ships)
+            {
+                if (ship.ShipType == ShipType.Spy)
+                {
+                    if ((bestShip == null)
+                        || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
+                    {
+                        bestShip = ship;
+                    }
+                }
+            }
+            return bestShip;
+        }
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            if (!base.IsValidOrder(fleet))
+                return false;
+            if (fleet.Sector.System == null)
+                return false;
+            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+                return false;
+            foreach (var ship in fleet.Ships)
+            {
+                if (ship.ShipType == ShipType.Spy)
+                    return true;
+            }
+            return false;
+        }
+
+        protected internal override void OnTurnBeginning()
+        {
+            base.OnTurnBeginning();
+            if (_isComplete)
+                return;
+            var SpyOnShip = FindBestSpyOnShip();
+            if (SpyOnShip == null)
+                return;
+            CreateSpyOn(
+                Fleet.Owner,
+                Fleet.Sector.System);
+            //GameContext.Current.Universe.Destroy(SpyOnShip);
+        }
+
+        protected internal override void OnOrderAssigned()
+        {
+            base.OnOrderAssigned();
+            if (!Fleet.Route.IsEmpty)
+                Fleet.Route = TravelRoute.Empty;
+        }
+
+        private static void CreateSpyOn(Civilization civ, StarSystem system)
+        {
+            var colonies = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
+            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+
+            //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            //if (defenseIntelligence - 1 < 0.1)
+            //    defenseIntelligence = 2;
+
+            //int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            //if (attackingIntelligence - 1 < 0.1)
+            //    attackingIntelligence = 1;
+
+            //int ratio = attackingIntelligence / defenseIntelligence;
+            ////max ratio for no exceeding gaining points
+            //if (ratio > 10)
+            //    ratio = 10;
+
+            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);
+
+           GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
+
+        }
+    }
+
+    #endregion
+
     #region RaidOrder
 
     [Serializable]
@@ -994,7 +1127,7 @@ namespace Supremacy.Orbitals
 
             // plan is: 
             // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
-            // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Tables\DiplomacyTables.txt Line 1 RegardLevels
+            // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Data\DiplomacyTables.txt Line 1 RegardLevels
 
             // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
             if (Fleet.Sector.System.Owner == Fleet.Owner)

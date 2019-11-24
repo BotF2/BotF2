@@ -55,10 +55,10 @@ namespace Supremacy.Client
     public class ClientException : ApplicationException
     {
         #region Constructors and Finalizers
-        public ClientException() {}
-        public ClientException(string message) : base(message) {}
-        public ClientException(string message, Exception innerException) : base(message, innerException) {}
-        protected ClientException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+        public ClientException() { }
+        public ClientException(string message) : base(message) { }
+        public ClientException(string message, Exception innerException) : base(message, innerException) { }
+        protected ClientException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         #endregion
     }
 

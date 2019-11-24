@@ -101,7 +101,7 @@ namespace Supremacy.Resources
             _commandLineMod = GameModLoader.GetModFromCommandLine();
 
             _defaultStrings = StringTable.Load(
-                GetResourcePath(@"Resources\Text\" + NeutralLocale + ".txt"));
+                GetResourcePath(@"Resources\Data\" + NeutralLocale + ".txt"));
 
             if (CurrentLocale == NeutralLocale)
             {
@@ -112,11 +112,11 @@ namespace Supremacy.Resources
                 try
                 {
                     _localStrings = StringTable.Load(
-                        GetResourcePath(@"Resources\Text\" + CurrentLocale + ".txt"));
+                        GetResourcePath(@"Resources\Data\" + CurrentLocale + ".txt"));
                 }
                 catch 
                 {
-                    GameLog.Core.GameData.Info("Hint: local file \\Text\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done");
+                    GameLog.Core.GameData.Info("Hint: local file \\Data\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done");
                 }
             }
         }

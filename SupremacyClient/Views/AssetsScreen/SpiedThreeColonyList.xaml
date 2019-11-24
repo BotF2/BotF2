@@ -1,0 +1,32 @@
+﻿<scc:ThemedUserControl x:Class="Supremacy.Client.Views.SpiedThreeColonyList"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                       xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:v="clr-namespace:Supremacy.Client.Views"
+                       mc:Ignorable="d"
+                       d:DesignWidth="1024"
+                       d:DesignHeight="768"
+                       d:DataContext="{x:Static scc:DesignTimeObjects.SpiedThreeColonies}"
+                       Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                       FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.DefaultFontWeightKey}}"
+                       FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}"
+                       UseLayoutRounding="True">
+	<ItemsControl ItemsSource="{Binding}"
+           BorderThickness="0"
+	       Grid.IsSharedSizeScope="True">
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate>
+        <VirtualizingStackPanel IsItemsHost="True" />
+      </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+		<ItemsControl.ItemTemplate>
+			<DataTemplate DataType="{x:Type s:Colony}">
+        <v:SystemListItem />
+			</DataTemplate>
+		</ItemsControl.ItemTemplate>
+	</ItemsControl>
+</scc:ThemedUserControl>

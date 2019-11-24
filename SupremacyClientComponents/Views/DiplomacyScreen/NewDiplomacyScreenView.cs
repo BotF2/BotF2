@@ -17,6 +17,6 @@ namespace Supremacy.Client.Views
         }
 
         protected NewDiplomacyScreenView([NotNull] IUnityContainer container)
-            : base(container) {}
+            : base(container) { }
     }
 }

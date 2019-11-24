@@ -9,5 +9,5 @@
 
 namespace Supremacy.Client.Views
 {
-    public interface IColonyScreenPresenter : IGameScreenPresenter<ColonyScreenPresentationModel, IColonyScreenView> {}
+    public interface IColonyScreenPresenter : IGameScreenPresenter<ColonyScreenPresentationModel, IColonyScreenView> { }
 }

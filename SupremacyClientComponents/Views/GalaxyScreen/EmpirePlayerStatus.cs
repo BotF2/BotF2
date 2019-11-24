@@ -23,7 +23,7 @@ namespace Supremacy.Client.Views
     internal class EmpirePlayerStatusCollection : KeyedCollectionBase<Civilization, EmpirePlayerStatus>, IEmpirePlayerStatusCollection
     {
         public EmpirePlayerStatusCollection()
-            : base(o => o.Empire) {}
+            : base(o => o.Empire) { }
 
         public void Update([NotNull] ILobbyData lobbyData)
         {
@@ -47,9 +47,9 @@ namespace Supremacy.Client.Views
 
             this[player.Empire].IsReady = true;
 //Plays a "click" sound when turn button is pressed. Sound plays on all machines in Multiplayer.
-            //var soundPlayer = new SoundPlayer("Resources/SoundFX/ChatMessage.ogg");
+            //var soundPlayer = new SoundPlayer("Resources/SoundFX/ChatMessage.wav");
             //{
-            //    if (File.Exists("Resources/SoundFX/ChatMessage.ogg"));
+            //    if (File.Exists("Resources/SoundFX/ChatMessage.wav"));
             //    soundPlayer.Play();
             //}  
         }

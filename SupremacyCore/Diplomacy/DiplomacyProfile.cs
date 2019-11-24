@@ -109,14 +109,14 @@ namespace Supremacy.Diplomacy
     public sealed class RelationshipMemoryWeightCollection : InitOnlyKeyedCollection<MemoryType, RelationshipMemoryWeight>
     {
         public RelationshipMemoryWeightCollection()
-            : base(w => w.MemoryType) {}
+            : base(w => w.MemoryType) { }
     }
 
     [Serializable]
     public sealed class DiplomacyProfileCollection : InitOnlyKeyedCollection<Civilization, DiplomacyProfile>
     {
         public DiplomacyProfileCollection()
-            : base(o => o.Civilization) {}
+            : base(o => o.Civilization) { }
     }
 
     [Serializable]

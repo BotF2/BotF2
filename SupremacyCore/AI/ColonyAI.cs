@@ -247,7 +247,7 @@ namespace Supremacy.AI
                     if (turnsNeeded > 0)
                     {
                         s.Project.IsRushed = true;
-                        while (colony.DeactivateFacility(ProductionCategory.Industry)) {}
+                        while (colony.DeactivateFacility(ProductionCategory.Industry)) { }
                     }
                 }
             });

@@ -24,7 +24,7 @@ namespace Supremacy.Types
         private readonly object _syncRoot;
 
         protected SupportInitializeBase()
-            : this(null) {}
+            : this(null) { }
 
         protected SupportInitializeBase(object syncRoot)
         {
@@ -54,8 +54,8 @@ namespace Supremacy.Types
                 function();
         }
 
-        protected virtual void BeginInitCore() {}
-        protected virtual void EndInitCore() {}
+        protected virtual void BeginInitCore() { }
+        protected virtual void EndInitCore() { }
 
         protected void VerifyInitializing()
         {

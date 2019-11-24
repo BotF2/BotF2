@@ -8,7 +8,7 @@ namespace Supremacy.Scripting.Ast
     {
         public static readonly string GlobalAlias = "global";
 
-        public QualifiedAliasMember() {}
+        public QualifiedAliasMember() { }
 
         public QualifiedAliasMember(string alias, string name, SourceSpan span)
         {

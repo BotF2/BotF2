@@ -9,6 +9,6 @@ namespace Supremacy.Text
     public class LocalizedStringValueCollection : KeyedCollectionBase<CultureInfo, LocalizedStringValue>
     {
         public LocalizedStringValueCollection()
-            : base(o => o.Language) {}
+            : base(o => o.Language) { }
     }
 }

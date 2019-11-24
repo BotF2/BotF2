@@ -113,7 +113,7 @@ namespace Supremacy.Universe
         private static CollectionBase<string> GetStarNames()
         {
             var file = new FileStream(
-                ResourceManager.GetResourcePath("Resources/Tables/StarNames.txt"),
+                ResourceManager.GetResourcePath("Resources/Data/StarNames.txt"),
                 FileMode.Open,
                 FileAccess.Read);
 
@@ -126,10 +126,27 @@ namespace Supremacy.Universe
                     var line = reader.ReadLine();
                     if (line == null)
                         break;
-                    //GameLog.Core.GalaxyGenerator.DebugFormat("Star Name = {0}", line);
                     names.Add(line.Trim());
                 }
             }
+
+            var qry = from s in names
+                      group s by s into grp
+                      select new
+                      {
+                          num = grp.Key,
+                          count = grp.Count()
+                      };
+            //then...
+            foreach (var o in qry)
+            {
+                if (o.count > 1)
+                {
+                    Console.WriteLine("###### Star Name {0} is used in StarNames.txt *{1}* times", o.num, o.count);
+                    GameLog.Core.GalaxyGenerator.ErrorFormat("###### Star Name {0} is used in StarNames.txt *{1}* times", o.num, o.count);
+                }
+            }
+
 
             return names;
         }
@@ -137,7 +154,7 @@ namespace Supremacy.Universe
         private static IList<string> GetNebulaNames()
         {
             var file = new FileStream(
-                ResourceManager.GetResourcePath("Resources/Tables/NebulaNames.txt"),
+                ResourceManager.GetResourcePath("Resources/Data/NebulaNames.txt"),
                 FileMode.Open,
                 FileAccess.Read);
 
@@ -152,6 +169,23 @@ namespace Supremacy.Universe
                         break;
                     //GameLog.Core.GalaxyGenerator.DebugFormat("Nebula Name = {0}", line);
                     names.Add(line.Trim());
+                }
+            }
+
+            var qry = from s in names
+                      group s by s into grp
+                      select new
+                      {
+                          num = grp.Key,
+                          count = grp.Count()
+                      };
+            //then...
+            foreach (var o in qry)
+            {
+                if (o.count > 1)
+                {
+                    Console.WriteLine("###### Nebula Name {0} is used in NebulaNames.txt *{1}* times", o.num, o.count);
+                    GameLog.Core.GalaxyGenerator.ErrorFormat("###### Nebula Name {0} is used in NebulaNames.txt *{1}* times", o.num, o.count);
                 }
             }
 
@@ -199,7 +233,7 @@ namespace Supremacy.Universe
                      * fall back to using UniverseManager.Tables later on.
                      */
                     UniverseTables = TableMap.ReadFromFile(
-                        ResourceManager.GetResourcePath("Resources/Tables/UniverseTables.txt"));
+                        ResourceManager.GetResourcePath("Resources/Data/UniverseTables.txt"));
 
                     var galaxySizes = UniverseTables["GalaxySizes"];
 
@@ -1073,10 +1107,12 @@ namespace Supremacy.Universe
                                     system.Name = "System " + system.ObjectID;
                                     break;
                                 }
-                                system.Name = starNames[0];
+                                system.Name = "Dummy";  // not inside Parallel foreach
                                 starNames.RemoveAt(0);
                                 break;
                         }
+
+
 
                         // below "SupportsPlanets" doesn't work atm ... so here manually (to get some sector available to COLONIZE)
                         bool _supportPlanets;
@@ -1147,12 +1183,42 @@ namespace Supremacy.Universe
 
                         GameContext.Current.Universe.Objects.Add(system);
                         GameContext.Current.Universe.Map[position].System = system;
+
+                        var systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
+
+                        //foreach (var pos in positions)
+                        //{
+                        if (system.Name == "Dummy")
+                            {
+                                system.Name = starNames.FirstOrDefault();
+                                starNames.Remove(system.Name);
+                            }
+
+                        var qry = from s in systemNamesList
+                                  group s by s into grp
+                                  select new
+                                  {
+                                      num = grp.Key,
+                                      count = grp.Count()
+                                  };
+                        //then...
+                        foreach (var o in qry)
+                        {
+                            if (o.count > 1)
+                            {
+                                Console.WriteLine("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
+                                GameLog.Core.GalaxyGenerator.ErrorFormat("###### Star Name {0} is used in systemNamesList *{1}* times", o.num, o.count);
+                            }
+                        }
+
+                        //}
                     }
                     finally
                     {
                         GameContext.PopThreadContext();
                     }
                 });
+
         }
 
         private static void LinkWormholes()
@@ -1162,8 +1228,18 @@ namespace Supremacy.Universe
             foreach (var wormhole in wormholes)
             {
                 //Everything less than Nebula is a proper star
-                wormhole.Name = GameContext.Current.Universe.FindNearest<StarSystem>(wormhole.Location,
+
+                string notFinalName = GameContext.Current.Universe.FindNearest<StarSystem>(wormhole.Location,
                     s => s.StarType < StarType.Nebula, false).Name;
+
+                var emp = GameContext.Current.CivilizationManagers.Where(c => c.CivilizationID < 7);
+
+                foreach (var cID in emp)
+                {
+                    if (notFinalName == cID.HomeColony.Name)
+                        notFinalName = "Wormhole";
+                }
+                wormhole.Name = notFinalName;
 
                 GameLog.Core.GalaxyGenerator.DebugFormat("Wormhole at {0} named {1}", wormhole.Location, wormhole.Name);
             }

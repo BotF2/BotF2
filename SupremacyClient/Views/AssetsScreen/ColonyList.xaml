@@ -17,7 +17,7 @@
                        UseLayoutRounding="True">
 	<ItemsControl ItemsSource="{Binding}"
            BorderThickness="0"
-	         Grid.IsSharedSizeScope="True">
+	       Grid.IsSharedSizeScope="True">
     <ItemsControl.ItemsPanel>
       <ItemsPanelTemplate>
         <VirtualizingStackPanel IsItemsHost="True" />

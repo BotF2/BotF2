@@ -178,7 +178,7 @@ namespace Supremacy.Orbitals
             get { return false; }
         }
 
-        public Orbital() {}
+        public Orbital() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Orbital"/> class using the specified design.
@@ -298,7 +298,9 @@ namespace Supremacy.Orbitals
             Entities.Civilization claimingCiv = null;
             if (GameContext.Current.SectorClaims != null)
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
-            GameLog.Core.MapData.DebugFormat("claimingCiv = {0}, Sector {1}, but owner=newOwner wish to be = {2}", claimingCiv, Sector.Location.ToString(), Owner);
+
+            //GameLog.Core.MapData.DebugFormat("claimingCiv = {0}, Sector {1}, but owner=newOwner wish to be = {2}", claimingCiv, Sector.Location.ToString(), Owner);
+            
             if (claimingCiv == Owner)
             {
                 if ((Sector.System != null) && Sector.System.HasColony && Sector.System.Owner == Owner)
@@ -309,7 +311,7 @@ namespace Supremacy.Orbitals
                     increase = 0.07;
                     HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
                     _hullStrength.UpdateAndReset();
-                    GameLog.Core.MapData.DebugFormat("claiming: Sector has colony = {0}, Sector = {1}, Owner = {2}", Sector.System.Colony.Name, Sector.Location.ToString(), Owner);
+                    //GameLog.Core.MapData.DebugFormat("claiming: Sector has colony = {0}, Sector = {1}, Owner = {2}", Sector.System.Colony.Name, Sector.Location.ToString(), Owner);
                 }
                 if (Sector.Station != null) 
                 {
@@ -318,7 +320,7 @@ namespace Supremacy.Orbitals
                     RegenerateHull();
                     HullStrength.AdjustCurrent((int)Math.Ceiling(increase * HullStrength.Maximum));
                     _hullStrength.UpdateAndReset();
-                    GameLog.Core.MapData.DebugFormat("claiming: Sector has station = {0}, Sector = {1}, Owner = {2}", Sector.Station.Name, Sector.Location.ToString(), Owner);
+                    //GameLog.Core.MapData.DebugFormat("claiming: Sector has station = {0}, Sector = {1}, Owner = {2}", Sector.Station.Name, Sector.Location.ToString(), Owner);
                 }
             }
             // no more instant-repair outcomment the following line

@@ -128,6 +128,8 @@ namespace Supremacy.Client
             {
                 _otherAssets = update.HostileAssets[0];
             }
+
+
             DataContext = _update;
 
             if (update.CombatUpdate_IsCombatOver)

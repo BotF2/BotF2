@@ -95,7 +95,7 @@ namespace Supremacy.Game
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected internal virtual void OnDeserialized() {}
+        protected internal virtual void OnDeserialized() { }
 
 #pragma warning disable 168
         [OnSerializing]
@@ -108,7 +108,7 @@ namespace Supremacy.Game
         /// <summary>
         /// Compacts this <see cref="GameObject"/> to reduce the serialization footprint.
         /// </summary>
-        public virtual void Compact() {}
+        public virtual void Compact() { }
 
         #region INotifyPropertyChanged Members
         /// <summary>

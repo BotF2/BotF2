@@ -81,7 +81,7 @@ namespace Supremacy.Client.Commands
         }
 
         public RedeployShipCommandArgs([NotNull] Ship ship)
-            : this(ship, null) {}
+            : this(ship, null) { }
 
         public RedeployShipCommandArgs([NotNull] Ship ship, [CanBeNull] Fleet targetFleet)
         {

@@ -96,7 +96,7 @@ namespace Supremacy.Client.Controls
             e.Handled = true;
         }
 
-        public InfoCard() : this(null) {}
+        public InfoCard() : this(null) { }
 
         public InfoCard([CanBeNull] IInfoCardSubject subject) : this(false)
         {

@@ -234,7 +234,7 @@ namespace Supremacy.Universe
         private int? _hashCode;
 
         public MapRectangle(MapLocation location)
-            : this(location.X, location.Y, location.X, location.Y) {}
+            : this(location.X, location.Y, location.X, location.Y) { }
 
         public MapRectangle(int x1, int y1, int x2, int y2)
         {

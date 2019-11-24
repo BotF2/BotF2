@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,6 +52,7 @@ namespace Supremacy.Data
                 return false;
             }
             table = (Table)_tables[tableName];
+            GameLog.Core.GameInitData.DebugFormat("tableName = {0} for string rowKey, string columnKey, out string value", tableName);
 
             TableRow<string> row;
             if (!table.TryGetRow(rowKey, out row))
@@ -69,6 +71,7 @@ namespace Supremacy.Data
                 return false;
             }
             table = (Table)_tables[tableName];
+            GameLog.Core.GameInitData.DebugFormat("tableName = {0} for TRowKey rowKey, string columnKey, out string value", tableName);
 
             var typedTable = table as Table<TRowKey>;
             if (typedTable == null)
@@ -92,6 +95,14 @@ namespace Supremacy.Data
             }
             table = (Table)_tables[tableName];
 
+            // used a lot of times
+            // MessageDialogButtons out of EnumStrings.txt is looking for translation for OK / CANCEL and so on ... used thousands times
+            // TechCategory         out of EnumStrings.txt is looking for translation for research fields like Weapons ...
+            // SitRepCategory       out of EnumStrings.txt is looking for translation for research fields like First Contact...
+
+            if (tableName != "MessageDialogButtons" && tableName != "TechCategory" && tableName != "SitRepCategory")  // this one in EnumStrings.txt is looking for translation for OK / CANCEL and so on ... used thousands times
+                GameLog.Core.GameInitData.DebugFormat("tableName = {0} for string rowKey, int columnIndex, out string value", tableName);
+
             TableRow<string> row;
             if (!table.TryGetRow(rowKey, out row))
                 return false;
@@ -109,6 +120,7 @@ namespace Supremacy.Data
                 return false;
             }
             table = (Table)_tables[tableName];
+            GameLog.Core.GameInitData.DebugFormat("tableName = {0} for TRowKey rowKey, int columnIndex, out string value", tableName);
 
             var typedTable = table as Table<TRowKey>;
             if (typedTable == null)
@@ -131,6 +143,7 @@ namespace Supremacy.Data
                 return false;
             }
             table = (Table)_tables[tableName];
+            GameLog.Core.GameInitData.DebugFormat("tableName = {0} for int rowIndex, string columnKey, out string value", tableName);
 
             if (rowIndex < 0 || rowIndex >= table.RowsInternal.Count)
                 return false;
@@ -152,6 +165,7 @@ namespace Supremacy.Data
                 return false;
             }
             table = (Table)_tables[tableName];
+            GameLog.Core.GameInitData.DebugFormat("tableName = {0} for int rowIndex, int columnIndex, out string value", tableName);
 
             var row = table.RowsInternal[rowIndex];
             if (row == null)
@@ -164,12 +178,14 @@ namespace Supremacy.Data
         {
             var writer = new StreamWriter(path);
             Write(writer);
+            GameLog.Core.GameInitData.DebugFormat("writer = {0}", writer);
             writer.Flush();
             writer.Close();
         }
 
         public static TableMap ReadFromFile(string path)
         {
+            GameLog.Client.GameInitData.DebugFormat("reading {0}", path);
             TableMap map = new TableMap();
             map.Read(path);
             return map;
@@ -207,7 +223,26 @@ namespace Supremacy.Data
                 while ((newTable = Table<string>.ReadFromStream(reader)) != null)
                 {
                     _tables.Add(newTable.Name, new Table(newTable));
+                    //GameLog.Core.GameInitData.DebugFormat("newTable.Name = {0}", newTable.Name);
+
+                    //int i = 0;
+                    string tableContentString = newTable.Name + ": ";
+
+                    
+                    //int tableRowMax = _tables.newTable.Rows.Count;
+                    ////for (int i = 0; Table(newTable); i++)
+                    //    foreach (var entry in newTable.Rows.Count)
+                    //        for (int i = 0; Table(newTable); i++)
+                    //        {
+                    //            for (int j = 0; newTable.Columns.Count; j++)
+                    //            {
+                    //                tableContentString += newTable.Rows[j].Values;
+                    //                //i = i + 1;
+                    //            }
+                    //        }
+                    //GameLog.Core.GameInitData.DebugFormat("newTable.Name = {0}", tableContentString);
                 }
+
             }
         }
 

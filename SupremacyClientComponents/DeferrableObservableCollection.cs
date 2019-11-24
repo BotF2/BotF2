@@ -21,7 +21,7 @@ namespace Supremacy.Client
         /// Initializes a new instance of the <see cref="DeferrableObservableCollection{T}"/> class.
         /// </summary>
         public DeferrableObservableCollection()
-            : this(null, false) {}
+            : this(null, false) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferrableObservableCollection{T}"/> class.

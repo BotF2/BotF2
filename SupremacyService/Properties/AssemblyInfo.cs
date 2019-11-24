@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SupremacyService")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Birth of the Federation 2 Team")]
-[assembly: AssemblyProduct("Birth of the Federation 2")]
-[assembly: AssemblyCopyright("Copyright (c) 2018 Birth of the Federation 2")]
+[assembly: AssemblyCompany("Rise of the UFP Team")]
+[assembly: AssemblyProduct("Rise of the UFP")]
+[assembly: AssemblyCopyright("Copyright (c) 2020 Rise of the UFP")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

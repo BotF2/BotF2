@@ -465,7 +465,7 @@ namespace Supremacy.Orbitals
     public class OrbitalStringKey : TechObjectStringKey
     {
         public OrbitalStringKey([NotNull] string name)
-            : base(name) {}
+            : base(name) { }
     }
 
     internal class OrbitalStringKeyConverter : TypeConverter

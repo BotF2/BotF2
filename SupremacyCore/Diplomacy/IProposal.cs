@@ -36,13 +36,13 @@ namespace Supremacy.Diplomacy
         private readonly CollectionBase<IClause> _clauses;
 
         public NewProposal(Civilization sender, Civilization recipient, params IClause[] clauses)
-            : this(GameContext.Current.TurnNumber, sender, recipient, (IEnumerable<IClause>)clauses) {}
+            : this(GameContext.Current.TurnNumber, sender, recipient, (IEnumerable<IClause>)clauses) { }
 
         public NewProposal(Civilization sender, Civilization recipient, IEnumerable<IClause> clauses)
-            : this(GameContext.Current.TurnNumber, sender, recipient, clauses) {}
+            : this(GameContext.Current.TurnNumber, sender, recipient, clauses) { }
 
         public NewProposal(int turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] params IClause[] clauses)
-            : this(turnSent, sender, recipient, (IEnumerable<IClause>)clauses) {}
+            : this(turnSent, sender, recipient, (IEnumerable<IClause>)clauses) { }
 
         public NewProposal(int turnSent, [NotNull] ICivIdentity sender, [NotNull] ICivIdentity recipient, [NotNull] IEnumerable<IClause> clauses)
         {
@@ -182,7 +182,7 @@ namespace Supremacy.Diplomacy
             if (proposal == null)
                 return false;
 
-            GameLog.Core.Diplomacy.DebugFormat("hasTreaty: null or clause = {0}", proposal.Clauses.ToString()/*, proposal.ToString()*/);
+            // GameLog.Core.Diplomacy.DebugFormat("hasTreaty: null or clause = {0}", proposal.Clauses.ToString()/*, proposal.ToString()*/);
 
             foreach (var clause in proposal.Clauses)
             {
@@ -208,7 +208,7 @@ namespace Supremacy.Diplomacy
 
         public static bool HasClause(this IProposal proposal, ClauseType clause)
         {
-            GameLog.Core.Diplomacy.DebugFormat("hasClause: null or clause = {0}", clause.ToString()/*, proposal.ToString()*/);
+            // GameLog.Core.Diplomacy.DebugFormat("hasClause: null or clause = {0}", clause.ToString()/*, proposal.ToString()*/);
 
             if (proposal == null)
                 return false;

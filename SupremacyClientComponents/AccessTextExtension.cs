@@ -16,7 +16,7 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(AccessText))]
     public sealed class AccessTextExtension : MarkupExtension
     {
-        public AccessTextExtension() {}
+        public AccessTextExtension() { }
 
         public AccessTextExtension(object text)
         {

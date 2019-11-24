@@ -134,7 +134,7 @@ namespace Supremacy.Orbitals
         /// <param name="spawnedInstance"> </param>
         public override bool TrySpawn(MapLocation location, Civilization owner, out TechObject spawnedInstance)
         {
-            GameLog.Core.Stations.DebugFormat("############# TrySpawn Station ##########");
+            //GameLog.Core.Stations.DebugFormat("############# TrySpawn Station ##########");
             if (!CanSpawn(location, owner))
             {
                 spawnedInstance = null;
@@ -234,7 +234,7 @@ namespace Supremacy.Orbitals
             civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
 
             spawnedInstance = station;
-            GameLog.Core.Stations.DebugFormat("spawnedInstance = {0} {1}, Owner = {2}, Location = {3} ##########", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location); 
+            GameLog.Core.Stations.DebugFormat("placed Station = {0} {1}, Owner = {2}, Location = {3}", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location); 
             return true;
         }
 

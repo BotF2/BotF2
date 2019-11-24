@@ -87,7 +87,7 @@ namespace Supremacy.Text
             get { return null; }
         }
 
-        static TextStyle() {}
+        static TextStyle() { }
 
         public TextStyle(FontStyle fontStyle, FontWeight fontWeight, Brush foreground, Brush background)
         {

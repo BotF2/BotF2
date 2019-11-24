@@ -18,7 +18,7 @@ namespace Supremacy.Scripting.Ast
         private Func<char, char> _translateEscapeCharacter;
 
         public InterpolatedStringExpression(LiteralExpression textLiteral)
-            : this(textLiteral, TranslateEscapeCharacter) {}
+            : this(textLiteral, TranslateEscapeCharacter) { }
 
         public InterpolatedStringExpression(
             LiteralExpression literalExpression,

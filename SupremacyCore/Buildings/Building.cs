@@ -59,7 +59,7 @@ namespace Supremacy.Buildings
             get { return Design as BuildingDesign; }
         }
 
-        public Building() {}
+        public Building() { }
 
         /// <summary>
         /// Initializes a new <see cref="Building"/> of the specified design.

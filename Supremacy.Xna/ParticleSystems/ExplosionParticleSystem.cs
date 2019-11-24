@@ -11,7 +11,7 @@ namespace Supremacy.Xna
     class ExplosionParticleSystem : ParticleSystem
     {
         public ExplosionParticleSystem(GraphicsDevice graphicsDevice, ContentManager content)
-            : base(graphicsDevice, content) {}
+            : base(graphicsDevice, content) { }
 
 
         protected override void InitializeSettings(ParticleSettings settings)

@@ -184,7 +184,7 @@ namespace Supremacy.Scripting.Ast
             Dump(sb, 0);
         }
 
-        public virtual void Dump(SourceWriter sw, int indentChange) {}
+        public virtual void Dump(SourceWriter sw, int indentChange) { }
         
         public virtual void BeginInit(ParseContext parseContext, bool raiseInitialized)
         {

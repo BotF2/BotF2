@@ -11,10 +11,10 @@ namespace Supremacy.Scripting
     public sealed class ScriptParameters : ReadOnlyCollection<ScriptParameter>
     {
         public ScriptParameters([NotNull] IEnumerable<ScriptParameter> parameters)
-            : base(parameters.ToList()) {}
+            : base(parameters.ToList()) { }
 
         public ScriptParameters([NotNull] params ScriptParameter[] parameters)
-            : base(parameters) {}
+            : base(parameters) { }
 
         public ScriptParameters Merge([NotNull] IEnumerable<ScriptParameter> otherParameters)
         {

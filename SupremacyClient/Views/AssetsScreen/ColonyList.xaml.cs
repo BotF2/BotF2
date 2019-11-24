@@ -9,10 +9,6 @@ namespace Supremacy.Client.Views
             InitializeComponent();
         }
 
-        //public SpiedOneColonyList()
-        //{
-        //    InitializeComponent();
-        //}
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return null;

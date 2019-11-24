@@ -57,9 +57,9 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             set { DataContext = value; }
         }
 
-        public void OnCreated() {}
+        public void OnCreated() { }
 
-        public void OnDestroyed() {}
+        public void OnDestroyed() { }
 
         #endregion
 

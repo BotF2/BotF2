@@ -78,7 +78,7 @@ namespace Supremacy.Economy
         private int _previousLevel;
         private int _previousChange;
 
-        public Treasury() {}
+        public Treasury() { }
 
         public Treasury(Treasury initialTreasury)
         {
