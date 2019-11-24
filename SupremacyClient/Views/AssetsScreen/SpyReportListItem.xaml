@@ -55,26 +55,26 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="SystemListColumn0" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn1" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn2" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn3" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="94" SharedSizeGroup="SystemListColumn4" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn6" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn7" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn8" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn9" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn10" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn11" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn12" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition Width="1" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -90,42 +90,42 @@
             <RowDefinition Height="0.00001*" />
         </Grid.RowDefinitions>
         <scc:GameButton Grid.Column="4"
-                    Grid.Row="3"
-                    DisplayMode="Tiny"
-                    VerticalAlignment="Center"
-                    Label="Gino"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
-                    CommandParameter="{Binding FallbackValue={x:Null}}" />
-        <!--<Border Grid.Row="0"
-              Grid.ColumnSpan="20"
-              BorderThickness="1"
-              Margin="2,2,2,2"
-              BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />-->
+                        Grid.Row="3"
+                        DisplayMode="Tiny"
+                        VerticalAlignment="Center"
+                        Label="Gino"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                        BorderThickness="2"
+                        Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
+                        CommandParameter="{Binding FallbackValue={x:Null}}" />
+        <Border Grid.Row="0"
+                  Grid.ColumnSpan="21"
+                  BorderThickness="1"
+                  Margin="0,0,0,0"
+                  BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
         <scc:GameButton Grid.Row="1"
                         Grid.Column="0"
-                    DisplayMode="Hyperlink"
+                        Margin="0,5,0,5"
+                        DisplayMode="Hyperlink"
+                        VerticalAlignment="Center"
+                        Label="{Binding Path=Name}"
+                        Command="{x:Static scc:NavigationCommands.NavigateToColony}"
+                        CommandParameter="{Binding FallbackValue={x:Null}}" />
+        <TextBlock Grid.Column="0"
+                   Grid.Row="2"
                     VerticalAlignment="Center"
-                    Label="{Binding Path=Name}"
-                    Command="{x:Static scc:NavigationCommands.NavigateToColony}"
-                    CommandParameter="{Binding FallbackValue={x:Null}}" />
-        <TextBlock Grid.Column="0"
-               Grid.Row="2"
-               VerticalAlignment="Center"
-               FontWeight="DemiBold"  
-               Text="{Binding Path=Inhabitants.PluralName}" />
-        <TextBlock Grid.Column="0"
-               Grid.Row="0"
-               VerticalAlignment="Center"
-               FontWeight="DemiBold"  
-               Text="Sabotage: " />
-        <TextBlock Text="POPULATION =" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
+                    FontWeight="DemiBold"  
+                    Text="{Binding Path=Inhabitants.PluralName}" />
+        <TextBlock Text="POPULATION ="
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="3"
                    Grid.Row="1"
-                Grid.ColumnSpan="2"                        
+                   Grid.ColumnSpan="2"                        
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
@@ -137,7 +137,11 @@
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
-        <TextBlock Text="MORALE =" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBlock Text="MORALE ="
+                   Grid.Row="2"
+                   Grid.Column="1"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="3"
                    Grid.Row="2"
                    VerticalAlignment="Center"
@@ -152,33 +156,53 @@
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
+        <!--<TextBlock Grid.Column="6"
+                   Grid.Row="0"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="0,5,0,5"
+                   FontWeight="DemiBold"  
+                   Text="Sabotage: " />
         <scc:GameButton Grid.Column="7"
                         Grid.ColumnSpan="2"
-                    Grid.Row="0"
-                    DisplayMode="Tiny"
-                    VerticalAlignment="Center"
-                    Label="Food"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
-                    CommandParameter="{Binding FallbackValue={x:Null}}" />
-        <TextBlock Text="FOOD =" Grid.Column="6" Grid.Row="1"  HorizontalAlignment="Right"/>
+                        Grid.Row="0"
+                        Margin="0,5,0,5"
+                        DisplayMode="Tiny"
+                        VerticalAlignment="Center"
+                        Label="Food"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                        BorderThickness="2"
+                        Command="{x:Static scc:NavigationCommands.SabotageFood}"
+                        CommandParameter="{Binding FallbackValue={x:Null}}" />-->
+        <TextBlock Text="FOOD ="
+                   Grid.Column="6"
+                   Grid.Row="1"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="8"
                    Grid.Row="1"
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                    Label="{Binding Path=FoodReserves.CurrentValue}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
-        <TextBlock Text="DEUTERIUM =" Grid.Row="2" Grid.Column="6" HorizontalAlignment="Right"/>
+        <TextBlock Text="DEUTERIUM ="
+                   Grid.Row="2"
+                   Grid.Column="6"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="8"
                    Grid.Row="2"
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/Resources/deuterium.png"
                    Label="{Binding Path=NetDeuterium}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />
-        <TextBlock Text="DILITHIUM =" Grid.Row="1" Grid.Column="10" HorizontalAlignment="Right"/>
+        <TextBlock Text="DILITHIUM ="
+                   Grid.Row="1"
+                   Grid.Column="10"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="12"
                    Grid.Row="1"
                    VerticalAlignment="Center"
@@ -192,19 +216,29 @@
                    ImageSourceSmall="vfs:///Resources/Images/Resources/rawmaterials.png"
                    Label="{Binding Path=NetRawMaterials}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
+        <!--<TextBlock Grid.Column="14"
+                   Grid.Row="0"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   FontWeight="DemiBold"  
+                   Text="Sabotage: " />
         <scc:GameButton Grid.Column="15"
                         Grid.ColumnSpan="2"
-                    Grid.Row="0"
-                    DisplayMode="Tiny"
-                    VerticalAlignment="Center"
-                    Label="Energy"
-                    Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                    BorderThickness="2"
-                    Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
-                    CommandParameter="{Binding FallbackValue={x:Null}}" />
-        <TextBlock Text="ENERGY =" Grid.Row="1" Grid.Column="14" HorizontalAlignment="Right"/>
+                        Grid.Row="0"
+                        DisplayMode="Tiny"
+                        VerticalAlignment="Center"
+                        Label="Energy"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                        BorderThickness="2"
+                        Command="{x:Static scc:NavigationCommands.SabotageEnergy}"
+                        CommandParameter="{Binding FallbackValue={x:Null}}" />-->
+        <TextBlock Text="ENERGY ="
+                   Grid.Row="1"
+                   Grid.Column="14"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="16"
                    Grid.Row="1"
                    VerticalAlignment="Center"
@@ -218,7 +252,11 @@
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
                    Label="{Binding Path=NetResearch}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
-        <TextBlock Text="INDUSTRY =" Grid.Row="1" Grid.Column="18" HorizontalAlignment="Right"/>
+        <TextBlock Text="INDUSTRY ="
+                   Grid.Row="1"
+                   Grid.Column="18"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="20"
                    Grid.Row="1"
                    VerticalAlignment="Center"
