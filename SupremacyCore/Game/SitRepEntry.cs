@@ -336,10 +336,26 @@ namespace Supremacy.Game
     public class BuildingBuiltSitRepEntry : ItemBuiltSitRepEntry
     {
         private readonly bool _isActive;
+        private readonly int _colonyId;
+
+        public Colony Colony
+        {
+            get { return GameContext.Current.Universe.Get<Colony>(_colonyId); }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.ColonyStatus | SitRepCategory.Construction; }
+        }
 
         public override SitRepAction Action
         {
             get { return SitRepAction.ViewColony; }
+        }
+
+        public override object ActionTarget
+        {
+            get { return Colony; }
         }
 
         public override string SummaryText
@@ -356,6 +372,7 @@ namespace Supremacy.Game
         public BuildingBuiltSitRepEntry(Civilization owner, TechObjectDesign itemType, MapLocation location, bool isActive)
             : base(owner, itemType, location)
         {
+            _colonyId = GameContext.Current.Universe.Map[Location].System.Colony.ObjectID;
             _isActive = isActive;
         }
     }
