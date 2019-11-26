@@ -75,21 +75,59 @@
                     HorizontalAlignment="left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
                         <Expander x:Name="EmpireExpanderOne" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
+                                 IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" BorderThickness="2" BorderBrush="LightGoldenrodYellow" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="20"/>
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                    </Grid>
-                                    <v:SpiedOneColonyList Grid.Row="1" DataContext="{Binding Path=SpiedOneColonies}" VerticalAlignment="Bottom" Margin="10,50,0,0" />
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="7"
+                                            BorderThickness="1"
+                                            Margin="0,0,0,0"
+                                            BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="4"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               Foreground="Orange"
+                                               FontWeight="DemiBold"  
+                                               Text="Sabotage: " />
+                                    <scc:GameButton 
+                                                Name="SabotageEngeryOne"      
+                                                Grid.Row="0"
+                                                Grid.Column="5"
+                                                Margin="0,5,10,5"
+                                                DisplayMode="Tiny"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Label="Energy"
+                                                FontWeight="DemiBold"
+                                                Foreground="Black"
+                                                Background="Transparent"
+                                                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                BorderThickness="2"
+                                                Click = "OnEnergyOneClick"/>
+                                    <scc:GameLabel Grid.Column="6"
+                                                   Grid.Row="0"
+                                                   VerticalAlignment="Center"
+                                                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                   Label="{Binding Path=NetEngery}"
+                                                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" HorizontalAlignment="Center">
+                                        <v:SpiedOneColonyList Grid.Row="16" DataContext="{Binding Path=SpiedOneColonies}" Margin="10,0,0,0" />
+                                    </StackPanel>
                                 </Grid>
                             </Grid>
                         </Expander>
@@ -129,50 +167,57 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                     </Grid>
-                                    <v:SpiedTwoColonyList Grid.Row="11" DataContext="{Binding Path=SpiedThreeColonies}" Margin="10,0,0,0" />
+                                    <v:SpiedThreeColonyList Grid.Row="11" DataContext="{Binding Path=SpiedThreeColonies}" Margin="10,0,0,0" />
                                 </Grid>
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
                         <Expander x:Name="EmpireExpanderFour" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4" >
-                            <Grid Name="EmpireGridFour" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
+                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+                            <Grid Name="EmpireGridFour" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
+
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="64"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
                                             Grid.Column="0"
-                                            Grid.ColumnSpan="2"
+                                            Grid.ColumnSpan="7"
                                             BorderThickness="1"
                                             Margin="0,0,0,0"
+                                            Background="MidnightBlue"
                                             BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
                                     <TextBlock Grid.Row="0"
-                                               Grid.Column="0"
+                                               Grid.Column="5"
                                                VerticalAlignment="Center"
-                                               HorizontalAlignment="Right"
+                                               HorizontalAlignment="Center"
                                                FontWeight="DemiBold"  
                                                Text="Sabotage: " />
                                     <scc:GameButton 
                                                 Name="SabotageEngeryFour"      
                                                 Grid.Row="0"
-                                                Grid.Column="1"
+                                                Grid.Column="6"
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
-                                                HorizontalAlignment="Left"
+                                                HorizontalAlignment="Center"
                                                 Label="Energy"
                                                 Foreground="Black"
                                                 Background="Transparent"
                                                 BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                 BorderThickness="2"
-                                                Click = "OnButtonClick"/>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                                        <v:SpiedTwoColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
+                                                Click = "OnEnergyFourClick"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                                        <v:SpiedFourColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
                                     </StackPanel>    
                                 </Grid>
                             </Grid>
@@ -193,7 +238,7 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                     </Grid>
-                                    <v:SpiedTwoColonyList Grid.Row="21" DataContext="{Binding Path=SpiedFiveColonies}" Margin="10,0,0,0" />
+                                    <v:SpiedFiveColonyList Grid.Row="21" DataContext="{Binding Path=SpiedFiveColonies}" Margin="10,0,0,0" />
                                 </Grid>
                             </Grid>
                         </Expander>
@@ -213,7 +258,7 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                     </Grid>
-                                    <v:SpiedTwoColonyList Grid.Row="26" DataContext="{Binding Path=SpiedSixColonies}"  Margin="10,0,0,0"/>
+                                    <v:SpiedSixColonyList Grid.Row="26" DataContext="{Binding Path=SpiedSixColonies}"  Margin="10,0,0,0"/>
                                 </Grid>
                             </Grid>
                         </Expander>
