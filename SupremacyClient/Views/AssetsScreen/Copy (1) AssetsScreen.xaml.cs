@@ -1,10 +1,10 @@
 ﻿using Supremacy.Client.Context;
-//using Supremacy.Diplomacy;
-//using Supremacy.Economy;
-//using Supremacy.Entities;
-//using Supremacy.Game;
+using Supremacy.Diplomacy;
+using Supremacy.Economy;
+using Supremacy.Entities;
+using Supremacy.Game;
 using Supremacy.Intelligence;
-//using Supremacy.Universe;
+using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace Supremacy.Client.Views
     public partial class AssetsScreen : IAssetsScreenView
     {
         public AssetsScreen()
-        {
+        {  
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
             EmpireExpanderOne.Visibility = Visibility.Collapsed;
@@ -28,18 +28,12 @@ namespace Supremacy.Client.Views
             EmpireExpanderFour.Visibility = Visibility.Collapsed;
             EmpireExpanderFive.Visibility = Visibility.Collapsed;
             EmpireExpanderSix.Visibility = Visibility.Collapsed;
-            //SabotageEnergyOne.Visibility = Visibility.Collapsed;
-            //SabotageEnergyTwo.Visibility = Visibility.Collapsed;
-            //SabotageEnergyThere.Visibility = Visibility.Collapsed;
-            SabotageEnergyFour.Visibility = Visibility.Collapsed;
-            //SabotageEnergyFive.Visibility = Visibility.Collapsed;
-            //SabotageEnergySix.Visibility = Visibility.Collapsed;          //SabotageEnergyOne.Visibility = Visibility.Collapsed;
-            //SabotageFoodTwo.Visibility = Visibility.Collapsed;
-            //SabotageFoodThere.Visibility = Visibility.Collapsed;
-            SabotageFoodFour.Visibility = Visibility.Collapsed;
-            //SabotageFoodFive.Visibility = Visibility.Collapsed;
-            //SabotageFoodSix.Visibility = Visibility.Collapsed;
-
+            //SabotageEngeryOne.Visibility = Visibility.Collapsed;
+            //SabotageEngeryTwo.Visibility = Visibility.Collapsed;
+            //SabotageEngeryThere.Visibility = Visibility.Collapsed;
+            SabotageEngeryFour.Visibility = Visibility.Collapsed;
+            //SabotageEngeryFive.Visibility = Visibility.Collapsed;
+            //SabotageEngerySix.Visibility = Visibility.Collapsed;
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -62,7 +56,7 @@ namespace Supremacy.Client.Views
                 if (twoCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != twoCivManager)
                 {
                     twoNoDummy = true;
-                }
+                }    
                 var threeCivManager = DesignTimeObjects.GetSpiedCivilizationThree();
                 if (threeCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != threeCivManager)
                 {
@@ -110,11 +104,7 @@ namespace Supremacy.Client.Views
                 }
                 if (true)
                 {
-                    SabotageEnergyFour.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageFoodFour.Visibility = Visibility.Visible;
+                    SabotageEngeryFour.Visibility = Visibility.Visible;
                 }
             }
             else
@@ -208,15 +198,80 @@ namespace Supremacy.Client.Views
         {
             StopAnimations();
         }
-        #endregion
-
-        private void OnEnergyFourClick(object sender, RoutedEventArgs e)
+        private void OnButtonClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
-        private void OnFoodFourClick(object sender, RoutedEventArgs e)
+        #endregion
+        public void SabotageEnergy(Colony colony, Civilization civ)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+            var system = colony.System;
+            var spyEmpire = IntelHelper.NewSpyCiv;
+            if (spyEmpire == null)
+                return;
+
+            if (colony == null)
+                return;
+
+            bool ownedByPlayer = (colony.OwnerID == spyEmpire.CivID);
+            if (ownedByPlayer)
+                return;
+
+            //private static void CreateSabotage(Civilization civ, StarSystem system)
+            //{
+            //var sabotagedCiv = GameContext.Current.CivilizationManagers[colony.Owner].Colonies;
+            //var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+
+            int defenseIntelligence = GameContext.Current.CivilizationManagers[colony.System.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            if (defenseIntelligence - 1 < 0.1)
+                defenseIntelligence = 2;
+
+            //int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            //if (attackingIntelligence - 1 < 0.1)
+            // var   attackingIntelligence = 100 * ;
+
+            //int ratio = attackingIntelligence / defenseIntelligence;
+            ////max ratio for no exceeding gaining points
+            //if (ratio > 10)
+            int ratio = 2;
+
+            //GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SABOTAGED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
+            //    system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+
+
+            GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (sabotaged): Energy=? out of facilities={3}, in total={4}",
+                system.Owner, system.Name, system.Location,
+                //colony.GetEnergyUsage(),
+                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
+                system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            GameLog.Core.Intel.DebugFormat("Sabotage Energy to {0}: TotalEnergyFacilities before={1}",
+                system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
+
+            //Effect of sabatoge
+            int removeEnergyFacilities = 0;
+            if (colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            {
+                removeEnergyFacilities = 1;
+                colony.RemoveFacilities(ProductionCategory.Energy, 1);
+            }
+
+            //if ratio > 2 than remove one more  EnergyFacility
+            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            //{
+            //    removeEnergyFacilities = 3;  //  2 and one from before
+            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
+            //}
+
+            // if ratio > 3 than remove one more  EnergyFacility
+            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            //{
+            //    removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
+            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
+            //}
+
+            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
+            // civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+
         }
     } 
 }

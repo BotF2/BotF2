@@ -5,7 +5,6 @@ using Supremacy.Game;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
-using System.Collections.Generic;
 
 
 namespace Supremacy.Intelligence
@@ -30,10 +29,10 @@ namespace Supremacy.Intelligence
         }
 
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
-        {      
+        {
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
-            if (spiedCiv == null)  
+            if (spiedCiv == null)
                 throw new ArgumentNullException("spiedCiv");
 
             _newSpyCiv = spyCiv;
@@ -110,6 +109,10 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
             // civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
+        }
+        public static void SabotageFood(Colony colony, Civilization civ)
+        {
+               // do something
         }
         #endregion
     }
