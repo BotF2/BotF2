@@ -28,17 +28,18 @@ namespace Supremacy.Client.Views
             EmpireExpanderFour.Visibility = Visibility.Collapsed;
             EmpireExpanderFive.Visibility = Visibility.Collapsed;
             EmpireExpanderSix.Visibility = Visibility.Collapsed;
-            //SabotageEnergyOne.Visibility = Visibility.Collapsed;
-            //SabotageEnergyTwo.Visibility = Visibility.Collapsed;
-            //SabotageEnergyThere.Visibility = Visibility.Collapsed;
+            SabotageEnergyOne.Visibility = Visibility.Collapsed;
+            SabotageEnergyTwo.Visibility = Visibility.Collapsed;
+            SabotageEnergyThree.Visibility = Visibility.Collapsed;
             SabotageEnergyFour.Visibility = Visibility.Collapsed;
-            //SabotageEnergyFive.Visibility = Visibility.Collapsed;
-            //SabotageEnergySix.Visibility = Visibility.Collapsed;          //SabotageEnergyOne.Visibility = Visibility.Collapsed;
-            //SabotageFoodTwo.Visibility = Visibility.Collapsed;
-            //SabotageFoodThere.Visibility = Visibility.Collapsed;
+            SabotageEnergyFive.Visibility = Visibility.Collapsed;
+            SabotageEnergySix.Visibility = Visibility.Collapsed;
+            SabotageFoodOne.Visibility = Visibility.Collapsed;
+            SabotageFoodTwo.Visibility = Visibility.Collapsed;
+            SabotageFoodThree.Visibility = Visibility.Collapsed;
             SabotageFoodFour.Visibility = Visibility.Collapsed;
-            //SabotageFoodFive.Visibility = Visibility.Collapsed;
-            //SabotageFoodSix.Visibility = Visibility.Collapsed;
+            SabotageFoodFive.Visibility = Visibility.Collapsed;
+            SabotageFoodSix.Visibility = Visibility.Collapsed;
 
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -110,11 +111,51 @@ namespace Supremacy.Client.Views
                 }
                 if (true)
                 {
+                    SabotageEnergyOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergyTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergyThree.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
                     SabotageEnergyFour.Visibility = Visibility.Visible;
                 }
                 if (true)
                 {
+                    SabotageEnergyFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergySix.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodThree.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
                     SabotageFoodFour.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodSix.Visibility = Visibility.Visible;
                 }
             }
             else
@@ -209,14 +250,53 @@ namespace Supremacy.Client.Views
             StopAnimations();
         }
         #endregion
-
+        private void OnEnergyOneClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+        }
+        private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+        }
+        private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+        }
         private void OnEnergyFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
-        private void OnFoodFourClick(object sender, RoutedEventArgs e)
+        private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+        }
+        private void OnEnergySixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+        }
+        private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+        }
+        private void OnFoodTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+        }
+        private void OnFoodThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+        }
+        private void OnFoodFourClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnFoodFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+        }
+        private void OnFoodSixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
         }
     } 
 }
