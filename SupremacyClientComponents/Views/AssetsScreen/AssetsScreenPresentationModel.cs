@@ -647,7 +647,7 @@ namespace Supremacy.Client.Views
                 try
                 {
                     var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization]; 
-                    return civManager.TotalIntelligence;
+                    return civManager.TotalIntelligenceProduction;
 
                 }
                 catch

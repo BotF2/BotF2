@@ -447,12 +447,12 @@ namespace Supremacy.Orbitals
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
 
-            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
             if (defenseIntelligence -1 < 0.1)
                 defenseIntelligence = 2;
             //GameLog.Client.GameData.DebugFormat("defenseIntelligence={0}", defenseIntelligence);
 
-            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
             if (attackingIntelligence -1 < 0.1)
                 attackingIntelligence = 1;
             //GameLog.Client.GameData.DebugFormat("attackingIntelligence={0}", attackingIntelligence);
@@ -827,11 +827,11 @@ namespace Supremacy.Orbitals
             var raidedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
             var raiderCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
-            int defenseIntelligence = raidedCiv.TotalIntelligence + 1;
+            int defenseIntelligence = raidedCiv.TotalIntelligenceProduction + 1;
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
 
-            int attackingIntelligence = raiderCiv.TotalIntelligence + 1;
+            int attackingIntelligence = raiderCiv.TotalIntelligenceProduction + 1;
             if (attackingIntelligence - 1 < 0.1)
                 attackingIntelligence = 1;
 
@@ -977,11 +977,11 @@ namespace Supremacy.Orbitals
             var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
-            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
 
-            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
+            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)
                 attackingIntelligence = 1;
 

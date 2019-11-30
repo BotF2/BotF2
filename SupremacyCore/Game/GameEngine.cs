@@ -1732,7 +1732,7 @@ namespace Supremacy.Game
                         return;
 
                     var attackingEmpire = GameContext.Current.CivilizationManagers[civ.CivID];
-                    if (attackingEmpire.TotalIntelligence <= 0) {
+                    if (attackingEmpire.TotalIntelligenceProduction <= 0) {
                         GameLog.Core.Intel.DebugFormat("{0} has no intel power so cannot attack");
                         return;
                     }
@@ -1763,8 +1763,8 @@ namespace Supremacy.Game
 
                     GameLog.Core.Intel.DebugFormat("{0} is targeting colony {1}...", civ.Name, targetColony.Name);
 
-                    int defenseIntelligence = targetEmpire.TotalIntelligence + innateDefense;
-                    int attackIntelligience = attackingEmpire.TotalIntelligence;
+                    int defenseIntelligence = targetEmpire.TotalIntelligenceProduction + innateDefense;
+                    int attackIntelligience = attackingEmpire.TotalIntelligenceProduction;
 
                     //Get the ratio of the attacking power to defending power
                     int ratio = attackIntelligience / defenseIntelligence;
