@@ -28,34 +28,87 @@
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="0" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock 
-                        Grid.Column="0" Text="Total Empire Intelligence"
+                        Grid.Column="0" 
+                        Text="  Total Empire Intelligence:  "
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>
+                        FontSize="14pt"/>
                     <TextBlock 
-                        Grid.Column="1" Text=" = "
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        Grid.Column="1" 
+                        Text="   > Attacking (Accumulated):  "
+                        Foreground="Red"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>
+                        FontSize="14pt"/>
                     <TextBlock 
-                        Grid.Column="2" Text="{Binding Path=TotalIntelligence}" 
+                        Grid.Column="2"
+                        Text="{Binding Path=TotalIntelligenceAttackingAccumulated}" 
+                        Foreground="Orange"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="14pt"/>
+                    <TextBlock 
+                        Grid.Column="3" Text="      > Production (last Turn):  "
+                        Foreground="Green"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="14pt"/>
+                    <!--<TextBlock 
+                        Grid.Column="3" Text=" = "
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>
-                    <Button x:Name="SummaryButton"
-                        Grid.Column="3"
+                        FontSize="12pt"/>-->
+                    <TextBlock 
+                        Grid.Column="4" Text="{Binding Path=TotalIntelligenceProduction}" 
+                        Foreground="LightGreen"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="14pt"/>
+                    <TextBlock 
+                        Grid.Column="5" Text="      > Own Defense (Accumulated) = "
+                        Foreground="SteelBlue"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="14pt"/>
+                    <TextBlock 
+                        Grid.Column="6" Text="{Binding Path=TotalIntelligenceDefenseAccumulated}" 
+                        Foreground="LightBlue"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="14pt"/>
+                    <!--<scc:GameButton 
+                        Grid.RowSpan="3"
+                        Grid.Column="7"
+                        Label="Fill Up Defense"            
                         VerticalAlignment="Top"
                         HorizontalAlignment="Right"
-                        Width="250"
+                        Width="90"
+                        Height="32"
+                        DisplayMode="Tiny"
+                        Style="{StaticResource LCARS_StandardButtonStyle}"
+                        
+                        FontSize="10pt"
+                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                        Foreground="Black"
+                        Margin="0,0,0,4"
+                        Command="{x:Static scc:NavigationCommands.FillUpDefense}"
+                        CommandParameter="{Binding FallbackValue={x:Null}}"
+                        />-->
+                    <Button x:Name="SummaryButton"
+                        Grid.RowSpan="3"
+                        Grid.Column="8"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Width="230"
                         Height="32"
                         Style="{StaticResource LCARS_StandardButtonStyle}"
                         Content="Click for Summary"
@@ -65,6 +118,24 @@
                         Margin="0,0,0,4"
                         Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}">
                     </Button>
+                    <!--White line-->
+                    <!--<Border
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="7"
+                        BorderThickness="1"
+                        Margin="0,0,0,0"
+                        Background="Black"
+                        BorderBrush="White" 
+                        >
+                    </Border>-->
+                    <TextBlock 
+                        Grid.Row="1" 
+                        Grid.ColumnSpan="7"
+                        Text="  To get a list here: take a spy ship, enter the sector of an *Empire's* colonies and give order to set up a spy network"
+                        Foreground="LightGray"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
                 </Grid>
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Visible"
