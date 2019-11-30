@@ -44,8 +44,8 @@ namespace Supremacy.Game
         private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
-        private int _totalIntelligenceAttackingAccumulated;
-        private int _totalIntelligenceDefenseAccumulated;
+        private Meter _totalIntelligenceAttackingAccumulated;
+        private Meter _totalIntelligenceDefenseAccumulated;
 
 
 
@@ -68,6 +68,11 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
+
+            _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
+            _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
+            _totalIntelligenceDefenseAccumulated = new Meter(0, 0, Meter.MaxValue);
+            _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
 
             _sitRepEntries = new List<SitRepEntry>();
 
@@ -252,13 +257,13 @@ namespace Supremacy.Game
         }
 
 
-        public int TotalIntelligenceAttackingAccumulated
+        public Meter TotalIntelligenceAttackingAccumulated
         {
             get { return _totalIntelligenceAttackingAccumulated; }
         }
 
 
-        public int TotalIntelligenceDefenseAccumulated
+        public Meter TotalIntelligenceDefenseAccumulated
         {
             get { return _totalIntelligenceDefenseAccumulated; }
         }
@@ -472,6 +477,18 @@ namespace Supremacy.Game
         {
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("AverageMorale");
+        }
+
+        private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+                OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
+        }
+
+        private void OnTotalIntelligenceDefenseAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+                OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }
         #endregion
 
