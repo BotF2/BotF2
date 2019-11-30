@@ -2,6 +2,7 @@
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -44,7 +45,11 @@ namespace Supremacy.Intelligence
         {
             var system = colony.System;
             var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
+            Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            
             var spyEmpire = IntelHelper.NewSpyCiv;
+            Meter attack = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+
             int ratio = -1;
             if (spyEmpire == null)
                 return;
@@ -56,15 +61,16 @@ namespace Supremacy.Intelligence
             if (ownedByPlayer)
                 return;
 
-            int defenseIntelligence = attackedCiv.TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
+
+            Int32.TryParse(attackedCiv.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
-
-            int attackingIntelligence = GameContext.Current.CivilizationManagers[spyEmpire].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
+                
+            Int32.TryParse(GameContext.Current.CivilizationManagers[spyEmpire].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)  
                 attackingIntelligence = 1;
                     
-                    attackingIntelligence = 100 * attackingIntelligence;// just for increase attacking Intelligence
+            attackingIntelligence = 100 * attackingIntelligence;// just for increase attacking Intelligence
 
             ratio = attackingIntelligence / defenseIntelligence;
             if (ratio < 2)
@@ -91,27 +97,29 @@ namespace Supremacy.Intelligence
             //if ratio > 1 than remove one more  EnergyFacility
             if (ratio > 1 && colony.GetTotalFacilities(ProductionCategory.Energy) > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                removeEnergyFacilities = 1;
+                //removeEnergyFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             //if ratio > 2 than remove one more  EnergyFacility
             if (ratio > 2 && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                removeEnergyFacilities = 3;  //  2 and one from before
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
+                //removeEnergyFacilities = 2;  //  2 and one from before
+                system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             // if ratio > 3 than remove one more  EnergyFacility
             if (ratio > 3 && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
+                //removeEnergyFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
+                system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
 
-            GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated -= defenseIntelligence / 2;
-            GameContext.Current.CivilizationManagers[spyEmpire].TotalIntelligenceAttackingAccumulated -= attackingIntelligence;
+            defense.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defense.UpdateAndReset();
+            attack.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
+            attack.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
             attackedCiv.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
