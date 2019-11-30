@@ -1389,11 +1389,15 @@ namespace Supremacy.Game
                      * for negative and possibly blocking production.
                      */
                     int newCredits = colonies.Sum(c => c.TaxCredits);
+                    int newIntelligenceDefense = colonies.Sum(c => c.NetIntelligence) * 3 / 10; // 30 % into Defense
+                    int newIntelligenceAttacking = colonies.Sum(c => c.NetIntelligence) * 7 / 10; // 70 % into AttackingAccumulation
                     int newDeuterium = colonies.Sum(c => c.NetDeuterium);
                     int newDilithium = colonies.Sum(c => c.NetDilithium);
                     int newRawMaterials = colonies.Sum(c => c.NetRawMaterials);
 
                     civManager.Credits.AdjustCurrent(newCredits);
+                    civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense); 
+                    civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking); 
                     civManager.Resources.Deuterium.AdjustCurrent(newDeuterium);
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);
