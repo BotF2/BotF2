@@ -152,6 +152,7 @@
         <TextBlock Text="FOOD ="
                    Grid.Column="6"
                    Grid.Row="1"
+                   Foreground="LightGreen"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="8"
@@ -195,7 +196,8 @@
                    Grid.Row="1"
                    Grid.Column="14"
                    HorizontalAlignment="Right"
-                   VerticalAlignment="Center"/>
+                   VerticalAlignment="Center"
+                   Foreground="Orange"/>
         <scc:GameLabel Grid.Column="16"
                    Grid.Row="1"
                    VerticalAlignment="Center"
@@ -223,7 +225,7 @@
                    Grid.Column="18"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"
-                   Foreground="Orange"/>
+                   Foreground="Yellow"/>
         <scc:GameLabel Grid.Column="20"
                    Grid.Row="1"
                    VerticalAlignment="Center"
@@ -233,6 +235,7 @@
         <TextBlock Text="RESEARCH ="
                    Grid.Row="2"
                    Grid.Column="18"
+                   Foreground="LightBlue"
                    HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="20"
                    Grid.Row="2"

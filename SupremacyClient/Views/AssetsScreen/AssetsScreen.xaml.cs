@@ -40,6 +40,8 @@ namespace Supremacy.Client.Views
             SabotageFoodFour.Visibility = Visibility.Collapsed;
             SabotageFoodFive.Visibility = Visibility.Collapsed;
             SabotageFoodSix.Visibility = Visibility.Collapsed;
+            StealResearchFour.Visibility = Visibility.Collapsed;
+
 
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -156,6 +158,10 @@ namespace Supremacy.Client.Views
                 if (true)
                 {
                     SabotageFoodSix.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchFour.Visibility = Visibility.Visible;
                 }
             }
             else
@@ -298,5 +304,10 @@ namespace Supremacy.Client.Views
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
         }
+        private void OnResearchFourClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+
     } 
 }

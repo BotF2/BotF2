@@ -110,9 +110,15 @@ namespace Supremacy.Intelligence
             // civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
+
         public static void SabotageFood(Colony colony, Civilization civ)
         {
-               // do something
+            // do something
+        }
+
+        internal static void StealResearch(Colony colony, Civilization spiedFourCiv)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
