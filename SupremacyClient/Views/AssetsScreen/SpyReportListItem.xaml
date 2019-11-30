@@ -192,18 +192,18 @@
                    ImageSourceSmall="vfs:///Resources/Images/Resources/rawmaterials.png"
                    Label="{Binding Path=NetRawMaterials}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
-        <TextBlock Text="INDUSTRY ="
-                   Grid.Row="1"
-                   Grid.Column="14"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center"
-                   Foreground="Orange"/>
-        <scc:GameLabel Grid.Column="16"
-                   Grid.Row="1"
-                   VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                   Label="{Binding Path=NetIndustry}"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+      <TextBlock Text="RESEARCH ="
+                 Grid.Row="1"
+                 Grid.Column="14"
+                 Foreground="LightBlue"  
+                 VerticalAlignment="Center"          
+                 HorizontalAlignment="Right"/>
+      <scc:GameLabel Grid.Column="16"
+                 Grid.Row="1"
+                 VerticalAlignment="Center"
+                 ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                 Label="{Binding Path=NetResearch}"
+                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
         <TextBlock Text="SHIP BUILDING ="
                    Grid.Row="2" Grid.Column="14"
                    HorizontalAlignment="Right"/>
@@ -232,17 +232,18 @@
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                    Label="{Binding Path=NetEnergy}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
-        <TextBlock Text="RESEARCH ="
+      <TextBlock Text="INDUSTRY ="
                    Grid.Row="2"
                    Grid.Column="18"
-                   Foreground="LightBlue"
-                   HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="20"
-                   Grid.Row="2"
+                   HorizontalAlignment="Right"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                   Label="{Binding Path=NetResearch}"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                   Foreground="Orange"/>
+      <scc:GameLabel Grid.Column="20"
+                 Grid.Row="2"
+                 VerticalAlignment="Center"
+                 ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
+                 Label="{Binding Path=NetIndustry}"
+                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
         <!-- Grid for Shipyards-->
         <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="20">
             <Grid.ColumnDefinitions>
