@@ -411,8 +411,8 @@
                             <Grid Name="EmpireGridFour" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
+                                      <RowDefinition Height="45" />
+                                      <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                       <ColumnDefinition Width="*" />
@@ -427,57 +427,35 @@
                                       <ColumnDefinition Width="Auto"/>
                                       <ColumnDefinition Width="Auto" />
                                       <ColumnDefinition Width="Auto"/>
+                                      <ColumnDefinition Width="10" />
+                                      <ColumnDefinition Width="Auto"/>
+                                      <ColumnDefinition Width="Auto" />
+                                      <ColumnDefinition Width="Auto"/>                             
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
                                             Grid.Column="0"
-                                            Grid.ColumnSpan="12"
+                                            Grid.ColumnSpan="16"
                                             BorderThickness="1"
                                             Margin="0,0,0,0"
                                             Background="Black"
-                                            BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+                                            BorderBrush="Red" />
                                   <TextBlock Grid.Row="0"
                                              Grid.Column="0"
                                              VerticalAlignment="Center"
-                                             HorizontalAlignment="Left"
+                                             HorizontalAlignment="Center"
                                              Margin="10,0,0,0"
                                              FontWeight="DemiBold"
-                                             Foreground="Red"
-                                             Text="Espionage" />  
+                                             Foreground="White"
+                                             Text="Espionage" />
                                   <TextBlock Grid.Row="0"
-                                               Grid.Column="1"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               FontWeight="DemiBold"
-                                               Foreground="LightGreen"
-                                               Text="Food: " />
-                                  <scc:GameLabel Grid.Row="0"
-                                                 Grid.Column="2"
-                                                 VerticalAlignment="Center"
-                                                 ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                                 Label="{Binding Path=FoodReserves.CurrentValue}"
-                                                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
-                                 <scc:GameButton Name="SabotageFoodFour"      
-                                                  Grid.Row="0"
-                                                  Grid.Column="3"
-                                                  DisplayMode="Tiny"
-                                                  VerticalAlignment="Center"
-                                                  HorizontalAlignment="Center"
-                                                  FontWeight="DemiBold"
-                                                  Label="Sabotage Food: "
-                                                  Foreground="Black"
-                                                  Background="Transparent"
-                                                  BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                  BorderThickness="2"
-                                                  Click = "OnFoodFourClick"/>
-                                  <TextBlock Grid.Row="0"
-                                             Grid.Column="5"
+                                             Grid.Column="1"
                                              VerticalAlignment="Center"
-                                             HorizontalAlignment="Center"
+                                             HorizontalAlignment="Right"
                                              FontWeight="DemiBold"
                                              Foreground="LightBlue"
                                              Text="Research: " />
                                   <scc:GameLabel Grid.Row="0"
-                                                 Grid.Column="6"
+                                                 Grid.Column="2"
                                                  VerticalAlignment="Center"
                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
                                                  Label="{Binding Path=NetEnergy}"
@@ -485,10 +463,10 @@
                                   <scc:GameButton
                                                 Name="StealResearchFour"
                                                 Grid.Row="0"
-                                                Grid.Column="7"
+                                                Grid.Column="3"
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
+                                                HorizontalAlignment="Left"
                                                 Label="Steal Research"
                                                 FontWeight="DemiBold"
                                                 Foreground="Black"
@@ -498,14 +476,68 @@
                                                 Click = "OnResearchFourClick"
                                                 Margin="0,0,15,0"/>
                                   <TextBlock Grid.Row="0"
+                                               Grid.Column="5"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               FontWeight="DemiBold"
+                                               Foreground="LightGreen"
+                                               Text="Food: " />
+                                  <scc:GameLabel Grid.Row="0"
+                                                 Grid.Column="6"
+                                                 VerticalAlignment="Center"
+                                                 ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                 Label="{Binding Path=FoodReserves.CurrentValue}"
+                                                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                 <scc:GameButton Name="SabotageFoodFour"      
+                                                  Grid.Row="0"
+                                                  Grid.Column="7"
+                                                  DisplayMode="Tiny"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  FontWeight="DemiBold"
+                                                  Label="Sabotage Food"
+                                                  Foreground="Black"
+                                                  Background="Transparent"
+                                                  BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                  BorderThickness="2"
+                                                  Click = "OnFoodFourClick"/>
+                                  <TextBlock Grid.Row="0"
                                               Grid.Column="9"
                                               VerticalAlignment="Center"
-                                              HorizontalAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              FontWeight="DemiBold"
+                                              Foreground="Orange"
+                                              Text="Industry: " />
+                                  <scc:GameLabel Grid.Row="0"
+                                                 Grid.Column="10"
+                                                 VerticalAlignment="Center"
+                                                 ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
+                                                 Label="{Binding Path=NetEnergy}"
+                                                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                  <scc:GameButton
+                                                Name="SabotageIndustryFour"
+                                                Grid.Row="0"
+                                                Grid.Column="11"
+                                                DisplayMode="Tiny"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Label="Sabotage Industry"
+                                                FontWeight="DemiBold"
+                                                Foreground="Black"
+                                                Background="Transparent"
+                                                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                BorderThickness="2"
+                                                Click = "OnIndustryFourClick"
+                                                Margin="0,0,15,0"/>
+                                  <TextBlock Grid.Row="0"
+                                              Grid.Column="13"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Right"
                                               FontWeight="DemiBold"
                                               Foreground="Yellow"
                                               Text="Energy: " />
                                   <scc:GameLabel Grid.Row="0"
-                                                 Grid.Column="10"
+                                                 Grid.Column="14"
                                                  VerticalAlignment="Center"
                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                  Label="{Binding Path=NetEnergy}"
@@ -513,10 +545,10 @@
                                   <scc:GameButton
                                                 Name="SabotageEnergyFour"
                                                 Grid.Row="0"
-                                                Grid.Column="11"
+                                                Grid.Column="15"
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
+                                                HorizontalAlignment="Left"
                                                 Label="Sabotage Energy"
                                                 FontWeight="DemiBold"
                                                 Foreground="Black"
@@ -525,7 +557,7 @@
                                                 BorderThickness="2"
                                                 Click = "OnEnergyFourClick"
                                                 Margin="0,0,15,0"/>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="12" HorizontalAlignment="Center">
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="16" HorizontalAlignment="Center">
                                         <v:SpiedFourColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
                                     </StackPanel>    
                                 </Grid>

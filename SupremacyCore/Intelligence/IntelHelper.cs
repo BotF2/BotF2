@@ -200,9 +200,13 @@ namespace Supremacy.Intelligence
 
         }
 
-        internal static void StealResearch(Colony colony, Civilization spiedFourCiv)
+        public static void StealResearch(Colony colony, Civilization spiedFourCiv)
         {
             GameLog.Core.Intel.DebugFormat("##### StealResearch not implemented yet");
+        }
+        public static void SabotageIndustry(Colony colony, Civilization spiedFourCiv)
+        {
+            GameLog.Core.Intel.DebugFormat("##### Sabotage Industry not implemented yet");
         }
         #endregion
     }
