@@ -269,6 +269,11 @@ namespace Supremacy.Client
 
             InputBindings.Add(
                 new KeyBinding(
+                    ClientCommands.ShowEndOfTurnSummary,
+                    new KeyGesture(Key.I, ModifierKeys.Control)));
+
+            InputBindings.Add(
+                new KeyBinding(
                     ClientCommands.LogTxtCommand,
                     Key.L,
                     ModifierKeys.Control));
@@ -285,6 +290,13 @@ namespace Supremacy.Client
                     ClientCommands.SaveGame,
                     Key.S,
                     ModifierKeys.Control));
+
+            //// ALT+S shows SaveGameDialog    // does not work yet
+            //        InputBindings.Add(
+            //        new KeyBinding(
+            //        //ClientCommands.ShowSaveGameDialog,
+            //            Key.S,
+            //            ModifierKeys.Alt));
 
             InputBindings.Add(
                 new KeyBinding(

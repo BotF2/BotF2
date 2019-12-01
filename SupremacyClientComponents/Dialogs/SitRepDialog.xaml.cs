@@ -151,20 +151,30 @@ namespace Supremacy.Client.Dialogs
                 {
                     case SitRepAction.ShowScienceScreen:
                         Close();
-                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen);
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen); // F4
                         break;
 
                     case SitRepAction.ViewColony:
                         Close();
-                        GalaxyScreenCommands.SelectSector.Execute((selection.ActionTarget as Colony).Sector);
+                        GalaxyScreenCommands.SelectSector.Execute((selection.ActionTarget as Colony).Sector); // F2
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
+                        break;
+
+                    case SitRepAction.ShowDiploScreen:
+                        Close();
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.DiplomacyScreen);  // F3
+                        break;
+
+                    case SitRepAction.ShowIntelScreen:
+                        Close();
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.IntelScreen); // F5
                         break;
 
                     case SitRepAction.CenterOnSector:
                         Close();
                         var sector = selection.ActionTarget as Sector;
                         GalaxyScreenCommands.SelectSector.Execute(sector);
-                        GalaxyScreenCommands.CenterOnSector.Execute(sector);
+                        GalaxyScreenCommands.CenterOnSector.Execute(sector);  
                         break;
 
                     case SitRepAction.SelectTaskForce:

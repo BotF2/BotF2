@@ -230,7 +230,13 @@ namespace Supremacy.Client
             if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
                 double fileSize = new FileInfo(errorFile).Length;
-                if (fileSize <= 0)
+                if (fileSize == 0)
+                {
+                    MessageBox.Show("Error.txt is empty - nothing to load");
+                    return;
+                }
+
+                if (fileSize < 0)
                 {
                     MessageBox.Show("Could not load Error.txt");
                     return;
