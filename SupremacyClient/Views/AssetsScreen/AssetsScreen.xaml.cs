@@ -42,6 +42,8 @@ namespace Supremacy.Client.Views
             SabotageFoodSix.Visibility = Visibility.Collapsed;
             SabotageIndustryFour.Visibility = Visibility.Collapsed;
             StealResearchFour.Visibility = Visibility.Collapsed;
+            BlameKlingons.Visibility = Visibility.Collapsed;
+           // BlameFour.Visibility = Visibility.Collapsed;
 
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -168,6 +170,11 @@ namespace Supremacy.Client.Views
                 {
                     StealResearchFour.Visibility = Visibility.Visible;
                 }
+                if (true)
+                {
+                    BlameKlingons.Visibility = Visibility.Visible;
+                }
+
             }
             else
                 PauseAnimations();
@@ -317,5 +324,10 @@ namespace Supremacy.Client.Views
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
+        //private void OnBlameFourClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        //}
+
     } 
 }

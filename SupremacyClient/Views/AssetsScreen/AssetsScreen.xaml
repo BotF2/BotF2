@@ -24,12 +24,13 @@
     </UserControl.Resources>
     <TabControl>
         <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
-            <!-- Grid just for Head line -->
+ <!-- Spy Tab and Grid just for Head line -->
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="0" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -40,7 +41,8 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock 
                         Grid.Column="0" 
@@ -50,7 +52,7 @@
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="1" 
-                        Text="   > Attacking (Accumulated):  "
+                        Text=" > Attacking (Accumulated):  "
                         Foreground="Red"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
@@ -61,7 +63,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
-                        Grid.Column="3" Text="      > Production (last Turn):  "
+                        Grid.Column="3" Text=" > Production (last Turn):  "
                         Foreground="Green"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
@@ -76,7 +78,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
-                        Grid.Column="5" Text="      > Own Defense (Accumulated) = "
+                        Grid.Column="5" Text=" > Own Defense (Accumulated) = "
                         Foreground="SteelBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
@@ -103,40 +105,145 @@
                         Command="{x:Static scc:NavigationCommands.FillUpDefense}"
                         CommandParameter="{Binding FallbackValue={x:Null}}"
                         />-->
-                    <Button x:Name="SummaryButton"
-                        Grid.RowSpan="3"
-                        Grid.Column="8"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        Width="230"
-                        Height="32"
-                        Style="{StaticResource LCARS_StandardButtonStyle}"
-                        Content="Click for Summary"
-                        FontSize="14pt"
-                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                        Foreground="Black"
-                        Margin="0,0,0,4"
-                        Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}">
-                    </Button>
-                    <!--White line-->
-                    <!--<Border
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="7"
-                        BorderThickness="1"
-                        Margin="0,0,0,0"
-                        Background="Black"
-                        BorderBrush="White" 
-                        >
-                    </Border>-->
-                    <TextBlock 
-                        Grid.Row="1" 
-                        Grid.ColumnSpan="7"
-                        Text="  To get a list here: take a spy ship, enter the sector of an *Empire's* colonies and give order to set up a spy network"
-                        Foreground="LightGray"
-                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>
-                </Grid>
+                  <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9">
+                    <Grid>     
+                      <!-- Grid for Blame buttons -->
+                          <Grid.RowDefinitions>
+                              <RowDefinition Height="40" />
+                              <RowDefinition Height="Auto"/>
+                          </Grid.RowDefinitions>
+                          <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="*" />
+                          </Grid.ColumnDefinitions>  
+                            <Border Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="8"
+                                    BorderThickness="1"
+                                    Background="Black"
+                                    BorderBrush="Yellow" />
+                          <TextBlock Grid.Row="0"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Left"
+                                      Margin="5,0,0,0"
+                                      FontWeight="DemiBold"
+                                      Foreground="White"
+                                      Text="Implicate others for your actions: " />
+                          <StackPanel Name="BlameRow"
+                                  Orientation="Horizontal"
+                                  Grid.Row="0"
+                                  Grid.Column="1" 
+                                  Grid.ColumnSpan="7">
+                            <StackPanel Name="BlameTerroists"
+                                        Orientation="Horizontal" >
+                                  <Image 
+                                        VerticalAlignment="Center"
+                                        Source="vfs:///Resources/Images/Insignias/Klingons.png"
+                                        Margin="5,0,5,0" >
+                                  </Image>
+                                  <RadioButton
+                                        Margin="0,5,0,0"
+                                        GroupName="BlameRadio"
+                                        Foreground="White">
+                                           Terrorists
+                                  </RadioButton>
+                            </StackPanel>
+                            <StackPanel Name="BlameKlingons"
+                                        Orientation="Horizontal" >
+                                  <Image 
+                                        VerticalAlignment="Center"
+                                        Source="vfs:///Resources/Images/Insignias/Klingons.png"
+                                        Margin="5,0,5,0" >
+                                  </Image>
+                                  <RadioButton
+                                        Margin="0,5,0,0"
+                                        GroupName="BlameRadio"
+                                        Foreground="Red">
+                                           Klingons
+                                  </RadioButton>
+                            </StackPanel>
+                      </StackPanel>                    
+                          <!--<scc:GameButton
+                                        Name="BlameFour"
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        DisplayMode="Tiny"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        Label="Blame Four"
+                                        FontWeight="DemiBold"
+                                        Foreground="Black"
+                                        Background="Transparent"
+                                        BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                        BorderThickness="2"
+                                        Click = "OnBlameFourClick"
+                                        Margin="5,0,5,0"/>-->                    
+                          </Grid>
+                      </StackPanel>
+                  <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9">
+                    <Grid>     
+                      <!-- Grid for explanation and summary buttons -->
+                          <Grid.RowDefinitions>
+                              <RowDefinition Height="34" />
+                              <RowDefinition Height="Auto"/>
+                          </Grid.RowDefinitions>
+                          <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="10"/>
+                              <ColumnDefinition Width="Auto"/>
+                          </Grid.ColumnDefinitions>  
+                          <TextBlock 
+                                Grid.Row="0" 
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="  To see a major Empire below: "
+                                Foreground="Yellow"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                FontSize="12pt"/> 
+                          <TextBlock 
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="Send a Spy Ship to the Empire's system then right click it to order "
+                                Foreground="LightGray"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                FontSize="12pt"/>   
+                          <TextBlock 
+                                Grid.Row="0" 
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Text="&quot;Install a Spy Network&quot;"
+                                Foreground="White"
+                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                FontSize="12pt"/> 
+                      <!-- Summary Button -->
+                          <Button x:Name="SummaryButton"
+                                  Grid.Row="0"
+                                  Grid.Column="4"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  Width="230"
+                                  Height="32"
+                                  Style="{StaticResource LCARS_StandardButtonStyle}"
+                                  Content="Click for Summary"
+                                  FontSize="14pt"
+                                  FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                  Foreground="Black"
+                                  Margin="5,0,0,4"
+                                  Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}">
+                         </Button>
+                     </Grid>
+                  </StackPanel>
+              </Grid>
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Visible"
                     Margin="5,0,0,0"
@@ -145,6 +252,7 @@
                     FlowDirection="RightToLeft"
                     HorizontalAlignment="left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
+ <!-- One Expander -->
                         <Expander x:Name="EmpireExpanderOne" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" BorderThickness="2" BorderBrush="LightGoldenrodYellow" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
@@ -232,6 +340,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
+  <!-- Two Expander -->
                         <Expander x:Name="EmpireExpanderTwo" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedTwoCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridTwo" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
@@ -319,6 +428,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
+  <!-- Three Expander -->
                         <Expander x:Name="EmpireExpanderThree" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedThreeCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridThree" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
@@ -336,7 +446,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto"/>
-                                  </Grid.ColumnDefinitions>
+                                  </Grid.ColumnDefinitions>                                
                                   <Border Grid.Row="0"
                                           Grid.Column="0"
                                           Grid.ColumnSpan="8"
@@ -344,6 +454,7 @@
                                           Margin="0,0,0,0"
                                           Background="MidnightBlue"
                                           BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+                                  <!-- Food -->
                                   <TextBlock Grid.Row="0"
                                              Grid.Column="1"
                                              VerticalAlignment="Center"
@@ -406,12 +517,14 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
+ <!-- Four Expander -->
                         <Expander x:Name="EmpireExpanderFour" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" BorderThickness="2" BorderBrush="Gray" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" FontWeight="DemiBold" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridFour" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                       <RowDefinition Height="45" />
+                                      <RowDefinition Height="Auto" />
                                       <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -436,14 +549,15 @@
                                             Grid.Column="0"
                                             Grid.ColumnSpan="16"
                                             BorderThickness="1"
-                                            Margin="0,0,0,0"
+                                            Margin="10,0,0,0"
                                             Background="Black"
                                             BorderBrush="Red" />
+                                   <!-- Espionage Four Section -->
                                   <TextBlock Grid.Row="0"
                                              Grid.Column="0"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
-                                             Margin="10,0,0,0"
+                                             Margin="0,0,0,0"
                                              FontWeight="DemiBold"
                                              Foreground="White"
                                              Text="Espionage" />
@@ -557,13 +671,23 @@
                                                 BorderThickness="2"
                                                 Click = "OnEnergyFourClick"
                                                 Margin="0,0,15,0"/>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="16" HorizontalAlignment="Center">
+                                   <!-- Colonies - Four -->
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
                                         <v:SpiedFourColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
-                                    </StackPanel>    
+                                    </StackPanel> 
+                                  <!-- Blame Four -->
+                                    <Border Grid.Row="2"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="22"
+                                           BorderBrush="Yellow"
+                                           BorderThickness="1"
+                                           Margin="0,0,0,0"
+                                           Background="Black" />
                                 </Grid>
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
+  <!-- Five Expander -->
                         <Expander x:Name="EmpireExpanderFive" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">
                             <Grid Name="EmpireGridFive" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5">
@@ -650,6 +774,7 @@
                                 </Grid>
                             </Grid>
                         </Expander>
+ <!-- Six Expander -->
                         <TextBlock Height="5"></TextBlock>
                         <Expander x:Name="EmpireExpanderSix" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedSixCivName}" BorderThickness="2" BorderBrush="Red" Foreground="White" VerticalAlignment="Top" Grid.ColumnSpan="4">

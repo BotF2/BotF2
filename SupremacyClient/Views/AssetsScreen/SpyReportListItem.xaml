@@ -40,10 +40,10 @@
                         <TextBlock x:Name="LinkText" Text="{TemplateBinding Content}" />
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
-                       Value="True">
+                                      Value="True">
                                 <Setter TargetName="LinkText"
-                        Property="TextDecorations"
-                        Value="Underline" />
+                                        Property="TextDecorations"
+                                        Value="Underline" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -81,7 +81,7 @@
             <RowDefinition Height="0.00001*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="70" />
@@ -233,34 +233,8 @@
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
-      <Border Grid.Row="3"
-             Grid.Column="0"
-             Grid.ColumnSpan="20"
-             BorderBrush="Yellow"
-             BorderThickness="1"
-             Margin="0,0,0,0"
-             Background="Black" />
-      <TextBlock Grid.Row="3"
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left"
-                Margin="10,0,0,0"
-                FontWeight="DemiBold"
-                Foreground="Yellow"                 
-                Text="Blame Others" />
-      <scc:GameButton Grid.Column="4"
-                Grid.Row="3"
-                DisplayMode="Tiny"
-                VerticalAlignment="Center"
-                Label="Gino"
-                Foreground="Black"
-                Background="Transparent"
-                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                BorderThickness="2"
-                Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
-                CommandParameter="{Binding FallbackValue={x:Null}}" />
         <!-- Grid for Shipyards-->
-        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="20">
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="20" Margin="0,5,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="280"/>
@@ -373,5 +347,32 @@
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[5].Project}" />-->
         </Grid>
+      <!-- Blame Others -->
+      <!--<Border Grid.Row="6"
+             Grid.Column="0"
+             Grid.ColumnSpan="22"
+             BorderBrush="Yellow"
+             BorderThickness="1"
+             Margin="0,0,0,0"
+             Background="Black" />
+      <TextBlock Grid.Row="6"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="10,0,0,0"
+                FontWeight="DemiBold"
+                Foreground="Yellow"
+                Text="Blame Others" />
+      <scc:GameButton Grid.Column="4"
+                Grid.Row="6"
+                DisplayMode="Tiny"
+                VerticalAlignment="Center"
+                Label="Gino"
+                Foreground="Black"
+                Background="Transparent"
+                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                BorderThickness="2"
+                Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
+                CommandParameter="{Binding FallbackValue={x:Null}}" />-->
     </Grid>
 </scc:ThemedUserControl>
