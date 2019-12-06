@@ -1,15 +1,14 @@
 ﻿using Supremacy.Client.Context;
-//using Supremacy.Diplomacy;
-//using Supremacy.Economy;
-//using Supremacy.Entities;
-//using Supremacy.Game;
 using Supremacy.Intelligence;
-//using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation.Peers;
+
+using System.Windows.Media.Imaging;
 
 namespace Supremacy.Client.Views
 {
@@ -40,11 +39,30 @@ namespace Supremacy.Client.Views
             SabotageFoodFour.Visibility = Visibility.Collapsed;
             SabotageFoodFive.Visibility = Visibility.Collapsed;
             SabotageFoodSix.Visibility = Visibility.Collapsed;
+            SabotageIndustryOne.Visibility = Visibility.Collapsed;
+            SabotageIndustryTwo.Visibility = Visibility.Collapsed;
+            SabotageIndustryThree.Visibility = Visibility.Collapsed;
             SabotageIndustryFour.Visibility = Visibility.Collapsed;
+            SabotageIndustryFive.Visibility = Visibility.Collapsed;
+            SabotageIndustrySix.Visibility = Visibility.Collapsed;
+            StealResearchOne.Visibility = Visibility.Collapsed;
+            StealResearchTwo.Visibility = Visibility.Collapsed;
+            StealResearchThree.Visibility = Visibility.Collapsed;
             StealResearchFour.Visibility = Visibility.Collapsed;
+            StealResearchFive.Visibility = Visibility.Collapsed;
+            StealResearchSix.Visibility = Visibility.Collapsed;
+            BlameNoOne.Visibility = Visibility.Visible;
+            BlameNoOne.IsChecked = true;
+            BlameTerrorists.Visibility = Visibility.Collapsed;
+            BlameFederation.Visibility = Visibility.Collapsed;
+            BlameTerranEmpire.Visibility = Visibility.Collapsed;
+            BlameRomulans.Visibility = Visibility.Collapsed;
             BlameKlingons.Visibility = Visibility.Collapsed;
-           // BlameFour.Visibility = Visibility.Collapsed;
+            BlameCardassians.Visibility = Visibility.Collapsed;
+            BlameDominion.Visibility = Visibility.Collapsed;
+            BlameBorg.Visibility = Visibility.Collapsed;
 
+            LoadInsignia();
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -163,18 +181,88 @@ namespace Supremacy.Client.Views
                 }
                 if (true)
                 {
+                    SabotageIndustryOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustryTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustryThree.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
                     SabotageIndustryFour.Visibility = Visibility.Visible;
                 }
-
+                if (true)
+                {
+                    SabotageIndustryFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustrySix.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchThree.Visibility = Visibility.Visible;
+                }
                 if (true)
                 {
                     StealResearchFour.Visibility = Visibility.Visible;
                 }
                 if (true)
                 {
+                    StealResearchFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchSix.Visibility = Visibility.Visible;
+                }
+                //if (true)
+                //{
+                //    BlameNoOne.Visibility = Visibility.Visible;
+                //}
+                if (true)
+                {
+                    BlameTerrorists.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameFederation.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameTerranEmpire.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameRomulans.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
                     BlameKlingons.Visibility = Visibility.Visible;
                 }
-
+                if (true)
+                {
+                    BlameCardassians.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameDominion.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameBorg.Visibility = Visibility.Visible;
+                }
             }
             else
                 PauseAnimations();
@@ -268,6 +356,7 @@ namespace Supremacy.Client.Views
             StopAnimations();
         }
         #endregion
+        #region OnButtonClicks
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
@@ -316,18 +405,105 @@ namespace Supremacy.Client.Views
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
         }
+        private void OnResearchOneClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchSixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryOneClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
-        //private void OnBlameFourClick(object sender, RoutedEventArgs e)
-        //{
-        //    IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
-        //}
+        private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustrySixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        #endregion
+        private void LoadInsignia()
+        {
+            BitmapImage insigniaFed = new BitmapImage();
+            var uriFed = new Uri("vfs:///Resources/Images/Insignias/FEDERATION.png");
+            insigniaFed.BeginInit();
+            insigniaFed.UriSource = uriFed;
+            insigniaFed.EndInit();
 
-    } 
+            BitmapImage insigniaTerran = new BitmapImage();
+            var uriTerran = new Uri("vfs:///Resources/Images/Insignias/TERRANEMPIRE.png");
+            insigniaTerran.BeginInit();
+            insigniaTerran.UriSource = uriTerran;
+            insigniaTerran.EndInit();
+
+            BitmapImage insigniaRom = new BitmapImage();
+            var uriRom = new Uri("vfs:///Resources/Images/Insignias/ROMULANS.png");
+            insigniaRom.BeginInit();
+            insigniaRom.UriSource = uriRom;
+            insigniaRom.EndInit();
+
+            BitmapImage insigniaKling = new BitmapImage();
+            var uriKling = new Uri("vfs:///Resources/Images/Insignias/KLINGONS.png");
+            insigniaKling.BeginInit();
+            insigniaKling.UriSource = uriKling;
+            insigniaKling.EndInit();
+
+            BitmapImage insigniaCard = new BitmapImage();
+            var uriCard = new Uri("vfs:///Resources/Images/Insignias/CARDASSIANS.png");
+            insigniaCard.BeginInit();
+            insigniaCard.UriSource = uriCard;
+            insigniaCard.EndInit();
+
+            BitmapImage insigniaDom = new BitmapImage();
+            var uriDom = new Uri("vfs:///Resources/Images/Insignias/DOMINION.png");
+            insigniaDom.BeginInit();
+            insigniaDom.UriSource = uriDom;
+            insigniaDom.EndInit();
+
+            BitmapImage insigniaBorg = new BitmapImage();
+            var uriBorg = new Uri("vfs:///Resources/Images/Insignias/BORG.png");
+            insigniaBorg.BeginInit();
+            insigniaBorg.UriSource = uriBorg;
+            insigniaBorg.EndInit();
+
+            InsigniaOne.Source = insigniaFed;
+            //InsigniaTwo.Source = insigniaTerran;
+            //InsigniaThree.Source = insigniaTerran;
+            InsigniaFour.Source = insigniaTerran;
+            //InsigniaFive.Source = insigniaTerran;
+            //InsigniaSix.Source = insigniaTerran;
+        }
+    }
 }

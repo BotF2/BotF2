@@ -84,7 +84,7 @@
             <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="70" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="0.00001*" />
         </Grid.RowDefinitions>
         <scc:GameButton Grid.Row="1"
@@ -106,11 +106,11 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"/>
         <scc:GameLabel Grid.Column="3"
-                   Grid.Row="1"
-                   Grid.ColumnSpan="2"                        
-                   VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
+                       Grid.Row="1"
+                       Grid.ColumnSpan="2"                        
+                       VerticalAlignment="Center"
+                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
+                       ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} / {1} ({2:0.#%})">
                     <Binding Path="Population.CurrentValue" />

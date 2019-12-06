@@ -309,8 +309,6 @@ namespace Supremacy.Client.Context
 
             Civilization DummyCiv = new Civilization();
             DummyCiv.CivID = -1;
-            //DummyCiv.Key = "Dummy";
-            //DummyCiv.HomeSystemName = "DummyLand";
             
             CivilizationManager DummyManager= new CivilizationManager(GameContext.Current, DummyCiv);
             
