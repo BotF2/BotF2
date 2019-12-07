@@ -17,6 +17,7 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
+        private List<int> _loopingCivIDs;
         public AssetsScreen()
         {
             InitializeComponent();
@@ -61,7 +62,6 @@ namespace Supremacy.Client.Views
             BlameCardassians.Visibility = Visibility.Collapsed;
             BlameDominion.Visibility = Visibility.Collapsed;
             BlameBorg.Visibility = Visibility.Collapsed;
-
             LoadInsignia();
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -498,12 +498,195 @@ namespace Supremacy.Client.Views
             insigniaBorg.UriSource = uriBorg;
             insigniaBorg.EndInit();
 
-            InsigniaOne.Source = insigniaFed;
-            //InsigniaTwo.Source = insigniaTerran;
-            //InsigniaThree.Source = insigniaTerran;
-            InsigniaFour.Source = insigniaTerran;
-            //InsigniaFive.Source = insigniaTerran;
-            //InsigniaSix.Source = insigniaTerran;
-        }
+            List<int> CivIDs = new List<int>();
+            if (AssetsScreenPresentationModel.SpiedOneCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedOneCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedTwoCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedTwoCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedOneCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedThreeCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedOneCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedFourCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedFiveCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedFiveCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedSixCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedSixCiv.CivID);
+
+        
+            if (CivIDs.Count >= 1)
+            {
+                switch (CivIDs[0])
+                {
+                    case 0:
+                        InsigniaOne.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaOne.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaOne.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaOne.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaOne.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaOne.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaOne.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 2)
+            {
+                switch (CivIDs[1])
+                {
+                    case 0:
+                        InsigniaTwo.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaTwo.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaTwo.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaTwo.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaTwo.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaTwo.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaTwo.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 3)
+            {
+                switch (CivIDs[2])
+                {
+                    case 0:
+                        InsigniaThree.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaThree.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaThree.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaThree.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaThree.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaThree.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaThree.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 4)
+            {
+                switch (CivIDs[3])
+                {
+                    case 0:
+                        InsigniaFour.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaFour.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaFour.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaFour.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaFour.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaFour.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaFour.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 5)
+            {
+                switch (CivIDs[4])
+                {
+                    case 0:
+                        InsigniaFive.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaFive.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaFive.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaFive.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaFive.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaFive.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaFive.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 6)
+            {
+                switch (CivIDs[5])
+                {
+                    case 0:
+                        InsigniaSix.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaSix.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaSix.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaSix.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaSix.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaSix.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaSix.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }      
     }
 }

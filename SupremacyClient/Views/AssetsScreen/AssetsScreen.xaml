@@ -383,19 +383,21 @@
                                             Margin="10,0,0,0"
                                             Background="Black"
                                             BorderBrush="Red" />
-                                    <!-- Espionage One Section -->
                                     <StackPanel Grid.Row="0"
-                                                Grid.Column="0"
-                                                Orientation="Horizontal">
-                                        <Image Name="InsigniaOne">
-                                        </Image>
+                                              Grid.Column="0"
+                                              Orientation="Horizontal"
+                                              HorizontalAlignment="Center"
+                                              Margin="15,0,0,0">
                                         <TextBlock
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,0"
-                                             FontWeight="DemiBold"
-                                             Foreground="White"
-                                             Text="Espionage" />
+                                             Foreground="AntiqueWhite"
+                                             Text="Espionage on the " />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Path=SpiedOneCivName}"/>
+                                        <Image Name="InsigniaOne" Margin="5,0,0,0">
+                                        </Image>
                                     </StackPanel>
                                     <TextBlock Grid.Row="0"
                                                 Grid.Column="1"
@@ -551,14 +553,22 @@
                                             Background="Black"
                                             BorderBrush="Red" />
                                     <!-- Espionage Two Section -->
-                                    <TextBlock Grid.Row="0"
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                Margin="0,0,0,0"
-                                                FontWeight="DemiBold"
-                                                Foreground="White"
-                                                Text="Espionage" />
+                                    <StackPanel Grid.Row="0"
+                                              Grid.Column="0"
+                                              Orientation="Horizontal"
+                                              HorizontalAlignment="Center"
+                                              Margin="15,0,0,0">
+                                        <TextBlock
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Margin="0,0,0,0"
+                                             Foreground="AntiqueWhite"
+                                             Text="Espionage on the " />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Path=SpiedTwoCivName}"/>
+                                        <Image Name="InsigniaTwo" Margin="5,0,0,0">
+                                        </Image>
+                                    </StackPanel>
                                     <TextBlock Grid.Row="0"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
@@ -713,14 +723,22 @@
                                             Background="Black"
                                             BorderBrush="Red" />
                                     <!-- Espionage Three Section -->
-                                    <TextBlock Grid.Row="0"
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                Margin="0,0,0,0"
-                                                FontWeight="DemiBold"
-                                                Foreground="White"
-                                                Text="Espionage" />
+                                    <StackPanel Grid.Row="0"
+                                              Grid.Column="0"
+                                              Orientation="Horizontal"
+                                              HorizontalAlignment="Center"
+                                              Margin="15,0,0,0" >
+                                        <TextBlock
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Margin="0,0,0,0"
+                                             Foreground="AntiqueWhite"
+                                             Text="Espionage on the " />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Path=SpiedThreeCivName}"/>
+                                        <Image Name="InsigniaThree" Margin="5,0,0,0">
+                                        </Image>
+                                    </StackPanel>
                                     <TextBlock Grid.Row="0"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
@@ -875,20 +893,21 @@
                                             Background="Black"
                                             BorderBrush="Red" />
                                    <!-- Espionage Four Section -->
-
                                     <StackPanel Grid.Row="0"
                                               Grid.Column="0"
-                                              Orientation="Horizontal">
-                                        <Image Name="InsigniaFour">
-
-                                        </Image>
+                                              Orientation="Horizontal"
+                                              HorizontalAlignment="Center"
+                                              Margin="15,0,0,0">
                                         <TextBlock
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
-                                             Margin="0,0,0,0"
-                                             FontWeight="DemiBold"
-                                             Foreground="White"
-                                             Text="Espionage" />
+                                             Margin="0,0,0,0"                                             
+                                             Foreground="AntiqueWhite"
+                                             Text="Espionage on the " />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Path=SpiedFourCivName}"/>
+                                        <Image Name="InsigniaFour" Margin="5,0,0,0">
+                                        </Image>
                                     </StackPanel>
                                     <TextBlock Grid.Row="0"
                                                 Grid.Column="1"
@@ -1044,14 +1063,22 @@
                                             Background="Black"
                                             BorderBrush="Red" />
                                     <!-- Espionage Five Section -->
-                                    <TextBlock Grid.Row="0"
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                Margin="0,0,0,0"
-                                                FontWeight="DemiBold"
-                                                Foreground="White"
-                                                Text="Espionage" />
+                                    <StackPanel Grid.Row="0"
+                                              Grid.Column="0"
+                                              Orientation="Horizontal"
+                                              HorizontalAlignment="Center"
+                                              Margin="15,0,0,0">
+                                        <TextBlock
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Margin="0,0,0,0"
+                                             Foreground="AntiqueWhite"
+                                             Text="Espionage on the " />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Path=SpiedFiveCivName}"/>
+                                        <Image Name="InsigniaFive" Margin="5,0,0,0">
+                                        </Image>
+                                    </StackPanel>
                                     <TextBlock Grid.Row="0"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
@@ -1206,14 +1233,23 @@
                                             Background="Black"
                                             BorderBrush="Red" />
                                     <!-- Espionage Six Section -->
-                                    <TextBlock Grid.Row="0"
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                Margin="0,0,0,0"
-                                                FontWeight="DemiBold"
-                                                Foreground="White"
-                                                Text="Espionage" />
+                                    <StackPanel Grid.Row="0"
+                                              Grid.Column="0"
+                                              Orientation="Horizontal"
+                                              HorizontalAlignment="Center"
+                                              Margin="15,0,0,0"
+                                              >
+                                        <TextBlock
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Margin="0,0,0,0"
+                                             Foreground="AntiqueWhite"
+                                             Text="Espionage on the " />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Path=SpiedSixCivName}"/>
+                                        <Image Name="InsigniaSix" Margin="5,0,0,0">
+                                        </Image>
+                                    </StackPanel>
                                     <TextBlock Grid.Row="0"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
