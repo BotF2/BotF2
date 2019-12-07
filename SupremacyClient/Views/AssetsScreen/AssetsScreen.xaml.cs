@@ -227,10 +227,6 @@ namespace Supremacy.Client.Views
                 {
                     StealResearchSix.Visibility = Visibility.Visible;
                 }
-                //if (true)
-                //{
-                //    BlameNoOne.Visibility = Visibility.Visible;
-                //}
                 if (true)
                 {
                     BlameTerrorists.Visibility = Visibility.Visible;

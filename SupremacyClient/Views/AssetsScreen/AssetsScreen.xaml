@@ -94,25 +94,7 @@
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
-                    <!--<scc:GameButton 
-                        Grid.RowSpan="3"
-                        Grid.Column="7"
-                        Label="Fill Up Defense"            
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right"
-                        Width="90"
-                        Height="32"
-                        DisplayMode="Tiny"
-                        Style="{StaticResource LCARS_StandardButtonStyle}"
-                        
-                        FontSize="10pt"
-                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                        Foreground="Black"
-                        Margin="0,0,0,4"
-                        Command="{x:Static scc:NavigationCommands.FillUpDefense}"
-                        CommandParameter="{Binding FallbackValue={x:Null}}"
-                        />-->
-                  <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="10">
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="10">
                         <Grid>     
                           <!-- Grid for Blame buttons -->
                               <Grid.RowDefinitions>
@@ -363,15 +345,15 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
@@ -399,19 +381,25 @@
                                         <Image Name="InsigniaOne" Margin="5,0,0,0">
                                         </Image>
                                     </StackPanel>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="1"
+                                                Grid.Column="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightBlue"
                                                 Text="Research: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="3"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="StealResearchOne"
                                                 Grid.Row="0"
@@ -427,19 +415,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnResearchOneClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="5"
+                                                    VerticalAlignment="Center"
+                                                   Margin="0,0,2,0"                                                  
+                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="5"
+                                                Grid.Column="6"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightGreen"
                                                 Text="Food: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="6"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                                    Label="{Binding Path=FoodReserves.CurrentValue}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="7"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton Name="SabotageFoodOne"      
                                                     Grid.Row="0"
                                                     Grid.Column="7"
@@ -453,19 +447,25 @@
                                                     BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                     BorderThickness="2"
                                                     Click = "OnFoodOneClick"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="9"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="9"
+                                                Grid.Column="10"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Orange"
                                                 Text="Industry: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="10"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="11"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="SabotageIndustryOne"
                                                 Grid.Row="0"
@@ -481,19 +481,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnIndustryOneClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="13"
+                                                    VerticalAlignment="Center"
+                                                   Margin="8,0,2,0"                                                   
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="13"
+                                                Grid.Column="14"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Yellow"
                                                 Text="Energy: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="14"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="15"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton
                                                 Name="SabotageEnergyOne"
                                                 Grid.Row="0"
@@ -532,15 +538,15 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
@@ -569,19 +575,25 @@
                                         <Image Name="InsigniaTwo" Margin="5,0,0,0">
                                         </Image>
                                     </StackPanel>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="1"
+                                                Grid.Column="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightBlue"
                                                 Text="Research: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="3"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="StealResearchTwo"
                                                 Grid.Row="0"
@@ -597,19 +609,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnResearchTwoClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="5"
+                                                    VerticalAlignment="Center"
+                                                   Margin="0,0,2,0"                                                   
+                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="5"
+                                                Grid.Column="6"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightGreen"
                                                 Text="Food: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="6"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                                    Label="{Binding Path=FoodReserves.CurrentValue}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="7"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton Name="SabotageFoodTwo"      
                                                     Grid.Row="0"
                                                     Grid.Column="7"
@@ -623,19 +641,25 @@
                                                     BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                     BorderThickness="2"
                                                     Click = "OnFoodTwoClick"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="9"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="9"
+                                                Grid.Column="10"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Orange"
                                                 Text="Industry: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="10"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="11"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="SabotageIndustryTwo"
                                                 Grid.Row="0"
@@ -651,19 +675,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnIndustryTwoClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="13"
+                                                    VerticalAlignment="Center"
+                                                   Margin="8,0,2,0"   
+                                                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="13"
+                                                Grid.Column="14"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Yellow"
                                                 Text="Energy: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="14"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="15"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton
                                                 Name="SabotageEnergyTwo"
                                                 Grid.Row="0"
@@ -702,15 +732,15 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
@@ -739,19 +769,25 @@
                                         <Image Name="InsigniaThree" Margin="5,0,0,0">
                                         </Image>
                                     </StackPanel>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"                                                  
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="1"
+                                                Grid.Column="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightBlue"
                                                 Text="Research: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="3"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="StealResearchThree"
                                                 Grid.Row="0"
@@ -767,19 +803,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnResearchThreeClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="5"
+                                                    VerticalAlignment="Center"
+                                                   Margin="0,0,2,0"                                                  
+                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="5"
+                                                Grid.Column="6"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightGreen"
                                                 Text="Food: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="6"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                                    Label="{Binding Path=FoodReserves.CurrentValue}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="7"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton Name="SabotageFoodThree"      
                                                     Grid.Row="0"
                                                     Grid.Column="7"
@@ -793,19 +835,25 @@
                                                     BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                     BorderThickness="2"
                                                     Click = "OnFoodThreeClick"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="9"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="9"
+                                                Grid.Column="10"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Orange"
                                                 Text="Industry: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="10"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="11"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="SabotageIndustryThree"
                                                 Grid.Row="0"
@@ -821,19 +869,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnIndustryThreeClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="13"
+                                                    VerticalAlignment="Center"
+                                                    Margin="8,0,2,0"                                                   
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="13"
+                                                Grid.Column="14"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Yellow"
                                                 Text="Energy: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="14"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="15"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton
                                                 Name="SabotageEnergyThree"
                                                 Grid.Row="0"
@@ -868,22 +922,22 @@
                                       <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                      <ColumnDefinition Width="*" />
-                                      <ColumnDefinition Width="Auto" />
-                                      <ColumnDefinition Width="Auto"/>
-                                      <ColumnDefinition Width="Auto" />
-                                      <ColumnDefinition Width="10" />
-                                      <ColumnDefinition Width="Auto"/>
-                                      <ColumnDefinition Width="Auto" />
-                                      <ColumnDefinition Width="Auto"/>
-                                      <ColumnDefinition Width="10" />
-                                      <ColumnDefinition Width="Auto"/>
-                                      <ColumnDefinition Width="Auto" />
-                                      <ColumnDefinition Width="Auto"/>
-                                      <ColumnDefinition Width="10" />
-                                      <ColumnDefinition Width="Auto"/>
-                                      <ColumnDefinition Width="Auto" />
-                                      <ColumnDefinition Width="Auto"/>                             
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
                                             Grid.Column="0"
@@ -909,19 +963,25 @@
                                         <Image Name="InsigniaFour" Margin="5,0,0,0">
                                         </Image>
                                     </StackPanel>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="1"
+                                                Grid.Column="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightBlue"
                                                 Text="Research: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="3"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="StealResearchFour"
                                                 Grid.Row="0"
@@ -937,19 +997,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnResearchFourClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="5"
+                                                    VerticalAlignment="Center"
+                                                   Margin="0,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="5"
+                                                Grid.Column="6"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightGreen"
                                                 Text="Food: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="6"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                                    Label="{Binding Path=FoodReserves.CurrentValue}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="7"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton Name="SabotageFoodFour"      
                                                     Grid.Row="0"
                                                     Grid.Column="7"
@@ -963,19 +1029,25 @@
                                                     BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                     BorderThickness="2"
                                                     Click = "OnFoodFourClick"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="9"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="9"
+                                                Grid.Column="10"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Orange"
                                                 Text="Industry: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="10"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="11"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="SabotageIndustryFour"
                                                 Grid.Row="0"
@@ -991,19 +1063,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnIndustryFourClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="13"
+                                                    VerticalAlignment="Center"
+                                                   Margin="8,0,2,0"                                                    
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="13"
+                                                Grid.Column="14"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Yellow"
                                                 Text="Energy: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="14"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="15"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton
                                                 Name="SabotageEnergyFour"
                                                 Grid.Row="0"
@@ -1042,15 +1120,15 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
@@ -1079,19 +1157,25 @@
                                         <Image Name="InsigniaFive" Margin="5,0,0,0">
                                         </Image>
                                     </StackPanel>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"                                                   
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="1"
+                                                Grid.Column="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightBlue"
                                                 Text="Research: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="3"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="StealResearchFive"
                                                 Grid.Row="0"
@@ -1107,19 +1191,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnResearchFiveClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="5"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,2,0"                                                  
+                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="5"
+                                                Grid.Column="6"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightGreen"
                                                 Text="Food: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="6"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                                    Label="{Binding Path=FoodReserves.CurrentValue}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="7"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton Name="SabotageFoodFive"      
                                                     Grid.Row="0"
                                                     Grid.Column="7"
@@ -1133,19 +1223,25 @@
                                                     BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                     BorderThickness="2"
                                                     Click = "OnFoodFiveClick"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="9"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="9"
+                                                Grid.Column="10"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Orange"
                                                 Text="Industry: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="10"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="11"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="SabotageIndustryFive"
                                                 Grid.Row="0"
@@ -1161,19 +1257,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnIndustryFiveClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="13"
+                                                    VerticalAlignment="Center"
+                                                  Margin="8,0,2,0"   
+                                                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="13"
+                                                Grid.Column="14"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Yellow"
                                                 Text="Energy: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="14"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="15"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton
                                                 Name="SabotageEnergyFive"
                                                 Grid.Row="0"
@@ -1212,15 +1314,15 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
@@ -1250,19 +1352,25 @@
                                         <Image Name="InsigniaSix" Margin="5,0,0,0">
                                         </Image>
                                     </StackPanel>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"                                                   
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="1"
+                                                Grid.Column="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightBlue"
                                                 Text="Research: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="3"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="StealResearchSix"
                                                 Grid.Row="0"
@@ -1278,19 +1386,25 @@
                                                 BorderThickness="2"
                                                 Click = "OnResearchSixClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="5"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,2,0"                                                
+                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="5"
+                                                Grid.Column="6"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="LightGreen"
                                                 Text="Food: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="6"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                                    Label="{Binding Path=FoodReserves.CurrentValue}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="7"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton Name="SabotageFoodSix"      
                                                     Grid.Row="0"
                                                     Grid.Column="7"
@@ -1304,19 +1418,25 @@
                                                     BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                                                     BorderThickness="2"
                                                     Click = "OnFoodSixClick"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="9"
+                                                    VerticalAlignment="Center"
+                                                   Margin="18,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="9"
+                                                Grid.Column="10"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
                                                 Foreground="Orange"
                                                 Text="Industry: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="10"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="11"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="SabotageIndustrySix"
                                                 Grid.Row="0"
@@ -1332,6 +1452,12 @@
                                                 BorderThickness="2"
                                                 Click = "OnIndustrySixClick"
                                                 Margin="0,0,15,0"/>
+                                    <scc:GameLabel Grid.Row="0"
+                                                    Grid.Column="13"
+                                                    VerticalAlignment="Center"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                   Margin="8,0,2,0"   
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
                                                 Grid.Column="13"
                                                 VerticalAlignment="Center"
@@ -1339,12 +1465,12 @@
                                                 FontWeight="DemiBold"
                                                 Foreground="Yellow"
                                                 Text="Energy: " />
-                                    <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="14"
-                                                    VerticalAlignment="Center"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    Label="{Binding Path=NetEnergy}"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                    <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                           Grid.Row="0"
+                                           Grid.Column="15"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,14,60,14"/>
                                     <scc:GameButton
                                                 Name="SabotageEnergySix"
                                                 Grid.Row="0"
