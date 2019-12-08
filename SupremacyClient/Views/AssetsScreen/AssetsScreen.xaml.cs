@@ -26,32 +26,32 @@ namespace Supremacy.Client.Views
             EmpireExpanderTwo.Visibility = Visibility.Collapsed;
             EmpireExpanderThree.Visibility = Visibility.Collapsed;
             EmpireExpanderFour.Visibility = Visibility.Collapsed;
-            EmpireExpanderFive.Visibility = Visibility.Collapsed;
-            EmpireExpanderSix.Visibility = Visibility.Collapsed;
+           // EmpireExpanderFive.Visibility = Visibility.Collapsed;
+           // EmpireExpanderSix.Visibility = Visibility.Collapsed;
             SabotageEnergyOne.Visibility = Visibility.Collapsed;
             SabotageEnergyTwo.Visibility = Visibility.Collapsed;
             SabotageEnergyThree.Visibility = Visibility.Collapsed;
             SabotageEnergyFour.Visibility = Visibility.Collapsed;
-            SabotageEnergyFive.Visibility = Visibility.Collapsed;
-            SabotageEnergySix.Visibility = Visibility.Collapsed;
+            //SabotageEnergyFive.Visibility = Visibility.Collapsed;
+            //SabotageEnergySix.Visibility = Visibility.Collapsed;
             SabotageFoodOne.Visibility = Visibility.Collapsed;
             SabotageFoodTwo.Visibility = Visibility.Collapsed;
             SabotageFoodThree.Visibility = Visibility.Collapsed;
             SabotageFoodFour.Visibility = Visibility.Collapsed;
-            SabotageFoodFive.Visibility = Visibility.Collapsed;
-            SabotageFoodSix.Visibility = Visibility.Collapsed;
+            //SabotageFoodFive.Visibility = Visibility.Collapsed;
+            //SabotageFoodSix.Visibility = Visibility.Collapsed;
             SabotageIndustryOne.Visibility = Visibility.Collapsed;
             SabotageIndustryTwo.Visibility = Visibility.Collapsed;
             SabotageIndustryThree.Visibility = Visibility.Collapsed;
             SabotageIndustryFour.Visibility = Visibility.Collapsed;
-            SabotageIndustryFive.Visibility = Visibility.Collapsed;
-            SabotageIndustrySix.Visibility = Visibility.Collapsed;
+          //  SabotageIndustryFive.Visibility = Visibility.Collapsed;
+           //SabotageIndustrySix.Visibility = Visibility.Collapsed;
             StealResearchOne.Visibility = Visibility.Collapsed;
             StealResearchTwo.Visibility = Visibility.Collapsed;
             StealResearchThree.Visibility = Visibility.Collapsed;
             StealResearchFour.Visibility = Visibility.Collapsed;
-            StealResearchFive.Visibility = Visibility.Collapsed;
-            StealResearchSix.Visibility = Visibility.Collapsed;
+           // StealResearchFive.Visibility = Visibility.Collapsed;
+            //StealResearchSix.Visibility = Visibility.Collapsed;
             BlameNoOne.Visibility = Visibility.Visible;
             BlameNoOne.IsChecked = true;
             BlameTerrorists.Visibility = Visibility.Collapsed;
@@ -74,8 +74,8 @@ namespace Supremacy.Client.Views
                 bool twoNoDummy = false;
                 bool threeNoDummy = false;
                 bool fourNoDummy = false;
-                bool fiveNoDummy = false;
-                bool sixNoDummy = false;
+                //bool fiveNoDummy = false;
+                //bool sixNoDummy = false;
 
                 var oneCivManager = DesignTimeObjects.GetSpiedCivilizationOne();
                 if (oneCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != oneCivManager)
@@ -97,16 +97,16 @@ namespace Supremacy.Client.Views
                 {
                     fourNoDummy = true;
                 }
-                var fiveCivManager = DesignTimeObjects.GetSpiedCivilizationFive();
-                if (fiveCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
-                {
-                    fiveNoDummy = true;
-                }
-                var sixCivManager = DesignTimeObjects.GetSpiedCivilizationSix();
-                if (sixCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != sixCivManager)
-                {
-                    sixNoDummy = true;
-                }
+                //var fiveCivManager = DesignTimeObjects.GetSpiedCivilizationFive();
+                //if (fiveCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fiveCivManager)
+                //{
+                //    fiveNoDummy = true;
+                //}
+                //var sixCivManager = DesignTimeObjects.GetSpiedCivilizationSix();
+                //if (sixCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != sixCivManager)
+                //{
+                //    sixNoDummy = true;
+                //}
 
                 if (oneNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv))
                 {
@@ -124,14 +124,14 @@ namespace Supremacy.Client.Views
                 {
                     EmpireExpanderFour.Visibility = Visibility.Visible;
                 }
-                if (fiveNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
-                {
-                    EmpireExpanderFive.Visibility = Visibility.Visible;
-                }
-                if (sixNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
-                {
-                    EmpireExpanderSix.Visibility = Visibility.Visible;
-                }
+                //if (fiveNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
+                //{
+                //    EmpireExpanderFive.Visibility = Visibility.Visible;
+                //}
+                //if (sixNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
+                //{
+                //    EmpireExpanderSix.Visibility = Visibility.Visible;
+                //}
                 if (true)
                 {
                     SabotageEnergyOne.Visibility = Visibility.Visible;
@@ -148,14 +148,14 @@ namespace Supremacy.Client.Views
                 {
                     SabotageEnergyFour.Visibility = Visibility.Visible;
                 }
-                if (true)
-                {
-                    SabotageEnergyFive.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageEnergySix.Visibility = Visibility.Visible;
-                }
+                //if (true)
+                //{
+                //    SabotageEnergyFive.Visibility = Visibility.Visible;
+                //}
+                //if (true)
+                //{
+                //    SabotageEnergySix.Visibility = Visibility.Visible;
+                //}
                 if (true)
                 {
                     SabotageFoodOne.Visibility = Visibility.Visible;
@@ -172,14 +172,14 @@ namespace Supremacy.Client.Views
                 {
                     SabotageFoodFour.Visibility = Visibility.Visible;
                 }
-                if (true)
-                {
-                    SabotageFoodFive.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageFoodSix.Visibility = Visibility.Visible;
-                }
+                //if (true)
+                //{
+                //    SabotageFoodFive.Visibility = Visibility.Visible;
+                //}
+                //if (true)
+                //{
+                //    SabotageFoodSix.Visibility = Visibility.Visible;
+                //}
                 if (true)
                 {
                     SabotageIndustryOne.Visibility = Visibility.Visible;
@@ -196,14 +196,14 @@ namespace Supremacy.Client.Views
                 {
                     SabotageIndustryFour.Visibility = Visibility.Visible;
                 }
-                if (true)
-                {
-                    SabotageIndustryFive.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageIndustrySix.Visibility = Visibility.Visible;
-                }
+                //if (true)
+                //{
+                //    SabotageIndustryFive.Visibility = Visibility.Visible;
+                //}
+                //if (true)
+                //{
+                //    SabotageIndustrySix.Visibility = Visibility.Visible;
+                //}
                 if (true)
                 {
                     StealResearchOne.Visibility = Visibility.Visible;
@@ -220,14 +220,14 @@ namespace Supremacy.Client.Views
                 {
                     StealResearchFour.Visibility = Visibility.Visible;
                 }
-                if (true)
-                {
-                    StealResearchFive.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    StealResearchSix.Visibility = Visibility.Visible;
-                }
+                //if (true)
+                //{
+                //    StealResearchFive.Visibility = Visibility.Visible;
+                //}
+                //if (true)
+                //{
+                //    StealResearchSix.Visibility = Visibility.Visible;
+                //}
                 if (true)
                 {
                     BlameTerrorists.Visibility = Visibility.Visible;
@@ -370,14 +370,14 @@ namespace Supremacy.Client.Views
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
-        private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
-        }
-        private void OnEnergySixClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
-        }
+        //private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+        //}
+        //private void OnEnergySixClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+        //}
         private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
@@ -394,14 +394,14 @@ namespace Supremacy.Client.Views
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
-        private void OnFoodFiveClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
-        }
-        private void OnFoodSixClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
-        }
+        //private void OnFoodFiveClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+        //}
+        //private void OnFoodSixClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+        //}
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
@@ -418,14 +418,14 @@ namespace Supremacy.Client.Views
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
-        private void OnResearchFiveClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
-        }
-        private void OnResearchSixClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
-        }
+        //private void OnResearchFiveClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        //}
+        //private void OnResearchSixClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        //}
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
@@ -442,14 +442,14 @@ namespace Supremacy.Client.Views
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
-        private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
-        }
-        private void OnIndustrySixClick(object sender, RoutedEventArgs e)
-        {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
-        }
+        //private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        //}
+        //private void OnIndustrySixClick(object sender, RoutedEventArgs e)
+        //{
+        //    IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        //}
         #endregion
         private void LoadInsignia()
         {
@@ -504,10 +504,10 @@ namespace Supremacy.Client.Views
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedThreeCiv.CivID);
             if (AssetsScreenPresentationModel.SpiedFourCiv != null)
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedFourCiv.CivID);
-            if (AssetsScreenPresentationModel.SpiedFiveCiv != null)
-                CivIDs.Add(AssetsScreenPresentationModel.SpiedFiveCiv.CivID);
-            if (AssetsScreenPresentationModel.SpiedSixCiv != null)
-                CivIDs.Add(AssetsScreenPresentationModel.SpiedSixCiv.CivID);
+            //if (AssetsScreenPresentationModel.SpiedFiveCiv != null)
+            //    CivIDs.Add(AssetsScreenPresentationModel.SpiedFiveCiv.CivID);
+            //if (AssetsScreenPresentationModel.SpiedSixCiv != null)
+            //    CivIDs.Add(AssetsScreenPresentationModel.SpiedSixCiv.CivID);
 
         
             if (CivIDs.Count >= 1)
@@ -626,64 +626,64 @@ namespace Supremacy.Client.Views
                         break;
                 }
             }
-            if (CivIDs.Count >= 5)
-            {
-                switch (CivIDs[4])
-                {
-                    case 0:
-                        InsigniaFive.Source = insigniaFed;
-                        break;
-                    case 1:
-                        InsigniaFive.Source = insigniaTerran;
-                        break;
-                    case 2:
-                        InsigniaFive.Source = insigniaRom;
-                        break;
-                    case 3:
-                        InsigniaFive.Source = insigniaKling;
-                        break;
-                    case 4:
-                        InsigniaFive.Source = insigniaCard;
-                        break;
-                    case 5:
-                        InsigniaFive.Source = insigniaDom;
-                        break;
-                    case 6:
-                        InsigniaFive.Source = insigniaBorg;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            if (CivIDs.Count >= 6)
-            {
-                switch (CivIDs[5])
-                {
-                    case 0:
-                        InsigniaSix.Source = insigniaFed;
-                        break;
-                    case 1:
-                        InsigniaSix.Source = insigniaTerran;
-                        break;
-                    case 2:
-                        InsigniaSix.Source = insigniaRom;
-                        break;
-                    case 3:
-                        InsigniaSix.Source = insigniaKling;
-                        break;
-                    case 4:
-                        InsigniaSix.Source = insigniaCard;
-                        break;
-                    case 5:
-                        InsigniaSix.Source = insigniaDom;
-                        break;
-                    case 6:
-                        InsigniaSix.Source = insigniaBorg;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            //if (CivIDs.Count >= 5)
+            //{
+            //    switch (CivIDs[4])
+            //    {
+            //        case 0:
+            //            InsigniaFive.Source = insigniaFed;
+            //            break;
+            //        case 1:
+            //            InsigniaFive.Source = insigniaTerran;
+            //            break;
+            //        case 2:
+            //            InsigniaFive.Source = insigniaRom;
+            //            break;
+            //        case 3:
+            //            InsigniaFive.Source = insigniaKling;
+            //            break;
+            //        case 4:
+            //            InsigniaFive.Source = insigniaCard;
+            //            break;
+            //        case 5:
+            //            InsigniaFive.Source = insigniaDom;
+            //            break;
+            //        case 6:
+            //            InsigniaFive.Source = insigniaBorg;
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
+            //if (CivIDs.Count >= 6)
+            //{
+            //    switch (CivIDs[5])
+            //    {
+            //        case 0:
+            //            InsigniaSix.Source = insigniaFed;
+            //            break;
+            //        case 1:
+            //            InsigniaSix.Source = insigniaTerran;
+            //            break;
+            //        case 2:
+            //            InsigniaSix.Source = insigniaRom;
+            //            break;
+            //        case 3:
+            //            InsigniaSix.Source = insigniaKling;
+            //            break;
+            //        case 4:
+            //            InsigniaSix.Source = insigniaCard;
+            //            break;
+            //        case 5:
+            //            InsigniaSix.Source = insigniaDom;
+            //            break;
+            //        case 6:
+            //            InsigniaSix.Source = insigniaBorg;
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
         }      
     }
 }

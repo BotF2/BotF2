@@ -1106,7 +1106,7 @@
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
         <!-- Five Expander -->
-                        <Expander x:Name="EmpireExpanderFive" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <!--<Expander x:Name="EmpireExpanderFive" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridFive" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -1140,7 +1140,7 @@
                                             Margin="10,0,0,0"
                                             Background="Black"
                                             BorderBrush="Red" />
-                                    <!-- Espionage Five Section -->
+                                    --><!-- Espionage Five Section --><!--
                                     <StackPanel Grid.Row="0"
                                               Grid.Column="0"
                                               Orientation="Horizontal"
@@ -1291,16 +1291,16 @@
                                                 BorderThickness="2"
                                                 Click = "OnEnergyFiveClick"
                                                 Margin="0,0,15,0"/>
-                                    <!-- Colonies - Five -->
+                                    --><!-- Colonies - Five --><!--
                                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
                                         <v:SpiedFiveColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFiveColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
-                        </Expander>
+                        </Expander>-->
                         <TextBlock Height="5"></TextBlock>
         <!-- Six Expander -->
-                        <Expander x:Name="EmpireExpanderSix" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <!--<Expander x:Name="EmpireExpanderSix" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedSixCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridSix" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -1334,7 +1334,7 @@
                                             Margin="10,0,0,0"
                                             Background="Black"
                                             BorderBrush="Red" />
-                                    <!-- Espionage Six Section -->
+                                    --><!-- Espionage Six Section --><!--
                                     <StackPanel Grid.Row="0"
                                               Grid.Column="0"
                                               Orientation="Horizontal"
@@ -1486,13 +1486,13 @@
                                                 BorderThickness="2"
                                                 Click = "OnEnergySixClick"
                                                 Margin="0,0,15,0"/>
-                                    <!-- Colonies - Six -->
+                                    --><!-- Colonies - Six --><!--
                                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
                                         <v:SpiedSixColonyList Grid.Row="16" DataContext="{Binding Path=SpiedSixColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
-                        </Expander>
+                        </Expander>-->
                         <TextBlock Height="5"></TextBlock>
                     </StackPanel>
                 </ScrollViewer>

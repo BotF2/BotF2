@@ -779,7 +779,7 @@ namespace Supremacy.Universe
                 {
                     empires.Add(civ);
                 }
-                else if (minorRaceFrequency != MinorRaceFrequency.None)
+                else // if (minorRaceFrequency != MinorRaceFrequency.None)
                 {
                     minorRaces.Add(civ);
                 }
@@ -795,8 +795,8 @@ namespace Supremacy.Universe
             var chosenCivs = new List<Civilization>();
 
             bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
-            if (minorRaceFrequency != MinorRaceFrequency.None)
-                PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+            //if (minorRaceFrequency != MinorRaceFrequency.None)
+            PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
 
             var unusedCivs = GameContext.Current.Civilizations.Except(chosenCivs).Select(o => o.CivID).ToHashSet();
 

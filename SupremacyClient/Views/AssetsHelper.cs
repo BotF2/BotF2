@@ -31,8 +31,8 @@ namespace Supremacy.Intelligence
                 Civilization civTwo = new Civilization();
                 Civilization civThree = new Civilization();
                 Civilization civFour = new Civilization(); 
-                Civilization civFive = new Civilization();
-                Civilization civSix = new Civilization();
+                //Civilization civFive = new Civilization();
+                //Civilization civSix = new Civilization();
 
                 if (true)
                 {
@@ -54,16 +54,16 @@ namespace Supremacy.Intelligence
                     try { civFour = DesignTimeObjects.GetSpiedCivilizationFour().Civilization; }
                     catch { civFour = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
                 }
-                if (true)
-                {
-                    try { civFive = DesignTimeObjects.GetSpiedCivilizationFive().Civilization; }
-                    catch { civFive = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
-                }
-                if (true)
-                {
-                    try { civSix = DesignTimeObjects.GetSpiedCivilizationSix().Civilization; }
-                    catch { civSix = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
-                }
+                //if (true)
+                //{
+                //    try { civFive = DesignTimeObjects.GetSpiedCivilizationFive().Civilization; }
+                //    catch { civFive = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                //}
+                //if (true)
+                //{
+                //    try { civSix = DesignTimeObjects.GetSpiedCivilizationSix().Civilization; }
+                //    catch { civSix = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                //}
 
                 if (newSpyCiv == DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization)//helper.)// (Civilization)DesignTimeAppContext.Instance.LocalPlayer)//_localPlayer.Civilization)
                 {
@@ -96,20 +96,20 @@ namespace Supremacy.Intelligence
                             Spied.Add(civFour, newSpiedColonies);
                         }
                     }
-                    if (civFive.CivID !=-1 && civFive == IntelHelper.NewTargetCiv)
-                    {
-                        if (!Spied.Where(o => o.Key == civFive).Any())
-                        {
-                            Spied.Add(civFive, newSpiedColonies);
-                        }
-                    }
-                    if (civSix.CivID != -1 && civSix == IntelHelper.NewTargetCiv)
-                    {
-                        if (!Spied.Where(o => o.Key == civSix).Any())
-                        {
-                            Spied.Add(civSix, newSpiedColonies);
-                        }
-                    }
+                    //if (civFive.CivID !=-1 && civFive == IntelHelper.NewTargetCiv)
+                    //{
+                    //    if (!Spied.Where(o => o.Key == civFive).Any())
+                    //    {
+                    //        Spied.Add(civFive, newSpiedColonies);
+                    //    }
+                    //}
+                    //if (civSix.CivID != -1 && civSix == IntelHelper.NewTargetCiv)
+                    //{
+                    //    if (!Spied.Where(o => o.Key == civSix).Any())
+                    //    {
+                    //        Spied.Add(civSix, newSpiedColonies);
+                    //    }
+                    //}
                     var anySpied = Spied.Where(s => s.Key == targetFromScreen).Any();
                     return anySpied;
                 }

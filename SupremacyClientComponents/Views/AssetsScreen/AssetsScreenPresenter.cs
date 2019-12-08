@@ -42,8 +42,8 @@ namespace Supremacy.Client.Views
             Model.SpiedTwoColonies = null;
             Model.SpiedThreeColonies = null;
             Model.SpiedFourColonies = null;
-            Model.SpiedFiveColonies = null;
-            Model.SpiedSixColonies = null;
+           // Model.SpiedFiveColonies = null;
+            //Model.SpiedSixColonies = null;
         }
 
         #endregion
@@ -62,8 +62,8 @@ namespace Supremacy.Client.Views
             Model.SpiedTwoColonies = DesignTimeAppContext.Instance.SpiedTwoEmpire.Colonies;
             Model.SpiedThreeColonies = DesignTimeAppContext.Instance.SpiedThreeEmpire.Colonies;
             Model.SpiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
-            Model.SpiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
-            Model.SpiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
+          //Model.SpiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
+          //Model.SpiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
         }
         #endregion
     }
