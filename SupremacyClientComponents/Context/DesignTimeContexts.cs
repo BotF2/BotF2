@@ -200,15 +200,15 @@ namespace Supremacy.Client.Context
             get { return DesignTimeObjects.GetSpiedCivilizationFour(); }
         }
 
-        //public CivilizationManager SpiedFiveEmpire
-        //{
-        //    get { return DesignTimeObjects.GetSpiedCivilizationFive(); }
-        //}
+        public CivilizationManager SpiedFiveEmpire
+        {
+            get { return DesignTimeObjects.GetSpiedCivilizationFive(); }
+        }
 
-        //public CivilizationManager SpiedSixEmpire
-        //{
-        //    get { return DesignTimeObjects.GetSpiedCivilizationSix(); }
-        //}
+        public CivilizationManager SpiedSixEmpire
+        {
+            get { return DesignTimeObjects.GetSpiedCivilizationSix(); }
+        }
 
         public IEnumerable<IPlayer> RemotePlayers
         {
@@ -237,8 +237,8 @@ namespace Supremacy.Client.Context
             GetSpiedCivilizationTwo();
             GetSpiedCivilizationThree();
             GetSpiedCivilizationFour();
-            //GetSpiedCivilizationFive();
-           // GetSpiedCivilizationSix();
+            GetSpiedCivilizationFive();
+            GetSpiedCivilizationSix();
         }
         public static List<CivilizationManager> OtherMajorEmpires
         { 
@@ -278,14 +278,14 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == DesignTimeObjects.GetSpiedCivilizationFour().CivilizationID); }
         }
-        //public static IEnumerable<Colony> SpiedFiveColonies
-        //{
-        //    get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == DesignTimeObjects.GetSpiedCivilizationFive().CivilizationID); }
-        //}
-        //public static IEnumerable<Colony> SpiedSixColonies
-        //{
-        //    get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == DesignTimeObjects.GetSpiedCivilizationSix().CivilizationID); }
-        //}
+        public static IEnumerable<Colony> SpiedFiveColonies
+        {
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == DesignTimeObjects.GetSpiedCivilizationFive().CivilizationID); }
+        }
+        public static IEnumerable<Colony> SpiedSixColonies
+        {
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == DesignTimeObjects.GetSpiedCivilizationSix().CivilizationID); }
+        }
 
         public static IEnumerable<StarSystem> StarSystems
         {
@@ -307,19 +307,35 @@ namespace Supremacy.Client.Context
             List<CivilizationManager> spiedCivManagers = new List<CivilizationManager>();
             List<CivilizationManager> empireCivManagers = new List<CivilizationManager>();
 
+            Civilization DummyCiv = new Civilization();
+            DummyCiv.CivID = -1;
+            //DummyCiv.Key = "Dummy";
+            //DummyCiv.HomeSystemName = "DummyLand";
+            
+            CivilizationManager DummyManager= new CivilizationManager(GameContext.Current, DummyCiv);
+            
+            Dictionary<int, CivilizationManager> DummyDictionary = new Dictionary<int, CivilizationManager>();
+            for (int i = 0; i < 7; i++)
+            {
+                DummyDictionary.Add(i, DummyManager);
+            }
             foreach (var aCiv in allCivs)
             {
                 if (aCiv.Civilization.IsEmpire)// && aCiv != localCiv)
                     empireCivManagers.Add(aCiv);
             }
-
             foreach (var aCivManager in empireCivManagers)
             {
+                DummyDictionary.Remove(aCivManager.Civilization.CivID);
+                DummyDictionary.Add(aCivManager.Civilization.CivID, aCivManager);
+            }
+            DummyDictionary.OrderBy(i => i.Key);
 
-                if(aCivManager != localCiv) 
+            foreach (var aCivManager in DummyDictionary.Values)
+            {
+                if(aCivManager != localCiv)
                 spiedCivManagers.Add(aCivManager);
             }
-
             return spiedCivManagers;
         }
         public static CivilizationManager GetCivLocalPlayer()
@@ -343,13 +359,13 @@ namespace Supremacy.Client.Context
         {
             return OtherMajorEmpires[3];
         }
-        //public static CivilizationManager GetSpiedCivilizationFive()
-        //{
-        //    return OtherMajorEmpires[4];
-        //}
-        //public static CivilizationManager GetSpiedCivilizationSix()
-        //{
-        //    return OtherMajorEmpires[5];
-        //}
+        public static CivilizationManager GetSpiedCivilizationFive()
+        {
+            return OtherMajorEmpires[4];
+        }
+        public static CivilizationManager GetSpiedCivilizationSix()
+        {
+            return OtherMajorEmpires[5];
+        }
     }
 }

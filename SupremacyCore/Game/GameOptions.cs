@@ -84,8 +84,8 @@ namespace Supremacy.Game
     /// </summary>
     public enum MinorRaceFrequency : byte
     {
-        
-        Few = 0,
+        None = 0,
+        Few,
         Some,
         Many
     }
