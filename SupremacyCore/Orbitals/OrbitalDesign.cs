@@ -343,6 +343,8 @@ namespace Supremacy.Orbitals
                                      Damage = Number.ParseInt32(element["BeamType"].GetAttribute("Damage").Trim()),
                                      Refire = Number.ParsePercentage(element["BeamType"].GetAttribute("Refire").Trim())
                                  };
+                if (_primaryWeapon.Damage > 0 && _primaryWeapon.Count < 1)   // atm all values between x and x (or 0 for not having this ability)
+                    GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for a beam: Damage = {0}, but Count = {1}", _primaryWeapon.Damage, _primaryWeapon.Count);
                 //_primaryWeaponName = element["BeamType"].GetAttribute("Name").Trim();
             }
             if (element["TorpedoType"] != null)
@@ -353,6 +355,8 @@ namespace Supremacy.Orbitals
                                        Count = Number.ParseInt32(element["TorpedoType"].GetAttribute("Count").Trim()),
                                        Damage = Number.ParseInt32(element["TorpedoType"].GetAttribute("Damage").Trim())
                                    };
+                if (_secondaryWeapon.Damage > 0 && _secondaryWeapon.Count < 1)   // atm all values between x and x (or 0 for not having this ability)
+                    GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for a torpedo: Damage = {0}, but Count = {1}", _secondaryWeapon.Damage, _secondaryWeapon.Count);
                 //_secondaryWeaponName = element["TorpedoType"].GetAttribute("Name").Trim();
             }
 

@@ -129,7 +129,7 @@ namespace Supremacy.Intelligence
             //    system.Name, defenseIntelligence, attackingIntelligence, ratio);
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) is SABOTAGED by {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+                system.Owner, system.Name, spyEmpire.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}",

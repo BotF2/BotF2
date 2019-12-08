@@ -320,7 +320,7 @@ namespace Supremacy.Client.Views
                 var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
                 try  
                 {
-                    GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
@@ -399,7 +399,8 @@ namespace Supremacy.Client.Views
                 }
                 catch
                 {
-                    //
+                    // 
+                    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
                 }
                 return sp1Name;
             }
@@ -408,7 +409,9 @@ namespace Supremacy.Client.Views
         public static Civilization SpiedOneCiv
         {
             get
-            { var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationOne();
+            { 
+                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationOne();
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
         }
@@ -444,6 +447,7 @@ namespace Supremacy.Client.Views
                 catch
                 {
                     //
+                    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedTwoCivName");
                 }
                 return sp2Name;
             }
@@ -488,7 +492,7 @@ namespace Supremacy.Client.Views
                 }
                 catch
                 {
-
+                    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
                 }
                 return sp3Name; 
             }

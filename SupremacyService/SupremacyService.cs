@@ -225,19 +225,26 @@ namespace Supremacy.WCF
             }
             catch (SupremacyException e)
             {
+                SendKeys.SendWait("^e"); // Error.txt  
+                Thread.Sleep(1000);                
+                SendKeys.SendWait("^l"); // Log.txt
+                Thread.Sleep(1000);
+
                 MessageBox.Show("An error occurred while starting a new game - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
                 //_errorService.HandleError(e);
-                SendKeys.Send("^l"); // Log.txt
-                SendKeys.Send("^e"); // Error.txt
+
                 _errorService.HandleError(e);
             }
             catch (Exception e)
             {
+                SendKeys.SendWait("^e"); // Error.txt  
+                Thread.Sleep(1000);
+                SendKeys.SendWait("^l"); // Log.txt
+                Thread.Sleep(1000);
                 MessageBox.Show("An error occurred while starting a new game  - please retry or change Settings like Galaxy Size.");
                 GameLog.Server.General.Error("An error occurred while starting a new game.", e);
-                SendKeys.Send("^l"); // Log.txt
-                SendKeys.Send("^e"); // Error.txt
+
             }
         }
 
