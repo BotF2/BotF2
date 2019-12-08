@@ -418,7 +418,7 @@ namespace Supremacy.Game
             });
 
             if (!errors.IsEmpty)
-                throw new AggregateException(errors);
+                throw new AggregateException(innerExceptions: errors);
 
             // This block is not guaranteed to be safe for parallel execution.
             GameContext.PushThreadContext(game);
