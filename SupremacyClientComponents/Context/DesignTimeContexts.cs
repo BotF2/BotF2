@@ -302,39 +302,30 @@ namespace Supremacy.Client.Context
         }
         private static List<CivilizationManager> SpiedCivManagers()
         {
-            var allCivs = GameContext.Current.CivilizationManagers;
-            var localCiv = GameContext.Current.CivilizationManagers[DesignTimeAppContext.Instance.LocalPlayerEmpire.CivilizationID];
             List<CivilizationManager> spiedCivManagers = new List<CivilizationManager>();
-            List<CivilizationManager> empireCivManagers = new List<CivilizationManager>();
 
-            Civilization DummyCiv = new Civilization();
-            DummyCiv.CivID = -1;
-            //DummyCiv.Key = "Dummy";
-            //DummyCiv.HomeSystemName = "DummyLand";
-            
-            CivilizationManager DummyManager= new CivilizationManager(GameContext.Current, DummyCiv);
-            
-            Dictionary<int, CivilizationManager> DummyDictionary = new Dictionary<int, CivilizationManager>();
-            for (int i = 0; i < 7; i++)
-            {
-                DummyDictionary.Add(i, DummyManager);
-            }
-            foreach (var aCiv in allCivs)
-            {
-                if (aCiv.Civilization.IsEmpire)// && aCiv != localCiv)
-                    empireCivManagers.Add(aCiv);
-            }
-            foreach (var aCivManager in empireCivManagers)
-            {
-                DummyDictionary.Remove(aCivManager.Civilization.CivID);
-                DummyDictionary.Add(aCivManager.Civilization.CivID, aCivManager);
-            }
-            DummyDictionary.OrderBy(i => i.Key);
+            spiedCivManagers.Clear();
 
-            foreach (var aCivManager in DummyDictionary.Values)
+            int _civIDinGame = -1;
+
+            try { _civIDinGame = GameContext.Current.CivilizationManagers[6].CivilizationID; } catch { _civIDinGame = 0; }
+            try { _civIDinGame = GameContext.Current.CivilizationManagers[5].CivilizationID; } catch { _civIDinGame = 0; }
+            try { _civIDinGame = GameContext.Current.CivilizationManagers[4].CivilizationID; } catch { _civIDinGame = 0; }
+            try { _civIDinGame = GameContext.Current.CivilizationManagers[3].CivilizationID; } catch { _civIDinGame = 0; }
+            try { _civIDinGame = GameContext.Current.CivilizationManagers[2].CivilizationID; } catch { _civIDinGame = 0; }
+            try { _civIDinGame = GameContext.Current.CivilizationManagers[1].CivilizationID; } catch { _civIDinGame = 0; }
+            try { _civIDinGame = GameContext.Current.CivilizationManagers[0].CivilizationID; } catch { _civIDinGame = 1; }
+
+            //GameLog.Core.Intel.DebugFormat("_civIDinGame: {0} is available", _civIDinGame);
+
+            while (spiedCivManagers.Count < 7)
             {
-                if(aCivManager != localCiv)
-                spiedCivManagers.Add(aCivManager);
+                try { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[0]); } catch { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[_civIDinGame]); }
+                try { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[1]); } catch { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[_civIDinGame]); }
+                try { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[2]); } catch { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[_civIDinGame]); }
+                try { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[3]); } catch { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[_civIDinGame]); }
+                try { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[4]); } catch { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[_civIDinGame]); }
+                try { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[5]); } catch { spiedCivManagers.Add(GameContext.Current.CivilizationManagers[_civIDinGame]); }
             }
             return spiedCivManagers;
         }

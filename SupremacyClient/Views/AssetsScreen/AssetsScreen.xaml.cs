@@ -1,15 +1,14 @@
 ﻿using Supremacy.Client.Context;
-using Supremacy.Diplomacy;
-using Supremacy.Economy;
-using Supremacy.Entities;
-using Supremacy.Game;
 using Supremacy.Intelligence;
-using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation.Peers;
+
+using System.Windows.Media.Imaging;
 
 namespace Supremacy.Client.Views
 {
@@ -18,8 +17,9 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
+        private List<int> _loopingCivIDs;
         public AssetsScreen()
-        {  
+        {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
             EmpireExpanderOne.Visibility = Visibility.Collapsed;
@@ -28,15 +28,45 @@ namespace Supremacy.Client.Views
             EmpireExpanderFour.Visibility = Visibility.Collapsed;
             EmpireExpanderFive.Visibility = Visibility.Collapsed;
             EmpireExpanderSix.Visibility = Visibility.Collapsed;
-            //SabotageEngeryOne.Visibility = Visibility.Collapsed;
-            //SabotageEngeryTwo.Visibility = Visibility.Collapsed;
-            //SabotageEngeryThere.Visibility = Visibility.Collapsed;
-            SabotageEngeryFour.Visibility = Visibility.Collapsed;
-            //SabotageEngeryFive.Visibility = Visibility.Collapsed;
-            //SabotageEngerySix.Visibility = Visibility.Collapsed;
+            SabotageEnergyOne.Visibility = Visibility.Collapsed;
+            SabotageEnergyTwo.Visibility = Visibility.Collapsed;
+            SabotageEnergyThree.Visibility = Visibility.Collapsed;
+            SabotageEnergyFour.Visibility = Visibility.Collapsed;
+            SabotageEnergyFive.Visibility = Visibility.Collapsed;
+            SabotageEnergySix.Visibility = Visibility.Collapsed;
+            SabotageFoodOne.Visibility = Visibility.Collapsed;
+            SabotageFoodTwo.Visibility = Visibility.Collapsed;
+            SabotageFoodThree.Visibility = Visibility.Collapsed;
+            SabotageFoodFour.Visibility = Visibility.Collapsed;
+            SabotageFoodFive.Visibility = Visibility.Collapsed;
+            SabotageFoodSix.Visibility = Visibility.Collapsed;
+            SabotageIndustryOne.Visibility = Visibility.Collapsed;
+            SabotageIndustryTwo.Visibility = Visibility.Collapsed;
+            SabotageIndustryThree.Visibility = Visibility.Collapsed;
+            SabotageIndustryFour.Visibility = Visibility.Collapsed;
+            SabotageIndustryFive.Visibility = Visibility.Collapsed;
+            SabotageIndustrySix.Visibility = Visibility.Collapsed;
+            StealResearchOne.Visibility = Visibility.Collapsed;
+            StealResearchTwo.Visibility = Visibility.Collapsed;
+            StealResearchThree.Visibility = Visibility.Collapsed;
+            StealResearchFour.Visibility = Visibility.Collapsed;
+            StealResearchFive.Visibility = Visibility.Collapsed;
+            StealResearchSix.Visibility = Visibility.Collapsed;
+            BlameNoOne.Visibility = Visibility.Visible;
+            BlameNoOne.IsChecked = true;
+            BlameTerrorists.Visibility = Visibility.Collapsed;
+            BlameFederation.Visibility = Visibility.Collapsed;
+            BlameTerranEmpire.Visibility = Visibility.Collapsed;
+            BlameRomulans.Visibility = Visibility.Collapsed;
+            BlameKlingons.Visibility = Visibility.Collapsed;
+            BlameCardassians.Visibility = Visibility.Collapsed;
+            BlameDominion.Visibility = Visibility.Collapsed;
+            BlameBorg.Visibility = Visibility.Collapsed;
+            LoadInsignia();
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            //LoadInsignia();
             if (IsVisible)
             {
                 ResumeAnimations();
@@ -56,7 +86,7 @@ namespace Supremacy.Client.Views
                 if (twoCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != twoCivManager)
                 {
                     twoNoDummy = true;
-                }    
+                }
                 var threeCivManager = DesignTimeObjects.GetSpiedCivilizationThree();
                 if (threeCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != threeCivManager)
                 {
@@ -104,7 +134,131 @@ namespace Supremacy.Client.Views
                 }
                 if (true)
                 {
-                    SabotageEngeryFour.Visibility = Visibility.Visible;
+                    SabotageEnergyOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergyTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergyThree.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergyFour.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergyFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageEnergySix.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodThree.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodFour.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageFoodSix.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustryOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustryTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustryThree.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustryFour.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustryFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    SabotageIndustrySix.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchOne.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchTwo.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchThree.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchFour.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchFive.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    StealResearchSix.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameTerrorists.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameFederation.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameTerranEmpire.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameRomulans.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameKlingons.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameCardassians.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameDominion.Visibility = Visibility.Visible;
+                }
+                if (true)
+                {
+                    BlameBorg.Visibility = Visibility.Visible;
                 }
             }
             else
@@ -198,80 +352,338 @@ namespace Supremacy.Client.Views
         {
             StopAnimations();
         }
-        private void OnButtonClick(object sender, RoutedEventArgs e)
+        #endregion
+        #region OnButtonClicks
+        private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
-            SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+        }
+        private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+        }
+        private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+        }
+        private void OnEnergyFourClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+        }
+        private void OnEnergySixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+        }
+        private void OnFoodOneClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+        }
+        private void OnFoodTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+        }
+        private void OnFoodThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+        }
+        private void OnFoodFourClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnFoodFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+        }
+        private void OnFoodSixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+        }
+        private void OnResearchOneClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchFourClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnResearchSixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryOneClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryFourClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+        }
+        private void OnIndustrySixClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
         }
         #endregion
-        public void SabotageEnergy(Colony colony, Civilization civ)
+        private void LoadInsignia()
         {
-            var system = colony.System;
-            var spyEmpire = IntelHelper.NewSpyCiv;
-            if (spyEmpire == null)
-                return;
+            BitmapImage insigniaFed = new BitmapImage();
+            var uriFed = new Uri("vfs:///Resources/Images/Insignias/FEDERATION.png");
+            insigniaFed.BeginInit();
+            insigniaFed.UriSource = uriFed;
+            insigniaFed.EndInit();
 
-            if (colony == null)
-                return;
+            BitmapImage insigniaTerran = new BitmapImage();
+            var uriTerran = new Uri("vfs:///Resources/Images/Insignias/TERRANEMPIRE.png");
+            insigniaTerran.BeginInit();
+            insigniaTerran.UriSource = uriTerran;
+            insigniaTerran.EndInit();
 
-            bool ownedByPlayer = (colony.OwnerID == spyEmpire.CivID);
-            if (ownedByPlayer)
-                return;
+            BitmapImage insigniaRom = new BitmapImage();
+            var uriRom = new Uri("vfs:///Resources/Images/Insignias/ROMULANS.png");
+            insigniaRom.BeginInit();
+            insigniaRom.UriSource = uriRom;
+            insigniaRom.EndInit();
 
-            //private static void CreateSabotage(Civilization civ, StarSystem system)
-            //{
-            //var sabotagedCiv = GameContext.Current.CivilizationManagers[colony.Owner].Colonies;
-            //var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+            BitmapImage insigniaKling = new BitmapImage();
+            var uriKling = new Uri("vfs:///Resources/Images/Insignias/KLINGONS.png");
+            insigniaKling.BeginInit();
+            insigniaKling.UriSource = uriKling;
+            insigniaKling.EndInit();
 
-            int defenseIntelligence = GameContext.Current.CivilizationManagers[colony.System.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
-            if (defenseIntelligence - 1 < 0.1)
-                defenseIntelligence = 2;
+            BitmapImage insigniaCard = new BitmapImage();
+            var uriCard = new Uri("vfs:///Resources/Images/Insignias/CARDASSIANS.png");
+            insigniaCard.BeginInit();
+            insigniaCard.UriSource = uriCard;
+            insigniaCard.EndInit();
 
-            //int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
-            //if (attackingIntelligence - 1 < 0.1)
-            // var   attackingIntelligence = 100 * ;
+            BitmapImage insigniaDom = new BitmapImage();
+            var uriDom = new Uri("vfs:///Resources/Images/Insignias/DOMINION.png");
+            insigniaDom.BeginInit();
+            insigniaDom.UriSource = uriDom;
+            insigniaDom.EndInit();
 
-            //int ratio = attackingIntelligence / defenseIntelligence;
-            ////max ratio for no exceeding gaining points
-            //if (ratio > 10)
-            int ratio = 2;
+            BitmapImage insigniaBorg = new BitmapImage();
+            var uriBorg = new Uri("vfs:///Resources/Images/Insignias/BORG.png");
+            insigniaBorg.BeginInit();
+            insigniaBorg.UriSource = uriBorg;
+            insigniaBorg.EndInit();
 
-            //GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SABOTAGED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-            //    system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+            List<int> CivIDs = new List<int>();
+            if (AssetsScreenPresentationModel.SpiedOneCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedOneCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedTwoCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedTwoCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedThreeCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedThreeCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedFourCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedFourCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedFiveCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedFiveCiv.CivID);
+            if (AssetsScreenPresentationModel.SpiedSixCiv != null)
+                CivIDs.Add(AssetsScreenPresentationModel.SpiedSixCiv.CivID);
 
-
-            GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (sabotaged): Energy=? out of facilities={3}, in total={4}",
-                system.Owner, system.Name, system.Location,
-                //colony.GetEnergyUsage(),
-                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
-                system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            GameLog.Core.Intel.DebugFormat("Sabotage Energy to {0}: TotalEnergyFacilities before={1}",
-                system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
-
-            //Effect of sabatoge
-            int removeEnergyFacilities = 0;
-            if (colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+        
+            if (CivIDs.Count >= 1)
             {
-                removeEnergyFacilities = 1;
-                colony.RemoveFacilities(ProductionCategory.Energy, 1);
+                switch (CivIDs[0])
+                {
+                    case 0:
+                        InsigniaOne.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaOne.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaOne.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaOne.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaOne.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaOne.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaOne.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            //if ratio > 2 than remove one more  EnergyFacility
-            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            //{
-            //    removeEnergyFacilities = 3;  //  2 and one from before
-            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
-            //}
-
-            // if ratio > 3 than remove one more  EnergyFacility
-            //if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            //{
-            //    removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-            //    system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
-            //}
-
-            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
-            // civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
-
-        }
-    } 
+            if (CivIDs.Count >= 2)
+            {
+                switch (CivIDs[1])
+                {
+                    case 0:
+                        InsigniaTwo.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaTwo.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaTwo.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaTwo.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaTwo.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaTwo.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaTwo.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 3)
+            {
+                switch (CivIDs[2])
+                {
+                    case 0:
+                        InsigniaThree.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaThree.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaThree.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaThree.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaThree.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaThree.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaThree.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 4)
+            {
+                switch (CivIDs[3])
+                {
+                    case 0:
+                        InsigniaFour.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaFour.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaFour.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaFour.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaFour.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaFour.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaFour.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 5)
+            {
+                switch (CivIDs[4])
+                {
+                    case 0:
+                        InsigniaFive.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaFive.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaFive.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaFive.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaFive.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaFive.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaFive.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (CivIDs.Count >= 6)
+            {
+                switch (CivIDs[5])
+                {
+                    case 0:
+                        InsigniaSix.Source = insigniaFed;
+                        break;
+                    case 1:
+                        InsigniaSix.Source = insigniaTerran;
+                        break;
+                    case 2:
+                        InsigniaSix.Source = insigniaRom;
+                        break;
+                    case 3:
+                        InsigniaSix.Source = insigniaKling;
+                        break;
+                    case 4:
+                        InsigniaSix.Source = insigniaCard;
+                        break;
+                    case 5:
+                        InsigniaSix.Source = insigniaDom;
+                        break;
+                    case 6:
+                        InsigniaSix.Source = insigniaBorg;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }      
+    }
 }
