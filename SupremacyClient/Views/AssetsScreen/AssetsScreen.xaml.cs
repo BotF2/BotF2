@@ -66,6 +66,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            //LoadInsignia();
             if (IsVisible)
             {
                 ResumeAnimations();
@@ -499,9 +500,9 @@ namespace Supremacy.Client.Views
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedOneCiv.CivID);
             if (AssetsScreenPresentationModel.SpiedTwoCiv != null)
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedTwoCiv.CivID);
-            if (AssetsScreenPresentationModel.SpiedOneCiv != null)
+            if (AssetsScreenPresentationModel.SpiedThreeCiv != null)
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedThreeCiv.CivID);
-            if (AssetsScreenPresentationModel.SpiedOneCiv != null)
+            if (AssetsScreenPresentationModel.SpiedFourCiv != null)
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedFourCiv.CivID);
             if (AssetsScreenPresentationModel.SpiedFiveCiv != null)
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedFiveCiv.CivID);
