@@ -74,7 +74,7 @@ namespace Supremacy.Client
             }
 
             object v = _ = Application.Current.Dispatcher.Invoke(
-                DispatcherPriority.Background,
+                priority: DispatcherPriority.Background,
                 (Action)
                 (() =>
                 {
