@@ -34,44 +34,56 @@ namespace Supremacy.Intelligence
                 Civilization civFive = new Civilization();
                 Civilization civSix = new Civilization();
 
-                if (true)
+                Civilization civLocalPlayer = DesignTimeObjects.GetCivLocalPlayer().Civilization; 
+
+                //if (true)
                 {
                     try { civOne = DesignTimeObjects.GetSpiedCivilizationOne().Civilization; }
-                    catch { civOne = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                    catch { civOne = civLocalPlayer; }
                 }
-                if (true)
+                //if (true)
                 {
                     try { civTwo = DesignTimeObjects.GetSpiedCivilizationTwo().Civilization; }
-                    catch { civTwo = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                    catch { civTwo = civLocalPlayer; }
                 }
-                if (true)
+                //if (true)
                 {
                     try { civThree = DesignTimeObjects.GetSpiedCivilizationThree().Civilization; }
-                    catch { civThree = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                    catch { civThree = civLocalPlayer; }
                 }
-                if (true)
+                //if (true)
                 {
                     try { civFour = DesignTimeObjects.GetSpiedCivilizationFour().Civilization; }
-                    catch { civFour = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                    catch { civFour = civLocalPlayer; }
                 }
-                if (true)
+                //if (true)
                 {
                     try { civFive = DesignTimeObjects.GetSpiedCivilizationFive().Civilization; }
-                    catch { civFive = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                    catch { civFive = civLocalPlayer; }
                 }
-                if (true)
+                //if (true)
                 {
                     try { civSix = DesignTimeObjects.GetSpiedCivilizationSix().Civilization; }
-                    catch { civSix = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
+                    catch { civSix = civLocalPlayer; }
                 }
+
+                GameLog.Client.UI.DebugFormat("Civs are populated .... ");
 
                 if (newSpyCiv == DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization)
                 {
+                    GameLog.Client.UI.DebugFormat("building up the screen stuff for the local player .... ");
                     if (civOne == IntelHelper.NewTargetCiv) //civOne.CivID != -1 && 
                     {
+                        GameLog.Client.UI.DebugFormat("building up spy report for civOne = {0} .... ", civOne.Key);
                         if (!Spied.Where(o => o.Key == civOne).Any())
                         {
+                            GameLog.Client.UI.DebugFormat("before adding all colonies of civOne = {0} .... ", civOne.Key);
                             Spied.Add(civOne, newSpiedColonies);
+                            //GameLog.Client.UI.DebugFormat("before adding all colonies of civOne = {0} .... ", civOne.Key);
+                            foreach (var col in newSpiedColonies)
+                            {
+                                GameLog.Client.UI.DebugFormat("before adding all colony {0} for spiedcolonies of civOne = {1} .... ", civOne.Key, col.Name);
+                            }
                         }
                     }
                     if (civTwo == IntelHelper.NewTargetCiv)

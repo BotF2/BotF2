@@ -71,168 +71,87 @@ namespace Supremacy.Client.Views
             if (IsVisible)
             {
                 ResumeAnimations();
-                //bool oneNoDummy = false;
-                //bool twoNoDummy = false;
-                //bool threeNoDummy = false;
-                //bool fourNoDummy = false;
-                //bool fiveNoDummy = false;
-                //bool sixNoDummy = false;
 
-                //var oneCivManager = DesignTimeObjects.GetSpiedCivilizationOne();
-                //if (oneCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != oneCivManager)
-                //{
-                //    oneNoDummy = true;
-                //}
-                //var twoCivManager = DesignTimeObjects.GetSpiedCivilizationTwo();
-                //if (twoCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != twoCivManager)
-                //{
-                //    twoNoDummy = true;
-                //}
-                //var threeCivManager = DesignTimeObjects.GetSpiedCivilizationThree();
-                //if (threeCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != threeCivManager)
-                //{
-                //    threeNoDummy = true;
-                //}
-                //var fourCivManager = DesignTimeObjects.GetSpiedCivilizationFour();
-                //if (fourCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
-                //{
-                //    fourNoDummy = true;
-                //}
-                //var fiveCivManager = DesignTimeObjects.GetSpiedCivilizationFive();
-                //if (fiveCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
-                //{
-                //    fiveNoDummy = true;
-                //}
-                //var sixCivManager = DesignTimeObjects.GetSpiedCivilizationSix();
-                //if (sixCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != sixCivManager)
-                //{
-                //    sixNoDummy = true;
-                //}
+                Civilization civLocalPlayer = AssetsScreenPresentationModel.Local;
 
-                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv)) //oneNoDummy && 
+                GameLog.Client.UI.DebugFormat("begin of checking visible");
+
+                if (AssetsScreenPresentationModel.SpiedOneCiv != civLocalPlayer)
+                    if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv)) //oneNoDummy && 
                 {
                     EmpireExpanderOne.Visibility = Visibility.Visible;
-                }
-                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedTwoCiv))
-                {
-                    EmpireExpanderTwo.Visibility = Visibility.Visible;
-                }
-                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedThreeCiv))
-                {
-                    EmpireExpanderThree.Visibility = Visibility.Visible;
-                }
-                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFourCiv))
-                {
-                    EmpireExpanderFour.Visibility = Visibility.Visible;
-                }
-                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
-                {
-                    EmpireExpanderFive.Visibility = Visibility.Visible;
-                }
-                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
-                {
-                    EmpireExpanderSix.Visibility = Visibility.Visible;
-                }
-                if (true);
-                {
+
                     SabotageEnergyOne.Visibility = Visibility.Visible;
-                }
-                if (true);
-                {
-                    SabotageEnergyTwo.Visibility = Visibility.Visible;
-                }
-                if (true);
-                {
-                    SabotageEnergyThree.Visibility = Visibility.Visible;
-                }
-                if (true);
-                {
-                    SabotageEnergyFour.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageEnergyFive.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageEnergySix.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
                     SabotageFoodOne.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageFoodTwo.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageFoodThree.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageFoodFour.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageFoodFive.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageFoodSix.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
                     SabotageIndustryOne.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageIndustryTwo.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageIndustryThree.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageIndustryFour.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageIndustryFive.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
-                    SabotageIndustrySix.Visibility = Visibility.Visible;
-                }
-                if (true)
-                {
                     StealResearchOne.Visibility = Visibility.Visible;
                 }
-                if (true)
+                GameLog.Client.UI.DebugFormat("empire ONE done of checking visible .... ");
+                if (AssetsScreenPresentationModel.SpiedTwoCiv != civLocalPlayer)
+                    if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedTwoCiv))
                 {
+                    EmpireExpanderTwo.Visibility = Visibility.Visible;
+
+                    SabotageEnergyTwo.Visibility = Visibility.Visible;
+                    SabotageFoodTwo.Visibility = Visibility.Visible;
+                    SabotageIndustryTwo.Visibility = Visibility.Visible;
                     StealResearchTwo.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (AssetsScreenPresentationModel.SpiedThreeCiv != civLocalPlayer)
+                    if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedThreeCiv))
                 {
+                    EmpireExpanderThree.Visibility = Visibility.Visible;
+
+                    SabotageEnergyThree.Visibility = Visibility.Visible;
+                    SabotageFoodThree.Visibility = Visibility.Visible;
+                    SabotageIndustryThree.Visibility = Visibility.Visible;
                     StealResearchThree.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (AssetsScreenPresentationModel.SpiedFourCiv != civLocalPlayer)
+                    if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFourCiv))
                 {
+                    EmpireExpanderFour.Visibility = Visibility.Visible;
+
+                    SabotageEnergyFour.Visibility = Visibility.Visible;
+                    SabotageFoodFour.Visibility = Visibility.Visible;
+                    SabotageIndustryFour.Visibility = Visibility.Visible;
                     StealResearchFour.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (AssetsScreenPresentationModel.SpiedFiveCiv != civLocalPlayer)
+                    if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
                 {
+                    EmpireExpanderFive.Visibility = Visibility.Visible;
+
+                    SabotageEnergyFive.Visibility = Visibility.Visible;
+                    SabotageFoodFive.Visibility = Visibility.Visible;
+                    SabotageIndustryFive.Visibility = Visibility.Visible;
                     StealResearchFive.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (AssetsScreenPresentationModel.SpiedSixCiv != civLocalPlayer)
+                    if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
                 {
+                    EmpireExpanderSix.Visibility = Visibility.Visible;
+
+                    SabotageEnergySix.Visibility = Visibility.Visible;
+                    SabotageFoodSix.Visibility = Visibility.Visible;
+                    SabotageIndustrySix.Visibility = Visibility.Visible;
                     StealResearchSix.Visibility = Visibility.Visible;
                 }
 
+                //GameLog.Client.UI.DebugFormat("in the middle of checking visible .... ");
+
+                //if (true);
+                //{
+                //    SabotageEnergyOne.Visibility = Visibility.Visible;
+                //}
+
+                GameLog.Client.UI.DebugFormat("end   of checking visible");
+
                 Dictionary<int, Civilization> sevenCivs = new Dictionary<int, Civilization>();
-                int index = 0; 
-                foreach (var civInDictionary in GameContext.Current.Civilizations)
+                int index = 0;
+                //var empireList = GameContext.Current.Civilizations.Select(o => o.CivilizationType == CivilizationType.Empire);
+                foreach (var civInDictionary in GameContext.Current.Civilizations) //.Select(o => o.CivilizationType == CivilizationType.Empire).ToArray())
+                    //foreach (var civInDictionary in empireList)
                 {
                     if (civInDictionary.IsEmpire)
                     {
@@ -243,11 +162,13 @@ namespace Supremacy.Client.Views
                         break;
                 }
 
+                GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(0) && AppContext.LocalPlayer.Empire.Key != "FEDERATION" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[0]].IsContactMade())
                 {
                     BlameFederation.Visibility = Visibility.Visible;
                 }
+                GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(1) && AppContext.LocalPlayer.Empire.Key != "TERRANEMPIRE" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[1]].IsContactMade())
                 {
@@ -263,11 +184,13 @@ namespace Supremacy.Client.Views
                 {
                     BlameKlingons.Visibility = Visibility.Visible;
                 }
+                GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(4) && AppContext.LocalPlayer.Empire.Key != "CARDASSIANS" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[4]].IsContactMade())
                 {
                     BlameCardassians.Visibility = Visibility.Visible;
                 }
+                GameLog.Client.UI.DebugFormat("CARD: end   of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(5) && AppContext.LocalPlayer.Empire.Key != "DOMINION" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[5]].IsContactMade())
                 {
