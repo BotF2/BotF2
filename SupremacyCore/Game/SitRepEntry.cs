@@ -1298,6 +1298,16 @@ namespace Supremacy.Game
             get { return _location; }
         }
 
+        //public override SitRepAction Action
+        //{
+        //    get { return SitRepAction.SelectTaskForce; }
+        //}
+
+        //public override object ActionTarget
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location].System; }
+        //}
+
         public override SitRepCategory Categories
         {
             get { return SitRepCategory.Construction; }
@@ -2597,11 +2607,11 @@ namespace Supremacy.Game
     [Serializable]
     public class StarvationSitRepEntry : SitRepEntry
     {
-        private readonly int _systemId;
+        private readonly int _colonyID;
 
-        public StarSystem System
+        public Colony Colony
         {
-            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); } 
+            get { return GameContext.Current.Universe.Get<Colony>(_colonyID); } 
         }
 
         public override SitRepAction Action
@@ -2611,7 +2621,7 @@ namespace Supremacy.Game
 
         public override object ActionTarget
         {
-            get { return System.Colony; }
+            get { return Colony; }
         }
 
         public override SitRepCategory Categories
@@ -2624,7 +2634,7 @@ namespace Supremacy.Game
             get
             {
                 return string.Format(ResourceManager.GetString("SITREP_STARVATION"),
-                    System.Colony.Name);
+                    Colony.Name);
             }
         }
 
@@ -2638,7 +2648,7 @@ namespace Supremacy.Game
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
-            _systemId = System.ObjectID;
+            _colonyID = colony.ObjectID;
         }
     }
 
