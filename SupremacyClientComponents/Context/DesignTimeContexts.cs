@@ -240,7 +240,7 @@ namespace Supremacy.Client.Context
             GetSpiedCivilizationFive();
             GetSpiedCivilizationSix();
         }
-        public static List<CivilizationManager> OtherMajorEmpires
+        public static List<CivilizationManager> SpiedCivEmpires
         { 
             get { return SpiedCivManagers(); }
 
@@ -336,27 +336,27 @@ namespace Supremacy.Client.Context
         public static CivilizationManager GetSpiedCivilizationOne()
         {
             //GameLog.Client.Intel.DebugFormat("otherMajorEmpire[0] id ={0} key ={1}", OtherMajorEmpires[0].CivilizationID);
-            return OtherMajorEmpires[0];
+            return SpiedCivEmpires[0];
         }
         public static CivilizationManager GetSpiedCivilizationTwo()
         {
-            return OtherMajorEmpires[1];
+            return SpiedCivEmpires[1];
         }
         public static CivilizationManager GetSpiedCivilizationThree()
         {
-            return OtherMajorEmpires[2];
+            return SpiedCivEmpires[2];
         }
         public static CivilizationManager GetSpiedCivilizationFour()
         {
-            return OtherMajorEmpires[3];
+            return SpiedCivEmpires[3];
         }
         public static CivilizationManager GetSpiedCivilizationFive()
         {
-            return OtherMajorEmpires[4];
+            return SpiedCivEmpires[4];
         }
         public static CivilizationManager GetSpiedCivilizationSix()
         {
-            return OtherMajorEmpires[5];
+            return SpiedCivEmpires[5];
         }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using Supremacy.Client.Context;
+using Supremacy.Diplomacy;
+using Supremacy.Entities;
+using Supremacy.Game;
 using Supremacy.Intelligence;
 using Supremacy.Utility;
 using System;
@@ -17,7 +20,6 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
-        private List<int> _loopingCivIDs;
         public AssetsScreen()
         {
             InitializeComponent();
@@ -54,7 +56,7 @@ namespace Supremacy.Client.Views
             StealResearchSix.Visibility = Visibility.Collapsed;
             BlameNoOne.Visibility = Visibility.Visible;
             BlameNoOne.IsChecked = true;
-            BlameTerrorists.Visibility = Visibility.Collapsed;
+            BlameTerrorists.Visibility = Visibility.Visible;
             BlameFederation.Visibility = Visibility.Collapsed;
             BlameTerranEmpire.Visibility = Visibility.Collapsed;
             BlameRomulans.Visibility = Visibility.Collapsed;
@@ -66,85 +68,84 @@ namespace Supremacy.Client.Views
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //LoadInsignia();
             if (IsVisible)
             {
                 ResumeAnimations();
-                bool oneNoDummy = false;
-                bool twoNoDummy = false;
-                bool threeNoDummy = false;
-                bool fourNoDummy = false;
-                bool fiveNoDummy = false;
-                bool sixNoDummy = false;
+                //bool oneNoDummy = false;
+                //bool twoNoDummy = false;
+                //bool threeNoDummy = false;
+                //bool fourNoDummy = false;
+                //bool fiveNoDummy = false;
+                //bool sixNoDummy = false;
 
-                var oneCivManager = DesignTimeObjects.GetSpiedCivilizationOne();
-                if (oneCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != oneCivManager)
-                {
-                    oneNoDummy = true;
-                }
-                var twoCivManager = DesignTimeObjects.GetSpiedCivilizationTwo();
-                if (twoCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != twoCivManager)
-                {
-                    twoNoDummy = true;
-                }
-                var threeCivManager = DesignTimeObjects.GetSpiedCivilizationThree();
-                if (threeCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != threeCivManager)
-                {
-                    threeNoDummy = true;
-                }
-                var fourCivManager = DesignTimeObjects.GetSpiedCivilizationFour();
-                if (fourCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
-                {
-                    fourNoDummy = true;
-                }
-                var fiveCivManager = DesignTimeObjects.GetSpiedCivilizationFive();
-                if (fiveCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
-                {
-                    fiveNoDummy = true;
-                }
-                var sixCivManager = DesignTimeObjects.GetSpiedCivilizationSix();
-                if (sixCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != sixCivManager)
-                {
-                    sixNoDummy = true;
-                }
+                //var oneCivManager = DesignTimeObjects.GetSpiedCivilizationOne();
+                //if (oneCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != oneCivManager)
+                //{
+                //    oneNoDummy = true;
+                //}
+                //var twoCivManager = DesignTimeObjects.GetSpiedCivilizationTwo();
+                //if (twoCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != twoCivManager)
+                //{
+                //    twoNoDummy = true;
+                //}
+                //var threeCivManager = DesignTimeObjects.GetSpiedCivilizationThree();
+                //if (threeCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != threeCivManager)
+                //{
+                //    threeNoDummy = true;
+                //}
+                //var fourCivManager = DesignTimeObjects.GetSpiedCivilizationFour();
+                //if (fourCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
+                //{
+                //    fourNoDummy = true;
+                //}
+                //var fiveCivManager = DesignTimeObjects.GetSpiedCivilizationFive();
+                //if (fiveCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != fourCivManager)
+                //{
+                //    fiveNoDummy = true;
+                //}
+                //var sixCivManager = DesignTimeObjects.GetSpiedCivilizationSix();
+                //if (sixCivManager.CivilizationID != -1 && DesignTimeObjects.CivilizationManager != sixCivManager)
+                //{
+                //    sixNoDummy = true;
+                //}
 
-                if (oneNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv))
+                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedOneCiv)) //oneNoDummy && 
                 {
                     EmpireExpanderOne.Visibility = Visibility.Visible;
                 }
-                if (twoNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedTwoCiv))
+                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedTwoCiv))
                 {
                     EmpireExpanderTwo.Visibility = Visibility.Visible;
                 }
-                if (threeNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedThreeCiv))
+                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedThreeCiv))
                 {
                     EmpireExpanderThree.Visibility = Visibility.Visible;
                 }
-                if (fourNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFourCiv))
+                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFourCiv))
                 {
                     EmpireExpanderFour.Visibility = Visibility.Visible;
                 }
-                if (fiveNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
+                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedFiveCiv))
                 {
                     EmpireExpanderFive.Visibility = Visibility.Visible;
                 }
-                if (sixNoDummy && AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
+                if (AssetsHelper.IsSpiedOn(AssetsScreenPresentationModel.SpiedSixCiv))
                 {
                     EmpireExpanderSix.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (true);
                 {
                     SabotageEnergyOne.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (true);
                 {
                     SabotageEnergyTwo.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (true);
                 {
                     SabotageEnergyThree.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (true);
                 {
                     SabotageEnergyFour.Visibility = Visibility.Visible;
                 }
@@ -228,36 +229,55 @@ namespace Supremacy.Client.Views
                 {
                     StealResearchSix.Visibility = Visibility.Visible;
                 }
-                if (true)
+
+                Dictionary<int, Civilization> sevenCivs = new Dictionary<int, Civilization>();
+                int index = 0; 
+                foreach (var civInDictionary in GameContext.Current.Civilizations)
                 {
-                    BlameTerrorists.Visibility = Visibility.Visible;
+                    if (civInDictionary.IsEmpire)
+                    {
+                        sevenCivs.Add(civInDictionary.CivID, civInDictionary);
+                        index++;
+                    }
+                    if (index >= 7)
+                        break;
                 }
-                if (true)
+
+                if (sevenCivs.Keys.Contains(0) && AppContext.LocalPlayer.Empire.Key != "FEDERATION" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[0]].IsContactMade())
                 {
                     BlameFederation.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (sevenCivs.Keys.Contains(1) && AppContext.LocalPlayer.Empire.Key != "TERRANEMPIRE" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[1]].IsContactMade())
                 {
                     BlameTerranEmpire.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (sevenCivs.Keys.Contains(2) && AppContext.LocalPlayer.Empire.Key != "ROMULANS" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[2]].IsContactMade())
                 {
                     BlameRomulans.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (sevenCivs.Keys.Contains(3) && AppContext.LocalPlayer.Empire.Key != "KLINGONS" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[3]].IsContactMade())
                 {
                     BlameKlingons.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (sevenCivs.Keys.Contains(4) && AppContext.LocalPlayer.Empire.Key != "CARDASSIANS" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[4]].IsContactMade())
                 {
                     BlameCardassians.Visibility = Visibility.Visible;
                 }
-                if (true)
+                if (sevenCivs.Keys.Contains(5) && AppContext.LocalPlayer.Empire.Key != "DOMINION" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[5]].IsContactMade())
                 {
                     BlameDominion.Visibility = Visibility.Visible;
                 }
-                if (true)
+
+                if (sevenCivs.Keys.Contains(6) && AppContext.LocalPlayer.Empire.Key != "BORG" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade())
                 {
+                    //GameLog.Client.Intel.DebugFormat("**************fed ={0} borg={1} fed borg is contact made {2}", AssetsScreenPresentationModel.Local.Key, sevenCivs[6].Key, GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade());
                     BlameBorg.Visibility = Visibility.Visible;
                 }
             }

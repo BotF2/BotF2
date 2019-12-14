@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -57,6 +58,7 @@ namespace Supremacy.Client.Views
 
         private void Update()
         {
+            GameLog.Core.UI.DebugFormat("AssetsScreenPresenter Update at line 61");
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
             Model.SpiedOneColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
             Model.SpiedTwoColonies = DesignTimeAppContext.Instance.SpiedTwoEmpire.Colonies;

@@ -225,6 +225,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnColoniesChanged()
         {
+            GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
             ColoniesChanged.Raise(this);
             OnPropertyChanged("Colonies");    
         }

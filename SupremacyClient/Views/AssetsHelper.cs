@@ -65,45 +65,44 @@ namespace Supremacy.Intelligence
                     catch { civSix = DesignTimeObjects.GetCivLocalPlayer().Civilization; }
                 }
 
-                if (newSpyCiv == DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization)//helper.)// (Civilization)DesignTimeAppContext.Instance.LocalPlayer)//_localPlayer.Civilization)
+                if (newSpyCiv == DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization)
                 {
-                    //int[] counter = new int[6] { 0, 0, 0, 0, 0, 0 };
-                    if (civOne.CivID != -1 && civOne == IntelHelper.NewTargetCiv)
+                    if (civOne == IntelHelper.NewTargetCiv) //civOne.CivID != -1 && 
                     {
                         if (!Spied.Where(o => o.Key == civOne).Any())
                         {
                             Spied.Add(civOne, newSpiedColonies);
                         }
                     }
-                    if (civTwo.CivID != -1 && civTwo == IntelHelper.NewTargetCiv)
+                    if (civTwo == IntelHelper.NewTargetCiv)
                     {
                         if (!Spied.Where(o => o.Key == civTwo).Any())
                         {
                             Spied.Add(civTwo, newSpiedColonies);
                         }
                     }
-                    if (civThree.CivID != -1 && civThree == IntelHelper.NewTargetCiv)
+                    if (civThree == IntelHelper.NewTargetCiv)
                     {
                         if (!Spied.Where(o => o.Key == civThree).Any())
                         {
                             Spied.Add(civThree, newSpiedColonies);
                         }
                     }
-                    if (civFour.CivID != -1 && civFour == IntelHelper.NewTargetCiv)
+                    if (civFour == IntelHelper.NewTargetCiv)
                     {
                         if (!Spied.Where(o => o.Key == civFour).Any())
                         {
                             Spied.Add(civFour, newSpiedColonies);
                         }
                     }
-                    if (civFive.CivID !=-1 && civFive == IntelHelper.NewTargetCiv)
+                    if (civFive == IntelHelper.NewTargetCiv)
                     {
                         if (!Spied.Where(o => o.Key == civFive).Any())
                         {
                             Spied.Add(civFive, newSpiedColonies);
                         }
                     }
-                    if (civSix.CivID != -1 && civSix == IntelHelper.NewTargetCiv)
+                    if (civSix == IntelHelper.NewTargetCiv)
                     {
                         if (!Spied.Where(o => o.Key == civSix).Any())
                         {

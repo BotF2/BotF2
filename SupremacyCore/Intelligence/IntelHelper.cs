@@ -32,7 +32,7 @@ namespace Supremacy.Intelligence
         }
 
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
-        {
+        {   GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
@@ -73,7 +73,7 @@ namespace Supremacy.Intelligence
 
         public static void SabotageEnergy(Colony colony, Civilization civ)
         {
-
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageEnergy at line 76");
             var system = colony.System;
             var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
             Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
@@ -177,7 +177,7 @@ namespace Supremacy.Intelligence
 
         public static void SabotageFood(Colony colony, Civilization civ)
         {
-
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageFood at line 180");
             var system = colony.System;
             var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
             Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
@@ -282,7 +282,7 @@ namespace Supremacy.Intelligence
         public static void StealResearch(Colony colony, Civilization civ)
         {
             //GameLog.Core.Intel.DebugFormat("##### StealResearch not implemented yet");
-
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageResearch at line 285");
 
             var system = colony.System;
             var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
@@ -387,6 +387,7 @@ namespace Supremacy.Intelligence
         public static void SabotageIndustry(Colony colony, Civilization civ)
         {
             //GameLog.Core.Intel.DebugFormat("##### Sabotage Industry not implemented yet");
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageIndustry at line 390");
 
             var system = colony.System;
             var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
@@ -445,7 +446,6 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("{1} ({0}) is SABOTAGED by {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
                 system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
-
             GameLog.Core.Intel.DebugFormat("{1} ({0}) at {2} (sabotaged): Industry={3} out of facilities={4}, in total={5}",
                 system.Owner, system.Name, system.Location,
                 system.Colony.NetIndustry,
@@ -477,7 +477,6 @@ namespace Supremacy.Intelligence
                 removeIndustryFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 system.Colony.RemoveFacilities(ProductionCategory.Industry, 1);
             }
-
 
             defense.AdjustCurrent(defenseIntelligence / 3 * -1);
             defense.UpdateAndReset();
