@@ -60,12 +60,13 @@ namespace Supremacy.Client.Views
         {
             GameLog.Core.UI.DebugFormat("AssetsScreenPresenter Update at line 61");
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
-            Model.SpiedOneColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
-            Model.SpiedTwoColonies = DesignTimeAppContext.Instance.SpiedTwoEmpire.Colonies;
-            Model.SpiedThreeColonies = DesignTimeAppContext.Instance.SpiedThreeEmpire.Colonies;
-            Model.SpiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
-            Model.SpiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
-            Model.SpiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
+            //Model.SpiedOneColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
+            Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
+            Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
+            Model.SpiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
+            Model.SpiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
+            Model.SpiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
+            Model.SpiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
         }
         #endregion
     }

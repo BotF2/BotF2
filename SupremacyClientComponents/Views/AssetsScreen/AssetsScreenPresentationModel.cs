@@ -28,12 +28,13 @@ namespace Supremacy.Client.Views
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
            
             _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
-            _spiedOneColonies = DesignTimeAppContext.Instance.SpiedOneEmpire.Colonies;
-            _spiedTwoColonies = DesignTimeAppContext.Instance.SpiedTwoEmpire.Colonies;
-            _spiedThreeColonies = DesignTimeAppContext.Instance.SpiedThreeEmpire.Colonies;
-            _spiedFourColonies = DesignTimeAppContext.Instance.SpiedFourEmpire.Colonies;
-            _spiedFiveColonies = DesignTimeAppContext.Instance.SpiedFiveEmpire.Colonies;
-            _spiedSixColonies = DesignTimeAppContext.Instance.SpiedSixEmpire.Colonies;
+            _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
+            //_spiedOneColonies = DesignTimeAppContext.Instance.SpiedC
+            _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
+            _spiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
+            _spiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
+            _spiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
+            _spiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
         }
 
         #region Colonies Property
@@ -374,7 +375,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.GetSpiedCivilizationOne();
+                var civManager = DesignTimeObjects.SpiedCivOne;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedOneTotalPopulation ={0}", civManager.TotalPopulation);
@@ -396,7 +397,7 @@ namespace Supremacy.Client.Views
                 string sp1Name = "Empty";
                 try
                 {
-                    sp1Name = DesignTimeObjects.GetSpiedCivilizationOne().Civilization.Name;
+                    sp1Name = DesignTimeObjects.SpiedCivOne.Civilization.Name;
                 }
                 catch
                 {
@@ -411,7 +412,7 @@ namespace Supremacy.Client.Views
         {
             get
             { 
-                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationOne();
+                var SpiedCiv = DesignTimeObjects.SpiedCivOne;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
@@ -421,7 +422,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.GetSpiedCivilizationTwo();
+                var civManager = DesignTimeObjects.SpiedCivTwo;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedTwoTotalPopulation ={0}", civManager.TotalPopulation);
@@ -443,7 +444,7 @@ namespace Supremacy.Client.Views
                 string sp2Name = "Empty";
                 try
                 {
-                    sp2Name = DesignTimeObjects.GetSpiedCivilizationTwo().Civilization.Name;
+                    sp2Name = DesignTimeObjects.SpiedCivTwo.Civilization.Name;
                 }
                 catch
                 {
@@ -457,7 +458,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationTwo();
+                var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
                 return SpiedCiv.Civilization;
             }
         }
@@ -466,7 +467,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.GetSpiedCivilizationThree();
+                var civManager = DesignTimeObjects.SpiedCivThree;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedThreeTotalPopulation ={0}", civManager.TotalPopulation);
@@ -489,7 +490,7 @@ namespace Supremacy.Client.Views
                 string sp3Name = "Empty";
                 try
                 {
-                    sp3Name = DesignTimeObjects.GetSpiedCivilizationThree().Civilization.Name;
+                    sp3Name = DesignTimeObjects.SpiedCivThree.Civilization.Name;
                 }
                 catch
                 {
@@ -502,7 +503,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationThree();
+                var SpiedCiv = DesignTimeObjects.SpiedCivThree;
                 return SpiedCiv.Civilization;
             }
         }
@@ -511,7 +512,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.GetSpiedCivilizationFour();
+                var civManager = DesignTimeObjects.SpiedCivFour;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedFourTotalPopulation ={0}", civManager.TotalPopulation);
@@ -533,7 +534,7 @@ namespace Supremacy.Client.Views
                 string sp4Name = "Empty";
                 try
                 {
-                    sp4Name = DesignTimeObjects.GetSpiedCivilizationFour().Civilization.Name;
+                    sp4Name = DesignTimeObjects.SpiedCivFour.Civilization.Name;
                 }
                 catch
                 {
@@ -546,7 +547,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationFour();
+                var SpiedCiv = DesignTimeObjects.SpiedCivFour;
                 return SpiedCiv.Civilization;
             }
         }
@@ -555,7 +556,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.GetSpiedCivilizationFive();
+                var civManager = DesignTimeObjects.SpiedCivFive;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedFiveTotalPopulation ={0}", civManager.TotalPopulation);
@@ -577,7 +578,7 @@ namespace Supremacy.Client.Views
                 string sp5Name = "Empty";
                 try
                 {
-                    sp5Name = DesignTimeObjects.GetSpiedCivilizationFive().Civilization.Name;
+                    sp5Name = DesignTimeObjects.SpiedCivFive.Civilization.Name;
                 }
                 catch
                 {
@@ -590,7 +591,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationFive();
+                var SpiedCiv = DesignTimeObjects.SpiedCivFive;
                 return SpiedCiv.Civilization;
             }
         }
@@ -599,7 +600,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.GetSpiedCivilizationSix();
+                var civManager = DesignTimeObjects.SpiedCivSix;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedSixTotalPopulation ={0}", civManager.TotalPopulation);
@@ -621,7 +622,7 @@ namespace Supremacy.Client.Views
                 string sp6Name = "Empty";
                 try
                 {
-                    sp6Name = DesignTimeObjects.GetSpiedCivilizationSix().Civilization.Name;
+                    sp6Name = DesignTimeObjects.SpiedCivSix.Civilization.Name;
                 }
                 catch
                 {
@@ -634,7 +635,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.GetSpiedCivilizationSix();
+                var SpiedCiv = DesignTimeObjects.SpiedCivSix;
                 return SpiedCiv.Civilization;
             }
         }

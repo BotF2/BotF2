@@ -38,32 +38,32 @@ namespace Supremacy.Intelligence
 
                 //if (true)
                 {
-                    try { civOne = DesignTimeObjects.GetSpiedCivilizationOne().Civilization; }
+                    try { civOne = DesignTimeObjects.SpiedCivOne.Civilization; }
                     catch { civOne = civLocalPlayer; }
                 }
                 //if (true)
                 {
-                    try { civTwo = DesignTimeObjects.GetSpiedCivilizationTwo().Civilization; }
+                    try { civTwo = DesignTimeObjects.SpiedCivTwo.Civilization; }
                     catch { civTwo = civLocalPlayer; }
                 }
                 //if (true)
                 {
-                    try { civThree = DesignTimeObjects.GetSpiedCivilizationThree().Civilization; }
+                    try { civThree = DesignTimeObjects.SpiedCivThree.Civilization; }
                     catch { civThree = civLocalPlayer; }
                 }
                 //if (true)
                 {
-                    try { civFour = DesignTimeObjects.GetSpiedCivilizationFour().Civilization; }
+                    try { civFour = DesignTimeObjects.SpiedCivFour.Civilization; }
                     catch { civFour = civLocalPlayer; }
                 }
                 //if (true)
                 {
-                    try { civFive = DesignTimeObjects.GetSpiedCivilizationFive().Civilization; }
+                    try { civFive = DesignTimeObjects.SpiedCivFive.Civilization; }
                     catch { civFive = civLocalPlayer; }
                 }
                 //if (true)
                 {
-                    try { civSix = DesignTimeObjects.GetSpiedCivilizationSix().Civilization; }
+                    try { civSix = DesignTimeObjects.SpiedCivSix.Civilization; }
                     catch { civSix = civLocalPlayer; }
                 }
 
