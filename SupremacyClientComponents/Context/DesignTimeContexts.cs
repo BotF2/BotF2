@@ -240,40 +240,39 @@ namespace Supremacy.Client.Context
             //GetSpiedCivilizationFive();
             //GetSpiedCivilizationSix();
         }
-        public static List<CivilizationManager> SpiedCivEmpires
+        public static List<CivilizationManager> SpiedCivMangers
         { 
             get { return SpiedCivManagers(); }
 
         }
-
         public static CivilizationManager SpiedCivOne
         {
-            get { return SpiedCivEmpires[0]; }
+            get { return SpiedCivMangers[0]; }
 
         }
         public static CivilizationManager SpiedCivTwo
         {
-            get { return SpiedCivEmpires[1]; }
+            get { return SpiedCivMangers[1]; }
 
         }
         public static CivilizationManager SpiedCivThree
         {
-            get { return SpiedCivEmpires[2]; }
+            get { return SpiedCivMangers[2]; }
 
         }
         public static CivilizationManager SpiedCivFour
         {
-            get { return SpiedCivEmpires[3]; }
+            get { return SpiedCivMangers[3]; }
 
         }
         public static CivilizationManager SpiedCivFive
         {
-            get { return SpiedCivEmpires[4]; }
+            get { return SpiedCivMangers[4]; }
 
         }
         public static CivilizationManager SpiedCivSix
         {
-            get { return SpiedCivEmpires[5]; }
+            get { return SpiedCivMangers[5]; }
 
         }
 
