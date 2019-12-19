@@ -1897,7 +1897,7 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class PlaqueSitRepEntry : SitRepEntry
+    public class PlagueSitRepEntry : SitRepEntry
     {
         private readonly int _colonyID;
 
@@ -1930,7 +1930,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAQUE_HEADER_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAGUE_HEADER_TEXT"),
                     Colony.Name);
             }
         }
@@ -1939,7 +1939,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAQUE_SUMMARY_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAGUE_SUMMARY_TEXT"),
                     Colony.Name);
             }
         }
@@ -1948,7 +1948,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return string.Format(ResourceManager.GetString("PLAQUE_DETAIL_TEXT"),
+                return string.Format(ResourceManager.GetString("PLAGUE_DETAIL_TEXT"),
                     Colony.Name);
             }
         }
@@ -1957,7 +1957,7 @@ namespace Supremacy.Game
         {
             get
             {
-                return "vfs:///Resources/Images/ScriptedEvents/Plaque.png";
+                return "vfs:///Resources/Images/ScriptedEvents/Plague.png";
             }
         }
 
@@ -1966,7 +1966,7 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public PlaqueSitRepEntry(Civilization owner, Colony colony)
+        public PlagueSitRepEntry(Civilization owner, Colony colony)
             : base(owner, SitRepPriority.Yellow)
         {
             if (colony == null)
