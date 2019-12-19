@@ -31,187 +31,6 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
-            //EmpireExpanderOne.Visibility = Visibility.Collapsed;
-            //EmpireExpanderTwo.Visibility = Visibility.Collapsed;
-            //EmpireExpanderThree.Visibility = Visibility.Collapsed;
-            //EmpireExpanderFour.Visibility = Visibility.Collapsed;
-            //EmpireExpanderFive.Visibility = Visibility.Collapsed;
-            //EmpireExpanderSix.Visibility = Visibility.Collapsed;
-            //SabotageEnergyOne.Visibility = Visibility.Collapsed;
-            //SabotageEnergyTwo.Visibility = Visibility.Collapsed;
-            //SabotageEnergyThree.Visibility = Visibility.Collapsed;
-            //SabotageEnergyFour.Visibility = Visibility.Collapsed;
-            //SabotageEnergyFive.Visibility = Visibility.Collapsed;
-            //SabotageEnergySix.Visibility = Visibility.Collapsed;
-            //SabotageFoodOne.Visibility = Visibility.Collapsed;
-            //SabotageFoodTwo.Visibility = Visibility.Collapsed;
-            //SabotageFoodThree.Visibility = Visibility.Collapsed;
-            //SabotageFoodFour.Visibility = Visibility.Collapsed;
-            //SabotageFoodFive.Visibility = Visibility.Collapsed;
-            //SabotageFoodSix.Visibility = Visibility.Collapsed;
-            //SabotageIndustryOne.Visibility = Visibility.Collapsed;
-            //SabotageIndustryTwo.Visibility = Visibility.Collapsed;
-            //SabotageIndustryThree.Visibility = Visibility.Collapsed;
-            //SabotageIndustryFour.Visibility = Visibility.Collapsed;
-            //SabotageIndustryFive.Visibility = Visibility.Collapsed;
-            //SabotageIndustrySix.Visibility = Visibility.Collapsed;
-            //StealResearchOne.Visibility = Visibility.Collapsed;
-            //StealResearchTwo.Visibility = Visibility.Collapsed;
-            //StealResearchThree.Visibility = Visibility.Collapsed;
-            //StealResearchFour.Visibility = Visibility.Collapsed;
-            //StealResearchFive.Visibility = Visibility.Collapsed;
-            //StealResearchSix.Visibility = Visibility.Collapsed;
-
-            //if (!AssetsHelper.IsSpiedOn(SpiedOneCiv))
-            //{
-            //    GameLog.Client.UI.DebugFormat("empire ONE done of checking visible .... ");
-
-            //    EmpireExpanderOne.Visibility = Visibility.Collapsed;
-            //}
-            ////}
-            //else
-            //{
-            //    if (SpiedOneCiv != civLocalPlayer)
-            //        EmpireExpanderOne.Visibility = Visibility.Visible;
-            //    else
-            //    {
-            //        EmpireExpanderOne.Visibility = Visibility.Collapsed;
-            //    }
-
-            //    SabotageEnergyOne.Visibility = Visibility.Visible;
-            //    SabotageFoodOne.Visibility = Visibility.Visible;
-            //    SabotageIndustryOne.Visibility = Visibility.Visible;
-            //    StealResearchOne.Visibility = Visibility.Visible;
-            //}
-
-
-
-            //if (!AssetsHelper.IsSpiedOn(SpiedTwoCiv))
-            //{
-            //    GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... ");
-            //    EmpireExpanderTwo.Visibility = Visibility.Collapsed;
-
-
-            //}
-            //else
-            //{
-            //    if (SpiedTwoCiv != civLocalPlayer)
-            //    {
-            //        EmpireExpanderTwo.Visibility = Visibility.Visible;
-
-            //        SabotageEnergyTwo.Visibility = Visibility.Visible;
-            //        SabotageFoodTwo.Visibility = Visibility.Visible;
-            //        SabotageIndustryTwo.Visibility = Visibility.Visible;
-            //        StealResearchTwo.Visibility = Visibility.Visible;
-            //    }
-
-            //    else
-            //    {
-            //        EmpireExpanderTwo.Visibility = Visibility.Collapsed;
-            //    }
-
-
-            //}
-
-
-            //if (!AssetsHelper.IsSpiedOn(SpiedThreeCiv))
-            //{
-            //    GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... ");
-            //    EmpireExpanderThree.Visibility = Visibility.Collapsed;
-
-            //}
-            //else
-            //{
-            //    if (SpiedThreeCiv != civLocalPlayer)
-            //    {
-            //        EmpireExpanderThree.Visibility = Visibility.Visible;
-
-            //        SabotageEnergyThree.Visibility = Visibility.Visible;
-            //        SabotageFoodThree.Visibility = Visibility.Visible;
-            //        SabotageIndustryThree.Visibility = Visibility.Visible;
-            //        StealResearchThree.Visibility = Visibility.Visible;
-            //    }
-            //    else
-            //    {
-            //        EmpireExpanderThree.Visibility = Visibility.Collapsed;
-            //    }
-
-
-            //}
-
-
-            //if (!AssetsHelper.IsSpiedOn(SpiedFourCiv))
-            //{
-            //    GameLog.Client.UI.DebugFormat("SpiedFourCiv checking visible .... ");
-            //    EmpireExpanderFour.Visibility = Visibility.Collapsed;
-
-            //}
-            //else
-            //{
-            //    if (SpiedFourCiv != civLocalPlayer)
-            //    {
-            //        EmpireExpanderFour.Visibility = Visibility.Visible;
-
-
-            //        SabotageEnergyFour.Visibility = Visibility.Visible;
-            //        SabotageFoodFour.Visibility = Visibility.Visible;
-            //        SabotageIndustryFour.Visibility = Visibility.Visible;
-            //        StealResearchFour.Visibility = Visibility.Visible;
-            //    }
-            //    else
-            //    {
-            //        EmpireExpanderFour.Visibility = Visibility.Collapsed;
-            //    }
-
-            //}
-
-            //if (!AssetsHelper.IsSpiedOn(SpiedFiveCiv))
-            //{
-            //    GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... ");
-            //    EmpireExpanderFive.Visibility = Visibility.Collapsed;
-
-            //}
-
-            //else
-            //{
-            //    if (SpiedFiveCiv != civLocalPlayer)
-            //    {
-            //        EmpireExpanderFive.Visibility = Visibility.Visible;
-
-            //        SabotageEnergyFive.Visibility = Visibility.Visible;
-            //        SabotageFoodFive.Visibility = Visibility.Visible;
-            //        SabotageIndustryFive.Visibility = Visibility.Visible;
-            //        StealResearchFive.Visibility = Visibility.Visible;
-            //    }
-            //    else
-            //    {
-            //        EmpireExpanderFive.Visibility = Visibility.Collapsed;
-            //    }
-            //}
-            //if (!AssetsHelper.IsSpiedOn(SpiedSixCiv))
-            //{
-            //    GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... ");
-
-            //    EmpireExpanderSix.Visibility = Visibility.Collapsed;
-
-            //}
-            //else
-            //{
-            //    if (SpiedSixCiv != civLocalPlayer)
-
-            //    {
-            //        EmpireExpanderSix.Visibility = Visibility.Visible;
-
-            //        SabotageEnergySix.Visibility = Visibility.Visible;
-            //        SabotageFoodSix.Visibility = Visibility.Visible;
-            //        SabotageIndustrySix.Visibility = Visibility.Visible;
-            //        StealResearchSix.Visibility = Visibility.Visible;
-            //    }
-            //    else
-            //    {
-            //        EmpireExpanderSix.Visibility = Visibility.Collapsed;
-            //    }
-            //}
             BlameNoOne.Visibility = Visibility.Visible;
             BlameNoOne.IsChecked = true;
             BlameTerrorists.Visibility = Visibility.Visible;
@@ -229,16 +48,14 @@ namespace Supremacy.Client.Views
             if (IsVisible)
             {
                 ResumeAnimations();
-
                 GameLog.Client.UI.DebugFormat("begin of checking visible");
 
-                if (!AssetsHelper.IsSpiedOn(SpiedOneCiv))
+                if (!AssetsHelper.IsSpiedOne(SpiedOneCiv))
                 {
-                    GameLog.Client.UI.DebugFormat("empire ONE done of checking visible .... ");
-
+                    GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... ");
                     EmpireExpanderOne.Visibility = Visibility.Collapsed;
                 }
-                //}
+
                 else
                 {
                     if (SpiedOneCiv != civLocalPlayer)
@@ -246,22 +63,18 @@ namespace Supremacy.Client.Views
                     else
                     {
                         EmpireExpanderOne.Visibility = Visibility.Collapsed;
-                    }
 
-                    SabotageEnergyOne.Visibility = Visibility.Visible;
-                    SabotageFoodOne.Visibility = Visibility.Visible;
-                    SabotageIndustryOne.Visibility = Visibility.Visible;
-                    StealResearchOne.Visibility = Visibility.Visible;
+                        SabotageEnergyOne.Visibility = Visibility.Visible;
+                        SabotageFoodOne.Visibility = Visibility.Visible;
+                        SabotageIndustryOne.Visibility = Visibility.Visible;
+                        StealResearchOne.Visibility = Visibility.Visible;
+                    }
                 }
 
-
-
-                if (!AssetsHelper.IsSpiedOn(SpiedTwoCiv))
+                if (!AssetsHelper.IsSpiedTwo(SpiedTwoCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... ");
                     EmpireExpanderTwo.Visibility = Visibility.Collapsed;
-
-
                 }
                 else
                 {
@@ -279,12 +92,9 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderTwo.Visibility = Visibility.Collapsed;
                     }
-
-
                 }
 
-
-                if (!AssetsHelper.IsSpiedOn(SpiedThreeCiv))
+                if (!AssetsHelper.IsSpiedThree(SpiedThreeCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... ");
                     EmpireExpanderThree.Visibility = Visibility.Collapsed;
@@ -305,24 +115,18 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderThree.Visibility = Visibility.Collapsed;
                     }
-
-
                 }
 
-
-                if (!AssetsHelper.IsSpiedOn(SpiedFourCiv))
+                if (!AssetsHelper.IsSpiedFour(SpiedFourCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFourCiv checking visible .... ");
                     EmpireExpanderFour.Visibility = Visibility.Collapsed;
-
                 }
                 else
                 {
                     if (SpiedFourCiv != civLocalPlayer)
                     {
                         EmpireExpanderFour.Visibility = Visibility.Visible;
-
-
                         SabotageEnergyFour.Visibility = Visibility.Visible;
                         SabotageFoodFour.Visibility = Visibility.Visible;
                         SabotageIndustryFour.Visibility = Visibility.Visible;
@@ -332,14 +136,12 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderFour.Visibility = Visibility.Collapsed;
                     }
-
                 }
 
-                if (!AssetsHelper.IsSpiedOn(SpiedFiveCiv))
+                if (!AssetsHelper.IsSpiedFive(SpiedFiveCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... ");
                     EmpireExpanderFive.Visibility = Visibility.Collapsed;
-
                 }
 
                 else
@@ -358,12 +160,11 @@ namespace Supremacy.Client.Views
                         EmpireExpanderFive.Visibility = Visibility.Collapsed;
                     }
                 }
-                if (!AssetsHelper.IsSpiedOn(SpiedSixCiv))
+                if (!AssetsHelper.IsSpiedSix(SpiedSixCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... ");
 
                     EmpireExpanderSix.Visibility = Visibility.Collapsed;
-
                 }
                 else
                 {
@@ -381,20 +182,15 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderSix.Visibility = Visibility.Collapsed;
                     }
-
-
                 }
 
                 //GameLog.Client.UI.DebugFormat("in the middle of checking visible .... ");
 
-
-                GameLog.Client.UI.DebugFormat("end   of checking visible");
+                GameLog.Client.UI.DebugFormat("end  of checking visible");
 
                 Dictionary<int, Civilization> sevenCivs = new Dictionary<int, Civilization>();
                 int index = 0;
-                //var empireList = GameContext.Current.Civilizations.Select(o => o.CivilizationType == CivilizationType.Empire);
-                foreach (var civInDictionary in GameContext.Current.Civilizations) //.Select(o => o.CivilizationType == CivilizationType.Empire).ToArray())
-                    //foreach (var civInDictionary in empireList)
+                foreach (var civInDictionary in GameContext.Current.Civilizations) 
                 {
                     if (civInDictionary.IsEmpire)
                     {
@@ -697,7 +493,6 @@ namespace Supremacy.Client.Views
             if (AssetsScreenPresentationModel.SpiedSixCiv != null)
                 CivIDs.Add(AssetsScreenPresentationModel.SpiedSixCiv.CivID);
             GameLog.Client.UI.DebugFormat("Adding SpiedCiv is finished");
-
 
             if (CivIDs.Count >= 1)
             {

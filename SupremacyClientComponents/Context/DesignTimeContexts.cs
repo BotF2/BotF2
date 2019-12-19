@@ -230,16 +230,16 @@ namespace Supremacy.Client.Context
     public static class DesignTimeObjects
     {
 
-        static DesignTimeObjects()
-        {
-            //SpiedCivManagers();
-            //GetSpiedCivilizationOne();
-            //GetSpiedCivilizationTwo();
-            //GetSpiedCivilizationThree();
-            //GetSpiedCivilizationFour();
-            //GetSpiedCivilizationFive();
-            //GetSpiedCivilizationSix();
-        }
+        //static DesignTimeObjects()
+        //{
+        //    //SpiedCivManagers();
+        //    //GetSpiedCivilizationOne();
+        //    //GetSpiedCivilizationTwo();
+        //    //GetSpiedCivilizationThree();
+        //    //GetSpiedCivilizationFour();
+        //    //GetSpiedCivilizationFive();
+        //    //GetSpiedCivilizationSix();
+        //}
         public static List<CivilizationManager> SpiedCivMangers
         { 
             get { return SpiedCivManagers(); }
@@ -365,31 +365,5 @@ namespace Supremacy.Client.Context
         {
             return DesignTimeAppContext.Instance.LocalPlayerEmpire;
         }
-        //public static CivilizationManager GetSpiedCivilizationOne()
-        //{
-        //    GameLog.Client.UI.DebugFormat("SpiedCivEmpires[0] = {0}", SpiedCivEmpires[0]);
-        //    return SpiedCivEmpires[0];
-        //}
-        //public static CivilizationManager GetSpiedCivilizationTwo()
-        //{
-        //    return SpiedCivEmpires[1];
-        //}
-        //public static CivilizationManager GetSpiedCivilizationThree()
-        //{
-        //    return SpiedCivEmpires[2];
-        //}
-        //public static CivilizationManager GetSpiedCivilizationFour()
-        //{
-        //    return SpiedCivEmpires[3];
-        //}
-        //public static CivilizationManager GetSpiedCivilizationFive()
-        //{
-        //    GameLog.Client.UI.DebugFormat("SpiedCivEmpires[0] = {0}", SpiedCivEmpires[0]);
-        //    return SpiedCivEmpires[4];
-        //}
-        //public static CivilizationManager GetSpiedCivilizationSix()
-        //{
-        //    return SpiedCivEmpires[5];
-        //}
     }
 }

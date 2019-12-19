@@ -1,97 +1,133 @@
 ﻿using Supremacy.Client.Context;
-//using Supremacy.Client.Views;
 using Supremacy.Collections;
-//using Supremacy.Diplomacy;
 using Supremacy.Entities;
-//using Supremacy.Game;
 using Supremacy.Universe;
 using Supremacy.Utility;
-//using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Supremacy.Intelligence
 {
     public static class AssetsHelper
-    {  
-        public static Dictionary<Civilization, UniverseObjectList<Colony>> SpiedDictionary = new Dictionary<Civilization, UniverseObjectList<Colony>>();
-        
-        public static bool IsSpiedOn(Civilization targetFromScreen)
+    {
+        static bool alreadyOne = false;
+        static bool alreadyTwo = false;
+        static bool alreadyThree = false;
+        static bool alreadyFour = false;
+        static bool alreadyFive = false;
+        static bool alreadySix = false;
+        public static Civilization NewSpyCiv
         {
-            if (IntelHelper.NewSpyCiv == null)
+            get { return IntelHelper.NewSpyCiv; }
+        }
+        public static Civilization NewTargetCiv
+        {
+            get {return IntelHelper.NewTargetCiv; }
+        }
+        public static UniverseObjectList<Colony> NewSpiedColonies
+        {
+            get { return IntelHelper.NewSpiedColonies; }
+        }
+        public static Civilization CivOne
+        {
+            get { return DesignTimeObjects.SpiedCivMangers[0].Civilization; }
+        }
+        public static Civilization CivTwo
+        {
+            get { return DesignTimeObjects.SpiedCivMangers[1].Civilization; }
+        }
+        public static Civilization CivThree
+        {
+            get { return DesignTimeObjects.SpiedCivMangers[2].Civilization; }
+        }
+        public static Civilization CivFour
+        {
+            get { return DesignTimeObjects.SpiedCivMangers[3].Civilization; }
+        }
+        public static Civilization CivFive
+        {
+            get { return DesignTimeObjects.SpiedCivMangers[4].Civilization; }
+        }
+        public static Civilization CivSix
+        {
+            get { return DesignTimeObjects.SpiedCivMangers[5].Civilization; }
+        }
+
+        public static bool IsSpiedOne(Civilization targetFromScreen)
+        {
+            if (NewSpyCiv == null)
                 return false;
-            else if (true)
-              { 
-                var newSpyCiv = IntelHelper.NewSpyCiv;
-                var newTargetCiv = IntelHelper.NewTargetCiv;
-                var newSpiedColonies = IntelHelper.NewSpiedColonies;
-
-                Civilization civOne = DesignTimeObjects.SpiedCivMangers[0].Civilization;
-                Civilization civTwo = DesignTimeObjects.SpiedCivMangers[1].Civilization;
-                Civilization civThree = DesignTimeObjects.SpiedCivMangers[2].Civilization;
-                Civilization civFour = DesignTimeObjects.SpiedCivMangers[3].Civilization;
-                Civilization civFive = DesignTimeObjects.SpiedCivMangers[4].Civilization;
-                Civilization civSix = DesignTimeObjects.SpiedCivMangers[5].Civilization;
-
-                Civilization civLocalPlayer = DesignTimeObjects.GetCivLocalPlayer().Civilization;
-
-                GameLog.Client.UI.DebugFormat("Civs are populated .... ");
-      
-                if (newSpyCiv == civLocalPlayer)
-                {
-                    GameLog.Client.UI.DebugFormat("building up the screen stuff for the local player .... ");
-                    if (civOne == IntelHelper.NewTargetCiv) //civOne.CivID != -1 && 
-                    {
-                        GameLog.Client.UI.DebugFormat("building up spy report for civOne = {0} .... ", civOne.Key);
-                        if (!SpiedDictionary.Where(o => o.Key == civOne).Any() && civOne != civLocalPlayer)
-                        {
-                            GameLog.Client.UI.DebugFormat("before adding all colonies of civOne = {0} .... ", civOne.Key);
-                            SpiedDictionary.Add(civOne, newSpiedColonies);
-                            //GameLog.Client.UI.DebugFormat("before adding all colonies of civOne = {0} .... ", civOne.Key);
-                            foreach (var col in newSpiedColonies)
-                            {
-                                GameLog.Client.UI.DebugFormat("before adding all colony {0} for spiedcolonies of civOne = {1} .... ", civOne.Key, col.Name);
-                            }
-                        }
-                    }
-                    if (civTwo == IntelHelper.NewTargetCiv)
-                    {
-                        if (!SpiedDictionary.Where(o => o.Key == civTwo).Any() && civTwo != civLocalPlayer)
-                        {
-                            SpiedDictionary.Add(civTwo, newSpiedColonies);
-                        }
-                    }
-                    if (civThree == IntelHelper.NewTargetCiv)
-                    {
-                        if (!SpiedDictionary.Where(o => o.Key == civThree).Any() && civThree != civLocalPlayer)
-                        {
-                            SpiedDictionary.Add(civThree, newSpiedColonies);
-                        }
-                    }
-                    if (civFour == IntelHelper.NewTargetCiv)
-                    {
-                        if (!SpiedDictionary.Where(o => o.Key == civFour).Any() && civFour != civLocalPlayer)
-                        {
-                            SpiedDictionary.Add(civFour, newSpiedColonies);
-                        }
-                    }
-                    if (civFive == IntelHelper.NewTargetCiv)
-                    {
-                        if (!SpiedDictionary.Where(o => o.Key == civFive).Any() && civFive != civLocalPlayer)
-                        {
-                            SpiedDictionary.Add(civFive, newSpiedColonies);
-                        }
-                    }
-                    if (civSix == IntelHelper.NewTargetCiv)
-                    {
-                        if (!SpiedDictionary.Where(o => o.Key == civSix).Any() && civSix != civLocalPlayer)
-                        {
-                            SpiedDictionary.Add(civSix, newSpiedColonies);
-                        }
-                    }
-                    var anySpied = SpiedDictionary.Where(s => s.Key == targetFromScreen).Any();
-                    return anySpied;
-                }
+            else if (alreadyOne)
+                return true;
+            else if (CivOne == NewTargetCiv)
+            {
+                alreadyOne = true;
+                return true;
+            }           
+            return false;
+        }
+        public static bool IsSpiedTwo(Civilization targetFromScreen)
+        {
+            if (NewSpyCiv == null)
+                return false;
+            else if (alreadyTwo)
+                return true;
+            else if (CivTwo == NewTargetCiv)
+            {
+                alreadyTwo = true;
+                return true;
+            }
+            return false;
+        }
+        public static bool IsSpiedThree(Civilization targetFromScreen)
+        {
+            if (NewSpyCiv == null)
+                return false;
+            else if (alreadyThree)
+                return true;
+            else if (CivThree == NewTargetCiv)
+            {
+                alreadyThree = true;
+                return true;
+            }
+            return false;
+        }
+        public static bool IsSpiedFour(Civilization targetFromScreen)
+        {
+            if (NewSpyCiv == null)
+                return false;
+            else if (alreadyFour)
+                return true;
+            else if (CivFour == NewTargetCiv)
+            {
+                alreadyFour = true;
+                return true;
+            }
+            return false;
+        }
+        public static bool IsSpiedFive(Civilization targetFromScreen)
+        {
+            if (NewSpyCiv == null)
+                return false;
+            else if (alreadyFive)
+                return true;
+            else if (CivFive == NewTargetCiv)
+            {
+                alreadyFive = true;
+                return true;
+            }
+            return false;
+        }
+        public static bool IsSpiedSix(Civilization targetFromScreen)
+        {
+            if (NewSpyCiv == null)
+                return false;
+            else if (alreadySix)
+                return true;
+            else if (CivSix == NewTargetCiv)
+            {
+                alreadySix = true;
+                return true;
             }
             return false;
         }

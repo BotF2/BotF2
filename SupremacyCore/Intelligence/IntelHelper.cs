@@ -76,7 +76,9 @@ namespace Supremacy.Intelligence
             GameLog.Core.UI.DebugFormat("IntelHelper SabotageEnergy at line 76");
             var system = colony.System;
             var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
-            Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter defense = new Meter(0,0,0);
+            if (null != GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated)
+            defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             
             var spyEmpire = IntelHelper.NewSpyCiv;
             Meter attack = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
@@ -111,7 +113,7 @@ namespace Supremacy.Intelligence
                 return;
 
 
-            Int32.TryParse(attackedCiv.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
+              Int32.TryParse(attackedCiv.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
                 

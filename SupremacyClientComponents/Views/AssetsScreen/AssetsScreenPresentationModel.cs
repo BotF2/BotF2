@@ -29,7 +29,6 @@ namespace Supremacy.Client.Views
            
             _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
-            //_spiedOneColonies = DesignTimeAppContext.Instance.SpiedC
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             _spiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
             _spiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
