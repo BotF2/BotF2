@@ -1897,7 +1897,7 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    public class PlaqueSitRepEntry : SitRepEntry
+    public class PlagueSitRepEntry : SitRepEntry
     {
         private readonly int _colonyID;
 
@@ -1966,7 +1966,7 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public PlaqueSitRepEntry(Civilization owner, Colony colony)
+        public PlagueSitRepEntry(Civilization owner, Colony colony)
             : base(owner, SitRepPriority.Yellow)
         {
             if (colony == null)
