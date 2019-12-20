@@ -55,19 +55,16 @@ namespace Supremacy.Client.Views
                     GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... ");
                     EmpireExpanderOne.Visibility = Visibility.Collapsed;
                 }
-
                 else
                 {
                     if (SpiedOneCiv != civLocalPlayer)
-                        EmpireExpanderOne.Visibility = Visibility.Visible;
-                    else
                     {
                         EmpireExpanderOne.Visibility = Visibility.Collapsed;
 
-                        SabotageEnergyOne.Visibility = Visibility.Visible;
-                        SabotageFoodOne.Visibility = Visibility.Visible;
-                        SabotageIndustryOne.Visibility = Visibility.Visible;
-                        StealResearchOne.Visibility = Visibility.Visible;
+                        //SabotageEnergyOne.Visibility = Visibility.Visible;
+                        //SabotageFoodOne.Visibility = Visibility.Visible;
+                        //SabotageIndustryOne.Visibility = Visibility.Visible;
+                        //StealResearchOne.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -82,15 +79,10 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderTwo.Visibility = Visibility.Visible;
 
-                        SabotageEnergyTwo.Visibility = Visibility.Visible;
-                        SabotageFoodTwo.Visibility = Visibility.Visible;
-                        SabotageIndustryTwo.Visibility = Visibility.Visible;
-                        StealResearchTwo.Visibility = Visibility.Visible;
-                    }
-
-                    else
-                    {
-                        EmpireExpanderTwo.Visibility = Visibility.Collapsed;
+                        //SabotageEnergyTwo.Visibility = Visibility.Visible;
+                        //SabotageFoodTwo.Visibility = Visibility.Visible;
+                        //SabotageIndustryTwo.Visibility = Visibility.Visible;
+                        //StealResearchTwo.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -106,14 +98,10 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderThree.Visibility = Visibility.Visible;
 
-                        SabotageEnergyThree.Visibility = Visibility.Visible;
-                        SabotageFoodThree.Visibility = Visibility.Visible;
-                        SabotageIndustryThree.Visibility = Visibility.Visible;
-                        StealResearchThree.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        EmpireExpanderThree.Visibility = Visibility.Collapsed;
+                        //SabotageEnergyThree.Visibility = Visibility.Visible;
+                        //SabotageFoodThree.Visibility = Visibility.Visible;
+                        //SabotageIndustryThree.Visibility = Visibility.Visible;
+                        //StealResearchThree.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -127,14 +115,11 @@ namespace Supremacy.Client.Views
                     if (SpiedFourCiv != civLocalPlayer)
                     {
                         EmpireExpanderFour.Visibility = Visibility.Visible;
-                        SabotageEnergyFour.Visibility = Visibility.Visible;
-                        SabotageFoodFour.Visibility = Visibility.Visible;
-                        SabotageIndustryFour.Visibility = Visibility.Visible;
-                        StealResearchFour.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        EmpireExpanderFour.Visibility = Visibility.Collapsed;
+
+                        //SabotageEnergyFour.Visibility = Visibility.Visible;
+                        //SabotageFoodFour.Visibility = Visibility.Visible;
+                        //SabotageIndustryFour.Visibility = Visibility.Visible;
+                        //StealResearchFour.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -150,14 +135,10 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderFive.Visibility = Visibility.Visible;
 
-                        SabotageEnergyFive.Visibility = Visibility.Visible;
-                        SabotageFoodFive.Visibility = Visibility.Visible;
-                        SabotageIndustryFive.Visibility = Visibility.Visible;
-                        StealResearchFive.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        EmpireExpanderFive.Visibility = Visibility.Collapsed;
+                        //SabotageEnergyFive.Visibility = Visibility.Visible;
+                        //SabotageFoodFive.Visibility = Visibility.Visible;
+                        //SabotageIndustryFive.Visibility = Visibility.Visible;
+                        //StealResearchFive.Visibility = Visibility.Visible;
                     }
                 }
                 if (!AssetsHelper.IsSpiedSix(SpiedSixCiv))
@@ -173,14 +154,10 @@ namespace Supremacy.Client.Views
                     {
                         EmpireExpanderSix.Visibility = Visibility.Visible;
 
-                        SabotageEnergySix.Visibility = Visibility.Visible;
-                        SabotageFoodSix.Visibility = Visibility.Visible;
-                        SabotageIndustrySix.Visibility = Visibility.Visible;
-                        StealResearchSix.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        EmpireExpanderSix.Visibility = Visibility.Collapsed;
+                        //SabotageEnergySix.Visibility = Visibility.Visible;
+                        //SabotageFoodSix.Visibility = Visibility.Visible;
+                        //SabotageIndustrySix.Visibility = Visibility.Visible;
+                        //StealResearchSix.Visibility = Visibility.Visible;
                     }
                 }
 

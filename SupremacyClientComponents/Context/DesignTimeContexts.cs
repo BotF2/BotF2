@@ -229,20 +229,14 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-
-        //static DesignTimeObjects()
-        //{
-        //    //SpiedCivManagers();
-        //    //GetSpiedCivilizationOne();
-        //    //GetSpiedCivilizationTwo();
-        //    //GetSpiedCivilizationThree();
-        //    //GetSpiedCivilizationFour();
-        //    //GetSpiedCivilizationFive();
-        //    //GetSpiedCivilizationSix();
-        //}
+        static List<CivilizationManager> managerList;
+        static DesignTimeObjects()
+        {
+            managerList = SpiedCivManagers();
+        }
         public static List<CivilizationManager> SpiedCivMangers
         { 
-            get { return SpiedCivManagers(); }
+            get { return managerList; }
 
         }
         public static CivilizationManager SpiedCivOne

@@ -154,7 +154,7 @@ namespace Supremacy.Intelligence
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-            Meter attackMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceDefenseAccumulated;
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
@@ -258,7 +258,7 @@ namespace Supremacy.Intelligence
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-            Meter attackMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceDefenseAccumulated;
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
@@ -361,7 +361,7 @@ namespace Supremacy.Intelligence
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-            Meter attackMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceDefenseAccumulated;
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
