@@ -32,7 +32,7 @@ namespace Supremacy.Intelligence
         }
 
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
-        {
+        {   GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
@@ -44,52 +44,25 @@ namespace Supremacy.Intelligence
         }
         #region Espionage Methods
 
-        public class EspionageAlreadyPressed
+        public static void SabotageEnergy(Colony colony, Civilization attackedCiv)
         {
-            
-            public string ALREADYPRESSEDENTRY;
-            public int TURNNUMBER;
-            //public string SPYINGCIV;
-            //public string SPIEDCIV;
-            //public string SPYSUBJECT;
-
-            public EspionageAlreadyPressed
-            (
-                string _alreadyPressedEntry
-                , int _turnNumber
-            //, string _spyingCiv
-            //, string _spiedCiv
-            //, string _spySubject
-            )
-            {
-
-                    ALREADYPRESSEDENTRY = _alreadyPressedEntry;
-                    TURNNUMBER = _turnNumber;
-                    //SPYINGCIV = _spyingCiv;
-                    //SPIEDCIV = _spiedCiv;
-                    //SPYSUBJECT = _spySubject;
-                }
-        }
-
-        public static void SabotageEnergy(Colony colony, Civilization civ)
-        {
-
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageEnergy at line 76");
             var system = colony.System;
-            var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
-            Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-            
-            var spyEmpire = IntelHelper.NewSpyCiv;
-            Meter attack = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceAttackingAccumulated;
 
-            // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if(alreadyPressedList[0].TURNNUMBER < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(spyEmpire.ToString() + " VS " + attackedCiv.Civilization.ToString() + ";Energy", GameContext.Current.TurnNumber);
+            // avoid doing Sabotage multiple times if buttons are pressed multiple time
+            if (alreadyPressedList.Count > 0)
+                if(alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber)
+                    alreadyPressedList.Clear(); // clear old list from previous turns
+            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCiv.ToString() + ";Energy", GameContext.Current.TurnNumber);
 
             int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.ALREADYPRESSEDENTRY == pressedNew.ALREADYPRESSEDENTRY);
+            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].TURNNUMBER, alreadyPressedList[apINT].ALREADYPRESSEDENTRY, pressedNew.ALREADYPRESSEDENTRY);
+                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                     GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
                     return;
             }
@@ -100,26 +73,26 @@ namespace Supremacy.Intelligence
 
 
             int ratio = -1;
-            if (spyEmpire == null)
+            if (NewSpyCiv == null)
                 return;
 
             if (colony == null)
                 return;
 
-            bool ownedByPlayer = (colony.OwnerID == spyEmpire.CivID);
+            bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
             if (ownedByPlayer)
                 return;
 
 
-            Int32.TryParse(attackedCiv.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
+              Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
                 
-            Int32.TryParse(GameContext.Current.CivilizationManagers[spyEmpire].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
+            Int32.TryParse(GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)  
                 attackingIntelligence = 1;
                     
-            attackingIntelligence = 100 * attackingIntelligence;// just for increase attacking Intelligence
+            attackingIntelligence = 1000 * attackingIntelligence;// just for increase attacking Intelligence
 
             ratio = attackingIntelligence / defenseIntelligence;
             if (ratio < 2)
@@ -129,7 +102,7 @@ namespace Supremacy.Intelligence
             //    system.Name, defenseIntelligence, attackingIntelligence, ratio);
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) is SABOTAGED by {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                system.Owner, system.Name, spyEmpire.Name, defenseIntelligence, attackingIntelligence, ratio);
+                system.Owner, system.Name, NewSpyCiv.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}",
@@ -165,35 +138,33 @@ namespace Supremacy.Intelligence
             }
 
 
-            defense.AdjustCurrent(defenseIntelligence / 3 * -1);
-            defense.UpdateAndReset();
-            attack.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
-            attack.UpdateAndReset();
+            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.UpdateAndReset();
+            attackMeter.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
+            attackMeter.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
-            attackedCiv.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
 
-        public static void SabotageFood(Colony colony, Civilization civ)
+        public static void SabotageFood(Colony colony, Civilization attackedCiv)
         {
-
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageFood at line 180");
             var system = colony.System;
-            var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
-            Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-
-            var spyEmpire = IntelHelper.NewSpyCiv;
-            Meter attack = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
+            Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceDefenseAccumulated;
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].TURNNUMBER < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(spyEmpire.ToString() + " VS " + attackedCiv.Civilization.ToString() + ";Food", GameContext.Current.TurnNumber);
+            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
+            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Food", GameContext.Current.TurnNumber);
 
             int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.ALREADYPRESSEDENTRY == pressedNew.ALREADYPRESSEDENTRY);
+            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].TURNNUMBER, alreadyPressedList[apINT].ALREADYPRESSEDENTRY, pressedNew.ALREADYPRESSEDENTRY);
+                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                 GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
                 return;
             }
@@ -204,26 +175,26 @@ namespace Supremacy.Intelligence
 
 
             int ratio = -1;
-            if (spyEmpire == null)
+            if (NewSpyCiv == null)
                 return;
 
             if (colony == null)
                 return;
 
-            bool ownedByPlayer = (colony.OwnerID == spyEmpire.CivID);
+            bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
             if (ownedByPlayer)
                 return;
 
 
-            Int32.TryParse(attackedCiv.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
+            Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
 
-            Int32.TryParse(GameContext.Current.CivilizationManagers[spyEmpire].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
+            Int32.TryParse(GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)
                 attackingIntelligence = 1;
 
-            attackingIntelligence = 100 * attackingIntelligence;// just for increase attacking Intelligence
+            attackingIntelligence = 1000 * attackingIntelligence;// just for increase attacking Intelligence
 
             ratio = attackingIntelligence / defenseIntelligence;
             if (ratio < 2)
@@ -233,7 +204,7 @@ namespace Supremacy.Intelligence
             //    system.Name, defenseIntelligence, attackingIntelligence, ratio);
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) is SABOTAGED by {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+                system.Owner, system.Name, attackedCiv.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) at {2} (sabotaged): Food={3} out of facilities={4}, in total={5}",
@@ -269,37 +240,35 @@ namespace Supremacy.Intelligence
             }
 
 
-            defense.AdjustCurrent(defenseIntelligence / 3 * -1);
-            defense.UpdateAndReset();
-            attack.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
-            attack.UpdateAndReset();
+            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.UpdateAndReset();
+            attackMeter.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
+            attackMeter.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: TotalFoodFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Food));
-            attackedCiv.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food)));
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food)));
 
         }
 
-        public static void StealResearch(Colony colony, Civilization civ)
+        public static void StealResearch(Colony colony, Civilization attackedCiv)
         {
             //GameLog.Core.Intel.DebugFormat("##### StealResearch not implemented yet");
-
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageResearch at line 285");
 
             var system = colony.System;
-            var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
-            Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-
-            var spyEmpire = IntelHelper.NewSpyCiv;
-            Meter attack = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
+            Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceDefenseAccumulated;
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].TURNNUMBER < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(spyEmpire.ToString() + " VS " + attackedCiv.Civilization.ToString() + ";Research", GameContext.Current.TurnNumber);
+            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
+            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Research", GameContext.Current.TurnNumber);
 
             int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.ALREADYPRESSEDENTRY == pressedNew.ALREADYPRESSEDENTRY);
+            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].TURNNUMBER, alreadyPressedList[apINT].ALREADYPRESSEDENTRY, pressedNew.ALREADYPRESSEDENTRY);
+                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                 GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
                 return;
             }
@@ -310,26 +279,26 @@ namespace Supremacy.Intelligence
 
 
             int ratio = -1;
-            if (spyEmpire == null)
+            if (NewSpyCiv == null)
                 return;
 
             if (colony == null)
                 return;
 
-            bool ownedByPlayer = (colony.OwnerID == spyEmpire.CivID);
+            bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
             if (ownedByPlayer)
                 return;
 
 
-            Int32.TryParse(attackedCiv.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
+            Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
 
-            Int32.TryParse(GameContext.Current.CivilizationManagers[spyEmpire].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
+            Int32.TryParse(GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)
                 attackingIntelligence = 1;
 
-            attackingIntelligence = 100 * attackingIntelligence;// just for increase attacking Intelligence
+            attackingIntelligence = 1000 * attackingIntelligence;// just for increase attacking Intelligence
 
             ratio = attackingIntelligence / defenseIntelligence;
             if (ratio < 2)
@@ -339,7 +308,7 @@ namespace Supremacy.Intelligence
             //    system.Name, defenseIntelligence, attackingIntelligence, ratio);
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) is SABOTAGED by {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+                system.Owner, system.Name, attackedCiv.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) at {2} (sabotaged): Research={3} out of facilities={4}, in total={5}",
@@ -375,35 +344,34 @@ namespace Supremacy.Intelligence
             }
 
 
-            defense.AdjustCurrent(defenseIntelligence / 3 * -1);
-            defense.UpdateAndReset();
-            attack.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
-            attack.UpdateAndReset();
+            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.UpdateAndReset();
+            attackMeter.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
+            attackMeter.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat("Sabotage Research at {0}: TotalResearchFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Research));
-            attackedCiv.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeResearchFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Research)));
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, removeResearchFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Research)));
 
         }
-        public static void SabotageIndustry(Colony colony, Civilization civ)
+        public static void SabotageIndustry(Colony colony, Civilization attackedCiv)
         {
             //GameLog.Core.Intel.DebugFormat("##### Sabotage Industry not implemented yet");
+            GameLog.Core.UI.DebugFormat("IntelHelper SabotageIndustry at line 390");
 
             var system = colony.System;
-            var attackedCiv = GameContext.Current.CivilizationManagers[colony.System.Owner];
-            Meter defense = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-
-            var spyEmpire = IntelHelper.NewSpyCiv;
-            Meter attack = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
+            Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceDefenseAccumulated;
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].TURNNUMBER < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(spyEmpire.ToString() + " VS " + attackedCiv.Civilization.ToString() + ";Industry", GameContext.Current.TurnNumber);
+            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
+            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Industry", GameContext.Current.TurnNumber);
 
             int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.ALREADYPRESSEDENTRY == pressedNew.ALREADYPRESSEDENTRY);
+            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].TURNNUMBER, alreadyPressedList[apINT].ALREADYPRESSEDENTRY, pressedNew.ALREADYPRESSEDENTRY);
+                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                 GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
                 return;
             }
@@ -414,26 +382,26 @@ namespace Supremacy.Intelligence
 
 
             int ratio = -1;
-            if (spyEmpire == null)
+            if (NewSpyCiv == null)
                 return;
 
             if (colony == null)
                 return;
 
-            bool ownedByPlayer = (colony.OwnerID == spyEmpire.CivID);
+            bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
             if (ownedByPlayer)
                 return;
 
 
-            Int32.TryParse(attackedCiv.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
+            Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
                 defenseIntelligence = 2;
 
-            Int32.TryParse(GameContext.Current.CivilizationManagers[spyEmpire].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
+            Int32.TryParse(GameContext.Current.CivilizationManagers[NewSpyCiv].TotalIntelligenceProduction.ToString(), out int attackingIntelligence);  // TotalIntelligence of attacked civ
             if (attackingIntelligence - 1 < 0.1)
                 attackingIntelligence = 1;
 
-            attackingIntelligence = 100 * attackingIntelligence;// just for increase attacking Intelligence
+            attackingIntelligence = 1000 * attackingIntelligence;// just for increase attacking Intelligence
 
             ratio = attackingIntelligence / defenseIntelligence;
             if (ratio < 2)
@@ -443,8 +411,7 @@ namespace Supremacy.Intelligence
             //    system.Name, defenseIntelligence, attackingIntelligence, ratio);
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) is SABOTAGED by {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
-
+                system.Owner, system.Name, attackedCiv.Name, defenseIntelligence, attackingIntelligence, ratio);
 
             GameLog.Core.Intel.DebugFormat("{1} ({0}) at {2} (sabotaged): Industry={3} out of facilities={4}, in total={5}",
                 system.Owner, system.Name, system.Location,
@@ -478,16 +445,28 @@ namespace Supremacy.Intelligence
                 system.Colony.RemoveFacilities(ProductionCategory.Industry, 1);
             }
 
-
-            defense.AdjustCurrent(defenseIntelligence / 3 * -1);
-            defense.UpdateAndReset();
-            attack.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
-            attack.UpdateAndReset();
+            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.UpdateAndReset();
+            attackMeter.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
+            attackMeter.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry));
-            attackedCiv.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry)));
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry)));
 
         }
         #endregion
+
+        public class EspionageAlreadyPressed
+        {
+
+            public string alreadyPressedEntry;
+            public int turnNumber;
+
+            public EspionageAlreadyPressed(string _alreadyPressedEntry, int _turnNumber)
+            {
+                alreadyPressedEntry = _alreadyPressedEntry;
+                turnNumber = _turnNumber;
+            }
+        }
     }
 }
