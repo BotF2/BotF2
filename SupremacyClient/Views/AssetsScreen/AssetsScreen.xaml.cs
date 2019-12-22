@@ -31,16 +31,26 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
-            BlameNoOne.Visibility = Visibility.Visible;
-            BlameNoOne.IsChecked = true;
-            BlameTerrorists.Visibility = Visibility.Visible;
-            BlameFederation.Visibility = Visibility.Collapsed;
-            BlameTerranEmpire.Visibility = Visibility.Collapsed;
-            BlameRomulans.Visibility = Visibility.Collapsed;
-            BlameKlingons.Visibility = Visibility.Collapsed;
-            BlameCardassians.Visibility = Visibility.Collapsed;
-            BlameDominion.Visibility = Visibility.Collapsed;
-            BlameBorg.Visibility = Visibility.Collapsed;
+            BlameNoOneCard.Visibility = Visibility.Visible;
+            BlameNoOneCard.IsChecked = true;
+            BlameTerroristsCard.Visibility = Visibility.Visible;
+            BlameFederationCard.Visibility = Visibility.Collapsed;
+            BlameTerranEmpireCard.Visibility = Visibility.Collapsed;
+            BlameRomulansCard.Visibility = Visibility.Collapsed;
+            BlameKlingonsCard.Visibility = Visibility.Collapsed;
+            //BlameCardassiansCard.Visibility = Visibility.Collapsed;
+            BlameDominionCard.Visibility = Visibility.Collapsed;
+            BlameBorgCard.Visibility = Visibility.Collapsed;
+            BlameNoOneRom.Visibility = Visibility.Visible;
+            BlameNoOneRom.IsChecked = true;
+            BlameTerroristsRom.Visibility = Visibility.Visible;
+            BlameFederationRom.Visibility = Visibility.Collapsed;
+            BlameTerranEmpireRom.Visibility = Visibility.Collapsed;
+            //BlameRomulansRom.Visibility = Visibility.Collapsed;
+            BlameKlingonsRom.Visibility = Visibility.Collapsed;
+            BlameCardassiansRom.Visibility = Visibility.Collapsed;
+            BlameDominionRom.Visibility = Visibility.Collapsed;
+            BlameBorgRom.Visibility = Visibility.Collapsed;
             LoadInsignia();
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -182,42 +192,47 @@ namespace Supremacy.Client.Views
                 if (sevenCivs.Keys.Contains(0) && AppContext.LocalPlayer.Empire.Key != "FEDERATION" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[0]].IsContactMade())
                 {
-                    BlameFederation.Visibility = Visibility.Visible;
+                    BlameFederationCard.Visibility = Visibility.Visible;
+                    BlameFederationRom.Visibility = Visibility.Visible;
                 }
                 GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(1) && AppContext.LocalPlayer.Empire.Key != "TERRANEMPIRE" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[1]].IsContactMade())
                 {
-                    BlameTerranEmpire.Visibility = Visibility.Visible;
+                    BlameTerranEmpireCard.Visibility = Visibility.Visible;
+                    BlameTerranEmpireRom.Visibility = Visibility.Visible;
                 }
                 if (sevenCivs.Keys.Contains(2) && AppContext.LocalPlayer.Empire.Key != "ROMULANS" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[2]].IsContactMade())
                 {
-                    BlameRomulans.Visibility = Visibility.Visible;
+                    BlameRomulansCard.Visibility = Visibility.Visible;
                 }
                 if (sevenCivs.Keys.Contains(3) && AppContext.LocalPlayer.Empire.Key != "KLINGONS" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[3]].IsContactMade())
                 {
-                    BlameKlingons.Visibility = Visibility.Visible;
+                    BlameKlingonsCard.Visibility = Visibility.Visible;
+                    BlameKlingonsRom.Visibility = Visibility.Visible;
                 }
                 GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(4) && AppContext.LocalPlayer.Empire.Key != "CARDASSIANS" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[4]].IsContactMade())
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
-                    BlameCardassians.Visibility = Visibility.Visible;
+                    BlameCardassiansRom.Visibility = Visibility.Visible;
                 }
                 GameLog.Client.UI.DebugFormat("CARD: end   of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(5) && AppContext.LocalPlayer.Empire.Key != "DOMINION" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[5]].IsContactMade())
                 {
-                    BlameDominion.Visibility = Visibility.Visible;
+                    BlameDominionCard.Visibility = Visibility.Visible;
+                    BlameDominionRom.Visibility = Visibility.Visible;
                 }
 
                 if (sevenCivs.Keys.Contains(6) && AppContext.LocalPlayer.Empire.Key != "BORG" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade())
                 {
                     //GameLog.Client.Intel.DebugFormat("**************fed ={0} borg={1} fed borg is contact made {2}", AssetsScreenPresentationModel.Local.Key, sevenCivs[6].Key, GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade());
-                    BlameBorg.Visibility = Visibility.Visible;
+                    BlameBorgCard.Visibility = Visibility.Visible;
+                    BlameBorgRom.Visibility = Visibility.Visible;
                 }
             }
             else

@@ -1,6 +1,7 @@
 ﻿using Supremacy.Client.Context;
 using Supremacy.Collections;
 using Supremacy.Entities;
+using Supremacy.Game;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System.Collections.Generic;
@@ -132,5 +133,38 @@ namespace Supremacy.Intelligence
             return false;
         }
     }
+    //public class IntelHelperNotStatic
+    //{
+    //    public List<CivilizationManager> ManagerList
+    //    {
+    //        get { return DesignTimeObjects.SpiedCivMangers; }
+    //    }
+
+
+    //    public class SpiedCivList
+    //    {
+    //        get         
+    //        {         
+
+    //        return IntelHelper.NewSpiedColonies;         
+
+    //         }
+
+    //    }
+
+    //public class SaveSpiedCivs
+
+    //{
+
+    //    private ArrayList SpiedCivManagersArray;
+
+
+
+    //    SpiedCivManagersArray = _spie;          
+
+    //#region Implementation of IOwnedDataSerializable          
+
+    //public void DeserializeOwnedData(SerializationReader reader, object context)
+    //    }
 }
 

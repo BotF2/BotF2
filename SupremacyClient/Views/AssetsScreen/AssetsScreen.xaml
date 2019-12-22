@@ -71,11 +71,6 @@
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
-                    <!--<TextBlock 
-                        Grid.Column="3" Text=" = "
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>-->
                     <TextBlock 
                         Grid.Column="4" Text="{Binding Path=TotalIntelligenceProduction}"
                         HorizontalAlignment="Left"
@@ -94,178 +89,7 @@
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
-                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="10">
-                        <Grid>     
-                          <!-- Grid for Blame buttons -->
-                              <Grid.RowDefinitions>
-                                  <RowDefinition Height="Auto" />
-                                  <RowDefinition Height="40"/>
-                                  <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                              <Grid.ColumnDefinitions>
-                                  <ColumnDefinition Width="Auto" />
-                                  <ColumnDefinition Width="Auto" />
-                                  <ColumnDefinition Width="Auto"/>
-                                  <ColumnDefinition Width="Auto"/>
-                                  <ColumnDefinition Width="Auto"/>
-                                  <ColumnDefinition Width="Auto"/>
-                                  <ColumnDefinition Width="Auto"/>
-                                  <ColumnDefinition Width="*" />
-                              </Grid.ColumnDefinitions>  
-                              <Border Grid.Row="0"
-                                      Grid.Column="0"
-                                      Grid.RowSpan="3"
-                                      Grid.ColumnSpan="8"
-                                      BorderThickness="1"
-                                      Background="Black"
-                                      BorderBrush="Yellow" />
-                              <TextBlock Grid.Row="0"
-                                         Grid.Column="0"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Left"
-                                         Margin="5,5,0,0"
-                                         Foreground="White"
-                                         Text=" Blame someone else for your actions: " />
-                              <StackPanel Name="NoOne"
-                                          Orientation="Horizontal"
-                                          Grid.Row="0"
-                                          Grid.Column="1">
-                                    <RadioButton
-                                            Name="BlameNoOne"
-                                            Margin="0,5,0,0"
-                                            GroupName="BlameRadio"
-                                            Foreground="White"
-                                            Content="Do not blame anyone" />
-                              </StackPanel>
-                              <StackPanel Name="BlameRow"
-                                          Orientation="Horizontal"
-                                          Grid.Row="1"
-                                          Grid.Column="0" 
-                                          Grid.ColumnSpan="7"
-                                          Margin="0,5,10,5">
-                                    <StackPanel Name="BlameTerrorists"
-                                                Orientation="Horizontal" >
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/Sabotage.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="Terrorists"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="White"
-                                                Content="Terrorists" />
-                                    </StackPanel>
-                                    <StackPanel Name="BlameFederation"
-                                                Orientation="Horizontal"
-                                                Margin="40,0,0,0">
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/Federation.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="Federation"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="LightBlue"
-                                                Content="Federation"/>
-                                    </StackPanel>
-                                    <StackPanel Name="BlameTerranEmpire"
-                                                Orientation="Horizontal"
-                                                Margin="40,0,0,0">
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/TerranEmpire.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="TerranEmpire"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="Yellow"
-                                                Content="Terran Empire"/>
-                                    </StackPanel>
-                                    <StackPanel Name="BlameRomulans"
-                                                Orientation="Horizontal"
-                                                Margin="40,0,0,0">
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/Romulans.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="Romulans"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="LightGreen"
-                                                Content="Romulans"/>
-                                    </StackPanel>
-                                    <StackPanel Name="BlameKlingons"
-                                                Orientation="Horizontal"
-                                                Margin="40,0,0,0">
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/Klingons.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="Klingons"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="Red"
-                                                Content="Klingons"/>
-                                    </StackPanel>
-                                    <StackPanel Name="BlameCardassians"
-                                                Orientation="Horizontal"
-                                                Margin="40,0,0,0">
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/Cardassians.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="Cardassians"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="Goldenrod"
-                                                Content="Cardassianss"/>
-                                    </StackPanel>
-                                    <StackPanel Name="BlameDominion"
-                                                Orientation="Horizontal"
-                                                Margin="40,0,0,0">
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/Dominion.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="Dominion"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="MediumPurple"
-                                                Content="Dominion"/>
-                                    </StackPanel>
-                                    <StackPanel Name="BlameBorg"
-                                                Orientation="Horizontal"
-                                                Margin="40,0,5,0">
-                                            <Image 
-                                                VerticalAlignment="Center"
-                                                Source="vfs:///Resources/Images/Insignias/Borg.png"
-                                                Margin="5,0,5,0" >
-                                            </Image>
-                                            <RadioButton
-                                                Name="Borg"
-                                                Margin="0,5,0,0"
-                                                GroupName="BlameRadio"
-                                                Foreground="YellowGreen"
-                                                Content="Borg"/>
-                                    </StackPanel>
-                              </StackPanel>                                
-                         </Grid>
-                  </StackPanel>
-                  <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9">
+                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9">
                     <Grid>     
                       <!-- Grid for explanation and summary buttons -->
                           <Grid.RowDefinitions>
@@ -323,7 +147,7 @@
                   </StackPanel>
               </Grid>
                 <ScrollViewer 
-                    VerticalScrollBarVisibility="Visible"
+                    VerticalScrollBarVisibility="Auto"
                     Margin="5,0,0,0"
                     Width="Auto"
                     Height="800"
@@ -339,23 +163,25 @@
                                         <RowDefinition Height="45" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
@@ -519,8 +345,160 @@
                                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
                                         <v:SpiedOneColonyList Grid.Row="16" DataContext="{Binding Path=SpiedOneColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
+                                    <!--<Border Grid.Row="3"
+                                              Grid.Column="0"
+                                              Grid.RowSpan="3"
+                                              Grid.ColumnSpan="16"
+                                              BorderThickness="1"
+                                              Background="Black"
+                                              BorderBrush="Yellow" />
+                                    <TextBlock Grid.Row="3"
+                                             Grid.Column="0"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Left"
+                                             Margin="5,5,0,0"
+                                             Foreground="White"
+                                             Text=" Blame someone else for your actions: " />
+                                    <StackPanel Name="NoOne"
+                                              Orientation="Horizontal"
+                                              Grid.Row="3"
+                                              Grid.Column="1">
+                                            <RadioButton
+                                                Name="BlameNoOne"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="White"
+                                                Content="Do not blame anyone" />
+                                    </StackPanel>
+                                    <StackPanel Name="BlameRow"
+                                              Orientation="Horizontal"
+                                              Grid.Row="4"
+                                              Grid.Column="0" 
+                                              Grid.ColumnSpan="15"
+                                              Margin="0,5,10,5">
+                                        <StackPanel Name="BlameTerrorists"
+                                                Orientation="Horizontal" >
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/Sabotage.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="Terrorists"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="White"
+                                                Content="Terrorists" />
+                                        </StackPanel>
+                                        <StackPanel Name="BlameFederation"
+                                                Orientation="Horizontal"
+                                                Margin="40,0,0,0">
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/Federation.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="Federation"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="LightBlue"
+                                                Content="Federation"/>
+                                        </StackPanel>
+                                        <StackPanel Name="BlameTerranEmpire"
+                                                Orientation="Horizontal"
+                                                Margin="40,0,0,0">
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/TerranEmpire.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="TerranEmpire"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="Yellow"
+                                                Content="Terran Empire"/>
+                                        </StackPanel>
+                                        <StackPanel Name="BlameRomulans"
+                                                Orientation="Horizontal"
+                                                Margin="40,0,0,0">
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/Romulans.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="Romulans"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="LightGreen"
+                                                Content="Romulans"/>
+                                        </StackPanel>
+                                        <StackPanel Name="BlameKlingons"
+                                                Orientation="Horizontal"
+                                                Margin="40,0,0,0">
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/Klingons.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="Klingons"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="Red"
+                                                Content="Klingons"/>
+                                        </StackPanel>
+                                        <StackPanel Name="BlameCardassians"
+                                                Orientation="Horizontal"
+                                                Margin="40,0,0,0">
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/Cardassians.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="Cardassians"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="Goldenrod"
+                                                Content="Cardassianss"/>
+                                        </StackPanel>
+                                        <StackPanel Name="BlameDominion"
+                                                Orientation="Horizontal"
+                                                Margin="40,0,0,0">
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/Dominion.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="Dominion"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="MediumPurple"
+                                                Content="Dominion"/>
+                                        </StackPanel>
+                                        <StackPanel Name="BlameBorg"
+                                                Orientation="Horizontal"
+                                                Margin="40,0,5,0">
+                                            <Image 
+                                                VerticalAlignment="Center"
+                                                Source="vfs:///Resources/Images/Insignias/Borg.png"
+                                                Margin="5,0,5,0" >
+                                            </Image>
+                                            <RadioButton
+                                                Name="Borg"
+                                                Margin="0,5,0,0"
+                                                GroupName="BlameRadio"
+                                                Foreground="YellowGreen"
+                                                Content="Borg"/>
+                                        </StackPanel>
+                                    </StackPanel>-->
                                 </Grid>
                             </Grid>
+                            
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
         <!-- Two Expander -->
@@ -532,23 +510,25 @@
                                         <RowDefinition Height="45" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
@@ -726,23 +706,25 @@
                                         <RowDefinition Height="45" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
@@ -907,6 +889,173 @@
                                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
                                         <v:SpiedThreeColonyList Grid.Row="16" DataContext="{Binding Path=SpiedThreeColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
+                                    <Border Grid.Row="3"
+                                              Grid.Column="0"
+                                              Grid.ColumnSpan="18"
+                                              BorderThickness="1"
+                                              Background="Black"
+                                              BorderBrush="LightGoldenrodYellow" />
+                                    <ScrollViewer 
+                                            HorizontalScrollBarVisibility="Auto"
+                                            VerticalScrollBarVisibility="Disabled"
+                                            HorizontalAlignment="Left"
+                                            Grid.Row="3"
+                                            Grid.ColumnSpan="18"
+                                            VerticalAlignment="Top"
+                                            Margin="0,5,0,0"
+                                            Width="1000">
+                                        <StackPanel Name="BlameRom"
+                                                      Orientation="Horizontal"
+                                                      VerticalAlignment="Top"
+                                                      Grid.Row="3"
+                                                      Grid.ColumnSpan="18"
+                                                      Grid.Column="0">
+                                            <StackPanel Name="BlameTextRom">
+                                                <TextBlock 
+                                                     VerticalAlignment="Top"
+                                                     HorizontalAlignment="Left"
+                                                     Margin="5,10,0,0"
+                                                     Foreground="Yellow"
+                                                     FontSize="14"
+                                                     Text="Blame someone for your actions: " />
+                                            </StackPanel>
+                                            <StackPanel Name="NoOneButtonRom">
+                                                <RadioButton
+                                                        VerticalAlignment="Top"
+                                                        Name="BlameNoOneRom"
+                                                        Margin="5,10,0,0"
+                                                        GroupName="BlameRadioRom"
+                                                        Foreground="White"
+                                                        Content="Blame No One" />
+                                            </StackPanel>
+                                            <StackPanel Name="BlameTerroristsRom"
+                                                        Orientation="Horizontal" >
+                                                <Image  Height="20"
+                                                        VerticalAlignment="Top"
+                                                        Source="vfs:///Resources/Images/Insignias/Sabotage.png"
+                                                        Margin="5,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                        Name="TerroristsRom"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,10,0,0"                                          
+                                                        GroupName="BlameRadioRom"
+                                                        Foreground="White"
+                                                        Content="Terrorists" />
+                                            </StackPanel>
+                                            <StackPanel Name="BlameFederationRom"
+                                                        Orientation="Horizontal">
+                                                <Image Height="20"
+                                                        VerticalAlignment="Top"
+                                                        Source="vfs:///Resources/Images/Insignias/Federation.png"
+                                                        Margin="10,10,5,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="FederationRom"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioRom"
+                                                    Foreground="LightBlue"
+                                                    Content="Federation"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameTerranEmpireRom"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                        VerticalAlignment="Top"
+                                                        Height="20"
+                                                        Source="vfs:///Resources/Images/Insignias/TerranEmpire.png"
+                                                        Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="TerranEmpireRom"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioRom"
+                                                    Foreground="LightYellow"
+                                                    Content="Terran Empire"/>
+                                            </StackPanel>
+                                            <!--<StackPanel Name="BlameRomulans"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"                                                    
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Romulans.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="Romulans"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"                                                   
+                                                    GroupName="BlameRadioRom"
+                                                    Foreground="LightGreen"
+                                                    Content="Romulans"/>
+                                            </StackPanel>-->
+                                            <StackPanel Name="BlameKlingonsRom"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Klingons.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="KlingonsRom"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioRom"
+                                                    Foreground="Red"
+                                                    Content="Klingons"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameCardassiansRom"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Cardassians.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="CardassiansRom"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioRom"
+                                                    Foreground="Goldenrod"
+                                                    Content="Cardassianss"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameDominionRom"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Dominion.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="DominionRom"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioRom"
+                                                    Foreground="MediumPurple"
+                                                    Content="Dominion"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameBorgRom"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Borg.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="BorgRom"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioRom"
+                                                    Foreground="YellowGreen"
+                                                    Content="Borg"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </ScrollViewer>
                                 </Grid>
                             </Grid>
                         </Expander>
@@ -917,26 +1066,28 @@
                             <Grid Name="EmpireGridFour" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
-                                      <RowDefinition Height="45" />
-                                      <RowDefinition Height="Auto" />
-                                      <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
@@ -1107,30 +1258,32 @@
                         <TextBlock Height="5"></TextBlock>
         <!-- Five Expander -->
                         <Expander x:Name="EmpireExpanderFive" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+                                 IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" FontSize="20" BorderThickness="2" BorderBrush="Red" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridFive" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
@@ -1139,7 +1292,7 @@
                                             BorderThickness="1"
                                             Margin="10,0,0,0"
                                             Background="Black"
-                                            BorderBrush="Red" />
+                                            BorderBrush="DarkRed" />
                                     <!-- Espionage Five Section -->
                                     <StackPanel Grid.Row="0"
                                               Grid.Column="0"
@@ -1160,6 +1313,7 @@
                                     <scc:GameLabel Grid.Row="0"
                                                     Grid.Column="1"
                                                     VerticalAlignment="Center"
+                                                   HorizontalAlignment="Right"
                                                    Margin="18,0,2,0"                                                   
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
                                                     ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
@@ -1295,6 +1449,174 @@
                                     <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
                                         <v:SpiedFiveColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFiveColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
+                                    <!--Blame Buttons -->
+                                    <Border Grid.Row="3"
+                                              Grid.Column="0"
+                                              Grid.ColumnSpan="18"
+                                              BorderThickness="1"
+                                              Background="Black"
+                                              BorderBrush="LightGoldenrodYellow" />
+                                    <ScrollViewer 
+                                            HorizontalScrollBarVisibility="Auto"
+                                            VerticalScrollBarVisibility="Disabled"
+                                            HorizontalAlignment="Left"
+                                            Grid.Row="3"
+                                            Grid.ColumnSpan="18"
+                                            VerticalAlignment="Top"
+                                            Margin="0,5,0,0"
+                                            Width="1000">
+                                        <StackPanel Name="BlameCard"
+                                                  Orientation="Horizontal"
+                                                  VerticalAlignment="Top"
+                                                  Grid.Row="3"
+                                                  Grid.ColumnSpan="18"
+                                                  Grid.Column="0">
+                                            <StackPanel Name="BlameTextCard">
+                                                <TextBlock 
+                                                     VerticalAlignment="Top"
+                                                     HorizontalAlignment="Left"
+                                                     Margin="5,10,0,0"
+                                                     Foreground="Yellow"
+                                                     FontSize="14"
+                                                     Text="Blame someone for your actions: " />
+                                            </StackPanel>
+                                            <StackPanel Name="NoOneButtonCard">
+                                                <RadioButton
+                                                        VerticalAlignment="Top"
+                                                        Name="BlameNoOneCard"
+                                                        Margin="5,10,0,0"
+                                                        GroupName="BlameRadioCard"
+                                                        Foreground="White"
+                                                        Content="Blame No One" />
+                                            </StackPanel>
+                                            <StackPanel Name="BlameTerroristsCard"
+                                                        Orientation="Horizontal" >
+                                                <Image  Height="20"
+                                                        VerticalAlignment="Top"
+                                                        Source="vfs:///Resources/Images/Insignias/Sabotage.png"
+                                                        Margin="5,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                        Name="TerroristsCard"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,10,0,0"                                          
+                                                        GroupName="BlameRadioCard"
+                                                        Foreground="White"
+                                                        Content="Terrorists" />
+                                            </StackPanel>
+                                            <StackPanel Name="BlameFederationCard"
+                                                        Orientation="Horizontal">
+                                                <Image Height="20"
+                                                        VerticalAlignment="Top"
+                                                        Source="vfs:///Resources/Images/Insignias/Federation.png"
+                                                        Margin="10,10,5,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="FederationCard"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioCard"
+                                                    Foreground="LightBlue"
+                                                    Content="Federation"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameTerranEmpireCard"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                        VerticalAlignment="Top"
+                                                        Height="20"
+                                                        Source="vfs:///Resources/Images/Insignias/TerranEmpire.png"
+                                                        Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="TerranEmpireCard"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioCard"
+                                                    Foreground="LightYellow"
+                                                    Content="Terran Empire"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameRomulansCard"
+                                                        Orientation="Horizontal">  
+                                                <Image 
+                                                    VerticalAlignment="Top"                                                    
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Romulans.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="RomulansCard"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"                                                   
+                                                    GroupName="BlameRadioCard"
+                                                    Foreground="LightGreen"
+                                                    Content="Romulans"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameKlingonsCard"
+                                                        Orientation="Horizontal">  
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Klingons.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="KlingonsCard"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioCard"
+                                                    Foreground="Red"
+                                                    Content="Klingons"/>
+                                            </StackPanel>
+                                            <!--<StackPanel Name="BlameCardassiansCard"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Cardassians.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="CardassiansCard"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioCard"
+                                                    Foreground="Goldenrod"
+                                                    Content="Cardassianss"/>
+                                            </StackPanel>-->
+                                            <StackPanel Name="BlameDominionCard"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Dominion.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="DominionCard"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioCard"
+                                                    Foreground="MediumPurple"
+                                                    Content="Dominion"/>
+                                            </StackPanel>
+                                            <StackPanel Name="BlameBorgCard"
+                                                        Orientation="Horizontal">
+                                                <Image 
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Borg.png"
+                                                    Margin="10,10,0,0" >
+                                                </Image>
+                                                <RadioButton
+                                                    Name="BorgCard"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadioCard"
+                                                    Foreground="YellowGreen"
+                                                    Content="Borg"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </ScrollViewer>
                                 </Grid>
                             </Grid>
                         </Expander>
@@ -1308,23 +1630,25 @@
                                         <RowDefinition Height="45" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
