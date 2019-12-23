@@ -334,26 +334,6 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        //public Meter TotalIntel
-        //{
-        //    get
-        //    {
-        //        var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-        //        try
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("TotalIntel ={0}", civManager.Civilization.);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            Meter zero = new Meter(0, 0, 0);
-        //            return zero; //civManager.TotalPopulation;
-
-        //        }
-        //    }
-        //}
         public string LocalCivName
         {
             get

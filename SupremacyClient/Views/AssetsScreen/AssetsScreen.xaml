@@ -155,8 +155,8 @@
                     HorizontalAlignment="left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
         <!-- One Expander -->
-                        <Expander x:Name="EmpireExpanderOne" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+                        <Expander x:Name="EmpireExpanderFed" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                                 IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" FontSize="20" BorderThickness="2" BorderBrush="LightBlue" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
