@@ -39,6 +39,7 @@ namespace Supremacy.Client.Views
         {
             base.TerminateOverride();
             Model.Colonies = null;
+            Model.SpiedZeroColonies = null;
             Model.SpiedOneColonies = null;
             Model.SpiedTwoColonies = null;
             Model.SpiedThreeColonies = null;
@@ -60,6 +61,7 @@ namespace Supremacy.Client.Views
         {
             GameLog.Core.UI.DebugFormat("Update on Turn Started at line 61");
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
+            Model.SpiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             Model.SpiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;

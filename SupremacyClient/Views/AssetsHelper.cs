@@ -11,6 +11,7 @@ namespace Supremacy.Intelligence
 {
     public static class AssetsHelper
     {
+        static bool alreadyZero = false;
         static bool alreadyOne = false;
         static bool alreadyTwo = false;
         static bool alreadyThree = false;
@@ -29,31 +30,47 @@ namespace Supremacy.Intelligence
         {
             get { return IntelHelper.NewSpiedColonies; }
         }
-        public static Civilization CivOne
+        public static Civilization CivZero
         {
             get { return DesignTimeObjects.SpiedCivMangers[0].Civilization; }
         }
-        public static Civilization CivTwo
+        public static Civilization CivOne
         {
             get { return DesignTimeObjects.SpiedCivMangers[1].Civilization; }
         }
-        public static Civilization CivThree
+        public static Civilization CivTwo
         {
             get { return DesignTimeObjects.SpiedCivMangers[2].Civilization; }
         }
-        public static Civilization CivFour
+        public static Civilization CivThree
         {
             get { return DesignTimeObjects.SpiedCivMangers[3].Civilization; }
         }
-        public static Civilization CivFive
+        public static Civilization CivFour
         {
             get { return DesignTimeObjects.SpiedCivMangers[4].Civilization; }
         }
-        public static Civilization CivSix
+        public static Civilization CivFive
         {
             get { return DesignTimeObjects.SpiedCivMangers[5].Civilization; }
         }
-
+        public static Civilization CivSix
+        {
+            get { return DesignTimeObjects.SpiedCivMangers[6].Civilization; }
+        }
+        public static bool IsSpiedZero(Civilization targetFromScreen)
+        {
+            if (NewSpyCiv == null)
+                return false;
+            else if (alreadyZero)
+                return true;
+            else if (CivZero == NewTargetCiv)
+            {
+                alreadyZero = true;
+                return true;
+            }
+            return false;
+        }
         public static bool IsSpiedOne(Civilization targetFromScreen)
         {
             if (NewSpyCiv == null)

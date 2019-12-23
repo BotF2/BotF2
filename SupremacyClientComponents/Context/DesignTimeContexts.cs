@@ -214,36 +214,36 @@ namespace Supremacy.Client.Context
         {
             get { return managerDictionary; }
         }
-        public static CivilizationManager SpiedCivOne
+        public static CivilizationManager SpiedCivZero
         {
             get { return SpiedCivManagersDictionary[0]; }
 
         }
-        public static CivilizationManager SpiedCivTwo
+        public static CivilizationManager SpiedCivOne
         {
             get { return SpiedCivManagersDictionary[1]; }
 
         }
-        public static CivilizationManager SpiedCivThree
+        public static CivilizationManager SpiedCivTwo
         {
             get { return SpiedCivManagersDictionary[2]; }
 
         }
-        public static CivilizationManager SpiedCivFour
+        public static CivilizationManager SpiedCivThree
         {
             get { return SpiedCivManagersDictionary[3]; }
 
         }
-        public static CivilizationManager SpiedCivFive
+        public static CivilizationManager SpiedCivFour
         {
             get { return SpiedCivManagersDictionary[4]; }
 
         }
-        public static CivilizationManager SpiedCivSix
+        public static CivilizationManager SpiedCivFive
         {
             get { return SpiedCivManagersDictionary[5]; }
         }
-        public static CivilizationManager SpiedCivSeven
+        public static CivilizationManager SpiedCivSix
         {
             get { return SpiedCivManagersDictionary[6]; }
         }
@@ -264,6 +264,11 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
         }
+        public static IEnumerable<Colony> SpiedZeroColonies
+        {
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivOne.CivilizationID); }
+        }
+
         public static IEnumerable<Colony> SpiedOneColonies
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivOne.CivilizationID); }
