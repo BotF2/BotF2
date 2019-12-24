@@ -31,21 +31,9 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
-            BlameNoOneRom.Visibility = Visibility.Visible;
-            BlameNoOneRom.IsChecked = true;
-            BlameTerroristsRom.Visibility = Visibility.Visible;
             BlameNoOneCard.Visibility = Visibility.Visible;
             BlameNoOneCard.IsChecked = true;
             BlameTerroristsCard.Visibility = Visibility.Visible;
-
-            BlameFederationRom.Visibility = Visibility.Collapsed;
-            BlameTerranEmpireRom.Visibility = Visibility.Collapsed;
-            //BlameRomulansRom.Visibility = Visibility.Collapsed;
-            BlameKlingonsRom.Visibility = Visibility.Collapsed;
-            BlameCardassiansRom.Visibility = Visibility.Collapsed;
-            BlameDominionRom.Visibility = Visibility.Collapsed;
-            BlameBorgRom.Visibility = Visibility.Collapsed;
-
             BlameFederationCard.Visibility = Visibility.Collapsed;
             BlameTerranEmpireCard.Visibility = Visibility.Collapsed;
             BlameRomulansCard.Visibility = Visibility.Collapsed;
@@ -53,7 +41,16 @@ namespace Supremacy.Client.Views
             //BlameCardassiansCard.Visibility = Visibility.Collapsed;
             BlameDominionCard.Visibility = Visibility.Collapsed;
             BlameBorgCard.Visibility = Visibility.Collapsed;
-
+            BlameNoOneRom.Visibility = Visibility.Visible;
+            BlameNoOneRom.IsChecked = true;
+            BlameTerroristsRom.Visibility = Visibility.Visible;
+            BlameFederationRom.Visibility = Visibility.Collapsed;
+            BlameTerranEmpireRom.Visibility = Visibility.Collapsed;
+            //BlameRomulansRom.Visibility = Visibility.Collapsed;
+            BlameKlingonsRom.Visibility = Visibility.Collapsed;
+            BlameCardassiansRom.Visibility = Visibility.Collapsed;
+            BlameDominionRom.Visibility = Visibility.Collapsed;
+            BlameBorgRom.Visibility = Visibility.Collapsed;
             LoadInsignia();
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -63,114 +60,116 @@ namespace Supremacy.Client.Views
                 ResumeAnimations();
                 GameLog.Client.UI.DebugFormat("begin of checking visible");
 
-                if (SpiedOneCiv == civLocalPlayer||!AssetsHelper.IsSpiedOne(SpiedOneCiv))
+                if (!AssetsHelper.IsSpiedOne(SpiedOneCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... ");
-                    EmpireExpanderFed.Visibility = Visibility.Collapsed;
+                    EmpireExpanderOne.Visibility = Visibility.Collapsed;
                 }
-                //else
-                //{
-                //    if (SpiedOneCiv != civLocalPlayer)
-                //    {
-                //        EmpireExpanderFed.Visibility = Visibility.Collapsed;
+                else
+                {
+                    if (SpiedOneCiv != civLocalPlayer)
+                    {
+                        EmpireExpanderOne.Visibility = Visibility.Collapsed;
 
-                //        //SabotageEnergyOne.Visibility = Visibility.Visible;
-                //        //SabotageFoodOne.Visibility = Visibility.Visible;
-                //        //SabotageIndustryOne.Visibility = Visibility.Visible;
-                //        //StealResearchOne.Visibility = Visibility.Visible;
-                //    }
-                //}
+                        //SabotageEnergyOne.Visibility = Visibility.Visible;
+                        //SabotageFoodOne.Visibility = Visibility.Visible;
+                        //SabotageIndustryOne.Visibility = Visibility.Visible;
+                        //StealResearchOne.Visibility = Visibility.Visible;
+                    }
+                }
 
-                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedTwo(SpiedTwoCiv))
+                if (!AssetsHelper.IsSpiedTwo(SpiedTwoCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... ");
                     EmpireExpanderTwo.Visibility = Visibility.Collapsed;
                 }
-                //else
-                //{
-                //    if (SpiedTwoCiv != civLocalPlayer)
-                //    {
-                //        EmpireExpanderTwo.Visibility = Visibility.Visible;
+                else
+                {
+                    if (SpiedTwoCiv != civLocalPlayer)
+                    {
+                        EmpireExpanderTwo.Visibility = Visibility.Visible;
 
-                //        //SabotageEnergyTwo.Visibility = Visibility.Visible;
-                //        //SabotageFoodTwo.Visibility = Visibility.Visible;
-                //        //SabotageIndustryTwo.Visibility = Visibility.Visible;
-                //        //StealResearchTwo.Visibility = Visibility.Visible;
-                //    }
-                //}
+                        //SabotageEnergyTwo.Visibility = Visibility.Visible;
+                        //SabotageFoodTwo.Visibility = Visibility.Visible;
+                        //SabotageIndustryTwo.Visibility = Visibility.Visible;
+                        //StealResearchTwo.Visibility = Visibility.Visible;
+                    }
+                }
 
-                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedThree(SpiedThreeCiv))
+                if (!AssetsHelper.IsSpiedThree(SpiedThreeCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... ");
                     EmpireExpanderThree.Visibility = Visibility.Collapsed;
+
                 }
-                //else
-                //{
-                //    if (SpiedThreeCiv != civLocalPlayer)
-                //    {
-                //        EmpireExpanderThree.Visibility = Visibility.Visible;
+                else
+                {
+                    if (SpiedThreeCiv != civLocalPlayer)
+                    {
+                        EmpireExpanderThree.Visibility = Visibility.Visible;
 
-                //        //SabotageEnergyThree.Visibility = Visibility.Visible;
-                //        //SabotageFoodThree.Visibility = Visibility.Visible;
-                //        //SabotageIndustryThree.Visibility = Visibility.Visible;
-                //        //StealResearchThree.Visibility = Visibility.Visible;
-                //    }
-                //}
+                        //SabotageEnergyThree.Visibility = Visibility.Visible;
+                        //SabotageFoodThree.Visibility = Visibility.Visible;
+                        //SabotageIndustryThree.Visibility = Visibility.Visible;
+                        //StealResearchThree.Visibility = Visibility.Visible;
+                    }
+                }
 
-                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedFour(SpiedFourCiv))
+                if (!AssetsHelper.IsSpiedFour(SpiedFourCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFourCiv checking visible .... ");
                     EmpireExpanderFour.Visibility = Visibility.Collapsed;
                 }
-                //else
-                //{
-                //    if (SpiedFourCiv != civLocalPlayer)
-                //    {
-                //        EmpireExpanderFour.Visibility = Visibility.Visible;
+                else
+                {
+                    if (SpiedFourCiv != civLocalPlayer)
+                    {
+                        EmpireExpanderFour.Visibility = Visibility.Visible;
 
-                //        //SabotageEnergyFour.Visibility = Visibility.Visible;
-                //        //SabotageFoodFour.Visibility = Visibility.Visible;
-                //        //SabotageIndustryFour.Visibility = Visibility.Visible;
-                //        //StealResearchFour.Visibility = Visibility.Visible;
-                //    }
-                //}
+                        //SabotageEnergyFour.Visibility = Visibility.Visible;
+                        //SabotageFoodFour.Visibility = Visibility.Visible;
+                        //SabotageIndustryFour.Visibility = Visibility.Visible;
+                        //StealResearchFour.Visibility = Visibility.Visible;
+                    }
+                }
 
-                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedFive(SpiedFiveCiv))
+                if (!AssetsHelper.IsSpiedFive(SpiedFiveCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... ");
                     EmpireExpanderFive.Visibility = Visibility.Collapsed;
                 }
-                //else
-                //{
-                //    if (SpiedFiveCiv != civLocalPlayer)
-                //    {
-                //        EmpireExpanderFive.Visibility = Visibility.Visible;
 
-                //        //SabotageEnergyFive.Visibility = Visibility.Visible;
-                //        //SabotageFoodFive.Visibility = Visibility.Visible;
-                //        //SabotageIndustryFive.Visibility = Visibility.Visible;
-                //        //StealResearchFive.Visibility = Visibility.Visible;
-                //    }
-                //}
-                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedSix(SpiedSixCiv))
+                else
+                {
+                    if (SpiedFiveCiv != civLocalPlayer)
+                    {
+                        EmpireExpanderFive.Visibility = Visibility.Visible;
+
+                        //SabotageEnergyFive.Visibility = Visibility.Visible;
+                        //SabotageFoodFive.Visibility = Visibility.Visible;
+                        //SabotageIndustryFive.Visibility = Visibility.Visible;
+                        //StealResearchFive.Visibility = Visibility.Visible;
+                    }
+                }
+                if (!AssetsHelper.IsSpiedSix(SpiedSixCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... ");
 
                     EmpireExpanderSix.Visibility = Visibility.Collapsed;
                 }
-                //else
-                //{
-                //    if (SpiedSixCiv != civLocalPlayer)
+                else
+                {
+                    if (SpiedSixCiv != civLocalPlayer)
 
-                //    {
-                //        EmpireExpanderSix.Visibility = Visibility.Visible;
+                    {
+                        EmpireExpanderSix.Visibility = Visibility.Visible;
 
-                //        //SabotageEnergySix.Visibility = Visibility.Visible;
-                //        //SabotageFoodSix.Visibility = Visibility.Visible;
-                //        //SabotageIndustrySix.Visibility = Visibility.Visible;
-                //        //StealResearchSix.Visibility = Visibility.Visible;
-                //    }
-                //}
+                        //SabotageEnergySix.Visibility = Visibility.Visible;
+                        //SabotageFoodSix.Visibility = Visibility.Visible;
+                        //SabotageIndustrySix.Visibility = Visibility.Visible;
+                        //StealResearchSix.Visibility = Visibility.Visible;
+                    }
+                }
 
                 //GameLog.Client.UI.DebugFormat("in the middle of checking visible .... ");
 
@@ -193,78 +192,47 @@ namespace Supremacy.Client.Views
                 if (sevenCivs.Keys.Contains(0) && AppContext.LocalPlayer.Empire.Key != "FEDERATION" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[0]].IsContactMade())
                 {
-                  //  BlameFederationTerran.Visibility = Visibility.Visible;
-                    BlameFederationRom.Visibility = Visibility.Visible;
-                  //  BlameFederationKling.Visibility = Visibility.Visible;
                     BlameFederationCard.Visibility = Visibility.Visible;
-                  //  BlameFederationDom.Visibility = Visibility.Visible;
-                   // BlameFederationBorg.Visibility = Visibility.Visible;
+                    BlameFederationRom.Visibility = Visibility.Visible;
                 }
                 GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(1) && AppContext.LocalPlayer.Empire.Key != "TERRANEMPIRE" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[1]].IsContactMade())
                 {
-                 //   BlameTerranEmpireFed.Visibility = Visibility.Visible;
-                    BlameTerranEmpireRom.Visibility = Visibility.Visible;
-                 //   BlameTerranEmpireKling.Visibility = Visibility.Visible;
                     BlameTerranEmpireCard.Visibility = Visibility.Visible;
-                 //   BlameTerranEmpireDom.Visibility = Visibility.Visible;
-                 //   BlameTerranEmpireBorg.Visibility = Visibility.Visible;
+                    BlameTerranEmpireRom.Visibility = Visibility.Visible;
                 }
                 if (sevenCivs.Keys.Contains(2) && AppContext.LocalPlayer.Empire.Key != "ROMULANS" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[2]].IsContactMade())
                 {
-                  //  BlameRomulansFed.Visibility = Visibility.Visible;
-                 //   BlameRomulansTerran.Visibility = Visibility.Visible;
-                  //  BlameRomulansKling.Visibility = Visibility.Visible;
                     BlameRomulansCard.Visibility = Visibility.Visible;
-                  //  BlameRomulansDom.Visibility = Visibility.Visible;
-                  //  BlameRomulansBorg.Visibility = Visibility.Visible;
                 }
                 if (sevenCivs.Keys.Contains(3) && AppContext.LocalPlayer.Empire.Key != "KLINGONS" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[3]].IsContactMade())
                 {
-                 //   BlameKlingonsFed.Visibility = Visibility.Visible;
-                  //  BlameKlingonsTerran.Visibility = Visibility.Visible;
-                    BlameKlingonsRom.Visibility = Visibility.Visible;
                     BlameKlingonsCard.Visibility = Visibility.Visible;
-                  //  BlameKlingonsDom.Visibility = Visibility.Visible;
-                   // BlameKlingonsBorg.Visibility = Visibility.Visible;
+                    BlameKlingonsRom.Visibility = Visibility.Visible;
                 }
                 GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(4) && AppContext.LocalPlayer.Empire.Key != "CARDASSIANS" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
-                 //   BlameCardassiansFed.Visibility = Visibility.Visible;
-                  //  BlameCardassiansTerran.Visibility = Visibility.Visible;
                     BlameCardassiansRom.Visibility = Visibility.Visible;
-                  //  BlameCardassiansKling.Visibility = Visibility.Visible;
-                  //  BlameCardassiansCard.Visibility = Visibility.Visible;
-                  //  BlameCardassiansDom.Visibility = Visibility.Visible;
-                    //BlameCardassiansBorg.Visibility = Visibility.Visible;
-                
                 }
                 GameLog.Client.UI.DebugFormat("CARD: end   of checking BLAME visible");
                 if (sevenCivs.Keys.Contains(5) && AppContext.LocalPlayer.Empire.Key != "DOMINION" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[5]].IsContactMade())
                 {
-                   // BlameDominionFed.Visibility = Visibility.Visible;
-                   // BlameDominionTerran.Visibility = Visibility.Visible;
-                    BlameDominionRom.Visibility = Visibility.Visible;
-                   // BlameDominionKling.Visibility = Visibility.Visible;
                     BlameDominionCard.Visibility = Visibility.Visible;
-                   // BlameDominionBorg.Visibility = Visibility.Visible;
+                    BlameDominionRom.Visibility = Visibility.Visible;
                 }
 
                 if (sevenCivs.Keys.Contains(6) && AppContext.LocalPlayer.Empire.Key != "BORG" &&
                     GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade())
                 {
                     //GameLog.Client.Intel.DebugFormat("**************fed ={0} borg={1} fed borg is contact made {2}", AssetsScreenPresentationModel.Local.Key, sevenCivs[6].Key, GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade());
-                   // BlameBorgFed.Visibility = Visibility.Visible;
-                    //BlameBorgTerran.Visibility = Visibility.Visible;
-                    BlameBorgRom.Visibility = Visibility.Visible;
-                    //BlameBorgKling.Visibility = Visibility.Visible;
                     BlameBorgCard.Visibility = Visibility.Visible;
+                    BlameBorgRom.Visibility = Visibility.Visible;
                 }
             }
             else
