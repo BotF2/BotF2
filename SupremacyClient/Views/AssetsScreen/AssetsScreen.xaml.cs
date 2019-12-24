@@ -31,26 +31,72 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
-            BlameNoOneCard.Visibility = Visibility.Visible;
-            BlameNoOneCard.IsChecked = true;
-            BlameTerroristsCard.Visibility = Visibility.Visible;
-            BlameFederationCard.Visibility = Visibility.Collapsed;
-            BlameTerranEmpireCard.Visibility = Visibility.Collapsed;
-            BlameRomulansCard.Visibility = Visibility.Collapsed;
-            BlameKlingonsCard.Visibility = Visibility.Collapsed;
-            //BlameCardassiansCard.Visibility = Visibility.Collapsed;
-            BlameDominionCard.Visibility = Visibility.Collapsed;
-            BlameBorgCard.Visibility = Visibility.Collapsed;
-            BlameNoOneRom.Visibility = Visibility.Visible;
-            BlameNoOneRom.IsChecked = true;
-            BlameTerroristsRom.Visibility = Visibility.Visible;
-            BlameFederationRom.Visibility = Visibility.Collapsed;
-            BlameTerranEmpireRom.Visibility = Visibility.Collapsed;
-            //BlameRomulansRom.Visibility = Visibility.Collapsed;
-            BlameKlingonsRom.Visibility = Visibility.Collapsed;
-            BlameCardassiansRom.Visibility = Visibility.Collapsed;
-            BlameDominionRom.Visibility = Visibility.Collapsed;
-            BlameBorgRom.Visibility = Visibility.Collapsed;
+            BlameNoOne1.Visibility = Visibility.Visible;
+            BlameNoOne1.IsChecked = true;
+            BlameTerrorists1.Visibility = Visibility.Visible;
+            //BlameFederation1.Visibility = Visibility.Collapsed;
+            //BlameTerranEmpire1.Visibility = Visibility.Collapsed;
+            //BlameRomulans1.Visibility = Visibility.Collapsed;
+            //BlameKlingons1.Visibility = Visibility.Collapsed;
+            //BlameCardassians1.Visibility = Visibility.Collapsed;
+            //BlameDominion1.Visibility = Visibility.Collapsed;
+            //BlameBorg1.Visibility = Visibility.Collapsed;
+
+            BlameNoOne2.Visibility = Visibility.Visible;
+            BlameNoOne2.IsChecked = true;
+            BlameTerrorists2.Visibility = Visibility.Visible;
+            //BlameFederation2.Visibility = Visibility.Collapsed;
+            //BlameTerranEmpire2.Visibility = Visibility.Collapsed;
+            //BlameRomulans2.Visibility = Visibility.Collapsed;
+            //BlameKlingons2.Visibility = Visibility.Collapsed;
+            //BlameCardassians2.Visibility = Visibility.Collapsed;
+            //BlameDominion2.Visibility = Visibility.Collapsed;
+            //BlameBorg2.Visibility = Visibility.Collapsed;
+
+            BlameNoOne3.Visibility = Visibility.Visible;
+            BlameNoOne3.IsChecked = true;
+            BlameTerrorists3.Visibility = Visibility.Visible;
+            //BlameFederation3.Visibility = Visibility.Collapsed;
+            //BlameTerranEmpire3.Visibility = Visibility.Collapsed;
+            //BlameRomulans3.Visibility = Visibility.Collapsed;
+            //BlameKlingons3.Visibility = Visibility.Collapsed;
+            //BlameCardassians3.Visibility = Visibility.Collapsed;
+            //BlameDominion3.Visibility = Visibility.Collapsed;
+            //BlameBorg3.Visibility = Visibility.Collapsed;
+
+            BlameNoOne4.Visibility = Visibility.Visible;
+            BlameNoOne4.IsChecked = true;
+            BlameTerrorists4.Visibility = Visibility.Visible;
+            //BlameFederation4.Visibility = Visibility.Collapsed;
+            //BlameTerranEmpire4.Visibility = Visibility.Collapsed;
+            //BlameRomulans4.Visibility = Visibility.Collapsed;
+            //BlameKlingons4.Visibility = Visibility.Collapsed;
+            //BlameCardassians4.Visibility = Visibility.Collapsed;
+            //BlameDominion4.Visibility = Visibility.Collapsed;
+            //BlameBorg4.Visibility = Visibility.Collapsed;
+
+            BlameNoOne5.Visibility = Visibility.Visible;
+            BlameNoOne5.IsChecked = true;
+            BlameTerrorists5.Visibility = Visibility.Visible;
+            //BlameFederation5.Visibility = Visibility.Collapsed;
+            //BlameTerranEmpire5.Visibility = Visibility.Collapsed;
+            //BlameRomulans5.Visibility = Visibility.Collapsed;
+            //BlameKlingons5.Visibility = Visibility.Collapsed;
+            //BlameCardassians5.Visibility = Visibility.Collapsed;
+            //BlameDominion5.Visibility = Visibility.Collapsed;
+            //BlameBorg5.Visibility = Visibility.Collapsed;
+
+            BlameNoOne6.Visibility = Visibility.Visible;
+            BlameNoOne6.IsChecked = true;
+            BlameTerrorists6.Visibility = Visibility.Visible;
+            //BlameFederation6.Visibility = Visibility.Collapsed;
+            //BlameTerranEmpire6.Visibility = Visibility.Collapsed;
+            //BlameRomulans6.Visibility = Visibility.Collapsed;
+            //BlameKlingons6.Visibility = Visibility.Collapsed;
+            //BlameCardassians6.Visibility = Visibility.Collapsed;
+            //BlameDominion6.Visibility = Visibility.Collapsed;
+            //BlameBorg6.Visibility = Visibility.Collapsed;
+
             LoadInsignia();
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -174,14 +220,15 @@ namespace Supremacy.Client.Views
                 //GameLog.Client.UI.DebugFormat("in the middle of checking visible .... ");
 
                 GameLog.Client.UI.DebugFormat("end  of checking visible");
-
-                Dictionary<int, Civilization> sevenCivs = new Dictionary<int, Civilization>();
+                List<Civilization> sevenCivsList = new List<Civilization>();
+                Dictionary<int, Civilization> sevenCivsDictionary = new Dictionary<int, Civilization>();
                 int index = 0;
-                foreach (var civInDictionary in GameContext.Current.Civilizations) 
+                foreach (var civIn in GameContext.Current.Civilizations) 
                 {
-                    if (civInDictionary.IsEmpire)
+                    if (civIn.IsEmpire)
                     {
-                        sevenCivs.Add(civInDictionary.CivID, civInDictionary);
+                        sevenCivsDictionary.Add(civIn.CivID, civIn);
+                        sevenCivsList.Add(civIn);
                         index++;
                     }
                     if (index >= 7)
@@ -189,50 +236,142 @@ namespace Supremacy.Client.Views
                 }
 
                 GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
-                if (sevenCivs.Keys.Contains(0) && AppContext.LocalPlayer.Empire.Key != "FEDERATION" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[0]].IsContactMade())
+                if (sevenCivsDictionary.Keys.Contains(0) && AppContext.LocalPlayer.Empire.Key != "FEDERATION" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[0]].IsContactMade())
                 {
-                    BlameFederationCard.Visibility = Visibility.Visible;
-                    BlameFederationRom.Visibility = Visibility.Visible;
+                    BlameFederation1.Visibility = Visibility.Collapsed;
                 }
                 GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
-                if (sevenCivs.Keys.Contains(1) && AppContext.LocalPlayer.Empire.Key != "TERRANEMPIRE" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[1]].IsContactMade())
+                if (sevenCivsDictionary.Keys.Contains(1) && AppContext.LocalPlayer.Empire.Key != "TERRANEMPIRE" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[1]].IsContactMade())
                 {
-                    BlameTerranEmpireCard.Visibility = Visibility.Visible;
-                    BlameTerranEmpireRom.Visibility = Visibility.Visible;
+                    if (sevenCivsDictionary[1] == sevenCivsList[0])
+                    {
+                        BlameTerranEmpire1.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        BlameTerranEmpire2.Visibility = Visibility.Collapsed;
+                    }
                 }
-                if (sevenCivs.Keys.Contains(2) && AppContext.LocalPlayer.Empire.Key != "ROMULANS" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[2]].IsContactMade())
+                if (sevenCivsDictionary.Keys.Contains(2) && AppContext.LocalPlayer.Empire.Key != "ROMULANS" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[2]].IsContactMade())
                 {
-                    BlameRomulansCard.Visibility = Visibility.Visible;
+                    if (sevenCivsDictionary[2] == sevenCivsList[0])
+                    {
+                        BlameRomulans1.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[2] == sevenCivsList[1])
+                    {
+                        BlameRomulans2.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        BlameRomulans3.Visibility = Visibility.Collapsed;
+                    }
                 }
-                if (sevenCivs.Keys.Contains(3) && AppContext.LocalPlayer.Empire.Key != "KLINGONS" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[3]].IsContactMade())
+                if (sevenCivsDictionary.Keys.Contains(3) && AppContext.LocalPlayer.Empire.Key != "KLINGONS" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[3]].IsContactMade())
                 {
-                    BlameKlingonsCard.Visibility = Visibility.Visible;
-                    BlameKlingonsRom.Visibility = Visibility.Visible;
+                    if (sevenCivsDictionary[3] == sevenCivsList[0])
+                    {
+                        BlameKlingons1.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[3] == sevenCivsList[1])
+                    {
+                        BlameKlingons2.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[3] == sevenCivsList[2])
+                    {
+                        BlameKlingons3.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        BlameKlingons4.Visibility = Visibility.Collapsed;
+                    }
                 }
                 GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
-                if (sevenCivs.Keys.Contains(4) && AppContext.LocalPlayer.Empire.Key != "CARDASSIANS" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
+                if (sevenCivsDictionary.Keys.Contains(4) && AppContext.LocalPlayer.Empire.Key != "CARDASSIANS" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
-                    BlameCardassiansRom.Visibility = Visibility.Visible;
+                    if (sevenCivsDictionary[4] == sevenCivsList[0])
+                    {
+                        BlameCardassians1.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[4] == sevenCivsList[1])
+                    {
+                        BlameCardassians2.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[4] == sevenCivsList[2])
+                    {
+                        BlameCardassians3.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[4] == sevenCivsList[3])
+                    {
+                        BlameCardassians4.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        BlameCardassians5.Visibility = Visibility.Collapsed;
+                    }
                 }
                 GameLog.Client.UI.DebugFormat("CARD: end   of checking BLAME visible");
-                if (sevenCivs.Keys.Contains(5) && AppContext.LocalPlayer.Empire.Key != "DOMINION" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[5]].IsContactMade())
+                if (sevenCivsDictionary.Keys.Contains(5) && AppContext.LocalPlayer.Empire.Key != "DOMINION" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[5]].IsContactMade())
                 {
-                    BlameDominionCard.Visibility = Visibility.Visible;
-                    BlameDominionRom.Visibility = Visibility.Visible;
+                    if (sevenCivsDictionary[5] == sevenCivsList[0])
+                    {
+                        BlameDominion1.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[5] == sevenCivsList[1])
+                    {
+                        BlameDominion2.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[5] == sevenCivsList[2])
+                    {
+                        BlameDominion3.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[5] == sevenCivsList[3])
+                    {
+                        BlameDominion4.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[5] == sevenCivsList[4])
+                    {
+                        BlameDominion5.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        BlameDominion6.Visibility = Visibility.Collapsed;
+                    }
                 }
 
-                if (sevenCivs.Keys.Contains(6) && AppContext.LocalPlayer.Empire.Key != "BORG" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade())
+                if (sevenCivsDictionary.Keys.Contains(6) && AppContext.LocalPlayer.Empire.Key != "BORG" &&
+                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[6]].IsContactMade())
                 {
-                    //GameLog.Client.Intel.DebugFormat("**************fed ={0} borg={1} fed borg is contact made {2}", AssetsScreenPresentationModel.Local.Key, sevenCivs[6].Key, GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivs[6]].IsContactMade());
-                    BlameBorgCard.Visibility = Visibility.Visible;
-                    BlameBorgRom.Visibility = Visibility.Visible;
+                    if (sevenCivsDictionary[6] == sevenCivsList[0])
+                    {
+                        BlameBorg1.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[6] == sevenCivsList[1])
+                    {
+                        BlameBorg2.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[6] == sevenCivsList[2])
+                    {
+                        BlameBorg3.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[6] == sevenCivsList[3])
+                    {
+                        BlameBorg4.Visibility = Visibility.Collapsed;
+                    }
+                    if (sevenCivsDictionary[6] == sevenCivsList[4])
+                    {
+                        BlameBorg5.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        BlameBorg6.Visibility = Visibility.Collapsed;
+                    }
                 }
             }
             else
@@ -378,15 +517,15 @@ namespace Supremacy.Client.Views
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
@@ -394,23 +533,23 @@ namespace Supremacy.Client.Views
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
         }
         private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
@@ -418,11 +557,11 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
         }
         private void OnIndustrySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
         }
         #endregion
         private void LoadInsignia()
