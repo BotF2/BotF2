@@ -274,9 +274,6 @@
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
       <DependentUpon>AssetsScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AssetsScreen\SpiedZeroColonyList.xaml.cs">
-      <DependentUpon>SpiedZeroColonyList.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AssetsScreen\SpiedSixColonyList.xaml.cs">
       <DependentUpon>SpiedSixColonyList.xaml</DependentUpon>
     </Compile>
@@ -850,10 +847,6 @@
     <Page Include="Views\AssetsScreen\AssetsScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AssetsScreen\SpiedZeroColonyList.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AssetsScreen\SpiedSixColonyList.xaml">
       <Generator>MSBuild:Compile</Generator>

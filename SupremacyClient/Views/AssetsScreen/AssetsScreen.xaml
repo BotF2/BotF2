@@ -154,7 +154,7 @@
                     FlowDirection="RightToLeft"
                     HorizontalAlignment="left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
-        <!-- zero Fed Expander -->
+        <!-- One Expander -->
                         <Expander x:Name="EmpireExpanderFed" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" FontSize="20" BorderThickness="2" BorderBrush="LightBlue" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
@@ -501,9 +501,9 @@
                             
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
-        <!-- One Terran Expander -->
-                        <Expander x:Name="EmpireExpanderTerran" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedTwoCivName}" FontSize="20" BorderThickness="2" BorderBrush="LightYellow" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+        <!-- Two Expander -->
+                        <Expander x:Name="EmpireExpanderTwo" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                                 IsExpanded="True" Header="{Binding Path=SpiedTwoCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridTwo" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
@@ -697,9 +697,9 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
-        <!-- Two Rom Expander -->
-                        <Expander x:Name="EmpireExpanderRom" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedThreeCivName}" FontSize="20" BorderThickness="2" BorderBrush="Green" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+        <!-- Three Expander -->
+                        <Expander x:Name="EmpireExpanderThree" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                                 IsExpanded="True" Header="{Binding Path=SpiedThreeCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridThree" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
@@ -1060,9 +1060,9 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
-        <!-- Three Kling Expander -->
-                        <Expander x:Name="EmpireExpanderKling" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" FontSize="20" BorderThickness="2" BorderBrush="Red" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+        <!-- Four Expander -->
+                        <Expander x:Name="EmpireExpanderFour" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                                 IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridFour" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
@@ -1256,9 +1256,9 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
-        <!-- Four Card Expander -->
-                        <Expander x:Name="EmpireExpanderCard" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" FontSize="20" BorderThickness="2" BorderBrush="Yellow" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+        <!-- Five Expander -->
+                        <Expander x:Name="EmpireExpanderFive" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                                 IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" FontSize="20" BorderThickness="2" BorderBrush="Red" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridFive" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
@@ -1621,9 +1621,9 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"></TextBlock>
-        <!-- Five Dom Expander -->
-                        <Expander x:Name="EmpireExpanderDom" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedSixCivName}" FontSize="20" BorderThickness="2" BorderBrush="Violet" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
+        <!-- Six Expander -->
+                        <Expander x:Name="EmpireExpanderSix" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                                 IsExpanded="True" Header="{Binding Path=SpiedSixCivName}" FontSize="20" BorderThickness="2" BorderBrush="Gray" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
                             <Grid Name="EmpireGridSix" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
@@ -1817,370 +1817,7 @@
                                 </Grid>
                             </Grid>
                         </Expander>
-   <!-- Six Borg Expander -->
-                      <Expander x:Name="EmpireExpanderBorg" Background="Black" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedSevenCivName}" FontSize="20" BorderThickness="2" BorderBrush="Green" Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="4" >
-                        <Grid Name="EmpireGridSeven" FlowDirection="LeftToRight" Background="Black"  Margin="1,1,5,5" HorizontalAlignment="Center">
-                          <Grid FlowDirection="LeftToRight">
-                            <Grid.RowDefinitions>
-                              <RowDefinition Height="45" />
-                              <RowDefinition Height="Auto" />
-                              <RowDefinition Height="Auto" />
-                              <RowDefinition Height="45" />
-                              <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                              <ColumnDefinition Width="*" />
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                              <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Row="0"
-                                    Grid.Column="0"
-                                    Grid.ColumnSpan="16"
-                                    BorderThickness="1"
-                                    Margin="10,0,0,0"
-                                    Background="Black"
-                                    BorderBrush="DarkRed" />
-                            <!-- Espionage Seven Section -->
-                            <StackPanel Grid.Row="0"
-                                      Grid.Column="0"
-                                      Orientation="Horizontal"
-                                      HorizontalAlignment="Center"
-                                      Margin="15,0,0,0">
-                              <TextBlock
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,0"
-                                   Foreground="AntiqueWhite"
-                                   Text="Espionage on the " />
-                              <TextBlock VerticalAlignment="Center"
-                                         Text="{Binding Path=SpiedSevenCivName}"/>
-                              <Image Name="InsigniaSeven" Margin="5,0,0,0">
-                              </Image>
-                            </StackPanel>
-                            <scc:GameLabel Grid.Row="0"
-                                            Grid.Column="1"
-                                            VerticalAlignment="Center"
-                                           HorizontalAlignment="Right"
-                                           Margin="18,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                            ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
-                            <TextBlock Grid.Row="0"
-                                        Grid.Column="2"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        FontWeight="DemiBold"
-                                        Foreground="LightBlue"
-                                        Text="Research: " />
-                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
-                                   Grid.Row="0"
-                                   Grid.Column="3"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="5,14,35,14"/>
-                            <scc:GameButton
-                                        Name="StealResearchSeven"
-                                        Grid.Row="0"
-                                        Grid.Column="3"
-                                        DisplayMode="Tiny"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Left"
-                                        Label="Steal Research"
-                                        FontWeight="DemiBold"
-                                        Foreground="Black"
-                                        Background="Transparent"
-                                        BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                        BorderThickness="2"
-                                        Click = "OnResearchSevenClick"
-                                        Margin="0,0,15,0"/>
-                            <scc:GameLabel Grid.Row="0"
-                                            Grid.Column="5"
-                                            VerticalAlignment="Center"
-                                            Margin="0,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                                            ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
-                            <TextBlock Grid.Row="0"
-                                        Grid.Column="6"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        FontWeight="DemiBold"
-                                        Foreground="LightGreen"
-                                        Text="Food: " />
-                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
-                                   Grid.Row="0"
-                                   Grid.Column="7"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="5,14,60,14"/>
-                            <scc:GameButton Name="SabotageFoodSeven"
-                                            Grid.Row="0"
-                                            Grid.Column="7"
-                                            DisplayMode="Tiny"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Left"
-                                            FontWeight="DemiBold"
-                                            Label="Sabotage Food"
-                                            Foreground="Black"
-                                            Background="Transparent"
-                                            BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                            BorderThickness="2"
-                                            Click = "OnFoodSevenClick"/>
-                            <scc:GameLabel Grid.Row="0"
-                                            Grid.Column="9"
-                                            VerticalAlignment="Center"
-                                           Margin="18,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                            ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
-                            <TextBlock Grid.Row="0"
-                                        Grid.Column="10"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        FontWeight="DemiBold"
-                                        Foreground="Orange"
-                                        Text="Industry: " />
-                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
-                                   Grid.Row="0"
-                                   Grid.Column="11"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="5,14,35,14"/>
-                            <scc:GameButton
-                                        Name="SabotageIndustrySeven"
-                                        Grid.Row="0"
-                                        Grid.Column="11"
-                                        DisplayMode="Tiny"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Left"
-                                        Label="Sabotage Industry"
-                                        FontWeight="DemiBold"
-                                        Foreground="Black"
-                                        Background="Transparent"
-                                        BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                        BorderThickness="2"
-                                        Click = "OnIndustrySevenClick"
-                                        Margin="0,0,15,0"/>
-                            <scc:GameLabel Grid.Row="0"
-                                            Grid.Column="13"
-                                            VerticalAlignment="Center"
-                                          Margin="8,0,2,0"
-                                           ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                            ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
-                            <TextBlock Grid.Row="0"
-                                        Grid.Column="14"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        FontWeight="DemiBold"
-                                        Foreground="Yellow"
-                                        Text="Energy: " />
-                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
-                                   Grid.Row="0"
-                                   Grid.Column="15"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="5,14,60,14"/>
-                            <scc:GameButton
-                                        Name="SabotageEnergySeven"
-                                        Grid.Row="0"
-                                        Grid.Column="15"
-                                        DisplayMode="Tiny"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Left"
-                                        Label="Sabotage Energy"
-                                        FontWeight="DemiBold"
-                                        Foreground="Black"
-                                        Background="Transparent"
-                                        BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                        BorderThickness="2"
-                                        Click = "OnEnergySevenClick"
-                                        Margin="0,0,15,0"/>
-                            <!-- Colonies - Seven -->
-                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                              <v:SpiedSevenColonyList Grid.Row="16" DataContext="{Binding Path=SpiedSevenColonies}" Margin="10,0,0,0" />
-                            </StackPanel>
-                            <!--Blame Buttons -->
-                            <Border Grid.Row="3"
-                                      Grid.Column="0"
-                                      Grid.ColumnSpan="18"
-                                      BorderThickness="1"
-                                      Background="Black"
-                                      BorderBrush="LightGoldenrodYellow" />
-                            <ScrollViewer
-                                    HorizontalScrollBarVisibility="Auto"
-                                    VerticalScrollBarVisibility="Disabled"
-                                    HorizontalAlignment="Left"
-                                    Grid.Row="3"
-                                    Grid.ColumnSpan="18"
-                                    VerticalAlignment="Top"
-                                    Margin="0,5,0,0"
-                                    Width="1000">
-                              <StackPanel Name="BlameCard"
-                                        Orientation="Horizontal"
-                                        VerticalAlignment="Top"
-                                        Grid.Row="3"
-                                        Grid.ColumnSpan="18"
-                                        Grid.Column="0">
-                                <StackPanel Name="BlameTextCard">
-                                  <TextBlock
-                                       VerticalAlignment="Top"
-                                       HorizontalAlignment="Left"
-                                       Margin="5,10,0,0"
-                                       Foreground="Yellow"
-                                       FontSize="14"
-                                       Text="Blame someone for your actions: " />
-                                </StackPanel>
-                                <StackPanel Name="NoOneButtonCard">
-                                  <RadioButton
-                                          VerticalAlignment="Top"
-                                          Name="BlameNoOneCard"
-                                          Margin="5,10,0,0"
-                                          GroupName="BlameRadioCard"
-                                          Foreground="White"
-                                          Content="Blame No One" />
-                                </StackPanel>
-                                <StackPanel Name="BlameTerroristsCard"
-                                            Orientation="Horizontal" >
-                                  <Image  Height="20"
-                                          VerticalAlignment="Top"
-                                          Source="vfs:///Resources/Images/Insignias/Sabotage.png"
-                                          Margin="5,10,0,0" >
-                                  </Image>
-                                  <RadioButton
-                                          Name="TerroristsCard"
-                                          VerticalAlignment="Top"
-                                          Margin="0,10,0,0"
-                                          GroupName="BlameRadioCard"
-                                          Foreground="White"
-                                          Content="Terrorists" />
-                                </StackPanel>
-                                <StackPanel Name="BlameFederationCard"
-                                            Orientation="Horizontal">
-                                  <Image Height="20"
-                                          VerticalAlignment="Top"
-                                          Source="vfs:///Resources/Images/Insignias/Federation.png"
-                                          Margin="10,10,5,0" >
-                                  </Image>
-                                  <RadioButton
-                                      Name="FederationCard"
-                                      VerticalAlignment="Top"
-                                      Margin="0,10,0,0"
-                                      GroupName="BlameRadioCard"
-                                      Foreground="LightBlue"
-                                      Content="Federation"/>
-                                </StackPanel>
-                                <StackPanel Name="BlameTerranEmpireCard"
-                                            Orientation="Horizontal">
-                                  <Image
-                                          VerticalAlignment="Top"
-                                          Height="20"
-                                          Source="vfs:///Resources/Images/Insignias/TerranEmpire.png"
-                                          Margin="10,10,0,0" >
-                                  </Image>
-                                  <RadioButton
-                                      Name="TerranEmpireCard"
-                                      VerticalAlignment="Top"
-                                      Margin="0,10,0,0"
-                                      GroupName="BlameRadioCard"
-                                      Foreground="LightYellow"
-                                      Content="Terran Empire"/>
-                                </StackPanel>
-                                <StackPanel Name="BlameRomulansCard"
-                                            Orientation="Horizontal">
-                                  <Image
-                                      VerticalAlignment="Top"
-                                      Height="20"
-                                      Source="vfs:///Resources/Images/Insignias/Romulans.png"
-                                      Margin="10,10,0,0" >
-                                  </Image>
-                                  <RadioButton
-                                      Name="RomulansCard"
-                                      VerticalAlignment="Top"
-                                      Margin="0,10,0,0"
-                                      GroupName="BlameRadioCard"
-                                      Foreground="LightGreen"
-                                      Content="Romulans"/>
-                                </StackPanel>
-                                <StackPanel Name="BlameKlingonsCard"
-                                            Orientation="Horizontal">
-                                  <Image
-                                      VerticalAlignment="Top"
-                                      Height="20"
-                                      Source="vfs:///Resources/Images/Insignias/Klingons.png"
-                                      Margin="10,10,0,0" >
-                                  </Image>
-                                  <RadioButton
-                                      Name="KlingonsCard"
-                                      VerticalAlignment="Top"
-                                      Margin="0,10,0,0"
-                                      GroupName="BlameRadioCard"
-                                      Foreground="Red"
-                                      Content="Klingons"/>
-                                </StackPanel>
-                                <!--<StackPanel Name="BlameCardassiansCard"
-                                                        Orientation="Horizontal">
-                                                <Image 
-                                                    VerticalAlignment="Top"
-                                                    Height="20"
-                                                    Source="vfs:///Resources/Images/Insignias/Cardassians.png"
-                                                    Margin="10,10,0,0" >
-                                                </Image>
-                                                <RadioButton
-                                                    Name="CardassiansCard"
-                                                    VerticalAlignment="Top"
-                                                    Margin="0,10,0,0"
-                                                    GroupName="BlameRadioCard"
-                                                    Foreground="Goldenrod"
-                                                    Content="Cardassianss"/>
-                                            </StackPanel>-->
-                                <StackPanel Name="BlameDominionCard"
-                                            Orientation="Horizontal">
-                                  <Image
-                                      VerticalAlignment="Top"
-                                      Height="20"
-                                      Source="vfs:///Resources/Images/Insignias/Dominion.png"
-                                      Margin="10,10,0,0" >
-                                  </Image>
-                                  <RadioButton
-                                      Name="DominionCard"
-                                      VerticalAlignment="Top"
-                                      Margin="0,10,0,0"
-                                      GroupName="BlameRadioCard"
-                                      Foreground="MediumPurple"
-                                      Content="Dominion"/>
-                                </StackPanel>
-                                <StackPanel Name="BlameBorgCard"
-                                            Orientation="Horizontal">
-                                  <Image
-                                      VerticalAlignment="Top"
-                                      Height="20"
-                                      Source="vfs:///Resources/Images/Insignias/Borg.png"
-                                      Margin="10,10,0,0" >
-                                  </Image>
-                                  <RadioButton
-                                      Name="BorgCard"
-                                      VerticalAlignment="Top"
-                                      Margin="0,10,0,0"
-                                      GroupName="BlameRadioCard"
-                                      Foreground="YellowGreen"
-                                      Content="Borg"/>
-                                </StackPanel>
-                              </StackPanel>
-                            </ScrollViewer>
-                          </Grid>
-                        </Grid>
-                      </Expander>
+                        <TextBlock Height="5"></TextBlock>
                     </StackPanel>
                 </ScrollViewer>
             </StackPanel>

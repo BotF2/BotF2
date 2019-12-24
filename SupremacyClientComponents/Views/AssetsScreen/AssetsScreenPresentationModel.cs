@@ -28,7 +28,6 @@ namespace Supremacy.Client.Views
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
            
             _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
-            _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             _spiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
@@ -41,8 +40,6 @@ namespace Supremacy.Client.Views
 
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
-
-        public event EventHandler SpiedZeroColoniesChanged;
 
         public event EventHandler SpiedOneColoniesChanged;
 
@@ -64,8 +61,6 @@ namespace Supremacy.Client.Views
 
         public event EventHandler TotalPopulationChanged;
 
-        public event EventHandler SpiedZeroTotalPopulationChanged;
-
         public event EventHandler SpiedOneTotalPopulationChanged;
 
         public event EventHandler SpiedTwoTotalPopulationChanged;
@@ -79,8 +74,6 @@ namespace Supremacy.Client.Views
         public event EventHandler SpiedSixTotalPopulationChanged;
 
         private IEnumerable<Colony> _colonies;
-
-        private IEnumerable<Colony> _spiedZeroColonies;
 
         private IEnumerable<Colony> _spiedOneColonies;
 
@@ -119,21 +112,7 @@ namespace Supremacy.Client.Views
                 OnTotalIntelligenceDefenseAccumulatedChanged();
             }
         }
-        public IEnumerable<Colony> SpiedZeroColonies
-        {
-            get { return _spiedZeroColonies; }
-            set
-            {
-                if (Equals(value, _spiedZeroColonies))
-                    return;
 
-                _spiedZeroColonies = value;
-
-                OnSpiedZeroColoniesChanged();
-
-                OnSpiedZeroTotalPopulationChanged();
-            }
-        }
         public IEnumerable<Colony> SpiedOneColonies
         {
             get { return _spiedOneColonies; }
@@ -250,12 +229,6 @@ namespace Supremacy.Client.Views
             ColoniesChanged.Raise(this);
             OnPropertyChanged("Colonies");    
         }
-
-        protected virtual void OnSpiedZeroColoniesChanged()
-        {
-            SpiedZeroColoniesChanged.Raise(this);
-            OnPropertyChanged("SpiedZeroColonies");
-        }
         protected virtual void OnSpiedOneColoniesChanged()
         {
             SpiedOneColoniesChanged.Raise(this);
@@ -308,11 +281,6 @@ namespace Supremacy.Client.Views
         {
             TotalIntelligenceDefenseAccumulatedChanged.Raise(this);
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
-        }
-        protected virtual void OnSpiedZeroTotalPopulationChanged()
-        {
-            SpiedZeroTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedZeroTotalPopulation");
         }
         protected virtual void OnSpiedOneTotalPopulationChanged()
         {
@@ -379,51 +347,6 @@ namespace Supremacy.Client.Views
             {
                 var localCiv = GameContext.Current.CivilizationManagers[DesignTimeObjects.GetCivLocalPlayer()];
                 return localCiv.Civilization;
-            }
-        }
-        public static Meter SpiedZeroTotalPopulation
-        {
-            get
-            {
-                var civManager = DesignTimeObjects.SpiedCivZero;
-                try
-                {
-                    GameLog.Core.Intel.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
-                    return civManager.TotalPopulation;
-                }
-                catch (Exception e)
-                {
-                    Meter zero = new Meter(0, 0, 0);
-                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedZeroTotalPopulation:");
-                    GameLog.Core.General.Error(e);
-                    return zero;
-                }
-            }
-        }
-        public static string SpiedZeroCivName
-        {
-            get
-            {
-                string sp1Name = "Empty";
-                try
-                {
-                    sp1Name = DesignTimeObjects.SpiedCivZero.Civilization.Name;
-                }
-                catch
-                {
-                    // 
-                    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedZeroCivName");
-                }
-                return sp1Name;
-            }
-        }
-        public static Civilization SpiedZeroCiv
-        {
-            get
-            {
-                var SpiedCiv = DesignTimeObjects.SpiedCivZero;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
-                return SpiedCiv.Civilization;
             }
         }
 

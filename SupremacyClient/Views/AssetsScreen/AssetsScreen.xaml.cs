@@ -21,7 +21,6 @@ namespace Supremacy.Client.Views
     public partial class AssetsScreen : IAssetsScreenView
     {
         Civilization civLocalPlayer = DesignTimeObjects.CivilizationManager.Civilization;
-        Civilization SpiedZeroCiv = DesignTimeObjects.SpiedCivZero.Civilization;
         Civilization SpiedOneCiv = DesignTimeObjects.SpiedCivOne.Civilization;
         Civilization SpiedTwoCiv = DesignTimeObjects.SpiedCivTwo.Civilization;
         Civilization SpiedThreeCiv = DesignTimeObjects.SpiedCivThree.Civilization;
@@ -32,49 +31,12 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
-            BlameNoOneFed.Visibility = Visibility.Visible;
-            BlameNoOneFed.IsChecked = true;
-            BlameTerroristsFed.Visibility = Visibility.Visible;
-
-            BlameNoOneTerran.Visibility = Visibility.Visible;
-            BlameNoOneTerran.IsChecked = true;
-            BlameTerroristsTerran.Visibility = Visibility.Visible;
-
             BlameNoOneRom.Visibility = Visibility.Visible;
             BlameNoOneRom.IsChecked = true;
             BlameTerroristsRom.Visibility = Visibility.Visible;
-
-            BlameNoOneKling.Visibility = Visibility.Visible;
-            BlameNoOneKling.IsChecked = true;
-            BlameTerroristsKling.Visibility = Visibility.Visible;
-
             BlameNoOneCard.Visibility = Visibility.Visible;
             BlameNoOneCard.IsChecked = true;
             BlameTerroristsCard.Visibility = Visibility.Visible;
-
-            BlameNoOneDom.Visibility = Visibility.Visible;
-            BlameNoOneDom.IsChecked = true;
-            BlameTerroristsDom.Visibility = Visibility.Visible;
-
-            BlameNoOneBorg.Visibility = Visibility.Visible;
-            BlameNoOneBorg.IsChecked = true;
-            BlameTerroristsBorg.Visibility = Visibility.Visible;
-
-            //BlameFederation.Visibility = Visibility.Collapsed;
-            BlameTerranEmpireFed.Visibility = Visibility.Collapsed;
-            BlameRomulansFed.Visibility = Visibility.Collapsed;
-            BlameKlingonsFed.Visibility = Visibility.Collapsed;
-            BlameCardassiansFed.Visibility = Visibility.Collapsed;
-            BlameDominionFed.Visibility = Visibility.Collapsed;
-            BlameBorgFed.Visibility = Visibility.Collapsed;
-
-            BlameFederationTerran.Visibility = Visibility.Collapsed;
-            //BlameTerranEmpireFed.Visibility = Visibility.Collapsed;
-            BlameRomulansTerran.Visibility = Visibility.Collapsed;
-            BlameKlingonsTerran.Visibility = Visibility.Collapsed;
-            BlameCardassiansTerran.Visibility = Visibility.Collapsed;
-            BlameDominionTerran.Visibility = Visibility.Collapsed;
-            BlameBorgTerran.Visibility = Visibility.Collapsed;
 
             BlameFederationRom.Visibility = Visibility.Collapsed;
             BlameTerranEmpireRom.Visibility = Visibility.Collapsed;
@@ -84,14 +46,6 @@ namespace Supremacy.Client.Views
             BlameDominionRom.Visibility = Visibility.Collapsed;
             BlameBorgRom.Visibility = Visibility.Collapsed;
 
-            BlameFederationKling.Visibility = Visibility.Collapsed;
-            BlameTerranEmpireKling.Visibility = Visibility.Collapsed;
-            BlameRomulansKling.Visibility = Visibility.Collapsed;
-            //BlameKlingonsKling.Visibility = Visibility.Collapsed;
-            BlameCardassiansKling.Visibility = Visibility.Collapsed;
-            BlameDominionKling.Visibility = Visibility.Collapsed;
-            BlameBorgKling.Visibility = Visibility.Collapsed;
-
             BlameFederationCard.Visibility = Visibility.Collapsed;
             BlameTerranEmpireCard.Visibility = Visibility.Collapsed;
             BlameRomulansCard.Visibility = Visibility.Collapsed;
@@ -99,22 +53,6 @@ namespace Supremacy.Client.Views
             //BlameCardassiansCard.Visibility = Visibility.Collapsed;
             BlameDominionCard.Visibility = Visibility.Collapsed;
             BlameBorgCard.Visibility = Visibility.Collapsed;
-
-            BlameFederationDom.Visibility = Visibility.Collapsed;
-            BlameTerranEmpireDom.Visibility = Visibility.Collapsed;
-            BlameRomulansDom.Visibility = Visibility.Collapsed;
-            BlameKlingonsDom.Visibility = Visibility.Collapsed;
-            BlameCardassiansDom.Visibility = Visibility.Collapsed;
-            //BlameDominionDom.Visibility = Visibility.Collapsed;
-            BlameBorgDom.Visibility = Visibility.Collapsed;
-
-            BlameFederationBorg.Visibility = Visibility.Collapsed;
-            BlameTerranEmpireBorg.Visibility = Visibility.Collapsed;
-            BlameRomulansBorg.Visibility = Visibility.Collapsed;
-            BlameKlingonsBorg.Visibility = Visibility.Collapsed;
-            BlameCardassiansBorg.Visibility = Visibility.Collapsed;
-            BlameDominionBorg.Visibility = Visibility.Collapsed;
-            //BlameBorgBorg.Visibility = Visibility.Collapsed;
 
             LoadInsignia();
         }
@@ -124,16 +62,11 @@ namespace Supremacy.Client.Views
             {
                 ResumeAnimations();
                 GameLog.Client.UI.DebugFormat("begin of checking visible");
-                if (SpiedZeroCiv == civLocalPlayer || !AssetsHelper.IsSpiedSix(SpiedZeroCiv))
-                {
-                    GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... ");
 
-                    EmpireExpanderFed.Visibility = Visibility.Collapsed;
-                }
                 if (SpiedOneCiv == civLocalPlayer||!AssetsHelper.IsSpiedOne(SpiedOneCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... ");
-                    EmpireExpanderTerran.Visibility = Visibility.Collapsed;
+                    EmpireExpanderFed.Visibility = Visibility.Collapsed;
                 }
                 //else
                 //{
@@ -148,10 +81,10 @@ namespace Supremacy.Client.Views
                 //    }
                 //}
 
-                if (SpiedTwoCiv == civLocalPlayer || !AssetsHelper.IsSpiedTwo(SpiedTwoCiv))
+                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedTwo(SpiedTwoCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... ");
-                    EmpireExpanderRom.Visibility = Visibility.Collapsed;
+                    EmpireExpanderTwo.Visibility = Visibility.Collapsed;
                 }
                 //else
                 //{
@@ -166,10 +99,10 @@ namespace Supremacy.Client.Views
                 //    }
                 //}
 
-                if (SpiedThreeCiv == civLocalPlayer || !AssetsHelper.IsSpiedThree(SpiedThreeCiv))
+                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedThree(SpiedThreeCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... ");
-                    EmpireExpanderKling.Visibility = Visibility.Collapsed;
+                    EmpireExpanderThree.Visibility = Visibility.Collapsed;
                 }
                 //else
                 //{
@@ -184,10 +117,10 @@ namespace Supremacy.Client.Views
                 //    }
                 //}
 
-                if (SpiedFourCiv == civLocalPlayer || !AssetsHelper.IsSpiedFour(SpiedFourCiv))
+                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedFour(SpiedFourCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFourCiv checking visible .... ");
-                    EmpireExpanderCard.Visibility = Visibility.Collapsed;
+                    EmpireExpanderFour.Visibility = Visibility.Collapsed;
                 }
                 //else
                 //{
@@ -202,10 +135,10 @@ namespace Supremacy.Client.Views
                 //    }
                 //}
 
-                if (SpiedFiveCiv == civLocalPlayer || !AssetsHelper.IsSpiedFive(SpiedFiveCiv))
+                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedFive(SpiedFiveCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... ");
-                    EmpireExpanderDom.Visibility = Visibility.Collapsed;
+                    EmpireExpanderFive.Visibility = Visibility.Collapsed;
                 }
                 //else
                 //{
@@ -219,11 +152,11 @@ namespace Supremacy.Client.Views
                 //        //StealResearchFive.Visibility = Visibility.Visible;
                 //    }
                 //}
-                if (SpiedSixCiv == civLocalPlayer || !AssetsHelper.IsSpiedSix(SpiedSixCiv))
+                if (SpiedOneCiv == civLocalPlayer || !AssetsHelper.IsSpiedSix(SpiedSixCiv))
                 {
                     GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... ");
 
-                    EmpireExpanderBorg.Visibility = Visibility.Collapsed;
+                    EmpireExpanderSix.Visibility = Visibility.Collapsed;
                 }
                 //else
                 //{
