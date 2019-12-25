@@ -31,71 +31,13 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
-            BlameNoOne1.Visibility = Visibility.Visible;
+
             BlameNoOne1.IsChecked = true;
-            BlameTerrorists1.Visibility = Visibility.Visible;
-            //BlameFederation1.Visibility = Visibility.Collapsed;
-            //BlameTerranEmpire1.Visibility = Visibility.Collapsed;
-            //BlameRomulans1.Visibility = Visibility.Collapsed;
-            //BlameKlingons1.Visibility = Visibility.Collapsed;
-            //BlameCardassians1.Visibility = Visibility.Collapsed;
-            //BlameDominion1.Visibility = Visibility.Collapsed;
-            //BlameBorg1.Visibility = Visibility.Collapsed;
-
-            BlameNoOne2.Visibility = Visibility.Visible;
             BlameNoOne2.IsChecked = true;
-            BlameTerrorists2.Visibility = Visibility.Visible;
-            //BlameFederation2.Visibility = Visibility.Collapsed;
-            //BlameTerranEmpire2.Visibility = Visibility.Collapsed;
-            //BlameRomulans2.Visibility = Visibility.Collapsed;
-            //BlameKlingons2.Visibility = Visibility.Collapsed;
-            //BlameCardassians2.Visibility = Visibility.Collapsed;
-            //BlameDominion2.Visibility = Visibility.Collapsed;
-            //BlameBorg2.Visibility = Visibility.Collapsed;
-
-            BlameNoOne3.Visibility = Visibility.Visible;
             BlameNoOne3.IsChecked = true;
-            BlameTerrorists3.Visibility = Visibility.Visible;
-            //BlameFederation3.Visibility = Visibility.Collapsed;
-            //BlameTerranEmpire3.Visibility = Visibility.Collapsed;
-            //BlameRomulans3.Visibility = Visibility.Collapsed;
-            //BlameKlingons3.Visibility = Visibility.Collapsed;
-            //BlameCardassians3.Visibility = Visibility.Collapsed;
-            //BlameDominion3.Visibility = Visibility.Collapsed;
-            //BlameBorg3.Visibility = Visibility.Collapsed;
-
-            BlameNoOne4.Visibility = Visibility.Visible;
             BlameNoOne4.IsChecked = true;
-            BlameTerrorists4.Visibility = Visibility.Visible;
-            //BlameFederation4.Visibility = Visibility.Collapsed;
-            //BlameTerranEmpire4.Visibility = Visibility.Collapsed;
-            //BlameRomulans4.Visibility = Visibility.Collapsed;
-            //BlameKlingons4.Visibility = Visibility.Collapsed;
-            //BlameCardassians4.Visibility = Visibility.Collapsed;
-            //BlameDominion4.Visibility = Visibility.Collapsed;
-            //BlameBorg4.Visibility = Visibility.Collapsed;
-
-            BlameNoOne5.Visibility = Visibility.Visible;
             BlameNoOne5.IsChecked = true;
-            BlameTerrorists5.Visibility = Visibility.Visible;
-            //BlameFederation5.Visibility = Visibility.Collapsed;
-            //BlameTerranEmpire5.Visibility = Visibility.Collapsed;
-            //BlameRomulans5.Visibility = Visibility.Collapsed;
-            //BlameKlingons5.Visibility = Visibility.Collapsed;
-            //BlameCardassians5.Visibility = Visibility.Collapsed;
-            //BlameDominion5.Visibility = Visibility.Collapsed;
-            //BlameBorg5.Visibility = Visibility.Collapsed;
-
-            BlameNoOne6.Visibility = Visibility.Visible;
             BlameNoOne6.IsChecked = true;
-            BlameTerrorists6.Visibility = Visibility.Visible;
-            //BlameFederation6.Visibility = Visibility.Collapsed;
-            //BlameTerranEmpire6.Visibility = Visibility.Collapsed;
-            //BlameRomulans6.Visibility = Visibility.Collapsed;
-            //BlameKlingons6.Visibility = Visibility.Collapsed;
-            //BlameCardassians6.Visibility = Visibility.Collapsed;
-            //BlameDominion6.Visibility = Visibility.Collapsed;
-            //BlameBorg6.Visibility = Visibility.Collapsed;
 
             LoadInsignia();
         }
@@ -115,7 +57,7 @@ namespace Supremacy.Client.Views
                 {
                     if (SpiedOneCiv != civLocalPlayer)
                     {
-                        EmpireExpanderOne.Visibility = Visibility.Collapsed;
+                        EmpireExpanderOne.Visibility = Visibility.Visible;
 
                         //SabotageEnergyOne.Visibility = Visibility.Visible;
                         //SabotageFoodOne.Visibility = Visibility.Visible;
@@ -216,161 +158,276 @@ namespace Supremacy.Client.Views
                         //StealResearchSix.Visibility = Visibility.Visible;
                     }
                 }
-
-                //GameLog.Client.UI.DebugFormat("in the middle of checking visible .... ");
-
                 GameLog.Client.UI.DebugFormat("end  of checking visible");
-                List<Civilization> sevenCivsList = new List<Civilization>();
-                Dictionary<int, Civilization> sevenCivsDictionary = new Dictionary<int, Civilization>();
-                int index = 0;
-                foreach (var civIn in GameContext.Current.Civilizations) 
+
+                var allEmpireCivManagers = DesignTimeObjects.SpiedCivMangers;
+
+                IEnumerable<CivilizationManager> distinctCivManagers = allEmpireCivManagers.Distinct();
+                List<CivilizationManager> availableCivManagers = new List<CivilizationManager>();
+
+                foreach (var manager in distinctCivManagers)
                 {
-                    if (civIn.IsEmpire)
-                    {
-                        sevenCivsDictionary.Add(civIn.CivID, civIn);
-                        sevenCivsList.Add(civIn);
-                        index++;
-                    }
-                    if (index >= 7)
-                        break;
+                    availableCivManagers.Add(manager);
+                }
+
+                List<Civilization> empireCivsList = new List<Civilization>();
+                Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
+
+                var localPlayerCivManager = DesignTimeObjects.LocalCivManager;
+
+                foreach (var civManager in availableCivManagers)
+                {
+                        empireCivsDictionary.Add(civManager.Civilization.CivID, civManager.Civilization);
+                        empireCivsList.Add(civManager.Civilization);
                 }
 
                 GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
-                if (sevenCivsDictionary.Keys.Contains(0) && AppContext.LocalPlayer.Empire.Key != "FEDERATION" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[0]].IsContactMade())
+
+                if (empireCivsDictionary.Keys.Contains(0) && localPlayerCivManager.Civilization.CivID != 0 &&
+                    GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[0]].IsContactMade())
                 {
-                    BlameFederation1.Visibility = Visibility.Collapsed;
+                    BlameFederation2.Visibility = Visibility.Visible;
+                    BlameFederation3.Visibility = Visibility.Visible;
+                    BlameFederation4.Visibility = Visibility.Visible;
+                    BlameFederation5.Visibility = Visibility.Visible;
+                    BlameFederation6.Visibility = Visibility.Visible;
                 }
                 GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
-                if (sevenCivsDictionary.Keys.Contains(1) && AppContext.LocalPlayer.Empire.Key != "TERRANEMPIRE" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[1]].IsContactMade())
+
+                if (empireCivsDictionary.Keys.Contains(1) && localPlayerCivManager.Civilization.CivID != 1 &&
+                    GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[1]].IsContactMade())
                 {
-                    if (sevenCivsDictionary[1] == sevenCivsList[0])
+                    if (empireCivsDictionary[1] == empireCivsList[0])
                     {
-                        BlameTerranEmpire1.Visibility = Visibility.Collapsed;
+                        BlameTerranEmpire2.Visibility = Visibility.Visible;
+                        BlameTerranEmpire3.Visibility = Visibility.Visible;
+                        BlameTerranEmpire4.Visibility = Visibility.Visible;
+                        BlameTerranEmpire5.Visibility = Visibility.Visible;
+                        BlameTerranEmpire6.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        BlameTerranEmpire2.Visibility = Visibility.Collapsed;
+                        BlameTerranEmpire1.Visibility = Visibility.Visible;
+                        BlameTerranEmpire3.Visibility = Visibility.Visible;
+                        BlameTerranEmpire4.Visibility = Visibility.Visible;
+                        BlameTerranEmpire5.Visibility = Visibility.Visible;
+                        BlameTerranEmpire6.Visibility = Visibility.Visible;
                     }
                 }
-                if (sevenCivsDictionary.Keys.Contains(2) && AppContext.LocalPlayer.Empire.Key != "ROMULANS" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[2]].IsContactMade())
+                if (empireCivsDictionary.Keys.Contains(2) && localPlayerCivManager.Civilization.CivID != 2 &&
+                    GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[2]].IsContactMade())
                 {
-                    if (sevenCivsDictionary[2] == sevenCivsList[0])
+                    if (empireCivsDictionary[2] == empireCivsList[0])
                     {
-                        BlameRomulans1.Visibility = Visibility.Collapsed;
+                        BlameRomulans2.Visibility = Visibility.Visible;
+                        BlameRomulans3.Visibility = Visibility.Visible;
+                        BlameRomulans4.Visibility = Visibility.Visible;
+                        BlameRomulans5.Visibility = Visibility.Visible;
+                        BlameRomulans6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[2] == sevenCivsList[1])
+                    if (empireCivsDictionary[2] == empireCivsList[1])
                     {
-                        BlameRomulans2.Visibility = Visibility.Collapsed;
+                        BlameRomulans1.Visibility = Visibility.Visible;
+                        BlameRomulans3.Visibility = Visibility.Visible;
+                        BlameRomulans4.Visibility = Visibility.Visible;
+                        BlameRomulans5.Visibility = Visibility.Visible;
+                        BlameRomulans6.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        BlameRomulans3.Visibility = Visibility.Collapsed;
+                        BlameRomulans1.Visibility = Visibility.Visible;
+                        BlameRomulans2.Visibility = Visibility.Visible;
+                        BlameRomulans4.Visibility = Visibility.Visible;
+                        BlameRomulans5.Visibility = Visibility.Visible;
+                        BlameRomulans6.Visibility = Visibility.Visible;
                     }
                 }
-                if (sevenCivsDictionary.Keys.Contains(3) && AppContext.LocalPlayer.Empire.Key != "KLINGONS" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[3]].IsContactMade())
+                if (empireCivsDictionary.Keys.Contains(3) && localPlayerCivManager.Civilization.CivID != 3 &&
+                    GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[3]].IsContactMade())
                 {
-                    if (sevenCivsDictionary[3] == sevenCivsList[0])
+                    if (empireCivsDictionary[3] == empireCivsList[0])
                     {
-                        BlameKlingons1.Visibility = Visibility.Collapsed;
+                        BlameKlingons2.Visibility = Visibility.Visible;
+                        BlameKlingons3.Visibility = Visibility.Visible;
+                        BlameKlingons4.Visibility = Visibility.Visible;
+                        BlameKlingons5.Visibility = Visibility.Visible;
+                        BlameKlingons6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[3] == sevenCivsList[1])
+                    if (empireCivsDictionary[3] == empireCivsList[1])
                     {
-                        BlameKlingons2.Visibility = Visibility.Collapsed;
+                        BlameKlingons1.Visibility = Visibility.Visible;
+                        BlameKlingons3.Visibility = Visibility.Visible;
+                        BlameKlingons4.Visibility = Visibility.Visible;
+                        BlameKlingons5.Visibility = Visibility.Visible;
+                        BlameKlingons6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[3] == sevenCivsList[2])
+                    if (empireCivsDictionary[3] == empireCivsList[2])
                     {
-                        BlameKlingons3.Visibility = Visibility.Collapsed;
+                        BlameKlingons1.Visibility = Visibility.Visible;
+                        BlameKlingons2.Visibility = Visibility.Visible;
+                        BlameKlingons4.Visibility = Visibility.Visible;
+                        BlameKlingons5.Visibility = Visibility.Visible;
+                        BlameKlingons6.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        BlameKlingons4.Visibility = Visibility.Collapsed;
+                        BlameKlingons1.Visibility = Visibility.Visible;
+                        BlameKlingons2.Visibility = Visibility.Visible;
+                        BlameKlingons3.Visibility = Visibility.Visible;
+                        BlameKlingons5.Visibility = Visibility.Visible;
+                        BlameKlingons6.Visibility = Visibility.Visible;
                     }
                 }
                 GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
-                if (sevenCivsDictionary.Keys.Contains(4) && AppContext.LocalPlayer.Empire.Key != "CARDASSIANS" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
+                if (empireCivsDictionary.Keys.Contains(4) && localPlayerCivManager.Civilization.CivID != 4 &&
+                    GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
-                    if (sevenCivsDictionary[4] == sevenCivsList[0])
+                    if (empireCivsDictionary[4] == empireCivsList[0])
                     {
-                        BlameCardassians1.Visibility = Visibility.Collapsed;
+                        BlameCardassians2.Visibility = Visibility.Visible;
+                        BlameCardassians3.Visibility = Visibility.Visible;
+                        BlameCardassians4.Visibility = Visibility.Visible;
+                        BlameCardassians5.Visibility = Visibility.Visible;
+                        BlameCardassians6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[4] == sevenCivsList[1])
+                    if (empireCivsDictionary[4] == empireCivsList[1])
                     {
-                        BlameCardassians2.Visibility = Visibility.Collapsed;
+                        BlameCardassians1.Visibility = Visibility.Visible;
+                        BlameCardassians3.Visibility = Visibility.Visible;
+                        BlameCardassians4.Visibility = Visibility.Visible;
+                        BlameCardassians5.Visibility = Visibility.Visible;
+                        BlameCardassians6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[4] == sevenCivsList[2])
+                    if (empireCivsDictionary[4] == empireCivsList[2])
                     {
-                        BlameCardassians3.Visibility = Visibility.Collapsed;
+                        BlameCardassians1.Visibility = Visibility.Visible;
+                        BlameCardassians2.Visibility = Visibility.Visible;
+                        BlameCardassians4.Visibility = Visibility.Visible;
+                        BlameCardassians5.Visibility = Visibility.Visible;
+                        BlameCardassians6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[4] == sevenCivsList[3])
+                    if (empireCivsDictionary[4] == empireCivsList[3])
                     {
-                        BlameCardassians4.Visibility = Visibility.Collapsed;
+                        BlameCardassians1.Visibility = Visibility.Visible;
+                        BlameCardassians2.Visibility = Visibility.Visible;
+                        BlameCardassians3.Visibility = Visibility.Visible;
+                        BlameCardassians5.Visibility = Visibility.Visible;
+                        BlameCardassians6.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        BlameCardassians5.Visibility = Visibility.Collapsed;
+                        BlameCardassians1.Visibility = Visibility.Visible;
+                        BlameCardassians2.Visibility = Visibility.Visible;
+                        BlameCardassians3.Visibility = Visibility.Visible;
+                        BlameCardassians4.Visibility = Visibility.Visible;
+                        BlameCardassians6.Visibility = Visibility.Visible;
                     }
                 }
-                GameLog.Client.UI.DebugFormat("CARD: end   of checking BLAME visible");
-                if (sevenCivsDictionary.Keys.Contains(5) && AppContext.LocalPlayer.Empire.Key != "DOMINION" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[5]].IsContactMade())
+                GameLog.Client.UI.DebugFormat("CARD: end of checking BLAME visible");
+                if (empireCivsDictionary.Keys.Contains(5) && localPlayerCivManager.Civilization.CivID != 5 &&
+                    GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[5]].IsContactMade())
                 {
-                    if (sevenCivsDictionary[5] == sevenCivsList[0])
+                    if (empireCivsDictionary[5] == empireCivsList[0])
                     {
-                        BlameDominion1.Visibility = Visibility.Collapsed;
+                        BlameDominion2.Visibility = Visibility.Visible;
+                        BlameDominion3.Visibility = Visibility.Visible;
+                        BlameDominion4.Visibility = Visibility.Visible;
+                        BlameDominion5.Visibility = Visibility.Visible;
+                        BlameDominion6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[5] == sevenCivsList[1])
+                    if (empireCivsDictionary[5] == empireCivsList[1])
                     {
-                        BlameDominion2.Visibility = Visibility.Collapsed;
+                        BlameDominion1.Visibility = Visibility.Visible;
+                        BlameDominion3.Visibility = Visibility.Visible;
+                        BlameDominion4.Visibility = Visibility.Visible;
+                        BlameDominion5.Visibility = Visibility.Visible;
+                        BlameDominion6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[5] == sevenCivsList[2])
+                    if (empireCivsDictionary[5] == empireCivsList[2])
                     {
-                        BlameDominion3.Visibility = Visibility.Collapsed;
+                        BlameDominion1.Visibility = Visibility.Visible;
+                        BlameDominion2.Visibility = Visibility.Visible;
+                        BlameDominion4.Visibility = Visibility.Visible;
+                        BlameDominion5.Visibility = Visibility.Visible;
+                        BlameDominion6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[5] == sevenCivsList[3])
+                    if (empireCivsDictionary[5] == empireCivsList[3])
                     {
-                        BlameDominion4.Visibility = Visibility.Collapsed;
+                        BlameDominion1.Visibility = Visibility.Visible;
+                        BlameDominion2.Visibility = Visibility.Visible;
+                        BlameDominion3.Visibility = Visibility.Visible;
+                        BlameDominion5.Visibility = Visibility.Visible;
+                        BlameDominion6.Visibility = Visibility.Visible;
+                        GameLog.Client.UI.DebugFormat("****************** Dictionary key 5 ={0} List item 4 ={1}", empireCivsDictionary[5], empireCivsList[4]);
                     }
-                    if (sevenCivsDictionary[5] == sevenCivsList[4])
+                    if (empireCivsDictionary[5] == empireCivsList[4])
                     {
-                        BlameDominion5.Visibility = Visibility.Collapsed;
+                        BlameDominion1.Visibility = Visibility.Visible;
+                        BlameDominion2.Visibility = Visibility.Visible;
+                        BlameDominion3.Visibility = Visibility.Visible;
+                        BlameDominion4.Visibility = Visibility.Visible;
+                        BlameDominion6.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        BlameDominion6.Visibility = Visibility.Collapsed;
+                        BlameDominion1.Visibility = Visibility.Visible;
+                        BlameDominion2.Visibility = Visibility.Visible;
+                        BlameDominion3.Visibility = Visibility.Visible;
+                        BlameDominion4.Visibility = Visibility.Visible;
+                        BlameDominion5.Visibility = Visibility.Visible;
                     }
                 }
 
-                if (sevenCivsDictionary.Keys.Contains(6) && AppContext.LocalPlayer.Empire.Key != "BORG" &&
-                    GameContext.Current.DiplomacyData[AssetsScreenPresentationModel.Local, sevenCivsDictionary[6]].IsContactMade())
+                if (empireCivsDictionary.Keys.Contains(6) && localPlayerCivManager.Civilization.CivID != 6 &&
+                    GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[6]].IsContactMade())
                 {
-                    if (sevenCivsDictionary[6] == sevenCivsList[0])
+                    if (empireCivsDictionary[6] == empireCivsList[0])
                     {
-                        BlameBorg1.Visibility = Visibility.Collapsed;
+                        BlameBorg2.Visibility = Visibility.Visible;
+                        BlameBorg3.Visibility = Visibility.Visible;
+                        BlameBorg4.Visibility = Visibility.Visible;
+                        BlameBorg5.Visibility = Visibility.Visible;
+                        BlameBorg6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[6] == sevenCivsList[1])
+                    if (empireCivsDictionary[6] == empireCivsList[1])
                     {
-                        BlameBorg2.Visibility = Visibility.Collapsed;
+                        BlameBorg1.Visibility = Visibility.Visible;
+                        BlameBorg3.Visibility = Visibility.Visible;
+                        BlameBorg4.Visibility = Visibility.Visible;
+                        BlameBorg5.Visibility = Visibility.Visible;
+                        BlameBorg6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[6] == sevenCivsList[2])
+                    if (empireCivsDictionary[6] == empireCivsList[2])
                     {
-                        BlameBorg3.Visibility = Visibility.Collapsed;
+                        BlameBorg1.Visibility = Visibility.Visible;
+                        BlameBorg2.Visibility = Visibility.Visible;
+                        BlameBorg4.Visibility = Visibility.Visible;
+                        BlameBorg5.Visibility = Visibility.Visible;
+                        BlameBorg6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[6] == sevenCivsList[3])
+                    if (empireCivsDictionary[6] == empireCivsList[3])
                     {
-                        BlameBorg4.Visibility = Visibility.Collapsed;
+                        BlameBorg1.Visibility = Visibility.Visible;
+                        BlameBorg2.Visibility = Visibility.Visible;
+                        BlameBorg3.Visibility = Visibility.Visible;
+                        BlameBorg5.Visibility = Visibility.Visible;
+                        BlameBorg6.Visibility = Visibility.Visible;
                     }
-                    if (sevenCivsDictionary[6] == sevenCivsList[4])
+                    if (empireCivsDictionary[6] == empireCivsList[4])
                     {
-                        BlameBorg5.Visibility = Visibility.Collapsed;
+                        BlameBorg1.Visibility = Visibility.Visible;
+                        BlameBorg2.Visibility = Visibility.Visible;
+                        BlameBorg3.Visibility = Visibility.Visible;
+                        BlameBorg4.Visibility = Visibility.Visible;
+                        BlameBorg6.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        BlameBorg6.Visibility = Visibility.Collapsed;
+                        BlameBorg1.Visibility = Visibility.Visible;
+                        BlameBorg2.Visibility = Visibility.Visible;
+                        BlameBorg3.Visibility = Visibility.Visible;
+                        BlameBorg4.Visibility = Visibility.Visible;
+                        BlameBorg5.Visibility = Visibility.Visible;
                     }
                 }
             }
