@@ -48,7 +48,7 @@ namespace Supremacy.Client.Views
                 ResumeAnimations();
                 GameLog.Client.UI.DebugFormat("begin of checking visible");
 
-                if (!AssetsHelper.IsSpiedOne(SpiedOneCiv))
+                if (!AssetsHelper.IsSpiedOne(SpiedOneCiv) || SpiedOneCiv == civLocalPlayer)
                 {
                     GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... ");
                     EmpireExpanderOne.Visibility = Visibility.Collapsed;
@@ -66,7 +66,7 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-                if (!AssetsHelper.IsSpiedTwo(SpiedTwoCiv))
+                if (!AssetsHelper.IsSpiedTwo(SpiedTwoCiv) || SpiedTwoCiv == civLocalPlayer)
                 {
                     GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... ");
                     EmpireExpanderTwo.Visibility = Visibility.Collapsed;
@@ -84,7 +84,7 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-                if (!AssetsHelper.IsSpiedThree(SpiedThreeCiv))
+                if (!AssetsHelper.IsSpiedThree(SpiedThreeCiv) || SpiedThreeCiv == civLocalPlayer)
                 {
                     GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... ");
                     EmpireExpanderThree.Visibility = Visibility.Collapsed;
@@ -103,7 +103,7 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-                if (!AssetsHelper.IsSpiedFour(SpiedFourCiv))
+                if (!AssetsHelper.IsSpiedFour(SpiedFourCiv) || SpiedFourCiv == civLocalPlayer)
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFourCiv checking visible .... ");
                     EmpireExpanderFour.Visibility = Visibility.Collapsed;
@@ -121,7 +121,7 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-                if (!AssetsHelper.IsSpiedFive(SpiedFiveCiv))
+                if (!AssetsHelper.IsSpiedFive(SpiedFiveCiv) || SpiedFiveCiv == civLocalPlayer)
                 {
                     GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... ");
                     EmpireExpanderFive.Visibility = Visibility.Collapsed;
@@ -139,7 +139,7 @@ namespace Supremacy.Client.Views
                         //StealResearchFive.Visibility = Visibility.Visible;
                     }
                 }
-                if (!AssetsHelper.IsSpiedSix(SpiedSixCiv))
+                if (!AssetsHelper.IsSpiedSix(SpiedSixCiv) || SpiedSixCiv == civLocalPlayer)
                 {
                     GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... ");
 
@@ -381,14 +381,14 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(6) && localPlayerCivManager.Civilization.CivID != 6 &&
                     GameContext.Current.DiplomacyData[localPlayerCivManager.Civilization, empireCivsDictionary[6]].IsContactMade())
                 {
-                    if (empireCivsDictionary[6] == empireCivsList[0])
-                    {
-                        BlameBorg2.Visibility = Visibility.Visible;
-                        BlameBorg3.Visibility = Visibility.Visible;
-                        BlameBorg4.Visibility = Visibility.Visible;
-                        BlameBorg5.Visibility = Visibility.Visible;
-                        BlameBorg6.Visibility = Visibility.Visible;
-                    }
+                    //if (empireCivsDictionary[6] == empireCivsList[0])
+                    //{
+                    //    BlameBorg2.Visibility = Visibility.Visible;
+                    //    BlameBorg3.Visibility = Visibility.Visible;
+                    //    BlameBorg4.Visibility = Visibility.Visible;
+                    //    BlameBorg5.Visibility = Visibility.Visible;
+                    //    BlameBorg6.Visibility = Visibility.Visible;
+                    //}
                     if (empireCivsDictionary[6] == empireCivsList[1])
                     {
                         BlameBorg1.Visibility = Visibility.Visible;

@@ -59,7 +59,7 @@ namespace Supremacy.Client.Views
         private void Update()
         {
             GameLog.Core.UI.DebugFormat("Update on Turn Started at line 61");
-            Model.Colonies = AppContext.LocalPlayerEmpire.Colonies; // keep this on AppContext
+            Model.Colonies = DesignTimeObjects.LocalCivManager.Colonies; 
             Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             Model.SpiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;

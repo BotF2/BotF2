@@ -180,36 +180,6 @@ namespace Supremacy.Client.Context
             get { return GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID]; }
         }
 
-        //public CivilizationManager SpiedOneEmpire
-        //{
-        //    get { return SpiedCivEmpires[0]; }
-        //}
-
-        //public CivilizationManager SpiedTwoEmpire
-        //{
-        //    get { return SpiedCivEmpires[1]; }
-        //}
-
-        //public CivilizationManager SpiedThreeEmpire
-        //{
-        //    get { return SpiedCivEmpires[2]; }
-        //}
-
-        //public CivilizationManager SpiedFourEmpire
-        //{
-        //    get { return SpiedCivEmpires[3]; }
-        //}
-
-        //public CivilizationManager SpiedFiveEmpire
-        //{
-        //    get { return SpiedCivEmpires[4]; }
-        //}
-
-        //public CivilizationManager SpiedSixEmpire
-        //{
-        //    get { return SpiedCivEmpires[5]; }
-        //}
-
         public IEnumerable<IPlayer> RemotePlayers
         {
             get { return Enumerable.Empty<IPlayer>(); }

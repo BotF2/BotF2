@@ -27,7 +27,7 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
            
-            _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; // keep this on DesignTimeAppContext
+            _colonies = DesignTimeObjects.LocalCivManager.Colonies; 
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             _spiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
@@ -308,7 +308,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization]; // keep this
+                var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager.Civilization]; // keep this
                 try  
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -328,7 +328,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].Civilization.Name;  // keep this on AppContext
+                return GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager.Civilization].Civilization.Name;  // keep this on AppContext
             }
         }
         public static Civilization Local
