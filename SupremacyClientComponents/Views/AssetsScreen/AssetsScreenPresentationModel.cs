@@ -26,8 +26,8 @@ namespace Supremacy.Client.Views
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
-           
-            _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies;
+
+            _colonies = DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies; 
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             _spiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
@@ -87,8 +87,6 @@ namespace Supremacy.Client.Views
 
         private IEnumerable<Colony> _spiedSixColonies;
 
-        //private IPlayer _localPlayer;
-
         private IEnumerable<Colony> _infiltratedColonies;
 
         public IEnumerable<Colony> Colonies
@@ -112,7 +110,6 @@ namespace Supremacy.Client.Views
                 OnTotalIntelligenceDefenseAccumulatedChanged();
             }
         }
-
         public IEnumerable<Colony> SpiedOneColonies
         {
             get { return _spiedOneColonies; }
@@ -143,7 +140,6 @@ namespace Supremacy.Client.Views
                 OnSpiedTwoTotalPopulationChanged();
             }
         }
-
         public IEnumerable<Colony> SpiedThreeColonies
         {
             get { return _spiedThreeColonies; }
@@ -159,7 +155,6 @@ namespace Supremacy.Client.Views
                 OnSpiedThreeTotalPopulationChanged();
             }
         }
-
         public IEnumerable<Colony> SpiedFourColonies
         {
             get { return _spiedFourColonies; }
@@ -175,7 +170,6 @@ namespace Supremacy.Client.Views
                 OnSpiedFourTotalPopulationChanged();
             }
         }
-
         public IEnumerable<Colony> SpiedFiveColonies
         {
             get { return _spiedFiveColonies; }
@@ -205,8 +199,7 @@ namespace Supremacy.Client.Views
 
                 OnSpiedSixTotalPopulationChanged();
             }
-        }
- 
+        } 
         public IEnumerable<Colony> InfiltratedColonies
         {
             get { return _infiltratedColonies; }
@@ -222,7 +215,6 @@ namespace Supremacy.Client.Views
                 OnTotalPopulationChanged();
             }
         }
-
         protected virtual void OnColoniesChanged()
         {
             GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
@@ -234,7 +226,6 @@ namespace Supremacy.Client.Views
             SpiedOneColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedOneColonies");
         }
-
         protected virtual void OnSpiedTwoColoniesChanged()
         {
             SpiedTwoColoniesChanged.Raise(this);
@@ -313,12 +304,11 @@ namespace Supremacy.Client.Views
             OnPropertyChanged("SpiedSixTotalPopulation");
         }
         #region TotalPopulations and Empire Names
-
         public Meter TotalPopulation
         {
             get
             {
-                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization]; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try  
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -334,42 +324,20 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        //public Meter TotalIntel
-        //{
-        //    get
-        //    {
-        //        var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-        //        try
-        //        {
-        //            GameLog.Core.Intel.DebugFormat("TotalIntel ={0}", civManager.Civilization.);
-        //            return civManager.TotalPopulation;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
-        //            GameLog.Core.General.Error(e);
-        //            Meter zero = new Meter(0, 0, 0);
-        //            return zero; //civManager.TotalPopulation;
-
-        //        }
-        //    }
-        //}
         public string LocalCivName
         {
             get
             {
-                return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].Civilization.Name;        
+                return GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization].Civilization.Name;  // keep this on AppContext
             }
         }
         public static Civilization Local
         {
             get
             {
-                var localCiv = GameContext.Current.CivilizationManagers[DesignTimeObjects.GetCivLocalPlayer()];
-                return localCiv.Civilization;
+                return GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager].Civilization;
             }
         }
-
         public static Meter SpiedOneTotalPopulation
         {
             get
@@ -406,7 +374,6 @@ namespace Supremacy.Client.Views
                 return sp1Name;
             }
         }
-
         public static Civilization SpiedOneCiv
         {
             get

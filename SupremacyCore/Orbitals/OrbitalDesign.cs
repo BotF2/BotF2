@@ -336,27 +336,51 @@ namespace Supremacy.Orbitals
             }
             if (element["BeamType"] != null)
             {
+                int beamCount = Number.ParseInt32(element["BeamType"].GetAttribute("Count").Trim());
+                int beamDamage = Number.ParseInt32(element["BeamType"].GetAttribute("Damage").Trim());
+                Percentage beamRefire = Number.ParsePercentage(element["BeamType"].GetAttribute("Refire").Trim());
+
+                if (beamCount == 0)
+                { 
+                    beamDamage = 0;
+                    beamRefire = 0;
+                }
+                if (beamDamage == 0)
+                { 
+                    beamCount = 0;
+                }
+
                 _primaryWeapon = new WeaponType
                                  {
                                      DeliveryType = WeaponDeliveryType.Beam,
-                                     Count = Number.ParseInt32(element["BeamType"].GetAttribute("Count").Trim()),
-                                     Damage = Number.ParseInt32(element["BeamType"].GetAttribute("Damage").Trim()),
-                                     Refire = Number.ParsePercentage(element["BeamType"].GetAttribute("Refire").Trim())
-                                 };
+                                     Count = beamCount,
+                                     Damage = beamDamage,
+                                     Refire = beamRefire
+                };
                 if (_primaryWeapon.Damage > 0 && _primaryWeapon.Count < 1)   // atm all values between x and x (or 0 for not having this ability)
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for a beam: Damage = {0}, but Count = {1}", _primaryWeapon.Damage, _primaryWeapon.Count);
                 //_primaryWeaponName = element["BeamType"].GetAttribute("Name").Trim();
             }
             if (element["TorpedoType"] != null)
             {
-                _secondaryWeapon = new WeaponType
+                int torpedoCount = Number.ParseInt32(element["TorpedoType"].GetAttribute("Count").Trim());
+                int torpedoDamage = Number.ParseInt32(element["TorpedoType"].GetAttribute("Damage").Trim());
+
+                if (torpedoCount == 0) torpedoDamage = 0;
+                if (torpedoDamage == 0) torpedoCount = 0;
+
+                    _secondaryWeapon = new WeaponType
                                    {
                                        DeliveryType = WeaponDeliveryType.Torpedo,
-                                       Count = Number.ParseInt32(element["TorpedoType"].GetAttribute("Count").Trim()),
-                                       Damage = Number.ParseInt32(element["TorpedoType"].GetAttribute("Damage").Trim())
+                                        Count = torpedoCount,
+                                        Damage = torpedoDamage
                                    };
                 if (_secondaryWeapon.Damage > 0 && _secondaryWeapon.Count < 1)   // atm all values between x and x (or 0 for not having this ability)
+                {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for a torpedo: Damage = {0}, but Count = {1}", _secondaryWeapon.Damage, _secondaryWeapon.Count);
+                
+                }
+                
                 //_secondaryWeaponName = element["TorpedoType"].GetAttribute("Name").Trim();
             }
 

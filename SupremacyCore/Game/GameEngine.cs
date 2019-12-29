@@ -1052,10 +1052,12 @@ namespace Supremacy.Game
                 {
                     var owner = GameContext.Current.CivilizationManagers[scienceShip.Owner];
                     var starType = scienceShip.Sector.System.StarType;
+                    if (scienceShip.Location == owner.HomeSystem.Location)
+                        return;
 
                     int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
-                    //GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
-                    //    scienceShip.ObjectID, scienceShip.Name, researchGained);
+                    GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
+                        scienceShip.ObjectID, scienceShip.Name, researchGained);
 
                     switch (starType)
                     {
@@ -1087,9 +1089,13 @@ namespace Supremacy.Game
                         case StarType.XRayPulsar:
                             researchGained = researchGained * 10;
                             break;
+                        default:
+                            researchGained = 1;
+                            break;
                     }
 
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
+
 
                     GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
                         scienceShip.ObjectID, scienceShip.Name, researchGained, owner.Civilization.Key, starType, scienceShip.Sector);
@@ -1098,7 +1104,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.Research.ErrorFormat(string.Format("There was a problem conducting research for {0} {1}",
+                    GameLog.Core.Research.ErrorFormat(string.Format("##### There was a problem conducting research for {0} {1}",
                         scienceShip.ObjectID, scienceShip.Name),
                         e);
                 }
