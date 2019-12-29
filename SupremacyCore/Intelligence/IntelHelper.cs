@@ -17,6 +17,8 @@ namespace Supremacy.Intelligence
         private static Civilization _newSpyCiv;
         private static UniverseObjectList<Colony> _newSpiedColonies;
         private static List<EspionageAlreadyPressed> alreadyPressedList = new List<EspionageAlreadyPressed>();
+        private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
+        private static List<Civilization> _spiedList = new List<Civilization>();
 
         public static UniverseObjectList<Colony> NewSpiedColonies
         {
@@ -30,17 +32,38 @@ namespace Supremacy.Intelligence
         {
             get { return _newTargetCiv; }
         }
-
+        public static Dictionary<Civilization, List<Civilization>> SpiedDictionary
+        {
+            get { return _spiedDictionary; }
+        }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {   GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
                 throw new ArgumentNullException("spiedCiv");
-
+            _spiedList.Clear();
             _newSpyCiv = spyCiv;
             _newTargetCiv = spiedCiv;
             _newSpiedColonies = colonies;
+            try 
+            {
+
+                _spiedDictionary[spyCiv].Add(spiedCiv);
+            }
+            catch
+            {
+                _spiedDictionary[spyCiv] = new List<Civilization> {spiedCiv};
+
+            }
+            //foreach (var aSpyCivKey in _spiedDictionary.Keys)
+            //{
+            //    foreach (var aSpiedCivValue in _spiedDictionary[aSpyCivKey])
+            //    {
+            //        GameLog.Client.UI.DebugFormat("********* Dictionary Key ={1} spied Civ ={0}", aSpiedCivValue.Key, aSpyCivKey.Key);
+            //    }
+            //}
+  
         }
         #region Espionage Methods
 

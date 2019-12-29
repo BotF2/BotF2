@@ -420,7 +420,7 @@ namespace Supremacy.Economy
             var civManager = GameContext.Current.CivilizationManagers[Builder];
 
             TechObject spawnedInstance;
-
+            GameLog.Core.Production.DebugFormat("Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location);
             if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out spawnedInstance))
                 return;
 
@@ -450,6 +450,8 @@ namespace Supremacy.Economy
         public virtual int GetTimeEstimate()
         {
             var industryAvailable = GetIndustryAvailable();
+            if (industryAvailable == 0)
+                industryAvailable = 1;
             var industryRemaining = IndustryRequired - IndustryInvested;
 
             var turns = industryRemaining / industryAvailable;

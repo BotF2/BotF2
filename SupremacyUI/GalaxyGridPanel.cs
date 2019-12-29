@@ -303,7 +303,10 @@ namespace Supremacy.UI
             {
                 s_starImages[type] = new BitmapImage(
                     ResourceManager.GetResourceUri(string.Format("Resources/Images/Stars/Map/{0}.png", type)));
+                
+                   
             }
+            GameLog.Client.General.DebugFormat("Images for Stars loaded...");
 
             s_textTypeface = new Typeface(
                 new FontFamily("#Resources/Fonts/Calibri"),

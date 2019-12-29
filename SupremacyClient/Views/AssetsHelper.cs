@@ -29,6 +29,10 @@ namespace Supremacy.Intelligence
         {
             get { return IntelHelper.NewSpiedColonies; }
         }
+        public static Dictionary<Civilization, List<Civilization>> SpiedByDictionary
+        {
+            get { return IntelHelper.SpiedDictionary; }
+        }
         public static Civilization CivOne
         {
             get { return DesignTimeObjects.SpiedCivMangers[0].Civilization; }
@@ -60,7 +64,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyOne)
                 return true;
-            else if (CivOne == NewTargetCiv)
+            else if (CivOne == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
             {
                 alreadyOne = true;
                 return true;
@@ -73,7 +77,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyTwo)
                 return true;
-            else if (CivTwo == NewTargetCiv)
+            else if (CivTwo == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
             {
                 alreadyTwo = true;
                 return true;
@@ -86,7 +90,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyThree)
                 return true;
-            else if (CivThree == NewTargetCiv)
+            else if (CivThree == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
             {
                 alreadyThree = true;
                 return true;
@@ -99,7 +103,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyFour)
                 return true;
-            else if (CivFour == NewTargetCiv)
+            else if (CivFour == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
             {
                 alreadyFour = true;
                 return true;
@@ -112,7 +116,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyFive)
                 return true;
-            else if (CivFive == NewTargetCiv)
+            else if (CivFive == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
             {
                 alreadyFive = true;
                 return true;
@@ -125,7 +129,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadySix)
                 return true;
-            else if (CivSix == NewTargetCiv)
+            else if (CivSix == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
             {
                 alreadySix = true;
                 return true;
@@ -133,38 +137,5 @@ namespace Supremacy.Intelligence
             return false;
         }
     }
-    //public class IntelHelperNotStatic
-    //{
-    //    public List<CivilizationManager> ManagerList
-    //    {
-    //        get { return DesignTimeObjects.SpiedCivMangers; }
-    //    }
-
-
-    //    public class SpiedCivList
-    //    {
-    //        get         
-    //        {         
-
-    //        return IntelHelper.NewSpiedColonies;         
-
-    //         }
-
-    //    }
-
-    //public class SaveSpiedCivs
-
-    //{
-
-    //    private ArrayList SpiedCivManagersArray;
-
-
-
-    //    SpiedCivManagersArray = _spie;          
-
-    //#region Implementation of IOwnedDataSerializable          
-
-    //public void DeserializeOwnedData(SerializationReader reader, object context)
-    //    }
 }
 
