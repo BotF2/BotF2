@@ -17,6 +17,7 @@ namespace Supremacy.Intelligence
         private static Civilization _newSpyCiv;
         private static UniverseObjectList<Colony> _newSpiedColonies;
         private static List<EspionageAlreadyPressed> alreadyPressedList = new List<EspionageAlreadyPressed>();
+        private static Dictionary<Civilization, Civilization> _spiedDictionary = new Dictionary<Civilization, Civilization>();
 
         public static UniverseObjectList<Colony> NewSpiedColonies
         {
@@ -30,7 +31,10 @@ namespace Supremacy.Intelligence
         {
             get { return _newTargetCiv; }
         }
-
+        public static Dictionary<Civilization, Civilization> SpiedDictionary
+        {
+            get { return _spiedDictionary; }
+        }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {   GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
             if (spyCiv == null)
@@ -41,6 +45,7 @@ namespace Supremacy.Intelligence
             _newSpyCiv = spyCiv;
             _newTargetCiv = spiedCiv;
             _newSpiedColonies = colonies;
+            _spiedDictionary.Add(spyCiv, spiedCiv);
         }
         #region Espionage Methods
 
