@@ -59,11 +59,11 @@ namespace Supremacy.Client.Views
                     if (_spiedOneCiv != _civLocalPlayer)
                     {
                         EmpireExpanderOne.Visibility = Visibility.Visible;
-
-                        //SabotageEnergyOne.Visibility = Visibility.Visible;
-                        //SabotageFoodOne.Visibility = Visibility.Visible;
-                        //SabotageIndustryOne.Visibility = Visibility.Visible;
-                        //StealResearchOne.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv))
+                            SabotageEnergyOne.Visibility = Visibility.Visible;
+                        SabotageFoodOne.Visibility = Visibility.Visible;
+                        SabotageIndustryOne.Visibility = Visibility.Visible;
+                        StealResearchOne.Visibility = Visibility.Visible;
                     }
                 }
 

@@ -302,7 +302,6 @@ namespace Supremacy.Client.Context
             var LocalCivManager = DesignTimeAppContext.Instance.LocalPlayerEmpire;
             var CivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
 
-
             try
             {
                 if (CivManagers[0].Civilization.Key!= null && CivManagers[0].Civilization.Key != "FEDERATION") 
