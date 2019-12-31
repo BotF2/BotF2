@@ -1403,7 +1403,7 @@ namespace Supremacy.Game
 
                     civManager.Credits.AdjustCurrent(newCredits);
                     civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense); 
-                    civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking); 
+                    civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking);
                     civManager.Resources.Deuterium.AdjustCurrent(newDeuterium);
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);

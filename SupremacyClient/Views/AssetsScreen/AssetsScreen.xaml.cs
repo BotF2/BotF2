@@ -61,9 +61,14 @@ namespace Supremacy.Client.Views
                         EmpireExpanderOne.Visibility = Visibility.Visible;
                         if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv))
                             SabotageEnergyOne.Visibility = Visibility.Visible;
-                        SabotageFoodOne.Visibility = Visibility.Visible;
-                        SabotageIndustryOne.Visibility = Visibility.Visible;
-                        StealResearchOne.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageFood(_spiedOneCiv))
+                            SabotageFoodOne.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv))
+                            SabotageIndustryOne.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeStealResearch(_spiedOneCiv))
+                            StealResearchOne.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeStealCredits(_spiedOneCiv))
+                            StealCreditsOne.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -77,11 +82,14 @@ namespace Supremacy.Client.Views
                     if (_spiedTwoCiv != _civLocalPlayer)
                     {
                         EmpireExpanderTwo.Visibility = Visibility.Visible;
-
-                        //SabotageEnergyTwo.Visibility = Visibility.Visible;
-                        //SabotageFoodTwo.Visibility = Visibility.Visible;
-                        //SabotageIndustryTwo.Visibility = Visibility.Visible;
-                        //StealResearchTwo.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv))
+                            SabotageEnergyTwo.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageFood(_spiedOneCiv))
+                            SabotageFoodTwo.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv))
+                            SabotageIndustryTwo.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeStealResearch(_spiedOneCiv))
+                            StealResearchTwo.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -96,11 +104,14 @@ namespace Supremacy.Client.Views
                     if (_spiedThreeCiv != _civLocalPlayer)
                     {
                         EmpireExpanderThree.Visibility = Visibility.Visible;
-
-                        //SabotageEnergyThree.Visibility = Visibility.Visible;
-                        //SabotageFoodThree.Visibility = Visibility.Visible;
-                        //SabotageIndustryThree.Visibility = Visibility.Visible;
-                        //StealResearchThree.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv))
+                            SabotageEnergyThree.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageFood(_spiedOneCiv))
+                            SabotageFoodThree.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv))
+                            SabotageIndustryThree.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeStealResearch(_spiedOneCiv))
+                            StealResearchThree.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -114,11 +125,14 @@ namespace Supremacy.Client.Views
                     if (_spiedFourCiv != _civLocalPlayer)
                     {
                         EmpireExpanderFour.Visibility = Visibility.Visible;
-
-                        //SabotageEnergyFour.Visibility = Visibility.Visible;
-                        //SabotageFoodFour.Visibility = Visibility.Visible;
-                        //SabotageIndustryFour.Visibility = Visibility.Visible;
-                        //StealResearchFour.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv))
+                            SabotageEnergyFour.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageFood(_spiedOneCiv))
+                            SabotageFoodFour.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv))
+                            SabotageIndustryFour.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeStealResearch(_spiedOneCiv))
+                            StealResearchFour.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -133,11 +147,14 @@ namespace Supremacy.Client.Views
                     if (_spiedFiveCiv != _civLocalPlayer)
                     {
                         EmpireExpanderFive.Visibility = Visibility.Visible;
-
-                        //SabotageEnergyFive.Visibility = Visibility.Visible;
-                        //SabotageFoodFive.Visibility = Visibility.Visible;
-                        //SabotageIndustryFive.Visibility = Visibility.Visible;
-                        //StealResearchFive.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv))
+                            SabotageEnergyFive.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageFood(_spiedOneCiv))
+                            SabotageFoodFive.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv))
+                            SabotageIndustryFive.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeStealResearch(_spiedOneCiv))
+                            StealResearchFive.Visibility = Visibility.Visible;
                     }
                 }
                 if (!AssetsHelper.IsSpiedSix(_spiedSixCiv) || _spiedSixCiv == _civLocalPlayer)
@@ -152,11 +169,14 @@ namespace Supremacy.Client.Views
 
                     {
                         EmpireExpanderSix.Visibility = Visibility.Visible;
-
-                        //SabotageEnergySix.Visibility = Visibility.Visible;
-                        //SabotageFoodSix.Visibility = Visibility.Visible;
-                        //SabotageIndustrySix.Visibility = Visibility.Visible;
-                        //StealResearchSix.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv))
+                            SabotageEnergySix.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageFood(_spiedOneCiv))
+                            SabotageFoodSix.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv))
+                            SabotageIndustrySix.Visibility = Visibility.Visible;
+                        if (IntelHelper.SeeStealResearch(_spiedOneCiv))
+                            StealResearchSix.Visibility = Visibility.Visible;
                     }
                 }
                 GameLog.Client.UI.DebugFormat("end  of checking visible");
@@ -534,6 +554,11 @@ namespace Supremacy.Client.Views
         }
         #endregion
         #region OnButtonClicks
+        private void OnCreditsOneClick(object sender, RoutedEventArgs e)
+        {
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+        }
+
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);

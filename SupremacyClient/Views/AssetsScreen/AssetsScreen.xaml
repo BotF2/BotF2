@@ -185,6 +185,9 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Row="0"
                                             Grid.Column="0"
@@ -200,23 +203,58 @@
                                               Margin="15,0,0,0">
                                         <TextBlock
                                              VerticalAlignment="Center"
-                                             HorizontalAlignment="Center"
+                                             HorizontalAlignment="Left"
                                              Margin="0,0,0,0"
                                              Foreground="AntiqueWhite"
-                                             Text="Espionage on the " />
+                                             Text="Try covet action on the " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedOneCivName}"/>
                                         <Image Name="InsigniaOne" Margin="5,0,0,0">
                                         </Image>
                                     </StackPanel>
+                                  <scc:GameLabel Grid.Row="0"
+                                                  Grid.Column="1"
+                                                  VerticalAlignment="Center"
+                                                  Margin="18,0,2,0"
+                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                                                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                  <TextBlock Grid.Row="0"
+                                              Grid.Column="2"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              FontWeight="DemiBold"
+                                              Foreground="LightBlue"
+                                              Text="Credits: " />
+                                  <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                         Grid.Row="0"
+                                         Grid.Column="3"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Left"
+                                         Margin="5,14,35,14"/>
+                                  <scc:GameButton
+                                              Name="StealCreditsOne"
+                                              Grid.Row="0"
+                                              Grid.Column="3"
+                                              DisplayMode="Tiny"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              Label="Steal Credits"
+                                              Visibility="Collapsed"
+                                              FontWeight="DemiBold"
+                                              Foreground="Black"
+                                              Background="Transparent"
+                                              BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                              BorderThickness="2"
+                                              Click = "OnCreditsOneClick"
+                                              Margin="0,0,15,0"/>
                                     <scc:GameLabel Grid.Row="0"
-                                                   Grid.Column="1"
+                                                   Grid.Column="4"
                                                    VerticalAlignment="Center"
                                                    Margin="18,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="2"
+                                                Grid.Column="5"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
@@ -224,14 +262,14 @@
                                                 Text="Research: " />
                                     <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
                                            Grid.Row="0"
-                                           Grid.Column="3"
+                                           Grid.Column="6"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
                                            Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="StealResearchOne"
                                                 Grid.Row="0"
-                                                Grid.Column="3"
+                                                Grid.Column="6"
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left"
@@ -245,13 +283,13 @@
                                                 Click = "OnResearchOneClick"
                                                 Margin="0,0,15,0"/>
                                     <scc:GameLabel Grid.Row="0"
-                                                   Grid.Column="5"
+                                                   Grid.Column="8"
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,2,0"                                                  
                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="6"
+                                                Grid.Column="9"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
@@ -259,13 +297,13 @@
                                                 Text="Food: " />
                                     <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
                                            Grid.Row="0"
-                                           Grid.Column="7"
+                                           Grid.Column="10"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
                                            Margin="5,14,60,14"/>
                                     <scc:GameButton Name="SabotageFoodOne"      
                                                     Grid.Row="0"
-                                                    Grid.Column="7"
+                                                    Grid.Column="10"
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
@@ -278,13 +316,13 @@
                                                     BorderThickness="2"
                                                     Click = "OnFoodOneClick"/>
                                     <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="9"
+                                                    Grid.Column="11"
                                                     VerticalAlignment="Center"
-                                                   Margin="18,0,2,0"
+                                                    Margin="18,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
                                                     ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="10"
+                                                Grid.Column="13"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
@@ -292,14 +330,14 @@
                                                 Text="Industry: " />
                                     <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
                                            Grid.Row="0"
-                                           Grid.Column="11"
+                                           Grid.Column="14"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
                                            Margin="5,14,35,14"/>
                                     <scc:GameButton
                                                 Name="SabotageIndustryOne"
                                                 Grid.Row="0"
-                                                Grid.Column="11"
+                                                Grid.Column="14"
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left"
@@ -313,13 +351,13 @@
                                                 Click = "OnIndustryOneClick"
                                                 Margin="0,0,15,0"/>
                                     <scc:GameLabel Grid.Row="0"
-                                                    Grid.Column="13"
+                                                    Grid.Column="16"
                                                     VerticalAlignment="Center"
                                                    Margin="8,0,2,0"                                                   
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                     ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                     <TextBlock Grid.Row="0"
-                                                Grid.Column="14"
+                                                Grid.Column="17"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
                                                 FontWeight="DemiBold"
@@ -327,14 +365,14 @@
                                                 Text="Energy: " />
                                     <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
                                            Grid.Row="0"
-                                           Grid.Column="15"
+                                           Grid.Column="18"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
                                            Margin="5,14,60,14"/>
                                     <scc:GameButton
                                                 Name="SabotageEnergyOne"
                                                 Grid.Row="0"
-                                                Grid.Column="15"
+                                                Grid.Column="18"
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left"
@@ -580,7 +618,7 @@
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,0"
                                              Foreground="AntiqueWhite"
-                                             Text="Espionage on the " />
+                                             Text="Try covet action on the " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedTwoCivName}"/>
                                         <Image Name="InsigniaTwo" Margin="5,0,0,0">
@@ -957,7 +995,7 @@
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,0"
                                              Foreground="AntiqueWhite"
-                                             Text="Espionage on the " />
+                                             Text="Try covet action on the " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedThreeCivName}"/>
                                         <Image Name="InsigniaThree" Margin="5,0,0,0">
@@ -1334,7 +1372,7 @@
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,0"                                             
                                              Foreground="AntiqueWhite"
-                                             Text="Espionage on the " />
+                                             Text="Try covet action on the " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedFourCivName}"/>
                                         <Image Name="InsigniaFour" Margin="5,0,0,0">
@@ -1711,7 +1749,7 @@
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,0"
                                              Foreground="AntiqueWhite"
-                                             Text="Espionage on the " />
+                                             Text="Try covet action on the " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedFiveCivName}"/>
                                         <Image Name="InsigniaFive" Margin="5,0,0,0">
@@ -2090,7 +2128,7 @@
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,0"
                                              Foreground="AntiqueWhite"
-                                             Text="Espionage on the " />
+                                             Text="Try covet action on the " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedSixCivName}"/>
                                         <Image Name="InsigniaSix" Margin="5,0,0,0">
