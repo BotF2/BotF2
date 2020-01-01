@@ -19,7 +19,6 @@ namespace Supremacy.Intelligence
         private static List<EspionageAlreadyPressed> alreadyPressedList = new List<EspionageAlreadyPressed>();
         private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
-        //private static readonly Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
 
         public static UniverseObjectList<Colony> NewSpiedColonies
         {
@@ -61,12 +60,12 @@ namespace Supremacy.Intelligence
         #region Espionage Methods
         public static bool SeeStealCredits(Civilization spied)
         {
-            bool seeIt = false;
-            var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+            bool seeIt = true;
+            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            int ratio = GetIntelRatio(attackedCivManager);
-            if (ratio > 1)
-                seeIt = true;
+            //int ratio = GetIntelRatio(attackedCivManager);
+            //if (ratio > 1)
+            //    seeIt = true;
             return seeIt;
         }
         public static bool SeeStealResearch(Civilization spied)
@@ -152,22 +151,21 @@ namespace Supremacy.Intelligence
             //Effect of steal // value needed for SitRep
             //int removeChredits = 0;
 
-            if (ratio > 1 && attackedCivManager.Treasury.CurrentLevel > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo is this what I think it is?  removeChredits = 10;
-                GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-10);
+                GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-5);
             }
-            if (ratio > 2 && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 1 && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                     // ToDo is this what I think it is?  removeChredits = 20;
-                    GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-20);
+                    GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-10);
             }
-            if (ratio > 3 && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo is this what I think it is?  removeChredits = 30;
-                GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-30);
+                GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-100);
             }
-
 
             defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
             defenseMeter.UpdateAndReset();
@@ -425,8 +423,6 @@ namespace Supremacy.Intelligence
                 alreadyPressedList.Add(pressedNew);
             }
 
-
-            //int ratio = -1;
             if (NewSpyCiv == null)
                 return;
 
