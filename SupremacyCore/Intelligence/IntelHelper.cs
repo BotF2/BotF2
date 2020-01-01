@@ -244,7 +244,6 @@ namespace Supremacy.Intelligence
         }
         public static void SabotageFood(Colony colony, Civilization attackedCiv)
         {
-            GameLog.Core.UI.DebugFormat("IntelHelper SabotageFood at line 180");
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;

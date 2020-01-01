@@ -211,7 +211,7 @@
                                         </Image>
                                         <scc:GameLabel 
                                                       VerticalAlignment="Center"
-                                                      Margin="18,0,2,0"
+                                                      Margin="14,0,2,0"
                                                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
                                         <TextBlock                                             
                                                 VerticalAlignment="Center"
@@ -246,7 +246,7 @@
                                         </Grid>
                                         <scc:GameLabel                                           
                                                    VerticalAlignment="Center"
-                                                   Margin="18,0,2,0"
+                                                   Margin="14,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                         <TextBlock                                          
@@ -283,7 +283,7 @@
                                         </Grid>
                                         <scc:GameLabel 
                                                        VerticalAlignment="Center"
-                                                       Margin="18,0,2,0"                                                  
+                                                       Margin="14,0,2,0"                                                  
                                                        ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                        ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock                                            
@@ -319,7 +319,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"
+                                                        Margin="14,0,2,0"
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock                                             
@@ -355,7 +355,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"                                                   
+                                                        Margin="14,0,2,0"                                                   
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                         <TextBlock 
@@ -387,7 +387,7 @@
                                                         Foreground="Black"
                                                         Background="Transparent"
                                                         BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                        BorderThickness="2"
+                                                        Margin="0,0,5,0"
                                                         Click = "OnEnergyOneClick" />
                                         </Grid>
                                     </StackPanel>
@@ -632,7 +632,7 @@
                                         </Image>
                                         <scc:GameLabel 
                                                       VerticalAlignment="Center"
-                                                      Margin="18,0,2,0"
+                                                      Margin="14,0,2,0"
                                                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
                                         <TextBlock                                             
                                                 VerticalAlignment="Center"
@@ -667,7 +667,7 @@
                                         </Grid>
                                         <scc:GameLabel                                           
                                                    VerticalAlignment="Center"
-                                                   Margin="18,0,2,0"
+                                                   Margin="14,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                         <TextBlock                                          
@@ -704,7 +704,7 @@
                                         </Grid>
                                         <scc:GameLabel 
                                                        VerticalAlignment="Center"
-                                                       Margin="18,0,2,0"                                                  
+                                                       Margin="14,0,2,0"                                                  
                                                        ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                        ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock                                            
@@ -738,14 +738,12 @@
                                                             BorderThickness="2"
                                                             Click = "OnFoodTwoClick" />
                                         </Grid>
-                                        <scc:GameLabel 
-                                            
+                                        <scc:GameLabel                                           
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"
+                                                        Margin="14,0,2,0"
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock 
-                                            
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Right"
                                                     FontWeight="DemiBold"
@@ -778,7 +776,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"                                                   
+                                                        Margin="14,0,2,0"                                                   
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                         <TextBlock 
@@ -810,7 +808,7 @@
                                                         Foreground="Black"
                                                         Background="Transparent"
                                                         BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                        BorderThickness="2"
+                                                        Margin="0,0,5,0"
                                                         Click = "OnEnergyTwoClick" />
                                         </Grid>
                                     </StackPanel>
@@ -1055,7 +1053,7 @@
                                         </Image>
                                         <scc:GameLabel 
                                                       VerticalAlignment="Center"
-                                                      Margin="18,0,2,0"
+                                                      Margin="14,0,2,0"
                                                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
                                         <TextBlock                                             
                                                 VerticalAlignment="Center"
@@ -1090,7 +1088,7 @@
                                         </Grid>
                                         <scc:GameLabel                                           
                                                    VerticalAlignment="Center"
-                                                   Margin="18,0,2,0"
+                                                   Margin="14,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                         <TextBlock                                          
@@ -1127,7 +1125,7 @@
                                         </Grid>
                                         <scc:GameLabel 
                                                        VerticalAlignment="Center"
-                                                       Margin="18,0,2,0"                                                  
+                                                       Margin="14,0,2,0"                                                  
                                                        ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                        ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock                                            
@@ -1163,7 +1161,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"
+                                                        Margin="14,0,2,0"
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock                                             
@@ -1199,7 +1197,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"                                                   
+                                                        Margin="14,0,2,0"                                                   
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                         <TextBlock 
@@ -1231,7 +1229,7 @@
                                                         Foreground="Black"
                                                         Background="Transparent"
                                                         BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                        BorderThickness="2"
+                                                        Margin="0,0,5,0"
                                                         Click = "OnEnergyThreeClick" />
                                         </Grid>
                                     </StackPanel>
@@ -1476,7 +1474,7 @@
                                         </Image>
                                         <scc:GameLabel 
                                                       VerticalAlignment="Center"
-                                                      Margin="18,0,2,0"
+                                                      Margin="14,0,2,0"
                                                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
                                         <TextBlock                                             
                                                 VerticalAlignment="Center"
@@ -1511,7 +1509,7 @@
                                         </Grid>
                                         <scc:GameLabel                                           
                                                    VerticalAlignment="Center"
-                                                   Margin="18,0,2,0"
+                                                   Margin="14,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                         <TextBlock                                          
@@ -1548,7 +1546,7 @@
                                         </Grid>
                                         <scc:GameLabel 
                                                        VerticalAlignment="Center"
-                                                       Margin="18,0,2,0"                                                  
+                                                       Margin="14,0,2,0"                                                  
                                                        ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                        ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock                                            
@@ -1584,7 +1582,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"
+                                                        Margin="14,0,2,0"
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock                                             
@@ -1620,7 +1618,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"                                                   
+                                                        Margin="14,0,2,0"                                                   
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                         <TextBlock 
@@ -1652,7 +1650,7 @@
                                                         Foreground="Black"
                                                         Background="Transparent"
                                                         BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                        BorderThickness="2"
+                                                        Margin="0,0,5,0"
                                                         Click = "OnEnergyFourClick" />
                                         </Grid>
                                     </StackPanel>
@@ -1897,7 +1895,7 @@
                                         </Image>
                                         <scc:GameLabel 
                                                       VerticalAlignment="Center"
-                                                      Margin="18,0,2,0"
+                                                      Margin="14,0,2,0"
                                                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
                                         <TextBlock                                             
                                                 VerticalAlignment="Center"
@@ -1932,7 +1930,7 @@
                                         </Grid>
                                         <scc:GameLabel                                           
                                                    VerticalAlignment="Center"
-                                                   Margin="18,0,2,0"
+                                                   Margin="14,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                         <TextBlock                                          
@@ -1969,7 +1967,7 @@
                                         </Grid>
                                         <scc:GameLabel 
                                                        VerticalAlignment="Center"
-                                                       Margin="18,0,2,0"                                                  
+                                                       Margin="14,0,2,0"                                                  
                                                        ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                        ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock                                            
@@ -2005,7 +2003,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"
+                                                        Margin="14,0,2,0"
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock                                             
@@ -2041,7 +2039,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"                                                   
+                                                        Margin="14,0,2,0"                                                   
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                         <TextBlock 
@@ -2073,7 +2071,7 @@
                                                         Foreground="Black"
                                                         Background="Transparent"
                                                         BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                        BorderThickness="2"
+                                                        Margin="0,0,5,0"
                                                         Click = "OnEnergyFiveClick" />
                                         </Grid>
                                     </StackPanel>
@@ -2318,7 +2316,7 @@
                                         </Image>
                                         <scc:GameLabel 
                                                       VerticalAlignment="Center"
-                                                      Margin="18,0,2,0"
+                                                      Margin="14,0,2,0"
                                                       ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
                                         <TextBlock                                             
                                                 VerticalAlignment="Center"
@@ -2353,7 +2351,7 @@
                                         </Grid>
                                         <scc:GameLabel                                           
                                                    VerticalAlignment="Center"
-                                                   Margin="18,0,2,0"
+                                                   Margin="14,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"                            
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
                                         <TextBlock                                          
@@ -2390,7 +2388,7 @@
                                         </Grid>
                                         <scc:GameLabel 
                                                        VerticalAlignment="Center"
-                                                       Margin="18,0,2,0"                                                  
+                                                       Margin="14,0,2,0"                                                  
                                                        ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                        ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock                                            
@@ -2426,7 +2424,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"
+                                                        Margin="14,0,2,0"
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"                                               
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock                                             
@@ -2462,7 +2460,7 @@
                                         </Grid>
                                         <scc:GameLabel                                             
                                                         VerticalAlignment="Center"
-                                                        Margin="18,0,2,0"                                                   
+                                                        Margin="14,0,2,0"                                                   
                                                         ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                                                         ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
                                         <TextBlock 
@@ -2494,7 +2492,7 @@
                                                         Foreground="Black"
                                                         Background="Transparent"
                                                         BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                        BorderThickness="2"
+                                                        Margin="0,0,5,0"
                                                         Click = "OnEnergySixClick" />
                                         </Grid>
                                     </StackPanel>
