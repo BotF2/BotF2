@@ -151,17 +151,17 @@ namespace Supremacy.Intelligence
             //Effect of steal // value needed for SitRep
             //int removeChredits = 0;
 
-            if (attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo is this what I think it is?  removeChredits = 10;
                 GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-5);
             }
-            if (ratio > 1 && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 1 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                     // ToDo is this what I think it is?  removeChredits = 20;
                     GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-10);
             }
-            if (ratio > 2 && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && !RandomHelper.Chance(5) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo is this what I think it is?  removeChredits = 30;
                 GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-100);
@@ -218,16 +218,16 @@ namespace Supremacy.Intelligence
 
             //Effect of steal // value needed for SitRep
 
-            if (ratio > 1) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo add to local player              
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(5);
             }
-            if (ratio > 2)// && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && !RandomHelper.Chance(4))// && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(10);
             }
-            if (ratio > 3)// && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 3 && !RandomHelper.Chance(8))// && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(15);
             }
@@ -290,24 +290,24 @@ namespace Supremacy.Intelligence
             int removeFoodFacilities = 0;
 
             //if ratio > 1 than remove one more  FoodFacility
-            if (ratio > 1 && colony.GetTotalFacilities(ProductionCategory.Food) > 1)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 1 && !RandomHelper.Chance(2) && colony.GetTotalFacilities(ProductionCategory.Food) > 1)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeFoodFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Food, 1);
             }
 
             //if ratio > 2 than remove one more  FoodFacility
-            if (ratio > 2 && system.Colony.GetTotalFacilities(ProductionCategory.Food) > 2)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && !RandomHelper.Chance(4) && system.Colony.GetTotalFacilities(ProductionCategory.Food) > 2)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeFoodFacilities = 2;  //  2 and one from before
                 system.Colony.RemoveFacilities(ProductionCategory.Food, 1);
             }
 
             // if ratio > 3 than remove one more  FoodFacility
-            if (ratio > 3 && system.Colony.GetTotalFacilities(ProductionCategory.Food) > 3)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 3 && !RandomHelper.Chance(4) && system.Colony.GetTotalFacilities(ProductionCategory.Food) > 3)// Food: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeFoodFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-                system.Colony.RemoveFacilities(ProductionCategory.Food, 1);
+                system.Colony.RemoveFacilities(ProductionCategory.Food, 2);
             }
 
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
@@ -365,24 +365,24 @@ namespace Supremacy.Intelligence
             int removeEnergyFacilities = 0;
 
             //if ratio > 1 than remove one more  EnergyFacility
-            if (ratio > 1 && colony.GetTotalFacilities(ProductionCategory.Energy) > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 1 && RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Energy) > 5)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             //if ratio > 2 than remove one more  EnergyFacility
-            if (ratio > 2 && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && !RandomHelper.Chance(2) && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 2;  //  2 and one from before
                 system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             // if ratio > 3 than remove one more  EnergyFacility
-            if (ratio > 3 && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 3 && !RandomHelper.Chance(2) && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
+                system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
             }
 
             defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
@@ -441,21 +441,21 @@ namespace Supremacy.Intelligence
             int removeIndustryFacilities = 0;
 
             //if ratio > 1 than remove one more  IndustryFacility
-            if (ratio > 1 && colony.GetTotalFacilities(ProductionCategory.Industry) > 1)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 1 && !RandomHelper.Chance(2) && colony.GetTotalFacilities(ProductionCategory.Industry) > 1)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeIndustryFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Industry, 1);
             }
 
             //if ratio > 2 than remove one more  IndustryFacility
-            if (ratio > 2 && system.Colony.GetTotalFacilities(ProductionCategory.Industry) > 2)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && !RandomHelper.Chance(4) && system.Colony.GetTotalFacilities(ProductionCategory.Industry) > 2)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeIndustryFacilities = 2;  //  2 and one from before
                 system.Colony.RemoveFacilities(ProductionCategory.Industry, 1);
             }
 
             // if ratio > 3 than remove one more  IndustryFacility
-            if (ratio > 3 && system.Colony.GetTotalFacilities(ProductionCategory.Industry) > 3)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 3 && !RandomHelper.Chance(6) && system.Colony.GetTotalFacilities(ProductionCategory.Industry) > 3)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeIndustryFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 system.Colony.RemoveFacilities(ProductionCategory.Industry, 1);
