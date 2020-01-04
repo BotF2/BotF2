@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation.Peers;
-
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace Supremacy.Client.Views
@@ -20,6 +20,10 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
+        private int criteria = 0;
+        private string criteriaType = "";
+        private string _blameWhoOne = "";
+        private RadioButton[] _radioButton; 
         //Civilization _civLocalPlayer = DesignTimeObjects.CivilizationManager.Civilization;
         Civilization _spiedOneCiv = DesignTimeObjects.SpiedCivOne.Civilization;
         Civilization _spiedTwoCiv = DesignTimeObjects.SpiedCivTwo.Civilization;
@@ -29,9 +33,18 @@ namespace Supremacy.Client.Views
         Civilization _spiedSixCiv = DesignTimeObjects.SpiedCivSix.Civilization;
         public AssetsScreen()
         {
+
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
 
+            _radioButton = new RadioButton[] { BlameNoOne1, Terrorists1, Federation1, TerranEmpire1, Romulans1, Klingons1, Cardassians1, Dominion1, Borg1 };
+            //just put them in the order so you can use Critera 1,2,3,4
+            for (int i = 0; i < _radioButton.Length; i++)
+            {
+                _radioButton[i].Tag = i; //set your cretara number into tag property here (1,2,3,4)
+                //_radioButton[i]. += new EventHandler(OnBlameButtonsOneClick);
+                //GameLog.Client.UI.DebugFormat("radio button loaded into array {0}", _radioButton[i].Name);
+            }
             BlameNoOne1.IsChecked = true;
             BlameNoOne2.IsChecked = true;
             BlameNoOne3.IsChecked = true;
@@ -40,6 +53,14 @@ namespace Supremacy.Client.Views
             BlameNoOne6.IsChecked = true;
 
             LoadInsignia();
+        }
+        public string BlameWhoOne
+        {
+            get { return _blameWhoOne; }
+            set
+            {
+                value = _blameWhoOne;
+            }
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -564,6 +585,49 @@ namespace Supremacy.Client.Views
         }
         #endregion
         #region OnButtonClicks
+        private void OnBlameButtonsOneClick(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb != null)
+            {
+                if (BlameNoOne1.IsChecked == true)
+                {
+                    _blameWhoOne = "no one"; //Label1.Text = "You choose: " + RadioButton1.Text;
+                }
+                if (Terrorists1.IsChecked == true)
+                {
+                    _blameWhoOne = "Terrorists"; //Label1.Text = "You choose: " + RadioButton1.Text;
+                }
+                if (Federation1.IsChecked == true)
+                {
+                    _blameWhoOne = "Federation";
+                }
+                if (TerranEmpire1.IsChecked == true)
+                {
+                    _blameWhoOne = "TerranEmpire";
+                }
+                if (Romulans1.IsChecked == true)
+                {
+                    _blameWhoOne = "Romulnas";
+                }
+                if (Klingons1.IsChecked == true)
+                {
+                    _blameWhoOne = "Klingons";
+                }
+                if (Cardassians1.IsChecked == true)
+                {
+                    _blameWhoOne = "Cardassians";
+                }
+                if (Borg1.IsChecked == true)
+                {
+                    _blameWhoOne = "Borg";
+                }
+                GameLog.Client.UI.DebugFormat("%$%$###$%$$#@ Blame Sting ={0}", _blameWhoOne);
+                // Federation1, TerranEmpire1, Romulans1, Klingons1, Cardassians1, Dominion1, Borg1 
+                //criteria = Int16.Parse(rb.Tag);
+                //criteriaType = rb.Text;
+            }
+        }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);

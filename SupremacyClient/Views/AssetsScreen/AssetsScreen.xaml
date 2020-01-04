@@ -417,12 +417,12 @@
                                                   Grid.Column="0">
                                             <StackPanel Name="BlameText1">
                                                 <TextBlock
-                                                 VerticalAlignment="Top"
-                                                 HorizontalAlignment="Left"
-                                                 Margin="5,10,0,0"
-                                                 Foreground="LightGoldenrodYellow"
-                                                 FontSize="16"
-                                                 Text="Blame someone for your actions: " />
+                                                     VerticalAlignment="Top"
+                                                     HorizontalAlignment="Left"
+                                                     Margin="5,10,0,0"
+                                                     Foreground="LightGoldenrodYellow"
+                                                     FontSize="16"
+                                                     Text="Blame someone for your actions: " />
                                             </StackPanel>
                                             <StackPanel Name="NoOneButton1">
                                                 <RadioButton
@@ -431,7 +431,9 @@
                                                     Margin="5,10,0,0"
                                                     GroupName="BlameRadio1"
                                                     Foreground="White"
-                                                    Content="Blame No One" />
+                                                    Content="Blame No One" 
+                                                    Tag="0"
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerrorists1"
                                                       Orientation="Horizontal" >
@@ -446,7 +448,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio1"
                                                     Foreground="White"
-                                                    Content="Terrorists" />
+                                                    Content="Terrorists" 
+                                                    Tag="1"
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameFederation1"
                                                         Visibility="Collapsed"
@@ -457,12 +461,14 @@
                                                     Margin="10,10,5,0" >
                                                 </Image>
                                                 <RadioButton
-                                                Name="Federation1"
-                                                VerticalAlignment="Top"
-                                                Margin="0,10,0,0"
-                                                GroupName="BlameRadio1"
-                                                Foreground="LightBlue"
-                                                Content="Federation"/>
+                                                    Name="Federation1"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio1"
+                                                    Foreground="LightBlue"
+                                                    Content="Federation"
+                                                    Tag="2"
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerranEmpire1"
                                                         Visibility="Collapsed"
@@ -474,97 +480,109 @@
                                                     Margin="10,10,0,0" >
                                                 </Image>
                                                 <RadioButton
-                                                Name="TerranEmpire1"
-                                                VerticalAlignment="Top"
-                                                Margin="0,10,0,0"
-                                                GroupName="BlameRadio1"
-                                                Foreground="LightYellow"
-                                                Content="Terran Empire"/>
+                                                    Name="TerranEmpire1"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio1"
+                                                    Foreground="LightYellow"
+                                                    Content="Terran Empire"
+                                                    Tag="3"
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameRomulans1"
                                                         Visibility="Collapsed"
                                                         Orientation="Horizontal">
                                                 <Image
-                                                VerticalAlignment="Top"
-                                                Height="20"
-                                                Source="vfs:///Resources/Images/Insignias/Romulans.png"
-                                                Margin="10,10,0,0" >
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Romulans.png"
+                                                    Margin="10,10,0,0" >
                                                 </Image>
                                                 <RadioButton
-                                                Name="Romulans1"
-                                                VerticalAlignment="Top"
-                                                Margin="0,10,0,0"
-                                                GroupName="BlameRadio1"
-                                                Foreground="LightGreen"
-                                                Content="Romulans"/>
+                                                    Name="Romulans1"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio1"
+                                                    Foreground="LightGreen"
+                                                    Content="Romulans"
+                                                    Tag="4"
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameKlingons1"
                                                         Visibility="Collapsed"
                                                         Orientation="Horizontal">
                                                 <Image
-                                                VerticalAlignment="Top"
-                                                Height="20"
-                                                Source="vfs:///Resources/Images/Insignias/Klingons.png"
-                                                Margin="10,10,0,0" >
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Klingons.png"
+                                                    Margin="10,10,0,0" >
                                                 </Image>
                                                 <RadioButton
-                                                Name="Klingons1"
-                                                VerticalAlignment="Top"
-                                                Margin="0,10,0,0"
-                                                GroupName="BlameRadio1"
-                                                Foreground="Red"
-                                                Content="Klingons"/>
+                                                    Name="Klingons1"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio1"
+                                                    Foreground="Red"
+                                                    Content="Klingons"
+                                                    Tag="5"
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameCardassians1"
                                                         Visibility="Collapsed"
                                                         Orientation="Horizontal">
                                                 <Image
-                                                VerticalAlignment="Top"
-                                                Height="20"
-                                                Source="vfs:///Resources/Images/Insignias/Cardassians.png"
-                                                Margin="10,10,0,0" >
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Cardassians.png"
+                                                    Margin="10,10,0,0" >
                                                 </Image>
                                                 <RadioButton
-                                                Name="Cardassians1"
-                                                VerticalAlignment="Top"
-                                                Margin="0,10,0,0"
-                                                GroupName="BlameRadio1"
-                                                Foreground="Goldenrod"
-                                                Content="Cardassianss"/>
+                                                    Name="Cardassians1"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio1"
+                                                    Foreground="Goldenrod"
+                                                    Content="Cardassianss"
+                                                    Tag="6"
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameDominion1"
                                                         Visibility="Collapsed"
                                                         Orientation="Horizontal">
                                                 <Image
-                                                  VerticalAlignment="Top"
-                                                  Height="20"
-                                                  Source="vfs:///Resources/Images/Insignias/Dominion.png"
-                                                  Margin="10,10,0,0" >
+                                                      VerticalAlignment="Top"
+                                                      Height="20"
+                                                      Source="vfs:///Resources/Images/Insignias/Dominion.png"
+                                                      Margin="10,10,0,0" >
                                                 </Image>
                                                 <RadioButton
-                                                  Name="Dominion1"
-                                                  VerticalAlignment="Top"
-                                                  Margin="0,10,0,0"
-                                                  GroupName="BlameRadio1"
-                                                  Foreground="MediumPurple"
-                                                  Content="Dominion"/>
+                                                      Name="Dominion1"
+                                                      VerticalAlignment="Top"
+                                                      Margin="0,10,0,0"
+                                                      GroupName="BlameRadio1"
+                                                      Foreground="MediumPurple"
+                                                      Content="Dominion"
+                                                      Tag="7"
+                                                      Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameBorg1"
                                                         Visibility="Collapsed"
                                                         Orientation="Horizontal">
                                                 <Image
-                                                  VerticalAlignment="Top"
-                                                  Height="20"
-                                                  Source="vfs:///Resources/Images/Insignias/Borg.png"
-                                                  Margin="10,10,0,0" >
+                                                      VerticalAlignment="Top"
+                                                      Height="20"
+                                                      Source="vfs:///Resources/Images/Insignias/Borg.png"
+                                                      Margin="10,10,0,0" >
                                                 </Image>
                                                 <RadioButton
-                                                  Name="Borg1"
-                                                  VerticalAlignment="Top"
-                                                  Margin="0,10,0,0"
-                                                  GroupName="BlameRadio1"
-                                                  Foreground="YellowGreen"
-                                                  Content="Borg"/>
+                                                      Name="Borg1"
+                                                      VerticalAlignment="Top"
+                                                      Margin="0,10,0,0"
+                                                      GroupName="BlameRadio1"
+                                                      Foreground="YellowGreen"
+                                                      Content="Borg"
+                                                      Tag="8"
+                                                      Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
