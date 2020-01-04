@@ -67,7 +67,7 @@ namespace Supremacy.Client.Views
                             SabotageIndustryOne.Visibility = Visibility.Visible;
                         if (IntelHelper.SeeStealResearch(_spiedOneCiv))
                             StealResearchOne.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedOneCiv))
+                        if (IntelHelper.SeeStealCredits(_spiedOneCiv, "NotClicked"))
                             StealCreditsOne.Visibility = Visibility.Visible;
                     }
                 }
@@ -90,7 +90,7 @@ namespace Supremacy.Client.Views
                             SabotageIndustryTwo.Visibility = Visibility.Visible;
                         if (IntelHelper.SeeStealResearch(_spiedTwoCiv))
                             StealResearchTwo.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedTwoCiv))
+                        if (IntelHelper.SeeStealCredits(_spiedTwoCiv, "NotClicked"))
                             StealCreditsTwo.Visibility = Visibility.Visible;
                     }
                 }
@@ -114,7 +114,7 @@ namespace Supremacy.Client.Views
                             SabotageIndustryThree.Visibility = Visibility.Visible;
                         if (IntelHelper.SeeStealResearch(_spiedThreeCiv))
                             StealResearchThree.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedThreeCiv))
+                        if (IntelHelper.SeeStealCredits(_spiedThreeCiv, "NotClicked"))
                             StealCreditsThree.Visibility = Visibility.Visible;
                     }
                 }
@@ -137,7 +137,7 @@ namespace Supremacy.Client.Views
                             SabotageIndustryFour.Visibility = Visibility.Visible;
                         if (IntelHelper.SeeStealResearch(_spiedFourCiv))
                             StealResearchFour.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedFourCiv))
+                        if (IntelHelper.SeeStealCredits(_spiedFourCiv, "NotClicked"))
                             StealCreditsFour.Visibility = Visibility.Visible;
                     }
                 }
@@ -161,7 +161,7 @@ namespace Supremacy.Client.Views
                             SabotageIndustryFive.Visibility = Visibility.Visible;
                         if (IntelHelper.SeeStealResearch(_spiedFiveCiv))
                             StealResearchFive.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedFiveCiv))
+                        if (IntelHelper.SeeStealCredits(_spiedFiveCiv, "NotClicked"))
                             StealCreditsFive.Visibility = Visibility.Visible;
                     }
                 }
@@ -185,7 +185,7 @@ namespace Supremacy.Client.Views
                             SabotageIndustrySix.Visibility = Visibility.Visible;
                         if (IntelHelper.SeeStealResearch(_spiedSixCiv))
                             StealResearchSix.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedSixCiv))
+                        if (IntelHelper.SeeStealCredits(_spiedSixCiv, "NotClicked"))
                             StealCreditsSix.Visibility = Visibility.Visible;
                     }
                 }
