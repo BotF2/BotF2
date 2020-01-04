@@ -20,11 +20,20 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
-        private int criteria = 0;
-        private string criteriaType = "";
-        private string _blameWhoOne = "";
-        private RadioButton[] _radioButton; 
-        //Civilization _civLocalPlayer = DesignTimeObjects.CivilizationManager.Civilization;
+        private string _blameWhoOne = "no one";
+        private string _blameWhoTwo = "no one";
+        private string _blameWhoThree = "no one";
+        private string _blameWhoFour = "no one";
+        private string _blameWhoFive = "no one";
+        private string _blameWhoSix = "no one";
+
+        private RadioButton[] _radioButtonOne;
+        private RadioButton[] _radioButtonTwo;
+        private RadioButton[] _radioButtonThree;
+        private RadioButton[] _radioButtonFour;
+        private RadioButton[] _radioButtonFive;
+        private RadioButton[] _radioButtonSix;
+       
         Civilization _spiedOneCiv = DesignTimeObjects.SpiedCivOne.Civilization;
         Civilization _spiedTwoCiv = DesignTimeObjects.SpiedCivTwo.Civilization;
         Civilization _spiedThreeCiv = DesignTimeObjects.SpiedCivThree.Civilization;
@@ -37,13 +46,38 @@ namespace Supremacy.Client.Views
             InitializeComponent();
             IsVisibleChanged += OnIsVisibleChanged;
 
-            _radioButton = new RadioButton[] { BlameNoOne1, Terrorists1, Federation1, TerranEmpire1, Romulans1, Klingons1, Cardassians1, Dominion1, Borg1 };
+            _radioButtonOne = new RadioButton[] { BlameNoOne1, Terrorists1, Federation1, TerranEmpire1, Romulans1, Klingons1, Cardassians1, Dominion1, Borg1 };
             //just put them in the order so you can use Critera 1,2,3,4
-            for (int i = 0; i < _radioButton.Length; i++)
+            for (int i = 0; i < _radioButtonOne.Length; i++)
             {
-                _radioButton[i].Tag = i; //set your cretara number into tag property here (1,2,3,4)
+                _radioButtonOne[i].Tag = i; //set your cretara number into tag property here (1,2,3,4)
                 //_radioButton[i]. += new EventHandler(OnBlameButtonsOneClick);
                 //GameLog.Client.UI.DebugFormat("radio button loaded into array {0}", _radioButton[i].Name);
+            }
+            _radioButtonTwo = new RadioButton[] { BlameNoOne2, Terrorists2, Federation2, TerranEmpire2, Romulans2, Klingons2, Cardassians2, Dominion2, Borg2 };
+            for (int i = 0; i < _radioButtonTwo.Length; i++)
+            {
+                _radioButtonTwo[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+            }
+            _radioButtonThree = new RadioButton[] { BlameNoOne3, Terrorists3, Federation3, TerranEmpire3, Romulans3, Klingons3, Cardassians3, Dominion3, Borg3 };
+            for (int i = 0; i < _radioButtonThree.Length; i++)
+            {
+                _radioButtonThree[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+            }
+            _radioButtonFour = new RadioButton[] { BlameNoOne4, Terrorists4, Federation4, TerranEmpire4, Romulans4, Klingons4, Cardassians4, Dominion4, Borg4 };
+            for (int i = 0; i < _radioButtonFour.Length; i++)
+            {
+                _radioButtonFour[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+            }
+            _radioButtonFive = new RadioButton[] { BlameNoOne5, Terrorists5, Federation5, TerranEmpire5, Romulans5, Klingons5, Cardassians5, Dominion5, Borg5 };
+            for (int i = 0; i < _radioButtonFive.Length; i++)
+            {
+                _radioButtonFive[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+            }
+            _radioButtonSix = new RadioButton[] { BlameNoOne6, Terrorists6, Federation6, TerranEmpire6, Romulans6, Klingons6, Cardassians6, Dominion6, Borg6 };
+            for (int i = 0; i < _radioButtonSix.Length; i++)
+            {
+                _radioButtonSix[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
             }
             BlameNoOne1.IsChecked = true;
             BlameNoOne2.IsChecked = true;
@@ -592,11 +626,11 @@ namespace Supremacy.Client.Views
             {
                 if (BlameNoOne1.IsChecked == true)
                 {
-                    _blameWhoOne = "no one"; //Label1.Text = "You choose: " + RadioButton1.Text;
+                    _blameWhoOne = "no one"; 
                 }
                 if (Terrorists1.IsChecked == true)
                 {
-                    _blameWhoOne = "Terrorists"; //Label1.Text = "You choose: " + RadioButton1.Text;
+                    _blameWhoOne = "Terrorists"; 
                 }
                 if (Federation1.IsChecked == true)
                 {
@@ -622,10 +656,210 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoOne = "Borg";
                 }
-                GameLog.Client.UI.DebugFormat("%$%$###$%$$#@ Blame Sting ={0}", _blameWhoOne);
+                GameLog.Client.UI.DebugFormat("Expander One %$%$###$%$$#@ Blame Sting ={0}", _blameWhoOne);
                 // Federation1, TerranEmpire1, Romulans1, Klingons1, Cardassians1, Dominion1, Borg1 
                 //criteria = Int16.Parse(rb.Tag);
                 //criteriaType = rb.Text;
+            }
+        }
+        private void OnBlameButtonsTwoClick(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb != null)
+            {
+                if (BlameNoOne2.IsChecked == true)
+                {
+                    _blameWhoTwo = "no one"; 
+                }
+                if (Terrorists2.IsChecked == true)
+                {
+                    _blameWhoTwo = "Terrorists"; 
+                }
+                if (Federation2.IsChecked == true)
+                {
+                    _blameWhoTwo = "Federation";
+                }
+                if (TerranEmpire2.IsChecked == true)
+                {
+                    _blameWhoTwo = "TerranEmpire";
+                }
+                if (Romulans2.IsChecked == true)
+                {
+                    _blameWhoTwo = "Romulnas";
+                }
+                if (Klingons2.IsChecked == true)
+                {
+                    _blameWhoTwo = "Klingons";
+                }
+                if (Cardassians2.IsChecked == true)
+                {
+                    _blameWhoTwo = "Cardassians";
+                }
+                if (Borg2.IsChecked == true)
+                {
+                    _blameWhoTwo = "Borg";
+                }
+                GameLog.Client.UI.DebugFormat("Expander Two ############### Blame Sting ={0}", _blameWhoTwo);
+            }
+        }
+        private void OnBlameButtonsThreeClick(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb != null)
+            {
+                if (BlameNoOne3.IsChecked == true)
+                {
+                    _blameWhoThree = "no one"; 
+                }
+                if (Terrorists3.IsChecked == true)
+                {
+                    _blameWhoThree = "Terrorists"; 
+                }
+                if (Federation3.IsChecked == true)
+                {
+                    _blameWhoThree = "Federation";
+                }
+                if (TerranEmpire3.IsChecked == true)
+                {
+                    _blameWhoThree = "TerranEmpire";
+                }
+                if (Romulans3.IsChecked == true)
+                {
+                    _blameWhoThree = "Romulnas";
+                }
+                if (Klingons3.IsChecked == true)
+                {
+                    _blameWhoThree = "Klingons";
+                }
+                if (Cardassians3.IsChecked == true)
+                {
+                    _blameWhoThree = "Cardassians";
+                }
+                if (Borg3.IsChecked == true)
+                {
+                    _blameWhoThree = "Borg";
+                }
+                GameLog.Client.UI.DebugFormat("Expander Three ############### Blame Sting ={0}", _blameWhoThree);
+            }
+        }
+        private void OnBlameButtonsFourClick(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb != null)
+            {
+                if (BlameNoOne4.IsChecked == true)
+                {
+                    _blameWhoFour = "no one";
+                }
+                if (Terrorists4.IsChecked == true)
+                {
+                    _blameWhoFour = "Terrorists";
+                }
+                if (Federation4.IsChecked == true)
+                {
+                    _blameWhoFour = "Federation";
+                }
+                if (TerranEmpire4.IsChecked == true)
+                {
+                    _blameWhoFour = "TerranEmpire";
+                }
+                if (Romulans4.IsChecked == true)
+                {
+                    _blameWhoFour = "Romulnas";
+                }
+                if (Klingons4.IsChecked == true)
+                {
+                    _blameWhoFour = "Klingons";
+                }
+                if (Cardassians4.IsChecked == true)
+                {
+                    _blameWhoFour = "Cardassians";
+                }
+                if (Borg4.IsChecked == true)
+                {
+                    _blameWhoFour = "Borg";
+                }
+                GameLog.Client.UI.DebugFormat("Expander Four ############### Blame Sting ={0}", _blameWhoFour);
+            }
+        }
+        private void OnBlameButtonsFiveClick(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb != null)
+            {
+                if (BlameNoOne5.IsChecked == true)
+                {
+                    _blameWhoFive = "no one";
+                }
+                if (Terrorists5.IsChecked == true)
+                {
+                    _blameWhoFive = "Terrorists";
+                }
+                if (Federation5.IsChecked == true)
+                {
+                    _blameWhoFive = "Federation";
+                }
+                if (TerranEmpire5.IsChecked == true)
+                {
+                    _blameWhoFive = "TerranEmpire";
+                }
+                if (Romulans5.IsChecked == true)
+                {
+                    _blameWhoFive = "Romulnas";
+                }
+                if (Klingons5.IsChecked == true)
+                {
+                    _blameWhoFive = "Klingons";
+                }
+                if (Cardassians5.IsChecked == true)
+                {
+                    _blameWhoFive = "Cardassians";
+                }
+                if (Borg5.IsChecked == true)
+                {
+                    _blameWhoFive = "Borg";
+                }
+                GameLog.Client.UI.DebugFormat("Expander Five ############### Blame Sting ={0}", _blameWhoFive);
+            }
+        }
+        private void OnBlameButtonsSixClick(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb != null)
+            {
+                if (BlameNoOne6.IsChecked == true)
+                {
+                    _blameWhoSix = "no one";
+                }
+                if (Terrorists6.IsChecked == true)
+                {
+                    _blameWhoSix = "Terrorists";
+                }
+                if (Federation6.IsChecked == true)
+                {
+                    _blameWhoSix = "Federation";
+                }
+                if (TerranEmpire6.IsChecked == true)
+                {
+                    _blameWhoSix = "TerranEmpire";
+                }
+                if (Romulans6.IsChecked == true)
+                {
+                    _blameWhoSix = "Romulnas";
+                }
+                if (Klingons6.IsChecked == true)
+                {
+                    _blameWhoSix = "Klingons";
+                }
+                if (Cardassians6.IsChecked == true)
+                {
+                    _blameWhoSix = "Cardassians";
+                }
+                if (Borg6.IsChecked == true)
+                {
+                    _blameWhoSix = "Borg";
+                }
+                GameLog.Client.UI.DebugFormat("Expander Six ############### Blame Sting ={0}", _blameWhoSix);
             }
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)

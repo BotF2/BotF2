@@ -870,7 +870,9 @@
                                                     Margin="5,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="White"
-                                                    Content="Blame No One" />
+                                                    Content="Blame No One" 
+                                                    Tag="0"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerrorists2"
                                                         Orientation="Horizontal" >
@@ -885,7 +887,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="White"
-                                                    Content="Terrorists" />
+                                                    Content="Terrorists"
+                                                    Tag="1"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameFederation2"
                                                         Visibility="Collapsed"
@@ -901,7 +905,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="LightBlue"
-                                                    Content="Federation"/>
+                                                    Content="Federation"
+                                                    Tag="2"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerranEmpire2"
                                                         Visibility="Collapsed"
@@ -918,7 +924,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="LightYellow"
-                                                    Content="Terran Empire"/>
+                                                    Content="Terran Empire"
+                                                    Tag="3"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameRomulans2"
                                                         Visibility="Collapsed"
@@ -935,7 +943,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="LightGreen"
-                                                    Content="Romulans"/>
+                                                    Content="Romulans"
+                                                    Tag="4"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameKlingons2"
                                                         Visibility="Collapsed"
@@ -952,7 +962,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="Red"
-                                                    Content="Klingons"/>
+                                                    Content="Klingons"
+                                                    Tag="5"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameCardassians2"
                                                         Visibility="Collapsed"
@@ -969,7 +981,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="Goldenrod"
-                                                    Content="Cardassianss"/>
+                                                    Content="Cardassianss"
+                                                    Tag="6"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameDominion2"
                                                         Visibility="Collapsed"
@@ -986,7 +1000,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="MediumPurple"
-                                                    Content="Dominion"/>
+                                                    Content="Dominion"
+                                                    Tag="7"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameBorg2"
                                                         Visibility="Collapsed"
@@ -1003,7 +1019,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio2"
                                                     Foreground="YellowGreen"
-                                                    Content="Borg"/>
+                                                    Content="Borg"
+                                                    Tag="8"
+                                                    Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -1291,7 +1309,9 @@
                                                         Margin="5,10,0,0"
                                                         GroupName="BlameRadio3"
                                                         Foreground="White"
-                                                        Content="Blame No One" />
+                                                        Content="Blame No One"
+                                                        Tag="0"
+                                                        Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerrorists3"
                                                         Orientation="Horizontal" >
@@ -1306,7 +1326,9 @@
                                                         Margin="0,10,0,0"                                          
                                                         GroupName="BlameRadio3"
                                                         Foreground="White"
-                                                        Content="Terrorists" />
+                                                        Content="Terrorists"
+                                                        Tag="1"
+                                                        Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameFederation3"
                                                         Visibility="Collapsed"
@@ -1322,7 +1344,9 @@
                                                         Margin="0,10,0,0"
                                                         GroupName="BlameRadio3"
                                                         Foreground="LightBlue"
-                                                        Content="Federation"/>
+                                                        Content="Federation"
+                                                        Tag="2"
+                                                        Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerranEmpire3"
                                                         Visibility="Collapsed"
@@ -1339,7 +1363,9 @@
                                                         Margin="0,10,0,0"
                                                         GroupName="BlameRadio3"
                                                         Foreground="LightYellow"
-                                                        Content="Terran Empire"/>
+                                                        Content="Terran Empire"
+                                                        Tag="3"
+                                                        Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameRomulans3"
                                                         Visibility="Collapsed"
@@ -1356,7 +1382,9 @@
                                                     Margin="0,10,0,0"                                                   
                                                     GroupName="BlameRadio3"
                                                     Foreground="LightGreen"
-                                                    Content="Romulans"/>
+                                                    Content="Romulans"
+                                                    Tag="4"
+                                                    Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameKlingons3"
                                                         Visibility="Collapsed"
@@ -1373,7 +1401,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio3"
                                                     Foreground="Red"
-                                                    Content="Klingons"/>
+                                                    Content="Klingons"
+                                                    Tag="5"
+                                                    Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameCardassians3"
                                                         Visibility="Collapsed"
@@ -1390,7 +1420,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio3"
                                                     Foreground="Goldenrod"
-                                                    Content="Cardassianss"/>
+                                                    Content="Cardassianss"
+                                                    Tag="6"
+                                                    Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameDominion3"
                                                         Visibility="Collapsed"
@@ -1407,7 +1439,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio3"
                                                     Foreground="MediumPurple"
-                                                    Content="Dominion"/>
+                                                    Content="Dominion"
+                                                    Tag="7"
+                                                    Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameBorg3"
                                                         Visibility="Collapsed"
@@ -1424,7 +1458,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio3"
                                                     Foreground="YellowGreen"
-                                                    Content="Borg"/>
+                                                    Content="Borg"
+                                                    Tag="8"
+                                                    Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -1712,7 +1748,9 @@
                                                     Margin="5,10,0,0"                                                    
                                                     GroupName="BlameRadio4"
                                                     Foreground="White"
-                                                    Content="Blame No One" />
+                                                    Content="Blame No One"
+                                                    Tag="0"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerrorists4"
                                                         Orientation="Horizontal">
@@ -1727,7 +1765,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="White"
-                                                    Content="Terrorists" />
+                                                    Content="Terrorists"
+                                                    Tag="1"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameFederation4"
                                                         Visibility="Collapsed"
@@ -1743,7 +1783,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="LightBlue"
-                                                    Content="Federation"/>
+                                                    Content="Federation"
+                                                    Tag="2"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerranEmpire4"
                                                         Visibility="Collapsed"
@@ -1760,7 +1802,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="LightYellow"
-                                                    Content="Terran Empire"/>
+                                                    Content="Terran Empire"
+                                                    Tag="3"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameRomulans4"
                                                         Visibility="Collapsed"
@@ -1777,7 +1821,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="LightGreen"
-                                                    Content="Romulans"/>
+                                                    Content="Romulans"
+                                                    Tag="4"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameKlingons4"
                                                         Visibility="Collapsed"
@@ -1794,7 +1840,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="Red"
-                                                    Content="Klingons"/>
+                                                    Content="Klingons"
+                                                    Tag="5"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameCardassians4"
                                                         Visibility="Collapsed"
@@ -1811,7 +1859,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="Goldenrod"
-                                                    Content="Cardassianss"/>
+                                                    Content="Cardassianss"
+                                                    Tag="6"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameDominion4"
                                                         Visibility="Collapsed"
@@ -1828,7 +1878,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="MediumPurple"
-                                                    Content="Dominion"/>
+                                                    Content="Dominion"
+                                                    Tag="7"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameBorg4"
                                                         Visibility="Collapsed"
@@ -1845,7 +1897,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
                                                     Foreground="YellowGreen"
-                                                    Content="Borg"/>
+                                                    Content="Borg"
+                                                    Tag="8"
+                                                    Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -2133,7 +2187,9 @@
                                                         Margin="5,10,0,0"
                                                         GroupName="BlameRadio5"
                                                         Foreground="White"
-                                                        Content="Blame No One" />
+                                                        Content="Blame No One"
+                                                        Tag="0"
+                                                        Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerrorists5"
                                                         Orientation="Horizontal" >
@@ -2148,7 +2204,9 @@
                                                         Margin="0,10,0,0"                                          
                                                         GroupName="BlameRadio5"
                                                         Foreground="White"
-                                                        Content="Terrorists" />
+                                                        Content="Terrorists"
+                                                        Tag="1"
+                                                        Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameFederation5"
                                                         Visibility="Collapsed"
@@ -2164,7 +2222,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio5"
                                                     Foreground="LightBlue"
-                                                    Content="Federation"/>
+                                                    Content="Federation"
+                                                    Tag="2"
+                                                    Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerranEmpire5"
                                                         Visibility="Collapsed"
@@ -2181,7 +2241,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio5"
                                                     Foreground="LightYellow"
-                                                    Content="Terran Empire"/>
+                                                    Content="Terran Empire"
+                                                    Tag="3"
+                                                    Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
                                               <StackPanel Name="BlameRomulans5"
                                                         Visibility="Collapsed"
@@ -2198,11 +2260,13 @@
                                                         Margin="0,10,0,0"
                                                         GroupName="BlameRadio5"
                                                         Foreground="LightGreen"
-                                                        Content="Romulans"/>
+                                                        Content="Romulans"
+                                                        Tag="4"
+                                                        Checked="OnBlameButtonsFiveClick"/>
                                               </StackPanel>
                                               <StackPanel Name="BlameKlingons5"
-                                                        Visibility="Collapsed"
-                                                        Orientation="Horizontal">
+                                                          Visibility="Collapsed"
+                                                          Orientation="Horizontal">
                                                     <Image
                                                         VerticalAlignment="Top"
                                                         Height="20"
@@ -2215,7 +2279,9 @@
                                                         Margin="0,10,0,0"
                                                         GroupName="BlameRadio5"
                                                         Foreground="Red"
-                                                        Content="Klingons"/>
+                                                        Content="Klingons"
+                                                        Tag="5"
+                                                        Checked="OnBlameButtonsFiveClick"/>
                                               </StackPanel>
                                             <StackPanel Name="BlameCardassians5"
                                                         Visibility="Collapsed"
@@ -2232,7 +2298,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio5"
                                                     Foreground="Goldenrod"
-                                                    Content="Cardassianss"/>
+                                                    Content="Cardassianss"
+                                                    Tag="6"
+                                                    Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameDominion5"
                                                         Visibility="Collapsed"
@@ -2249,7 +2317,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio5"
                                                     Foreground="MediumPurple"
-                                                    Content="Dominion"/>
+                                                    Content="Dominion"
+                                                    Tag="7"
+                                                    Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameBorg5"
                                                         Visibility="Collapsed"
@@ -2266,7 +2336,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio5"
                                                     Foreground="YellowGreen"
-                                                    Content="Borg"/>
+                                                    Content="Borg"
+                                                    Tag="8"
+                                                    Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -2554,7 +2626,9 @@
                                                     Margin="5,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="White"
-                                                    Content="Blame No One" />
+                                                    Content="Blame No One"
+                                                    Tag="0"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerrorists6"
                                                       Orientation="Horizontal" >
@@ -2569,7 +2643,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="White"
-                                                    Content="Terrorists" />
+                                                    Content="Terrorists"
+                                                    Tag="1"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameFederation6"
                                                         Visibility="Collapsed"
@@ -2580,12 +2656,14 @@
                                                     Margin="10,10,5,0" >
                                                 </Image>
                                                 <RadioButton
-                                                Name="Federation6"
-                                                VerticalAlignment="Top"
-                                                Margin="0,10,0,0"
-                                                GroupName="BlameRadio6"
-                                                Foreground="LightBlue"
-                                                Content="Federation"/>
+                                                    Name="Federation6"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio6"
+                                                    Foreground="LightBlue"
+                                                    Content="Federation"
+                                                    Tag="2"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameTerranEmpire6"
                                                         Visibility="Collapsed"
@@ -2602,7 +2680,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="LightYellow"
-                                                    Content="Terran Empire"/>
+                                                    Content="Terran Empire"
+                                                    Tag="3"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameRomulans6"
                                                         Visibility="Collapsed"
@@ -2619,7 +2699,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="LightGreen"
-                                                    Content="Romulans"/>
+                                                    Content="Romulans"
+                                                    Tag="4"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameKlingons6"
                                                         Visibility="Collapsed"
@@ -2636,7 +2718,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="Red"
-                                                    Content="Klingons"/>
+                                                    Content="Klingons"
+                                                    Tag="5"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameCardassians6"
                                                         Visibility="Collapsed"
@@ -2653,7 +2737,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="Goldenrod"
-                                                    Content="Cardassianss"/>
+                                                    Content="Cardassianss"
+                                                    Tag="6"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameDominion6"
                                                         Visibility="Collapsed"
@@ -2670,7 +2756,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="MediumPurple"
-                                                    Content="Dominion"/>
+                                                    Content="Dominion"
+                                                    Tag="7"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameBorg6"
                                                         Visibility="Collapsed"
@@ -2687,7 +2775,9 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio6"
                                                     Foreground="YellowGreen"
-                                                    Content="Borg"/>
+                                                    Content="Borg"
+                                                    Tag="8"
+                                                    Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
