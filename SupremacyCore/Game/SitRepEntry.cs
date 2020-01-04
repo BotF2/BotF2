@@ -1681,6 +1681,69 @@ namespace Supremacy.Game
     public class NewSabotageSitRepEntry : SitRepEntry
     {
         private readonly int _systemId;
+        private readonly int _removeFacilities;
+        private readonly int _totalEnergyFacilities;
+        private readonly string _affectedField;
+
+        public StarSystem System
+        {
+            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
+        }
+
+        public override object ActionTarget
+        {
+            get { return System.Sector; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.ColonyStatus; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                if (_removeFacilities > 0)
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
+                       System.Owner, System.Location, _affectedField, _removeFacilities, _totalEnergyFacilities + _removeFacilities);
+                }
+                else
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FAILED"),
+                        System.Owner, System.Name, _affectedField);
+                }
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public NewSabotageSitRepEntry(Civilization owner, Colony colony, string affectedField, int removeEnergyFacilities, int totalEnergyFacilities)
+            : base(owner, SitRepPriority.Red)
+        {
+            if (colony == null)
+                throw new ArgumentNullException("colony");
+            _systemId = colony.System.ObjectID;
+
+            _removeFacilities = removeEnergyFacilities;
+            _totalEnergyFacilities = totalEnergyFacilities;
+            _affectedField = affectedField;
+        }
+    }
+
+    [Serializable]
+    public class NewSabotageFromShipSitRepEntry : SitRepEntry
+    {
+        private readonly int _systemId;
         private readonly int _removeEnergyFacilities;
         private readonly int _totalEnergyFacilities;
 
@@ -1728,7 +1791,7 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public NewSabotageSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int totalEnergyFacilities)
+        public NewSabotageFromShipSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int totalEnergyFacilities)
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)

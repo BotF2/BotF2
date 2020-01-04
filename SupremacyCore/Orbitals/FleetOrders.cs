@@ -1025,7 +1025,7 @@ namespace Supremacy.Orbitals
             }
 
             GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+            civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
     }
