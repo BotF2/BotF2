@@ -117,12 +117,20 @@ namespace Supremacy.Intelligence
             return seeIt;
         }
       
-        public static void StealCredits(Colony colony, Civilization attackedCiv)
+        public static void StealCredits(Colony colony, Civilization attackedCiv, string blamed)
         {
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
+            var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+
+            switch (blamed)
+            {
+                default:
+                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+                    break;
+            }
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
@@ -158,26 +166,27 @@ namespace Supremacy.Intelligence
 
             //Effect of steal // value needed for SitRep
             //int removeChredits = 0;
+            Int32.TryParse(attackedCivManager.Credits.ToString(), out int stolenCredits);
 
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                // ToDo is this what I think it is?  removeChredits = 10;
-                GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-5);
-
+                stolenCredits = stolenCredits / 100 * 5; // 5 percent
             }
             if (ratio > 1 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                // ToDo is this what I think it is?  removeChredits = 20;
-                GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-10);
+                stolenCredits = stolenCredits / 100 * 20; 
             }
             if (ratio > 2 && !RandomHelper.Chance(5) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                // ToDo is this what I think it is?  removeChredits = 30;
-                GameContext.Current.CivilizationManagers[_newTargetCiv].Credits.AdjustCurrent(-100);
+                stolenCredits = stolenCredits / 100 * 30;
             }
+
+            // result 
+            GameContext.Current.CivilizationManagers[system.Owner].Credits.AdjustCurrent(stolenCredits * -1);
+            GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.AdjustCurrent(stolenCredits);
 
 
 
@@ -186,18 +195,31 @@ namespace Supremacy.Intelligence
             attackMeter.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
 
-            GameLog.Core.Intel.DebugFormat("Steal Credits at {0}: Credits={1}", system.Name, attackedCivManager.Treasury.CurrentLevel);
-            //*******************ToDo: new sitrep
-            // attackedCivManager.SitRepEntries.Add(new NewStealSitRepEntry(attackedCiv, system.Colony, removeChredits, system.Colony.GetTotalFacilities(ProductionCategory.Research)));
+            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED"); ;
+
+            GameLog.Core.Intel.DebugFormat("Steal Credits at {0}: {1} Credits", system.Name, stolenCredits);
+
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, stolenCredits, system.Colony.GetTotalFacilities(ProductionCategory.Research), blamed, "attackedCiv"));
+            attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, stolenCredits, system.Colony.GetTotalFacilities(ProductionCategory.Research), blamed, "attackingCiv"));
 
         }
-        public static void StealResearch(Colony colony, Civilization attackedCiv)
+        public static void StealResearch(Colony colony, Civilization attackedCiv, string blamed)
         {
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
+            var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
             Meter stolenResearchPoints;
+
+            switch (blamed)
+            {
+                default:
+                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+                    break;
+            }
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
@@ -207,7 +229,7 @@ namespace Supremacy.Intelligence
             apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                 GameLog.Client.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
                 return;
             }
@@ -237,8 +259,6 @@ namespace Supremacy.Intelligence
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int researchPoints); 
 
-
-
             if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo add to local player              
@@ -253,6 +273,7 @@ namespace Supremacy.Intelligence
                 researchPoints = researchPoints / 100 * 35;  
             }
 
+            // result
             if (researchPoints > 0)
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(researchPoints);
 
@@ -263,19 +284,28 @@ namespace Supremacy.Intelligence
             attackMeter.UpdateAndReset();
 
 
-            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"); ;
+            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"); 
 
-            GameLog.Core.Intel.DebugFormat("Research stolen at {0}: Credits={1}", system.Name, attackedCivManager.Treasury.CurrentLevel);
-            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, affectedField, researchPoints, system.Colony.GetTotalFacilities(ProductionCategory.Research)));
+            GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} ResearchPoints", system.Name, researchPoints);
+
+            attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, researchPoints, system.Colony.GetTotalFacilities(ProductionCategory.Research), blamed, "attackingCiv"));
             // no info to attacked civ
         }
-        public static void SabotageFood(Colony colony, Civilization attackedCiv)
+        public static void SabotageFood(Colony colony, Civilization attackedCiv, string blamed)
         {
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+
+            switch (blamed)
+            {
+                default:
+                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+                    break;
+            }
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
@@ -285,7 +315,7 @@ namespace Supremacy.Intelligence
             apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                 GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
                 return;
             }
@@ -348,16 +378,26 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: TotalFoodFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Food));
 
-            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food)));
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackedCiv"));
             
-            attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food))); ;
+            attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
         }
-        public static void SabotageEnergy(Colony colony, Civilization attackedCiv)
+        public static void SabotageEnergy(Colony colony, Civilization attackedCiv, string blamed)
         {
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+
+            switch (blamed)
+            {
+                default:
+                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+                    break;
+            }
 
             // avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0)
@@ -369,7 +409,7 @@ namespace Supremacy.Intelligence
             apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                 GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
                 return;
             }
@@ -426,19 +466,30 @@ namespace Supremacy.Intelligence
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"); 
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
-            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, affectedField, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
+            attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackingCiv"));
 
         }
 
-        public static void SabotageIndustry(Colony colony, Civilization attackedCiv)
+        public static void SabotageIndustry(Colony colony, Civilization attackedCiv, string blamed)
         {
             //GameLog.Core.Intel.DebugFormat("##### Sabotage Industry not implemented yet");
             GameLog.Core.UI.DebugFormat("IntelHelper SabotageIndustry at line 390");
 
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
+            var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+
+            switch (blamed)
+            {
+                default:
+                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+                    break;
+            }
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
@@ -448,7 +499,7 @@ namespace Supremacy.Intelligence
             apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             if (apINT > -1)
             {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
                 GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
                 return;
             }
@@ -504,7 +555,10 @@ namespace Supremacy.Intelligence
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY");
 
             GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry));
-            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry)));
+            attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackedCiv"));
+            attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
+                attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackingCiv"));
 
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager)

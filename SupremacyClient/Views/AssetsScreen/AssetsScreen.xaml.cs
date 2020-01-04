@@ -630,123 +630,123 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
         }
         private void OnCreditsTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
         }
         private void OnCreditsThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
         }
         private void OnCreditsFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
         }
         private void OnCreditsFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
         }
         private void OnCreditsSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
         }
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
         }
         private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
         }
         private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
         }
         private void OnEnergyFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
         }
         private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
         }
         private void OnEnergySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
         }
         private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
         }
         private void OnFoodTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
         }
         private void OnFoodThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
         }
         private void OnFoodFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
         }
         private void OnFoodFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
         }
         private void OnFoodSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
         }
         private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
         }
         private void OnIndustrySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
         }
         #endregion
         private void LoadInsignia()
