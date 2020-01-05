@@ -53,29 +53,57 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="90" SharedSizeGroup="SystemListColumn0" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn1" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn2" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn3" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="90" SharedSizeGroup="SystemListColumn4" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn6" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn7" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn8" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn9" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn10" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn11" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="Auto" MinWidth="60" SharedSizeGroup="SystemListColumn12" />
-            <ColumnDefinition Width="1" />
+            <ColumnDefinition Width="Auto" MinWidth="100" />
+            <ColumnDefinition Width="Auto" MinWidth="80"  />
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="140" />
+            <!--<ColumnDefinition Width="Auto" MinWidth="40" SharedSizeGroup="SystemListColumn6" />-->
+            
+            
+            <!--Research + Deuterium-->
+
+
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+            <!--<ColumnDefinition Width="Auto" MinWidth="40" SharedSizeGroup="SystemListColumn2" />
+            <ColumnDefinition Width="Auto" MinWidth="40" SharedSizeGroup="SystemListColumn3" />-->
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+         
+            <!--<ColumnDefinition Width="Auto" MinWidth="30" SharedSizeGroup="SystemListColumn4" />-->
+
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="3"  />
+            <!--Food + Dilithium-->            
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="60"  />
+            
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn8" />
+            <!--Industry + Raw Materials-->            
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn9" />
+            
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn10" />
+            <!--Energy + Shipyards-->            
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="100" SharedSizeGroup="SystemListColumn11" />
+            
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="170" SharedSizeGroup="SystemListColumn12" />
+            <!--Research-->             
+            <ColumnDefinition MaxWidth="3" />
             <ColumnDefinition Width="Auto" />
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="120" SharedSizeGroup="SystemListColumn13" />
+             <!--Credits-->          
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" />
+
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.00001*" />
@@ -138,10 +166,9 @@
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
-      <TextBlock Text="RESEARCH ="
+      <!--<TextBlock Text="RESEARCH ="
                  Grid.Row="1"
                  Grid.Column="6"
-                 Foreground="LightBlue"
                  VerticalAlignment="Center"
                  HorizontalAlignment="Right"/>
       <scc:GameLabel Grid.Column="8"
@@ -149,8 +176,62 @@
                  VerticalAlignment="Center"
                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
                  Label="{Binding Path=NetResearch}"
-                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
-      <TextBlock Text="FOOD ="
+                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />-->
+        <!--<TextBlock Text="1x"
+                  Grid.Column="1"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="2x"
+                  Grid.Column="2"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="3x"
+                  Grid.Column="3"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="4x"
+                  Grid.Column="4"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="5x"
+                  Grid.Column="5"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="6x"
+                  Grid.Column="6"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="7x"
+                  Grid.Column="7"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="8x"
+                  Grid.Column="9"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="9x"
+                  Grid.Column="9"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>-->
+        <TextBlock Text="FOOD ="
                   Grid.Column="10"
                   Grid.Row="1"
                   Foreground="LightGreen"
@@ -186,7 +267,52 @@
                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                   Label="{Binding Path=NetEnergy}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
-      <TextBlock Text="DEUTERIUM ="
+
+        <TextBlock Text="RESEARCH = "
+                Grid.Row="1"
+                Grid.Column="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="LightBlue"/>
+        <TextBlock Text="  ( whole empire )     "
+                Grid.Row="2"
+                Grid.Column="20"
+                   Grid.ColumnSpan="3"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="LightBlue"/>
+        <scc:GameLabel Grid.Column="22"
+                  Grid.Row="1"
+                  VerticalAlignment="Center"
+                  Margin="0,0,0,0"
+                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                  Label="{Binding Path=ResearchForSpyScreen}"
+                   />        
+        <TextBlock Text="CREDITS = "
+                Grid.Row="1"
+                Grid.Column="24"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="Gold"/>
+        <TextBlock Text="  ( whole empire )     "
+                Grid.Row="2"
+                Grid.Column="24"
+                Grid.ColumnSpan="3"
+                Margin=" 0,0,15,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="Gold"/>
+        <scc:GameLabel Grid.Column="26"
+                  Grid.Row="1"
+                  VerticalAlignment="Center"
+                  Margin=" 0,0,15,0"
+                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png"
+                  Label="{Binding Path=CreditsForSpyScreen}"
+                   />
+
+
+        <!--Second Line-->
+        <!--<TextBlock Text="DEUTERIUM ="
                   Grid.Row="2"
                   Grid.Column="6"
                   HorizontalAlignment="Right"
@@ -196,7 +322,7 @@
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/Resources/deuterium.png"
                   Label="{Binding Path=NetDeuterium}"
-                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />-->
       <TextBlock Text="DILITHIUM ="
                   Grid.Row="2"
                   Grid.Column="10"
@@ -217,7 +343,22 @@
                   ImageSourceSmall="vfs:///Resources/Images/Resources/rawmaterials.png"
                   Label="{Binding Path=NetRawMaterials}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
-      <TextBlock Text="SHIP BUILDING ="
+        <!--<TextBlock Text="RESEARCH (empire) = "
+                Grid.Row="2"
+                Grid.Column="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="LightBlue"/>
+        <scc:GameLabel Grid.Column="22"
+                  Grid.Row="2"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                  Label="{Binding Path=ResearchForSpyScreen}"
+                   />-->
+        
+        <!--ShipBuilding-->
+
+        <TextBlock Text="SHIP BUILDING ="
                   Grid.Row="2" Grid.Column="18"
                   HorizontalAlignment="Right"/>
       <scc:GameLabel Grid.Column="20"
@@ -237,12 +378,14 @@
         <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="20" Margin="0,5,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="280"/>
+                <ColumnDefinition Width="Auto" MinWidth="80"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="280"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="280" />
                 <ColumnDefinition Width="Auto" />
+                <!--<ColumnDefinition Width="Auto" MinWidth="40" />
+                <ColumnDefinition Width="Auto" />-->
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto"  />
             </Grid.ColumnDefinitions>
@@ -268,12 +411,12 @@
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
                 Text="Shipyard 2:  " />
-            <TextBlock Grid.Column="2"
+            <TextBlock Grid.Column="3"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
                 Text=" Shipyard 3:  " />
-            <TextBlock Grid.Column="2"
+            <TextBlock Grid.Column="3"
                 Grid.Row="1"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
@@ -289,12 +432,18 @@
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
                 Text="Shipyard 8:" />-->
-            <!--<TextBlock Grid.Column="0"
-                Grid.Row="6"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left"
-                   FontWeight="DemiBold"  
-                Text="Shipyard 3:" />-->
+                    <!--<TextBlock Grid.Column="6"
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        FontWeight="DemiBold"  
+                        Text="Credits (whole Empire) = " />
+                    <TextBlock Grid.Column="6"
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        FontWeight="DemiBold"  
+                        Text="Research (whole Empire) = " />-->
             <!--<TextBlock Grid.Column="4"
                 Grid.Row="6"
                 Grid.ColumnSpan="1"
@@ -334,18 +483,24 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />-->
-            <!--<TextBlock Grid.Column="1"
-                Grid.Row="6"
-                Grid.ColumnSpan="3"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[2].Project}" />
-        <TextBlock Grid.Column="6"
+                    <!--<TextBlock Grid.Column="7"
+                        Grid.Row="0"
+                        Grid.ColumnSpan="3"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Text="{Binding Path=CreditsForSpyScreen}" />
+                    <TextBlock Grid.Column="7"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Text="{Binding Path=ResearchForSpyScreen}" />-->
+            <TextBlock Grid.Column="6"
                 Grid.Row="6"
                 Grid.ColumnSpan="3"                   
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[5].Project}" />-->
+                Text="{Binding Path=Shipyard.BuildSlots[5].Project}" />
         </Grid>
       <!-- Blame Others -->
       <!--<Border Grid.Row="6"

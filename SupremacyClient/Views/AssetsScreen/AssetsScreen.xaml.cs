@@ -254,7 +254,7 @@ namespace Supremacy.Client.Views
                 var shortList = GameContext.Current.CivilizationManagers; // only CivilizationMangers in game and in CivID numerical sequence
                 foreach (var manager in shortList)
                 {
-                    if (manager != DesignTimeObjects.LocalCivManager) // not the local player
+                    if (manager.Civilization.IsEmpire && manager != DesignTimeObjects.LocalCivManager) // not the local player
                     {
                         spyableCivManagers.Add(manager);
                     }
