@@ -551,6 +551,70 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
+        /// Gets the credits the civilization<see cref="Colony"/>.
+        /// </summary>
+        /// <value>The credits.</value>
+        public Meter CreditsForSpyScreen
+        {
+            get
+            {
+                Meter creditsForSpyScreen = GameContext.Current.CivilizationManagers[Owner].Credits;
+
+                //var modifier = new OutputModifier(0, 1.0f);
+                //var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                //var adjustedPop = Population.CurrentValue * moraleMod;
+
+                //foreach (var building in Buildings) // bonus from special structures
+                //{
+                //    if (!building.IsActive)
+                //        continue;
+
+                //    foreach (var bonus in building.BuildingDesign.Bonuses)
+                //    {
+                //        if (bonus.BonusType == BonusType.Credits)
+                //            modifier.Bonus += bonus.Amount;
+                //        else if (bonus.BonusType == BonusType.PercentCredits)
+                //            modifier.Efficiency += (bonus.Amount / 100f);
+                //    }
+                //}
+
+                return creditsForSpyScreen;
+            }
+        }
+
+        /// <summary>
+        /// Gets the credits the civilization<see cref="Colony"/>.
+        /// </summary>
+        /// <value>The credits.</value>
+        public Meter ResearchForSpyScreen
+        {
+            get
+            {
+                Meter researchForSpyScreen = GameContext.Current.CivilizationManagers[Owner].Credits;
+
+                //var modifier = new OutputModifier(0, 1.0f);
+                //var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                //var adjustedPop = Population.CurrentValue * moraleMod;
+
+                //foreach (var building in Buildings) // bonus from special structures
+                //{
+                //    if (!building.IsActive)
+                //        continue;
+
+                //    foreach (var bonus in building.BuildingDesign.Bonuses)
+                //    {
+                //        if (bonus.BonusType == BonusType.Credits)
+                //            modifier.Bonus += bonus.Amount;
+                //        else if (bonus.BonusType == BonusType.PercentCredits)
+                //            modifier.Efficiency += (bonus.Amount / 100f);
+                //    }
+                //}
+
+                return researchForSpyScreen;
+            }
+        }
+
+        /// <summary>
         /// Gets the net food production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net food production.</value>
