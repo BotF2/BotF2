@@ -125,12 +125,13 @@ namespace Supremacy.Intelligence
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
 
-            switch (blamed)
-            {
-                default:
-                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
-                    break;
-            }
+            //   #### we are using incoming text for blamed
+            //switch (blamed)
+            //{
+            //    default:
+            //        blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+            //        break;
+            //}
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
@@ -168,20 +169,26 @@ namespace Supremacy.Intelligence
             //int removeChredits = 0;
             Int32.TryParse(attackedCivManager.Credits.ToString(), out int stolenCredits);
 
+            if (stolenCredits < 100)  // they have not enough credits being worth to be sabotaged, especially avoid negative stuff !!!
+            {
+                stolenCredits = -1;
+                goto stolenCreditsIsMinusOne;
+            }
+
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                stolenCredits = stolenCredits / 100 * 5; // 5 percent
+                stolenCredits = stolenCredits / 100 * 2; // 2 percent of their TOTAL Credits - not just income
             }
             if (ratio > 1 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                stolenCredits = stolenCredits / 100 * 20; 
+                stolenCredits = stolenCredits / 100 * 4; 
             }
             if (ratio > 2 && !RandomHelper.Chance(5) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                stolenCredits = stolenCredits / 100 * 30;
+                stolenCredits = stolenCredits / 100 * 6;
             }
 
             // result 
@@ -189,15 +196,17 @@ namespace Supremacy.Intelligence
             GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.AdjustCurrent(stolenCredits);
 
 
-
+            // costs on both sides for the attack
             defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
             defenseMeter.UpdateAndReset();
             attackMeter.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
 
+            stolenCreditsIsMinusOne:;  // in this case give SitRep: nothing to gain
+
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED"); ;
 
-            GameLog.Core.Intel.DebugFormat("Steal Credits at {0}: {1} Credits", system.Name, stolenCredits);
+            GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits", system.Name, stolenCredits);
 
             attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
                 attackedCiv, system.Colony, affectedField, stolenCredits, system.Colony.GetTotalFacilities(ProductionCategory.Research), blamed, "attackedCiv"));
@@ -257,20 +266,21 @@ namespace Supremacy.Intelligence
 
             // calculation stolen research points depended on defenders stuff
 
-            Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int researchPoints); 
+            Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int researchPoints);
+            int attackedResearchCumulativePoints = researchPoints;
 
             if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo add to local player              
-                researchPoints = researchPoints / 100 * 5;  // 5 percent
+                researchPoints = researchPoints / 100 * 2;  // 3 percent, but base is CumulativePoints, so all research points ever yielded
             }
             if (ratio > 2 && !RandomHelper.Chance(4))// && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                researchPoints = researchPoints / 100 * 20;  
+                researchPoints = researchPoints / 100 * 4;  
             }
             if (ratio > 3 && !RandomHelper.Chance(8))// && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                researchPoints = researchPoints / 100 * 35;  
+                researchPoints = researchPoints / 100 * 6;  
             }
 
             // result
@@ -289,7 +299,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} ResearchPoints", system.Name, researchPoints);
 
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, researchPoints, system.Colony.GetTotalFacilities(ProductionCategory.Research), blamed, "attackingCiv"));
+                attackedCiv, system.Colony, affectedField, researchPoints, attackedResearchCumulativePoints, blamed, "attackingCiv"));
             // no info to attacked civ
         }
         public static void SabotageFood(Colony colony, Civilization attackedCiv, string blamed)

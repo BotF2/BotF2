@@ -1681,8 +1681,8 @@ namespace Supremacy.Game
     public class NewSabotageSitRepEntry : SitRepEntry
     {
         private readonly int _systemId;
-        private readonly int _removeFacilities;
-        private readonly int _totalFacilities;
+        private readonly int _removedStuff;
+        private readonly int _totalStuff;
         private readonly string _affectedField;
         private readonly string _blamed;
         private readonly string _roleText;
@@ -1711,17 +1711,23 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_removeFacilities > 0)
+                if (_removedStuff == -1)
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
+                        _roleText, System.Name, System.Location, System.Owner, _affectedField);
+                    //    0               1          2                 3              4       placeholders in en.txt
+                }
+                else if (_removedStuff > 0)
                 {
                     return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
-                       _roleText, System.Name, System.Location, _affectedField, _removeFacilities, _totalFacilities + _removeFacilities, _blamed, System.Owner);
+                       _roleText, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff, _blamed, System.Owner);
                     //    0               1          2                 3                   4               5                               6        7
                 }
                 else
                 {
                     return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FAILED"),
                         _roleText, System.Name, System.Location, System.Owner, _affectedField);
-                    //    0               1          2                 3              4
+                    //    0               1          2                 3              4   placeholders in en.txt
                 }
             }
         }
@@ -1731,15 +1737,15 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public NewSabotageSitRepEntry(Civilization owner, Colony colony, string affectedField, int removeEnergyFacilities, int totalEnergyFacilities, string blamed, string role)
+        public NewSabotageSitRepEntry(Civilization owner, Colony colony, string affectedField, int removedStuff, int totalStuff, string blamed, string role)
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
             _systemId = colony.System.ObjectID;
 
-            _removeFacilities = removeEnergyFacilities;
-            _totalFacilities = totalEnergyFacilities;
+            _removedStuff = removedStuff;  // facilities or credits or research points 
+            _totalStuff = totalStuff;
             _affectedField = affectedField;
             _blamed = blamed;
             switch (role)
