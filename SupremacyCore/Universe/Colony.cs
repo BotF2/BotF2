@@ -590,7 +590,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                Meter researchForSpyScreen = GameContext.Current.CivilizationManagers[Owner].Credits;
+                Meter researchForSpyScreen = GameContext.Current.CivilizationManagers[Owner].Research.CumulativePoints;
 
                 //var modifier = new OutputModifier(0, 1.0f);
                 //var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);

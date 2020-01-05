@@ -191,9 +191,21 @@ namespace Supremacy.Intelligence
                 stolenCredits = stolenCredits / 100 * 6;
             }
 
+            GameLog.Core.Intel.DebugFormat("Credits system.Owner BEFORE from {0}:  >>> {1} Credits", system.Owner, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
             // result 
             GameContext.Current.CivilizationManagers[system.Owner].Credits.AdjustCurrent(stolenCredits * -1);
+            GameContext.Current.CivilizationManagers[system.Owner].Credits.UpdateAndReset();
+            GameLog.Core.Intel.DebugFormat("Credits system.Owner AFTER from {0}:  >>> {1} Credits", system.Owner, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
+
+            GameLog.Core.Intel.DebugFormat("Credits SPY CIV BEFORE from {0}:  >>> {1} Credits", 
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key, 
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.CurrentValue);
+
             GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.AdjustCurrent(stolenCredits);
+            GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.UpdateAndReset();
+            GameLog.Core.Intel.DebugFormat("Credits SPY CIV AFTER from {0}:  >>> {1} Credits",
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.CurrentValue);
 
 
             // costs on both sides for the attack
