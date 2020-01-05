@@ -554,29 +554,14 @@ namespace Supremacy.Universe
         /// Gets the credits the civilization<see cref="Colony"/>.
         /// </summary>
         /// <value>The credits.</value>
-        public Meter CreditsForSpyScreen
+        public int CreditsForSpyScreen
         {
             get
             {
-                Meter creditsForSpyScreen = GameContext.Current.CivilizationManagers[Owner].Credits;
+                Int32.TryParse(GameContext.Current.CivilizationManagers[Owner].Credits.ToString(), out int creditsForSpyScreen);
 
-                //var modifier = new OutputModifier(0, 1.0f);
-                //var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
-                //var adjustedPop = Population.CurrentValue * moraleMod;
-
-                //foreach (var building in Buildings) // bonus from special structures
-                //{
-                //    if (!building.IsActive)
-                //        continue;
-
-                //    foreach (var bonus in building.BuildingDesign.Bonuses)
-                //    {
-                //        if (bonus.BonusType == BonusType.Credits)
-                //            modifier.Bonus += bonus.Amount;
-                //        else if (bonus.BonusType == BonusType.PercentCredits)
-                //            modifier.Efficiency += (bonus.Amount / 100f);
-                //    }
-                //}
+                GameLog.Core.Intel.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner],
+                    this.Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
 
                 return creditsForSpyScreen;
             }

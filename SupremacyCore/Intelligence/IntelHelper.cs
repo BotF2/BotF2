@@ -168,6 +168,8 @@ namespace Supremacy.Intelligence
             //Effect of steal // value needed for SitRep
             //int removeChredits = 0;
             Int32.TryParse(attackedCivManager.Credits.ToString(), out int stolenCredits);
+            int attackedCreditsBefore = stolenCredits;
+
 
             if (stolenCredits < 100)  // they have not enough credits being worth to be sabotaged, especially avoid negative stuff !!!
             {
@@ -175,20 +177,25 @@ namespace Supremacy.Intelligence
                 goto stolenCreditsIsMinusOne;
             }
 
+            stolenCredits = stolenCredits / 100 * 3;
+
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                stolenCredits = stolenCredits / 100 * 2; // 2 percent of their TOTAL Credits - not just income
+                stolenCredits = stolenCredits * 2; // 2 percent of their TOTAL Credits - not just income
             }
-            if (ratio > 1 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 10 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            {
+                if (!RandomHelper.Chance(3))
+                {
+                    SeeStealCredits(_newTargetCiv, "Clicked");
+                    stolenCredits = stolenCredits * 3;
+                }
+            }
+            if (ratio > 20 && !RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 SeeStealCredits(_newTargetCiv, "Clicked");
-                stolenCredits = stolenCredits / 100 * 4; 
-            }
-            if (ratio > 2 && !RandomHelper.Chance(5) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            {
-                SeeStealCredits(_newTargetCiv, "Clicked");
-                stolenCredits = stolenCredits / 100 * 6;
+                stolenCredits = stolenCredits * 2;
             }
 
             GameLog.Core.Intel.DebugFormat("Credits system.Owner BEFORE from {0}:  >>> {1} Credits", system.Owner, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
@@ -197,12 +204,14 @@ namespace Supremacy.Intelligence
             GameContext.Current.CivilizationManagers[system.Owner].Credits.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("Credits system.Owner AFTER from {0}:  >>> {1} Credits", system.Owner, GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue);
 
+
             GameLog.Core.Intel.DebugFormat("Credits SPY CIV BEFORE from {0}:  >>> {1} Credits", 
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key, 
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.CurrentValue);
 
             GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.AdjustCurrent(stolenCredits);
             GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.UpdateAndReset();
+
             GameLog.Core.Intel.DebugFormat("Credits SPY CIV AFTER from {0}:  >>> {1} Credits",
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.CurrentValue);
@@ -216,14 +225,16 @@ namespace Supremacy.Intelligence
 
             stolenCreditsIsMinusOne:;  // in this case give SitRep: nothing to gain
 
-            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED"); ;
+            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED");
+
+            Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Credits.CurrentValue.ToString(), out int newCreditsAttacked);
 
             GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits", system.Name, stolenCredits);
 
             attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, stolenCredits, system.Colony.GetTotalFacilities(ProductionCategory.Research), blamed, "attackedCiv"));
+                attackedCiv, system.Colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, stolenCredits, system.Colony.GetTotalFacilities(ProductionCategory.Research), blamed, "attackingCiv"));
+                attackedCiv, system.Colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
 
         }
         public static void StealResearch(Colony colony, Civilization attackedCiv, string blamed)
@@ -281,6 +292,9 @@ namespace Supremacy.Intelligence
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int researchPoints);
             int attackedResearchCumulativePoints = researchPoints;
 
+            // ToDO: do it like credits... start with base value of 2%, and then random chance and ratio to increase this....
+            //    ... instead of DEcreasing it once and once again.. and again...
+
             if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo add to local player              
@@ -295,9 +309,20 @@ namespace Supremacy.Intelligence
                 researchPoints = researchPoints / 100 * 6;  
             }
 
+
+            GameLog.Core.Intel.DebugFormat("Research SPY CIV ** BEFORE ** from {0}:  >>> {1} Research",
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Research.CumulativePoints);
+
             // result
             if (researchPoints > 0)
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(researchPoints);
+
+
+            GameLog.Core.Intel.DebugFormat("Research SPY CIV ** AFTER ** from {0}:  >>> {1} Research",
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Research.CumulativePoints);
+
 
             // handling intelligence points for attack / defence
             defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
@@ -310,8 +335,11 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} ResearchPoints", system.Name, researchPoints);
 
+            Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
+
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, researchPoints, attackedResearchCumulativePoints, blamed, "attackingCiv"));
+                attackedCiv, system.Colony, affectedField, researchPoints,
+                newResearchCumulative, blamed, "attackingCiv"));
             // no info to attacked civ
         }
         public static void SabotageFood(Colony colony, Civilization attackedCiv, string blamed)
