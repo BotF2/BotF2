@@ -14,6 +14,7 @@ namespace Supremacy.Intelligence
 {
     public static class IntelHelper
     {
+        private static int _removedEnergyFacilities = 0;
         private static Civilization _newTargetCiv;
         private static Civilization _newSpyCiv;
         private static UniverseObjectList<Colony> _newSpiedColonies;
@@ -36,6 +37,10 @@ namespace Supremacy.Intelligence
         public static Dictionary<Civilization, List<Civilization>> SpiedDictionary
         {
             get { return _spiedDictionary; }
+        }
+        public static int RemovedEnergyFacilities
+        {
+            get { return _removedEnergyFacilities; }
         }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         { GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
@@ -244,7 +249,7 @@ namespace Supremacy.Intelligence
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
-            Meter stolenResearchPoints;
+           // Meter stolenResearchPoints;
 
             switch (blamed)
             {
@@ -441,6 +446,7 @@ namespace Supremacy.Intelligence
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+            int removeEnergyFacilities = 0;
 
             switch (blamed)
             {
@@ -485,28 +491,29 @@ namespace Supremacy.Intelligence
                 defenseIntelligence = 2;
 
             //Effect of sabotage // value needed for SitRep
-            int removeEnergyFacilities = 0;
+            //int removeEnergyFacilities = 0;
 
             //if ratio > 1 than remove one more  EnergyFacility
             if (ratio > 1 && RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Energy) > 5)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 1;
-                colony.RemoveFacilities(ProductionCategory.Energy, 1);
+                //system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             //if ratio > 2 than remove one more  EnergyFacility
             if (ratio > 2 && !RandomHelper.Chance(2) && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 2;  //  2 and one from before
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
+                //system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             // if ratio > 3 than remove one more  EnergyFacility
             if (ratio > 3 && !RandomHelper.Chance(2) && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
+                //system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
             }
+            _removedEnergyFacilities = removeEnergyFacilities;
 
             defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
             defenseMeter.UpdateAndReset();

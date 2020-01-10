@@ -1,8 +1,10 @@
 ﻿using Supremacy.Client.Context;
 using Supremacy.Diplomacy;
+using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
+using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,7 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
+        //private int _energyOutputOne = 0;
         private string _blameWhoOne = "no one";
         private string _blameWhoTwo = "no one";
         private string _blameWhoThree = "no one";
@@ -50,34 +53,34 @@ namespace Supremacy.Client.Views
             //just put them in the order so you can use Critera 1,2,3,4
             for (int i = 0; i < _radioButtonOne.Length; i++)
             {
-                _radioButtonOne[i].Tag = i; //set your cretara number into tag property here (1,2,3,4)
+                _radioButtonOne[i].Tag = i; //set your critera number into tag property here (1,2,3,4)
                 //_radioButton[i]. += new EventHandler(OnBlameButtonsOneClick);
                 //GameLog.Client.UI.DebugFormat("radio button loaded into array {0}", _radioButton[i].Name);
             }
             _radioButtonTwo = new RadioButton[] { BlameNoOne2, Terrorists2, Federation2, TerranEmpire2, Romulans2, Klingons2, Cardassians2, Dominion2, Borg2 };
             for (int i = 0; i < _radioButtonTwo.Length; i++)
             {
-                _radioButtonTwo[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+                _radioButtonTwo[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
             }
             _radioButtonThree = new RadioButton[] { BlameNoOne3, Terrorists3, Federation3, TerranEmpire3, Romulans3, Klingons3, Cardassians3, Dominion3, Borg3 };
             for (int i = 0; i < _radioButtonThree.Length; i++)
             {
-                _radioButtonThree[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+                _radioButtonThree[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
             }
             _radioButtonFour = new RadioButton[] { BlameNoOne4, Terrorists4, Federation4, TerranEmpire4, Romulans4, Klingons4, Cardassians4, Dominion4, Borg4 };
             for (int i = 0; i < _radioButtonFour.Length; i++)
             {
-                _radioButtonFour[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+                _radioButtonFour[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
             }
             _radioButtonFive = new RadioButton[] { BlameNoOne5, Terrorists5, Federation5, TerranEmpire5, Romulans5, Klingons5, Cardassians5, Dominion5, Borg5 };
             for (int i = 0; i < _radioButtonFive.Length; i++)
             {
-                _radioButtonFive[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+                _radioButtonFive[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
             }
             _radioButtonSix = new RadioButton[] { BlameNoOne6, Terrorists6, Federation6, TerranEmpire6, Romulans6, Klingons6, Cardassians6, Dominion6, Borg6 };
             for (int i = 0; i < _radioButtonSix.Length; i++)
             {
-                _radioButtonSix[i].Tag = i; //set your cretara number into tag property here (0,1,2,3,4... )
+                _radioButtonSix[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
             }
             BlameNoOne1.IsChecked = true;
             BlameNoOne2.IsChecked = true;
@@ -260,9 +263,6 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-
-                var localPlayer = DesignTimeObjects.LocalCivManager.Civilization;
-
                 Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
                 List<Civilization> empireCivsList = new List<Civilization>();
         
@@ -272,7 +272,7 @@ namespace Supremacy.Client.Views
                     empireCivsDictionary.Add(civManager.CivilizationID, civManager.Civilization); //dictionary of civs that can be spied on with key set to CivID
                     empireCivsList.Add(civManager.Civilization); // list of civs that can be spied on by local player and in CivID sequence
                     GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
-                    GameLog.Client.UI.DebugFormat("Add civ = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
+                    GameLog.Client.UI.DebugFormat("Add civ.Key = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
                     counting++;
                 }
 
@@ -656,12 +656,10 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoOne = "Borg";
                 }
-                GameLog.Client.UI.DebugFormat("Expander One %$%$###$%$$#@ Blame Sting ={0}", _blameWhoOne);
-                // Federation1, TerranEmpire1, Romulans1, Klingons1, Cardassians1, Dominion1, Borg1 
-                //criteria = Int16.Parse(rb.Tag);
-                //criteriaType = rb.Text;
+                //GameLog.Client.UI.DebugFormat("Expander One %$%$###$%$$#@ Blame Sting ={0}", _blameWhoOne);
             }
         }
+         
         private void OnBlameButtonsTwoClick(object sender, EventArgs e)
         {
             RadioButton rb = sender as RadioButton;
@@ -699,7 +697,7 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoTwo = "Borg";
                 }
-                GameLog.Client.UI.DebugFormat("Expander Two ############### Blame Sting ={0}", _blameWhoTwo);
+               // GameLog.Client.UI.DebugFormat("Expander Two ############### Blame Sting ={0}", _blameWhoTwo);
             }
         }
         private void OnBlameButtonsThreeClick(object sender, EventArgs e)
@@ -739,7 +737,7 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoThree = "Borg";
                 }
-                GameLog.Client.UI.DebugFormat("Expander Three ############### Blame Sting ={0}", _blameWhoThree);
+                //GameLog.Client.UI.DebugFormat("Expander Three ############### Blame Sting ={0}", _blameWhoThree);
             }
         }
         private void OnBlameButtonsFourClick(object sender, EventArgs e)
@@ -779,7 +777,7 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoFour = "Borg";
                 }
-                GameLog.Client.UI.DebugFormat("Expander Four ############### Blame Sting ={0}", _blameWhoFour);
+                //GameLog.Client.UI.DebugFormat("Expander Four ############### Blame Sting ={0}", _blameWhoFour);
             }
         }
         private void OnBlameButtonsFiveClick(object sender, EventArgs e)
@@ -819,7 +817,7 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoFive = "Borg";
                 }
-                GameLog.Client.UI.DebugFormat("Expander Five ############### Blame Sting ={0}", _blameWhoFive);
+                //GameLog.Client.UI.DebugFormat("Expander Five ############### Blame Sting ={0}", _blameWhoFive);
             }
         }
         private void OnBlameButtonsSixClick(object sender, EventArgs e)
@@ -859,7 +857,7 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoSix = "Borg";
                 }
-                GameLog.Client.UI.DebugFormat("Expander Six ############### Blame Sting ={0}", _blameWhoSix);
+                //GameLog.Client.UI.DebugFormat("Expander Six ############### Blame Sting ={0}", _blameWhoSix);
             }
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
@@ -868,23 +866,23 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
         }
         private void OnCreditsThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
         }
         private void OnCreditsFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
         }
         private void OnCreditsFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
         }
         private void OnCreditsSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
@@ -892,47 +890,51 @@ namespace Supremacy.Client.Views
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
+            IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
         }
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            //int removedEnergyFacilities = 0;
+            int activeFacilities = IntelHelper.NewSpiedColonies.FirstOrDefault().GetActiveFacilities(ProductionCategory.Energy);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne); //, out removedEnergyFacilities);
+            //_energyOutputOne =IntelHelper.NewSpiedColonies.FirstOrDefault().GetProductionOutput(ProductionCategory.Energy);
+
         }
         private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
         }
         private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
         }
         private void OnEnergyFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
         }
         private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
         }
         private void OnEnergySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
+            IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
         }
         private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
@@ -940,23 +942,23 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
         }
         private void OnFoodThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
         }
         private void OnFoodFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
         }
         private void OnFoodFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
         }
         private void OnFoodSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
+            IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
@@ -964,25 +966,30 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoOne);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
         }
         private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoOne);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoOne);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoOne);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
         }
         private void OnIndustrySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoOne);
+            IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
         }
         #endregion
+        //public int GetProductionOutputOne()
+        //{
+        //    _energyOutputOne
+        //    return _energyOutputOne;
+        //}
         private void LoadInsignia()
         {
             GameLog.Client.UI.DebugFormat("Loading Insignias/FEDERATION.png and more");

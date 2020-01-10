@@ -265,7 +265,7 @@
                   Grid.Row="1"
                   VerticalAlignment="Center"
                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                  Label="{Binding Path=NetEnergy}"
+                  Label="{Binding NetEnergy, Mode=TwoWay}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
 
         <TextBlock Text="RESEARCH = "
