@@ -644,36 +644,6 @@ namespace Supremacy.Universe
 
                 return (GetProductionOutput(ProductionCategory.Energy) - energyUsed);
             }
-            set
-            {
-                var SpiedColony = IntelHelper.NewSpiedColonies.FirstOrDefault();
-                //var system = SpiedColony.System;
-                var removedEnergyFacilities = IntelHelper.RemovedEnergyFacilities;
-                // ToDo: get this to reset the NetEnergy for the given colony so the NetEnergy properyt updates in the SystemListItem.xaml screen
-       
-                //int colonyBuildings = SpiedColony.Buildings.Count();
-                //int energy = GetProductionOutput(ProductionCategory.Energy);
-                SpiedColony.RemoveFacilities(ProductionCategory.Energy, removedEnergyFacilities);
-                //energy = energy - (energy / colonyBuildings * removedEnergyFacilities);
-
-                var energyUsed = SpiedColony.Buildings
-                   .Where(building => building.IsActive)
-                   .Sum(building => building.BuildingDesign.EnergyCost);
-
-                var shipyard = SpiedColony.Shipyard;
-                if (shipyard != null)
-                {
-                    energyUsed += shipyard.BuildSlots
-                        .Where(o => o.IsActive)
-                        .Sum(o => shipyard.ShipyardDesign.BuildSlotEnergyCost);
-                }
-
-                var orbitalBatteryDesign = SpiedColony.OrbitalBatteryDesign;
-                if (orbitalBatteryDesign != null)
-                    energyUsed += (orbitalBatteryDesign.UnitEnergyCost * _activeOrbitalBatteries.Value);
-
-                value = (SpiedColony.GetProductionOutput(ProductionCategory.Energy) - energyUsed);
-            }
         }
 
         /// <summary>
