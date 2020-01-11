@@ -17,7 +17,7 @@ namespace Supremacy.Intelligence
         private static Civilization _newTargetCiv;
         private static Civilization _newSpyCiv;
         private static UniverseObjectList<Colony> _newSpiedColonies;
-        private static List<EspionageAlreadyPressed> alreadyPressedList = new List<EspionageAlreadyPressed>();
+        //private static List<EspionageAlreadyPressed> alreadyPressedList = new List<EspionageAlreadyPressed>();
         private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
 
@@ -60,92 +60,92 @@ namespace Supremacy.Intelligence
             }
         }
         #region Espionage Methods
-        public static bool SeeStealCredits(Civilization spied, string whenAsked)
-        {
-            bool seeIt = true;
-            if (whenAsked == "NotClicked")
-            {
-                //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+        //public static bool SeeStealCredits(Civilization spied, string whenAsked)
+        //{
+        //    bool seeIt = true;
+        //    if (whenAsked == "NotClicked")
+        //    {
+        //        //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-                //int ratio = GetIntelRatio(attackedCivManager);
-                //if (ratio > 1)
-                //    seeIt = true;
-                return seeIt;
-            }
-            else { seeIt = false; }
-            return seeIt;
+        //        //int ratio = GetIntelRatio(attackedCivManager);
+        //        //if (ratio > 1)
+        //        //    seeIt = true;
+        //        return seeIt;
+        //    }
+        //    else { seeIt = false; }
+        //    return seeIt;
 
-        }
+        //}
 
-        public static bool SeeStealResearch(Civilization spied, string whenAsked)
-        {
-            bool seeIt = true;
+        //public static bool SeeStealResearch(Civilization spied, string whenAsked)
+        //{
+        //    bool seeIt = true;
 
-            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            //int ratio = GetIntelRatio(attackedCivManager);
-            //if (ratio > 1)
-            //    seeIt = true;
+        //    //int ratio = GetIntelRatio(attackedCivManager);
+        //    //if (ratio > 1)
+        //    //    seeIt = true;
 
-            if (whenAsked == "NotClicked")
-            {
-                return seeIt;
-            }
-            else { seeIt = false; }
-            return seeIt;
-        }
-        public static bool SeeSabotageFood(Civilization spied, string whenAsked)
-        {
-            bool seeIt = true;
-            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+        //    if (whenAsked == "NotClicked")
+        //    {
+        //        return seeIt;
+        //    }
+        //    else { seeIt = false; }
+        //    return seeIt;
+        //}
+        //public static bool SeeSabotageFood(Civilization spied, string whenAsked)
+        //{
+        //    bool seeIt = true;
+        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            //int ratio = GetIntelRatio(attackedCivManager);
-            //if (ratio > 1)
-            //    seeIt = true;
-            if (whenAsked == "NotClicked")
-            {
-                return seeIt;
-            }
-            else { seeIt = false; }
-            return seeIt;
-        }
-        public static bool SeeSabotageIndustry(Civilization spied, string whenAsked)
-        {
-            //bool seeIt = false;
-            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+        //    //int ratio = GetIntelRatio(attackedCivManager);
+        //    //if (ratio > 1)
+        //    //    seeIt = true;
+        //    if (whenAsked == "NotClicked")
+        //    {
+        //        return seeIt;
+        //    }
+        //    else { seeIt = false; }
+        //    return seeIt;
+        //}
+        //public static bool SeeSabotageIndustry(Civilization spied, string whenAsked)
+        //{
+        //    //bool seeIt = false;
+        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            //int ratio = GetIntelRatio(attackedCivManager);
-            //if (ratio > 1)
-            //    seeIt = true;
-            //return seeIt;
+        //    //int ratio = GetIntelRatio(attackedCivManager);
+        //    //if (ratio > 1)
+        //    //    seeIt = true;
+        //    //return seeIt;
 
-            bool seeIt = true;
-            if (whenAsked == "NotClicked")
-            {
-                return seeIt;
-            }
-            else { seeIt = false; }
-            return seeIt;
+        //    bool seeIt = true;
+        //    if (whenAsked == "NotClicked")
+        //    {
+        //        return seeIt;
+        //    }
+        //    else { seeIt = false; }
+        //    return seeIt;
 
-        }
-        public static bool SeeSabotageEnergy(Civilization spied, string whenAsked)
-        {
-            //bool seeIt = false;
-            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+        //}
+        //public static bool SeeSabotageEnergy(Civilization spied, string whenAsked)
+        //{
+        //    //bool seeIt = false;
+        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            //int ratio = GetIntelRatio(attackedCivManager);
-            //if (ratio > 1)
-            //    seeIt = true;
-            //return seeIt;
+        //    //int ratio = GetIntelRatio(attackedCivManager);
+        //    //if (ratio > 1)
+        //    //    seeIt = true;
+        //    //return seeIt;
 
-            bool seeIt = true;
-            if (whenAsked == "NotClicked")
-            {
-                return seeIt;
-            }
-            else { seeIt = false; }
-            return seeIt;
-        }
+        //    bool seeIt = true;
+        //    if (whenAsked == "NotClicked")
+        //    {
+        //        return seeIt;
+        //    }
+        //    else { seeIt = false; }
+        //    return seeIt;
+        //}
       
         public static void StealCredits(Colony colony, Civilization attackedCiv, string blamed)
         {
@@ -164,21 +164,21 @@ namespace Supremacy.Intelligence
             //}
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Credits", GameContext.Current.TurnNumber);
+            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
+            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Credits", GameContext.Current.TurnNumber);
 
-            int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            if (apINT > -1)
-            {
-                GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-                GameLog.Client.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
-                return;
-            }
-            else
-            {
-                alreadyPressedList.Add(pressedNew);
-            }
+            //int apINT = -1;
+            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
+            //if (apINT > -1)
+            //{
+            //    GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Client.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
+            //    return;
+            //}
+            //else
+            //{
+            //    alreadyPressedList.Add(pressedNew);
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -211,20 +211,20 @@ namespace Supremacy.Intelligence
 
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                SeeStealCredits(_newTargetCiv, "Clicked");
+                //SeeStealCredits(_newTargetCiv, "Clicked");
                 stolenCredits = stolenCredits * 2; // 2 percent of their TOTAL Credits - not just income
             }
             if (ratio > 10 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 if (!RandomHelper.Chance(3))
                 {
-                    SeeStealCredits(_newTargetCiv, "Clicked");
+                    //SeeStealCredits(_newTargetCiv, "Clicked");
                     stolenCredits = stolenCredits * 3;
                 }
             }
             if (ratio > 20 && !RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                SeeStealCredits(_newTargetCiv, "Clicked");
+               // SeeStealCredits(_newTargetCiv, "Clicked");
                 stolenCredits = stolenCredits * 2;
             }
 
@@ -276,29 +276,29 @@ namespace Supremacy.Intelligence
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
            // Meter stolenResearchPoints;
 
-            switch (blamed)
-            {
-                default:
-                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
-                    break;
-            }
+            //switch (blamed)
+            //{
+            //    default:
+            //        blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+            //        break;
+            //}
 
-            // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Research", GameContext.Current.TurnNumber);
+            //// stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
+            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
+            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Research", GameContext.Current.TurnNumber);
 
-            int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            if (apINT > -1)
-            {
-                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-                GameLog.Client.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
-                return;
-            }
-            else
-            {
-                alreadyPressedList.Add(pressedNew);
-            }
+            //int apINT = -1;
+            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
+            //if (apINT > -1)
+            //{
+            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Client.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
+            //    return;
+            //}
+            //else
+            //{
+            //    alreadyPressedList.Add(pressedNew);
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -333,17 +333,17 @@ namespace Supremacy.Intelligence
             if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // ToDo add to local player           
-                SeeStealResearch(_newTargetCiv, "Clicked");
+                //SeeStealResearch(_newTargetCiv, "Clicked");
                 stolenResearchPoints = stolenResearchPoints * 2;  // 2 percent, but base is CumulativePoints, so all research points ever yielded
             }
             if (ratio > 2 && !RandomHelper.Chance(4))// && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                SeeStealResearch(_newTargetCiv, "Clicked");
+                //SeeStealResearch(_newTargetCiv, "Clicked");
                 stolenResearchPoints = stolenResearchPoints * 3;  
             }
             if (ratio > 3 && !RandomHelper.Chance(8))// && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                SeeStealResearch(_newTargetCiv, "Clicked");
+                //SeeStealResearch(_newTargetCiv, "Clicked");
                 stolenResearchPoints = stolenResearchPoints * 2;  
             }
 
@@ -390,29 +390,29 @@ namespace Supremacy.Intelligence
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
 
-            switch (blamed)
-            {
-                default:
-                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
-                    break;
-            }
+            //switch (blamed)
+            //{
+            //    default:
+            //        blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+            //        break;
+            //}
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Food", GameContext.Current.TurnNumber);
+            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
+            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Food", GameContext.Current.TurnNumber);
 
-            int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            if (apINT > -1)
-            {
-                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-                GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
-                return;
-            }
-            else
-            {
-                alreadyPressedList.Add(pressedNew);
-            }
+            //int apINT = -1;
+            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
+            //if (apINT > -1)
+            //{
+            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
+            //    return;
+            //}
+            //else
+            //{
+            //    alreadyPressedList.Add(pressedNew);
+            //}
             //int ratio = -1;
             if (NewSpyCiv == null)
                 return;
@@ -483,31 +483,31 @@ namespace Supremacy.Intelligence
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
 
 
-            switch (blamed)
-            {
-                default:
-                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
-                    break;
-            }
+            //switch (blamed)
+            //{
+            //    default:
+            //        blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+            //        break;
+            //}
 
             // avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0)
-                if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber)
-                    alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCiv.ToString() + ";Energy", GameContext.Current.TurnNumber);
+            //if (alreadyPressedList.Count > 0)
+            //    if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber)
+            //        alreadyPressedList.Clear(); // clear old list from previous turns
+            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCiv.ToString() + ";Energy", GameContext.Current.TurnNumber);
 
-            int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            if (apINT > -1)
-            {
-                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-                GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
-                return;
-            }
-            else
-            {
-                alreadyPressedList.Add(pressedNew);
-            }
+            //int apINT = -1;
+            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
+            //if (apINT > -1)
+            //{
+            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
+            //    return;
+            //}
+            //else
+            //{
+            //    alreadyPressedList.Add(pressedNew);
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -576,29 +576,29 @@ namespace Supremacy.Intelligence
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
 
-            switch (blamed)
-            {
-                default:
-                    blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
-                    break;
-            }
+            //switch (blamed)
+            //{
+            //    default:
+            //        blamed = ResourceManager.GetString("NOBODY_TO_BLAME");
+            //        break;
+            //}
 
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Industry", GameContext.Current.TurnNumber);
+            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
+            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Industry", GameContext.Current.TurnNumber);
 
-            int apINT = -1;
-            apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            if (apINT > -1)
-            {
-                GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-                GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
-                return;
-            }
-            else
-            {
-                alreadyPressedList.Add(pressedNew);
-            }
+            //int apINT = -1;
+            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
+            //if (apINT > -1)
+            //{
+            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
+            //    return;
+            //}
+            //else
+            //{
+            //    alreadyPressedList.Add(pressedNew);
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -675,17 +675,17 @@ namespace Supremacy.Intelligence
     }
         #endregion
 
-    public class EspionageAlreadyPressed
-    {
+    //public class EspionageAlreadyPressed
+    //{
 
-        public string alreadyPressedEntry;
-        public int turnNumber;
+    //    public string alreadyPressedEntry;
+    //    public int turnNumber;
 
-        public EspionageAlreadyPressed(string _alreadyPressedEntry, int _turnNumber)
-        {
-            alreadyPressedEntry = _alreadyPressedEntry;
-            turnNumber = _turnNumber;
-        }
-    }
+    //    public EspionageAlreadyPressed(string _alreadyPressedEntry, int _turnNumber)
+    //    {
+    //        alreadyPressedEntry = _alreadyPressedEntry;
+    //        turnNumber = _turnNumber;
+    //    }
+    //}
     
 }

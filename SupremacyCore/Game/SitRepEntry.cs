@@ -1725,7 +1725,7 @@ namespace Supremacy.Game
                 }
                 else
                 {
-                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FAILED"),
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
                         _roleText, System.Name, System.Location, System.Owner, _affectedField);
                     //    0               1          2                 3              4   placeholders in en.txt
                 }

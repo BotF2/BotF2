@@ -23,12 +23,12 @@ namespace Supremacy.Client.Views
     public partial class AssetsScreen : IAssetsScreenView
     {
         //private int _energyOutputOne = 0;
-        private string _blameWhoOne = "no one";
-        private string _blameWhoTwo = "no one";
-        private string _blameWhoThree = "no one";
-        private string _blameWhoFour = "no one";
-        private string _blameWhoFive = "no one";
-        private string _blameWhoSix = "no one";
+        private string _blameWhoOne = "No one";
+        private string _blameWhoTwo = "No one";
+        private string _blameWhoThree = "No one";
+        private string _blameWhoFour = "No one";
+        private string _blameWhoFive = "No one";
+        private string _blameWhoSix = "No one";
 
         private RadioButton[] _radioButtonOne;
         private RadioButton[] _radioButtonTwo;
@@ -117,15 +117,15 @@ namespace Supremacy.Client.Views
                     if (_spiedOneCiv != _civLocalPlayer)
                     {
                         EmpireExpanderOne.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv, "NotClicked"))
                             SabotageEnergyOne.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageFood(_spiedOneCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageFood(_spiedOneCiv, "NotClicked"))
                             SabotageFoodOne.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv, "NotClicked"))
                             SabotageIndustryOne.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealResearch(_spiedOneCiv, "NotClicked"))
+                       //if (IntelHelper.SeeStealResearch(_spiedOneCiv, "NotClicked"))
                             StealResearchOne.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedOneCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealCredits(_spiedOneCiv, "NotClicked"))
                             StealCreditsOne.Visibility = Visibility.Visible;
                     }
                 }
@@ -140,15 +140,15 @@ namespace Supremacy.Client.Views
                     if (_spiedTwoCiv != _civLocalPlayer)
                     {
                         EmpireExpanderTwo.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageEnergy(_spiedTwoCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageEnergy(_spiedTwoCiv, "NotClicked"))
                             SabotageEnergyTwo.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageFood(_spiedTwoCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageFood(_spiedTwoCiv, "NotClicked"))
                             SabotageFoodTwo.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageIndustry(_spiedTwoCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageIndustry(_spiedTwoCiv, "NotClicked"))
                             SabotageIndustryTwo.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealResearch(_spiedTwoCiv, "NotClicked"))
+                       // if (IntelHelper.SeeStealResearch(_spiedTwoCiv, "NotClicked"))
                             StealResearchTwo.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedTwoCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealCredits(_spiedTwoCiv, "NotClicked"))
                             StealCreditsTwo.Visibility = Visibility.Visible;
                     }
                 }
@@ -164,15 +164,15 @@ namespace Supremacy.Client.Views
                     if (_spiedThreeCiv != _civLocalPlayer)
                     {
                         EmpireExpanderThree.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageEnergy(_spiedThreeCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageEnergy(_spiedThreeCiv, "NotClicked"))
                             SabotageEnergyThree.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageFood(_spiedThreeCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageFood(_spiedThreeCiv, "NotClicked"))
                             SabotageFoodThree.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageIndustry(_spiedThreeCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageIndustry(_spiedThreeCiv, "NotClicked"))
                             SabotageIndustryThree.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealResearch(_spiedThreeCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealResearch(_spiedThreeCiv, "NotClicked"))
                             StealResearchThree.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedThreeCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealCredits(_spiedThreeCiv, "NotClicked"))
                             StealCreditsThree.Visibility = Visibility.Visible;
                     }
                 }
@@ -187,15 +187,15 @@ namespace Supremacy.Client.Views
                     if (_spiedFourCiv != _civLocalPlayer)
                     {
                         EmpireExpanderFour.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageEnergy(_spiedFourCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageEnergy(_spiedFourCiv, "NotClicked"))
                             SabotageEnergyFour.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageFood(_spiedFourCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageFood(_spiedFourCiv, "NotClicked"))
                             SabotageFoodFour.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageIndustry(_spiedFourCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageIndustry(_spiedFourCiv, "NotClicked"))
                             SabotageIndustryFour.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealResearch(_spiedFourCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealResearch(_spiedFourCiv, "NotClicked"))
                             StealResearchFour.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedFourCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealCredits(_spiedFourCiv, "NotClicked"))
                             StealCreditsFour.Visibility = Visibility.Visible;
                     }
                 }
@@ -211,15 +211,15 @@ namespace Supremacy.Client.Views
                     if (_spiedFiveCiv != _civLocalPlayer)
                     {
                         EmpireExpanderFive.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageEnergy(_spiedFiveCiv, "NotClicked"))
+                       // if (IntelHelper.SeeSabotageEnergy(_spiedFiveCiv, "NotClicked"))
                             SabotageEnergyFive.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageFood(_spiedFiveCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageFood(_spiedFiveCiv, "NotClicked"))
                             SabotageFoodFive.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageIndustry(_spiedFiveCiv, "NotClicked"))
+                       // if (IntelHelper.SeeSabotageIndustry(_spiedFiveCiv, "NotClicked"))
                             SabotageIndustryFive.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealResearch(_spiedFiveCiv, "NotClicked"))
+                       // if (IntelHelper.SeeStealResearch(_spiedFiveCiv, "NotClicked"))
                             StealResearchFive.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedFiveCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealCredits(_spiedFiveCiv, "NotClicked"))
                             StealCreditsFive.Visibility = Visibility.Visible;
                     }
                 }
@@ -235,15 +235,15 @@ namespace Supremacy.Client.Views
 
                     {
                         EmpireExpanderSix.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageEnergy(_spiedSixCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageEnergy(_spiedSixCiv, "NotClicked"))
                             SabotageEnergySix.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageFood(_spiedSixCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageFood(_spiedSixCiv, "NotClicked"))
                             SabotageFoodSix.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeSabotageIndustry(_spiedSixCiv, "NotClicked"))
+                        //if (IntelHelper.SeeSabotageIndustry(_spiedSixCiv, "NotClicked"))
                             SabotageIndustrySix.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealResearch(_spiedSixCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealResearch(_spiedSixCiv, "NotClicked"))
                             StealResearchSix.Visibility = Visibility.Visible;
-                        if (IntelHelper.SeeStealCredits(_spiedSixCiv, "NotClicked"))
+                        //if (IntelHelper.SeeStealCredits(_spiedSixCiv, "NotClicked"))
                             StealCreditsSix.Visibility = Visibility.Visible;
                     }
                 }
@@ -863,133 +863,154 @@ namespace Supremacy.Client.Views
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            StealCreditsOne.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            StealCreditsTwo.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            StealCreditsThree.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            StealCreditsFour.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            StealCreditsFive.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsSixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            StealCreditsSix.Visibility = Visibility.Collapsed;
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            StealResearchOne.Visibility = Visibility.Collapsed;
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            StealResearchTwo.Visibility = Visibility.Collapsed;
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            StealResearchThree.Visibility = Visibility.Collapsed;
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            StealResearchFour.Visibility = Visibility.Collapsed;
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            StealResearchFive.Visibility = Visibility.Collapsed;
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.StealResearch(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            StealResearchSix.Visibility = Visibility.Collapsed;
         }
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
-            //int removedEnergyFacilities = 0;
-            int activeFacilities = IntelHelper.NewSpiedColonies.FirstOrDefault().GetActiveFacilities(ProductionCategory.Energy);
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne); //, out removedEnergyFacilities);
-            //_energyOutputOne =IntelHelper.NewSpiedColonies.FirstOrDefault().GetProductionOutput(ProductionCategory.Energy);
-
+            SabotageEnergyOne.Visibility = Visibility.Collapsed;
         }
         private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            SabotageEnergyTwo.Visibility = Visibility.Collapsed;
         }
         private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            SabotageEnergyThree.Visibility = Visibility.Collapsed;
         }
         private void OnEnergyFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            SabotageEnergyFour.Visibility = Visibility.Collapsed;
         }
         private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            SabotageEnergyFive.Visibility = Visibility.Collapsed;
         }
         private void OnEnergySixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            SabotageEnergySix.Visibility = Visibility.Collapsed;
         }
         private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            SabotageFoodOne.Visibility = Visibility.Collapsed;
         }
         private void OnFoodTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            SabotageFoodTwo.Visibility = Visibility.Collapsed;
         }
         private void OnFoodThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            SabotageFoodThree.Visibility = Visibility.Collapsed;
         }
         private void OnFoodFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            SabotageFoodFour.Visibility = Visibility.Collapsed;
         }
         private void OnFoodFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            SabotageFoodFive.Visibility = Visibility.Collapsed;
         }
         private void OnFoodSixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            SabotageFoodSix.Visibility = Visibility.Collapsed;
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            SabotageIndustryOne.Visibility = Visibility.Collapsed;
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            SabotageIndustryTwo.Visibility = Visibility.Collapsed;
         }
         private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            SabotageIndustryThree.Visibility = Visibility.Collapsed;
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            SabotageIndustryFour.Visibility = Visibility.Collapsed;
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            SabotageIndustryFive.Visibility = Visibility.Collapsed;
         }
         private void OnIndustrySixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            SabotageIndustrySix.Visibility = Visibility.Collapsed;
         }
         #endregion
-        //public int GetProductionOutputOne()
-        //{
-        //    _energyOutputOne
-        //    return _energyOutputOne;
-        //}
         private void LoadInsignia()
         {
             GameLog.Client.UI.DebugFormat("Loading Insignias/FEDERATION.png and more");
