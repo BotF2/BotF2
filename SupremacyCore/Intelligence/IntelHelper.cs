@@ -81,44 +81,73 @@ namespace Supremacy.Intelligence
 
         }
 
-        public static bool SeeStealResearch(Civilization spied)
+        public static bool SeeStealResearch(Civilization spied, string whenAsked)
         {
-            bool seeIt = false;
-            var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+            bool seeIt = true;
 
-            int ratio = GetIntelRatio(attackedCivManager);
-            if (ratio > 1)
-                seeIt = true;
+            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+
+            //int ratio = GetIntelRatio(attackedCivManager);
+            //if (ratio > 1)
+            //    seeIt = true;
+
+            if (whenAsked == "NotClicked")
+            {
+                return seeIt;
+            }
+            else { seeIt = false; }
             return seeIt;
         }
-        public static bool SeeSabotageFood(Civilization spied)
+        public static bool SeeSabotageFood(Civilization spied, string whenAsked)
         {
-            bool seeIt = false;
-            var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+            bool seeIt = true;
+            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            int ratio = GetIntelRatio(attackedCivManager);
-            if (ratio > 1)
-                seeIt = true;
+            //int ratio = GetIntelRatio(attackedCivManager);
+            //if (ratio > 1)
+            //    seeIt = true;
+            if (whenAsked == "NotClicked")
+            {
+                return seeIt;
+            }
+            else { seeIt = false; }
             return seeIt;
         }
-        public static bool SeeSabotageIndustry(Civilization spied)
+        public static bool SeeSabotageIndustry(Civilization spied, string whenAsked)
         {
-            bool seeIt = false;
-            var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+            //bool seeIt = false;
+            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            int ratio = GetIntelRatio(attackedCivManager);
-            if (ratio > 1)
-                seeIt = true;
+            //int ratio = GetIntelRatio(attackedCivManager);
+            //if (ratio > 1)
+            //    seeIt = true;
+            //return seeIt;
+
+            bool seeIt = true;
+            if (whenAsked == "NotClicked")
+            {
+                return seeIt;
+            }
+            else { seeIt = false; }
             return seeIt;
-        }
-        public static bool SeeSabotageEnergy(Civilization spied)
-        {
-            bool seeIt = false;
-            var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-            int ratio = GetIntelRatio(attackedCivManager);
-            if (ratio > 1)
-                seeIt = true;
+        }
+        public static bool SeeSabotageEnergy(Civilization spied, string whenAsked)
+        {
+            //bool seeIt = false;
+            //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
+
+            //int ratio = GetIntelRatio(attackedCivManager);
+            //if (ratio > 1)
+            //    seeIt = true;
+            //return seeIt;
+
+            bool seeIt = true;
+            if (whenAsked == "NotClicked")
+            {
+                return seeIt;
+            }
+            else { seeIt = false; }
             return seeIt;
         }
       
@@ -182,7 +211,7 @@ namespace Supremacy.Intelligence
                 goto stolenCreditsIsMinusOne;
             }
 
-            stolenCredits = stolenCredits / 100 * 3;
+            stolenCredits = stolenCredits / 100 * 3;  // default 3 percent
 
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
@@ -294,24 +323,32 @@ namespace Supremacy.Intelligence
 
             // calculation stolen research points depended on defenders stuff
 
-            Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int researchPoints);
-            int attackedResearchCumulativePoints = researchPoints;
+            Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int stolenResearchPoints);
+            int attackedResearchCumulativePoints = stolenResearchPoints;
 
-            // ToDO: do it like credits... start with base value of 2%, and then random chance and ratio to increase this....
-            //    ... instead of DEcreasing it once and once again.. and again...
+            if (stolenResearchPoints < 100)
+            {
+                stolenResearchPoints = -1;
+                goto stolenResearchPointsIsMinusOne;
+            }
+
+            stolenResearchPoints = stolenResearchPoints / 100 * 2; // default 2 percent
 
             if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                // ToDo add to local player              
-                researchPoints = researchPoints / 100 * 2;  // 3 percent, but base is CumulativePoints, so all research points ever yielded
+                // ToDo add to local player           
+                SeeStealResearch(_newTargetCiv, "Clicked");
+                stolenResearchPoints = stolenResearchPoints * 2;  // 2 percent, but base is CumulativePoints, so all research points ever yielded
             }
             if (ratio > 2 && !RandomHelper.Chance(4))// && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                researchPoints = researchPoints / 100 * 4;  
+                SeeStealResearch(_newTargetCiv, "Clicked");
+                stolenResearchPoints = stolenResearchPoints * 3;  
             }
             if (ratio > 3 && !RandomHelper.Chance(8))// && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                researchPoints = researchPoints / 100 * 6;  
+                SeeStealResearch(_newTargetCiv, "Clicked");
+                stolenResearchPoints = stolenResearchPoints * 2;  
             }
 
 
@@ -320,8 +357,8 @@ namespace Supremacy.Intelligence
                 GameContext.Current.CivilizationManagers[_newSpyCiv].Research.CumulativePoints);
 
             // result
-            if (researchPoints > 0)
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(researchPoints);
+            if (stolenResearchPoints > 0)
+                GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(stolenResearchPoints);
 
 
             GameLog.Core.Intel.DebugFormat("Research SPY CIV ** AFTER ** from {0}:  >>> {1} Research",
@@ -335,15 +372,17 @@ namespace Supremacy.Intelligence
             attackMeter.AdjustCurrent(defenseIntelligence / 2); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
 
+            stolenResearchPointsIsMinusOne:;
+
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"); 
 
-            GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} ResearchPoints", system.Name, researchPoints);
+            GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} stolenResearchPoints", system.Name, stolenResearchPoints);
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
 
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, researchPoints,
+                attackedCiv, system.Colony, affectedField, stolenResearchPoints,
                 newResearchCumulative, blamed, "attackingCiv"));
             // no info to attacked civ
         }
