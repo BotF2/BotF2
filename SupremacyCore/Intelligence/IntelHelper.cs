@@ -14,7 +14,6 @@ namespace Supremacy.Intelligence
 {
     public static class IntelHelper
     {
-        private static int _removedEnergyFacilities = 0;
         private static Civilization _newTargetCiv;
         private static Civilization _newSpyCiv;
         private static UniverseObjectList<Colony> _newSpiedColonies;
@@ -38,10 +37,7 @@ namespace Supremacy.Intelligence
         {
             get { return _spiedDictionary; }
         }
-        public static int RemovedEnergyFacilities
-        {
-            get { return _removedEnergyFacilities; }
-        }
+
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         { GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
             if (spyCiv == null)
@@ -268,7 +264,7 @@ namespace Supremacy.Intelligence
             attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
                 attackedCiv, system.Colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
+                _newSpyCiv, system.Colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
 
         }
         public static void StealResearch(Colony colony, Civilization attackedCiv, string blamed)
@@ -382,7 +378,7 @@ namespace Supremacy.Intelligence
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
 
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, stolenResearchPoints,
+                _newSpyCiv, system.Colony, affectedField, stolenResearchPoints,
                 newResearchCumulative, blamed, "attackingCiv"));
             // no info to attacked civ
         }
@@ -476,16 +472,16 @@ namespace Supremacy.Intelligence
                 attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackedCiv"));
             
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
+                _newSpyCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
         }
         public static void SabotageEnergy(Colony colony, Civilization attackedCiv, string blamed)
         {
-            var system = colony.System;
+            //var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
-            Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
+            Meter defenseMeter = GameContext.Current.CivilizationManagers[colony.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
-            int removeEnergyFacilities = 0;
+
 
             switch (blamed)
             {
@@ -530,29 +526,29 @@ namespace Supremacy.Intelligence
                 defenseIntelligence = 2;
 
             //Effect of sabotage // value needed for SitRep
-            //int removeEnergyFacilities = 0;
+            int removeEnergyFacilities = 0;
 
             //if ratio > 1 than remove one more  EnergyFacility
             if (ratio > 1 && RandomHelper.Chance(4) && colony.GetTotalFacilities(ProductionCategory.Energy) > 5)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                removeEnergyFacilities = 1;
-                //system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
+                removeEnergyFacilities += 1;
+                colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             //if ratio > 2 than remove one more  EnergyFacility
-            if (ratio > 2 && !RandomHelper.Chance(2) && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 2 && !RandomHelper.Chance(2) && colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                removeEnergyFacilities = 2;  //  2 and one from before
-                //system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
+                removeEnergyFacilities += 1;  //  2 and one from before
+                colony.RemoveFacilities(ProductionCategory.Energy, 1);
             }
 
             // if ratio > 3 than remove one more  EnergyFacility
-            if (ratio > 3 && !RandomHelper.Chance(2) && system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+            if (ratio > 3 && !RandomHelper.Chance(2) && colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 removeEnergyFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-                //system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
+                colony.RemoveFacilities(ProductionCategory.Energy, 2);
             }
-            _removedEnergyFacilities = removeEnergyFacilities;
+            //_removedEnergyFacilities = removeEnergyFacilities;
 
             defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
             defenseMeter.UpdateAndReset();
@@ -561,11 +557,11 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"); 
 
-            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
+            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
             attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
+                attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackingCiv"));
+                _newSpyCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackingCiv"));
 
         }
 
@@ -654,7 +650,7 @@ namespace Supremacy.Intelligence
             attackedCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
                 attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackedCiv"));
             attackingCivManager.SitRepEntries.Add(new NewSabotageSitRepEntry(
-                attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackingCiv"));
+                _newSpyCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackingCiv"));
 
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager)
