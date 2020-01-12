@@ -1,4 +1,5 @@
 ﻿    <scc:ThemedUserControl x:Class="Supremacy.Client.Views.AssetsScreen"
+                           x:Name="AssetsScreen1"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -54,26 +55,27 @@
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="1" 
-                        Text="  Accumulated Points = "
+                        Text=" attaced = "
                         HorizontalAlignment="Right"
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="2"
-                        Text="{Binding Path=TotalIntelligenceAttackingAccumulated}" 
+                        Text="{Binding ElementName=AssetsScreen1, Path=AttackedMeter}"
                         HorizontalAlignment="Left"
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
-                        Grid.Column="3" Text="  Production Last Turn = "
+                        Grid.Column="3" Text="attacking  = "
                         HorizontalAlignment="Right"
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
-                        Grid.Column="4" Text="{Binding Path=TotalIntelligenceProduction}"
+                        Grid.Column="4"
+                        Text="{Binding ElementName=AssetsScreen1, Path=AttackingMeter}"
                         HorizontalAlignment="Left"
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"

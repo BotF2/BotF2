@@ -4,6 +4,7 @@ using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
+using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -43,6 +44,24 @@ namespace Supremacy.Client.Views
         Civilization _spiedFourCiv = DesignTimeObjects.SpiedCivFour.Civilization;
         Civilization _spiedFiveCiv = DesignTimeObjects.SpiedCivFive.Civilization;
         Civilization _spiedSixCiv = DesignTimeObjects.SpiedCivSix.Civilization;
+        public string BlameWhoOne
+        {
+            get { return _blameWhoOne; }
+            set
+            {
+                value = _blameWhoOne;
+            }
+        }
+        public int AttackedMeter
+        {
+            get { return 1; } // IntelHelper. }
+            set { value = IntelHelper.GetIntelRatio(GameContext.Current.CivilizationManagers[IntelHelper.NewSpyCiv]); }
+        }
+        public int AttackingMeter
+        {
+            get { return 1; } // IntelHelper. }
+            set { value = IntelHelper.GetIntelRatio(GameContext.Current.CivilizationManagers[IntelHelper.NewSpyCiv]); }
+        }
         public AssetsScreen()
         {
 
@@ -91,14 +110,7 @@ namespace Supremacy.Client.Views
 
             LoadInsignia();
         }
-        public string BlameWhoOne
-        {
-            get { return _blameWhoOne; }
-            set
-            {
-                value = _blameWhoOne;
-            }
-        }
+
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var _civLocalPlayer = AppContext.LocalPlayerEmpire.Civilization;
