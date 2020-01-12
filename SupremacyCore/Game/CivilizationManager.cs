@@ -70,7 +70,7 @@ namespace Supremacy.Game
             _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
             _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
             _totalIntelligenceDefenseAccumulated = new Meter(0, 0, Meter.MaxValue);
-            _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
+            _totalIntelligenceDefenseAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
 
             _sitRepEntries = new List<SitRepEntry>();
 
