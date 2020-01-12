@@ -428,18 +428,7 @@
                                                      Margin="5,10,0,0"
                                                      Foreground="LightGoldenrodYellow"
                                                      FontSize="16"
-                                                     Text="1) Blame this actions on: " />
-                                            </StackPanel>
-                                            <StackPanel Name="NoOneButton1">
-                                                <RadioButton
-                                                    VerticalAlignment="Top"
-                                                    Name="BlameNoOne1"
-                                                    Margin="5,10,0,0"
-                                                    GroupName="BlameRadio1"
-                                                    Foreground="White"
-                                                    Content="Blame No One" 
-                                                    Tag="0"
-                                                    Checked="OnBlameButtonsOneClick"/>
+                                                     Text="1) Blame your actions on: " />
                                             </StackPanel>
                                             <StackPanel Name="BlameTerrorists1"
                                                       Orientation="Horizontal" >
@@ -456,6 +445,17 @@
                                                     Foreground="White"
                                                     Content="Terrorists" 
                                                     Tag="1"
+                                                    Checked="OnBlameButtonsOneClick"/>
+                                            </StackPanel>
+                                            <StackPanel Name="NoOneButton1">
+                                                <RadioButton
+                                                    VerticalAlignment="Top"
+                                                    Name="BlameNoOne1"
+                                                    Margin="5,10,0,0"
+                                                    GroupName="BlameRadio1"
+                                                    Foreground="White"
+                                                    Content="Blame No One" 
+                                                    Tag="0"
                                                     Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel Name="BlameFederation1"
