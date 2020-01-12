@@ -116,16 +116,11 @@ namespace Supremacy.Client.Views
                 {
                     if (_spiedOneCiv != _civLocalPlayer)
                     {
-                        EmpireExpanderOne.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageEnergy(_spiedOneCiv, "NotClicked"))
+                        EmpireExpanderOne.Visibility = Visibility.Visible;                    
                             SabotageEnergyOne.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageFood(_spiedOneCiv, "NotClicked"))
                             SabotageFoodOne.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageIndustry(_spiedOneCiv, "NotClicked"))
                             SabotageIndustryOne.Visibility = Visibility.Visible;
-                       //if (IntelHelper.SeeStealResearch(_spiedOneCiv, "NotClicked"))
                             StealResearchOne.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealCredits(_spiedOneCiv, "NotClicked"))
                             StealCreditsOne.Visibility = Visibility.Visible;
                     }
                 }
@@ -140,15 +135,10 @@ namespace Supremacy.Client.Views
                     if (_spiedTwoCiv != _civLocalPlayer)
                     {
                         EmpireExpanderTwo.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageEnergy(_spiedTwoCiv, "NotClicked"))
                             SabotageEnergyTwo.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageFood(_spiedTwoCiv, "NotClicked"))
                             SabotageFoodTwo.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageIndustry(_spiedTwoCiv, "NotClicked"))
                             SabotageIndustryTwo.Visibility = Visibility.Visible;
-                       // if (IntelHelper.SeeStealResearch(_spiedTwoCiv, "NotClicked"))
                             StealResearchTwo.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealCredits(_spiedTwoCiv, "NotClicked"))
                             StealCreditsTwo.Visibility = Visibility.Visible;
                     }
                 }
@@ -164,15 +154,10 @@ namespace Supremacy.Client.Views
                     if (_spiedThreeCiv != _civLocalPlayer)
                     {
                         EmpireExpanderThree.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageEnergy(_spiedThreeCiv, "NotClicked"))
                             SabotageEnergyThree.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageFood(_spiedThreeCiv, "NotClicked"))
                             SabotageFoodThree.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageIndustry(_spiedThreeCiv, "NotClicked"))
                             SabotageIndustryThree.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealResearch(_spiedThreeCiv, "NotClicked"))
                             StealResearchThree.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealCredits(_spiedThreeCiv, "NotClicked"))
                             StealCreditsThree.Visibility = Visibility.Visible;
                     }
                 }
@@ -187,15 +172,10 @@ namespace Supremacy.Client.Views
                     if (_spiedFourCiv != _civLocalPlayer)
                     {
                         EmpireExpanderFour.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageEnergy(_spiedFourCiv, "NotClicked"))
                             SabotageEnergyFour.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageFood(_spiedFourCiv, "NotClicked"))
                             SabotageFoodFour.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageIndustry(_spiedFourCiv, "NotClicked"))
                             SabotageIndustryFour.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealResearch(_spiedFourCiv, "NotClicked"))
                             StealResearchFour.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealCredits(_spiedFourCiv, "NotClicked"))
                             StealCreditsFour.Visibility = Visibility.Visible;
                     }
                 }
@@ -211,15 +191,10 @@ namespace Supremacy.Client.Views
                     if (_spiedFiveCiv != _civLocalPlayer)
                     {
                         EmpireExpanderFive.Visibility = Visibility.Visible;
-                       // if (IntelHelper.SeeSabotageEnergy(_spiedFiveCiv, "NotClicked"))
                             SabotageEnergyFive.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageFood(_spiedFiveCiv, "NotClicked"))
                             SabotageFoodFive.Visibility = Visibility.Visible;
-                       // if (IntelHelper.SeeSabotageIndustry(_spiedFiveCiv, "NotClicked"))
                             SabotageIndustryFive.Visibility = Visibility.Visible;
-                       // if (IntelHelper.SeeStealResearch(_spiedFiveCiv, "NotClicked"))
                             StealResearchFive.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealCredits(_spiedFiveCiv, "NotClicked"))
                             StealCreditsFive.Visibility = Visibility.Visible;
                     }
                 }
@@ -235,15 +210,10 @@ namespace Supremacy.Client.Views
 
                     {
                         EmpireExpanderSix.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageEnergy(_spiedSixCiv, "NotClicked"))
                             SabotageEnergySix.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageFood(_spiedSixCiv, "NotClicked"))
                             SabotageFoodSix.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeSabotageIndustry(_spiedSixCiv, "NotClicked"))
                             SabotageIndustrySix.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealResearch(_spiedSixCiv, "NotClicked"))
                             StealResearchSix.Visibility = Visibility.Visible;
-                        //if (IntelHelper.SeeStealCredits(_spiedSixCiv, "NotClicked"))
                             StealCreditsSix.Visibility = Visibility.Visible;
                     }
                 }
