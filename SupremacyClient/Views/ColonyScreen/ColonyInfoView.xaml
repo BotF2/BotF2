@@ -14,13 +14,13 @@
 
         <!-- MORALE -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}" Text="{Binding Path=SelectedColony.Morale.CurrentValue, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" />
         </DockPanel>
 
         <!-- FOOD -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource FOOD_SURPLUS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource FOOD_SURPLUS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" HorizontalAlignment="Right">
                 <scc:TextBlockExtensions.FormattedText>
                     <MultiBinding StringFormat="{}{0} ([f {1}]{2}[/])">
@@ -34,25 +34,25 @@
 
         <!-- INDUSTRY -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource INDUSTRY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource INDUSTRY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Path=SelectedColony.NetIndustry, Mode=OneWay}" />
         </DockPanel>
 
         <!-- NET ENERGY -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource ENERGY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" DockPanel.Dock="Left" TextAlignment="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource ENERGY}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock DockPanel.Dock="Right" TextAlignment="Right" Foreground="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}}" Text="{Binding Path=SelectedColony.NetEnergy, Mode=OneWay}" />
         </DockPanel>
 
         <!-- RESEARCH -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Path=SelectedColony.NetResearch, Mode=OneWay}" />
         </DockPanel>
 
         <!-- INTELLIGENCE -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Path=SelectedColony.NetIntelligence, Mode=OneWay}" />
         </DockPanel>
 
@@ -61,19 +61,19 @@
 
         <!-- DILITHIUM -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource DILITHIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource DILITHIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Path=SelectedColony.NetDilithium, Mode=OneWay}" />
         </DockPanel>
 
         <!-- DEUTERIUM -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource DEUTERIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource DEUTERIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Path=SelectedColony.NetDeuterium, Mode=OneWay}" />
         </DockPanel>
 
         <!-- RAW MATERIALS -->
         <DockPanel HorizontalAlignment="Stretch">
-            <TextBlock TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource RAW_MATERIALS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+            <TextBlock Margin="8,0,0,0" TextAlignment="Left" DockPanel.Dock="Left" Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" Text="{Binding Source={s:StringResource RAW_MATERIALS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
             <TextBlock TextAlignment="Right" DockPanel.Dock="Right" Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" Text="{Binding Path=SelectedColony.NetRawMaterials, Mode=OneWay}" />
         </DockPanel>
     </StackPanel>
