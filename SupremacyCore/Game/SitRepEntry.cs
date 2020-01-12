@@ -1711,19 +1711,34 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_removedStuff == -1)
+
+                if (_removedStuff == -2)
                 {
                     return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
                         _roleText, System.Name, System.Location, System.Owner, _affectedField);
+                    //    0               1          2                 3              4   placeholders in en.txt
+                }
+                if (_removedStuff == -1)
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
+                        _roleText, System.Name, System.Location, System.Owner, _affectedField);
                     //    0               1          2                 3              4       placeholders in en.txt
                 }
-                else if (_removedStuff > 0)
+                
+                if (_removedStuff > 0)
                 {
+                    string destroyed = ResourceManager.GetString("SITREP_SABOTAGE_DESTROYED");
+                    if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
+                        _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
+                    {
+                        destroyed = ResourceManager.GetString("SITREP_SABOTAGE_STOLEN");
+                    }
+
                     return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
-                       _roleText, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff, _blamed, System.Owner);
-                    //    0               1          2                 3                   4               5                               6        7
+                       _roleText, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff, _blamed, System.Owner, destroyed);
+                    //    0               1          2                 3                   4               5                    6        7           8
                 }
-                else
+                else // _removedStuff = 0
                 {
                     return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
                         _roleText, System.Name, System.Location, System.Owner, _affectedField);
