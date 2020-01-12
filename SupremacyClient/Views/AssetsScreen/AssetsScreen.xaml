@@ -140,8 +140,8 @@
                                   Style="{StaticResource LCARS_StandardButtonStyle}"
                                   Content="Click for Turn Summary"
                                   FontSize="14pt"
-                                  FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                  Foreground="Black"
+                                  Foreground="Orange"
+                                  FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"                                  
                                   Margin="5,5,0,5"
                                   Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}">
                          </Button>
@@ -163,7 +163,7 @@
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
-                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="5" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="45" />
                                         <RowDefinition Height="Auto"/>
@@ -186,7 +186,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Border Grid.Row="0"
+                                    <Border Grid.Row="3"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="16"
                                             BorderThickness="2"
@@ -194,7 +194,7 @@
                                             Background="Black"
                                             BorderBrush="Red" />
                                     <!-- Covert Ops buttons One -->
-                                    <StackPanel Grid.Row="0"
+                                    <StackPanel Grid.Row="3"
                                               Grid.Column="0"
                                               Orientation="Horizontal"
                                               HorizontalAlignment="Left"
@@ -203,8 +203,9 @@
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Left"
                                              Margin="10,0,0,0"
+                                             FontSize="16"
                                              Foreground="AntiqueWhite"
-                                             Text="Covet action on the " />
+                                             Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedOneCivName}"/>
                                         <Image Name="InsigniaOne" Margin="5,0,0,0">
@@ -397,18 +398,18 @@
                                         </Grid>
                                     </StackPanel>
                                     <!--Blame Buttons 1 -->
-                                    <Border Grid.Row="3"
+                                    <Border Grid.Row="0"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="18"
                                             BorderThickness="3"
                                             Margin="10,0,0,0"
                                             Background="Black"
-                                            BorderBrush="LightGoldenrodYellow" />
+                                            BorderBrush="DarkOrange" />
                                     <ScrollViewer
                                               HorizontalScrollBarVisibility="Auto"
                                               VerticalScrollBarVisibility="Disabled"
                                               HorizontalAlignment="Left"
-                                              Grid.Row="3"
+                                              Grid.Row="0"
                                               Grid.ColumnSpan="18"
                                               VerticalAlignment="Top"
                                               Margin="0,5,0,0"
@@ -417,7 +418,7 @@
                                                   Orientation="Horizontal"
                                                   VerticalAlignment="Top"
                                                   Margin="15,0,0,0"                    
-                                                  Grid.Row="3"
+                                                  Grid.Row="0"
                                                   Grid.ColumnSpan="18"
                                                   Grid.Column="0">
                                             <StackPanel Name="BlameText1">
@@ -427,7 +428,7 @@
                                                      Margin="5,10,0,0"
                                                      Foreground="LightGoldenrodYellow"
                                                      FontSize="16"
-                                                     Text="Blame someone for your actions: " />
+                                                     Text="1) Blame this actions on: " />
                                             </StackPanel>
                                             <StackPanel Name="NoOneButton1">
                                                 <RadioButton

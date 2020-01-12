@@ -399,12 +399,12 @@
                     Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
                     CornerRadius="14,0,0,14"
                     Width="21" />
-                        <!--<Path Grid.Column="0"
+                        <Path Grid.Column="0"
                     Height="28"
                     Width="14"
                     Stretch="Fill" 
                     Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
-                    Data="F1 M 16,32C 7.16345,32 3.8147e-006,24.8366 3.8147e-006,16C 3.8147e-006,7.16344 7.16345,5.72205e-006 16,5.72205e-006L 16,16L 16,32 Z"/>-->
+                    Data="F1 M 16,32C 7.16345,32 3.8147e-006,24.8366 3.8147e-006,16C 3.8147e-006,7.16344 7.16345,5.72205e-006 16,5.72205e-006L 16,16L 16,32 Z"/>
                         <Border x:Name="ContentBorder"
                     Grid.Column="1"
                     Margin="3,0,3,0"
@@ -415,21 +415,21 @@
                                 VerticalAlignment="Center"
                                 RecognizesAccessKey="True" />
                         </Border>
-                        <!--<Rectangle Grid.Column="2"
+                        <Rectangle Grid.Column="2"
                        Stretch="Fill"
                        Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
                        Margin="0,0,3,0"
-                       Width="14" />-->
+                       Width="14" />
                         <Border Grid.Column="3"
                     Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
                     CornerRadius="0,14,14,0"
                     Width="21" />
-                        <!--<Path Grid.Column="3"
+                        <Path Grid.Column="3"
                     Height="28"
                     Width="14" 
                     Stretch="Fill"
                     Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" 
-                    Data="F1 M 9.79717e-016,5.72205e-006C 8.83655,5.72205e-006 16,7.16344 16,16C 16,24.8366 8.83655,32 9.79717e-016,32L 0,16L 9.79717e-016,5.72205e-006 Z"/>-->
+                    Data="F1 M 9.79717e-016,5.72205e-006C 8.83655,5.72205e-006 16,7.16344 16,16C 16,24.8366 8.83655,32 9.79717e-016,32L 0,16L 9.79717e-016,5.72205e-006 Z"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled"
