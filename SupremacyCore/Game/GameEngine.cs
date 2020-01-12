@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Economy;
 using Supremacy.Entities;
+using Supremacy.Intelligence;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
@@ -75,6 +76,7 @@ namespace Supremacy.Game
     public class GameEngine
     {
         #region Public Members
+
         /// <summary>
         /// Occurs when the current turn phase has changed.
         /// </summary>
@@ -400,12 +402,25 @@ namespace Supremacy.Game
 
             errors.Clear();
 
+
+
             ParallelForEach(civManagers, civManager =>
             {
+                GameLog.Core.General.DebugFormat("***** civManager.SitRepEntries_Temp.Count = {0}", civManager.SitRepEntries_Temp.Count);
                 GameContext.PushThreadContext(game);
                 try
                 {
                     civManager.SitRepEntries.Clear();
+
+                    try
+                    {
+                        var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
+                        foreach (var entry in civSitReps)
+                        {
+                            civManager.SitRepEntries.Add(entry);
+                        }
+                    }
+                    catch { }
                 }
                 catch (Exception e)
                 {
@@ -416,6 +431,8 @@ namespace Supremacy.Game
                     GameContext.PopThreadContext();
                 }
             });
+
+            IntelHelper.SitReps_Temp.Clear();
 
             if (!errors.IsEmpty)
                 throw new AggregateException(errors);

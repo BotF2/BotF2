@@ -21,6 +21,20 @@ namespace Supremacy.Intelligence
         private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
 
+        private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
+
+        public static List<SitRepEntry> SitReps_Temp
+        {
+            get
+            {
+                return _sitReps_Temp;
+            }
+            set
+            {
+                value = _sitReps_Temp;
+            }
+        }
+
         public static UniverseObjectList<Colony> NewSpiedColonies
         {
             get { return _newSpiedColonies; }
@@ -264,25 +278,29 @@ namespace Supremacy.Intelligence
 
 
             // costs on both sides for the attack
-            // handling intelligence points for attack / defence  //////////////////////////7
+            // handling intelligence points for attack / defence  //////////////////////////
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+
+            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
             defenseMeter.UpdateAndReset();
+
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
 
-            //////////////////////////////////////////7
+            //////////////////////////////////////////
 
             stolenCreditsIsMinusOne:;   // pushing buttons makes 'intel costs'
 
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
                     attackMeter.CurrentValue);
+
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
+
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
                     attackMeter.CurrentValue);
@@ -295,10 +313,15 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits", colony.Name, stolenCredits);
 
-            attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
-            attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
+
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 _newSpyCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
+            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    _newSpyCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
 
         }
         public static void StealResearch(Colony colony, Civilization attackedCiv, string blamed)
@@ -416,7 +439,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -444,9 +467,17 @@ namespace Supremacy.Intelligence
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
 
-            attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-                _newSpyCiv, system.Colony, affectedField, stolenResearchPoints,
-                newResearchCumulative, blamed, "attackingCiv"));
+
+
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(_newSpyCiv, system.Colony, 
+                    affectedField, stolenResearchPoints,
+                    newResearchCumulative, blamed, "attackingCiv"));
+
+
+            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //        _newSpyCiv, system.Colony, affectedField, stolenResearchPoints,
+            //        newResearchCumulative, blamed, "attackingCiv"));
+
             // no info to attacked civ
         }
         public static void SabotageFood(Colony colony, Civilization attackedCiv, string blamed)
@@ -547,7 +578,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -571,13 +602,21 @@ namespace Supremacy.Intelligence
 
 
 
-            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD"); 
+            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD");
 
-            attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackedCiv"));
-            
-            attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+
+            //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackedCiv"));
+
+
+
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 _newSpyCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
+
+            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    _newSpyCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
         }
         public static void SabotageEnergy(Colony colony, Civilization attackedCiv, string blamed)
         {
@@ -671,7 +710,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -695,10 +734,16 @@ namespace Supremacy.Intelligence
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"); 
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
-            attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
-            attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
+
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 _newSpyCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackingCiv"));
+            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    _newSpyCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackingCiv"));
 
         }
 
@@ -793,7 +838,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence / 3 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -817,10 +862,16 @@ namespace Supremacy.Intelligence
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY");
 
             GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry));
-            attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackedCiv"));
-            attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackedCiv"));
+
+            _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 _newSpyCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackingCiv"));
+            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
+            //    _newSpyCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackingCiv"));
 
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager)
