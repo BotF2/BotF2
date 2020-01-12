@@ -406,7 +406,6 @@ namespace Supremacy.Game
 
             ParallelForEach(civManagers, civManager =>
             {
-                GameLog.Core.General.DebugFormat("***** civManager.SitRepEntries_Temp.Count = {0}", civManager.SitRepEntries_Temp.Count);
                 GameContext.PushThreadContext(game);
                 try
                 {
