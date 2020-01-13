@@ -87,7 +87,8 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
-                        Grid.Column="6" Text="{Binding Path=TotalIntelligenceDefenseAccumulated}" 
+                        Grid.Column="6"
+                        Text="{Binding ElementName=AssetsScreen1, Path=DefenseAcculatedIntel}" 
                         HorizontalAlignment="Left"
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
