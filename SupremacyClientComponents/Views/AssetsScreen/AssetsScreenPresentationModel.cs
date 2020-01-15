@@ -40,37 +40,29 @@ namespace Supremacy.Client.Views
 
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
-
-        public event EventHandler SpiedOneColoniesChanged;
-
-        public event EventHandler SpiedTwoColoniesChanged;
-
-        public event EventHandler SpiedThreeColoniesChanged;
-
-        public event EventHandler SpiedFourColoniesChanged;
-
-        public event EventHandler SpiedFiveColoniesChanged;
-
-        public event EventHandler SpiedSixColoniesChanged;
-
+        public event EventHandler TotalPopulationChanged;
         public event EventHandler TotalIntelligenceProductionChanged;
-
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
-
         public event EventHandler TotalIntelligenceDefenseAccumulatedChanged;
 
-        public event EventHandler TotalPopulationChanged;
 
+        public event EventHandler SpiedOneColoniesChanged;
         public event EventHandler SpiedOneTotalPopulationChanged;
+        //public event EventHandler SpiedOneTotalIntelligenceDefenseAccumulatedChanged;
 
+        public event EventHandler SpiedTwoColoniesChanged;
         public event EventHandler SpiedTwoTotalPopulationChanged;
 
+        public event EventHandler SpiedThreeColoniesChanged;
         public event EventHandler SpiedThreeTotalPopulationChanged;
 
+        public event EventHandler SpiedFourColoniesChanged;
         public event EventHandler SpiedFourTotalPopulationChanged;
 
+        public event EventHandler SpiedFiveColoniesChanged;
         public event EventHandler SpiedFiveTotalPopulationChanged;
 
+        public event EventHandler SpiedSixColoniesChanged;
         public event EventHandler SpiedSixTotalPopulationChanged;
 
         private IEnumerable<Colony> _colonies;
@@ -100,13 +92,9 @@ namespace Supremacy.Client.Views
                 _colonies = value;
 
                 OnColoniesChanged();
-
                 OnTotalPopulationChanged();
-
                 OnTotalIntelligenceProductionChanged();
-
                 OnTotalIntelligenceAttackingAccumulatedChanged();
-
                 OnTotalIntelligenceDefenseAccumulatedChanged();
             }
         }
@@ -121,8 +109,8 @@ namespace Supremacy.Client.Views
                 _spiedOneColonies = value;
 
                 OnSpiedOneColoniesChanged();
-
                 OnSpiedOneTotalPopulationChanged();
+               // OnSpiedOneTotalIntelligenceDefenseAccumulatedChanged();
             }
         }
         public IEnumerable<Colony> SpiedTwoColonies
@@ -217,15 +205,45 @@ namespace Supremacy.Client.Views
         }
         protected virtual void OnColoniesChanged()
         {
-            GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
+            //GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
             ColoniesChanged.Raise(this);
-            OnPropertyChanged("Colonies");    
+            OnPropertyChanged("Colonies");
+        }
+        protected virtual void OnTotalPopulationChanged()
+        {
+            TotalPopulationChanged.Raise(this);
+            OnPropertyChanged("TotalPopulation");
+        }
+        protected virtual void OnTotalIntelligenceProductionChanged()
+        {
+            TotalIntelligenceProductionChanged.Raise(this);
+            OnPropertyChanged("TotalIntelligenceProduction");
+        }
+        protected virtual void OnTotalIntelligenceAttackingAccumulatedChanged()
+        {
+            TotalIntelligenceAttackingAccumulatedChanged.Raise(this);
+            OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
+        }
+        protected virtual void OnTotalIntelligenceDefenseAccumulatedChanged()
+        {
+            TotalIntelligenceDefenseAccumulatedChanged.Raise(this);
+            OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }
         protected virtual void OnSpiedOneColoniesChanged()
         {
             SpiedOneColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedOneColonies");
         }
+        protected virtual void OnSpiedOneTotalPopulationChanged()
+        {
+            SpiedOneTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedOneTotalPopulation");
+        }
+        //protected virtual void OnSpiedOneTotalIntelligenceDefenseAccumulatedChanged()
+        //{
+        //    SpiedOneTotalIntelligenceDefenseAccumulatedChanged.Raise(this);
+        //    OnPropertyChanged("SpiedOneTotalIntelligenceDefenseAccumulated");
+        //}
         protected virtual void OnSpiedTwoColoniesChanged()
         {
             SpiedTwoColoniesChanged.Raise(this);
@@ -253,31 +271,6 @@ namespace Supremacy.Client.Views
         }
         #endregion Colonies Property
 
-        protected virtual void OnTotalPopulationChanged()
-        {
-            TotalPopulationChanged.Raise(this);
-            OnPropertyChanged("TotalPopulation");
-        }
-        protected virtual void OnTotalIntelligenceProductionChanged()
-        {
-            TotalIntelligenceProductionChanged.Raise(this);
-            OnPropertyChanged("TotalIntelligenceProduction");
-        }
-        protected virtual void OnTotalIntelligenceAttackingAccumulatedChanged()
-        {
-            TotalIntelligenceAttackingAccumulatedChanged.Raise(this);
-            OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
-        }
-        protected virtual void OnTotalIntelligenceDefenseAccumulatedChanged()
-        {
-            TotalIntelligenceDefenseAccumulatedChanged.Raise(this);
-            OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
-        }
-        protected virtual void OnSpiedOneTotalPopulationChanged()
-        {
-            SpiedOneTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedOneTotalPopulation");
-        }
         protected virtual void OnSpiedTwoTotalPopulationChanged()
         {
             SpiedTwoTotalPopulationChanged.Raise(this);

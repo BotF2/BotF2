@@ -75,7 +75,7 @@
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="4"
-                        Text="{Binding ElementName=AssetsScreen1, Path=AttackingMeter}"
+                        Text="{Binding Path=TotalIntelligenceAttackingAccumulated}"
                         HorizontalAlignment="Left"
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -88,7 +88,7 @@
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="6"
-                        Text="{Binding ElementName=AssetsScreen1, Path=DefenseAcculatedIntel}" 
+                        Text="{Binding Path=SpiedOneTotalIntelligenceDefenseAccumulated}" 
                         HorizontalAlignment="Left"
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"

@@ -52,21 +52,21 @@ namespace Supremacy.Client.Views
                 value = _blameWhoOne;
             }
         }
-        public int TotalIntelligenceAttackingAccumulated // change to meter
-        {
-            get { return 1; } // IntelHelper. }
-            set { value = IntelHelper.GetIntelRatio(GameContext.Current.CivilizationManagers[IntelHelper.NewSpyCiv]); }
-        }
-        public int AttackingMeterProductionLastTurn // change to meter
-        {
-            get { return 1; } // IntelHelper. }
-            set { value = IntelHelper.GetIntelRatio(GameContext.Current.CivilizationManagers[IntelHelper.NewSpyCiv]); }
-        }
-        public int DefenseAcculatedIntel
-        {
-            get { return IntelHelper.DefenseAcculatedIntelInt;}
-            set { IntelHelper.DefenseAcculatedIntelInt = value; }
-        }
+        //public int TotalIntelligenceAttackingAccumulated // change to meter
+        //{
+        //    get { return 1; } // IntelHelper. }
+        //    set { value = IntelHelper.GetIntelRatio(GameContext.Current.CivilizationManagers[IntelHelper.NewSpyCiv]); }
+        //}
+        //public int AttackingMeterProductionLastTurn // change to meter
+        //{
+        //    get { return 1; } // IntelHelper. }
+        //    set { value = IntelHelper.GetIntelRatio(GameContext.Current.CivilizationManagers[IntelHelper.NewSpyCiv]); }
+        //}
+        //public int DefenseAccumulatedIntel
+        //{
+        //    get { return IntelHelper.DefenseAccumulatedIntelInt;}
+        //    set { IntelHelper.DefenseAccumulatedIntelInt = value; }
+        //}
         public AssetsScreen()
         {
 
