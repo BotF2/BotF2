@@ -21,17 +21,17 @@ namespace Supremacy.Intelligence
         private static List<Civilization> _spiedList = new List<Civilization>();
         private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenceAccumulatedIntelInt;
-        private static int _attackInt;
+        private static int _attackAccumulatedIntelInt;
 
         public static int DefenseAccumulatedIntelInt
         {
-            get { return 23; } // _defenceAcculatedIntelInt; }
+            get { return  _defenceAccumulatedIntelInt; }
             set { _defenceAccumulatedIntelInt = value; }
         }
-        public static int AttackInt
+        public static int AttackAccumulatedIntelInt
         {
-            get { return _attackInt; }
-            set { _attackInt = value; }
+            get { return _attackAccumulatedIntelInt; }
+            set { _attackAccumulatedIntelInt = value; }
         }
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -264,6 +264,7 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Credits system.Owner BEFORE from {0}:  >>> {1} Credits", colony.Owner, GameContext.Current.CivilizationManagers[colony.Owner].Credits.CurrentValue);
             // result 
+
             GameContext.Current.CivilizationManagers[colony.Owner].Credits.AdjustCurrent(stolenCredits * -1);
             GameContext.Current.CivilizationManagers[colony.Owner].Credits.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("Credits system.Owner AFTER from {0}:  >>> {1} Credits", colony.Owner, GameContext.Current.CivilizationManagers[colony.Owner].Credits.CurrentValue);
@@ -329,6 +330,9 @@ namespace Supremacy.Intelligence
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
             _defenceAccumulatedIntelInt = newDefenseIntelligence;
 
+            int newAttackIntelligence = 0;
+            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _attackAccumulatedIntelInt = newAttackIntelligence;
         }
         public static void StealResearch(Colony colony, Civilization attackedCiv, string blamed)
         {
@@ -483,9 +487,9 @@ namespace Supremacy.Intelligence
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
             _defenceAccumulatedIntelInt = newDefenseIntelligence;
 
-            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-            //        _newSpyCiv, system.Colony, affectedField, stolenResearchPoints,
-            //        newResearchCumulative, blamed, "attackingCiv"));
+            int newAttackIntelligence = 0;
+            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _attackAccumulatedIntelInt = newAttackIntelligence;
 
             // no info to attacked civ
         }
@@ -628,8 +632,9 @@ namespace Supremacy.Intelligence
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
             _defenceAccumulatedIntelInt = newDefenseIntelligence;
 
-            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-            //    _newSpyCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
+            int newAttackIntelligence = 0;
+            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _attackAccumulatedIntelInt = newAttackIntelligence;
         }
         public static void SabotageEnergy(Colony colony, Civilization attackedCiv, string blamed)
         {
@@ -761,6 +766,10 @@ namespace Supremacy.Intelligence
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
             _defenceAccumulatedIntelInt = newDefenseIntelligence;
+
+            int newAttackIntelligence = 0;
+            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _attackAccumulatedIntelInt = newAttackIntelligence;
         }
 
         public static void SabotageIndustry(Colony colony, Civilization attackedCiv, string blamed)
@@ -892,6 +901,10 @@ namespace Supremacy.Intelligence
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
             _defenceAccumulatedIntelInt += newDefenseIntelligence;
+
+            int newAttackIntelligence = 0;
+            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _attackAccumulatedIntelInt = newAttackIntelligence;
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager)
         {
