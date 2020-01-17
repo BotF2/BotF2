@@ -28,7 +28,7 @@ namespace Supremacy.Client.Views
                 try
                 {
                     //FillUpDefense();
-                    return _totalIntelligenceProduction;
+                    return 777;//_totalIntelligenceProduction;
                     //var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization]; 
                     //return civManager.TotalIntelligenceProduction;
 
@@ -73,7 +73,7 @@ namespace Supremacy.Client.Views
                 //    return ;
                 //}
                 _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedIntelInt;
-                return _totalIntelligenceDefenseAccumulated;// IntelHelper.DefenseAccumulatedIntelInt;
+                return 888;//_totalIntelligenceDefenseAccumulated;// IntelHelper.DefenseAccumulatedIntelInt;
             }
             set
             {
@@ -100,7 +100,7 @@ namespace Supremacy.Client.Views
                 //    return 0;
                 //}
                 _totalIntelligenceAttackingAccumulated = IntelHelper.AttackAccumulatedIntelInt;
-                return _totalIntelligenceAttackingAccumulated;
+                return 999;// _totalIntelligenceAttackingAccumulated;
             }
             set
             {
@@ -158,7 +158,6 @@ namespace Supremacy.Client.Views
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
         public event EventHandler TotalIntelligenceDefenseAccumulatedChanged;
 
-
         public event EventHandler SpiedOneColoniesChanged;
         public event EventHandler SpiedOneTotalPopulationChanged;
 
@@ -191,7 +190,7 @@ namespace Supremacy.Client.Views
 
         private IEnumerable<Colony> _spiedSixColonies;
 
-        private IEnumerable<Colony> _infiltratedColonies;
+        //private IEnumerable<Colony> _infiltratedColonies;
 
         public IEnumerable<Colony> Colonies
         {
@@ -295,20 +294,20 @@ namespace Supremacy.Client.Views
                 OnSpiedSixTotalPopulationChanged();
             }
         }
-        public IEnumerable<Colony> InfiltratedColonies
-        {
-            get { return _infiltratedColonies; }
-            set
-            {
-                if (Equals(value, _infiltratedColonies))
-                    return;
+        //public IEnumerable<Colony> InfiltratedColonies
+        //{
+        //    get { return _infiltratedColonies; }
+        //    set
+        //    {
+        //        if (Equals(value, _infiltratedColonies))
+        //            return;
 
-                _infiltratedColonies = value;
+        //        _infiltratedColonies = value;
 
-                OnColoniesChanged();
-                OnTotalPopulationChanged();
-            }
-        }
+        //        OnColoniesChanged();
+        //        OnTotalPopulationChanged();
+        //    }
+        //}
         protected virtual void OnColoniesChanged()
         {
             //GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");

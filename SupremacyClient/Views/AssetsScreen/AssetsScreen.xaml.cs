@@ -23,7 +23,6 @@ namespace Supremacy.Client.Views
     /// </summary>
     public partial class AssetsScreen : IAssetsScreenView
     {
-        //private int _energyOutputOne = 0;
         private string _blameWhoOne = "No one";
         private string _blameWhoTwo = "No one";
         private string _blameWhoThree = "No one";
@@ -234,11 +233,8 @@ namespace Supremacy.Client.Views
                             StealCreditsSix.Visibility = Visibility.Visible;
                     }
                 }
-                GameLog.Client.UI.DebugFormat("end  of checking visible");
+               //GameLog.Client.UI.DebugFormat("end  of checking visible");
 
-                //var allEmpireCivManagers = DesignTimeObjects.SpiedCivMangers; // all CivilizationManagers in game, and in CivID numerical sequence, but Local CivilizationManager substitued for not in game CiviliationManagers
-
-                // IEnumerable<CivilizationManager> distinctCivManagers = allEmpireCivManagers.Distinct();
                 List<CivilizationManager> spyableCivManagers = new List<CivilizationManager>();
 
                 var shortList = GameContext.Current.CivilizationManagers; // only CivilizationMangers in game and in CivID numerical sequence
@@ -1233,7 +1229,7 @@ namespace Supremacy.Client.Views
                         break;
                 }
             }
-            GameLog.Client.UI.DebugFormat("Insignia is finished");
+            //GameLog.Client.UI.DebugFormat("Insignia is finished");
         }      
     }
 }
