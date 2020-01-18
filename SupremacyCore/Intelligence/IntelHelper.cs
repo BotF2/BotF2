@@ -19,13 +19,14 @@ namespace Supremacy.Intelligence
         private static UniverseObjectList<Colony> _newSpiedColonies;
         private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
+        private static Dictionary<Civilization, int> _defenceDictionary = new Dictionary<Civilization, int>();
         private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenceAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
 
         public static int DefenseAccumulatedIntelInt
         {
-            get { return  _defenceAccumulatedIntelInt; }
+            get { return _defenceAccumulatedIntelInt; }
             set { _defenceAccumulatedIntelInt = value; }
         }
         public static int AttackAccumulatedIntelInt
@@ -55,7 +56,11 @@ namespace Supremacy.Intelligence
         {
             get { return _spiedDictionary; }
         }
-
+        public static Dictionary<Civilization, int> DefenceDictionary
+        {
+            get { return _defenceDictionary; }
+        }
+  
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         { GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
             if (spyCiv == null)
@@ -68,108 +73,34 @@ namespace Supremacy.Intelligence
             _newSpiedColonies = colonies;
             try
             {
-
                 _spiedDictionary[spyCiv].Add(spiedCiv);
             }
             catch
-            {
+            {            
                 _spiedDictionary[spyCiv] = new List<Civilization> { spiedCiv };
+            }
+            PopulateDefence();
 
+        }
+        private static void PopulateDefence()
+        {
+            _defenceDictionary.Clear();
+            foreach (var spiedCiv in _spiedList)
+            {
+                int defenseInt = 0;      
+                var spiedCivManager = GameContext.Current.CivilizationManagers[spiedCiv];
+                Int32.TryParse(spiedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseInt);
+                _defenceDictionary.Add(spiedCiv, defenseInt);
             }
         }
         #region Espionage Methods
-        //public static bool SeeStealCredits(Civilization spied, string whenAsked)
-        //{
-        //    bool seeIt = true;
-        //    if (whenAsked == "NotClicked")
-        //    {
-        //        //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
 
-        //        //int ratio = GetIntelRatio(attackedCivManager);
-        //        //if (ratio > 1)
-        //        //    seeIt = true;
-        //        return seeIt;
-        //    }
-        //    else { seeIt = false; }
-        //    return seeIt;
-
-        //}
-
-        //public static bool SeeStealResearch(Civilization spied, string whenAsked)
-        //{
-        //    bool seeIt = true;
-
-        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
-
-        //    //int ratio = GetIntelRatio(attackedCivManager);
-        //    //if (ratio > 1)
-        //    //    seeIt = true;
-
-        //    if (whenAsked == "NotClicked")
-        //    {
-        //        return seeIt;
-        //    }
-        //    else { seeIt = false; }
-        //    return seeIt;
-        //}
-        //public static bool SeeSabotageFood(Civilization spied, string whenAsked)
-        //{
-        //    bool seeIt = true;
-        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
-
-        //    //int ratio = GetIntelRatio(attackedCivManager);
-        //    //if (ratio > 1)
-        //    //    seeIt = true;
-        //    if (whenAsked == "NotClicked")
-        //    {
-        //        return seeIt;
-        //    }
-        //    else { seeIt = false; }
-        //    return seeIt;
-        //}
-        //public static bool SeeSabotageIndustry(Civilization spied, string whenAsked)
-        //{
-        //    //bool seeIt = false;
-        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
-
-        //    //int ratio = GetIntelRatio(attackedCivManager);
-        //    //if (ratio > 1)
-        //    //    seeIt = true;
-        //    //return seeIt;
-
-        //    bool seeIt = true;
-        //    if (whenAsked == "NotClicked")
-        //    {
-        //        return seeIt;
-        //    }
-        //    else { seeIt = false; }
-        //    return seeIt;
-
-        //}
-        //public static bool SeeSabotageEnergy(Civilization spied, string whenAsked)
-        //{
-        //    //bool seeIt = false;
-        //    //var attackedCivManager = GameContext.Current.CivilizationManagers[spied];
-
-        //    //int ratio = GetIntelRatio(attackedCivManager);
-        //    //if (ratio > 1)
-        //    //    seeIt = true;
-        //    //return seeIt;
-
-        //    bool seeIt = true;
-        //    if (whenAsked == "NotClicked")
-        //    {
-        //        return seeIt;
-        //    }
-        //    else { seeIt = false; }
-        //    return seeIt;
-        //}
-      
         public static void StealCredits(Colony colony, Civilization attackedCiv, string blamed)
         {
             //var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
+
             Meter defenseMeter = GameContext.Current.CivilizationManagers[colony.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
             int stolenCredits = -2; // -1 = failed, -2 = not worth
@@ -516,9 +447,6 @@ namespace Supremacy.Intelligence
                     blamed = "bl_No one";
                 }
             }
-
-
-
             // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
             //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
             //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Food", GameContext.Current.TurnNumber);

@@ -189,6 +189,8 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <!--Blame Buttons One -->
                                     <Border Grid.Row="0"
@@ -420,10 +422,10 @@
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
                                             <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
-                                             Grid.Row="1"
-                                             Margin="0,4,0,4"
-                                             VerticalAlignment="Center"
-                                             HorizontalAlignment="Left" />
+                                                   Grid.Row="1"
+                                                   Margin="0,4,0,4"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left" />
                                             <scc:GameButton x:Name="SabotageFoodOne"
                                                       Grid.Row="1"
                                                       DisplayMode="Tiny"
@@ -589,8 +591,29 @@
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - One -->
-                                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                        <v:SpiedOneColonyList Grid.Row="16" DataContext="{Binding Path=SpiedOneColonies}" Margin="10,0,0,0" />
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
+                                      <!--<Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>-->
+                                        <v:SpiedOneColonyList DataContext="{Binding Path=SpiedOneColonies}" Margin="10,0,0,0" />
+                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <TextBlock
+                                               Text="     Intelligence Defence Points = "
+                                               HorizontalAlignment="Right"
+                                               Foreground="LightGoldenrodYellow"
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                               FontSize="14pt"/>
+                                        <TextBlock
+                                            Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=OneWay}"
+                                            HorizontalAlignment="Left"
+                                            Foreground="OrangeRed"
+                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                            FontSize="14pt"/>
+                                      </StackPanel>
+                                      <!--</Grid>-->
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -1035,8 +1058,8 @@
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - Two -->
-                                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                        <v:SpiedTwoColonyList Grid.Row="16" DataContext="{Binding Path=SpiedTwoColonies}" Margin="10,0,0,0" />
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
+                                        <v:SpiedTwoColonyList DataContext="{Binding Path=SpiedTwoColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -1480,8 +1503,8 @@
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - Three -->
-                                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                        <v:SpiedThreeColonyList Grid.Row="16" DataContext="{Binding Path=SpiedThreeColonies}" Margin="10,0,0,0" />
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
+                                        <v:SpiedThreeColonyList DataContext="{Binding Path=SpiedThreeColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -1925,8 +1948,8 @@
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - Four -->
-                                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                        <v:SpiedFourColonyList Grid.Row="16" DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
+                                        <v:SpiedFourColonyList DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -2370,8 +2393,8 @@
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - Five -->
-                                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                        <v:SpiedFiveColonyList Grid.Row="16" DataContext="{Binding SpiedFiveColonies}" Margin="10,0,0,0" />
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
+                                        <v:SpiedFiveColonyList DataContext="{Binding SpiedFiveColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -2815,8 +2838,8 @@
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - 6 -->
-                                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                        <v:SpiedSixColonyList Grid.Row="16" DataContext="{Binding Path=SpiedSixColonies}" Margin="10,0,0,0" />
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
+                                        <v:SpiedSixColonyList DataContext="{Binding Path=SpiedSixColonies}" Margin="10,0,0,0" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>

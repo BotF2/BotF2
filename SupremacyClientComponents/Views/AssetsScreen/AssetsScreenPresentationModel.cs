@@ -83,6 +83,34 @@ namespace Supremacy.Client.Views
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
             }
         }
+        public int OneTotalIntelligenceDefense
+        {
+            get
+            {
+                //try
+                //{
+                FillUpDefense();
+                //var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                //    return civManager.TotalIntelligenceDefenseAccumulated;
+                //}
+                //catch
+                //{
+                //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceDefenseAccumulated...");
+                //    return ;
+                //}
+                var localCivManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
+                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedIntelInt;
+                return 888;//_totalIntelligenceDefenseAccumulated;// IntelHelper.DefenseAccumulatedIntelInt;
+            }
+            set
+            {
+                FillUpDefense();
+                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedIntelInt;
+                _totalIntelligenceDefenseAccumulated = value;
+                NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
+            }
+        }
+
 
         public int TotalIntelligenceAttackingAccumulated
         {
