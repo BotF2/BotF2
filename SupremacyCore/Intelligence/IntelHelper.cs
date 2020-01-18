@@ -95,14 +95,16 @@ namespace Supremacy.Intelligence
         }
         #region Espionage Methods
 
-        public static void StealCredits(Colony colony, Civilization attackedCiv, string blamed)
+        public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             //var system = colony.System;
-            var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
+            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
 
-            Meter defenseMeter = GameContext.Current.CivilizationManagers[colony.Owner].TotalIntelligenceDefenseAccumulated;
-            Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+
+            Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
+            //var attackMeter = AssetsScreenPresentationModel.UpdateAttackingAccumulated(attackingCiv);
+            Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
             int stolenCredits = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
@@ -193,24 +195,24 @@ namespace Supremacy.Intelligence
                 stolenCredits = stolenCredits * 2;
             }
 
-            GameLog.Core.Intel.DebugFormat("Credits system.Owner BEFORE from {0}:  >>> {1} Credits", colony.Owner, GameContext.Current.CivilizationManagers[colony.Owner].Credits.CurrentValue);
+            GameLog.Core.Intel.DebugFormat("Credits system.Owner BEFORE from {0}:  >>> {1} Credits", attackedCiv, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
             // result 
 
-            GameContext.Current.CivilizationManagers[colony.Owner].Credits.AdjustCurrent(stolenCredits * -1);
-            GameContext.Current.CivilizationManagers[colony.Owner].Credits.UpdateAndReset();
-            GameLog.Core.Intel.DebugFormat("Credits system.Owner AFTER from {0}:  >>> {1} Credits", colony.Owner, GameContext.Current.CivilizationManagers[colony.Owner].Credits.CurrentValue);
+            GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);
+            GameContext.Current.CivilizationManagers[attackedCiv].Credits.UpdateAndReset();
+            GameLog.Core.Intel.DebugFormat("Credits system.Owner AFTER from {0}:  >>> {1} Credits", attackedCiv, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
 
 
             GameLog.Core.Intel.DebugFormat("Credits SPY CIV BEFORE from {0}:  >>> {1} Credits", 
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key, 
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.CurrentValue);
+                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key, 
+                GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
 
-            GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.AdjustCurrent(stolenCredits);
-            GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.UpdateAndReset();
+            GameContext.Current.CivilizationManagers[attackingCiv].Credits.AdjustCurrent(stolenCredits);
+            GameContext.Current.CivilizationManagers[attackingCiv].Credits.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat("Credits SPY CIV AFTER from {0}:  >>> {1} Credits",
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Credits.CurrentValue);
+                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
+                GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
 
 
             // costs on both sides for the attack
@@ -231,19 +233,19 @@ namespace Supremacy.Intelligence
             stolenCreditsIsMinusOne:;   // pushing buttons makes 'intel costs'
 
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED");
 
-            Int32.TryParse(GameContext.Current.CivilizationManagers[colony.Owner].Credits.CurrentValue.ToString(), out int newCreditsAttacked);
+            Int32.TryParse(GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue.ToString(), out int newCreditsAttacked);
 
             GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits", colony.Name, stolenCredits);
 
@@ -253,7 +255,7 @@ namespace Supremacy.Intelligence
             //    attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
 
             _sitReps_Temp.Add(new NewSabotageSitRepEntry(
-                _newSpyCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
+                attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
             //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
             //    _newSpyCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
 

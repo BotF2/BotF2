@@ -117,7 +117,7 @@ namespace Supremacy.Client.Views
 
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var _civLocalPlayer = AppContext.LocalPlayerEmpire.Civilization;
+            var _civLocalPlayer = DesignTimeObjects.LocalCivManager.Civilization;//AppContext.LocalPlayerEmpire.Civilization;
             if (IsVisible)
             {
                 ResumeAnimations();
@@ -845,32 +845,32 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), IntelHelper.NewSpyCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             StealCreditsOne.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), IntelHelper.NewSpyCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             StealCreditsTwo.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), IntelHelper.NewSpyCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             StealCreditsThree.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), IntelHelper.NewSpyCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             StealCreditsFour.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), IntelHelper.NewSpyCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             StealCreditsFive.Visibility = Visibility.Collapsed;
         }
         private void OnCreditsSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.StealCredits(IntelHelper.NewSpiedColonies.FirstOrDefault(), IntelHelper.NewSpyCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             StealCreditsSix.Visibility = Visibility.Collapsed;
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)

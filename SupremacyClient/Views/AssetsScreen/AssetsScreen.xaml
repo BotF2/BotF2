@@ -592,28 +592,21 @@
                                     </StackPanel>
                                     <!-- Colonies - One -->
                                     <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                      <!--<Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>-->
                                         <v:SpiedOneColonyList DataContext="{Binding Path=SpiedOneColonies}" Margin="10,0,0,0" />
-                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                        <TextBlock
+                                        <!--<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                            <TextBlock
                                                Text="     Intelligence Defence Points = "
                                                HorizontalAlignment="Right"
                                                Foreground="LightGoldenrodYellow"
                                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                FontSize="14pt"/>
-                                        <TextBlock
+                                            <TextBlock
                                             Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=OneWay}"
                                             HorizontalAlignment="Left"
                                             Foreground="OrangeRed"
                                             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                             FontSize="14pt"/>
-                                      </StackPanel>
-                                      <!--</Grid>-->
+                                        </StackPanel>-->
                                     </StackPanel>
                                 </Grid>
                             </Grid>
