@@ -60,7 +60,7 @@ namespace Supremacy.Intelligence
         }
         public static Civilization CivSix
         {
-            get { return GameContext.Current.CivilizationManagers[4].Civilization; }
+            get { return GameContext.Current.CivilizationManagers[6].Civilization; }
         }
         public static bool IsSpiedZero(Civilization targetFromScreen)
         {
