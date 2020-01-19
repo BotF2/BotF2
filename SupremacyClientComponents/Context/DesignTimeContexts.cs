@@ -201,7 +201,8 @@ namespace Supremacy.Client.Context
     {
         static List<CivilizationManager> managerList;
         //static List<CivilizationManager> _allManagersList;
-        static CivilizationManager _spyingCivManager;
+        static CivilizationManager _spyingCivManager;  // syping, but in mulitplayer maybe different to local one
+        static CivilizationManager _spiedCivDummy;
         private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
         //private static List<CivilizationManager> spyableCivManagers;
 
@@ -226,37 +227,96 @@ namespace Supremacy.Client.Context
         //}
         public static CivilizationManager SpiedCivZero
         {
-            get { return GameContext.Current.CivilizationManagers[0]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
+                }
+                catch { }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivOne
         {
-            get { return GameContext.Current.CivilizationManagers[1]; ; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
+                }
+                catch { }
+                return _spiedCivDummy;
+            }
         }
+
         public static CivilizationManager SpiedCivTwo
         {
-            get { return GameContext.Current.CivilizationManagers[2]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
+                }
+                catch { }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivThree
         {
-            get { return GameContext.Current.CivilizationManagers[3]; ; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
+                }
+                catch { }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivFour
         {
-            get { return GameContext.Current.CivilizationManagers[4]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
+                }
+                catch { }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivFive
         {
-            get { return GameContext.Current.CivilizationManagers[5]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
+                }
+                catch { }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivSix
         {
-            get { return GameContext.Current.CivilizationManagers[6]; }
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
+                }
+                catch { }
+                return _spiedCivDummy;
+            }
+
 
         }
         //public static CivilizationManager SpyingCivManager
@@ -279,10 +339,10 @@ namespace Supremacy.Client.Context
                 return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
             }
         }
-        public static Colony FirstSpiedColony
-        {
-            get { return SpiedCivZero.HomeColony; }
-        }
+        //public static Colony FirstSpiedColony
+        //{
+        //    get { return SpiedCivZero.HomeColony; }
+        //}
 
         public static IEnumerable<Colony> Colonies
         {

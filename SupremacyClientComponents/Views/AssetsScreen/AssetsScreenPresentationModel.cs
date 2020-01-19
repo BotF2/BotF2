@@ -185,7 +185,7 @@ namespace Supremacy.Client.Views
 
             _colonies = DesignTimeObjects.CivilizationManager.Colonies;//DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies;
             _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
-            _spiedOneColonies = DesignTimeObjects.SpiedCivZero.Colonies;
+            _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             _spiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
             _spiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;

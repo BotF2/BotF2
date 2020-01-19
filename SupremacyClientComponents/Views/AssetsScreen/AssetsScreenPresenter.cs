@@ -62,7 +62,7 @@ namespace Supremacy.Client.Views
             //GameLog.Core.UI.DebugFormat("Update on Turn Started at line 61");
             Model.Colonies = DesignTimeObjects.CivilizationManager.Colonies; //AppContext.LocalPlayerEmpire.Colonies; // not DesignTimeObjects.LocalCivManager.Colonies; 
             Model.SpiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
-            Model.SpiedOneColonies = DesignTimeObjects.SpiedCivZero.Colonies;
+            Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             Model.SpiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
             Model.SpiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
