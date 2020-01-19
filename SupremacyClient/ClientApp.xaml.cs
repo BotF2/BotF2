@@ -216,7 +216,7 @@ namespace Supremacy.Client
 
         // ToDo: Currently this function only prints "theme" data, but it could be made globaly accessible
         //       if need arise to trace some other XAML files and ResourceDirecotries 
-        private void printXAMLdata(ResourceDictionary resourceDirectory, Uri parentUri, int level = 1)
+        private void PrintXAMLdata(ResourceDictionary resourceDirectory, Uri parentUri, int level = 1)
         {
             // How to enumerate loaded images with absolute paths
             // https://docs.microsoft.com/en-us/windows/uwp/controls-and-patterns/resourcedictionary-and-xaml-resource-references
@@ -266,7 +266,7 @@ namespace Supremacy.Client
             // and recursively print all their data 
             foreach (ResourceDictionary childResDirectory in resourceDirectory.MergedDictionaries)
             {
-                printXAMLdata(childResDirectory, parentUri, level++);
+                PrintXAMLdata(childResDirectory, parentUri, level++);
             }
         }
 
@@ -343,8 +343,7 @@ namespace Supremacy.Client
         private static object ExitFrame(object state)
         {
             // Exit the nested message loop.
-            var frame = state as DispatcherFrame;
-            if (frame != null)
+            if (state is DispatcherFrame frame)
             {
                 frame.Continue = false;
             }
@@ -471,8 +470,7 @@ namespace Supremacy.Client
             /* If an instance of the game is already running, then exit. */
             if (!CmdLineArgs.AllowMultipleInstances)
             {
-                bool mutexIsNew;
-                _singleInstanceMutex = new Mutex(true, "{CC4FD558-0934-451d-A387-738B5DB5619C}", out mutexIsNew);
+                _singleInstanceMutex = new Mutex(true, "{CC4FD558-0934-451d-A387-738B5DB5619C}", out bool mutexIsNew);
                 if (!mutexIsNew)
                 {
                     MessageBox.Show("An instance of Supremacy is already running.");

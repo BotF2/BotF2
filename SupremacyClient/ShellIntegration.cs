@@ -31,7 +31,7 @@ namespace Supremacy.Client
             var jumpListCreated = false;
             JumpList jumpList = null;
 
-            Application.Current.Dispatcher.Invoke(
+            _ = Application.Current.Dispatcher.Invoke(
                 DispatcherPriority.Background,
                 (Action)
                 (() => jumpList = JumpList.GetJumpList(Application.Current)));
@@ -74,7 +74,7 @@ namespace Supremacy.Client
             }
 
             object v = _ = Application.Current.Dispatcher.Invoke(
-                DispatcherPriority.Background,
+                priority: DispatcherPriority.Background,
                 (Action)
                 (() =>
                 {
