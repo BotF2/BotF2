@@ -205,15 +205,15 @@ namespace Supremacy.Client.Context
         private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
         //private static List<CivilizationManager> spyableCivManagers;
 
-        static DesignTimeObjects()
-        {
-            managerList = SpyableCivManagers();
-        }
-        public static List<CivilizationManager> SpiedCivMangers
-        { 
-            get { return managerList; }
+        //static DesignTimeObjects()
+        //{
+        //    managerList = SpyableCivManagers();
+        //}
+        //public static List<CivilizationManager> SpiedCivMangers
+        //{ 
+        //    get { return managerList; }
 
-        }
+        //}
         //public static List<CivilizationManager> allCivManagers
         //{
         //    get { return _allManagersList; }
@@ -279,6 +279,10 @@ namespace Supremacy.Client.Context
                 return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
             }
         }
+        public static Colony FirstSpiedColony
+        {
+            get { return SpiedCivZero.HomeColony; }
+        }
 
         public static IEnumerable<Colony> Colonies
         {
@@ -326,94 +330,94 @@ namespace Supremacy.Client.Context
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }
-        private static List<CivilizationManager> SpyableCivManagers()
-        {
-            var LocalCivManager = DesignTimeAppContext.Instance.LocalPlayerEmpire;
-            var CivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
+        //private static List<CivilizationManager> SpyableCivManagers()
+        //{
+        //    var LocalCivManager = DesignTimeAppContext.Instance.LocalPlayerEmpire;
+        //    var CivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
 
-            try
-            {
-                if (CivManagers[0].Civilization.Key!= null && CivManagers[0].Civilization.Key != "FEDERATION") 
-                    CivManagers.Insert(0, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(0, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[0].Civilization.Key!= null && CivManagers[0].Civilization.Key != "FEDERATION") 
+        //            CivManagers.Insert(0, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(0, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[1].Civilization.Key != null && CivManagers[1].Civilization.Key != "TERRANEMPIRE")
-                    CivManagers.Insert(1, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(1, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[1].Civilization.Key != null && CivManagers[1].Civilization.Key != "TERRANEMPIRE")
+        //            CivManagers.Insert(1, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(1, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[2].Civilization.Key != null && CivManagers[2].Civilization.Key != "ROMULANS")
-                    CivManagers.Insert(2, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(2, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[2].Civilization.Key != null && CivManagers[2].Civilization.Key != "ROMULANS")
+        //            CivManagers.Insert(2, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(2, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[3].Civilization.Key != null && CivManagers[3].Civilization.Key != "KLINGONS")
-                    CivManagers.Insert(3, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(3, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[3].Civilization.Key != null && CivManagers[3].Civilization.Key != "KLINGONS")
+        //            CivManagers.Insert(3, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(3, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[4].Civilization.Key != null && CivManagers[4].Civilization.Key != "CARDASSIANS")
-                    CivManagers.Insert(4, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(4, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[4].Civilization.Key != null && CivManagers[4].Civilization.Key != "CARDASSIANS")
+        //            CivManagers.Insert(4, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(4, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[5].Civilization.Key != null && CivManagers[5].Civilization.Key != "DOMINION")
-                    CivManagers.Insert(5, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(5, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[5].Civilization.Key != null && CivManagers[5].Civilization.Key != "DOMINION")
+        //            CivManagers.Insert(5, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(5, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[6].Civilization.Key != null && CivManagers[6].Civilization.Key != "BORG")
-                    CivManagers.Insert(6, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(6, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[6].Civilization.Key != null && CivManagers[6].Civilization.Key != "BORG")
+        //            CivManagers.Insert(6, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(6, LocalCivManager);
+        //    }
 
             //GameLogOutCivMan(CivManagers);
 
-            CivManagers.Remove(LocalCivManager);
-            CivManagers.OrderBy(o => o.CivilizationID);
+        //    CivManagers.Remove(LocalCivManager);
+        //    CivManagers.OrderBy(o => o.CivilizationID);
 
-            GameLog.Client.UI.DebugFormat("--------------------");
-            foreach (var civ in CivManagers)
-            {
-                GameLog.Client.UI.DebugFormat("civManagers contains {0} {1}", civ.CivilizationID, civ.Civilization.Key);
-            }
+        //    GameLog.Client.UI.DebugFormat("--------------------");
+        //    foreach (var civ in CivManagers)
+        //    {
+        //        GameLog.Client.UI.DebugFormat("civManagers contains {0} {1}", civ.CivilizationID, civ.Civilization.Key);
+        //    }
 
-            return CivManagers;
-        }
+        //    return CivManagers;
+        //}
 
         //public static CivilizationManager GetCivLocalPlayer()
         //{

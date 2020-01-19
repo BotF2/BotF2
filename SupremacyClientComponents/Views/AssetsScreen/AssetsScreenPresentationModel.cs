@@ -20,45 +20,45 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
-        private static AssetsScreenPresentationModel _designInstance;
+        //private static AssetsScreenPresentationModel _designInstance;
 
-        public static AssetsScreenPresentationModel DesignInstance
-        {
-            get
-            {
-                if (_designInstance == null)
-                {
-                    _designInstance = new AssetsScreenPresentationModel(DesignTimeAppContext.Instance)
-                                      {
-                                          SelectedColony = DesignTimeObjects.Colony
-                                      };
-                }
-                return _designInstance;
-            }
-        }
+        //public static AssetsScreenPresentationModel DesignInstance
+        //{
+        //    get
+        //    {
+        //        //if (_designInstance == null)
+        //        //{
+        //        //    _designInstance = new AssetsScreenPresentationModel(DesignTimeAppContext.Instance)
+        //        //                      {
+        //        //                          SelectedColony = DesignTimeObjects.FirstSpiedColony
+        //        //                      };
+        //        //}
+        //        return _designInstance;
+        //    }
+        //}
         //public AssetsScreenPresentationModel(IAppContext appContext)
         //: base(appContext) { }
 
-        public event EventHandler SelectedColonyChanged;
+        //public event EventHandler SelectedColonyChanged;
 
-        private Colony _selectedColony;
-        public Colony SelectedColony
-        {
-            get { return _selectedColony; }
-            set
-            {
-                var oldValue = _selectedColony;
-                _selectedColony = value;
-                OnSelectedColonyChanged(oldValue, value);
-            }
-        }
-        private void OnSelectedColonyChanged(Colony oldValue, Colony newValue)
-        {
-            var handler = SelectedColonyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
-            OnPropertyChanged("SelectedColony");
-        }
+        //private Colony _selectedColony;
+        //public Colony SelectedColony
+        //{
+        //    get { return _selectedColony; }
+        //    set
+        //    {
+        //        var oldValue = _selectedColony;
+        //        _selectedColony = value;
+        //        OnSelectedColonyChanged(oldValue, value);
+        //    }
+        //}
+        //private void OnSelectedColonyChanged(Colony oldValue, Colony newValue)
+        //{
+        //    var handler = SelectedColonyChanged;
+        //    if (handler != null)
+        //        handler(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
+        //    OnPropertyChanged("SelectedColony");
+        //}
         #region Properties for AssestsScreen
         public int TotalIntelligenceProduction
         {
