@@ -16,6 +16,7 @@ using Supremacy.Economy;
 using Supremacy.Effects;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
@@ -551,6 +552,55 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
+        /// Gets the credits the civilization<see cref="Colony"/>.
+        /// </summary>
+        /// <value>The credits.</value>
+        public int CreditsForSpyScreen
+        {
+            get
+            {
+                Int32.TryParse(GameContext.Current.CivilizationManagers[Owner].Credits.ToString(), out int creditsForSpyScreen);
+
+                GameLog.Core.Intel.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner],
+                    this.Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
+
+                return creditsForSpyScreen;
+            }
+        }
+
+        /// <summary>
+        /// Gets the credits the civilization<see cref="Colony"/>.
+        /// </summary>
+        /// <value>The credits.</value>
+        public Meter ResearchForSpyScreen
+        {
+            get
+            {
+                Meter researchForSpyScreen = GameContext.Current.CivilizationManagers[Owner].Research.CumulativePoints;
+
+                //var modifier = new OutputModifier(0, 1.0f);
+                //var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                //var adjustedPop = Population.CurrentValue * moraleMod;
+
+                //foreach (var building in Buildings) // bonus from special structures
+                //{
+                //    if (!building.IsActive)
+                //        continue;
+
+                //    foreach (var bonus in building.BuildingDesign.Bonuses)
+                //    {
+                //        if (bonus.BonusType == BonusType.Credits)
+                //            modifier.Bonus += bonus.Amount;
+                //        else if (bonus.BonusType == BonusType.PercentCredits)
+                //            modifier.Efficiency += (bonus.Amount / 100f);
+                //    }
+                //}
+
+                return researchForSpyScreen;
+            }
+        }
+
+        /// <summary>
         /// Gets the net food production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net food production.</value>
@@ -1025,6 +1075,14 @@ namespace Supremacy.Universe
                     }
                     break;
                 case ProductionCategory.Industry:
+                    {
+                        float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                        baseOutput = (int)(moraleMod * baseOutput);
+                        if (baseOutput < 10)
+                            baseOutput = 10;
+                    }
+                    break;
+                case ProductionCategory.Energy:
                     {
                         float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                         baseOutput = (int)(moraleMod * baseOutput);

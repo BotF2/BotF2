@@ -38,13 +38,14 @@ namespace Supremacy.Client
 
         static MenuScreen()
         {
+            SaveGameCommand = new RoutedCommand("SaveGame", typeof(MenuScreen));
             SinglePlayerCommand = new RoutedCommand("SinglePlayer", typeof(MenuScreen));
             MultiplayerCommand = new RoutedCommand("Multiplayer", typeof(MenuScreen));
             ContinueCommand = new RoutedCommand("Continue", typeof(MenuScreen));
             OptionsCommand = new RoutedCommand("Options", typeof(MenuScreen));
             CreditsCommand = new RoutedCommand("Credits", typeof(MenuScreen));
             LoadGameCommand = new RoutedCommand("LoadGame", typeof(MenuScreen));
-            SaveGameCommand = new RoutedCommand("SaveGame", typeof(MenuScreen));
+
             RetireCommand = new RoutedCommand("Retire", typeof(MenuScreen));
             ExitCommand = new RoutedCommand("Exit", typeof(MenuScreen));
         }
@@ -60,7 +61,7 @@ namespace Supremacy.Client
 
             //this.IsActive = true;
             
-            ClientCommands.ShowSaveGameDialog.RegisterCommand(SaveGameCommand);
+            //ClientCommands.ShowSaveGameDialog.RegisterCommand(SaveGameCommand);
 
             CommandBindings.Add(
                 new CommandBinding(

@@ -24,7 +24,7 @@ namespace Supremacy.Client.Views
             
 
             BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard)
-                                        .OrderByDescending(s => s.BuildDesign.BuildCost)
+                                        .OrderBy(s => s.BuildDesign.Key)
                                         .ToArray();
 
             BuildProjectList.ItemsSource = shipList;

@@ -47,8 +47,6 @@ namespace Supremacy.Game
         private Meter _totalIntelligenceAttackingAccumulated;
         private Meter _totalIntelligenceDefenseAccumulated;
 
-
-
         #endregion
 
         #region Constructors
@@ -72,7 +70,7 @@ namespace Supremacy.Game
             _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
             _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
             _totalIntelligenceDefenseAccumulated = new Meter(0, 0, Meter.MaxValue);
-            _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
+            _totalIntelligenceDefenseAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
 
             _sitRepEntries = new List<SitRepEntry>();
 
@@ -257,12 +255,10 @@ namespace Supremacy.Game
             }
         }
 
-
         public Meter TotalIntelligenceAttackingAccumulated
         {
             get { return _totalIntelligenceAttackingAccumulated; }
         }
-
 
         public Meter TotalIntelligenceDefenseAccumulated
         {
@@ -491,6 +487,7 @@ namespace Supremacy.Game
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }
+
         #endregion
 
         #region INotifyPropertyChanged Members

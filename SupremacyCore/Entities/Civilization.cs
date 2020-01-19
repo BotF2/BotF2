@@ -11,6 +11,7 @@ using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
@@ -102,6 +103,7 @@ namespace Supremacy.Entities
         private float _industryToCreditsConversionRatio = 0.0f;
         private int _baseMoraleLevel = 100;
         private int _moraleDriftRate = 1;
+        private List<Civilization> _spiedCivList;
         #endregion
 
         #region Constructors
@@ -137,6 +139,15 @@ namespace Supremacy.Entities
             _civType = CivilizationType.MinorPower;
         }
 
+        public List<Civilization> SpiedCivList
+        {
+            get { return _spiedCivList; }
+            set
+            {
+                // code here to .Add civs to list as spy ships install spy network
+                _spiedCivList = value;
+            }
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class from XML data.
         /// </summary>
@@ -182,7 +193,7 @@ namespace Supremacy.Entities
 
             _traits = (string)element.Element(ns + "Traits");
             _traits = _traits.Trim();
-
+            _spiedCivList = SpiedCivList; // 
 
             // When starting a game, options is null
             //TODO: This should be in with the code to start the game

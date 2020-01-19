@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Economy;
 using Supremacy.Entities;
+using Supremacy.Intelligence;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
@@ -75,6 +76,7 @@ namespace Supremacy.Game
     public class GameEngine
     {
         #region Public Members
+
         /// <summary>
         /// Occurs when the current turn phase has changed.
         /// </summary>
@@ -400,12 +402,24 @@ namespace Supremacy.Game
 
             errors.Clear();
 
+
+
             ParallelForEach(civManagers, civManager =>
             {
                 GameContext.PushThreadContext(game);
                 try
                 {
                     civManager.SitRepEntries.Clear();
+
+                    try
+                    {
+                        var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
+                        foreach (var entry in civSitReps)
+                        {
+                            civManager.SitRepEntries.Add(entry);
+                        }
+                    }
+                    catch { }
                 }
                 catch (Exception e)
                 {
@@ -416,6 +430,8 @@ namespace Supremacy.Game
                     GameContext.PopThreadContext();
                 }
             });
+
+            IntelHelper.SitReps_Temp.Clear();
 
             if (!errors.IsEmpty)
                 throw new AggregateException(innerExceptions: errors);
@@ -1052,10 +1068,12 @@ namespace Supremacy.Game
                 {
                     var owner = GameContext.Current.CivilizationManagers[scienceShip.Owner];
                     var starType = scienceShip.Sector.System.StarType;
+                    if (scienceShip.Location == owner.HomeSystem.Location)
+                        return;
 
                     int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
-                    //GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
-                    //    scienceShip.ObjectID, scienceShip.Name, researchGained);
+                    GameLog.Core.Research.DebugFormat("Base research gained for {0} {1} is {2}",
+                        scienceShip.ObjectID, scienceShip.Name, researchGained);
 
                     switch (starType)
                     {
@@ -1087,9 +1105,13 @@ namespace Supremacy.Game
                         case StarType.XRayPulsar:
                             researchGained = researchGained * 10;
                             break;
+                        default:
+                            researchGained = 1;
+                            break;
                     }
 
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
+
 
                     GameLog.Core.Research.DebugFormat("{0} {1} gained {2} research points for {3} by studying the {4} in {5}",
                         scienceShip.ObjectID, scienceShip.Name, researchGained, owner.Civilization.Key, starType, scienceShip.Sector);
@@ -1098,7 +1120,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.Research.ErrorFormat(string.Format("There was a problem conducting research for {0} {1}",
+                    GameLog.Core.Research.ErrorFormat(string.Format("##### There was a problem conducting research for {0} {1}",
                         scienceShip.ObjectID, scienceShip.Name),
                         e);
                 }
@@ -1397,7 +1419,7 @@ namespace Supremacy.Game
 
                     civManager.Credits.AdjustCurrent(newCredits);
                     civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense); 
-                    civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking); 
+                    civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking);
                     civManager.Resources.Deuterium.AdjustCurrent(newDeuterium);
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);

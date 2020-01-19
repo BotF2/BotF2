@@ -124,14 +124,16 @@ namespace Supremacy.Universe
 
         public HashSet<UniverseObject> Find(UniverseObjectType objectType)
         {
-            GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
+            // works 
+            //GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
             return _objects.Where(o => o.ObjectType == objectType).ToHashSet();
         }
 
         public HashSet<T> Find<T>(UniverseObjectType objectType)
             where T : UniverseObject
         {
-            GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
+            // works 
+            //GameLog.Core.General.DebugFormat("Find Object Type {0}", objectType);
             return _objects.Where(o => o.ObjectType == objectType).OfType<T>().ToHashSet();
         }
 
@@ -629,9 +631,9 @@ namespace Supremacy.Universe
             _objects.SerializeOwnedData(writer, context);
             _homeColonyLookup.SerializeOwnedData(writer, context);
 
-            GameLog.Core.SaveLoad.DebugFormat("Deserializing _objects...");
-            GameLog.Core.SaveLoad.DebugFormat("Deserializing _homeColonyLookup...");
-    	}
+            GameLog.Core.SaveLoad.DebugFormat("Serializing _objects...");
+            GameLog.Core.SaveLoad.DebugFormat("Serializing _homeColonyLookup...");
+        }
 
     	public void DeserializeOwnedData(SerializationReader reader, object context)
     	{

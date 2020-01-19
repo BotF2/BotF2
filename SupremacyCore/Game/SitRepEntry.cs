@@ -1681,6 +1681,102 @@ namespace Supremacy.Game
     public class NewSabotageSitRepEntry : SitRepEntry
     {
         private readonly int _systemId;
+        private readonly int _removedStuff;
+        private readonly int _totalStuff;
+        private readonly string _affectedField;
+        private readonly string _blamed;
+        private readonly string _roleText;
+
+        public StarSystem System
+        {
+            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
+        }
+
+        public override object ActionTarget
+        {
+            get { return System.Sector; }
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.ColonyStatus; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+
+                if (_removedStuff == -2)
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
+                        _roleText, System.Name, System.Location, System.Owner, _affectedField);
+                    //    0               1          2                 3              4   placeholders in en.txt
+                }
+                if (_removedStuff == -1)
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
+                        _roleText, System.Name, System.Location, System.Owner, _affectedField);
+                    //    0               1          2                 3              4       placeholders in en.txt
+                }
+                
+                if (_removedStuff > 0)
+                {
+                    string destroyed = ResourceManager.GetString("SITREP_SABOTAGE_DESTROYED");
+                    if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
+                        _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
+                    {
+                        destroyed = ResourceManager.GetString("SITREP_SABOTAGE_STOLEN");
+                    }
+
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
+                       _roleText, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff, _blamed, System.Owner, destroyed);
+                    //    0               1          2                 3                   4               5                    6        7           8
+                }
+                else // _removedStuff = 0
+                {
+                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
+                        _roleText, System.Name, System.Location, System.Owner, _affectedField);
+                    //    0               1          2                 3              4   placeholders in en.txt
+                }
+            }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public NewSabotageSitRepEntry(Civilization owner, Colony colony, string affectedField, int removedStuff, int totalStuff, string blamed, string role)
+            : base(owner, SitRepPriority.Red)
+        {
+            if (colony == null)
+                throw new ArgumentNullException("colony");
+            _systemId = colony.System.ObjectID;
+
+            _removedStuff = removedStuff;  // facilities or credits or research points 
+            _totalStuff = totalStuff;
+            _affectedField = affectedField;
+            _blamed = blamed;
+            switch (role)
+            {
+                case "attackingCiv": _roleText = ResourceManager.GetString("SABOTAGE_ROLE_ATTACKING_CIV"); break;
+                case "attackedCiv": _roleText = ResourceManager.GetString("SABOTAGE_ROLE_ATTACKED_CIV"); break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    [Serializable]
+    public class NewSabotageFromShipSitRepEntry : SitRepEntry
+    {
+        private readonly int _systemId;
         private readonly int _removeEnergyFacilities;
         private readonly int _totalEnergyFacilities;
 
@@ -1728,7 +1824,7 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public NewSabotageSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int totalEnergyFacilities)
+        public NewSabotageFromShipSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int totalEnergyFacilities)
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)

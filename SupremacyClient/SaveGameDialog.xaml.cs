@@ -35,6 +35,8 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
+            IsVisibleChanged += SaveGameDialogIsVisibleChanged;
+            
             InputBindings.Add(
                 new KeyBinding(GenericCommands.CancelCommand,
                                Key.Escape,
@@ -55,7 +57,7 @@ namespace Supremacy.Client
                                    GenericCommandsAcceptCommandExecuted,
                                    GenericCommandsAcceptCommandCanExecute));
 
-            IsVisibleChanged += SaveGameDialogIsVisibleChanged;
+
             SaveGameList.SelectionChanged += SaveGameListSelectionChanged;
         }
 
