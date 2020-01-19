@@ -159,7 +159,446 @@
                     Height="800"
                     HorizontalAlignment="left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
-      <!-- One Expander -->
+      <!-- Zero Expander -->
+                        <Expander x:Name="EmpireExpanderZero" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                                 IsExpanded="True" Header="{Binding Path=SpiedFED}" FontSize="20" BorderThickness="3" BorderBrush="White"
+                                  Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
+                            <Grid Name="EmpireGridZero" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                                <Grid FlowDirection="LeftToRight">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="5" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!--Blame Buttons Zero -->
+                                    <Border Grid.Row="0"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="18"
+                                            BorderThickness="3"
+                                            Margin="10,0,0,0"
+                                            Background="Black"
+                                            BorderBrush="DarkOrange" />
+                                    <ScrollViewer
+                                              HorizontalScrollBarVisibility="Auto"
+                                              VerticalScrollBarVisibility="Disabled"
+                                              HorizontalAlignment="Left"
+                                              Grid.Row="0"
+                                              Grid.ColumnSpan="18"
+                                              VerticalAlignment="Top"
+                                              Margin="0,5,0,0"
+                                              Width="1000">
+                                        <StackPanel x:Name="Blame0"
+                                                  Orientation="Horizontal"
+                                                  VerticalAlignment="Top"
+                                                  Margin="15,0,0,0"                    
+                                                  Grid.Row="0"
+                                                  Grid.ColumnSpan="18"
+                                                  Grid.Column="0">
+                                            <StackPanel x:Name="BlameText0">
+                                                <TextBlock
+                                                     VerticalAlignment="Top"
+                                                     HorizontalAlignment="Left"
+                                                     Margin="5,10,0,0"
+                                                     Foreground="LightGoldenrodYellow"
+                                                     FontSize="16"
+                                                     Text="1) Blame your actions on: " />
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameTerrorists0"
+                                                      Orientation="Horizontal" >
+                                                <Image  Height="20"
+                                                    VerticalAlignment="Top"
+                                                    Source="vfs:///Resources/Images/Insignias/Sabotage.png"
+                                                    Margin="5,10,0,0" />
+                                                <RadioButton
+                                                    Name="Terrorists0"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio0"
+                                                    Foreground="White"
+                                                    Content="Terrorists" 
+                                                    Tag="1"
+                                                    Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="NoOneButton0">
+                                                <RadioButton
+                                                    VerticalAlignment="Top"
+                                                    x:Name="BlameNoOne0"
+                                                    Margin="5,10,0,0"
+                                                    GroupName="BlameRadio0"
+                                                    Foreground="White"
+                                                    Content="Blame No One" 
+                                                    Tag="0"
+                                                    Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameFederation0"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal">
+                                                <Image Height="20"
+                                                    VerticalAlignment="Top"
+                                                    Source="vfs:///Resources/Images/Insignias/Federation.png"
+                                                    Margin="10,10,5,0" />
+                                                <RadioButton
+                                                    x:Name="Federation0"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio0"
+                                                    Foreground="LightBlue"
+                                                    Content="Federation"
+                                                    Tag="2"
+                                                    Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameTerranEmpire0"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal">
+                                                <Image
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/TerranEmpire.png"
+                                                    Margin="10,10,0,0" />
+                                                <RadioButton
+                                                    x:Name="TerranEmpire0"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio0"
+                                                    Foreground="LightYellow"
+                                                    Content="Terran Empire"
+                                                    Tag="3"
+                                                    Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameRomulans0"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal">
+                                                <Image
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Romulans.png"
+                                                    Margin="10,10,0,0" />
+                                                <RadioButton
+                                                    x:Name="Romulans0"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio0"
+                                                    Foreground="LightGreen"
+                                                    Content="Romulans"
+                                                    Tag="4"
+                                                    Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameKlingons0"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal">
+                                                <Image
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Klingons.png"
+                                                    Margin="10,10,0,0" />
+                                                <RadioButton
+                                                    x:Name="Klingons0"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio0"
+                                                    Foreground="Red"
+                                                    Content="Klingons"
+                                                    Tag="5"
+                                                    Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameCardassians0"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal">
+                                                <Image
+                                                    VerticalAlignment="Top"
+                                                    Height="20"
+                                                    Source="vfs:///Resources/Images/Insignias/Cardassians.png"
+                                                    Margin="10,10,0,0" />
+                                                <RadioButton
+                                                    x:Name="Cardassians0"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,10,0,0"
+                                                    GroupName="BlameRadio0"
+                                                    Foreground="Goldenrod"
+                                                    Content="Cardassianss"
+                                                    Tag="6"
+                                                    Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameDominion0"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal">
+                                                <Image
+                                                      VerticalAlignment="Top"
+                                                      Height="20"
+                                                      Source="vfs:///Resources/Images/Insignias/Dominion.png"
+                                                      Margin="10,10,0,0" />
+                                                <RadioButton
+                                                      x:Name="Dominion0"
+                                                      VerticalAlignment="Top"
+                                                      Margin="0,10,0,0"
+                                                      GroupName="BlameRadio0"
+                                                      Foreground="MediumPurple"
+                                                      Content="Dominion"
+                                                      Tag="7"
+                                                      Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                            <StackPanel x:Name="BlameBorg0"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal">
+                                                <Image
+                                                      VerticalAlignment="Top"
+                                                      Height="20"
+                                                      Source="vfs:///Resources/Images/Insignias/Borg.png"
+                                                      Margin="10,10,0,0" />
+                                                <RadioButton
+                                                      x:Name="Borg0"
+                                                      VerticalAlignment="Top"
+                                                      Margin="0,10,0,0"
+                                                      GroupName="BlameRadio0"
+                                                      Foreground="YellowGreen"
+                                                      Content="Borg"
+                                                      Tag="8"
+                                                      Checked="OnBlameButtonsZeroClick"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                    <Border Grid.Row="3"
+                                          Grid.Column="0"
+                                          Grid.ColumnSpan="16"
+                                          BorderThickness="2"
+                                          Margin="10,0,0,5"
+                                          Background="Black"
+                                          BorderBrush="Red" />
+                                    <!-- Covert Ops buttons Zero -->
+                                    <StackPanel Grid.Row="3"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Left"
+                                            Margin="10,0,0,0">
+                                        <TextBlock
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Left"
+                                             Margin="10,0,0,0"
+                                             FontSize="16"
+                                             Foreground="AntiqueWhite"
+                                             Text="2) Target: " />
+                                        <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding Path=SpiedFedName}"/>
+                                        <!--<Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="5,0,0,0">
+                                        </Image>-->
+                                        <!--Food Zero-->
+                                        <scc:GameLabel
+                                                   VerticalAlignment="Center"
+                                                   Margin="14,0,2,0"
+                                                   ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                                                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                        <TextBlock
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Right"
+                                                FontWeight="DemiBold"
+                                                Foreground="LightGreen"
+                                                Text="Food: " />
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="24" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                                   Grid.Row="1"
+                                                   Margin="0,4,0,4"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left" />
+                                            <scc:GameButton x:Name="SabotageFoodZero"
+                                                      Grid.Row="1"
+                                                      DisplayMode="Tiny"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Left"
+                                                      FontWeight="DemiBold"
+                                                      Label="Sabotage Food"
+                                                      Visibility="Collapsed"
+                                                      Foreground="Black"
+                                                      Background="Transparent"
+                                                      BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                      BorderThickness="2"
+                                                      Click = "OnFoodZeroClick"/>
+                                        </Grid>
+                                        <!--Industry Zero-->
+                                        <scc:GameLabel
+                                                    VerticalAlignment="Center"
+                                                    Margin="14,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                        <TextBlock
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Right"
+                                                FontWeight="DemiBold"
+                                                Foreground="Orange"
+                                                Text="Industry: " />
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="24" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                             Grid.Row="1"
+                                             Margin="0,4,0,4"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Left" />
+                                            <scc:GameButton
+                                                  x:Name="SabotageIndustryZero"
+                                                  Grid.Row="1"
+                                                  DisplayMode="Tiny"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Label="Sabotage Industry"
+                                                  Visibility="Collapsed"
+                                                  FontWeight="DemiBold"
+                                                  Foreground="Black"
+                                                  Background="Transparent"
+                                                  BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                  Click = "OnIndustryZeroClick" />
+                                        </Grid>
+                                        <!--Energy Zero-->
+                                        <scc:GameLabel
+                                                    VerticalAlignment="Center"
+                                                    Margin="14,0,2,0"
+                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                        <TextBlock
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Right"
+                                                FontWeight="DemiBold"
+                                                Foreground="Yellow"
+                                                Text="Energy: " />
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="24" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                                   Grid.Row="1"
+                                                   Margin="0,4,0,4"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left" />
+                                            <scc:GameButton
+                                                  x:Name="SabotageEnergyZero"
+                                                  Grid.Row="1"
+                                                  DisplayMode="Tiny"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Label="Sabotage Energy"
+                                                  Visibility="Collapsed"
+                                                  FontWeight="DemiBold"
+                                                  Foreground="Black"
+                                                  Background="Transparent"
+                                                  BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                  Margin="0,0,5,0"
+                                                  Click = "OnEnergyZeroClick" />
+                                        </Grid>
+                                        <!--Research Zero-->
+                                        <scc:GameLabel
+                                               VerticalAlignment="Center"
+                                               Margin="14,0,2,0"
+                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                                               ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                        <TextBlock
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Right"
+                                                FontWeight="DemiBold"
+                                                Foreground="LightBlue"
+                                                Text="Research: " />
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="24" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                                   Grid.Row="1"
+                                                   Margin="0,4,0,4"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left" />
+                                            <scc:GameButton
+                                                  x:Name="StealResearchZero"
+                                                  Grid.Row="1"
+                                                  DisplayMode="Tiny"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Label="Steal Research"
+                                                  Visibility="Collapsed"
+                                                  FontWeight="DemiBold"
+                                                  Foreground="Black"
+                                                  Background="Transparent"
+                                                  BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                  BorderThickness="2"
+                                                  Click = "OnResearchZeroClick"/>
+                                        </Grid>
+                                        <!--Credit One-->
+                                        <scc:GameLabel
+                                                  VerticalAlignment="Center"
+                                                  Margin="14,0,2,0"
+                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Right"
+                                            FontWeight="DemiBold"
+                                            Foreground="LightBlue"
+                                            Text="Credits: " />
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="24" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                                     Grid.Row="1"
+                                                     Margin="0,4,0,4"
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Left" />
+                                            <scc:GameButton
+                                                x:Name="StealCreditsZero"
+                                                Grid.Row="1"
+                                                DisplayMode="Tiny"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Label="Steal Credits"
+                                                Visibility="Collapsed"
+                                                FontWeight="DemiBold"
+                                                Foreground="Black"
+                                                Background="Transparent"
+                                                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                                                Click = "OnCreditsZeroClick"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <!-- Colonies - Zero -->
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
+                                        <v:SpiedZeroColonyList DataContext="{Binding Path=SpiedZeroColonies}" Margin="10,0,0,0" />
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Expander>
+                        <TextBlock Height="5"/>
+                        <!-- One Expander -->
                         <Expander x:Name="EmpireExpanderOne" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" FontSize="20" BorderThickness="3" BorderBrush="White"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
@@ -321,7 +760,7 @@
                                                     Foreground="Red"
                                                     Content="Klingons"
                                                     Tag="5"
-                                                    Checked="OnBlameButtonsOneClick"/>
+                                                    Checked="OnBlameButtonsZeroClick"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameCardassians1"
                                                         Visibility="Collapsed"
@@ -339,7 +778,7 @@
                                                     Foreground="Goldenrod"
                                                     Content="Cardassianss"
                                                     Tag="6"
-                                                    Checked="OnBlameButtonsOneClick"/>
+                                                    Checked="OnBlameButtonsZeroClick"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameDominion1"
                                                         Visibility="Collapsed"
@@ -357,7 +796,7 @@
                                                       Foreground="MediumPurple"
                                                       Content="Dominion"
                                                       Tag="7"
-                                                      Checked="OnBlameButtonsOneClick"/>
+                                                      Checked="OnBlameButtonsZeroClick"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameBorg1"
                                                         Visibility="Collapsed"
@@ -375,7 +814,7 @@
                                                       Foreground="YellowGreen"
                                                       Content="Borg"
                                                       Tag="8"
-                                                      Checked="OnBlameButtonsOneClick"/>
+                                                      Checked="OnBlameButtonsZeroClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -401,8 +840,8 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                Text="{Binding Path=SpiedOneCivName}"/>
-                                        <Image x:Name="InsigniaOne" Margin="5,0,0,0">
-                                        </Image>
+                                        <!--<Image x:Name="InsigniaOne" Margin="5,0,0,0">
+                                        </Image>-->
                                         <!--Food One-->
                                         <scc:GameLabel
                                                    VerticalAlignment="Center"
@@ -587,26 +1026,12 @@
                                                 Foreground="Black"
                                                 Background="Transparent"
                                                 BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                Click = "OnCreditsOneClick"/>
+                                                Click = "OnCreditsZeroClick"/>
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - One -->
                                     <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
                                         <v:SpiedOneColonyList DataContext="{Binding Path=SpiedOneColonies}" Margin="10,0,0,0" />
-                                        <!--<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                            <TextBlock
-                                               Text="     Intelligence Defence Points = "
-                                               HorizontalAlignment="Right"
-                                               Foreground="LightGoldenrodYellow"
-                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                               FontSize="14pt"/>
-                                            <TextBlock
-                                            Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=OneWay}"
-                                            HorizontalAlignment="Left"
-                                            Foreground="OrangeRed"
-                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                            FontSize="14pt"/>
-                                        </StackPanel>-->
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -861,8 +1286,8 @@
                                  Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedTwoCivName}"/>
-                                        <Image x:Name="InsigniaTwo" Margin="5,0,0,0">
-                                        </Image>
+                                        <!--<Image x:Name="InsigniaTwo" Margin="5,0,0,0">
+                                        </Image>-->
                                         <!--Food Two-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -1306,8 +1731,8 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                     Text="{Binding Path=SpiedThreeCivName}"/>
-                                        <Image x:Name="InsigniaThree" Margin="5,0,0,0">
-                                        </Image>
+                                        <!--<Image x:Name="InsigniaThree" Margin="5,0,0,0">
+                                        </Image>-->
                                         <!--Food Three-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -1751,8 +2176,8 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedFourCivName}"/>
-                                        <Image x:Name="InsigniaFour" Margin="5,0,0,0">
-                                        </Image>
+                                        <!--<Image x:Name="InsigniaFour" Margin="5,0,0,0">
+                                        </Image>-->
                                         <!--Food Four-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -2183,21 +2608,21 @@
                                           BorderBrush="Red" />
                                     <!-- Covert Ops buttons five -->
                                     <StackPanel Grid.Row="3"
-                                      Grid.Column="0"
-                                        Orientation="Horizontal"
-                                      HorizontalAlignment="Left"
-                                      Margin="10,0,0,0">
+                                                  Grid.Column="0"
+                                                  Orientation="Horizontal"
+                                                  HorizontalAlignment="Left"
+                                                  Margin="10,0,0,0">
                                         <TextBlock
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="10,0,0,0"
-                                   FontSize="16"
-                               Foreground="AntiqueWhite"
-                               Text="2) Target: " />
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            Margin="10,0,0,0"
+                                            FontSize="16"
+                                            Foreground="AntiqueWhite"
+                                            Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                         Text="{Binding Path=SpiedFiveCivName}"/>
-                                        <Image x:Name="InsigniaFive" Margin="5,0,0,0">
-                                        </Image>
+                                                    Text="{Binding Path=SpiedFiveCivName}"/>
+                                        <!--<Image x:Name="InsigniaFive" Margin="5,0,0,0">
+                                        </Image>-->
                                         <!--Food Five-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -2640,9 +3065,9 @@
                                                 Foreground="AntiqueWhite"
                                                 Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                            Text="{Binding Path=SpiedSixCivName}"/>
-                                        <Image x:Name="InsigniaSix" Margin="5,0,0,0">
-                                        </Image>
+                                                    Text="{Binding Path=SpiedSixCivName}"/>
+                                        <!--<Image x:Name="InsigniaSix" Margin="5,0,0,0">
+                                        </Image>-->
                                         <!--Food Six-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"

@@ -200,6 +200,9 @@ namespace Supremacy.Client.Context
     public static class DesignTimeObjects
     {
         static List<CivilizationManager> managerList;
+        //static List<CivilizationManager> _allManagersList;
+        static CivilizationManager _spyingCivManager;
+        private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
         //private static List<CivilizationManager> spyableCivManagers;
 
         static DesignTimeObjects()
@@ -211,38 +214,60 @@ namespace Supremacy.Client.Context
             get { return managerList; }
 
         }
+        //public static List<CivilizationManager> allCivManagers
+        //{
+        //    get { return _allManagersList; }
+        //    set
+        //    { 
+        //        allCivManagers = managerList;
+        //        allCivManagers.Add(LocalCivManager);
+        //        allCivManagers = value;
+        //    }
+        //}
+        public static CivilizationManager SpiedCivZero
+        {
+            get { return GameContext.Current.CivilizationManagers[0]; }
+
+        }
         public static CivilizationManager SpiedCivOne
         {
-            get { return SpiedCivMangers[0]; }
+            get { return GameContext.Current.CivilizationManagers[1]; ; }
 
         }
         public static CivilizationManager SpiedCivTwo
         {
-            get { return SpiedCivMangers[1]; }
+            get { return GameContext.Current.CivilizationManagers[2]; }
 
         }
         public static CivilizationManager SpiedCivThree
         {
-            get { return SpiedCivMangers[2]; }
+            get { return GameContext.Current.CivilizationManagers[3]; ; }
 
         }
         public static CivilizationManager SpiedCivFour
         {
-            get { return SpiedCivMangers[3]; }
+            get { return GameContext.Current.CivilizationManagers[4]; }
 
         }
         public static CivilizationManager SpiedCivFive
         {
-            get { return SpiedCivMangers[4]; }
+            get { return GameContext.Current.CivilizationManagers[5]; }
 
         }
         public static CivilizationManager SpiedCivSix
         {
-            get { return SpiedCivMangers[5]; }
+            get { return GameContext.Current.CivilizationManagers[6]; }
 
         }
-
-        public static CivilizationManager LocalCivManager
+        //public static CivilizationManager SpyingCivManager
+        //{
+        //    get { return _spyingCivManager; }
+        //    set
+        //    {
+        //        _spyingCivManager = value;
+        //    }
+        //}
+        public static CivilizationManager CivilizationManager
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
         }
@@ -258,6 +283,10 @@ namespace Supremacy.Client.Context
         public static IEnumerable<Colony> Colonies
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
+        }
+        public static IEnumerable<Colony> SpiedZeroColonies
+        {
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivZero.CivilizationID); }
         }
         public static IEnumerable<Colony> SpiedOneColonies
         {
@@ -293,7 +322,7 @@ namespace Supremacy.Client.Context
             get
             {
                 var claims = GameContext.Current.SectorClaims;
-                var owner = LocalCivManager.Civilization;
+                var owner = CivilizationManager.Civilization;
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }
@@ -386,9 +415,9 @@ namespace Supremacy.Client.Context
             return CivManagers;
         }
 
-        public static CivilizationManager GetCivLocalPlayer()
-        {
-            return DesignTimeAppContext.Instance.LocalPlayerEmpire;
-        }
+        //public static CivilizationManager GetCivLocalPlayer()
+        //{
+        //    return DesignTimeAppContext.Instance.LocalPlayerEmpire;
+        //}
     }
 }

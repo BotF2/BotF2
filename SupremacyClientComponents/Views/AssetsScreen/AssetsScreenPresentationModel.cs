@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using Microsoft.Practices.Unity;
-
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Universe;
@@ -21,6 +20,46 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
+        private static AssetsScreenPresentationModel _designInstance;
+
+        public static AssetsScreenPresentationModel DesignInstance
+        {
+            get
+            {
+                if (_designInstance == null)
+                {
+                    _designInstance = new AssetsScreenPresentationModel(DesignTimeAppContext.Instance)
+                                      {
+                                          SelectedColony = DesignTimeObjects.Colony
+                                      };
+                }
+                return _designInstance;
+            }
+        }
+        //public AssetsScreenPresentationModel(IAppContext appContext)
+        //: base(appContext) { }
+
+        public event EventHandler SelectedColonyChanged;
+
+        private Colony _selectedColony;
+        public Colony SelectedColony
+        {
+            get { return _selectedColony; }
+            set
+            {
+                var oldValue = _selectedColony;
+                _selectedColony = value;
+                OnSelectedColonyChanged(oldValue, value);
+            }
+        }
+        private void OnSelectedColonyChanged(Colony oldValue, Colony newValue)
+        {
+            var handler = SelectedColonyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
+            OnPropertyChanged("SelectedColony");
+        }
+        #region Properties for AssestsScreen
         public int TotalIntelligenceProduction
         {
             get
@@ -56,7 +95,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        #region TotalIntelligence Empire
+        
 
         public int TotalIntelligenceDefenseAccumulated
         {
@@ -121,7 +160,7 @@ namespace Supremacy.Client.Views
         }
         protected virtual void FillUpDefense()
         {
-            var civ = GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager.Civilization];
+            var civ = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
             civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
             civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
             civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
@@ -131,7 +170,7 @@ namespace Supremacy.Client.Views
             //OnPropertyChanged("TotalIntelligenceProduction");
 
         }
-        #endregion TotalIntelligence Empire
+        #endregion 
 
         [InjectionConstructor]
         public AssetsScreenPresentationModel([NotNull] IAppContext appContext)
@@ -143,14 +182,15 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
-            _colonies = DesignTimeObjects.LocalCivManager.Colonies;//DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies; 
-            _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
+            _colonies = DesignTimeObjects.CivilizationManager.Colonies;//DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies;
+            _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
+            _spiedOneColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
             _spiedThreeColonies = DesignTimeObjects.SpiedCivThree.Colonies;
             _spiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
             _spiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
             _spiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
-            _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager.Civilization].TotalIntelligenceProduction;
+            _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization].TotalIntelligenceProduction;
             
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
@@ -165,6 +205,9 @@ namespace Supremacy.Client.Views
         public event EventHandler TotalIntelligenceProductionChanged;
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
         public event EventHandler TotalIntelligenceDefenseAccumulatedChanged;
+
+        public event EventHandler SpiedZeroColoniesChanged;
+        public event EventHandler SpiedZeroTotalPopulationChanged;
 
         public event EventHandler SpiedOneColoniesChanged;
         public event EventHandler SpiedOneTotalPopulationChanged;
@@ -185,6 +228,8 @@ namespace Supremacy.Client.Views
         public event EventHandler SpiedSixTotalPopulationChanged;
 
         private IEnumerable<Colony> _colonies;
+
+        private IEnumerable<Colony> _spiedZeroColonies;
 
         private IEnumerable<Colony> _spiedOneColonies;
 
@@ -216,6 +261,20 @@ namespace Supremacy.Client.Views
                 OnTotalIntelligenceProductionChanged();
                 OnTotalIntelligenceAttackingAccumulatedChanged();
                 OnTotalIntelligenceDefenseAccumulatedChanged();
+            }
+        }
+        public IEnumerable<Colony> SpiedZeroColonies
+        {
+            get { return _spiedZeroColonies; }
+            set
+            {
+                if (Equals(value, _spiedZeroColonies))
+                    return;
+
+                _spiedZeroColonies = value;
+
+                OnSpiedZeroColoniesChanged();
+                OnSpiedZeroTotalPopulationChanged();
             }
         }
         public IEnumerable<Colony> SpiedOneColonies
@@ -342,6 +401,16 @@ namespace Supremacy.Client.Views
             TotalIntelligenceDefenseAccumulatedChanged.Raise(this);
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }
+        protected virtual void OnSpiedZeroColoniesChanged()
+        {
+            SpiedZeroColoniesChanged.Raise(this);
+            OnPropertyChanged("SpiedZeroColonies");
+        }
+        protected virtual void OnSpiedZeroTotalPopulationChanged()
+        {
+            SpiedZeroTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedZeroTotalPopulation");
+        }
         protected virtual void OnSpiedOneColoniesChanged()
         {
             SpiedOneColoniesChanged.Raise(this);
@@ -377,7 +446,6 @@ namespace Supremacy.Client.Views
             SpiedSixColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedSixColonies");
         }
-        #endregion Colonies Property
 
         protected virtual void OnSpiedTwoTotalPopulationChanged()
         {
@@ -404,12 +472,14 @@ namespace Supremacy.Client.Views
             SpiedSixTotalPopulationChanged.Raise(this);
             OnPropertyChanged("SpiedSixTotalPopulation");
         }
+        #endregion
+
         #region TotalPopulations and Empire Names
         public Meter TotalPopulation
         {
             get
             {
-                var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager.Civilization]; // not this DesignTimeObjects.LocalCivManager.Civilization
+                var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization]; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -429,14 +499,69 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager.Civilization].Civilization.Name;  // keep this on AppContext
+                return GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization].Civilization.Name;  // keep this on AppContext
             }
         }
         public static Civilization Local
         {
             get
             {
-                return GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager].Civilization;
+                return GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager].Civilization;
+            }
+        }
+        public static Civilization SpiedZeroCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivZero;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                return SpiedCiv.Civilization;
+            }
+        }
+        public static Meter SpiedZeroTotalPopulation
+        {
+            get
+            {
+                var civManager = DesignTimeObjects.SpiedCivZero;
+                try
+                {
+                    GameLog.Core.Intel.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalPopulation;
+                }
+                catch (Exception e)
+                {
+                    Meter zero = new Meter(0, 0, 0);
+                    GameLog.Core.Intel.WarnFormat("Problem occured at SpiedZeroTotalPopulation:");
+                    GameLog.Core.General.Error(e);
+                    return zero;
+                }
+            }
+        }
+
+        public static string SpiedFedName
+        {
+            get
+            {
+                //string sp1Name = "Empty";
+                //try
+                //{
+                //    sp1Name = DesignTimeObjects.SpiedCivOne.Civilization.Name;
+                //}
+                //catch
+                //{
+                //    // 
+                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
+                //}
+                return "Federation0";
+            }
+        }
+        public static Civilization SpiedOneCiv
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivOne;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                return SpiedCiv.Civilization;
             }
         }
         public static Meter SpiedOneTotalPopulation
@@ -457,34 +582,32 @@ namespace Supremacy.Client.Views
                     return zero;
                 }
             }
-        }
+        }  
         public static string SpiedOneCivName
         {
             get
             {
-                string sp1Name = "Empty";
-                try
-                {
-                    sp1Name = DesignTimeObjects.SpiedCivOne.Civilization.Name;
-                }
-                catch
-                {
-                    // 
-                    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
-                }
-                return sp1Name;
+                //string sp1Name = "Empty";
+                //try
+                //{
+                //    sp1Name = DesignTimeObjects.SpiedCivZero.Civilization.Name;
+                //}
+                //catch
+                //{
+                //    // 
+                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
+                //}
+                return "Terran Empire0"; //p1Name;
             }
         }
-        public static Civilization SpiedOneCiv
+        public static Civilization SpiedTwoCiv
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivOne;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
                 return SpiedCiv.Civilization;
             }
         }
-
         public Meter SpiedTwoTotalPopulation
         {
             get
@@ -508,28 +631,27 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                string sp2Name = "Empty";
-                try
-                {
-                    sp2Name = DesignTimeObjects.SpiedCivTwo.Civilization.Name;
-                }
-                catch
-                {
-                    //
-                    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedTwoCivName");
-                }
-                return sp2Name;
+                //string sp2Name = "Empty";
+                //try
+                //{
+                //    sp2Name = DesignTimeObjects.SpiedCivTwo.Civilization.Name;
+                //}
+                //catch
+                //{
+                //    //
+                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedTwoCivName");
+                //}
+                return "Romulans0"; // sp2Name;
             }
         }
-        public static Civilization SpiedTwoCiv
+        public static Civilization SpiedThreeCiv
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
+                var SpiedCiv = DesignTimeObjects.SpiedCivThree;
                 return SpiedCiv.Civilization;
             }
         }
-
         public Meter SpiedThreeTotalPopulation
         {
             get
@@ -554,27 +676,26 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                string sp3Name = "Empty";
-                try
-                {
-                    sp3Name = DesignTimeObjects.SpiedCivThree.Civilization.Name;
-                }
-                catch
-                {
-                    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
-                }
-                return sp3Name;
+                //string sp3Name = "Empty";
+                //try
+                //{
+                //    sp3Name = DesignTimeObjects.SpiedCivThree.Civilization.Name;
+                //}
+                //catch
+                //{
+                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
+                //}
+                return "Klingons0"; // sp3Name;
             }
         }
-        public static Civilization SpiedThreeCiv
+        public static Civilization SpiedFourCiv
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivThree;
+                var SpiedCiv = DesignTimeObjects.SpiedCivFour;
                 return SpiedCiv.Civilization;
             }
         }
-
         public Meter SpiedFourTotalPopulation
         {
             get
@@ -598,27 +719,26 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                string sp4Name = "Empty";
-                try
-                {
-                    sp4Name = DesignTimeObjects.SpiedCivFour.Civilization.Name;
-                }
-                catch
-                {
-                    //
-                }
-                return sp4Name;
+                //string sp4Name = "Empty";
+                //try
+                //{
+                //    sp4Name = DesignTimeObjects.SpiedCivFour.Civilization.Name;
+                //}
+                //catch
+                //{
+                //    //
+                //}
+                return "Cardassians"; // sp4Name;
             }
         }
-        public static Civilization SpiedFourCiv
+        public static Civilization SpiedFiveCiv
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivFour;
+                var SpiedCiv = DesignTimeObjects.SpiedCivFive;
                 return SpiedCiv.Civilization;
             }
         }
-
         public Meter SpiedFiveTotalPopulation
         {
             get
@@ -642,27 +762,26 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                string sp5Name = "Empty";
-                try
-                {
-                    sp5Name = DesignTimeObjects.SpiedCivFive.Civilization.Name;
-                }
-                catch
-                {
-                    //
-                }
-                return sp5Name;
+                //string sp5Name = "Empty";
+                //try
+                //{
+                //    sp5Name = DesignTimeObjects.SpiedCivFive.Civilization.Name;
+                //}
+                //catch
+                //{
+                //    //
+                //}
+                return "Dominion"; // sp5Name;
             }
         }
-        public static Civilization SpiedFiveCiv
+        public static Civilization SpiedSixCiv
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivFive;
+                var SpiedCiv = DesignTimeObjects.SpiedCivSix;
                 return SpiedCiv.Civilization;
             }
         }
-
         public Meter SpiedSixTotalPopulation
         {
             get
@@ -686,37 +805,30 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                string sp6Name = "Empty";
-                try
-                {
-                    sp6Name = DesignTimeObjects.SpiedCivSix.Civilization.Name;
-                }
-                catch
-                {
-                    //
-                }
-                return sp6Name;
+                //string sp6Name = "Empty";
+                //try
+                //{
+                //    sp6Name = DesignTimeObjects.SpiedCivSix.Civilization.Name;
+                //}
+                //catch
+                //{
+                //    //
+                //}
+                return "Bor0"; // sp6Name;
             }
         }
-        public static Civilization SpiedSixCiv
-        {
-            get
-            {
-                var SpiedCiv = DesignTimeObjects.SpiedCivSix;
-                return SpiedCiv.Civilization;
-            }
-        }
+
         #endregion
 
         #region Credits Empire
 
-        public Meter CreditsEmpire
+        public Meter CreditsEmpire // do we need this???
         {
             get
             {
                 try
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.LocalCivManager.Civilization];
+                    var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
                     return civManager.Credits;
                 }
                 catch
@@ -778,6 +890,7 @@ namespace Supremacy.Client.Views
         }
 
         #endregion
+
         //protected void Reset() // do we need this??
         //{
         //    TotalIntelligenceAttackingAccumulated = 1;

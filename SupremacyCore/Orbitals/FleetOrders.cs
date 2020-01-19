@@ -402,22 +402,23 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            if (!base.IsValidOrder(fleet))
-                return false;
-            if (fleet.Sector.System == null)
-                return false;
-            //if (fleet.Sector.System.IsInhabited)
+            return false; // replaced by AssetsScreen spy mission
+            //if (!base.IsValidOrder(fleet))
             //    return false;
-            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
-                return false;
-            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //if (fleet.Sector.System == null)
             //    return false;
-            foreach (var ship in fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Spy)
-                    return true;
-            }
-            return false;
+            ////if (fleet.Sector.System.IsInhabited)
+            ////    return false;
+            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+            //    return false;
+            ////if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            ////    return false;
+            //foreach (var ship in fleet.Ships)
+            //{
+            //    if (ship.ShipType == ShipType.Spy)
+            //        return true;
+            //}
+            //return false;
         }
 
         protected internal override void OnTurnBeginning()
@@ -679,6 +680,10 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
                 return false;
+            //if (!fleet.Sector.Owner.IsEmpire)
+            //    return false;
+            if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
+                return false;
             foreach (var ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)
@@ -801,18 +806,19 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            if (!base.IsValidOrder(fleet))
-                return false;
-            if (fleet.Sector.System == null)
-                return false;
-            if (!fleet.Sector.System.HasColony)
-                return false;
-            if (fleet.Sector.System.Owner == fleet.Owner)
-                return false;
-            if (!fleet.Ships.Any(s => s.ShipType == ShipType.FastAttack))
-                return false;
+            return false; // replaced by AssetsScreen spy missions
+            //if (!base.IsValidOrder(fleet))
+            //    return false;
+            //if (fleet.Sector.System == null)
+            //    return false;
+            //if (!fleet.Sector.System.HasColony)
+            //    return false;
+            //if (fleet.Sector.System.Owner == fleet.Owner)
+            //    return false;
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.FastAttack))
+            //    return false;
 
-            return true;
+            //return true;
         }
 
         protected internal override void OnTurnBeginning()
@@ -937,18 +943,19 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            if (!base.IsValidOrder(fleet))
-                return false;
-            if (fleet.Sector.System == null)
-                return false;
-            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
-                return false;
-            foreach (var ship in fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Spy)
-                    return true;
-            }
-            return false;
+            return false; // not use in place of AssetsScreen spy missions taking over
+            //if (!base.IsValidOrder(fleet))
+            //    return false;
+            //if (fleet.Sector.System == null)
+            //    return false;
+            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+            //    return false;
+            //foreach (var ship in fleet.Ships)
+            //{
+            //    if (ship.ShipType == ShipType.Spy)
+            //        return true;
+            //}
+            //return false;
         }
 
         protected internal override void OnTurnBeginning()
