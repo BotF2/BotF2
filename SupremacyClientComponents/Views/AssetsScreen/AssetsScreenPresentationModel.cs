@@ -26,18 +26,19 @@ namespace Supremacy.Client.Views
         //{
         //    get
         //    {
-        //        //if (_designInstance == null)
-        //        //{
-        //        //    _designInstance = new AssetsScreenPresentationModel(DesignTimeAppContext.Instance)
-        //        //                      {
-        //        //                          SelectedColony = DesignTimeObjects.FirstSpiedColony
-        //        //                      };
-        //        //}
+        //        if (_designInstance == null)
+        //        {
+        //            _designInstance = new AssetsScreenPresentationModel(DesignTimeAppContext.Instance)
+        //            {
+        //                SelectedColony = DesignTimeObjects.Colony
+        //            };
+        //        }
+       
         //        return _designInstance;
         //    }
         //}
-        //public AssetsScreenPresentationModel(IAppContext appContext)
-        //: base(appContext) { }
+        ////public AssetsScreenPresentationModel(IAppContext appContext)
+        ////: base(appContext) { }
 
         //public event EventHandler SelectedColonyChanged;
 
@@ -552,7 +553,7 @@ namespace Supremacy.Client.Views
                 //    // 
                 //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
                 //}
-                return "Federation0";
+                return "Federation";
             }
         }
         public static Civilization SpiedOneCiv
@@ -583,7 +584,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }  
-        public static string SpiedOneCivName
+        public static string SpiedTerranName
         {
             get
             {
@@ -597,7 +598,7 @@ namespace Supremacy.Client.Views
                 //    // 
                 //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
                 //}
-                return "Terran Empire0"; //p1Name;
+                return "Terran Empire"; //p1Name;
             }
         }
         public static Civilization SpiedTwoCiv
@@ -627,7 +628,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedTwoCivName
+        public static string SpiedRomName
         {
             get
             {
@@ -641,7 +642,7 @@ namespace Supremacy.Client.Views
                 //    //
                 //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedTwoCivName");
                 //}
-                return "Romulans0"; // sp2Name;
+                return "Romulans"; // sp2Name;
             }
         }
         public static Civilization SpiedThreeCiv
@@ -672,7 +673,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public static string SpiedThreeCivName
+        public static string SpiedKlingName
         {
             get
             {
@@ -685,7 +686,7 @@ namespace Supremacy.Client.Views
                 //{
                 //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
                 //}
-                return "Klingons0"; // sp3Name;
+                return "Klingons"; // sp3Name;
             }
         }
         public static Civilization SpiedFourCiv
@@ -715,7 +716,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedFourCivName
+        public static string SpiedCardName
         {
             get
             {
@@ -758,7 +759,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedFiveCivName
+        public static string SpiedDomName
         {
             get
             {
@@ -801,7 +802,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedSixCivName
+        public static string SpiedBorgName
         {
             get
             {
@@ -814,7 +815,7 @@ namespace Supremacy.Client.Views
                 //{
                 //    //
                 //}
-                return "Bor0"; // sp6Name;
+                return "Borg"; // sp6Name;
             }
         }
 

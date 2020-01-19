@@ -161,7 +161,7 @@
                     <StackPanel Height="1400" Margin="5,0,0,0">
       <!-- Zero Expander -->
                         <Expander x:Name="EmpireExpanderZero" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFED}" FontSize="20" BorderThickness="3" BorderBrush="White"
+                                 IsExpanded="True" Header="{Binding Path=SpiedFedName}" FontSize="20" BorderThickness="3" BorderBrush="White"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid Name="EmpireGridZero" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -401,8 +401,8 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                Text="{Binding Path=SpiedFedName}"/>
-                                        <!--<Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="5,0,0,0">
-                                        </Image>-->
+                                        <Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="5,0,0,0">
+                                        </Image>
                                         <!--Food Zero-->
                                         <scc:GameLabel
                                                    VerticalAlignment="Center"
@@ -598,9 +598,9 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-                        <!-- One Expander -->
+     <!-- One Expander -->
                         <Expander x:Name="EmpireExpanderOne" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedOneCivName}" FontSize="20" BorderThickness="3" BorderBrush="White"
+                                 IsExpanded="True" Header="{Binding Path=SpiedTerranName}" FontSize="20" BorderThickness="3" BorderBrush="White"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -839,9 +839,9 @@
                                              Foreground="AntiqueWhite"
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                               Text="{Binding Path=SpiedOneCivName}"/>
-                                        <!--<Image x:Name="InsigniaOne" Margin="5,0,0,0">
-                                        </Image>-->
+                                               Text="{Binding Path=SpiedTerranName}"/>
+                                        <Image Source="vfs:///Resources/Images/Insignias/TERRANEMPIRE.png" Margin="5,0,0,0">
+                                        </Image>
                                         <!--Food One-->
                                         <scc:GameLabel
                                                    VerticalAlignment="Center"
@@ -1039,7 +1039,7 @@
                         <TextBlock Height="5"/>
         <!-- Two Expander -->
                         <Expander x:Name="EmpireExpanderTwo" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedTwoCivName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedRomName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridTwo" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -1285,9 +1285,9 @@
                                                  Foreground="AntiqueWhite"
                                  Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                                   Text="{Binding Path=SpiedTwoCivName}"/>
-                                        <!--<Image x:Name="InsigniaTwo" Margin="5,0,0,0">
-                                        </Image>-->
+                                                   Text="{Binding Path=SpiedRomName}"/>
+                                        <Image Source="vfs:///Resources/Images/Insignias/ROMULANS.png" Margin="5,0,0,0">
+                                        </Image>
                                         <!--Food Two-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -1485,7 +1485,7 @@
                         <TextBlock Height="5"/>
       <!-- Three Expander -->
                         <Expander x:Name="EmpireExpanderThree" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedThreeCivName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedKlingName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3" >
                             <Grid x:Name="EmpireGridThree" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -1730,9 +1730,9 @@
                                              Foreground="AntiqueWhite"
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                                    Text="{Binding Path=SpiedThreeCivName}"/>
-                                        <!--<Image x:Name="InsigniaThree" Margin="5,0,0,0">
-                                        </Image>-->
+                                                    Text="{Binding Path=SpiedKlingName}"/>
+                                        <Image Source="vfs:///Resources/Images/Insignias/KLINGONS.png" Margin="5,0,0,0">
+                                        </Image>
                                         <!--Food Three-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -1930,7 +1930,7 @@
                         <TextBlock Height="5"/>
       <!-- Four Expander -->
                         <Expander x:Name="EmpireExpanderFour" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedFourCivName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridFour" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -2175,9 +2175,9 @@
                                              Foreground="AntiqueWhite"
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                                   Text="{Binding Path=SpiedFourCivName}"/>
-                                        <!--<Image x:Name="InsigniaFour" Margin="5,0,0,0">
-                                        </Image>-->
+                                                   Text="{Binding Path=SpiedCardName}"/>
+                                        <Image Source="vfs:///Resources/Images/Insignias/CARDASSIANS.png" Margin="5,0,0,0">
+                                        </Image>
                                         <!--Food Four-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -2375,7 +2375,7 @@
                         <TextBlock Height="5"/>
        <!-- Five Expander -->
                         <Expander x:Name="EmpireExpanderFive" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedFiveCivName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedDomName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4"  Grid.Row="3">
                             <Grid x:Name="EmpireGridFive" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -2620,9 +2620,9 @@
                                             Foreground="AntiqueWhite"
                                             Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                                    Text="{Binding Path=SpiedFiveCivName}"/>
-                                        <!--<Image x:Name="InsigniaFive" Margin="5,0,0,0">
-                                        </Image>-->
+                                                    Text="{Binding Path=SpiedDomName}"/>
+                                        <Image Source="vfs:///Resources/Images/Insignias/DOMINION.png" Margin="5,0,0,0">
+                                        </Image>
                                         <!--Food Five-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
@@ -2820,7 +2820,7 @@
                         <TextBlock Height="5"/>
       <!-- Six Expander -->
                         <Expander x:Name="EmpireExpanderSix" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedSixCivName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedBorgName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridSix" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -3065,9 +3065,9 @@
                                                 Foreground="AntiqueWhite"
                                                 Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
-                                                    Text="{Binding Path=SpiedSixCivName}"/>
-                                        <!--<Image x:Name="InsigniaSix" Margin="5,0,0,0">
-                                        </Image>-->
+                                                    Text="{Binding Path=SpiedBorgName}"/>
+                                        <Image Source="vfs:///Resources/Images/Insignias/BORG.png" Margin="5,0,0,0">
+                                        </Image>
                                         <!--Food Six-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
