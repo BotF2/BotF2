@@ -68,7 +68,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyZero)
                 return true;
-            else if (CivZero == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
+            else if (CivZero == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
             {
                 alreadyZero = true;
                 return true;
@@ -81,7 +81,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyOne)
                 return true;
-            else if (CivOne == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
+            else if (CivOne == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
             {
                 alreadyOne = true;
                 return true;
@@ -94,7 +94,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyTwo)
                 return true;
-            else if (CivTwo == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
+            else if (CivTwo == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
             {
                 alreadyTwo = true;
                 return true;
@@ -107,7 +107,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyThree)
                 return true;
-            else if (CivThree == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
+            else if (CivThree == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
             {
                 alreadyThree = true;
                 return true;
@@ -120,7 +120,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyFour)
                 return true;
-            else if (CivFour == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
+            else if (CivFour == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
             {
                 alreadyFour = true;
                 return true;
@@ -133,7 +133,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadyFive)
                 return true;
-            else if (CivFive == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
+            else if (CivFive == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
             {
                 alreadyFive = true;
                 return true;
@@ -146,7 +146,7 @@ namespace Supremacy.Intelligence
                 return false;
             else if (alreadySix)
                 return true;
-            else if (CivSix == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(NewTargetCiv))
+            else if (CivSix == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
             {
                 alreadySix = true;
                 return true;
