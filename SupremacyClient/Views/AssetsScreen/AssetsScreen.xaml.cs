@@ -117,13 +117,14 @@ namespace Supremacy.Client.Views
 
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var _civLocalPlayer = DesignTimeObjects.Colony.Owner;//AppContext.LocalPlayerEmpire.Civilization;
+            var _civLocalPlayer = AppContext.LocalPlayer.Empire;//AppContext.LocalPlayerEmpire.Civilization;
             GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
             if (IsVisible)
             {
                 ResumeAnimations();
                 GameLog.Client.UI.DebugFormat("begin of checking visible");
+                GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
 
                 if (!AssetsHelper.IsSpiedZero(_spiedZeroCiv) || _spiedZeroCiv == _civLocalPlayer)
                 {
@@ -131,6 +132,7 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
+                    EmpireExpanderZero.Visibility = Visibility.Visible;
                     SabotageEnergyZero.Visibility = Visibility.Visible;
                     SabotageFoodZero.Visibility = Visibility.Visible;
                     SabotageIndustryZero.Visibility = Visibility.Visible;
@@ -146,12 +148,12 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                        EmpireExpanderOne.Visibility = Visibility.Visible;                    
-                        SabotageEnergyOne.Visibility = Visibility.Visible;
-                        SabotageFoodOne.Visibility = Visibility.Visible;
-                        SabotageIndustryOne.Visibility = Visibility.Visible;
-                        StealResearchOne.Visibility = Visibility.Visible;
-                        StealCreditsOne.Visibility = Visibility.Visible;
+                    EmpireExpanderOne.Visibility = Visibility.Visible;                    
+                    SabotageEnergyOne.Visibility = Visibility.Visible;
+                    SabotageFoodOne.Visibility = Visibility.Visible;
+                    SabotageIndustryOne.Visibility = Visibility.Visible;
+                    StealResearchOne.Visibility = Visibility.Visible;
+                    StealCreditsOne.Visibility = Visibility.Visible;
                 }
 
                     GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
@@ -284,6 +286,7 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(0) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[0]].IsContactMade())
                 {
+                    EmpireExpanderZero.Visibility = Visibility.Visible;
                     BlameFederation1.Visibility = Visibility.Visible;
                     BlameFederation2.Visibility = Visibility.Visible;
                     BlameFederation3.Visibility = Visibility.Visible;
@@ -298,6 +301,7 @@ namespace Supremacy.Client.Views
                 {
                     //if (empireCivsDictionary[1] == empireCivsList[0]) // if the Terran Empire (key =1) is in the first index (first expander spy report)
                     //{
+                        EmpireExpanderOne.Visibility = Visibility.Visible;
                         BlameTerranEmpire0.Visibility = Visibility.Visible;
                         BlameTerranEmpire2.Visibility = Visibility.Visible;
                         BlameTerranEmpire3.Visibility = Visibility.Visible;
@@ -320,6 +324,7 @@ namespace Supremacy.Client.Views
                 {
                     //if (empireCivsDictionary[2] == empireCivsList[0])
                     //{
+                    EmpireExpanderTwo.Visibility = Visibility.Visible;
                     BlameRomulans0.Visibility = Visibility.Visible;
                     BlameRomulans1.Visibility = Visibility.Visible;
                     BlameRomulans3.Visibility = Visibility.Visible;
@@ -349,7 +354,8 @@ namespace Supremacy.Client.Views
                 {
                     //if (empireCivsDictionary[3] == empireCivsList[0])
                     //{
-                        BlameKlingons0.Visibility = Visibility.Visible;
+                    EmpireExpanderThree.Visibility = Visibility.Visible;
+                    BlameKlingons0.Visibility = Visibility.Visible;
                         BlameKlingons1.Visibility = Visibility.Visible;
                         BlameKlingons2.Visibility = Visibility.Visible;
                         BlameKlingons4.Visibility = Visibility.Visible;
@@ -386,8 +392,8 @@ namespace Supremacy.Client.Views
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
                     //if (empireCivsDictionary[4] == empireCivsList[0])
-                    //{
-                        BlameCardassians0.Visibility = Visibility.Visible;
+                    EmpireExpanderFour.Visibility = Visibility.Visible;
+                    BlameCardassians0.Visibility = Visibility.Visible;
                         BlameCardassians1.Visibility = Visibility.Visible;
                         BlameCardassians2.Visibility = Visibility.Visible;
                         BlameCardassians3.Visibility = Visibility.Visible;
@@ -433,7 +439,8 @@ namespace Supremacy.Client.Views
                 {
                     //if (empireCivsDictionary[5] == empireCivsList[0])
                     //{
-                        BlameDominion0.Visibility = Visibility.Visible;
+                    EmpireExpanderFive.Visibility = Visibility.Visible;
+                    BlameDominion0.Visibility = Visibility.Visible;
                         BlameDominion1.Visibility = Visibility.Visible;
                         BlameDominion2.Visibility = Visibility.Visible;
                         BlameDominion3.Visibility = Visibility.Visible;
@@ -486,7 +493,8 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(6) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[6]].IsContactMade())
                 {
-                        BlameBorg0.Visibility = Visibility.Visible;
+                    EmpireExpanderSix.Visibility = Visibility.Visible;
+                    BlameBorg0.Visibility = Visibility.Visible;
                         BlameBorg1.Visibility = Visibility.Visible;
                         BlameBorg2.Visibility = Visibility.Visible;
                         BlameBorg3.Visibility = Visibility.Visible;
