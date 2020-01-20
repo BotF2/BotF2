@@ -204,6 +204,42 @@ namespace Supremacy.Client.Context
         static CivilizationManager _spyingCivManager;  // syping, but in mulitplayer maybe different to local one
         static CivilizationManager _spiedCivDummy;
         private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
+        private static bool _subedZero = false;
+        private static bool _subedOne = false;
+        private static bool _subedTwo = false;
+        private static bool _subedThree = false;
+        private static bool _subedFour = false;
+        private static bool _subedFive = false;
+        private static bool _subedSix = false;
+        public static bool SubedZero
+        {
+            get { return _subedZero; }
+        }
+        public static bool SubedOne
+        {
+            get { return _subedOne; }
+        }
+        public static bool SubedTwo
+        {
+            get { return _subedTwo; }
+        }
+        public static bool SubedThree
+        {
+            get { return _subedThree; }
+        }
+        public static bool SubedFour
+        {
+            get { return _subedFour; }
+        }
+        public static bool SubedFive
+        {
+            get { return _subedFive; }
+        }
+        public static bool SubedSix
+        {
+            get { return _subedSix; }
+        }
+
         //private static List<CivilizationManager> spyableCivManagers;
 
         //static DesignTimeObjects()
@@ -234,7 +270,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
                 }
-                catch { }
+                catch { _subedZero = true; }
                 return _spiedCivDummy;
             }
         }
@@ -247,7 +283,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
                 }
-                catch { }
+                catch { _subedOne = true; }
                 return _spiedCivDummy;
             }
         }
@@ -261,7 +297,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
                 }
-                catch { }
+                catch { _subedTwo = true; }
                 return _spiedCivDummy;
             }
         }
@@ -274,7 +310,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
                 }
-                catch { }
+                catch { _subedThree = true; }
                 return _spiedCivDummy;
             }
         }
@@ -287,7 +323,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
                 }
-                catch { }
+                catch { _subedFour = true; }
                 return _spiedCivDummy;
             }
         }
@@ -300,7 +336,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
                 }
-                catch { }
+                catch { _subedFive = true; }
                 return _spiedCivDummy;
             }
         }
@@ -313,7 +349,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
                 }
-                catch { }
+                catch { _subedSix = true; }
                 return _spiedCivDummy;
             }
 

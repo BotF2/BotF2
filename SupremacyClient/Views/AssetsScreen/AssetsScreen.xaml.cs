@@ -1,4 +1,6 @@
-﻿using Supremacy.Client.Context;
+﻿using Avalon.Windows.Annotations;
+using Microsoft.Practices.Unity;
+using Supremacy.Client.Context;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -9,6 +11,7 @@ using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
@@ -21,9 +24,11 @@ namespace Supremacy.Client.Views
     /// <summary>
     /// Interaction logic for AssetsScreen.xaml
     /// </summary>
-    public partial class AssetsScreen : IAssetsScreenView
+    public partial class AssetsScreen : IAssetsScreenView, IWeakEventListener
     {
-        //no GameLog here possible ....  GameLog.Client.UI.DebugFormat("populating _blameWhoZero...");
+        private readonly IUnityContainer _container;
+        private readonly IAppContext _appContext;
+
         private string _blameWhoZero = "No one";
         private string _blameWhoOne = "No one";
         private string _blameWhoTwo = "No one";
@@ -47,19 +52,19 @@ namespace Supremacy.Client.Views
         Civilization _spiedFourCiv = DesignTimeObjects.SpiedCivFour.Civilization;
         Civilization _spiedFiveCiv = DesignTimeObjects.SpiedCivFive.Civilization;
         Civilization _spiedSixCiv = DesignTimeObjects.SpiedCivSix.Civilization;
-        //public string BlameWhoOne
-        //{
-        //    get { return _blameWhoOne; }
-        //    set
-        //    {
-        //        value = _blameWhoOne;
-        //    }
-        //}
 
-        public AssetsScreen()
+        public AssetsScreen([NotNull] IUnityContainer container)
         {
+            if (container == null)
+                throw new ArgumentNullException("container");
+
+            _container = container;
+            _appContext = _container.Resolve<IAppContext>();
 
             InitializeComponent();
+
+            PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
+
             GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
             IsVisibleChanged += OnIsVisibleChanged;
 
@@ -114,10 +119,18 @@ namespace Supremacy.Client.Views
 
             //LoadInsignia();
         }
+        private void OnLocalPlayerEmpireChanged()
+        {
+            if (!_appContext.IsGameInPlay || _appContext.IsGameEnding)
+                return;
 
+            var localPlayerEmpire = _appContext.LocalPlayerEmpire;
+            if (localPlayerEmpire == null)
+                return;
+        }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var _civLocalPlayer = AppContext.LocalPlayer.Empire;//AppContext.LocalPlayerEmpire.Civilization;
+            var _civLocalPlayer = _appContext.LocalPlayer.Empire;//AppContext.LocalPlayerEmpire.Civilization;
             GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
             if (IsVisible)
@@ -126,7 +139,7 @@ namespace Supremacy.Client.Views
                 GameLog.Client.UI.DebugFormat("begin of checking visible");
                 GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
 
-                if (!AssetsHelper.IsSpiedZero(_spiedZeroCiv) ||_spiedZeroCiv == _civLocalPlayer)
+                if (!AssetsHelper.IsSpiedZero(_civLocalPlayer) || _spiedZeroCiv == _civLocalPlayer)
                 {
                     EmpireExpanderZero.Visibility = Visibility.Collapsed;
                 }
@@ -141,7 +154,7 @@ namespace Supremacy.Client.Views
                 }
 
                     GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
-                if (!AssetsHelper.IsSpiedOne(_spiedOneCiv) || _spiedOneCiv == _civLocalPlayer)
+                if (!AssetsHelper.IsSpiedOne(_civLocalPlayer) || _spiedOneCiv == _civLocalPlayer)
                 {
 
                     EmpireExpanderOne.Visibility = Visibility.Collapsed;
@@ -157,7 +170,7 @@ namespace Supremacy.Client.Views
                 }
 
                     GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
-                if (!AssetsHelper.IsSpiedTwo(_spiedTwoCiv) || _spiedTwoCiv == _civLocalPlayer)
+                if (!AssetsHelper.IsSpiedTwo(_civLocalPlayer) || _spiedTwoCiv == _civLocalPlayer)
                 {
 
                     EmpireExpanderTwo.Visibility = Visibility.Collapsed;
@@ -173,7 +186,7 @@ namespace Supremacy.Client.Views
                 }
 
                 GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
-                if (!AssetsHelper.IsSpiedThree(_spiedThreeCiv) || _spiedThreeCiv == _civLocalPlayer)
+                if (!AssetsHelper.IsSpiedThree(_civLocalPlayer) || _spiedThreeCiv == _civLocalPlayer)
                 {                    
                     EmpireExpanderThree.Visibility = Visibility.Collapsed;
                 }
@@ -188,7 +201,7 @@ namespace Supremacy.Client.Views
                 }
 
                     GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
-                if (!AssetsHelper.IsSpiedFour(_spiedFourCiv) || _spiedFourCiv == _civLocalPlayer)
+                if (!AssetsHelper.IsSpiedFour(_civLocalPlayer) || _spiedFourCiv == _civLocalPlayer)
                 {
 
                     EmpireExpanderFour.Visibility = Visibility.Collapsed;
@@ -204,7 +217,7 @@ namespace Supremacy.Client.Views
                 }
 
                     GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
-                if (!AssetsHelper.IsSpiedFive(_spiedFiveCiv) || _spiedFiveCiv == _civLocalPlayer)
+                if (!AssetsHelper.IsSpiedFive(_civLocalPlayer) || _spiedFiveCiv == _civLocalPlayer)
                 {
 
                     EmpireExpanderFive.Visibility = Visibility.Collapsed;
@@ -221,7 +234,7 @@ namespace Supremacy.Client.Views
                 }
 
                     GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
-                if (!AssetsHelper.IsSpiedSix(_spiedSixCiv) || _spiedSixCiv == _civLocalPlayer)
+                if (!AssetsHelper.IsSpiedSix(_civLocalPlayer) || _spiedSixCiv == _civLocalPlayer)
                 {
 
                     EmpireExpanderSix.Visibility = Visibility.Collapsed;
@@ -281,12 +294,11 @@ namespace Supremacy.Client.Views
                 ////}
 
 
-                GameLog.Client.UI.DebugFormat("ToDO: bring back blamed stuff");
-
                 if (empireCivsDictionary.Keys.Contains(0) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[0]].IsContactMade())
                 {
-                    EmpireExpanderZero.Visibility = Visibility.Visible;
+                    if (AssetsHelper.IsSpiedZero(_civLocalPlayer))
+                        EmpireExpanderZero.Visibility = Visibility.Visible;
                     BlameFederation1.Visibility = Visibility.Visible;
                     BlameFederation2.Visibility = Visibility.Visible;
                     BlameFederation3.Visibility = Visibility.Visible;
@@ -299,249 +311,79 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(1) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[1]].IsContactMade())
                 {
-                    //if (empireCivsDictionary[1] == empireCivsList[0]) // if the Terran Empire (key =1) is in the first index (first expander spy report)
-                    //{
+                    if (AssetsHelper.IsSpiedOne(_civLocalPlayer))
                         EmpireExpanderOne.Visibility = Visibility.Visible;
-                        BlameTerranEmpire0.Visibility = Visibility.Visible;
-                        BlameTerranEmpire2.Visibility = Visibility.Visible;
-                        BlameTerranEmpire3.Visibility = Visibility.Visible;
-                        BlameTerranEmpire4.Visibility = Visibility.Visible;
-                        BlameTerranEmpire5.Visibility = Visibility.Visible;
-                        BlameTerranEmpire6.Visibility = Visibility.Visible;
-                    //}
-
-                    //else
-                    //{
-                    //    BlameTerranEmpire1.Visibility = Visibility.Visible;
-                    //    BlameTerranEmpire3.Visibility = Visibility.Visible;
-                    //    BlameTerranEmpire4.Visibility = Visibility.Visible;
-                    //    BlameTerranEmpire5.Visibility = Visibility.Visible;
-                    //    BlameTerranEmpire6.Visibility = Visibility.Visible;
-                    //}
+                    BlameTerranEmpire0.Visibility = Visibility.Visible;
+                    BlameTerranEmpire2.Visibility = Visibility.Visible;
+                    BlameTerranEmpire3.Visibility = Visibility.Visible;
+                    BlameTerranEmpire4.Visibility = Visibility.Visible;
+                    BlameTerranEmpire5.Visibility = Visibility.Visible;
+                    BlameTerranEmpire6.Visibility = Visibility.Visible;
                 }
                 if (empireCivsDictionary.Keys.Contains(2) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[2]].IsContactMade())
                 {
-                    //if (empireCivsDictionary[2] == empireCivsList[0])
-                    //{
-                    EmpireExpanderTwo.Visibility = Visibility.Visible;
+                    if (AssetsHelper.IsSpiedTwo(_civLocalPlayer))
+                        EmpireExpanderTwo.Visibility = Visibility.Visible;
                     BlameRomulans0.Visibility = Visibility.Visible;
                     BlameRomulans1.Visibility = Visibility.Visible;
                     BlameRomulans3.Visibility = Visibility.Visible;
                     BlameRomulans4.Visibility = Visibility.Visible;
                     BlameRomulans5.Visibility = Visibility.Visible;
                     BlameRomulans6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[2] == empireCivsList[1])
-                    //{
-                    //    BlameRomulans1.Visibility = Visibility.Visible;
-                    //    BlameRomulans3.Visibility = Visibility.Visible;
-                    //    BlameRomulans4.Visibility = Visibility.Visible;
-                    //    BlameRomulans5.Visibility = Visibility.Visible;
-                    //    BlameRomulans6.Visibility = Visibility.Visible;
-                    //}
-                    //else
-                    //{
-                    //    BlameRomulans1.Visibility = Visibility.Visible;
-                    //    BlameRomulans2.Visibility = Visibility.Visible;
-                    //    BlameRomulans4.Visibility = Visibility.Visible;
-                    //    BlameRomulans5.Visibility = Visibility.Visible;
-                    //    BlameRomulans6.Visibility = Visibility.Visible;
-                    //}
                 }
                 if (empireCivsDictionary.Keys.Contains(3) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[3]].IsContactMade())
                 {
-                    //if (empireCivsDictionary[3] == empireCivsList[0])
-                    //{
-                    EmpireExpanderThree.Visibility = Visibility.Visible;
+                    if (AssetsHelper.IsSpiedThree(_civLocalPlayer))
+                        EmpireExpanderThree.Visibility = Visibility.Visible;
                     BlameKlingons0.Visibility = Visibility.Visible;
-                        BlameKlingons1.Visibility = Visibility.Visible;
-                        BlameKlingons2.Visibility = Visibility.Visible;
-                        BlameKlingons4.Visibility = Visibility.Visible;
-                        BlameKlingons5.Visibility = Visibility.Visible;
-                        BlameKlingons6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[3] == empireCivsList[1])
-                    //{
-                    //    BlameKlingons1.Visibility = Visibility.Visible;
-                    //    BlameKlingons3.Visibility = Visibility.Visible;
-                    //    BlameKlingons4.Visibility = Visibility.Visible;
-                    //    BlameKlingons5.Visibility = Visibility.Visible;
-                    //    BlameKlingons6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[3] == empireCivsList[2])
-                    //{
-                    //    BlameKlingons1.Visibility = Visibility.Visible;
-                    //    BlameKlingons2.Visibility = Visibility.Visible;
-                    //    BlameKlingons4.Visibility = Visibility.Visible;
-                    //    BlameKlingons5.Visibility = Visibility.Visible;
-                    //    BlameKlingons6.Visibility = Visibility.Visible;
-                    //}
-                    //else
-                    //{
-                    //    BlameKlingons1.Visibility = Visibility.Visible;
-                    //    BlameKlingons2.Visibility = Visibility.Visible;
-                    //    BlameKlingons3.Visibility = Visibility.Visible;
-                    //    BlameKlingons5.Visibility = Visibility.Visible;
-                    //    BlameKlingons6.Visibility = Visibility.Visible;
-                    //}
+                    BlameKlingons1.Visibility = Visibility.Visible;
+                    BlameKlingons2.Visibility = Visibility.Visible;
+                    BlameKlingons4.Visibility = Visibility.Visible;
+                    BlameKlingons5.Visibility = Visibility.Visible;
+                    BlameKlingons6.Visibility = Visibility.Visible;
                 }
                 GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
                 if (empireCivsDictionary.Keys.Contains(4) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
-                    //if (empireCivsDictionary[4] == empireCivsList[0])
-                    EmpireExpanderFour.Visibility = Visibility.Visible;
+                    if (AssetsHelper.IsSpiedFour(_civLocalPlayer))
+                        EmpireExpanderFour.Visibility = Visibility.Visible;
                     BlameCardassians0.Visibility = Visibility.Visible;
-                        BlameCardassians1.Visibility = Visibility.Visible;
-                        BlameCardassians2.Visibility = Visibility.Visible;
-                        BlameCardassians3.Visibility = Visibility.Visible;
-                        BlameCardassians5.Visibility = Visibility.Visible;
-                        BlameCardassians6.Visibility = Visibility.Visible;
-                    //}
-                    //else if (empireCivsDictionary[4] == empireCivsList[1])
-                    //{
-                    //    BlameCardassians1.Visibility = Visibility.Visible;
-                    //    BlameCardassians3.Visibility = Visibility.Visible;
-                    //    BlameCardassians4.Visibility = Visibility.Visible;
-                    //    BlameCardassians5.Visibility = Visibility.Visible;
-                    //    BlameCardassians6.Visibility = Visibility.Visible;
-                    //}
-                    //else if (empireCivsDictionary[4] == empireCivsList[2])
-                    //{
-                    //    BlameCardassians1.Visibility = Visibility.Visible;
-                    //    BlameCardassians2.Visibility = Visibility.Visible;
-                    //    BlameCardassians4.Visibility = Visibility.Visible;
-                    //    BlameCardassians5.Visibility = Visibility.Visible;
-                    //    BlameCardassians6.Visibility = Visibility.Visible;
-                    //}
-                    //else if (empireCivsDictionary[4] == empireCivsList[3])
-                    //{
-                    //    BlameCardassians1.Visibility = Visibility.Visible;
-                    //    BlameCardassians2.Visibility = Visibility.Visible;
-                    //    BlameCardassians3.Visibility = Visibility.Visible;
-                    //    BlameCardassians5.Visibility = Visibility.Visible;
-                    //    BlameCardassians6.Visibility = Visibility.Visible;
-                    //}
-                    //else
-                    //{
-                    //    BlameCardassians1.Visibility = Visibility.Visible;
-                    //    BlameCardassians2.Visibility = Visibility.Visible;
-                    //    BlameCardassians3.Visibility = Visibility.Visible;
-                    //    BlameCardassians4.Visibility = Visibility.Visible;
-                    //    BlameCardassians6.Visibility = Visibility.Visible;
-                    //}
+                    BlameCardassians1.Visibility = Visibility.Visible;
+                    BlameCardassians2.Visibility = Visibility.Visible;
+                    BlameCardassians3.Visibility = Visibility.Visible;
+                    BlameCardassians5.Visibility = Visibility.Visible;
+                    BlameCardassians6.Visibility = Visibility.Visible;
                 }
-                GameLog.Client.UI.DebugFormat("CARD: end of checking BLAME visible");
+
                 if (empireCivsDictionary.Keys.Contains(5) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[5]].IsContactMade())
                 {
-                    //if (empireCivsDictionary[5] == empireCivsList[0])
-                    //{
-                    EmpireExpanderFive.Visibility = Visibility.Visible;
+                    if (AssetsHelper.IsSpiedFive(_civLocalPlayer))
+                        EmpireExpanderFive.Visibility = Visibility.Visible;
                     BlameDominion0.Visibility = Visibility.Visible;
-                        BlameDominion1.Visibility = Visibility.Visible;
-                        BlameDominion2.Visibility = Visibility.Visible;
-                        BlameDominion3.Visibility = Visibility.Visible;
-                        BlameDominion4.Visibility = Visibility.Visible;
-                        BlameDominion6.Visibility = Visibility.Visible;
+                    BlameDominion1.Visibility = Visibility.Visible;
+                    BlameDominion2.Visibility = Visibility.Visible;
+                    BlameDominion3.Visibility = Visibility.Visible;
+                    BlameDominion4.Visibility = Visibility.Visible;
+                    BlameDominion6.Visibility = Visibility.Visible;
                     //}
-                    //if (empireCivsDictionary[5] == empireCivsList[1])
-                    //{
-                    //    BlameDominion1.Visibility = Visibility.Visible;
-                    //    BlameDominion3.Visibility = Visibility.Visible;
-                    //    BlameDominion4.Visibility = Visibility.Visible;
-                    //    BlameDominion5.Visibility = Visibility.Visible;
-                    //    BlameDominion6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[5] == empireCivsList[2])
-                    //{
-                    //    BlameDominion1.Visibility = Visibility.Visible;
-                    //    BlameDominion2.Visibility = Visibility.Visible;
-                    //    BlameDominion4.Visibility = Visibility.Visible;
-                    //    BlameDominion5.Visibility = Visibility.Visible;
-                    //    BlameDominion6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[5] == empireCivsList[3])
-                    //{
-                    //    BlameDominion1.Visibility = Visibility.Visible;
-                    //    BlameDominion2.Visibility = Visibility.Visible;
-                    //    BlameDominion3.Visibility = Visibility.Visible;
-                    //    BlameDominion5.Visibility = Visibility.Visible;
-                    //    BlameDominion6.Visibility = Visibility.Visible;
-                    //    // GameLog.Client.UI.DebugFormat("****************** Dictionary key 5 ={0} List item 4 ={1}", empireCivsDictionary[5], empireCivsList[4]);
-                    //}
-                    //if (empireCivsDictionary[5] == empireCivsList[4])
-                    //{
-                    //    BlameDominion1.Visibility = Visibility.Visible;
-                    //    BlameDominion2.Visibility = Visibility.Visible;
-                    //    BlameDominion3.Visibility = Visibility.Visible;
-                    //    BlameDominion4.Visibility = Visibility.Visible;
-                    //    BlameDominion6.Visibility = Visibility.Visible;
-                    //}
-                    //else
-                    //{
-                    //    BlameDominion1.Visibility = Visibility.Visible;
-                    //    BlameDominion2.Visibility = Visibility.Visible;
-                    //    BlameDominion3.Visibility = Visibility.Visible;
-                    //    BlameDominion4.Visibility = Visibility.Visible;
-                    //    BlameDominion5.Visibility = Visibility.Visible;
-                    //}
+
                 }
 
                 if (empireCivsDictionary.Keys.Contains(6) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[6]].IsContactMade())
                 {
-                    EmpireExpanderSix.Visibility = Visibility.Visible;
+                    if (AssetsHelper.IsSpiedSix(_civLocalPlayer))
+                        EmpireExpanderSix.Visibility = Visibility.Visible;
                     BlameBorg0.Visibility = Visibility.Visible;
-                        BlameBorg1.Visibility = Visibility.Visible;
-                        BlameBorg2.Visibility = Visibility.Visible;
-                        BlameBorg3.Visibility = Visibility.Visible;
-                        BlameBorg4.Visibility = Visibility.Visible;
-                        BlameBorg5.Visibility = Visibility.Visible;
-                        
-                    //}
-                    //if (empireCivsDictionary[6] == empireCivsList[1])
-                    //{
-                    //    BlameBorg1.Visibility = Visibility.Visible;
-                    //    BlameBorg3.Visibility = Visibility.Visible;
-                    //    BlameBorg4.Visibility = Visibility.Visible;
-                    //    BlameBorg5.Visibility = Visibility.Visible;
-                    //    BlameBorg6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[6] == empireCivsList[2])
-                    //{
-                    //    BlameBorg1.Visibility = Visibility.Visible;
-                    //    BlameBorg2.Visibility = Visibility.Visible;
-                    //    BlameBorg4.Visibility = Visibility.Visible;
-                    //    BlameBorg5.Visibility = Visibility.Visible;
-                    //    BlameBorg6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[6] == empireCivsList[3])
-                    //{
-                    //    BlameBorg1.Visibility = Visibility.Visible;
-                    //    BlameBorg2.Visibility = Visibility.Visible;
-                    //    BlameBorg3.Visibility = Visibility.Visible;
-                    //    BlameBorg5.Visibility = Visibility.Visible;
-                    //    BlameBorg6.Visibility = Visibility.Visible;
-                    //}
-                    //if (empireCivsDictionary[6] == empireCivsList[4])
-                    //{
-                    //    BlameBorg1.Visibility = Visibility.Visible;
-                    //    BlameBorg2.Visibility = Visibility.Visible;
-                    //    BlameBorg3.Visibility = Visibility.Visible;
-                    //    BlameBorg4.Visibility = Visibility.Visible;
-                    //    BlameBorg6.Visibility = Visibility.Visible;
-                    //}
-                    //else
-                    //{
-                    //    BlameBorg1.Visibility = Visibility.Visible;
-                    //    BlameBorg2.Visibility = Visibility.Visible;
-                    //    BlameBorg3.Visibility = Visibility.Visible;
-                    //    BlameBorg4.Visibility = Visibility.Visible;
-                    //    BlameBorg5.Visibility = Visibility.Visible;
-                    //}
+                    BlameBorg1.Visibility = Visibility.Visible;
+                    BlameBorg2.Visibility = Visibility.Visible;
+                    BlameBorg3.Visibility = Visibility.Visible;
+                    BlameBorg4.Visibility = Visibility.Visible;
+                    BlameBorg5.Visibility = Visibility.Visible;
                 }
             //NoDiplomacyDataAvailableAtStart:;
             }
@@ -1095,244 +937,25 @@ namespace Supremacy.Client.Views
             SabotageIndustrySix.Visibility = Visibility.Collapsed;
         }
         #endregion
-        //private void LoadInsignia()
-        //{
-        //    GameLog.Client.UI.DebugFormat("Loading Insignias/FEDERATION.png and more");
-        //    BitmapImage insigniaFed = new BitmapImage();
-        //    var uriFed = new Uri("vfs:///Resources/Images/Insignias/FEDERATION.png");
-        //    insigniaFed.BeginInit();
-        //    insigniaFed.UriSource = uriFed;
-        //    insigniaFed.EndInit();
+        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            var appContext = sender as IAppContext;
 
-        //    BitmapImage insigniaTerran = new BitmapImage();
-        //    var uriTerran = new Uri("vfs:///Resources/Images/Insignias/TERRANEMPIRE.png");
-        //    insigniaTerran.BeginInit();
-        //    insigniaTerran.UriSource = uriTerran;
-        //    insigniaTerran.EndInit();
+            if (appContext == null)
+                return false;
 
-        //    BitmapImage insigniaRom = new BitmapImage();
-        //    var uriRom = new Uri("vfs:///Resources/Images/Insignias/ROMULANS.png");
-        //    insigniaRom.BeginInit();
-        //    insigniaRom.UriSource = uriRom;
-        //    insigniaRom.EndInit();
+            var propertyChangedEventArgs = e as PropertyChangedEventArgs;
+            if (propertyChangedEventArgs == null)
+                return false;
 
-        //    BitmapImage insigniaKling = new BitmapImage();
-        //    var uriKling = new Uri("vfs:///Resources/Images/Insignias/KLINGONS.png");
-        //    insigniaKling.BeginInit();
-        //    insigniaKling.UriSource = uriKling;
-        //    insigniaKling.EndInit();
+            switch (propertyChangedEventArgs.PropertyName)
+            {
+                case "LocalPlayerEmpire":
+                    OnLocalPlayerEmpireChanged();
+                    break;
+            }
 
-        //    BitmapImage insigniaCard = new BitmapImage();
-        //    var uriCard = new Uri("vfs:///Resources/Images/Insignias/CARDASSIANS.png");
-        //    insigniaCard.BeginInit();
-        //    insigniaCard.UriSource = uriCard;
-        //    insigniaCard.EndInit();
-
-        //    BitmapImage insigniaDom = new BitmapImage();
-        //    var uriDom = new Uri("vfs:///Resources/Images/Insignias/DOMINION.png");
-        //    insigniaDom.BeginInit();
-        //    insigniaDom.UriSource = uriDom;
-        //    insigniaDom.EndInit();
-
-        //    BitmapImage insigniaBorg = new BitmapImage();
-        //    var uriBorg = new Uri("vfs:///Resources/Images/Insignias/BORG.png");
-        //    insigniaBorg.BeginInit();
-        //    insigniaBorg.UriSource = uriBorg;
-        //    insigniaBorg.EndInit();
-        //    GameLog.Client.UI.DebugFormat("Loading Insignias is finished");
-
-        //    List<int> CivIDs = new List<int>();
-        //    //if (AssetsScreenPresentationModel.SpiedZeroCiv != null)
-        //    //    CivIDs.Add(AssetsScreenPresentationModel.SpiedZeroCiv.CivID);
-        //    if (AssetsScreenPresentationModel.SpiedOneCiv != null)
-        //        CivIDs.Add(AssetsScreenPresentationModel.SpiedOneCiv.CivID);
-        //    if (AssetsScreenPresentationModel.SpiedTwoCiv != null)
-        //        CivIDs.Add(AssetsScreenPresentationModel.SpiedTwoCiv.CivID);
-        //    if (AssetsScreenPresentationModel.SpiedThreeCiv != null)
-        //        CivIDs.Add(AssetsScreenPresentationModel.SpiedThreeCiv.CivID);
-        //    if (AssetsScreenPresentationModel.SpiedFourCiv != null)
-        //        CivIDs.Add(AssetsScreenPresentationModel.SpiedFourCiv.CivID);
-        //    if (AssetsScreenPresentationModel.SpiedFiveCiv != null)
-        //        CivIDs.Add(AssetsScreenPresentationModel.SpiedFiveCiv.CivID);
-        //    if (AssetsScreenPresentationModel.SpiedSixCiv != null)
-        //        CivIDs.Add(AssetsScreenPresentationModel.SpiedSixCiv.CivID);
-        //    GameLog.Client.UI.DebugFormat("Adding SpiedCiv is finished");
-
-        //    if (CivIDs.Count >= 1)
-        //    {
-        //        switch (CivIDs[0])
-        //        {
-        //            case 0:
-        //                InsigniaOne.Source = insigniaFed;
-        //                break;
-        //            case 1:
-        //                InsigniaOne.Source = insigniaTerran;
-        //                break;
-        //            case 2:
-        //                InsigniaOne.Source = insigniaRom;
-        //                break;
-        //            case 3:
-        //                InsigniaOne.Source = insigniaKling;
-        //                break;
-        //            case 4:
-        //                InsigniaOne.Source = insigniaCard;
-        //                break;
-        //            case 5:
-        //                InsigniaOne.Source = insigniaDom;
-        //                break;
-        //            case 6:
-        //                InsigniaOne.Source = insigniaBorg;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    if (CivIDs.Count >= 2)
-        //    {
-        //        switch (CivIDs[1])
-        //        {
-        //            case 0:
-        //                InsigniaTwo.Source = insigniaFed;
-        //                break;
-        //            case 1:
-        //                InsigniaTwo.Source = insigniaTerran;
-        //                break;
-        //            case 2:
-        //                InsigniaTwo.Source = insigniaRom;
-        //                break;
-        //            case 3:
-        //                InsigniaTwo.Source = insigniaKling;
-        //                break;
-        //            case 4:
-        //                InsigniaTwo.Source = insigniaCard;
-        //                break;
-        //            case 5:
-        //                InsigniaTwo.Source = insigniaDom;
-        //                break;
-        //            case 6:
-        //                InsigniaTwo.Source = insigniaBorg;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    if (CivIDs.Count >= 3)
-        //    {
-        //        switch (CivIDs[2])
-        //        {
-        //            case 0:
-        //                InsigniaThree.Source = insigniaFed;
-        //                break;
-        //            case 1:
-        //                InsigniaThree.Source = insigniaTerran;
-        //                break;
-        //            case 2:
-        //                InsigniaThree.Source = insigniaRom;
-        //                break;
-        //            case 3:
-        //                InsigniaThree.Source = insigniaKling;
-        //                break;
-        //            case 4:
-        //                InsigniaThree.Source = insigniaCard;
-        //                break;
-        //            case 5:
-        //                InsigniaThree.Source = insigniaDom;
-        //                break;
-        //            case 6:
-        //                InsigniaThree.Source = insigniaBorg;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    if (CivIDs.Count >= 4)
-        //    {
-        //        switch (CivIDs[3])
-        //        {
-        //            case 0:
-        //                InsigniaFour.Source = insigniaFed;
-        //                break;
-        //            case 1:
-        //                InsigniaFour.Source = insigniaTerran;
-        //                break;
-        //            case 2:
-        //                InsigniaFour.Source = insigniaRom;
-        //                break;
-        //            case 3:
-        //                InsigniaFour.Source = insigniaKling;
-        //                break;
-        //            case 4:
-        //                InsigniaFour.Source = insigniaCard;
-        //                break;
-        //            case 5:
-        //                InsigniaFour.Source = insigniaDom;
-        //                break;
-        //            case 6:
-        //                InsigniaFour.Source = insigniaBorg;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    if (CivIDs.Count >= 5)
-        //    {
-        //        switch (CivIDs[4])
-        //        {
-        //            case 0:
-        //                InsigniaFive.Source = insigniaFed;
-        //                break;
-        //            case 1:
-        //                InsigniaFive.Source = insigniaTerran;
-        //                break;
-        //            case 2:
-        //                InsigniaFive.Source = insigniaRom;
-        //                break;
-        //            case 3:
-        //                InsigniaFive.Source = insigniaKling;
-        //                break;
-        //            case 4:
-        //                InsigniaFive.Source = insigniaCard;
-        //                break;
-        //            case 5:
-        //                InsigniaFive.Source = insigniaDom;
-        //                break;
-        //            case 6:
-        //                InsigniaFive.Source = insigniaBorg;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    if (CivIDs.Count >= 6)
-        //    {
-        //        switch (CivIDs[5])
-        //        {
-        //            case 0:
-        //                InsigniaSix.Source = insigniaFed;
-        //                break;
-        //            case 1:
-        //                InsigniaSix.Source = insigniaTerran;
-        //                break;
-        //            case 2:
-        //                InsigniaSix.Source = insigniaRom;
-        //                break;
-        //            case 3:
-        //                InsigniaSix.Source = insigniaKling;
-        //                break;
-        //            case 4:
-        //                InsigniaSix.Source = insigniaCard;
-        //                break;
-        //            case 5:
-        //                InsigniaSix.Source = insigniaDom;
-        //                break;
-        //            case 6:
-        //                InsigniaSix.Source = insigniaBorg;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-            //GameLog.Client.UI.DebugFormat("Insignia is finished");
-        //}      
+            return true;
+        }
     }
 }

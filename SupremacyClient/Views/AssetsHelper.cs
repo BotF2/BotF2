@@ -62,94 +62,109 @@ namespace Supremacy.Intelligence
         {
             get { return GameContext.Current.CivilizationManagers[6].Civilization; }
         }
-        public static bool IsSpiedZero(Civilization targetFromScreen)
+        public static bool IsSpiedZero(Civilization localCivFromScreen)
         {
-            if (NewSpyCiv == null)
+            if (DesignTimeObjects.SubedZero)
                 return false;
-            else if (alreadyZero)
-                return true;
-            else if (CivZero == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
+            //else if (alreadyZero)
+            //    return true;
+            else
             {
-                alreadyZero = true;
-                return true;
+                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                catch { return false; }
+                if (SpiedByDictionary[localCivFromScreen].Contains(CivZero))                   
+                    return true;
+            }
+            return false;
+
+        }
+        public static bool IsSpiedOne(Civilization localCivFromScreen)
+        {
+            if (DesignTimeObjects.SubedOne)
+                return false;
+            //else if (alreadyOne)
+            //    return true;
+            else
+            {
+                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                catch { return false; }
+                if (SpiedByDictionary[localCivFromScreen].Contains(CivOne))
+                    return true;
             }
             return false;
         }
-        public static bool IsSpiedOne(Civilization targetFromScreen)
+        public static bool IsSpiedTwo(Civilization localCivFromScreen)
         {
-            if (NewSpyCiv == null)
+            if (DesignTimeObjects.SubedTwo)
                 return false;
-            else if (alreadyOne)
-                return true;
-            else if (CivOne == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
+            //else if (alreadyTwo)
+            //    return true;
+            else
             {
-                alreadyOne = true;
-                return true;
-            }           
-            return false;
-        }
-        public static bool IsSpiedTwo(Civilization targetFromScreen)
-        {
-            if (NewSpyCiv == null)
-                return false;
-            else if (alreadyTwo)
-                return true;
-            else if (CivTwo == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
-            {
-                alreadyTwo = true;
-                return true;
+                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                catch { return false; }
+                if (SpiedByDictionary[localCivFromScreen].Contains(CivTwo))
+                    return true;
             }
             return false;
         }
-        public static bool IsSpiedThree(Civilization targetFromScreen)
+        public static bool IsSpiedThree(Civilization localCivFromScreen)
         {
-            if (NewSpyCiv == null)
+            if (DesignTimeObjects.SubedThree)
                 return false;
-            else if (alreadyThree)
-                return true;
-            else if (CivThree == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
+            //else if (alreadyThree)
+            //    return true;
+            else
             {
-                alreadyThree = true;
-                return true;
+                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                catch { return false; }
+                if (SpiedByDictionary[localCivFromScreen].Contains(CivThree))
+                    return true;
             }
             return false;
         }
-        public static bool IsSpiedFour(Civilization targetFromScreen)
+        public static bool IsSpiedFour(Civilization localCivFromScreen)
         {
-            if (NewSpyCiv == null)
+            if (DesignTimeObjects.SubedFour)
                 return false;
-            else if (alreadyFour)
-                return true;
-            else if (CivFour == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
+            //else if (alreadyFour)
+            //    return true;
+            else
             {
-                alreadyFour = true;
-                return true;
+                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                catch { return false; }
+                if (SpiedByDictionary[localCivFromScreen].Contains(CivFour))
+                    return true;
             }
             return false;
         }
-        public static bool IsSpiedFive(Civilization targetFromScreen)
+        public static bool IsSpiedFive(Civilization localCivFromScreen)
         {
-            if (NewSpyCiv == null)
+            if (DesignTimeObjects.SubedFive)
                 return false;
-            else if (alreadyFive)
-                return true;
-            else if (CivFive == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
+            //else if (alreadyFive)
+            //    return true;
+            else
             {
-                alreadyFive = true;
-                return true;
+                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                catch { return false; }
+                if (SpiedByDictionary[localCivFromScreen].Contains(CivFive))
+                    return true;
             }
             return false;
         }
-        public static bool IsSpiedSix(Civilization targetFromScreen)
+        public static bool IsSpiedSix(Civilization localCivFromScreen)
         {
-            if (NewSpyCiv == null)
+            if (DesignTimeObjects.SubedSix)
                 return false;
-            else if (alreadySix)
-                return true;
-            else if (CivSix == NewTargetCiv && SpiedByDictionary[NewSpyCiv].Contains(targetFromScreen))
+            //else if (alreadySix)
+            //    return true;
+            else
             {
-                alreadySix = true;
-                return true;
+                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                catch { return false; }
+                if (SpiedByDictionary[localCivFromScreen].Contains(CivSix))
+                    return true;
             }
             return false;
         }
