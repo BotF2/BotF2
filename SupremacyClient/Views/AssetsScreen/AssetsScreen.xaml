@@ -160,7 +160,7 @@
                     HorizontalAlignment="left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
       <!-- Zero Expander -->
-                        <Expander x:Name="EmpireExpanderZero" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <Expander x:Name="EmpireExpanderZero" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedFedName}" FontSize="20" BorderThickness="3" BorderBrush="White"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid Name="EmpireGridZero" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
@@ -599,7 +599,7 @@
                         </Expander>
                         <TextBlock Height="5"/>
      <!-- One Expander -->
-                        <Expander x:Name="EmpireExpanderOne" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <Expander x:Name="EmpireExpanderOne" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedTerranName}" FontSize="20" BorderThickness="3" BorderBrush="White"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
@@ -1038,7 +1038,7 @@
                         </Expander>
                         <TextBlock Height="5"/>
         <!-- Two Expander -->
-                        <Expander x:Name="EmpireExpanderTwo" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <Expander x:Name="EmpireExpanderTwo" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedRomName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridTwo" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
@@ -1484,7 +1484,7 @@
                         </Expander>
                         <TextBlock Height="5"/>
       <!-- Three Expander -->
-                        <Expander x:Name="EmpireExpanderThree" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <Expander x:Name="EmpireExpanderThree" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedKlingName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3" >
                             <Grid x:Name="EmpireGridThree" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
@@ -1929,7 +1929,7 @@
                         </Expander>
                         <TextBlock Height="5"/>
       <!-- Four Expander -->
-                        <Expander x:Name="EmpireExpanderFour" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <Expander x:Name="EmpireExpanderFour" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridFour" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
@@ -2374,7 +2374,7 @@
                         </Expander>
                         <TextBlock Height="5"/>
        <!-- Five Expander -->
-                        <Expander x:Name="EmpireExpanderFive" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <Expander x:Name="EmpireExpanderFive" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedDomName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4"  Grid.Row="3">
                             <Grid x:Name="EmpireGridFive" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
@@ -2819,7 +2819,7 @@
                         </Expander>
                         <TextBlock Height="5"/>
       <!-- Six Expander -->
-                        <Expander x:Name="EmpireExpanderSix" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
+                        <Expander x:Name="EmpireExpanderSix" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedBorgName}" FontSize="20" BorderThickness="3" BorderBrush="White" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridSix" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
