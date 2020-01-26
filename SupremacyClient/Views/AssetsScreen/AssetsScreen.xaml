@@ -283,7 +283,7 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio0"
                                                     Foreground="LightYellow"
-                                                    Content="Terran Empire"
+                                                    Content="TerranEmpire"
                                                     Tag="3"
                                                     Checked="OnBlameButtonsZeroClick"/>
                                             </StackPanel>
@@ -722,7 +722,7 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio1"
                                                     Foreground="LightYellow"
-                                                    Content="Terran Empire"
+                                                    Content="TerranEmpire"
                                                     Tag="3"
                                                     Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
@@ -1162,7 +1162,7 @@
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio2"
                                                       Foreground="LightYellow"
-                                                      Content="Terran Empire"
+                                                      Content="TerranEmpire"
                                                       Tag="3"
                                                       Checked="OnBlameButtonsTwoClick"/>
                                             </StackPanel>
@@ -1608,7 +1608,7 @@
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio3"
                                                       Foreground="LightYellow"
-                                                      Content="Terran Empire"
+                                                      Content="TerranEmpire"
                                                       Tag="3"
                                                       Checked="OnBlameButtonsThreeClick"/>
                                             </StackPanel>
@@ -2053,7 +2053,7 @@
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio4"
                                                       Foreground="LightYellow"
-                                                      Content="Terran Empire"
+                                                      Content="TerranEmpire"
                                                       Tag="3"
                                                       Checked="OnBlameButtonsFourClick"/>
                                             </StackPanel>
@@ -2498,7 +2498,7 @@
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio5"
                                                     Foreground="LightYellow"
-                                                    Content="Terran Empire"
+                                                    Content="TerranEmpire"
                                                     Tag="3"
                                                     Checked="OnBlameButtonsFiveClick"/>
                                             </StackPanel>
@@ -2943,7 +2943,7 @@
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio6"
                                                       Foreground="LightYellow"
-                                                      Content="Terran Empire"
+                                                      Content="TerranEmpire"
                                                       Tag="3"
                                                       Checked="OnBlameButtonsSixClick"/>
                                             </StackPanel>

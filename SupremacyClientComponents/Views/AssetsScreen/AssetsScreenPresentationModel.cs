@@ -543,16 +543,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //string sp1Name = "Empty";
-                //try
-                //{
-                //    sp1Name = DesignTimeObjects.SpiedCivOne.Civilization.Name;
-                //}
-                //catch
-                //{
-                //    // 
-                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
-                //}
                 return "Federation";
             }
         }
@@ -588,16 +578,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //string sp1Name = "Empty";
-                //try
-                //{
-                //    sp1Name = DesignTimeObjects.SpiedCivZero.Civilization.Name;
-                //}
-                //catch
-                //{
-                //    // 
-                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
-                //}
                 return "Terran Empire"; //p1Name;
             }
         }
@@ -632,16 +612,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //string sp2Name = "Empty";
-                //try
-                //{
-                //    sp2Name = DesignTimeObjects.SpiedCivTwo.Civilization.Name;
-                //}
-                //catch
-                //{
-                //    //
-                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedTwoCivName");
-                //}
                 return "Romulans"; // sp2Name;
             }
         }
@@ -677,15 +647,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //string sp3Name = "Empty";
-                //try
-                //{
-                //    sp3Name = DesignTimeObjects.SpiedCivThree.Civilization.Name;
-                //}
-                //catch
-                //{
-                //    GameLog.Client.UI.ErrorFormat("##### Problem getting SpiedOneCivName");
-                //}
                 return "Klingons"; // sp3Name;
             }
         }
@@ -720,15 +681,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //string sp4Name = "Empty";
-                //try
-                //{
-                //    sp4Name = DesignTimeObjects.SpiedCivFour.Civilization.Name;
-                //}
-                //catch
-                //{
-                //    //
-                //}
                 return "Cardassians"; // sp4Name;
             }
         }
@@ -763,15 +715,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //string sp5Name = "Empty";
-                //try
-                //{
-                //    sp5Name = DesignTimeObjects.SpiedCivFive.Civilization.Name;
-                //}
-                //catch
-                //{
-                //    //
-                //}
                 return "Dominion"; // sp5Name;
             }
         }
@@ -806,15 +749,6 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //string sp6Name = "Empty";
-                //try
-                //{
-                //    sp6Name = DesignTimeObjects.SpiedCivSix.Civilization.Name;
-                //}
-                //catch
-                //{
-                //    //
-                //}
                 return "Borg"; // sp6Name;
             }
         }
