@@ -20,7 +20,46 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
+        //private static AssetsScreenPresentationModel _designInstance;
 
+        //public static AssetsScreenPresentationModel DesignInstance
+        //{
+        //    get
+        //    {
+        //        if (_designInstance == null)
+        //        {
+        //            _designInstance = new AssetsScreenPresentationModel(DesignTimeAppContext.Instance)
+        //            {
+        //                SelectedColony = DesignTimeObjects.Colony
+        //            };
+        //        }
+       
+        //        return _designInstance;
+        //    }
+        //}
+        ////public AssetsScreenPresentationModel(IAppContext appContext)
+        ////: base(appContext) { }
+
+        //public event EventHandler SelectedColonyChanged;
+
+        //private Colony _selectedColony;
+        //public Colony SelectedColony
+        //{
+        //    get { return _selectedColony; }
+        //    set
+        //    {
+        //        var oldValue = _selectedColony;
+        //        _selectedColony = value;
+        //        OnSelectedColonyChanged(oldValue, value);
+        //    }
+        //}
+        //private void OnSelectedColonyChanged(Colony oldValue, Colony newValue)
+        //{
+        //    var handler = SelectedColonyChanged;
+        //    if (handler != null)
+        //        handler(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
+        //    OnPropertyChanged("SelectedColony");
+        //}
         #region Properties for AssestsScreen
         public int TotalIntelligenceProduction
         {
@@ -153,10 +192,7 @@ namespace Supremacy.Client.Views
             _spiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
             _spiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
             _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization].TotalIntelligenceProduction;
-            CivilizationManager civManager = new CivilizationManager(AppContext.CurrentGame, DesignTimeObjects.CivilizationManager.Civilization);
-            _totalIntelligenceDefenseAccumulated = civManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
-            _totalIntelligenceAttackingAccumulated = civManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
-
+            
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
             OnPropertyChanged("TotalIntelligenceProduction");
@@ -754,7 +790,6 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Implementation of INotifyPropertyChanged
-
         [NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
 
