@@ -199,12 +199,12 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        static List<CivilizationManager> managerList;
-        //static List<CivilizationManager> _allManagersList;
-        static CivilizationManager _spyingCivManager;  // syping, but in mulitplayer maybe different to local one
+        //static List<CivilizationManager> managerList;
+        ////static List<CivilizationManager> _allManagersList;
+        //static CivilizationManager _spyingCivManager;  // syping, but in mulitplayer maybe different to local one
         static CivilizationManager _spiedCivDummy;
         private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
-        private static bool _subedZero = false;
+        private static bool _subedZero = false; // Is the race not in the game? We substitue the host civ for missing civ and then _subedZero is true and Federation not in game.
         private static bool _subedOne = false;
         private static bool _subedTwo = false;
         private static bool _subedThree = false;
@@ -215,6 +215,10 @@ namespace Supremacy.Client.Context
         {
             get { return _subedZero; }
         }
+        /// <summary>
+        /// Host Civilization Manager has been used as a substitute for a civ not in the game
+        /// In this case Federation is not in game, CivID Zero
+        /// </summary>
         public static bool SubedOne
         {
             get { return _subedOne; }
@@ -363,11 +367,17 @@ namespace Supremacy.Client.Context
         //        _spyingCivManager = value;
         //    }
         //}
+        /// <summary>
+        /// This is the Host Civilization Manager, see IntelHelper.localCivManager for civ manager in multiplayer
+        /// Info on multiplayer civ manager is from AssetsScreen.xaml.cs so hope this works for multiplayer local machine
+        /// </summary>
         public static CivilizationManager CivilizationManager
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
         }
-
+        /// <summary>
+        /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
+        /// </summary>
         public static Colony Colony
         {
             get
@@ -375,11 +385,9 @@ namespace Supremacy.Client.Context
                 return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
             }
         }
-        //public static Colony FirstSpiedColony
-        //{
-        //    get { return SpiedCivZero.HomeColony; }
-        //}
-
+        /// <summary>
+        /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
+        /// </summary>
         public static IEnumerable<Colony> Colonies
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }

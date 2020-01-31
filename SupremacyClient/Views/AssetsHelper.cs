@@ -66,11 +66,11 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedZero)
                 return false;
-            //else if (alreadyZero)
-            //    return true;
+            else if (alreadyZero)
+                return true;
             else
             {
-                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                try { var civList = SpiedByDictionary[localCivFromScreen]; }
                 catch { return false; }
                 if (SpiedByDictionary[localCivFromScreen].Contains(CivZero))                   
                     return true;
@@ -82,11 +82,11 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedOne)
                 return false;
-            //else if (alreadyOne)
-            //    return true;
+            else if (alreadyOne)
+                return true;
             else
             {
-                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                try { var civList = SpiedByDictionary[localCivFromScreen]; }
                 catch { return false; }
                 if (SpiedByDictionary[localCivFromScreen].Contains(CivOne))
                     return true;
@@ -97,11 +97,11 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedTwo)
                 return false;
-            //else if (alreadyTwo)
-            //    return true;
+            else if (alreadyTwo)
+                return true;
             else
             {
-                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                try { var civList = SpiedByDictionary[localCivFromScreen]; }
                 catch { return false; }
                 if (SpiedByDictionary[localCivFromScreen].Contains(CivTwo))
                     return true;
@@ -112,11 +112,11 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedThree)
                 return false;
-            //else if (alreadyThree)
-            //    return true;
+            else if (alreadyThree)
+                return true;
             else
             {
-                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                try { var civList = SpiedByDictionary[localCivFromScreen]; }
                 catch { return false; }
                 if (SpiedByDictionary[localCivFromScreen].Contains(CivThree))
                     return true;
@@ -127,11 +127,11 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedFour)
                 return false;
-            //else if (alreadyFour)
-            //    return true;
+            else if (alreadyFour)
+                return true;
             else
             {
-                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                try { var civList = SpiedByDictionary[localCivFromScreen]; }
                 catch { return false; }
                 if (SpiedByDictionary[localCivFromScreen].Contains(CivFour))
                     return true;
@@ -142,11 +142,11 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedFive)
                 return false;
-            //else if (alreadyFive)
-            //    return true;
+            else if (alreadyFive)
+                return true;
             else
             {
-                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                try { var civList = SpiedByDictionary[localCivFromScreen]; }
                 catch { return false; }
                 if (SpiedByDictionary[localCivFromScreen].Contains(CivFive))
                     return true;
@@ -157,11 +157,11 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedSix)
                 return false;
-            //else if (alreadySix)
-            //    return true;
+            else if (alreadySix)
+                return true;
             else
             {
-                try { var somethin = SpiedByDictionary[localCivFromScreen]; }
+                try { var civList = SpiedByDictionary[localCivFromScreen]; }
                 catch { return false; }
                 if (SpiedByDictionary[localCivFromScreen].Contains(CivSix))
                     return true;

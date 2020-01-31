@@ -20,6 +20,8 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
+
+        #region designInstance stuff
         //private static AssetsScreenPresentationModel _designInstance;
 
         //public static AssetsScreenPresentationModel DesignInstance
@@ -33,7 +35,7 @@ namespace Supremacy.Client.Views
         //                SelectedColony = DesignTimeObjects.Colony
         //            };
         //        }
-       
+
         //        return _designInstance;
         //    }
         //}
@@ -60,7 +62,14 @@ namespace Supremacy.Client.Views
         //        handler(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
         //    OnPropertyChanged("SelectedColony");
         //}
+        #endregion
+
         #region Properties for AssestsScreen
+
+        public CivilizationManager MyLocalCivManager
+        {
+            get { return IntelHelper.LocalCivManager; }
+        }
         public int TotalIntelligenceProduction
         {
             get
@@ -69,9 +78,6 @@ namespace Supremacy.Client.Views
                 {
                     //FillUpDefense();
                     return _totalIntelligenceProduction;
-                    //var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization]; 
-                    //return civManager.TotalIntelligenceProduction;
-
                 }
                 catch
                 {
@@ -83,10 +89,8 @@ namespace Supremacy.Client.Views
             {
                 try
                 {
-                    //FillUpDefense();
-                    //NotifyPropertyChanged("TotalIntelligenceProduction");
                     FillUpDefense();
-                    _totalIntelligenceProduction = value; // NotifyPropertyChanging("TotalIntelligence);
+                    _totalIntelligenceProduction = value;
                     NotifyPropertyChanged("TotalIntelligenceProduction");
                 }
                 catch
@@ -113,13 +117,13 @@ namespace Supremacy.Client.Views
                 //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceDefenseAccumulated...");
                 //    return ;
                 //}
-                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedIntelInt;
+                _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 return _totalIntelligenceDefenseAccumulated;// IntelHelper.DefenseAccumulatedIntelInt;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedIntelInt;
+                _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
             }
@@ -140,13 +144,13 @@ namespace Supremacy.Client.Views
                 //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceAttackingAccumulated...");
                 //    return 0;
                 //}
-                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackAccumulatedIntelInt;
+                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 return _totalIntelligenceAttackingAccumulated;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackAccumulatedIntelInt;
+                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
                 NotifyPropertyChanged("TotalIntelligenceAttackingAccumulated");
             }
@@ -161,7 +165,7 @@ namespace Supremacy.Client.Views
         }
         protected virtual void FillUpDefense()
         {
-            var civ = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
+            var civ = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization];
             civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
             civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
             civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
@@ -183,7 +187,7 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
-            _colonies = DesignTimeObjects.CivilizationManager.Colonies;//DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies;
+            _colonies = MyLocalCivManager.Colonies;//DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies;
             _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
@@ -191,8 +195,10 @@ namespace Supremacy.Client.Views
             _spiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
             _spiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
             _spiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
-            _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization].TotalIntelligenceProduction;
-            
+            _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceProduction;
+            _totalIntelligenceAttackingAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
+            _totalIntelligenceDefenseAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
+
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
             OnPropertyChanged("TotalIntelligenceProduction");
@@ -500,14 +506,14 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization].Civilization.Name;  // keep this on AppContext
+                return MyLocalCivManager.Civilization.Name;  // keep this on AppContext
             }
         }
         public static Civilization Local
         {
             get
             {
-                return GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager].Civilization;
+                return IntelHelper.LocalCivManager.Civilization;
             }
         }
         public static Civilization SpiedZeroCiv
@@ -578,7 +584,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return "Terran Empire"; //p1Name;
+                return "Terran Empire"; 
             }
         }
         public static Civilization SpiedTwoCiv
@@ -612,7 +618,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return "Romulans"; // sp2Name;
+                return "Romulans"; 
             }
         }
         public static Civilization SpiedThreeCiv
@@ -647,7 +653,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return "Klingons"; // sp3Name;
+                return "Klingons";
             }
         }
         public static Civilization SpiedFourCiv
@@ -681,7 +687,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return "Cardassians"; // sp4Name;
+                return "Cardassians";
             }
         }
         public static Civilization SpiedFiveCiv
@@ -715,7 +721,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return "Dominion"; // sp5Name;
+                return "Dominion";
             }
         }
         public static Civilization SpiedSixCiv
@@ -749,7 +755,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return "Borg"; // sp6Name;
+                return "Borg";
             }
         }
 
@@ -775,7 +781,6 @@ namespace Supremacy.Client.Views
             }
         }
         #endregion Credits Empire
-
 
         #region Implementation of NotifyPropertyChanged
 

@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
+using Supremacy.Intelligence;
 using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
@@ -60,7 +61,7 @@ namespace Supremacy.Client.Views
         private void Update()
         {
             //GameLog.Core.UI.DebugFormat("Update on Turn Started at line 61");
-            Model.Colonies = DesignTimeObjects.CivilizationManager.Colonies; //AppContext.LocalPlayerEmpire.Colonies; // not DesignTimeObjects.LocalCivManager.Colonies; 
+            Model.Colonies = IntelHelper.LocalCivManager.Colonies; 
             Model.SpiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;

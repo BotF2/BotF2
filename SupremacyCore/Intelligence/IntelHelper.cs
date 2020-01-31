@@ -23,21 +23,12 @@ namespace Supremacy.Intelligence
         private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenceAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
+        private static CivilizationManager _localCivManager;
 
-        public static int DefenseAccumulatedIntelInt
-        {
-            get { return _defenceAccumulatedIntelInt; }
-            set { _defenceAccumulatedIntelInt = value; }
-        }
-        public static int AttackAccumulatedIntelInt
-        {
-            get { return _attackAccumulatedIntelInt; }
-            set { _attackAccumulatedIntelInt = value; }
-        }
         public static List<SitRepEntry> SitReps_Temp
         {
-            get{ return _sitReps_Temp;}
-            set{ _sitReps_Temp = value;}
+            get { return _sitReps_Temp; }
+            set { _sitReps_Temp = value; }
         }
 
         public static UniverseObjectList<Colony> NewSpiedColonies
@@ -60,7 +51,15 @@ namespace Supremacy.Intelligence
         {
             get { return _defenceDictionary; }
         }
-  
+        public static CivilizationManager LocalCivManager
+        {
+            get { return _localCivManager; }
+        }
+        public static CivilizationManager GetLocalCiv(CivilizationManager civManager)
+        {
+            _localCivManager = civManager;
+            return civManager;
+        }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         { GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
             if (spyCiv == null)
@@ -93,6 +92,7 @@ namespace Supremacy.Intelligence
                 _defenceDictionary.Add(spiedCiv, defenseInt);
             }
         }
+        
         #region Espionage Methods
 
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)

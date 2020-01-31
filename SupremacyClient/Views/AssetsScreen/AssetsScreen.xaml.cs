@@ -28,6 +28,7 @@ namespace Supremacy.Client.Views
     {
         private readonly IUnityContainer _container;
         private readonly IAppContext _appContext;
+        private CivilizationManager _localCivManager;
 
         private string _blameWhoZero = "No one";
         private string _blameWhoOne = "No one";
@@ -53,6 +54,33 @@ namespace Supremacy.Client.Views
         Civilization _spiedFiveCiv = DesignTimeObjects.SpiedCivFive.Civilization;
         Civilization _spiedSixCiv = DesignTimeObjects.SpiedCivSix.Civilization;
 
+        protected int _totalIntelligenceProduction;
+        protected int _totalIntelligenceDefenseAccumulated;
+        protected int _totalIntelligenceAttackingAccumulated;
+
+        #region Properties for AssestsScreen
+
+        public Meter UpdateAttackingAccumulated(Civilization attackingCiv)
+        {
+            Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
+            int newAttackIntelligence = 0;
+            Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
+            _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
+            return attackMeter;
+        }
+        protected virtual void FillUpDefense()
+        {
+            var civ = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
+            civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
+            civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
+            civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
+            civ.TotalIntelligenceDefenseAccumulated.UpdateAndReset();
+            //OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
+            //OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
+            //OnPropertyChanged("TotalIntelligenceProduction");
+            
+        }
+        #endregion 
         public AssetsScreen([NotNull] IUnityContainer container)
         {
             if (container == null)
@@ -60,7 +88,8 @@ namespace Supremacy.Client.Views
 
             _container = container;
             _appContext = _container.Resolve<IAppContext>();
-
+            _localCivManager = _appContext.LocalPlayerEmpire;
+            IntelHelper.GetLocalCiv(_localCivManager);
             InitializeComponent();
 
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
