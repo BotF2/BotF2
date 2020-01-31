@@ -55,13 +55,19 @@ namespace Supremacy.Intelligence
         {
             get { return _localCivManager; }
         }
+        /// <summary>
+        /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player
+        /// </summary>
+        /// <param name="civManager"></param>
+        /// <returns></returns>
         public static CivilizationManager GetLocalCiv(CivilizationManager civManager)
         {
             _localCivManager = civManager;
             return civManager;
         }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
-        { GameLog.Core.UI.DebugFormat("IntelHelper SendXSpiedY at line 35");
+        {
+            GameLog.Core.UI.DebugFormat("New spyciv ={0} spied on ={1}",spyCiv.Key, spiedCiv.Key);
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
@@ -97,7 +103,6 @@ namespace Supremacy.Intelligence
 
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
-            //var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
 
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
@@ -108,7 +113,6 @@ namespace Supremacy.Intelligence
             int stolenCredits = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
-            // blame somebody but not the clicked one - if result Romulans, you never know, whether really Romulans blamed, or Romulans (=known empire) itself
             if (blamed == "No one" || blamed == "Terrorists")
             {
                 blamed = attackingCivManager.Civilization.ShortName;
@@ -130,8 +134,8 @@ namespace Supremacy.Intelligence
             //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             //if (apINT > -1)
             //{
-            //    GameLog.Client.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Client.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
+            //    GameLog.Core.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Core.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
             //    return;
             //}
             //else
@@ -160,7 +164,7 @@ namespace Supremacy.Intelligence
             int attackedCreditsBefore = stolenCredits;
 
 
-            if (stolenCredits < 100)  // they have not enough credits being worth to be sabotaged, especially avoid negative stuff !!!
+            if (stolenCredits < 100)  // they have not enough credits worth stealing, especially avoid negative stuff !!!
             {
                 stolenCredits = -2;
                 goto stolenCreditsIsMinusOne;
@@ -172,9 +176,7 @@ namespace Supremacy.Intelligence
                 goto stolenCreditsIsMinusOne;
             }
 
-
             stolenCredits = stolenCredits / 100 * 3;  // default 3 percent
-
 
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
@@ -194,60 +196,68 @@ namespace Supremacy.Intelligence
                // SeeStealCredits(_newTargetCiv, "Clicked");
                 stolenCredits = stolenCredits * 2;
             }
-
-            GameLog.Core.Intel.DebugFormat("Credits system.Owner BEFORE from {0}:  >>> {1} Credits", attackedCiv, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
-            // result 
+            GameLog.Core.UI.DebugFormat("**** CREDITS, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: {1} Credits", attackedCiv.Key, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
 
             GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);
             GameContext.Current.CivilizationManagers[attackedCiv].Credits.UpdateAndReset();
-            GameLog.Core.Intel.DebugFormat("Credits system.Owner AFTER from {0}:  >>> {1} Credits", attackedCiv, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
 
+            GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: {1} Credits", attackedCiv.Key, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
+            GameLog.Core.UI.DebugFormat("attacing accumulated ={0}", _attackAccumulatedIntelInt);
 
-            GameLog.Core.Intel.DebugFormat("Credits SPY CIV BEFORE from {0}:  >>> {1} Credits", 
-                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key, 
-                GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
+            GameLog.Core.UI.DebugFormat("BEFORE: attackING civ={0}: {1} Credits", attackingCiv.Key, GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
 
             GameContext.Current.CivilizationManagers[attackingCiv].Credits.AdjustCurrent(stolenCredits);
             GameContext.Current.CivilizationManagers[attackingCiv].Credits.UpdateAndReset();
 
-            GameLog.Core.Intel.DebugFormat("Credits SPY CIV AFTER from {0}:  >>> {1} Credits",
-                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
-                GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
+            GameLog.Core.UI.DebugFormat(" AFTER: attakING civ={0}: {1} Credits", attackingCiv.Key, GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
+            GameLog.Core.UI.DebugFormat("attacing accumulated ={0}", _attackAccumulatedIntelInt);
 
+            // DEFENSE
 
-            // costs on both sides for the attack
-            // handling intelligence points for attack / defence  //////////////////////////
-            GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
-                    defenseMeter.CurrentValue);
+            GameLog.Core.UI.DebugFormat("** DEFENSE METER INT, attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: defense meter {1}, accumulated ={2}",
+                    attackedCiv.Key, defenseMeter.CurrentValue, _defenceAccumulatedIntelInt);
+            GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+                attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
+            //GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
+            //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
 
             defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
             defenseMeter.UpdateAndReset();
 
-            GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
-                    defenseMeter.CurrentValue);
+            GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: defense meter {1}, accumulated ={2}",
+                    attackedCiv.Key, defenseMeter.CurrentValue, _defenceAccumulatedIntelInt);
+            GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+                attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
+        //GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
+        //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
 
-            //////////////////////////////////////////
+        //  ATTACKING
 
-            stolenCreditsIsMinusOne:;   // pushing buttons makes 'intel costs'
+        stolenCreditsIsMinusOne:;   // pushing buttons makes 'intel costs'
 
-            GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
-                    attackMeter.CurrentValue);
+            GameLog.Core.UI.DebugFormat("** ATTACK METER INT attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: attackED meter {1}, accumulated ={2}",
+                    attackedCiv.Key, attackMeter.CurrentValue, _attackAccumulatedIntelInt);
+            GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+                attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
+            //GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
+            //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].Credits.CurrentValue);
 
-            attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // devided by two, it's more than on defense side
+            attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // divided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
 
-            GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
-                    attackMeter.CurrentValue);
+            GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: attackED meter {1}, accumulated ={2}",
+                    attackedCiv.Key, attackMeter.CurrentValue, _attackAccumulatedIntelInt);
+            GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+                attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED");
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue.ToString(), out int newCreditsAttacked);
 
-            GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits", colony.Name, stolenCredits);
+            GameLog.Core.UI.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits", colony.Name, stolenCredits);
 
             _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
@@ -298,8 +308,8 @@ namespace Supremacy.Intelligence
             //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             //if (apINT > -1)
             //{
-            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Client.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
+            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Core.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
             //    return;
             //}
             //else
@@ -457,8 +467,8 @@ namespace Supremacy.Intelligence
             //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             //if (apINT > -1)
             //{
-            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
+            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Core.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
             //    return;
             //}
             //else
@@ -600,8 +610,8 @@ namespace Supremacy.Intelligence
             //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             //if (apINT > -1)
             //{
-            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
+            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Core.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
             //    return;
             //}
             //else
@@ -736,8 +746,8 @@ namespace Supremacy.Intelligence
             //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
             //if (apINT > -1)
             //{
-            //    GameLog.Client.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Client.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
+            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
+            //    GameLog.Core.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
             //    return;
             //}
             //else

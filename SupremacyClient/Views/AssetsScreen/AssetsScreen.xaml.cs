@@ -98,45 +98,43 @@ namespace Supremacy.Client.Views
             IsVisibleChanged += OnIsVisibleChanged;
 
             _radioButtonZero = new RadioButton[] { BlameNoOne0, Terrorists0, Federation0, TerranEmpire0, Romulans0, Klingons0, Cardassians0, Dominion0, Borg0 };
-            //just put them in the order so you can use Critera 1,2,3,4
+            //just put them in the order so you can use item 1,2,3,4
             for (int i = 0; i < _radioButtonZero.Length; i++)
             {
-                _radioButtonZero[i].Tag = i; //set your critera number into tag property here (1,2,3,4)
-                //_radioButton[i]. += new EventHandler(OnBlameButtonsOneClick);
-                GameLog.Client.UI.DebugFormat("radio button loaded into array {0}", _radioButtonZero[i].Name);
+                _radioButtonZero[i].Tag = i; //set your item number into tag property here (1,2,3,4)
+                //GameLog.Client.UI.DebugFormat("radio button loaded into array {0}", _radioButtonZero[i].Name);
             }
             _radioButtonOne = new RadioButton[] { BlameNoOne1, Terrorists1, Federation1, TerranEmpire1, Romulans1, Klingons1, Cardassians1, Dominion1, Borg1 };
             //just put them in the order so you can use Critera 1,2,3,4
             for (int i = 0; i < _radioButtonOne.Length; i++)
             {
-                _radioButtonOne[i].Tag = i; //set your critera number into tag property here (1,2,3,4)
-                //_radioButton[i]. += new EventHandler(OnBlameButtonsOneClick);
+                _radioButtonOne[i].Tag = i; 
                 //GameLog.Client.UI.DebugFormat("radio button loaded into array {0}", _radioButton[i].Name);
             }
             _radioButtonTwo = new RadioButton[] { BlameNoOne2, Terrorists2, Federation2, TerranEmpire2, Romulans2, Klingons2, Cardassians2, Dominion2, Borg2 };
             for (int i = 0; i < _radioButtonTwo.Length; i++)
             {
-                _radioButtonTwo[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
+                _radioButtonTwo[i].Tag = i;
             }
             _radioButtonThree = new RadioButton[] { BlameNoOne3, Terrorists3, Federation3, TerranEmpire3, Romulans3, Klingons3, Cardassians3, Dominion3, Borg3 };
             for (int i = 0; i < _radioButtonThree.Length; i++)
             {
-                _radioButtonThree[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
+                _radioButtonThree[i].Tag = i;
             }
             _radioButtonFour = new RadioButton[] { BlameNoOne4, Terrorists4, Federation4, TerranEmpire4, Romulans4, Klingons4, Cardassians4, Dominion4, Borg4 };
             for (int i = 0; i < _radioButtonFour.Length; i++)
             {
-                _radioButtonFour[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
+                _radioButtonFour[i].Tag = i; 
             }
             _radioButtonFive = new RadioButton[] { BlameNoOne5, Terrorists5, Federation5, TerranEmpire5, Romulans5, Klingons5, Cardassians5, Dominion5, Borg5 };
             for (int i = 0; i < _radioButtonFive.Length; i++)
             {
-                _radioButtonFive[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
+                _radioButtonFive[i].Tag = i;
             }
             _radioButtonSix = new RadioButton[] { BlameNoOne6, Terrorists6, Federation6, TerranEmpire6, Romulans6, Klingons6, Cardassians6, Dominion6, Borg6 };
             for (int i = 0; i < _radioButtonSix.Length; i++)
             {
-                _radioButtonSix[i].Tag = i; //set your critera number into tag property here (0,1,2,3,4... )
+                _radioButtonSix[i].Tag = i;
             }
             BlameNoOne0.IsChecked = true;
             BlameNoOne1.IsChecked = true;
@@ -154,26 +152,23 @@ namespace Supremacy.Client.Views
                 return;
 
             var localPlayerEmpire = _appContext.LocalPlayerEmpire;
+            GameLog.Client.UI.DebugFormat("AssetsScreen local player ={0}", localPlayerEmpire.Civilization.Key);
             if (localPlayerEmpire == null)
                 return;
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var _civLocalPlayer = _appContext.LocalPlayer.Empire;//AppContext.LocalPlayerEmpire.Civilization;
+            var _civLocalPlayer = _appContext.LocalPlayer.Empire;
             GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
             if (IsVisible)
             {
                 ResumeAnimations();
-                GameLog.Client.UI.DebugFormat("begin of checking visible");
-                GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
+               // GameLog.Client.UI.DebugFormat("begin of checking visible");
+                // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
 
                 if (AssetsHelper.IsSpiedZero(_civLocalPlayer) && _spiedZeroCiv != _civLocalPlayer)
                 {
-                //    EmpireExpanderZero.Visibility = Visibility.Collapsed;
-                //}
-                //else
-                //{
                     EmpireExpanderZero.Visibility = Visibility.Visible;
                     SabotageEnergyZero.Visibility = Visibility.Visible;
                     SabotageFoodZero.Visibility = Visibility.Visible;
@@ -185,11 +180,6 @@ namespace Supremacy.Client.Views
                     GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedOne(_civLocalPlayer) && _spiedOneCiv != _civLocalPlayer)
                 {
-
-                //    EmpireExpanderOne.Visibility = Visibility.Collapsed;
-                //}
-                //else
-                //{
                     EmpireExpanderOne.Visibility = Visibility.Visible;                    
                     SabotageEnergyOne.Visibility = Visibility.Visible;
                     SabotageFoodOne.Visibility = Visibility.Visible;
@@ -201,11 +191,6 @@ namespace Supremacy.Client.Views
                     GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) && _spiedTwoCiv != _civLocalPlayer)
                 {
-
-                //    EmpireExpanderTwo.Visibility = Visibility.Collapsed;
-                //}
-                //else
-                //{
                     EmpireExpanderTwo.Visibility = Visibility.Visible;
                     SabotageEnergyTwo.Visibility = Visibility.Visible;
                     SabotageFoodTwo.Visibility = Visibility.Visible;
@@ -217,10 +202,6 @@ namespace Supremacy.Client.Views
                 GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedThree(_civLocalPlayer) && _spiedThreeCiv != _civLocalPlayer)
                 {                    
-                //    EmpireExpanderThree.Visibility = Visibility.Collapsed;
-                //}
-                //else
-                //{
                     EmpireExpanderThree.Visibility = Visibility.Visible;
                     SabotageEnergyThree.Visibility = Visibility.Visible;
                     SabotageFoodThree.Visibility = Visibility.Visible;
@@ -232,11 +213,6 @@ namespace Supremacy.Client.Views
                     GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFour(_civLocalPlayer) && _spiedFourCiv != _civLocalPlayer)
                 {
-
-                //    EmpireExpanderFour.Visibility = Visibility.Collapsed;
-                //}
-                //else
-                //{
                     EmpireExpanderFour.Visibility = Visibility.Visible;
                     SabotageEnergyFour.Visibility = Visibility.Visible;
                     SabotageFoodFour.Visibility = Visibility.Visible;
@@ -248,12 +224,6 @@ namespace Supremacy.Client.Views
                     GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFive(_civLocalPlayer) && _spiedFiveCiv != _civLocalPlayer)
                 {
-
-                //    EmpireExpanderFive.Visibility = Visibility.Collapsed;
-                //}
-
-                //else
-                //{
                     EmpireExpanderFive.Visibility = Visibility.Visible;
                     SabotageEnergyFive.Visibility = Visibility.Visible;
                     SabotageFoodFive.Visibility = Visibility.Visible;
@@ -265,17 +235,12 @@ namespace Supremacy.Client.Views
                     GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedSix(_civLocalPlayer) && _spiedSixCiv != _civLocalPlayer)
                 {
-
-                //    EmpireExpanderSix.Visibility = Visibility.Collapsed;
-                //}
-                //else
-                //{
-                        EmpireExpanderSix.Visibility = Visibility.Visible;
-                        SabotageEnergySix.Visibility = Visibility.Visible;
-                        SabotageFoodSix.Visibility = Visibility.Visible;
-                        SabotageIndustrySix.Visibility = Visibility.Visible;
-                        StealResearchSix.Visibility = Visibility.Visible;
-                        StealCreditsSix.Visibility = Visibility.Visible;
+                    EmpireExpanderSix.Visibility = Visibility.Visible;
+                    SabotageEnergySix.Visibility = Visibility.Visible;
+                    SabotageFoodSix.Visibility = Visibility.Visible;
+                    SabotageIndustrySix.Visibility = Visibility.Visible;
+                    StealResearchSix.Visibility = Visibility.Visible;
+                    StealCreditsSix.Visibility = Visibility.Visible;
                 }
                //GameLog.Client.UI.DebugFormat("end  of checking visible");
 
@@ -284,10 +249,10 @@ namespace Supremacy.Client.Views
                 var shortList = GameContext.Current.CivilizationManagers; // only CivilizationMangers in game and in CivID numerical sequence
                 foreach (var manager in shortList)
                 {
-                    if (manager.Civilization.IsEmpire && manager.Civilization != _civLocalPlayer) // not the local player
+                    if (manager.Civilization.IsEmpire && manager.Civilization != _civLocalPlayer) // bool is empire and is not the local player
                     {
                         spyableCivManagers.Add(manager);
-                        GameLog.Client.UI.DebugFormat("spyableCivManagers.ADD: manager = {0}", manager.Civilization.Key);
+                       // GameLog.Client.UI.DebugFormat("spyableCivManagers.ADD: manager = {0}", manager.Civilization.Key);
                     }
                 }
 
@@ -299,29 +264,12 @@ namespace Supremacy.Client.Views
                 {
                     empireCivsDictionary.Add(civManager.CivilizationID, civManager.Civilization); //dictionary of civs that can be spied on with key set to CivID
                     empireCivsList.Add(civManager.Civilization); // list of civs that can be spied on by local player and in CivID sequence
-                    GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
-                    GameLog.Client.UI.DebugFormat("Add civ.Key = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
+                    //GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
+                   // GameLog.Client.UI.DebugFormat("Add civ.Key = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
                     counting++;
                 }
 
-                GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
-
-                ////try
-                ////{
-                //if (GameContext.Current.DiplomacyData != null)
-                //    GameLog.Client.UI.DebugFormat("worked: GameContext.Current.DiplomacyData != null");
-                ////    //else
-                ////    //{
-
-                ////    //}
-                ////}
-                ////catch
-                ////{
-                ////GameLog.Client.UI.DebugFormat("didn't worked: GameContext.Current.DiplomacyData != null");
-                //if (GameContext.Current.TurnNumber < 3)
-                //        goto NoDiplomacyDataAvailableAtStart;
-                ////}
-
+                //GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
 
                 if (empireCivsDictionary.Keys.Contains(0) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[0]].IsContactMade())
@@ -340,8 +288,6 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(1) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[1]].IsContactMade())
                 {
-                    //if (AssetsHelper.IsSpiedOne(_civLocalPlayer))
-                    //    EmpireExpanderOne.Visibility = Visibility.Visible;
                     BlameTerranEmpire0.Visibility = Visibility.Visible;
                     BlameTerranEmpire2.Visibility = Visibility.Visible;
                     BlameTerranEmpire3.Visibility = Visibility.Visible;
@@ -352,8 +298,6 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(2) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[2]].IsContactMade())
                 {
-                    //if (AssetsHelper.IsSpiedTwo(_civLocalPlayer))
-                    //    EmpireExpanderTwo.Visibility = Visibility.Visible;
                     BlameRomulans0.Visibility = Visibility.Visible;
                     BlameRomulans1.Visibility = Visibility.Visible;
                     BlameRomulans3.Visibility = Visibility.Visible;
@@ -364,8 +308,6 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(3) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[3]].IsContactMade())
                 {
-                    //if (AssetsHelper.IsSpiedThree(_civLocalPlayer))
-                    //    EmpireExpanderThree.Visibility = Visibility.Visible;
                     BlameKlingons0.Visibility = Visibility.Visible;
                     BlameKlingons1.Visibility = Visibility.Visible;
                     BlameKlingons2.Visibility = Visibility.Visible;
@@ -373,12 +315,10 @@ namespace Supremacy.Client.Views
                     BlameKlingons5.Visibility = Visibility.Visible;
                     BlameKlingons6.Visibility = Visibility.Visible;
                 }
-                GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
+                //GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
                 if (empireCivsDictionary.Keys.Contains(4) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
-                    //if (AssetsHelper.IsSpiedFour(_civLocalPlayer))
-                    //    EmpireExpanderFour.Visibility = Visibility.Visible;
                     BlameCardassians0.Visibility = Visibility.Visible;
                     BlameCardassians1.Visibility = Visibility.Visible;
                     BlameCardassians2.Visibility = Visibility.Visible;
@@ -390,23 +330,17 @@ namespace Supremacy.Client.Views
                 if (empireCivsDictionary.Keys.Contains(5) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[5]].IsContactMade())
                 {
-                    //if (AssetsHelper.IsSpiedFive(_civLocalPlayer))
-                    //    EmpireExpanderFive.Visibility = Visibility.Visible;
                     BlameDominion0.Visibility = Visibility.Visible;
                     BlameDominion1.Visibility = Visibility.Visible;
                     BlameDominion2.Visibility = Visibility.Visible;
                     BlameDominion3.Visibility = Visibility.Visible;
                     BlameDominion4.Visibility = Visibility.Visible;
                     BlameDominion6.Visibility = Visibility.Visible;
-                    //}
-
                 }
 
                 if (empireCivsDictionary.Keys.Contains(6) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[6]].IsContactMade())
                 {
-                    //if (AssetsHelper.IsSpiedSix(_civLocalPlayer))
-                    //    EmpireExpanderSix.Visibility = Visibility.Visible;
                     BlameBorg0.Visibility = Visibility.Visible;
                     BlameBorg1.Visibility = Visibility.Visible;
                     BlameBorg2.Visibility = Visibility.Visible;
@@ -438,7 +372,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-
+// do we need this in the AssetsScreen???
         protected void ResumeAnimations()
         {
             foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
@@ -983,7 +917,7 @@ namespace Supremacy.Client.Views
                     OnLocalPlayerEmpireChanged();
                     break;
             }
-
+            GameLog.Client.UI.DebugFormat("AssetsScreen Recieves localciv sender={0} and e={1}", sender.ToString(), e.ToString()) ;
             return true;
         }
     }
