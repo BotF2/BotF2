@@ -89,6 +89,7 @@ namespace Supremacy.Client.Views
             _container = container;
             _appContext = _container.Resolve<IAppContext>();
             _localCivManager = _appContext.LocalPlayerEmpire;
+            PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
             IntelHelper.GetLocalCiv(_localCivManager);
             InitializeComponent();
 
