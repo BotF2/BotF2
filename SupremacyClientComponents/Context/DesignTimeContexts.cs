@@ -269,7 +269,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
+                _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
@@ -282,7 +282,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
+                _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
@@ -296,7 +296,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
+                _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
@@ -309,7 +309,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
+                _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
@@ -322,7 +322,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
+                _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
@@ -335,7 +335,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
+                _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
@@ -348,7 +348,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
+                _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
