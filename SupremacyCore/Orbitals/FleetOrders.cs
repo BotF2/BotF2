@@ -682,8 +682,8 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
                 return false;
-            //if (!fleet.Sector.Owner.IsEmpire)
-            //    return false;
+            if (!fleet.Sector.Owner.IsEmpire)  // if it is NOT an empire, return false
+                return false;
             if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
                 return false;
             foreach (var ship in fleet.Ships)
