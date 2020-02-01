@@ -40,7 +40,7 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        private Dictionary<Civilization, List<Colony>> _infiltratedColonies;
+        //private Dictionary<Civilization, List<Colony>> _infiltratedColonies;
         private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
@@ -188,11 +188,11 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>The infiltrated colonies.</value>
         [NotNull]
-        public Dictionary<Civilization, List<Colony>> InfiltratedColonies
-        {
-            get { return _infiltratedColonies; }
-            // set{ alksdjf = value}
-        }
+        //public Dictionary<Civilization, List<Colony>> InfiltratedColonies
+        //{
+        //    get { return _infiltratedColonies; }
+        //    // set{ alksdjf = value}
+        //}
 
         public Colony SeatOfGovernment
         {
@@ -251,18 +251,38 @@ namespace Supremacy.Game
                 {
                     baseIntel *= bonus.Amount;
                 }
+                GameLog.Client.UI.DebugFormat("TotalIntelProduction ={0}", baseIntel);
                 return baseIntel;
             }
         }
 
         public Meter TotalIntelligenceAttackingAccumulated
         {
-            get { return _totalIntelligenceAttackingAccumulated; }
+            get
+            {
+                var updateMeter = _totalIntelligenceAttackingAccumulated;
+                
+                if (_totalIntelligenceAttackingAccumulated.CurrentValue == 0)
+                {
+                    updateMeter.CurrentValue = TotalIntelligenceProduction;
+                }
+                GameLog.Client.UI.DebugFormat("TotalIntelAttackingAccumulated ={0}", updateMeter.CurrentValue);
+                return updateMeter;
+            }
         }
 
         public Meter TotalIntelligenceDefenseAccumulated
         {
-            get { return _totalIntelligenceDefenseAccumulated; }
+            get
+            {
+                var updateMeter = _totalIntelligenceDefenseAccumulated;
+                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
+                {
+                    updateMeter.CurrentValue = TotalIntelligenceProduction;
+                }
+                return _totalIntelligenceDefenseAccumulated;
+            }
         }
 
         public bool ControlsHomeSystem
@@ -478,12 +498,14 @@ namespace Supremacy.Game
 
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString() );
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
         }
 
         private void OnTotalIntelligenceDefenseAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            GameLog.Client.UI.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }

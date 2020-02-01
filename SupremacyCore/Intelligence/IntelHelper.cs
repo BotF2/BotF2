@@ -19,9 +19,9 @@ namespace Supremacy.Intelligence
         private static UniverseObjectList<Colony> _newSpiedColonies;
         private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
-        private static Dictionary<Civilization, int> _defenceDictionary = new Dictionary<Civilization, int>();
+        private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
         private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
-        private static int _defenceAccumulatedIntelInt;
+        private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
         private static CivilizationManager _localCivManager;
 
@@ -30,7 +30,6 @@ namespace Supremacy.Intelligence
             get { return _sitReps_Temp; }
             set { _sitReps_Temp = value; }
         }
-
         public static UniverseObjectList<Colony> NewSpiedColonies
         {
             get { return _newSpiedColonies; }
@@ -49,11 +48,32 @@ namespace Supremacy.Intelligence
         }
         public static Dictionary<Civilization, int> DefenceDictionary
         {
-            get { return _defenceDictionary; }
+            get { return _defenseDictionary; }
         }
         public static CivilizationManager LocalCivManager
         {
-            get { return _localCivManager; }
+            get { return _localCivManager; } // ?? AppConte; }
+        }
+        public static int DefenseAccumulatedInteInt
+        {
+            get
+            {
+                _defenseAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
+                return _defenseAccumulatedIntelInt;
+            }
+        }
+        public static int AttackingAccumulatedInteInt
+        {
+            get
+            {
+                _attackAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
+                return _attackAccumulatedIntelInt;
+            }
+        }
+        static IntelHelper()
+        {
+            //_attackAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
+            //_defenseAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
         }
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player
@@ -89,13 +109,13 @@ namespace Supremacy.Intelligence
         }
         private static void PopulateDefence()
         {
-            _defenceDictionary.Clear();
+            _defenseDictionary.Clear();
             foreach (var spiedCiv in _spiedList)
             {
                 int defenseInt = 0;      
                 var spiedCivManager = GameContext.Current.CivilizationManagers[spiedCiv];
                 Int32.TryParse(spiedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseInt);
-                _defenceDictionary.Add(spiedCiv, defenseInt);
+                _defenseDictionary.Add(spiedCiv, defenseInt);
             }
         }
         
@@ -217,7 +237,7 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.UI.DebugFormat("** DEFENSE METER INT, attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
             GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: defense meter {1}, accumulated ={2}",
-                    attackedCiv.Key, defenseMeter.CurrentValue, _defenceAccumulatedIntelInt);
+                    attackedCiv.Key, defenseMeter.CurrentValue, DefenseAccumulatedInteInt);
             GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
             //GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
@@ -227,7 +247,7 @@ namespace Supremacy.Intelligence
             defenseMeter.UpdateAndReset();
 
             GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: defense meter {1}, accumulated ={2}",
-                    attackedCiv.Key, defenseMeter.CurrentValue, _defenceAccumulatedIntelInt);
+                    attackedCiv.Key, defenseMeter.CurrentValue, DefenseAccumulatedInteInt);
             GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
         //GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
@@ -239,7 +259,7 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.UI.DebugFormat("** ATTACK METER INT attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
             GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: attackED meter {1}, accumulated ={2}",
-                    attackedCiv.Key, attackMeter.CurrentValue, _attackAccumulatedIntelInt);
+                    attackedCiv.Key, attackMeter.CurrentValue, AttackingAccumulatedInteInt);
             GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
             //GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
@@ -249,7 +269,7 @@ namespace Supremacy.Intelligence
             attackMeter.UpdateAndReset();
 
             GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: attackED meter {1}, accumulated ={2}",
-                    attackedCiv.Key, attackMeter.CurrentValue, _attackAccumulatedIntelInt);
+                    attackedCiv.Key, attackMeter.CurrentValue, AttackingAccumulatedInteInt);
             GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
 
@@ -271,7 +291,7 @@ namespace Supremacy.Intelligence
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
-            _defenceAccumulatedIntelInt = newDefenseIntelligence;
+            _defenseAccumulatedIntelInt = newDefenseIntelligence;
 
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
@@ -428,7 +448,7 @@ namespace Supremacy.Intelligence
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
-            _defenceAccumulatedIntelInt = newDefenseIntelligence;
+            _defenseAccumulatedIntelInt = newDefenseIntelligence;
 
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
@@ -570,7 +590,7 @@ namespace Supremacy.Intelligence
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
-            _defenceAccumulatedIntelInt = newDefenseIntelligence;
+            _defenseAccumulatedIntelInt = newDefenseIntelligence;
 
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
@@ -705,7 +725,7 @@ namespace Supremacy.Intelligence
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
-            _defenceAccumulatedIntelInt = newDefenseIntelligence;
+            _defenseAccumulatedIntelInt = newDefenseIntelligence;
 
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
@@ -840,7 +860,7 @@ namespace Supremacy.Intelligence
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
-            _defenceAccumulatedIntelInt += newDefenseIntelligence;
+            _defenseAccumulatedIntelInt += newDefenseIntelligence;
 
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);

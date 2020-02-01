@@ -77,11 +77,12 @@ namespace Supremacy.Client.Views
                 try
                 {
                     //FillUpDefense();
+                    GameLog.Core.UI.DebugFormat("Get TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
                     return _totalIntelligenceProduction;
                 }
                 catch
                 {
-                    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceProduction get...");
+                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction get...");
                     return 0;
                 }
             }
@@ -91,11 +92,12 @@ namespace Supremacy.Client.Views
                 {
                     FillUpDefense();
                     _totalIntelligenceProduction = value;
+                    GameLog.Core.UI.DebugFormat("Set TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
                     NotifyPropertyChanged("TotalIntelligenceProduction");
                 }
                 catch
                 {
-                    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceProduction set...");
+                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction set...");
                     //0 = value;
                 }
             }
@@ -117,14 +119,18 @@ namespace Supremacy.Client.Views
                 //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceDefenseAccumulated...");
                 //    return ;
                 //}
+                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
+                GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 return _totalIntelligenceDefenseAccumulated;// IntelHelper.DefenseAccumulatedIntelInt;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
+                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
+                //_totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
+                GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
             }
         }
@@ -144,23 +150,29 @@ namespace Supremacy.Client.Views
                 //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceAttackingAccumulated...");
                 //    return 0;
                 //}
-                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
+                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
+               // _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
+                GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
+                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
+                //_totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
+                GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceAttackingAccumulated");
             }
         }
         public Meter UpdateAttackingAccumulated(Civilization attackingCiv)
         {
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
+            GameLog.Core.UI.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
+            GameLog.Core.UI.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
             return attackMeter;
         }
         protected virtual void FillUpDefense()
@@ -557,7 +569,7 @@ namespace Supremacy.Client.Views
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivOne;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
         }

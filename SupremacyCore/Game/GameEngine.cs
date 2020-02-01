@@ -1426,7 +1426,10 @@ namespace Supremacy.Game
 
                     GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added from all colonies to {4} ",
                         newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization);
-
+                    GameLog.Client.UI.DebugFormat("Civ Manager ={0} TotalIntelDefenseAccumulated ={1}, TotalIntelAccumulated ={2}",
+                        civManager.Civilization.Key,
+                        civManager.TotalIntelligenceDefenseAccumulated.CurrentValue,
+                        civManager.TotalIntelligenceAttackingAccumulated.CurrentValue);
                     //Get the resources available for the civilization
                     ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection();
                     totalResourcesAvailable[ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue;

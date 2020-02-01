@@ -561,7 +561,7 @@ namespace Supremacy.Universe
             {
                 Int32.TryParse(GameContext.Current.CivilizationManagers[Owner].Credits.ToString(), out int creditsForSpyScreen);
 
-                GameLog.Core.Intel.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner],
+                GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner],
                     this.Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
 
                 return creditsForSpyScreen;
@@ -661,7 +661,11 @@ namespace Supremacy.Universe
         /// <value>The net intelligence production.</value>
         public int NetIntelligence
         {
-            get { return GetProductionOutput(ProductionCategory.Intelligence); }
+            get
+            {
+                GameLog.Client.UI.DebugFormat("NetIntelligence ={0}", GetProductionOutput(ProductionCategory.Intelligence));
+                return GetProductionOutput(ProductionCategory.Intelligence);
+            }
         }
 
         /// <summary>

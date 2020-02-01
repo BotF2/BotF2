@@ -159,7 +159,7 @@ namespace Supremacy.Client.Views
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var _civLocalPlayer = _appContext.LocalPlayer.Empire;
-            GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
+           // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
             if (IsVisible)
             {
@@ -177,7 +177,7 @@ namespace Supremacy.Client.Views
                     StealCreditsZero.Visibility = Visibility.Visible;
                 }
 
-                    GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
+                    //GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedOne(_civLocalPlayer) && _spiedOneCiv != _civLocalPlayer)
                 {
                     EmpireExpanderOne.Visibility = Visibility.Visible;                    
@@ -188,7 +188,7 @@ namespace Supremacy.Client.Views
                     StealCreditsOne.Visibility = Visibility.Visible;
                 }
 
-                    GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
+                   // GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) && _spiedTwoCiv != _civLocalPlayer)
                 {
                     EmpireExpanderTwo.Visibility = Visibility.Visible;
@@ -199,7 +199,7 @@ namespace Supremacy.Client.Views
                     StealCreditsTwo.Visibility = Visibility.Visible;
                 }
 
-                GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
+                //GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedThree(_civLocalPlayer) && _spiedThreeCiv != _civLocalPlayer)
                 {                    
                     EmpireExpanderThree.Visibility = Visibility.Visible;
@@ -210,7 +210,7 @@ namespace Supremacy.Client.Views
                     StealCreditsThree.Visibility = Visibility.Visible;
                 }
 
-                    GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
+                    //GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFour(_civLocalPlayer) && _spiedFourCiv != _civLocalPlayer)
                 {
                     EmpireExpanderFour.Visibility = Visibility.Visible;
@@ -221,7 +221,7 @@ namespace Supremacy.Client.Views
                     StealCreditsFour.Visibility = Visibility.Visible;
                 }
 
-                    GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
+                    //GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFive(_civLocalPlayer) && _spiedFiveCiv != _civLocalPlayer)
                 {
                     EmpireExpanderFive.Visibility = Visibility.Visible;
@@ -232,7 +232,7 @@ namespace Supremacy.Client.Views
                     StealCreditsFive.Visibility = Visibility.Visible;
                 }
 
-                    GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
+                    //GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedSix(_civLocalPlayer) && _spiedSixCiv != _civLocalPlayer)
                 {
                     EmpireExpanderSix.Visibility = Visibility.Visible;
@@ -283,7 +283,7 @@ namespace Supremacy.Client.Views
                     BlameFederation5.Visibility = Visibility.Visible;
                     BlameFederation6.Visibility = Visibility.Visible;
                 }
-                GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
+                //GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
 
                 if (empireCivsDictionary.Keys.Contains(1) &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[1]].IsContactMade())
