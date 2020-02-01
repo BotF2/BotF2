@@ -760,7 +760,7 @@
                                                     Foreground="Red"
                                                     Content="Klingons"
                                                     Tag="5"
-                                                    Checked="OnBlameButtonsZeroClick"/>
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameCardassians1"
                                                         Visibility="Collapsed"
@@ -778,7 +778,7 @@
                                                     Foreground="Goldenrod"
                                                     Content="Cardassianss"
                                                     Tag="6"
-                                                    Checked="OnBlameButtonsZeroClick"/>
+                                                    Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameDominion1"
                                                         Visibility="Collapsed"
@@ -796,7 +796,7 @@
                                                       Foreground="MediumPurple"
                                                       Content="Dominion"
                                                       Tag="7"
-                                                      Checked="OnBlameButtonsZeroClick"/>
+                                                      Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameBorg1"
                                                         Visibility="Collapsed"
@@ -814,7 +814,7 @@
                                                       Foreground="YellowGreen"
                                                       Content="Borg"
                                                       Tag="8"
-                                                      Checked="OnBlameButtonsZeroClick"/>
+                                                      Checked="OnBlameButtonsOneClick"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -1026,7 +1026,7 @@
                                                 Foreground="Black"
                                                 Background="Transparent"
                                                 BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
-                                                Click = "OnCreditsZeroClick"/>
+                                                Click = "OnCreditsOneClick"/>
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - One -->
