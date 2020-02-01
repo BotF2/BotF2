@@ -2073,11 +2073,40 @@ namespace Supremacy.Combat
             //GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
             // _combatShips = _combatShipsTemp;
 
-            var allRetreatShips = _combatShipsTemp // All non destroyed ships retreat (survive)
+
+            var _combatShipsTempNotDestroyed = _combatShipsTemp
                 .Where(s => !s.Item1.IsDestroyed)
-                .Where(s => s.Item1.Owner != s.Item1.Source.Sector.Owner) // Ships in own territory make a stand (remain in the system they own), after 5 turns.
                 .ToList();
-            foreach (var ship in allRetreatShips)
+
+            var _stayingThereShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+            var _allRetreatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
+
+
+            // cases:    (minors as well)
+
+            // Attacker   CARD + ROM
+            // Defense    FED + Kling
+
+            Civilization firstShipOwner = null; // Dummy, not all sectors have a Sector owner
+
+            foreach (var ship in _combatShipsTempNotDestroyed)
+            {
+                firstShipOwner = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Owner;
+
+                if (CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner) == false)
+                    {
+                    _stayingThereShips.Add(ship);
+                    //GameLog.Core.CombatDetails.DebugFormat("added to _stayingThereShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                }
+                else
+                {
+                    _allRetreatShips.Add(ship);
+                    //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                }
+            }
+
+
+            foreach (var ship in _allRetreatShips)
             {
                 if (ship.Item1 != null)
                 {
@@ -2085,7 +2114,7 @@ namespace Supremacy.Combat
                     var ownerAssets = GetAssets(ship.Item1.Owner);
                     if (!ownerAssets.EscapedShips.Contains(ship.Item1))
                     {
-                        GameLog.Core.CombatDetails.DebugFormat("END EscapedShips ={0}", ship.Item1.Name);
+                        GameLog.Core.CombatDetails.DebugFormat("END EscapedShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
                         ownerAssets.EscapedShips.Add(ship.Item1);
                         ownerAssets.CombatShips.Remove(ship.Item1);
                         ownerAssets.NonCombatShips.Remove(ship.Item1);
@@ -2093,12 +2122,11 @@ namespace Supremacy.Combat
                     }
                 }
             }
-            //}
-            //********************************************************************
 
             GameLog.Core.CombatDetails.DebugFormat("AutomatedCombatEngine ends");
 
-        }// END OF RESOVLECOMBATROUNDCORE
+        }
+        // END OF RESOVLECOMBATROUNDCORE
     }
 }
 
