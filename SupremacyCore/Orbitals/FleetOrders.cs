@@ -717,7 +717,7 @@ namespace Supremacy.Orbitals
 
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
-            var colonies = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
+            var colonies =  GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ

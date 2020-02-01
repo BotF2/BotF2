@@ -498,7 +498,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization]; // not this DesignTimeObjects.LocalCivManager.Civilization
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);

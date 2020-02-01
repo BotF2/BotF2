@@ -52,7 +52,7 @@ namespace Supremacy.Intelligence
         }
         public static CivilizationManager LocalCivManager
         {
-            get { return _localCivManager; } // ?? AppConte; }
+            get { return _localCivManager; } 
         }
         public static int DefenseAccumulatedInteInt
         {
