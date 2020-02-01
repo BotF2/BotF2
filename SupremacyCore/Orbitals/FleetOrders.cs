@@ -678,6 +678,8 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System == null)
                 return false;
+            if (fleet.Sector.System.Colony == null)
+                return false;
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
                 return false;
             //if (!fleet.Sector.Owner.IsEmpire)
