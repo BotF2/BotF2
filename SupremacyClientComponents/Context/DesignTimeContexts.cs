@@ -211,6 +211,7 @@ namespace Supremacy.Client.Context
         private static bool _subedFour = false;
         private static bool _subedFive = false;
         private static bool _subedSix = false;
+
         public static bool SubedZero
         {
             get { return _subedZero; }
@@ -265,6 +266,7 @@ namespace Supremacy.Client.Context
         //        allCivManagers = value;
         //    }
         //}
+
         public static CivilizationManager SpiedCivZero
         {
             get
@@ -272,9 +274,14 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
+                    if (IntelHelper._spyingCiv_0_DummyList.Contains(GameContext.Current.CivilizationManagers[0].Civilization))
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
                 }
                 catch { _subedZero = true; }
+
+                if (_spiedCivDummy == null)
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
+
                 return _spiedCivDummy;
             }
         }
@@ -285,9 +292,14 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
+                    if (IntelHelper._spyingCiv_1_DummyList.Contains(GameContext.Current.CivilizationManagers[1].Civilization))
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
                 }
                 catch { _subedOne = true; }
+
+                if (_spiedCivDummy == null)
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
+
                 return _spiedCivDummy;
             }
         }
@@ -299,9 +311,14 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
+                    if (IntelHelper._spyingCiv_2_DummyList.Contains(GameContext.Current.CivilizationManagers[2].Civilization))
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
                 }
                 catch { _subedTwo = true; }
+
+                if (_spiedCivDummy == null)
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
+                
                 return _spiedCivDummy;
             }
         }
@@ -312,9 +329,22 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
+                    if (IntelHelper._spyingCiv_3_DummyList.Contains(GameContext.Current.CivilizationManagers[3].Civilization))
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
                 }
                 catch { _subedThree = true; }
+
+
+                //foreach (var item in _spiedCiv_3_DummyList)
+                //{
+                //    //GameLog.Core.UI.DebugFormat("_spiedCivThreeDummyList-Entry = {0}", item.Key);
+                //}
+
+                if (_spiedCivDummy == null)
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
+
+                ////GameLog.Core.UI.DebugFormat("_spiedCivThree (FINALLY) = {0}", _spiedCivDummy.Civilization.Key);
+
                 return _spiedCivDummy;
             }
         }
@@ -325,9 +355,23 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
+                    if (IntelHelper._spyingCiv_4_DummyList.Contains(GameContext.Current.CivilizationManagers[4].Civilization))
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
                 }
                 catch { _subedFour = true; }
+
+
+                //for (int i = 0; i < _spiedCiv_4_DummyList.Count; i++)
+                //{
+                //    GameLog.Core.UI.DebugFormat("{0} is spying to > _spiedCiv_4_DummyList-Entry = {1}", IntelHelper.LocalCivManager.Civilization.Key, _spiedCiv_4_DummyList[i].Key);
+                //}
+
+
+                if (_spiedCivDummy == null)
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
+
+                //GameLog.Core.UI.DebugFormat("_spiedCiv_4_ (FINALLY) = {0}", _spiedCivDummy.Civilization.Key);
+
                 return _spiedCivDummy;
             }
         }
@@ -338,9 +382,14 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
+                    if (IntelHelper._spyingCiv_5_DummyList.Contains(GameContext.Current.CivilizationManagers[5].Civilization))
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
                 }
                 catch { _subedFive = true; }
+
+                if (_spiedCivDummy == null)
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
+
                 return _spiedCivDummy;
             }
         }
@@ -351,9 +400,14 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = IntelHelper.LocalCivManager;
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
+                    if (IntelHelper._spyingCiv_6_DummyList.Contains(GameContext.Current.CivilizationManagers[6].Civilization))
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
                 }
                 catch { _subedSix = true; }
+
+                if (_spiedCivDummy == null)
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
+
                 return _spiedCivDummy;
             }
 

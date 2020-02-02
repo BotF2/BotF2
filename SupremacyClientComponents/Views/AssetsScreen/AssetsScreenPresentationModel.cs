@@ -20,6 +20,7 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
+        private List<Civilization> _localSpyingCivList;
 
         #region designInstance stuff
         //private static AssetsScreenPresentationModel _designInstance;
@@ -70,6 +71,25 @@ namespace Supremacy.Client.Views
         {
             get { return IntelHelper.LocalCivManager; }
         }
+
+        public List<Civilization> LocalSpyingCivList
+        {
+            get 
+            {
+                if (MyLocalCivManager.Civilization.CivID == 0) _localSpyingCivList = IntelHelper._spyingCiv_0_DummyList;
+                if (MyLocalCivManager.Civilization.CivID == 1) _localSpyingCivList = IntelHelper._spyingCiv_1_DummyList;
+                if (MyLocalCivManager.Civilization.CivID == 2) _localSpyingCivList = IntelHelper._spyingCiv_2_DummyList;
+                if (MyLocalCivManager.Civilization.CivID == 3) _localSpyingCivList = IntelHelper._spyingCiv_3_DummyList;
+                if (MyLocalCivManager.Civilization.CivID == 4) _localSpyingCivList = IntelHelper._spyingCiv_4_DummyList;
+                if (MyLocalCivManager.Civilization.CivID == 5) _localSpyingCivList = IntelHelper._spyingCiv_5_DummyList;
+                if (MyLocalCivManager.Civilization.CivID == 6) _localSpyingCivList = IntelHelper._spyingCiv_6_DummyList;
+
+
+                return _localSpyingCivList; 
+            }
+        }
+
+
         public int TotalIntelligenceProduction
         {
             get
@@ -809,6 +829,7 @@ namespace Supremacy.Client.Views
         #region Implementation of INotifyPropertyChanged
         [NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
+        
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {

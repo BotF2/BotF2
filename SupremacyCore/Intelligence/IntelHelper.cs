@@ -24,6 +24,13 @@ namespace Supremacy.Intelligence
         private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
         private static CivilizationManager _localCivManager;
+        public static List<Civilization> _spyingCiv_0_DummyList;
+        public static List<Civilization> _spyingCiv_1_DummyList;
+        public static List<Civilization> _spyingCiv_2_DummyList;
+        public static List<Civilization> _spyingCiv_3_DummyList;
+        public static List<Civilization> _spyingCiv_4_DummyList;
+        public static List<Civilization> _spyingCiv_5_DummyList;
+        public static List<Civilization> _spyingCiv_6_DummyList;
 
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -105,11 +112,22 @@ namespace Supremacy.Intelligence
                 _spiedDictionary[spyCiv] = new List<Civilization> { spiedCiv };
             }
 
-            foreach (var entry in _spiedDictionary)
+            //for (int i = 0; i < _spiedDictionary.Keys.Count; i++)
+            foreach (var _spyCiv in _spiedDictionary)
             {
-                GameLog.Core.UI.DebugFormat("spyCiv = {0} spying on = {1}", entry.Key, entry.Value);
-            }
+                if (_spyCiv.Key.CivID == 0) _spyingCiv_0_DummyList = _spyCiv.Value;
+                if (_spyCiv.Key.CivID == 1) _spyingCiv_1_DummyList = _spyCiv.Value;
+                if (_spyCiv.Key.CivID == 2) _spyingCiv_2_DummyList = _spyCiv.Value;
+                if (_spyCiv.Key.CivID == 3) _spyingCiv_3_DummyList = _spyCiv.Value;
+                if (_spyCiv.Key.CivID == 4) _spyingCiv_4_DummyList = _spyCiv.Value;
+                if (_spyCiv.Key.CivID == 5) _spyingCiv_5_DummyList = _spyCiv.Value;
+                if (_spyCiv.Key.CivID == 6) _spyingCiv_6_DummyList = _spyCiv.Value;
 
+                foreach (var _spiedCiv in _spyCiv.Value) // _spyCiv.Value = _spiedList
+                {
+                    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCiv.Key, _spiedCiv.Key);
+                }
+            }
 
             PopulateDefence();
 
