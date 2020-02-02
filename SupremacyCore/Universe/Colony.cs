@@ -561,7 +561,7 @@ namespace Supremacy.Universe
             {
                 Int32.TryParse(GameContext.Current.CivilizationManagers[Owner].Credits.ToString(), out int creditsForSpyScreen);
 
-                GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner],
+                GameLog.Core.UI.DebugFormat("{0} - {1}: Credits = {2}, creditsForSpyScreen = {3}", GameContext.Current.CivilizationManagers[Owner].Civilization.Key,
                     this.Name, GameContext.Current.CivilizationManagers[Owner].Credits.CurrentValue, creditsForSpyScreen);
 
                 return creditsForSpyScreen;

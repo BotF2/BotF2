@@ -87,7 +87,7 @@ namespace Supremacy.Intelligence
         }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {
-            GameLog.Core.UI.DebugFormat("New spyciv ={0} spied on ={1}",spyCiv.Key, spiedCiv.Key);
+            GameLog.Core.UI.DebugFormat("New spyciv = {0} spying on = {1}",spyCiv.Key, spiedCiv.Key);
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
@@ -104,6 +104,13 @@ namespace Supremacy.Intelligence
             {            
                 _spiedDictionary[spyCiv] = new List<Civilization> { spiedCiv };
             }
+
+            foreach (var entry in _spiedDictionary)
+            {
+                GameLog.Core.UI.DebugFormat("spyCiv = {0} spying on = {1}", entry.Key, entry.Value);
+            }
+
+
             PopulateDefence();
 
         }
