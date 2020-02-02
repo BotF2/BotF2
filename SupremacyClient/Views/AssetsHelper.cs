@@ -11,13 +11,6 @@ namespace Supremacy.Intelligence
 {
     public static class AssetsHelper
     {
-        static bool alreadyZero = false;
-        static bool alreadyOne = false;
-        static bool alreadyTwo = false;
-        static bool alreadyThree = false;
-        static bool alreadyFour = false;
-        static bool alreadyFive = false;
-        static bool alreadySix = false;
         public static Civilization NewSpyCiv
         {
             get { return IntelHelper.NewSpyCiv; }
@@ -66,8 +59,6 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedZero)
                 return false;
-            else if (alreadyZero)
-                return true;
             else
             {
                 try { var civList = SpiedByDictionary[localCivFromScreen]; }
@@ -82,8 +73,6 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedOne)
                 return false;
-            else if (alreadyOne)
-                return true;
             else
             {
                 try { var civList = SpiedByDictionary[localCivFromScreen]; }
@@ -97,8 +86,6 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedTwo)
                 return false;
-            else if (alreadyTwo)
-                return true;
             else
             {
                 try { var civList = SpiedByDictionary[localCivFromScreen]; }
@@ -112,8 +99,6 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedThree)
                 return false;
-            else if (alreadyThree)
-                return true;
             else
             {
                 try { var civList = SpiedByDictionary[localCivFromScreen]; }
@@ -127,8 +112,6 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedFour)
                 return false;
-            else if (alreadyFour)
-                return true;
             else
             {
                 try { var civList = SpiedByDictionary[localCivFromScreen]; }
@@ -142,8 +125,6 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedFive)
                 return false;
-            else if (alreadyFive)
-                return true;
             else
             {
                 try { var civList = SpiedByDictionary[localCivFromScreen]; }
@@ -157,8 +138,6 @@ namespace Supremacy.Intelligence
         {
             if (DesignTimeObjects.SubedSix)
                 return false;
-            else if (alreadySix)
-                return true;
             else
             {
                 try { var civList = SpiedByDictionary[localCivFromScreen]; }

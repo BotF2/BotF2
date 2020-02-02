@@ -686,6 +686,20 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
                 return false;
+            try
+            {
+                foreach (Civilization Civ in IntelHelper.SpiedDictionary[fleet.Owner])
+                {
+                    if (Civ == fleet.Sector.System.Colony.Owner)
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch
+            {
+                GameLog.Client.UI.DebugFormat("Tried the Spied Dictionary but it was null");
+            }
             foreach (var ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)
@@ -718,7 +732,7 @@ namespace Supremacy.Orbitals
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
             var colonies =  GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+            var civManager = GameContext.Current.CivilizationManagers[civ];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             //if (defenseIntelligence - 1 < 0.1)
