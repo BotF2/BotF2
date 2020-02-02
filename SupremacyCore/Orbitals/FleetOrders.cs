@@ -569,10 +569,12 @@ namespace Supremacy.Orbitals
                 Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
-                GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}, new = {7}"
-                    ,Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
-                    , Fleet.Sector.System.Colony.Name,Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
-                    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
+                //GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}%, new = {7}"
+                //    ,Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
+                //    , Fleet.Sector.System.Colony.Name,Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
+                //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
+
+                //ToDo: SitRep
             }
             //If the colony is not ours, just doing small medical help + increase regard + trust etc
             if (Fleet.Sector.System.Colony is null) // currentx
@@ -583,10 +585,12 @@ namespace Supremacy.Orbitals
             {
 
                 var foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
+                healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
 
                 // only small medical help = +1
-                Fleet.Sector.System.Colony.Health.AdjustCurrent(1);
+                Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
+                //ToDo: SitRep
 
                 // send a medical ship to other civilization's colony and get trust
                 if (Fleet.Sector.System.Colony.Owner != Fleet.Owner && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
