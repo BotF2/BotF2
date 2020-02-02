@@ -918,7 +918,7 @@ namespace Supremacy.Client.Views
                     OnLocalPlayerEmpireChanged();
                     break;
             }
-            GameLog.Client.UI.DebugFormat("AssetsScreen Recieves localciv sender={0} and e={1}", sender.ToString(), e.ToString()) ;
+            GameLog.Client.UI.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
             return true;
         }
     }

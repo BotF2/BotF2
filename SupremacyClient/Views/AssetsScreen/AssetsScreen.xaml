@@ -3274,7 +3274,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -3293,7 +3293,17 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                 </Grid>
-                <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
+                <ScrollViewer 
+                    VerticalScrollBarVisibility="Visible"
+                    Grid.Row="2"
+                    Margin="5,0,0,0"
+                    Width="Auto"
+                    Height="800"
+                    HorizontalAlignment="left">
+                    <StackPanel Height="1400" Margin="5,0,0,0" Grid.Row="2">
+                        <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}" />
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </TabItem>
         <!--TAB for STATIONS-->
