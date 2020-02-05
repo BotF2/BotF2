@@ -110,7 +110,6 @@ namespace Supremacy.Intelligence
                 GameLog.Core.UI.DebugFormat("spyCiv = {0} spying on = {1}", entry.Key, entry.Value);
             }
 
-
             PopulateDefence();
 
         }
@@ -896,18 +895,5 @@ namespace Supremacy.Intelligence
         }
     }
         #endregion
-
-    //public class EspionageAlreadyPressed
-    //{
-
-    //    public string alreadyPressedEntry;
-    //    public int turnNumber;
-
-    //    public EspionageAlreadyPressed(string _alreadyPressedEntry, int _turnNumber)
-    //    {
-    //        alreadyPressedEntry = _alreadyPressedEntry;
-    //        turnNumber = _turnNumber;
-    //    }
-    //}
     
 }
