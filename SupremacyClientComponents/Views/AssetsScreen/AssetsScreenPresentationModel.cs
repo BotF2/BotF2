@@ -20,6 +20,7 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
+        private List<Civilization> _localSpyingCivList;
 
         #region designInstance stuff
         //private static AssetsScreenPresentationModel _designInstance;
@@ -70,6 +71,24 @@ namespace Supremacy.Client.Views
         {
             get { return IntelHelper.LocalCivManager; }
         }
+
+        public List<Civilization> LocalSpyingCivList
+        {
+            get 
+            {
+                if (MyLocalCivManager.Civilization.CivID == 0) _localSpyingCivList = IntelHelper._spyingCiv_0_List;
+                if (MyLocalCivManager.Civilization.CivID == 1) _localSpyingCivList = IntelHelper._spyingCiv_1_List;
+                if (MyLocalCivManager.Civilization.CivID == 2) _localSpyingCivList = IntelHelper._spyingCiv_2_List;
+                if (MyLocalCivManager.Civilization.CivID == 3) _localSpyingCivList = IntelHelper._spyingCiv_3_List;
+                if (MyLocalCivManager.Civilization.CivID == 4) _localSpyingCivList = IntelHelper._spyingCiv_4_List;
+                if (MyLocalCivManager.Civilization.CivID == 5) _localSpyingCivList = IntelHelper._spyingCiv_5_List;
+                if (MyLocalCivManager.Civilization.CivID == 6) _localSpyingCivList = IntelHelper._spyingCiv_6_List;
+
+                return _localSpyingCivList; 
+            }
+        }
+
+
         public int TotalIntelligenceProduction
         {
             get
@@ -199,7 +218,7 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
-            _colonies = MyLocalCivManager.Colonies;//DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies;
+            _colonies = MyLocalCivManager.Colonies; //not the host, DesignTimeObjects.LocalCivManager.Colonies;
             _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
@@ -380,20 +399,6 @@ namespace Supremacy.Client.Views
                 OnSpiedSixTotalPopulationChanged();
             }
         }
-        //public IEnumerable<Colony> InfiltratedColonies
-        //{
-        //    get { return _infiltratedColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _infiltratedColonies))
-        //            return;
-
-        //        _infiltratedColonies = value;
-
-        //        OnColoniesChanged();
-        //        OnTotalPopulationChanged();
-        //    }
-        //}
         protected virtual void OnColoniesChanged()
         {
             //GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
@@ -809,6 +814,7 @@ namespace Supremacy.Client.Views
         #region Implementation of INotifyPropertyChanged
         [NonSerialized]
         private PropertyChangedEventHandler _propertyChanged;
+        
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {

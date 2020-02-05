@@ -211,6 +211,7 @@ namespace Supremacy.Client.Context
         private static bool _subedFour = false;
         private static bool _subedFive = false;
         private static bool _subedSix = false;
+
         /// <summary>
         /// Host Civilization Manager has been used as a substitute for a civ not in the game
         /// In this case Federation is not in game, CivID Zero
@@ -245,37 +246,19 @@ namespace Supremacy.Client.Context
             get { return _subedSix; }
         }
 
-        //private static List<CivilizationManager> spyableCivManagers;
-
-        //static DesignTimeObjects()
-        //{
-        //    managerList = SpyableCivManagers();
-        //}
-        //public static List<CivilizationManager> SpiedCivMangers
-        //{ 
-        //    get { return managerList; }
-
-        //}
-        //public static List<CivilizationManager> allCivManagers
-        //{
-        //    get { return _allManagersList; }
-        //    set
-        //    { 
-        //        allCivManagers = managerList;
-        //        allCivManagers.Add(LocalCivManager);
-        //        allCivManagers = value;
-        //    }
-        //}
         public static CivilizationManager SpiedCivZero
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[0]; // if Fed is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
                 }
-                catch { _subedZero = true; }
+                catch
+                {
+                    _subedZero = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -283,12 +266,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later 
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1]; // if Terran is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
                 }
-                catch { _subedOne = true; }
+                catch
+                {
+                    _subedOne = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -297,12 +283,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; 
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
                 }
-                catch { _subedTwo = true; }
+                catch
+                {
+                    _subedTwo = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -310,12 +299,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; 
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3]; 
                 }
-                catch { _subedThree = true; }
+                catch
+                {
+                    _subedThree = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -323,12 +315,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
                 }
-                catch { _subedFour = true; }
+                catch
+                {
+                    _subedFour = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -336,12 +331,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
                 }
-                catch { _subedFive = true; }
+                catch
+                {
+                    _subedFive = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -349,33 +347,30 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager;
                 try
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
                 }
-                catch { _subedSix = true; }
+                catch
+                {
+                    _subedSix = true;
+                }
                 return _spiedCivDummy;
             }
 
 
         }
-        //public static CivilizationManager SpyingCivManager
-        //{
-        //    get { return _spyingCivManager; }
-        //    set
-        //    {
-        //        _spyingCivManager = value;
-        //    }
-        //}
+
         /// <summary>
         /// This is the Host Civilization Manager, see IntelHelper.localCivManager for civ manager in multiplayer
         /// Info on multiplayer civ manager is from AssetsScreen.xaml.cs so hope this works for multiplayer local machine
         /// </summary>
-        public static CivilizationManager CivilizationManager
+        public static CivilizationManager CivilizationManager 
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
         }
+
         /// <summary>
         /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
         /// </summary>
@@ -523,9 +518,5 @@ namespace Supremacy.Client.Context
         //    return CivManagers;
         //}
 
-        //public static CivilizationManager GetCivLocalPlayer()
-        //{
-        //    return DesignTimeAppContext.Instance.LocalPlayerEmpire;
-        //}
     }
 }

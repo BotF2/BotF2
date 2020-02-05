@@ -15,7 +15,7 @@
                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                        Background="#66000000"
                        UseLayoutRounding="True"
-                       Margin="6,6,6,6">
+                       Margin="0,6,0,6">
 
     <UserControl.Resources>
         <Style x:Key="changeColorOnExpanded" TargetType="Expander">
@@ -157,11 +157,11 @@
                     Margin="5,0,0,0"
                     Width="Auto"
                     Height="800"
-                    HorizontalAlignment="left">
+                    HorizontalAlignment="Right">
                     <StackPanel Height="1400" Margin="5,0,0,0">
       <!-- Zero Expander -->
                         <Expander x:Name="EmpireExpanderZero" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedFedName}" FontSize="20" BorderThickness="3" BorderBrush="LightBlue"
+                                 IsExpanded="True" Header="{Binding Path=SpiedFedName}" FontSize="20" BorderThickness="3" BorderBrush="Blue"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid Name="EmpireGridZero" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -401,12 +401,12 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                Text="{Binding Path=SpiedFedName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="5,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="0,0,0,0">
                                         </Image>
                                         <!--Food Zero-->
                                         <scc:GameLabel
                                                    VerticalAlignment="Center"
-                                                   Margin="14,0,2,0"
+                                                   Margin="0,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock
@@ -553,7 +553,7 @@
                                                   BorderThickness="2"
                                                   Click = "OnResearchZeroClick"/>
                                         </Grid>
-                                        <!--Credit One-->
+                                        <!--Credit Zero-->
                                         <scc:GameLabel
                                                   VerticalAlignment="Center"
                                                   Margin="14,0,2,0"
@@ -840,12 +840,12 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                Text="{Binding Path=SpiedTerranName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/TERRANEMPIRE.png" Margin="5,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/TERRANEMPIRE.png" Margin="0,0,0,0">
                                         </Image>
                                         <!--Food One-->
                                         <scc:GameLabel
                                                    VerticalAlignment="Center"
-                                                   Margin="14,0,2,0"
+                                                   Margin="0,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock
@@ -1286,12 +1286,12 @@
                                  Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedRomName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/ROMULANS.png" Margin="5,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/ROMULANS.png" Margin="0,0,0,0">
                                         </Image>
                                         <!--Food Two-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
-                                             Margin="14,0,2,0"
+                                             Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock
@@ -1731,12 +1731,12 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                     Text="{Binding Path=SpiedKlingName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/KLINGONS.png" Margin="5,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/KLINGONS.png" Margin="0,0,0,0">
                                         </Image>
                                         <!--Food Three-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
-                                             Margin="14,0,2,0"
+                                             Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock
@@ -1930,7 +1930,7 @@
                         <TextBlock Height="5"/>
       <!-- Four Expander -->
                         <Expander x:Name="EmpireExpanderFour" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="LightGoldenrodYellow" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="Goldenrod" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridFour" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
                                 <Grid FlowDirection="LeftToRight">
@@ -2176,12 +2176,12 @@
                                              Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedCardName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/CARDASSIANS.png" Margin="5,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/CARDASSIANS.png" Margin="0,0,0,0">
                                         </Image>
                                         <!--Food Four-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
-                                             Margin="14,0,2,0"
+                                             Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock
@@ -2366,8 +2366,8 @@
                                         </Grid>
                                     </StackPanel>
                                     <!-- Colonies - Four -->
-                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="17" HorizontalAlignment="Left">
-                                        <v:SpiedFourColonyList DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,0" />
+                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="15" HorizontalAlignment="Left">
+                                        <v:SpiedFourColonyList DataContext="{Binding Path=SpiedFourColonies}" Margin="10,0,0,10" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -2621,12 +2621,12 @@
                                             Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                     Text="{Binding Path=SpiedDomName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/DOMINION.png" Margin="5,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/DOMINION.png" Margin="0,0,0,0">
                                         </Image>
                                         <!--Food Five-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
-                                             Margin="14,0,2,0"
+                                             Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock
@@ -3066,12 +3066,12 @@
                                                 Text="2) Target: " />
                                         <TextBlock VerticalAlignment="Center"
                                                     Text="{Binding Path=SpiedBorgName}"/>
-                                        <Image Source="vfs:///Resources/Images/Insignias/BORG.png" Margin="5,0,0,0">
+                                        <Image Source="vfs:///Resources/Images/Insignias/BORG.png" Margin="0,0,0,0">
                                         </Image>
                                         <!--Food Six-->
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
-                                             Margin="14,0,2,0"
+                                             Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
                                         <TextBlock
