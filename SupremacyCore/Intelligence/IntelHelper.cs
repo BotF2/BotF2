@@ -24,13 +24,13 @@ namespace Supremacy.Intelligence
         private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
         private static CivilizationManager _localCivManager;
-        public static List<Civilization> _spyingCiv_0_DummyList;
-        public static List<Civilization> _spyingCiv_1_DummyList;
-        public static List<Civilization> _spyingCiv_2_DummyList;
-        public static List<Civilization> _spyingCiv_3_DummyList;
-        public static List<Civilization> _spyingCiv_4_DummyList;
-        public static List<Civilization> _spyingCiv_5_DummyList;
-        public static List<Civilization> _spyingCiv_6_DummyList;
+        public static List<Civilization> _spyingCiv_0_List;
+        public static List<Civilization> _spyingCiv_1_List;
+        public static List<Civilization> _spyingCiv_2_List;
+        public static List<Civilization> _spyingCiv_3_List;
+        public static List<Civilization> _spyingCiv_4_List;
+        public static List<Civilization> _spyingCiv_5_List;
+        public static List<Civilization> _spyingCiv_6_List;
 
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -113,19 +113,19 @@ namespace Supremacy.Intelligence
             }
 
             //for (int i = 0; i < _spiedDictionary.Keys.Count; i++)
-            foreach (var _spyCiv in _spiedDictionary)
+            foreach (var _spyCivPair in _spiedDictionary)
             {
-                if (_spyCiv.Key.CivID == 0) _spyingCiv_0_DummyList = _spyCiv.Value;
-                if (_spyCiv.Key.CivID == 1) _spyingCiv_1_DummyList = _spyCiv.Value;
-                if (_spyCiv.Key.CivID == 2) _spyingCiv_2_DummyList = _spyCiv.Value;
-                if (_spyCiv.Key.CivID == 3) _spyingCiv_3_DummyList = _spyCiv.Value;
-                if (_spyCiv.Key.CivID == 4) _spyingCiv_4_DummyList = _spyCiv.Value;
-                if (_spyCiv.Key.CivID == 5) _spyingCiv_5_DummyList = _spyCiv.Value;
-                if (_spyCiv.Key.CivID == 6) _spyingCiv_6_DummyList = _spyCiv.Value;
+                if (_spyCivPair.Key.CivID == 0) _spyingCiv_0_List = _spiedDictionary[_spyCivPair.Key];
+                if (_spyCivPair.Key.CivID == 1) _spyingCiv_1_List = _spiedDictionary[_spyCivPair.Key];
+                if (_spyCivPair.Key.CivID == 2) _spyingCiv_2_List = _spiedDictionary[_spyCivPair.Key];
+                if (_spyCivPair.Key.CivID == 3) _spyingCiv_3_List = _spiedDictionary[_spyCivPair.Key];
+                if (_spyCivPair.Key.CivID == 4) _spyingCiv_4_List = _spiedDictionary[_spyCivPair.Key];
+                if (_spyCivPair.Key.CivID == 5) _spyingCiv_5_List = _spiedDictionary[_spyCivPair.Key];
+                if (_spyCivPair.Key.CivID == 6) _spyingCiv_6_List = _spiedDictionary[_spyCivPair.Key];
 
-                foreach (var _spiedCiv in _spyCiv.Value) // _spyCiv.Value = _spiedList
+                foreach (var _spiedCiv in _spyCivPair.Value) // _spyCiv.Value = _spiedList
                 {
-                    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCiv.Key, _spiedCiv.Key);
+                    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCivPair.Key, _spiedCiv.Key);
                 }
             }
 
@@ -170,23 +170,6 @@ namespace Supremacy.Intelligence
                     blamed = "bl_No one";
                 }
             }
-
-            // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Credits", GameContext.Current.TurnNumber);
-
-            //int apINT = -1;
-            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            //if (apINT > -1)
-            //{
-            //    GameLog.Core.Intel.DebugFormat("alreadyPressedList-Entry: {0},{1},{2},", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Core.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
-            //    return;
-            //}
-            //else
-            //{
-            //    alreadyPressedList.Add(pressedNew);
-            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -345,23 +328,6 @@ namespace Supremacy.Intelligence
                 }
             }
 
-            //// stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Research", GameContext.Current.TurnNumber);
-
-            //int apINT = -1;
-            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            //if (apINT > -1)
-            //{
-            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Core.Intel.DebugFormat("this button was pressed before in this turn ... nothing happens...");
-            //    return;
-            //}
-            //else
-            //{
-            //    alreadyPressedList.Add(pressedNew);
-            //}
-
             if (NewSpyCiv == null)
                 return;
 
@@ -504,23 +470,7 @@ namespace Supremacy.Intelligence
                     blamed = "bl_No one";
                 }
             }
-            // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Food", GameContext.Current.TurnNumber);
 
-            //int apINT = -1;
-            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            //if (apINT > -1)
-            //{
-            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Core.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
-            //    return;
-            //}
-            //else
-            //{
-            //    alreadyPressedList.Add(pressedNew);
-            //}
-            //int ratio = -1;
             if (NewSpyCiv == null)
                 return;
 
@@ -608,8 +558,6 @@ namespace Supremacy.Intelligence
             //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
             //    attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackedCiv"));
 
-
-
             _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 _newSpyCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
 
@@ -644,25 +592,6 @@ namespace Supremacy.Intelligence
                     blamed = "bl_No one";
                 }
             }
-
-            // avoid doing Sabotage multiple times if buttons are pressed multiple time
-            //if (alreadyPressedList.Count > 0)
-            //    if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber)
-            //        alreadyPressedList.Clear(); // clear old list from previous turns
-            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCiv.ToString() + ";Energy", GameContext.Current.TurnNumber);
-
-            //int apINT = -1;
-            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            //if (apINT > -1)
-            //{
-            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Core.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
-            //    return;
-            //}
-            //else
-            //{
-            //    alreadyPressedList.Add(pressedNew);
-            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -783,23 +712,6 @@ namespace Supremacy.Intelligence
                 }
             }
 
-            // stuff to avoid doing Sabotage multiple times if buttons are pressed multiple time
-            //if (alreadyPressedList.Count > 0) if (alreadyPressedList[0].turnNumber < GameContext.Current.TurnNumber) alreadyPressedList.Clear(); // clear old list from previous turns
-            //EspionageAlreadyPressed pressedNew = new EspionageAlreadyPressed(NewSpyCiv.ToString() + " VS " + attackedCivManager.Civilization.ToString() + ";Industry", GameContext.Current.TurnNumber);
-
-            //int apINT = -1;
-            //apINT = alreadyPressedList.FindIndex(item => item.alreadyPressedEntry == pressedNew.alreadyPressedEntry);
-            //if (apINT > -1)
-            //{
-            //    GameLog.Core.Intel.DebugFormat("now pressed: {2}, but alreadyPressedList-Entry: {0},{1}", alreadyPressedList[apINT].turnNumber, alreadyPressedList[apINT].alreadyPressedEntry, pressedNew.alreadyPressedEntry);
-            //    GameLog.Core.Intel.DebugFormat("this sabotage button was pressed before in this turn ... nothing happens...");
-            //    return;
-            //}
-            //else
-            //{
-            //    alreadyPressedList.Add(pressedNew);
-            //}
-
             if (NewSpyCiv == null)
                 return;
 
@@ -867,8 +779,6 @@ namespace Supremacy.Intelligence
                     GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
-
-
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY");
 
             GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry));
@@ -913,19 +823,5 @@ namespace Supremacy.Intelligence
             return ratio;
         }
     }
-        #endregion
-
-    //public class EspionageAlreadyPressed
-    //{
-
-    //    public string alreadyPressedEntry;
-    //    public int turnNumber;
-
-    //    public EspionageAlreadyPressed(string _alreadyPressedEntry, int _turnNumber)
-    //    {
-    //        alreadyPressedEntry = _alreadyPressedEntry;
-    //        turnNumber = _turnNumber;
-    //    }
-    //}
-    
+        #endregion 
 }

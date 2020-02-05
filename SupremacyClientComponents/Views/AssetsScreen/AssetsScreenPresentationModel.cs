@@ -76,14 +76,13 @@ namespace Supremacy.Client.Views
         {
             get 
             {
-                if (MyLocalCivManager.Civilization.CivID == 0) _localSpyingCivList = IntelHelper._spyingCiv_0_DummyList;
-                if (MyLocalCivManager.Civilization.CivID == 1) _localSpyingCivList = IntelHelper._spyingCiv_1_DummyList;
-                if (MyLocalCivManager.Civilization.CivID == 2) _localSpyingCivList = IntelHelper._spyingCiv_2_DummyList;
-                if (MyLocalCivManager.Civilization.CivID == 3) _localSpyingCivList = IntelHelper._spyingCiv_3_DummyList;
-                if (MyLocalCivManager.Civilization.CivID == 4) _localSpyingCivList = IntelHelper._spyingCiv_4_DummyList;
-                if (MyLocalCivManager.Civilization.CivID == 5) _localSpyingCivList = IntelHelper._spyingCiv_5_DummyList;
-                if (MyLocalCivManager.Civilization.CivID == 6) _localSpyingCivList = IntelHelper._spyingCiv_6_DummyList;
-
+                if (MyLocalCivManager.Civilization.CivID == 0) _localSpyingCivList = IntelHelper._spyingCiv_0_List;
+                if (MyLocalCivManager.Civilization.CivID == 1) _localSpyingCivList = IntelHelper._spyingCiv_1_List;
+                if (MyLocalCivManager.Civilization.CivID == 2) _localSpyingCivList = IntelHelper._spyingCiv_2_List;
+                if (MyLocalCivManager.Civilization.CivID == 3) _localSpyingCivList = IntelHelper._spyingCiv_3_List;
+                if (MyLocalCivManager.Civilization.CivID == 4) _localSpyingCivList = IntelHelper._spyingCiv_4_List;
+                if (MyLocalCivManager.Civilization.CivID == 5) _localSpyingCivList = IntelHelper._spyingCiv_5_List;
+                if (MyLocalCivManager.Civilization.CivID == 6) _localSpyingCivList = IntelHelper._spyingCiv_6_List;
 
                 return _localSpyingCivList; 
             }
@@ -219,7 +218,7 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
-            _colonies = MyLocalCivManager.Colonies;//DesignTimeAppContext.Instance.LocalPlayerEmpire.Colonies; //not this DesignTimeObjects.LocalCivManager.Colonies;
+            _colonies = MyLocalCivManager.Colonies; //not the host, DesignTimeObjects.LocalCivManager.Colonies;
             _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
@@ -400,20 +399,6 @@ namespace Supremacy.Client.Views
                 OnSpiedSixTotalPopulationChanged();
             }
         }
-        //public IEnumerable<Colony> InfiltratedColonies
-        //{
-        //    get { return _infiltratedColonies; }
-        //    set
-        //    {
-        //        if (Equals(value, _infiltratedColonies))
-        //            return;
-
-        //        _infiltratedColonies = value;
-
-        //        OnColoniesChanged();
-        //        OnTotalPopulationChanged();
-        //    }
-        //}
         protected virtual void OnColoniesChanged()
         {
             //GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");

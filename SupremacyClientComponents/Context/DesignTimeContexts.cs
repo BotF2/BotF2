@@ -245,43 +245,19 @@ namespace Supremacy.Client.Context
             get { return _subedSix; }
         }
 
-        //private static List<CivilizationManager> spyableCivManagers;
-
-        //static DesignTimeObjects()
-        //{
-        //    managerList = SpyableCivManagers();
-        //}
-        //public static List<CivilizationManager> SpiedCivMangers
-        //{ 
-        //    get { return managerList; }
-
-        //}
-        //public static List<CivilizationManager> allCivManagers
-        //{
-        //    get { return _allManagersList; }
-        //    set
-        //    { 
-        //        allCivManagers = managerList;
-        //        allCivManagers.Add(LocalCivManager);
-        //        allCivManagers = value;
-        //    }
-        //}
-
         public static CivilizationManager SpiedCivZero
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later
                 try
                 {
-                    if (IntelHelper._spyingCiv_0_DummyList.Contains(GameContext.Current.CivilizationManagers[0].Civilization))
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[0]; // if Fed is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
                 }
-                catch { _subedZero = true; }
-
-                if (_spiedCivDummy == null)
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[0];
-
+                catch
+                {
+                    _subedZero = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -289,17 +265,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later 
                 try
                 {
-                    if (IntelHelper._spyingCiv_1_DummyList.Contains(GameContext.Current.CivilizationManagers[1].Civilization))
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1]; // if Terran is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
                 }
-                catch { _subedOne = true; }
-
-                if (_spiedCivDummy == null)
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1];
-
+                catch
+                {
+                    _subedOne = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -308,17 +282,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; 
                 try
                 {
-                    if (IntelHelper._spyingCiv_2_DummyList.Contains(GameContext.Current.CivilizationManagers[2].Civilization))
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
-                }
-                catch { _subedTwo = true; }
-
-                if (_spiedCivDummy == null)
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
-                
+                }
+                catch
+                {
+                    _subedTwo = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -326,25 +298,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager; 
                 try
                 {
-                    if (IntelHelper._spyingCiv_3_DummyList.Contains(GameContext.Current.CivilizationManagers[3].Civilization))
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3]; 
                 }
-                catch { _subedThree = true; }
-
-
-                //foreach (var item in _spiedCiv_3_DummyList)
-                //{
-                //    //GameLog.Core.UI.DebugFormat("_spiedCivThreeDummyList-Entry = {0}", item.Key);
-                //}
-
-                if (_spiedCivDummy == null)
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
-
-                ////GameLog.Core.UI.DebugFormat("_spiedCivThree (FINALLY) = {0}", _spiedCivDummy.Civilization.Key);
-
+                catch
+                {
+                    _subedThree = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -352,26 +314,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager;
                 try
                 {
-                    if (IntelHelper._spyingCiv_4_DummyList.Contains(GameContext.Current.CivilizationManagers[4].Civilization))
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
-                }
-                catch { _subedFour = true; }
-
-
-                //for (int i = 0; i < _spiedCiv_4_DummyList.Count; i++)
-                //{
-                //    GameLog.Core.UI.DebugFormat("{0} is spying to > _spiedCiv_4_DummyList-Entry = {1}", IntelHelper.LocalCivManager.Civilization.Key, _spiedCiv_4_DummyList[i].Key);
-                //}
-
-
-                if (_spiedCivDummy == null)
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
-
-                //GameLog.Core.UI.DebugFormat("_spiedCiv_4_ (FINALLY) = {0}", _spiedCivDummy.Civilization.Key);
-
+                }
+                catch
+                {
+                    _subedFour = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -379,17 +330,15 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager;
                 try
                 {
-                    if (IntelHelper._spyingCiv_5_DummyList.Contains(GameContext.Current.CivilizationManagers[5].Civilization))
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
-                }
-                catch { _subedFive = true; }
-
-                if (_spiedCivDummy == null)
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
-
+                }
+                catch
+                {
+                    _subedFive = true;
+                }
                 return _spiedCivDummy;
             }
         }
@@ -397,38 +346,30 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = IntelHelper.LocalCivManager;
+                _spiedCivDummy = CivilizationManager;
                 try
                 {
-                    if (IntelHelper._spyingCiv_6_DummyList.Contains(GameContext.Current.CivilizationManagers[6].Civilization))
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
-                }
-                catch { _subedSix = true; }
-
-                if (_spiedCivDummy == null)
                     _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
-
+                }
+                catch
+                {
+                    _subedSix = true;
+                }
                 return _spiedCivDummy;
             }
 
 
         }
-        //public static CivilizationManager SpyingCivManager
-        //{
-        //    get { return _spyingCivManager; }
-        //    set
-        //    {
-        //        _spyingCivManager = value;
-        //    }
-        //}
+
         /// <summary>
         /// This is the Host Civilization Manager, see IntelHelper.localCivManager for civ manager in multiplayer
         /// Info on multiplayer civ manager is from AssetsScreen.xaml.cs so hope this works for multiplayer local machine
         /// </summary>
-        public static CivilizationManager CivilizationManager
+        public static CivilizationManager CivilizationManager 
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
         }
+
         /// <summary>
         /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
         /// </summary>
@@ -577,9 +518,5 @@ namespace Supremacy.Client.Context
         //    return CivManagers;
         //}
 
-        //public static CivilizationManager GetCivLocalPlayer()
-        //{
-        //    return DesignTimeAppContext.Instance.LocalPlayerEmpire;
-        //}
     }
 }
