@@ -212,14 +212,14 @@ namespace Supremacy.Client.Context
         private static bool _subedFive = false;
         private static bool _subedSix = false;
 
-        public static bool SubedZero
-        {
-            get { return _subedZero; }
-        }
         /// <summary>
         /// Host Civilization Manager has been used as a substitute for a civ not in the game
         /// In this case Federation is not in game, CivID Zero
         /// </summary>
+        public static bool SubedZero
+        {
+            get { return _subedZero; }
+        }
         public static bool SubedOne
         {
             get { return _subedOne; }
@@ -420,6 +420,7 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.Universe.Find<StarSystem>(); }
         }
+
         public static IEnumerable<StarSystem> ControlledSystems
         {
             get

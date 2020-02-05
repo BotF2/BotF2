@@ -557,28 +557,43 @@ namespace Supremacy.Orbitals
 
         protected internal override void OnTurnEnding()
         {
-            
-            //Medicate the colony
-            var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10);
+
+            //Medicate the colony --- // PopulationHealth is a percent value !!  // healthAdjustment is also a percent valuee.g. 80% * 1,1 = 88%
+            var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10); 
             if (Fleet.Sector.System.Colony is null) // currentx
             {
                 //do nothing
             }
+
             else if(Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
             {
                 Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
+
+                //GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}%, new = {7}"
+                //    ,Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
+                //    , Fleet.Sector.System.Colony.Name,Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
+                //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
+
+                //ToDo: SitRep
             }
-            //If the colony is not ours, increase regard etc
+            //If the colony is not ours, just doing small medical help + increase regard + trust etc
             if (Fleet.Sector.System.Colony is null) // currentx
             {
                 //do nothing
+
             }
             else if(Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
             {
 
                 var foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
-              
+                healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
+
+                // only small medical help = +1
+                Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
+                Fleet.Sector.System.Colony.Health.UpdateAndReset();
+                //ToDo: SitRep
+
                 // send a medical ship to other civilization's colony and get trust
                 if (Fleet.Sector.System.Colony.Owner != Fleet.Owner && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
                 {
