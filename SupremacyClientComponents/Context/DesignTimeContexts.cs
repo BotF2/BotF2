@@ -415,7 +415,6 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivSix.CivilizationID); }
         }
-
         public static IEnumerable<StarSystem> StarSystems
         {
             get { return GameContext.Current.Universe.Find<StarSystem>(); }

@@ -1,4 +1,4 @@
-﻿using Supremacy.Collections;
+using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -824,5 +824,5 @@ namespace Supremacy.Intelligence
             return ratio;
         }
     }
-        #endregion 
+        #endregion
 }
