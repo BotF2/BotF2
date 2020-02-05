@@ -213,6 +213,7 @@
     <Compile Include="Scripting\EventDefinition.cs" />
     <Compile Include="Scripting\Events\AsteroidImpactEvent.cs" />
     <Compile Include="Scripting\Events\MajorAsteroidImpact.cs" />
+    <Compile Include="Scripting\Events\TerroristEvent.cs" />
     <Compile Include="Scripting\Events\TerroristsCaptured.cs" />
     <Compile Include="Scripting\Events\Earthquake.cs" />
     <Compile Include="Scripting\Events\GammaRayBurst.cs" />

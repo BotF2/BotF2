@@ -199,54 +199,180 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        static List<CivilizationManager> managerList;
-        //private static List<CivilizationManager> spyableCivManagers;
+        //static List<CivilizationManager> managerList;
+        ////static List<CivilizationManager> _allManagersList;
+        //static CivilizationManager _spyingCivManager;  // syping, but in mulitplayer maybe different to local one
+        static CivilizationManager _spiedCivDummy;
+        private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
+        private static bool _subedZero = false; // Is the race not in the game? We substitue the host civ for missing civ and then _subedZero is true and Federation not in game.
+        private static bool _subedOne = false;
+        private static bool _subedTwo = false;
+        private static bool _subedThree = false;
+        private static bool _subedFour = false;
+        private static bool _subedFive = false;
+        private static bool _subedSix = false;
 
-        static DesignTimeObjects()
+        public static bool SubedZero
         {
-            managerList = SpyableCivManagers();
+            get { return _subedZero; }
         }
-        public static List<CivilizationManager> SpiedCivMangers
-        { 
-            get { return managerList; }
+        /// <summary>
+        /// Host Civilization Manager has been used as a substitute for a civ not in the game
+        /// In this case Federation is not in game, CivID Zero
+        /// </summary>
+        public static bool SubedOne
+        {
+            get { return _subedOne; }
+        }
+        public static bool SubedTwo
+        {
+            get { return _subedTwo; }
+        }
+        public static bool SubedThree
+        {
+            get { return _subedThree; }
+        }
+        public static bool SubedFour
+        {
+            get { return _subedFour; }
+        }
+        public static bool SubedFive
+        {
+            get { return _subedFive; }
+        }
+        public static bool SubedSix
+        {
+            get { return _subedSix; }
+        }
 
+        public static CivilizationManager SpiedCivZero
+        {
+            get
+            {
+                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later
+                try
+                {
+                        _spiedCivDummy = GameContext.Current.CivilizationManagers[0]; // if Fed is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
+                }
+                catch
+                {
+                    _subedZero = true;
+                }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivOne
         {
-            get { return SpiedCivMangers[0]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later 
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1]; // if Terran is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
+                }
+                catch
+                {
+                    _subedOne = true;
+                }
+                return _spiedCivDummy;
+            }
         }
+
         public static CivilizationManager SpiedCivTwo
         {
-            get { return SpiedCivMangers[1]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager; 
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
+                }
+                catch
+                {
+                    _subedTwo = true;
+                }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivThree
         {
-            get { return SpiedCivMangers[2]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager; 
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3]; 
+                }
+                catch
+                {
+                    _subedThree = true;
+                }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivFour
         {
-            get { return SpiedCivMangers[3]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
+                }
+                catch
+                {
+                    _subedFour = true;
+                }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivFive
         {
-            get { return SpiedCivMangers[4]; }
-
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
+                }
+                catch
+                {
+                    _subedFive = true;
+                }
+                return _spiedCivDummy;
+            }
         }
         public static CivilizationManager SpiedCivSix
         {
-            get { return SpiedCivMangers[5]; }
+            get
+            {
+                _spiedCivDummy = CivilizationManager;
+                try
+                {
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
+                }
+                catch
+                {
+                    _subedSix = true;
+                }
+                return _spiedCivDummy;
+            }
+
 
         }
 
-        public static CivilizationManager LocalCivManager
+        /// <summary>
+        /// This is the Host Civilization Manager, see IntelHelper.localCivManager for civ manager in multiplayer
+        /// Info on multiplayer civ manager is from AssetsScreen.xaml.cs so hope this works for multiplayer local machine
+        /// </summary>
+        public static CivilizationManager CivilizationManager 
         {
             get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
         }
 
+        /// <summary>
+        /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
+        /// </summary>
         public static Colony Colony
         {
             get
@@ -254,10 +380,16 @@ namespace Supremacy.Client.Context
                 return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
             }
         }
-
+        /// <summary>
+        /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
+        /// </summary>
         public static IEnumerable<Colony> Colonies
         {
             get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
+        }
+        public static IEnumerable<Colony> SpiedZeroColonies
+        {
+            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivZero.CivilizationID); }
         }
         public static IEnumerable<Colony> SpiedOneColonies
         {
@@ -293,103 +425,98 @@ namespace Supremacy.Client.Context
             get
             {
                 var claims = GameContext.Current.SectorClaims;
-                var owner = LocalCivManager.Civilization;
+                var owner = CivilizationManager.Civilization;
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }
-        private static List<CivilizationManager> SpyableCivManagers()
-        {
-            var LocalCivManager = DesignTimeAppContext.Instance.LocalPlayerEmpire;
-            var CivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
+        //private static List<CivilizationManager> SpyableCivManagers()
+        //{
+        //    var LocalCivManager = DesignTimeAppContext.Instance.LocalPlayerEmpire;
+        //    var CivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
 
+        //    try
+        //    {
+        //        if (CivManagers[0].Civilization.Key!= null && CivManagers[0].Civilization.Key != "FEDERATION") 
+        //            CivManagers.Insert(0, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(0, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[0].Civilization.Key!= null && CivManagers[0].Civilization.Key != "FEDERATION") 
-                    CivManagers.Insert(0, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(0, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[1].Civilization.Key != null && CivManagers[1].Civilization.Key != "TERRANEMPIRE")
+        //            CivManagers.Insert(1, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(1, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[1].Civilization.Key != null && CivManagers[1].Civilization.Key != "TERRANEMPIRE")
-                    CivManagers.Insert(1, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(1, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[2].Civilization.Key != null && CivManagers[2].Civilization.Key != "ROMULANS")
+        //            CivManagers.Insert(2, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(2, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[2].Civilization.Key != null && CivManagers[2].Civilization.Key != "ROMULANS")
-                    CivManagers.Insert(2, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(2, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[3].Civilization.Key != null && CivManagers[3].Civilization.Key != "KLINGONS")
+        //            CivManagers.Insert(3, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(3, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[3].Civilization.Key != null && CivManagers[3].Civilization.Key != "KLINGONS")
-                    CivManagers.Insert(3, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(3, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[4].Civilization.Key != null && CivManagers[4].Civilization.Key != "CARDASSIANS")
+        //            CivManagers.Insert(4, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(4, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[4].Civilization.Key != null && CivManagers[4].Civilization.Key != "CARDASSIANS")
-                    CivManagers.Insert(4, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(4, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[5].Civilization.Key != null && CivManagers[5].Civilization.Key != "DOMINION")
+        //            CivManagers.Insert(5, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(5, LocalCivManager);
+        //    }
 
-            try
-            {
-                if (CivManagers[5].Civilization.Key != null && CivManagers[5].Civilization.Key != "DOMINION")
-                    CivManagers.Insert(5, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(5, LocalCivManager);
-            }
-
-            try
-            {
-                if (CivManagers[6].Civilization.Key != null && CivManagers[6].Civilization.Key != "BORG")
-                    CivManagers.Insert(6, LocalCivManager);
-            }
-            catch
-            {
-                CivManagers.Insert(6, LocalCivManager);
-            }
+        //    try
+        //    {
+        //        if (CivManagers[6].Civilization.Key != null && CivManagers[6].Civilization.Key != "BORG")
+        //            CivManagers.Insert(6, LocalCivManager);
+        //    }
+        //    catch
+        //    {
+        //        CivManagers.Insert(6, LocalCivManager);
+        //    }
 
             //GameLogOutCivMan(CivManagers);
 
-            CivManagers.Remove(LocalCivManager);
-            CivManagers.OrderBy(o => o.CivilizationID);
+        //    CivManagers.Remove(LocalCivManager);
+        //    CivManagers.OrderBy(o => o.CivilizationID);
 
-            GameLog.Client.UI.DebugFormat("--------------------");
-            foreach (var civ in CivManagers)
-            {
-                GameLog.Client.UI.DebugFormat("civManagers contains {0} {1}", civ.CivilizationID, civ.Civilization.Key);
-            }
+        //    GameLog.Client.UI.DebugFormat("--------------------");
+        //    foreach (var civ in CivManagers)
+        //    {
+        //        GameLog.Client.UI.DebugFormat("civManagers contains {0} {1}", civ.CivilizationID, civ.Civilization.Key);
+        //    }
 
-            return CivManagers;
-        }
+        //    return CivManagers;
+        //}
 
-        public static CivilizationManager GetCivLocalPlayer()
-        {
-            return DesignTimeAppContext.Instance.LocalPlayerEmpire;
-        }
     }
 }

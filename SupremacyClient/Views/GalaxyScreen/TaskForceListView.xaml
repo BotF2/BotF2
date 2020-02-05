@@ -61,6 +61,7 @@
     <ListView x:Name="TaskForceList"
             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
             Focusable="False"
+            SelectionMode="Single" 
             KeyboardNavigation.TabNavigation="None"
             KeyboardNavigation.DirectionalNavigation="None"
             KeyboardNavigation.IsTabStop="False"

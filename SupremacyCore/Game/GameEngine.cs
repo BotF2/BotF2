@@ -14,6 +14,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Economy;
 using Supremacy.Entities;
+using Supremacy.Intelligence;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
@@ -75,6 +76,7 @@ namespace Supremacy.Game
     public class GameEngine
     {
         #region Public Members
+
         /// <summary>
         /// Occurs when the current turn phase has changed.
         /// </summary>
@@ -400,12 +402,24 @@ namespace Supremacy.Game
 
             errors.Clear();
 
+
+
             ParallelForEach(civManagers, civManager =>
             {
                 GameContext.PushThreadContext(game);
                 try
                 {
                     civManager.SitRepEntries.Clear();
+
+                    try
+                    {
+                        var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
+                        foreach (var entry in civSitReps)
+                        {
+                            civManager.SitRepEntries.Add(entry);
+                        }
+                    }
+                    catch { }
                 }
                 catch (Exception e)
                 {
@@ -416,6 +430,8 @@ namespace Supremacy.Game
                     GameContext.PopThreadContext();
                 }
             });
+
+            IntelHelper.SitReps_Temp.Clear();
 
             if (!errors.IsEmpty)
                 throw new AggregateException(innerExceptions: errors);
@@ -1403,14 +1419,17 @@ namespace Supremacy.Game
 
                     civManager.Credits.AdjustCurrent(newCredits);
                     civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense); 
-                    civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking); 
+                    civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking);
                     civManager.Resources.Deuterium.AdjustCurrent(newDeuterium);
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);
 
                     GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added from all colonies to {4} ",
                         newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization);
-
+                    GameLog.Client.UI.DebugFormat("Civ Manager ={0} TotalIntelDefenseAccumulated ={1}, TotalIntelAccumulated ={2}",
+                        civManager.Civilization.Key,
+                        civManager.TotalIntelligenceDefenseAccumulated.CurrentValue,
+                        civManager.TotalIntelligenceAttackingAccumulated.CurrentValue);
                     //Get the resources available for the civilization
                     ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection();
                     totalResourcesAvailable[ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue;

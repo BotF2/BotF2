@@ -402,22 +402,23 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            if (!base.IsValidOrder(fleet))
-                return false;
-            if (fleet.Sector.System == null)
-                return false;
-            //if (fleet.Sector.System.IsInhabited)
+            return false; // replaced by AssetsScreen spy mission
+            //if (!base.IsValidOrder(fleet))
             //    return false;
-            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
-                return false;
-            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //if (fleet.Sector.System == null)
             //    return false;
-            foreach (var ship in fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Spy)
-                    return true;
-            }
-            return false;
+            ////if (fleet.Sector.System.IsInhabited)
+            ////    return false;
+            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+            //    return false;
+            ////if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            ////    return false;
+            //foreach (var ship in fleet.Ships)
+            //{
+            //    if (ship.ShipType == ShipType.Spy)
+            //        return true;
+            //}
+            //return false;
         }
 
         protected internal override void OnTurnBeginning()
@@ -677,8 +678,28 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System == null)
                 return false;
+            if (fleet.Sector.System.Colony == null)
+                return false;
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
                 return false;
+            if (!fleet.Sector.Owner.IsEmpire)  // if it is NOT an empire, return false
+                return false;
+            if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
+                return false;
+            try
+            {
+                foreach (Civilization Civ in IntelHelper.SpiedDictionary[fleet.Owner])
+                {
+                    if (Civ == fleet.Sector.System.Colony.Owner)
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch
+            {
+                GameLog.Client.UI.DebugFormat("Tried the Spied Dictionary but it was null");
+            }
             foreach (var ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)
@@ -710,8 +731,8 @@ namespace Supremacy.Orbitals
 
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
-            var colonies = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+            var colonies =  GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
+            var civManager = GameContext.Current.CivilizationManagers[civ];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             //if (defenseIntelligence - 1 < 0.1)
@@ -801,18 +822,19 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            if (!base.IsValidOrder(fleet))
-                return false;
-            if (fleet.Sector.System == null)
-                return false;
-            if (!fleet.Sector.System.HasColony)
-                return false;
-            if (fleet.Sector.System.Owner == fleet.Owner)
-                return false;
-            if (!fleet.Ships.Any(s => s.ShipType == ShipType.FastAttack))
-                return false;
+            return false; // replaced by AssetsScreen spy missions
+            //if (!base.IsValidOrder(fleet))
+            //    return false;
+            //if (fleet.Sector.System == null)
+            //    return false;
+            //if (!fleet.Sector.System.HasColony)
+            //    return false;
+            //if (fleet.Sector.System.Owner == fleet.Owner)
+            //    return false;
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.FastAttack))
+            //    return false;
 
-            return true;
+            //return true;
         }
 
         protected internal override void OnTurnBeginning()
@@ -937,18 +959,19 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            if (!base.IsValidOrder(fleet))
-                return false;
-            if (fleet.Sector.System == null)
-                return false;
-            if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
-                return false;
-            foreach (var ship in fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Spy)
-                    return true;
-            }
-            return false;
+            return false; // not use in place of AssetsScreen spy missions taking over
+            //if (!base.IsValidOrder(fleet))
+            //    return false;
+            //if (fleet.Sector.System == null)
+            //    return false;
+            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+            //    return false;
+            //foreach (var ship in fleet.Ships)
+            //{
+            //    if (ship.ShipType == ShipType.Spy)
+            //        return true;
+            //}
+            //return false;
         }
 
         protected internal override void OnTurnBeginning()
@@ -1025,7 +1048,7 @@ namespace Supremacy.Orbitals
             }
 
             GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            civManager.SitRepEntries.Add(new NewSabotageSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+            civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
     }
