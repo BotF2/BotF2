@@ -128,10 +128,7 @@ namespace Supremacy.Intelligence
                     GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCivPair.Key, _spiedCiv.Key);
                 }
             }
-
-
             PopulateDefence();
-
         }
         private static void PopulateDefence()
         {
@@ -423,16 +420,11 @@ namespace Supremacy.Intelligence
                     GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
-
-
-
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"); 
 
             GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} stolenResearchPoints", system.Name, stolenResearchPoints);
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
-
-
 
             _sitReps_Temp.Add(new NewSabotageSitRepEntry(_newSpyCiv, system.Colony, 
                     affectedField, stolenResearchPoints,
@@ -457,7 +449,6 @@ namespace Supremacy.Intelligence
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
             int removeFoodFacilities = -2;  // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
-
 
             if (blamed == "No one" || blamed == "Terrorists")
             {
@@ -546,10 +537,7 @@ namespace Supremacy.Intelligence
                     GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
-
             GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: TotalFoodFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Food));
-
-
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD");
 
@@ -579,7 +567,6 @@ namespace Supremacy.Intelligence
             Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
             int removeEnergyFacilities = -2;
             int defenseIntelligence = -2;
-
 
             if (blamed == "No one" || blamed == "Terrorists")
             {
@@ -686,7 +673,6 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
         }
-
         public static void SabotageIndustry(Colony colony, Civilization attackedCiv, string blamed)
         {
             //GameLog.Core.Intel.DebugFormat("##### Sabotage Industry not implemented yet");
