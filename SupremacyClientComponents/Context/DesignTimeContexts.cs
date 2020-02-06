@@ -220,7 +220,6 @@ namespace Supremacy.Client.Context
         {
             get { return _subedZero; }
         }
-
         public static bool SubedOne
         {
             get { return _subedOne; }
@@ -420,6 +419,7 @@ namespace Supremacy.Client.Context
         {
             get { return GameContext.Current.Universe.Find<StarSystem>(); }
         }
+
         public static IEnumerable<StarSystem> ControlledSystems
         {
             get

@@ -564,6 +564,7 @@ namespace Supremacy.Orbitals
             {
                 //do nothing
             }
+
             else if(Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
             {
                 Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
@@ -580,6 +581,7 @@ namespace Supremacy.Orbitals
             if (Fleet.Sector.System.Colony is null) // currentx
             {
                 //do nothing
+
             }
             else if(Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
             {
