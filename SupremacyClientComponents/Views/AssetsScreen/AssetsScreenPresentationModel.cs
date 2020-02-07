@@ -95,7 +95,8 @@ namespace Supremacy.Client.Views
             {
                 try
                 {
-                    //FillUpDefense();
+                    _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
+         
                     GameLog.Core.UI.DebugFormat("Get TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
                     return _totalIntelligenceProduction;
                 }
@@ -109,6 +110,7 @@ namespace Supremacy.Client.Views
             {
                 try
                 {
+                    _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
                     FillUpDefense();
                     _totalIntelligenceProduction = value;
                     GameLog.Core.UI.DebugFormat("Set TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
@@ -117,7 +119,6 @@ namespace Supremacy.Client.Views
                 catch
                 {
                     GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction set...");
-                    //0 = value;
                 }
             }
         }
@@ -127,27 +128,16 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //try
-                //{
-                FillUpDefense();
-                //var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                //    return civManager.TotalIntelligenceDefenseAccumulated;
-                //}
-                //catch
-                //{
-                //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceDefenseAccumulated...");
-                //    return ;
-                //}
-                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
+                FillUpDefense();          
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
-                return _totalIntelligenceDefenseAccumulated;// IntelHelper.DefenseAccumulatedIntelInt;
+                return _totalIntelligenceDefenseAccumulated;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
-                //_totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
+               //_totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
+                _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
                 GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
@@ -158,27 +148,16 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //try
-                //{
                 FillUpDefense();
-                //var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                //    return civManager.TotalIntelligenceAttackingAccumulated;
-                //}
-                //catch
-                //{
-                //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceAttackingAccumulated...");
-                //    return 0;
-                //}
-                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
-               // _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
+                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
-                //_totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
+               // _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
+                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
                 GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceAttackingAccumulated");
@@ -218,7 +197,7 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
-            _colonies = MyLocalCivManager.Colonies; //not the host, DesignTimeObjects.LocalCivManager.Colonies;
+            _colonies = MyLocalCivManager.Colonies; //not the host on a remote machine, DesignTimeObjects.LocalCivManager.Colonies;
             _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
@@ -280,8 +259,6 @@ namespace Supremacy.Client.Views
         private IEnumerable<Colony> _spiedFiveColonies;
 
         private IEnumerable<Colony> _spiedSixColonies;
-
-        //private IEnumerable<Colony> _infiltratedColonies;
 
         public IEnumerable<Colony> Colonies
         {
@@ -561,7 +538,6 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-
         public static string SpiedFedName
         {
             get
