@@ -184,32 +184,32 @@ namespace Supremacy.AI
                 //TODO
                 if (fleet.IsSpy)
                 {
-                    if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
-                    {
-                        Colony bestSystemForSpying;
-                        if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
-                        {
-                            if (bestSystemForSpying.Location == fleet.Location)
-                            {
-                                //Spy
-                                fleet.SetOrder(new SabotageOrder());
-                                fleet.UnitAIType = UnitAIType.Spy;
-                                fleet.Activity = UnitActivity.Mission;
-                                GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} in {1} to sabotage the system", fleet.ObjectID, fleet.Location);
-                            }
-                            else
-                            {
-                                fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForSpying.Sector }));
-                                fleet.UnitAIType = UnitAIType.Medical;
-                                fleet.Activity = UnitActivity.Mission;
-                                GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} to {1}", fleet.ObjectID, bestSystemForSpying);
-                            }
-                        }
-                        else
-                        {
-                            GameLog.Core.AI.DebugFormat("Nothing to do for spy fleet {0}", fleet.ObjectID);
-                        }
-                    }
+                    //if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
+                    //{
+                    //    Colony bestSystemForSpying;
+                    //    if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
+                    //    {
+                    //        if (bestSystemForSpying.Location == fleet.Location)
+                    //        {
+                    //            //Spy
+                    //            fleet.SetOrder(new SabotageOrder());
+                    //            fleet.UnitAIType = UnitAIType.Spy;
+                    //            fleet.Activity = UnitActivity.Mission;
+                    //            GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} in {1} to sabotage the system", fleet.ObjectID, fleet.Location);
+                    //        }
+                    //        else
+                    //        {
+                    //            fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForSpying.Sector }));
+                    //            fleet.UnitAIType = UnitAIType.Medical;
+                    //            fleet.Activity = UnitActivity.Mission;
+                    //            GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} to {1}", fleet.ObjectID, bestSystemForSpying);
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        GameLog.Core.AI.DebugFormat("Nothing to do for spy fleet {0}", fleet.ObjectID);
+                    //    }
+                    //}
                 }
 
                 //TODO
