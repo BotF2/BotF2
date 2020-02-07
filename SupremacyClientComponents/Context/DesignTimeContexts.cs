@@ -199,9 +199,6 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        //static List<CivilizationManager> managerList;
-        ////static List<CivilizationManager> _allManagersList;
-        //static CivilizationManager _spyingCivManager;  // syping, but in mulitplayer maybe different to local one
         static CivilizationManager _spiedCivDummy;
         private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static bool _subedZero = false; // Is the race not in the game? We substitue the host civ for missing civ and then _subedZero is true and Federation not in game.
@@ -357,8 +354,6 @@ namespace Supremacy.Client.Context
                 }
                 return _spiedCivDummy;
             }
-
-
         }
 
         /// <summary>
@@ -429,94 +424,5 @@ namespace Supremacy.Client.Context
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }
-        //private static List<CivilizationManager> SpyableCivManagers()
-        //{
-        //    var LocalCivManager = DesignTimeAppContext.Instance.LocalPlayerEmpire;
-        //    var CivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
-
-        //    try
-        //    {
-        //        if (CivManagers[0].Civilization.Key!= null && CivManagers[0].Civilization.Key != "FEDERATION") 
-        //            CivManagers.Insert(0, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(0, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[1].Civilization.Key != null && CivManagers[1].Civilization.Key != "TERRANEMPIRE")
-        //            CivManagers.Insert(1, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(1, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[2].Civilization.Key != null && CivManagers[2].Civilization.Key != "ROMULANS")
-        //            CivManagers.Insert(2, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(2, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[3].Civilization.Key != null && CivManagers[3].Civilization.Key != "KLINGONS")
-        //            CivManagers.Insert(3, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(3, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[4].Civilization.Key != null && CivManagers[4].Civilization.Key != "CARDASSIANS")
-        //            CivManagers.Insert(4, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(4, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[5].Civilization.Key != null && CivManagers[5].Civilization.Key != "DOMINION")
-        //            CivManagers.Insert(5, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(5, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[6].Civilization.Key != null && CivManagers[6].Civilization.Key != "BORG")
-        //            CivManagers.Insert(6, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(6, LocalCivManager);
-        //    }
-
-            //GameLogOutCivMan(CivManagers);
-
-        //    CivManagers.Remove(LocalCivManager);
-        //    CivManagers.OrderBy(o => o.CivilizationID);
-
-        //    GameLog.Client.UI.DebugFormat("--------------------");
-        //    foreach (var civ in CivManagers)
-        //    {
-        //        GameLog.Client.UI.DebugFormat("civManagers contains {0} {1}", civ.CivilizationID, civ.Civilization.Key);
-        //    }
-
-        //    return CivManagers;
-        //}
-
     }
 }

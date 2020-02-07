@@ -173,27 +173,7 @@ namespace Supremacy.Game
             get { return _colonies; }
         }
 
-        ///// <summary>
-        ///// Gets a list of the spied civilization's colonies.
-        ///// </summary>
-        ///// <value>The colonies.</value>
-        //[NotNull]
-        //public UniverseObjectList<Colony> SpyColonies
-        //{
-        //    get { return _spyColonies; }
-        //}
-
-        /// <summary>
-        /// Gets a list of the civilization's infiltrated colonies.
-        /// </summary>
-        /// <value>The infiltrated colonies.</value>
         [NotNull]
-        //public Dictionary<Civilization, List<Colony>> InfiltratedColonies
-        //{
-        //    get { return _infiltratedColonies; }
-        //    // set{ alksdjf = value}
-        //}
-
         public Colony SeatOfGovernment
         {
             get
@@ -246,7 +226,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
+                int baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
                 foreach (var bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
                 {
                     baseIntel *= bonus.Amount;
@@ -276,7 +256,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceDefenseAccumulated;
-                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated ={0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;

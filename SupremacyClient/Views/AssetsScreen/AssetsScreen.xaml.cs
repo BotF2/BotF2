@@ -92,6 +92,7 @@ namespace Supremacy.Client.Views
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
             IntelHelper.GetLocalCiv(_localCivManager);
             InitializeComponent();
+            Terrorists();
 
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
 
@@ -146,6 +147,135 @@ namespace Supremacy.Client.Views
             BlameNoOne6.IsChecked = true;
 
             //LoadInsignia();
+        }
+        private void Terrorists()
+        {
+
+            if (GameContext.Current.TurnNumber > 2)
+            {
+                // for testing
+                FindTarget(DesignTimeObjects.CivilizationManager);
+                // end for testing
+                var availableCivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
+                foreach (var civManager in availableCivManagers)
+                {
+                    switch (civManager.CivilizationID)
+                    {
+                        case 0:
+                            if (DesignTimeObjects.SubedZero)
+                            {
+                                availableCivManagers.Remove(civManager);
+                            }
+                            continue;
+                        case 1:
+                            if (DesignTimeObjects.SubedOne)
+                            {
+                                availableCivManagers.Remove(civManager);
+                            }
+                            continue;
+                        case 2:
+                            if (DesignTimeObjects.SubedTwo)
+                            {
+                                availableCivManagers.Remove(civManager);
+                            }
+                            continue;
+                        case 3:
+                            if (DesignTimeObjects.SubedThree)
+                            {
+                                availableCivManagers.Remove(civManager);
+                            }
+                            continue;
+                        case 4:
+                            if (DesignTimeObjects.SubedFour)
+                            {
+                                availableCivManagers.Remove(civManager);
+                            }
+                            continue;
+                        case 5:
+                            if (DesignTimeObjects.SubedFive)
+                            {
+                                availableCivManagers.Remove(civManager);
+                            }
+                            continue;
+                        case 6:
+                            if (DesignTimeObjects.SubedSix)
+                            {
+                                availableCivManagers.Remove(civManager);
+                            }
+                            continue;
+                        default:
+                            break;
+                    }
+                }
+
+                foreach (var civManager in availableCivManagers)
+                {
+                    switch (civManager.Civilization.Key)
+                    {
+                        case "BORG":
+                            if (RandomHelper.Chance(95))
+                                FindTarget(GameContext.Current.CivilizationManagers[6]);
+                            break;
+                        case "KLINGONS":
+                            if (RandomHelper.Chance(80))
+                                FindTarget(GameContext.Current.CivilizationManagers[3]);
+                            break;
+                        case "ROMULANS":
+                            if (RandomHelper.Chance(75))
+                                FindTarget(GameContext.Current.CivilizationManagers[2]);
+                            break;
+                        case "FEDERATION":
+                            if (RandomHelper.Chance(70))
+                                FindTarget(GameContext.Current.CivilizationManagers[0]);
+                            break;
+                        case "CARDASSIANS":
+                            if (RandomHelper.Chance(65))
+                                FindTarget(GameContext.Current.CivilizationManagers[4]);
+                            break;
+                        case "DOMINION":
+                            if (RandomHelper.Chance(60))
+                                FindTarget(GameContext.Current.CivilizationManagers[5]);
+                            break;
+                        case "TERRANEMPIRE":
+                            if (RandomHelper.Chance(50))
+                                FindTarget(GameContext.Current.CivilizationManagers[1]);
+                            break;
+                    }
+                }
+            }
+        }
+        private void FindTarget(CivilizationManager civManager)
+        {
+// for testing
+            IntelHelper.SabotageEnergy(DesignTimeObjects.CivilizationManager.HomeColony, DesignTimeObjects.CivilizationManager.Civilization, "Terrorists");
+            GameLog.Client.UI.DebugFormat(" ********** localyCiv = {0}, sabotage energy ************ ", _localCivManager.Civilization.Key);
+// end of testing section
+            Random random = new Random();
+            int choseTheTarget = random.Next(0, 4);
+            switch (choseTheTarget)
+            {
+                case 0:
+                    {
+                        var Civs = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
+                        var luckyCiv = Civs.OrderBy(s => random.Next()).First();
+                        IntelHelper.StealCredits(civManager.HomeColony, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
+                        break;
+                    }
+                case 1:
+                    IntelHelper.StealResearch(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    break;
+                case 2:
+                    IntelHelper.SabotageEnergy(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    break;
+                case 3:
+                    IntelHelper.SabotageFood(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    break;
+                case 4:
+                    IntelHelper.SabotageIndustry(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    break;
+                default:
+                    break;
+            }
         }
         private void OnLocalPlayerEmpireChanged()
         {
