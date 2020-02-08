@@ -156,57 +156,7 @@ namespace Supremacy.Client.Views
                 // for testing
                 FindTarget(DesignTimeObjects.CivilizationManager);
                 // end for testing
-                var availableCivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
-                foreach (var civManager in availableCivManagers)
-                {
-                    switch (civManager.CivilizationID)
-                    {
-                        case 0:
-                            if (DesignTimeObjects.SubedZero)
-                            {
-                                availableCivManagers.Remove(civManager);
-                            }
-                            continue;
-                        case 1:
-                            if (DesignTimeObjects.SubedOne)
-                            {
-                                availableCivManagers.Remove(civManager);
-                            }
-                            continue;
-                        case 2:
-                            if (DesignTimeObjects.SubedTwo)
-                            {
-                                availableCivManagers.Remove(civManager);
-                            }
-                            continue;
-                        case 3:
-                            if (DesignTimeObjects.SubedThree)
-                            {
-                                availableCivManagers.Remove(civManager);
-                            }
-                            continue;
-                        case 4:
-                            if (DesignTimeObjects.SubedFour)
-                            {
-                                availableCivManagers.Remove(civManager);
-                            }
-                            continue;
-                        case 5:
-                            if (DesignTimeObjects.SubedFive)
-                            {
-                                availableCivManagers.Remove(civManager);
-                            }
-                            continue;
-                        case 6:
-                            if (DesignTimeObjects.SubedSix)
-                            {
-                                availableCivManagers.Remove(civManager);
-                            }
-                            continue;
-                        default:
-                            break;
-                    }
-                }
+                var availableCivManagers =  DesignTimeObjects.AvailableCivManagers; //GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
 
                 foreach (var civManager in availableCivManagers)
                 {

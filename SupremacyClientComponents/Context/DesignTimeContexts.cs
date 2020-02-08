@@ -199,6 +199,7 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
+        private static List<CivilizationManager> _availableCivManagers;
         static CivilizationManager _spiedCivDummy;
         private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static bool _subedZero = false; // Is the race not in the game? We substitue the host civ for missing civ and then _subedZero is true and Federation not in game.
@@ -241,7 +242,12 @@ namespace Supremacy.Client.Context
         {
             get { return _subedSix; }
         }
-
+        #region  Constuctor
+        static DesignTimeObjects() 
+        {
+            _availableCivManagers = GameContext.Current.CivilizationManagers.Where(s => s.Civilization.IsEmpire).ToList();
+        }
+        #endregion
         public static CivilizationManager SpiedCivZero
         {
             get
@@ -249,11 +255,12 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later
                 try
                 {
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[0]; // if Fed is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[0]; // if Fed is not in game this line fails to the catch and Host CivManager is left in as subsitute civManager
                 }
                 catch
                 {
                     _subedZero = true;
+                    _availableCivManagers.Remove(_spiedCivDummy);
                 }
                 return _spiedCivDummy;
             }
@@ -265,11 +272,12 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later 
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1]; // if Terran is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1]; // if Terran is not in game this line fails to the catch and Host CivManager is left in as subsitute civManager
                 }
                 catch
                 {
                     _subedOne = true;
+                    _availableCivManagers.Remove(_spiedCivDummy);
                 }
                 return _spiedCivDummy;
             }
@@ -287,6 +295,7 @@ namespace Supremacy.Client.Context
                 catch
                 {
                     _subedTwo = true;
+                    _availableCivManagers.Remove(_spiedCivDummy);
                 }
                 return _spiedCivDummy;
             }
@@ -298,11 +307,12 @@ namespace Supremacy.Client.Context
                 _spiedCivDummy = CivilizationManager; 
                 try
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3]; 
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3];
                 }
                 catch
                 {
                     _subedThree = true;
+                    _availableCivManagers.Remove(_spiedCivDummy);
                 }
                 return _spiedCivDummy;
             }
@@ -319,6 +329,7 @@ namespace Supremacy.Client.Context
                 catch
                 {
                     _subedFour = true;
+                    _availableCivManagers.Remove(_spiedCivDummy);
                 }
                 return _spiedCivDummy;
             }
@@ -335,6 +346,7 @@ namespace Supremacy.Client.Context
                 catch
                 {
                     _subedFive = true;
+                    _availableCivManagers.Remove(_spiedCivDummy);
                 }
                 return _spiedCivDummy;
             }
@@ -351,9 +363,14 @@ namespace Supremacy.Client.Context
                 catch
                 {
                     _subedSix = true;
+                    _availableCivManagers.Remove(_spiedCivDummy);
                 }
                 return _spiedCivDummy;
             }
+        }
+        public static List<CivilizationManager> AvailableCivManagers
+        {
+            get { return _availableCivManagers; }
         }
 
         /// <summary>
