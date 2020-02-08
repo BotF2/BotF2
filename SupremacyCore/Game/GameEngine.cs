@@ -374,17 +374,17 @@ namespace Supremacy.Game
             var fleets = objects.OfType<Fleet>().ToHashSet();
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
 
-           GameLog.Core.Stations.DebugFormat("resetting items...");
+           GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {
                 GameContext.PushThreadContext(game);
-                //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
+                // GameLog.Core.General.DebugFormat("next item will be: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                 try
                 {
-                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    // GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is trying to reset", item.ObjectID, item.Name);
                     item.Reset();
                     // works well but gives hidden info
-                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    // GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
                 }
                 catch (Exception e)
                 {
@@ -1120,6 +1120,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
+                    // Check TechObj for correct (formatted) values for ScienceAbility and ScanStrength
                     GameLog.Core.Research.ErrorFormat(string.Format("##### There was a problem conducting research for {0} {1}",
                         scienceShip.ObjectID, scienceShip.Name),
                         e);
