@@ -150,11 +150,17 @@ namespace Supremacy.Client.Views
         }
         private void Terrorists()
         {
+            Civilization Terrorists = new Civilization();
+            CivilizationManager TerroristsManager = new CivilizationManager(GameContext.Current, Terrorists);
+            Terrorists.Key = "Terrorists";
+            Terrorists.ShortName = "Terrorists_ShortName";
 
             if (GameContext.Current.TurnNumber > 2)
             {
                 // for testing
-                FindTarget(DesignTimeObjects.CivilizationManager);
+                //FindTarget(DesignTimeObjects.CivilizationManager);
+
+                //FindTarget(TerroristsManager);
                 // end for testing
                 var availableCivManagers =  DesignTimeObjects.AvailableCivManagers; //GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
 
@@ -164,41 +170,48 @@ namespace Supremacy.Client.Views
                     {
                         case "BORG":
                             if (RandomHelper.Chance(95))
-                                FindTarget(GameContext.Current.CivilizationManagers[6]);
+                                TerroristsManager = GameContext.Current.CivilizationManagers[6];
                             break;
                         case "KLINGONS":
                             if (RandomHelper.Chance(80))
-                                FindTarget(GameContext.Current.CivilizationManagers[3]);
+                                TerroristsManager = GameContext.Current.CivilizationManagers[3];
                             break;
                         case "ROMULANS":
                             if (RandomHelper.Chance(75))
-                                FindTarget(GameContext.Current.CivilizationManagers[2]);
+                                TerroristsManager = GameContext.Current.CivilizationManagers[2];
                             break;
                         case "FEDERATION":
                             if (RandomHelper.Chance(70))
-                                FindTarget(GameContext.Current.CivilizationManagers[0]);
+                                TerroristsManager = GameContext.Current.CivilizationManagers[0];
                             break;
                         case "CARDASSIANS":
                             if (RandomHelper.Chance(65))
-                                FindTarget(GameContext.Current.CivilizationManagers[4]);
+                                TerroristsManager = GameContext.Current.CivilizationManagers[4];
                             break;
                         case "DOMINION":
                             if (RandomHelper.Chance(60))
-                                FindTarget(GameContext.Current.CivilizationManagers[5]);
+                                TerroristsManager = GameContext.Current.CivilizationManagers[5];
                             break;
                         case "TERRANEMPIRE":
                             if (RandomHelper.Chance(50))
-                                FindTarget(GameContext.Current.CivilizationManagers[1]);
+                                TerroristsManager = GameContext.Current.CivilizationManagers[1];
                             break;
                     }
                 }
+                if (Terrorists.ShortName != "Terrorists_ShortName")
+                    FindTarget(TerroristsManager);
             }
         }
+
+
         private void FindTarget(CivilizationManager civManager)
         {
+
+            //Civilization Terrorists = new Civilization();
+            //Terrorists.ShortName = "Terrorists_ShortName";
 // for testing
-            IntelHelper.SabotageEnergy(DesignTimeObjects.CivilizationManager.HomeColony, DesignTimeObjects.CivilizationManager.Civilization, "Terrorists");
-            GameLog.Client.UI.DebugFormat(" ********** localyCiv = {0}, sabotage energy ************ ", _localCivManager.Civilization.Key);
+            ///IntelHelper.SabotageEnergy(DesignTimeObjects.CivilizationManager.HomeColony, DesignTimeObjects.CivilizationManager.Civilization, "Terrorists");
+            GameLog.Client.UI.DebugFormat(" ********** terrorists targeet civ = {0}, sabotage energy ************ ", civManager.Civilization.Key);
 // end of testing section
             Random random = new Random();
             int choseTheTarget = random.Next(0, 4);
