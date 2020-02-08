@@ -19,6 +19,7 @@ namespace Supremacy.Intelligence
         private static UniverseObjectList<Colony> _newSpiedColonies;
         private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
+        private static List<Civilization> _localSpiedList = new List<Civilization>();
         private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
         private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenseAccumulatedIntelInt;
@@ -93,6 +94,22 @@ namespace Supremacy.Intelligence
             _localCivManager = civManager;
             return civManager;
         }
+
+        public static void ReadSpiedList(List<Civilization> SpiedList)
+        {
+            _localSpiedList = SpiedList;
+
+            if (LocalCivManager.CivilizationID == 0) _spiedList = _spyingCiv_0_List;
+            if (LocalCivManager.CivilizationID == 1) _spiedList = _spyingCiv_1_List;
+            if (LocalCivManager.CivilizationID == 2) _spiedList = _spyingCiv_2_List;
+            if (LocalCivManager.CivilizationID == 3) _spiedList = _spyingCiv_3_List;
+            if (LocalCivManager.CivilizationID == 4) _spiedList = _spyingCiv_4_List;
+            if (LocalCivManager.CivilizationID == 5) _spiedList = _spyingCiv_5_List;
+            if (LocalCivManager.CivilizationID == 6) _spiedList = _spyingCiv_6_List;
+
+            //return _spiedList;
+        }
+
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {
             GameLog.Core.UI.DebugFormat("New spyciv = {0} spying on = {1}",spyCiv.Key, spiedCiv.Key);
