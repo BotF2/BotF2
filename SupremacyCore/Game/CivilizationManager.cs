@@ -38,11 +38,10 @@ namespace Supremacy.Game
         private readonly ResearchPool _research;
         private readonly ResourcePool _resources;
         private readonly List<SitRepEntry> _sitRepEntries;
-        private List<Civilization> _spiedCivList;
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        //private Dictionary<Civilization, List<Colony>> _infiltratedColonies;
+        private List<Civilization> _spiedCivList;
         private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
@@ -75,13 +74,13 @@ namespace Supremacy.Game
             _totalIntelligenceDefenseAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
 
             _sitRepEntries = new List<SitRepEntry>();
-            _spiedCivList = new List<Civilization>();
-            if (SpiedCivList != null)
-            {
-                IntelHelper.ReadSpiedList(SpiedCivList);
+            _spiedCivList =  new List<Civilization>();
+            //if (SpiedCivList != null)
+            //{
+            //   //IntelHelper.ReadSpiedList(SpiedCivList);
                
-                _spiedCivList.AddRange(SpiedCivList);
-            }
+            //    _spiedCivList.AddRange(SpiedCivList);
+            //}
 
 
             //_spiedCivList = new SpiedCivListMap(_spiedCivList);
@@ -225,61 +224,66 @@ namespace Supremacy.Game
         //        _civList = civList;
         //    }
         //}
-
-        public  List<Civilization> SpiedCivList
+        public void UpDateSpiedList(List<Civilization> civList)
+        {
+            _spiedCivList.AddRange(civList);
+        }
+        public List<Civilization> SpiedCivList
         {
             get
             {
-                _spiedCivList = new List<Civilization>();
-                int localPlayer = 0;
-                try
-                {
-                    localPlayer = IntelHelper.LocalCivManager.CivilizationID;
-
-                }
-                catch
-                {
-                    // GameLog "problem"
-                }
-
-                switch (localPlayer)
-                {
-                    case 0:
-                        _spiedCivList = IntelHelper._spyingCiv_0_List;
-                        break;
-                    case 1:
-                        _spiedCivList = IntelHelper._spyingCiv_1_List;
-                        break;
-                    case 2:
-                        _spiedCivList = IntelHelper._spyingCiv_2_List;
-                        break;
-                    case 3:
-                        _spiedCivList = IntelHelper._spyingCiv_3_List;
-                        break;
-                    case 4:
-                        _spiedCivList = IntelHelper._spyingCiv_4_List;
-                        break;
-                    case 5:
-                        _spiedCivList = IntelHelper._spyingCiv_5_List;
-                        break;
-                    case 6:
-                        _spiedCivList = IntelHelper._spyingCiv_6_List;
-                        break;
-                    default:
-                        break;
-                }
-
-                try
-                {
-
-                    foreach (var _civ in _spiedCivList)
-                    {
-                        GameLog.Core.Intel.DebugFormat("SpiedCivList: civ {0} is spying to {1}", IntelHelper.LocalCivManager.Civilization.Key, _civ.Name);
-                    }
-                }
-                catch { }
-
                 return _spiedCivList;
+
+                //_spiedCivList = new List<Civilization>();
+                //int localPlayer = 0;
+                //try
+                //{
+                //    localPlayer = IntelHelper.LocalCivManager.CivilizationID;
+
+                //}
+                //catch
+                //{
+                //    // GameLog "problem"
+                //}
+
+                //switch (localPlayer)
+                //{
+                //    case 0:
+                //        _spiedCivList = IntelHelper._spyingCiv_0_List;
+                //        break;
+                //    case 1:
+                //        _spiedCivList = IntelHelper._spyingCiv_1_List;
+                //        break;
+                //    case 2:
+                //        _spiedCivList = IntelHelper._spyingCiv_2_List;
+                //        break;
+                //    case 3:
+                //        _spiedCivList = IntelHelper._spyingCiv_3_List;
+                //        break;
+                //    case 4:
+                //        _spiedCivList = IntelHelper._spyingCiv_4_List;
+                //        break;
+                //    case 5:
+                //        _spiedCivList = IntelHelper._spyingCiv_5_List;
+                //        break;
+                //    case 6:
+                //        _spiedCivList = IntelHelper._spyingCiv_6_List;
+                //        break;
+                //    default:
+                //        break;
+                //}
+
+                //try
+                //{
+
+                //    foreach (var _civ in _spiedCivList)
+                //    {
+                //        GameLog.Core.Intel.DebugFormat("SpiedCivList: civ {0} is spying to {1}", IntelHelper.LocalCivManager.Civilization.Key, _civ.Name);
+                //    }
+                //}
+                //catch { }
+
+
             }
         }
 

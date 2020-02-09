@@ -61,13 +61,11 @@ namespace Supremacy.Intelligence
                 return false;
             else
             {
-                try { var civList = SpiedByDictionary[localCivFromScreen]; }
-                catch { return false; }
-                if (SpiedByDictionary[localCivFromScreen].Contains(CivZero))                   
-                    return true;
+                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                if (civList.Contains(CivZero))
+                        return true;
+                else { return false; }
             }
-            return false;
-
         }
         public static bool IsSpiedOne(Civilization localCivFromScreen)
         {
@@ -75,51 +73,47 @@ namespace Supremacy.Intelligence
                 return false;
             else
             {
-                try { var civList = SpiedByDictionary[localCivFromScreen]; }
-                catch { return false; }
-                if (SpiedByDictionary[localCivFromScreen].Contains(CivOne))
+                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                if (civList.Contains(CivOne))
                     return true;
+                else { return false; }
             }
-            return false;
         }
         public static bool IsSpiedTwo(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedTwo)
-                return false;
+                    return false;
             else
             {
-                try { var civList = SpiedByDictionary[localCivFromScreen]; }
-                catch { return false; }
-                if (SpiedByDictionary[localCivFromScreen].Contains(CivTwo))
+                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                if (civList.Contains(CivTwo))
                     return true;
+                else { return false; }
             }
-            return false;
         }
         public static bool IsSpiedThree(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedThree)
-                return false;
+                    return false;
             else
             {
-                try { var civList = SpiedByDictionary[localCivFromScreen]; }
-                catch { return false; }
-                if (SpiedByDictionary[localCivFromScreen].Contains(CivThree))
+                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                if (civList.Contains(CivThree))
                     return true;
+                else { return false; }
             }
-            return false;
         }
         public static bool IsSpiedFour(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedFour)
-                return false;
+                    return false;
             else
             {
-                try { var civList = SpiedByDictionary[localCivFromScreen]; }
-                catch { return false; }
-                if (SpiedByDictionary[localCivFromScreen].Contains(CivFour))
+                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                if (civList.Contains(CivFour))
                     return true;
+                else { return false; }
             }
-            return false;
         }
         public static bool IsSpiedFive(Civilization localCivFromScreen)
         {
@@ -127,25 +121,23 @@ namespace Supremacy.Intelligence
                 return false;
             else
             {
-                try { var civList = SpiedByDictionary[localCivFromScreen]; }
-                catch { return false; }
-                if (SpiedByDictionary[localCivFromScreen].Contains(CivFive))
+                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                if (civList.Contains(CivFive))
                     return true;
+                else { return false; }
             }
-            return false;
         }
         public static bool IsSpiedSix(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedSix)
-                return false;
+                    return false;
             else
             {
-                try { var civList = SpiedByDictionary[localCivFromScreen]; }
-                catch { return false; }
-                if (SpiedByDictionary[localCivFromScreen].Contains(CivSix))
+                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                if (civList.Contains(CivSix))
                     return true;
+                else { return false; }
             }
-            return false;
         }
     }
 }

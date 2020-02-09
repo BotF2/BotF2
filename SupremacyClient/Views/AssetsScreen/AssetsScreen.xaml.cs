@@ -211,7 +211,7 @@ namespace Supremacy.Client.Views
             //Terrorists.ShortName = "Terrorists_ShortName";
 // for testing
             ///IntelHelper.SabotageEnergy(DesignTimeObjects.CivilizationManager.HomeColony, DesignTimeObjects.CivilizationManager.Civilization, "Terrorists");
-            GameLog.Client.UI.DebugFormat(" ********** terrorists targeet civ = {0}, sabotage energy ************ ", civManager.Civilization.Key);
+            GameLog.Client.UI.DebugFormat(" ********** terrorists targeet civ = {0} ************ ", civManager.Civilization.Key);
 // end of testing section
             Random random = new Random();
             int choseTheTarget = random.Next(0, 4);
