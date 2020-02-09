@@ -2224,6 +2224,22 @@ namespace Supremacy.Game
                 civManager.Resources.UpdateAndReset();
                 civManager.Credits.UpdateAndReset();
                 civManager.OnTurnFinished();
+
+                // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
+                GameLog.Core.CivsAndRaces.DebugFormat(";Col:;{1};Pop:;{2};Morale:;{3};Credits;{4};Change;{5};Research;{6};{7};for;{0}"
+                    , civManager.Civilization.Key
+                    , civManager.Colonies.Count
+                    , civManager.TotalPopulation
+                    , civManager.AverageMorale  
+                    , civManager.Credits.CurrentValue
+                    , civManager.Credits.CurrentChange
+
+                    , civManager.Research.CumulativePoints
+                    , civManager.Civilization.CivilizationType
+                    //, civManager.Treasury.GrossIncome  // ;Treasury;{7}  // doesn't work, maybe it's just done with Credits !
+                    //, civManager.Treasury.Maintenance  // ;Maint;{8}
+
+                    );
             }
 
             GameContext.Current.TurnNumber++;
