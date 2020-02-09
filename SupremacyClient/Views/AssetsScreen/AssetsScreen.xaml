@@ -32,7 +32,7 @@
                         <RowDefinition Height="25" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="0" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -151,6 +151,8 @@
                             </Button>
                         </Grid>
                     </StackPanel>
+                    <TextBlock Name="InstallingZero" Text="{Binding Path=Installing_0, Mode=OneWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9" Foreground="White" >
+                    </TextBlock>
                 </Grid>
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"

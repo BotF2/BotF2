@@ -47,6 +47,7 @@ namespace Supremacy.Game
         private int _seatOfGovernmentId = -1;
         private Meter _totalIntelligenceAttackingAccumulated;
         private Meter _totalIntelligenceDefenseAccumulated;
+        private string _installingSpyNetwork = "No Spy Networks Installed";
 
         #endregion
 
@@ -67,6 +68,7 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
+           // _installingSpyNetwork.PropertyChanged = OnInstallingSpyNetworkChanged;
 
             _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
             _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
@@ -75,16 +77,6 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList =  new List<Civilization>();
-            //if (SpiedCivList != null)
-            //{
-            //   //IntelHelper.ReadSpiedList(SpiedCivList);
-               
-            //    _spiedCivList.AddRange(SpiedCivList);
-            //}
-
-
-            //_spiedCivList = new SpiedCivListMap(_spiedCivList);
-            //_spiedCivList = GameContext.Current.Civilizations.
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -138,6 +130,18 @@ namespace Supremacy.Game
             get { return _totalPopulation; }
         }
 
+        public string InstallingSpyNetwork
+        {
+            get
+            {
+                if (IntelHelper.InstallingSpy_0 == true)
+                {
+                    _installingSpyNetwork = "Installing Spy Network";
+                    OnPropertyChanged("InstallingSpyNetwork");
+                }
+                    return _installingSpyNetwork;
+            }
+        }
         /// <summary>
         /// Gets the credits in the civilization's treasury.
         /// </summary>
@@ -216,75 +220,17 @@ namespace Supremacy.Game
             }
         }
 
-        //private class SpiedCivListMap 
-        //{
-        //    private List<Civilization> _civList;
-        //    public SpiedCivListMap(List<Civilization> civList)
-        //    {
-        //        _civList = civList;
-        //    }
-        //}
         public void UpDateSpiedList(List<Civilization> civList)
         {
             _spiedCivList.AddRange(civList);
+            foreach (var item in civList)
+            {
+                GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item );
+            }
         }
         public List<Civilization> SpiedCivList
         {
-            get
-            {
-                return _spiedCivList;
-
-                //_spiedCivList = new List<Civilization>();
-                //int localPlayer = 0;
-                //try
-                //{
-                //    localPlayer = IntelHelper.LocalCivManager.CivilizationID;
-
-                //}
-                //catch
-                //{
-                //    // GameLog "problem"
-                //}
-
-                //switch (localPlayer)
-                //{
-                //    case 0:
-                //        _spiedCivList = IntelHelper._spyingCiv_0_List;
-                //        break;
-                //    case 1:
-                //        _spiedCivList = IntelHelper._spyingCiv_1_List;
-                //        break;
-                //    case 2:
-                //        _spiedCivList = IntelHelper._spyingCiv_2_List;
-                //        break;
-                //    case 3:
-                //        _spiedCivList = IntelHelper._spyingCiv_3_List;
-                //        break;
-                //    case 4:
-                //        _spiedCivList = IntelHelper._spyingCiv_4_List;
-                //        break;
-                //    case 5:
-                //        _spiedCivList = IntelHelper._spyingCiv_5_List;
-                //        break;
-                //    case 6:
-                //        _spiedCivList = IntelHelper._spyingCiv_6_List;
-                //        break;
-                //    default:
-                //        break;
-                //}
-
-                //try
-                //{
-
-                //    foreach (var _civ in _spiedCivList)
-                //    {
-                //        GameLog.Core.Intel.DebugFormat("SpiedCivList: civ {0} is spying to {1}", IntelHelper.LocalCivManager.Civilization.Key, _civ.Name);
-                //    }
-                //}
-                //catch { }
-
-
-            }
+            get { return _spiedCivList;}
         }
 
         /// <summary>
@@ -318,7 +264,6 @@ namespace Supremacy.Game
                 return baseIntel;
             }
         }
-
         public Meter TotalIntelligenceAttackingAccumulated
         {
             get
@@ -558,7 +503,11 @@ namespace Supremacy.Game
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("AverageMorale");
         }
-
+        private void OnInstallingSpyNetworkPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+                OnPropertyChanged("InstallingSpyNetwork");
+        }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString() );

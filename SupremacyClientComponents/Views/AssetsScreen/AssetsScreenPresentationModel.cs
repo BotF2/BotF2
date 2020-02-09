@@ -21,6 +21,7 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
         private List<Civilization> _localSpyingCivList;
+        private string _installing_0 = "No new spy networks";
 
         #region designInstance stuff
         //private static AssetsScreenPresentationModel _designInstance;
@@ -66,6 +67,19 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Properties for AssestsScreen
+        public string Installing_0
+        {
+            get
+            {
+                _installing_0 = MyLocalCivManager.InstallingSpyNetwork;
+               return _installing_0;
+            }
+            set
+            {
+                _installing_0 = value;
+                NotifyPropertyChanged("Installing_0");
+            }
+        }
 
         public CivilizationManager MyLocalCivManager
         {
@@ -76,7 +90,11 @@ namespace Supremacy.Client.Views
         {
             get 
             {
-                if (MyLocalCivManager.Civilization.CivID == 0) _localSpyingCivList = IntelHelper._spyingCiv_0_List;
+                if (MyLocalCivManager.Civilization.CivID == 0)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_0_List;
+
+                }
                 if (MyLocalCivManager.Civilization.CivID == 1) _localSpyingCivList = IntelHelper._spyingCiv_1_List;
                 if (MyLocalCivManager.Civilization.CivID == 2) _localSpyingCivList = IntelHelper._spyingCiv_2_List;
                 if (MyLocalCivManager.Civilization.CivID == 3) _localSpyingCivList = IntelHelper._spyingCiv_3_List;
@@ -209,6 +227,7 @@ namespace Supremacy.Client.Views
             _totalIntelligenceAttackingAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
             _totalIntelligenceDefenseAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
 
+            OnPropertyChanged("InstallingSpyNetwork");
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
             OnPropertyChanged("TotalIntelligenceProduction");
@@ -219,6 +238,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
         public event EventHandler TotalPopulationChanged;
+        public event EventHandler InstallingSpyNetworkChanged;
         public event EventHandler TotalIntelligenceProductionChanged;
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
         public event EventHandler TotalIntelligenceDefenseAccumulatedChanged;
@@ -273,6 +293,7 @@ namespace Supremacy.Client.Views
                 FillUpDefense();
                 OnColoniesChanged();
                 OnTotalPopulationChanged();
+                OnInstallingSpyNetworkChanged();
                 OnTotalIntelligenceProductionChanged();
                 OnTotalIntelligenceAttackingAccumulatedChanged();
                 OnTotalIntelligenceDefenseAccumulatedChanged();
@@ -387,6 +408,11 @@ namespace Supremacy.Client.Views
             TotalPopulationChanged.Raise(this);
             OnPropertyChanged("TotalPopulation");
         }
+        protected virtual void OnInstallingSpyNetworkChanged()
+        {
+            InstallingSpyNetworkChanged.Raise(this);
+            OnPropertyChanged("InstallingSpyNetwork");
+        }
         protected virtual void OnTotalIntelligenceProductionChanged()
         {
             TotalIntelligenceProductionChanged.Raise(this);
@@ -495,6 +521,10 @@ namespace Supremacy.Client.Views
 
                 }
             }
+        }
+        public string InstallingSpyNetwork
+        {
+            get { return MyLocalCivManager.InstallingSpyNetwork; }
         }
         public string LocalCivName
         {
@@ -773,6 +803,8 @@ namespace Supremacy.Client.Views
                 }
             }
         }
+
+  
         #endregion Credits Empire
 
         #region Implementation of NotifyPropertyChanged

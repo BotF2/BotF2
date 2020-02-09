@@ -32,6 +32,7 @@ namespace Supremacy.Intelligence
         public static List<Civilization> _spyingCiv_4_List;
         public static List<Civilization> _spyingCiv_5_List;
         public static List<Civilization> _spyingCiv_6_List;
+        private static bool _installingSpy_0 = false;
 
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -50,19 +51,7 @@ namespace Supremacy.Intelligence
         {
             get { return _newTargetCiv; }
         }
-        //public static Dictionary<Civilization, List<Civilization>> SpiedDictionary
-        //{
-        //    get
-        //    {
-        //        //try { _spiedDictionary[LocalCivManager.Civilization].AddRange(_localSpiedList); }
-        //        //catch { }
-        //        return _spiedDictionary;
-        //    }
-        //    set
-        //    {
-        //        _spiedDictionary = value;
-        //    }
-        //}
+   
         public static Dictionary<Civilization, int> DefenceDictionary
         {
             get { return _defenseDictionary; }
@@ -87,11 +76,9 @@ namespace Supremacy.Intelligence
                 return _attackAccumulatedIntelInt;
             }
         }
-        static IntelHelper()
-        {
-            //_attackAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
-            //_defenseAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
-        }
+
+        public static bool InstallingSpy_0 { get => _installingSpy_0; set => _installingSpy_0 = value; }
+
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player
         /// </summary>
@@ -102,24 +89,13 @@ namespace Supremacy.Intelligence
             _localCivManager = civManager;
             return civManager;
         }
-
-        public static void ReadSpiedList(List<Civilization> SpiedList)
+        public static bool CheckingInstallSpy_0()
         {
-            _localSpiedList = SpiedList;
-
-            if (LocalCivManager.CivilizationID == 0) _spiedList = _spyingCiv_0_List;
-            if (LocalCivManager.CivilizationID == 1) _spiedList = _spyingCiv_1_List;
-            if (LocalCivManager.CivilizationID == 2) _spiedList = _spyingCiv_2_List;
-            if (LocalCivManager.CivilizationID == 3) _spiedList = _spyingCiv_3_List;
-            if (LocalCivManager.CivilizationID == 4) _spiedList = _spyingCiv_4_List;
-            if (LocalCivManager.CivilizationID == 5) _spiedList = _spyingCiv_5_List;
-            if (LocalCivManager.CivilizationID == 6) _spiedList = _spyingCiv_6_List;
-
-            //return _spiedList;
+            return _installingSpy_0;
         }
-
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {
+            _installingSpy_0 = true;
             GameLog.Core.UI.DebugFormat("**** New spyciv = {0} spying on = {1}",spyCiv.Key, spiedCiv.Key);
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
@@ -133,11 +109,12 @@ namespace Supremacy.Intelligence
             switch (spyCiv.CivID)
             {
                 case 0:
+
                     if (_spyingCiv_0_List == null)
                         _spyingCiv_0_List = newList;
                     else
                     {
-                        _spyingCiv_0_List.Add(spiedCiv);
+                        _spyingCiv_0_List.Add(spiedCiv);                       
                         GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
                     }
                     break;
@@ -196,69 +173,7 @@ namespace Supremacy.Intelligence
                     }
                     break;
             }
-
-            //foreach (var _spiedCiv in ) // _spyCiv.Value = _spiedList
-            //{
-            //    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCivPair.Key, _spiedCiv.Key);
-            //}
-
-            //try
-            //{
-            //_spiedList.Add(spie)
-            //    _spiedDictionary[spyCiv].Add(spiedCiv);
-            //    GameLog.Core.UI.DebugFormat("********* Try Adding spyciv = {0} spying on = {1}", spyCiv.Key, spiedCiv.Key);
-            //}
-            //catch
-            //{            
-            //    _spiedDictionary[spyCiv] = new List<Civilization> { spiedCiv };
-            //    GameLog.Core.UI.DebugFormat("******* Catch Adding spyciv = {0} spying on = {1}", spyCiv.Key, spiedCiv.Key);
-            //}
-
-            //for (int i = 0; i < _spiedDictionary.Keys.Count; i++)
-            //foreach (var _spyCivPair in _spiedDictionary)
-            //{
-            //    if (_spyCivPair.Key.CivID == 0)
-            //    {
-            //        _spyingCiv_0_List = _spiedDictionary[_spyCivPair.Key];
-            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
-            //    }
-            //    if (_spyCivPair.Key.CivID == 1)
-            //    {
-            //        _spyingCiv_1_List = _spiedDictionary[_spyCivPair.Key];
-            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_1_List);
-            //    }
-            //    if (_spyCivPair.Key.CivID == 2)
-            //    {
-            //        _spyingCiv_2_List = _spiedDictionary[_spyCivPair.Key];
-            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_2_List);
-            //    }
-            //    if (_spyCivPair.Key.CivID == 3)
-            //    {
-            //        _spyingCiv_3_List = _spiedDictionary[_spyCivPair.Key];
-            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_3_List);
-            //    }
-            //    if (_spyCivPair.Key.CivID == 4)
-            //    {
-            //        _spyingCiv_4_List = _spiedDictionary[_spyCivPair.Key];
-            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_4_List);
-            //    }
-
-            //    if (_spyCivPair.Key.CivID == 5)
-            //    {
-            //        _spyingCiv_5_List = _spiedDictionary[_spyCivPair.Key];
-            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_5_List);
-            //    }
-            //    if (_spyCivPair.Key.CivID == 6)
-            //    {
-            //        _spyingCiv_6_List = _spiedDictionary[_spyCivPair.Key];
-            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_6_List);
-            //    }
-
-            //foreach (var _spiedCiv in _spyCivPair.Value) // _spyCiv.Value = _spiedList
-            //{
-            //    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCivPair.Key, _spiedCiv.Key);
-            //}
-            //}
+            GameLog.Client.UI.DebugFormat("********* end of sending spied list to CM **********");
             PopulateDefence();
         }
         private static void PopulateDefence()

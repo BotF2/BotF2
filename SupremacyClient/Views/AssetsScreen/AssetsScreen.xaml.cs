@@ -258,9 +258,8 @@ namespace Supremacy.Client.Views
             if (IsVisible)
             {
                 ResumeAnimations();
-               // GameLog.Client.UI.DebugFormat("begin of checking visible");
+               GameLog.Client.UI.DebugFormat("*********** begin of checking visible ***********");
                 // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
-
                 if (AssetsHelper.IsSpiedZero(_civLocalPlayer) && _spiedZeroCiv != _civLocalPlayer) // && !DesignTimeObjects.SubedZero)
                 {
                     EmpireExpanderZero.Visibility = Visibility.Visible;

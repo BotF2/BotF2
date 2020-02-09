@@ -200,8 +200,8 @@ namespace Supremacy.Client.Context
     public static class DesignTimeObjects
     {
         private static List<CivilizationManager> _availableCivManagers;
-        static CivilizationManager _spiedCivDummy;
-        private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
+        private static CivilizationManager _spiedCivDummy;
+        //private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static bool _subedZero = false; // Is the race not in the game? We substitue the host civ for missing civ and then _subedZero is true and Federation not in game.
         private static bool _subedOne = false;
         private static bool _subedTwo = false;
