@@ -23,10 +23,10 @@ namespace Supremacy.Intelligence
         {
             get { return IntelHelper.NewSpiedColonies; }
         }
-        public static Dictionary<Civilization, List<Civilization>> SpiedByDictionary
-        {
-            get { return IntelHelper.SpiedDictionary; }
-        }
+        //public static Dictionary<Civilization, List<Civilization>> SpiedByDictionary
+        //{
+        //    get { return IntelHelper.SpiedDictionary; }
+        //}
         public static Civilization CivZero
         {
             get { return GameContext.Current.CivilizationManagers[0].Civilization; }

@@ -701,20 +701,20 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
                 return false;
-            try
-            {
-                foreach (Civilization Civ in IntelHelper.SpiedDictionary[fleet.Owner])
-                {
-                    if (Civ == fleet.Sector.System.Colony.Owner)
-                    {
-                        return false;
-                    }
-                }
-            }
-            catch
-            {
-                GameLog.Client.UI.DebugFormat("Tried the Spied Dictionary but it was null");
-            }
+            //try
+            //{
+            //    foreach (Civilization Civ in IntelHelper.SpiedDictionary[fleet.Owner])
+            //    {
+            //        if (Civ == fleet.Sector.System.Colony.Owner)
+            //        {
+            //            return false;
+            //        }
+            //    }
+            //}
+            //catch
+            //{
+            //    GameLog.Client.UI.DebugFormat("Tried the Spied Dictionary but it was null");
+            //}
             foreach (var ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)

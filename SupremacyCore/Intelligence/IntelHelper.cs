@@ -17,7 +17,7 @@ namespace Supremacy.Intelligence
         private static Civilization _newTargetCiv;
         private static Civilization _newSpyCiv;
         private static UniverseObjectList<Colony> _newSpiedColonies;
-        private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
+        //private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
         private static List<Civilization> _localSpiedList = new List<Civilization>();
         private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
@@ -50,19 +50,19 @@ namespace Supremacy.Intelligence
         {
             get { return _newTargetCiv; }
         }
-        public static Dictionary<Civilization, List<Civilization>> SpiedDictionary
-        {
-            get
-            {
-                //try { _spiedDictionary[LocalCivManager.Civilization].AddRange(_localSpiedList); }
-                //catch { }
-                return _spiedDictionary;
-            }
-            set
-            {
-                _spiedDictionary = value;
-            }
-        }
+        //public static Dictionary<Civilization, List<Civilization>> SpiedDictionary
+        //{
+        //    get
+        //    {
+        //        //try { _spiedDictionary[LocalCivManager.Civilization].AddRange(_localSpiedList); }
+        //        //catch { }
+        //        return _spiedDictionary;
+        //    }
+        //    set
+        //    {
+        //        _spiedDictionary = value;
+        //    }
+        //}
         public static Dictionary<Civilization, int> DefenceDictionary
         {
             get { return _defenseDictionary; }
@@ -120,7 +120,7 @@ namespace Supremacy.Intelligence
 
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {
-            GameLog.Core.UI.DebugFormat("New spyciv = {0} spying on = {1}",spyCiv.Key, spiedCiv.Key);
+            GameLog.Core.UI.DebugFormat("**** New spyciv = {0} spying on = {1}",spyCiv.Key, spiedCiv.Key);
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
@@ -129,60 +129,136 @@ namespace Supremacy.Intelligence
             _newSpyCiv = spyCiv;
             _newTargetCiv = spiedCiv;
             _newSpiedColonies = colonies;
-            try
+            var newList = new List<Civilization> { spiedCiv };
+            switch (spyCiv.CivID)
             {
-                _spiedDictionary[spyCiv].Add(spiedCiv);
+                case 0:
+                    if (_spyingCiv_0_List == null)
+                        _spyingCiv_0_List = newList;
+                    else
+                    {
+                        _spyingCiv_0_List.Add(spiedCiv);
+                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
+                    }
+                    break;
+                case 1:
+                    if (_spyingCiv_1_List == null)
+                        _spyingCiv_1_List = newList;
+                    else
+                    {
+                        _spyingCiv_1_List.Add(spiedCiv);
+                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_1_List);
+                    }
+                    break;
+                case 2:
+                    if (_spyingCiv_2_List == null)
+                        _spyingCiv_2_List = newList;
+                    else
+                    {
+                        _spyingCiv_2_List.Add(spiedCiv);
+                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_2_List);
+                    }
+                    break;
+                case 3:
+                    if (_spyingCiv_3_List == null)
+                        _spyingCiv_3_List = newList;
+                    else
+                    {
+                        _spyingCiv_3_List.Add(spiedCiv);
+                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_3_List);
+                    }
+                    break;
+                case 4:
+                    if (_spyingCiv_4_List == null)
+                        _spyingCiv_4_List = newList;
+                    else
+                    {
+                        _spyingCiv_4_List.Add(spiedCiv);
+                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_4_List);
+                    }
+                    break;
+                case 5:
+                    if (_spyingCiv_5_List == null)
+                        _spyingCiv_5_List = newList;
+                    else
+                    {
+                        _spyingCiv_5_List.Add(spiedCiv);
+                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_5_List);
+                    }
+                    break;
+                case 6:
+                    if (_spyingCiv_6_List == null)
+                        _spyingCiv_6_List = newList;
+                    else
+                    {
+                        _spyingCiv_6_List.Add(spiedCiv);
+                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_6_List);
+                    }
+                    break;
             }
-            catch
-            {            
-                _spiedDictionary[spyCiv] = new List<Civilization> { spiedCiv };
-            }
+
+            //foreach (var _spiedCiv in ) // _spyCiv.Value = _spiedList
+            //{
+            //    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCivPair.Key, _spiedCiv.Key);
+            //}
+
+            //try
+            //{
+            //_spiedList.Add(spie)
+            //    _spiedDictionary[spyCiv].Add(spiedCiv);
+            //    GameLog.Core.UI.DebugFormat("********* Try Adding spyciv = {0} spying on = {1}", spyCiv.Key, spiedCiv.Key);
+            //}
+            //catch
+            //{            
+            //    _spiedDictionary[spyCiv] = new List<Civilization> { spiedCiv };
+            //    GameLog.Core.UI.DebugFormat("******* Catch Adding spyciv = {0} spying on = {1}", spyCiv.Key, spiedCiv.Key);
+            //}
 
             //for (int i = 0; i < _spiedDictionary.Keys.Count; i++)
-            foreach (var _spyCivPair in _spiedDictionary)
-            {
-                if (_spyCivPair.Key.CivID == 0)
-                {
-                    _spyingCiv_0_List = _spiedDictionary[_spyCivPair.Key];
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
-                }
-                if (_spyCivPair.Key.CivID == 1)
-                {
-                    _spyingCiv_1_List = _spiedDictionary[_spyCivPair.Key];
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_1_List);
-                }
-                if (_spyCivPair.Key.CivID == 2)
-                {
-                    _spyingCiv_2_List = _spiedDictionary[_spyCivPair.Key];
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_2_List);
-                }
-                if (_spyCivPair.Key.CivID == 3)
-                {
-                    _spyingCiv_3_List = _spiedDictionary[_spyCivPair.Key];
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_3_List);
-                }
-                if (_spyCivPair.Key.CivID == 4)
-                {
-                    _spyingCiv_4_List = _spiedDictionary[_spyCivPair.Key];
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_4_List);
-                }
+            //foreach (var _spyCivPair in _spiedDictionary)
+            //{
+            //    if (_spyCivPair.Key.CivID == 0)
+            //    {
+            //        _spyingCiv_0_List = _spiedDictionary[_spyCivPair.Key];
+            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
+            //    }
+            //    if (_spyCivPair.Key.CivID == 1)
+            //    {
+            //        _spyingCiv_1_List = _spiedDictionary[_spyCivPair.Key];
+            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_1_List);
+            //    }
+            //    if (_spyCivPair.Key.CivID == 2)
+            //    {
+            //        _spyingCiv_2_List = _spiedDictionary[_spyCivPair.Key];
+            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_2_List);
+            //    }
+            //    if (_spyCivPair.Key.CivID == 3)
+            //    {
+            //        _spyingCiv_3_List = _spiedDictionary[_spyCivPair.Key];
+            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_3_List);
+            //    }
+            //    if (_spyCivPair.Key.CivID == 4)
+            //    {
+            //        _spyingCiv_4_List = _spiedDictionary[_spyCivPair.Key];
+            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_4_List);
+            //    }
 
-                if (_spyCivPair.Key.CivID == 5)
-                {
-                    _spyingCiv_5_List = _spiedDictionary[_spyCivPair.Key];
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_5_List);
-                }
-                if (_spyCivPair.Key.CivID == 6)
-                {
-                    _spyingCiv_6_List = _spiedDictionary[_spyCivPair.Key];
-                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_6_List);
-                }
+            //    if (_spyCivPair.Key.CivID == 5)
+            //    {
+            //        _spyingCiv_5_List = _spiedDictionary[_spyCivPair.Key];
+            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_5_List);
+            //    }
+            //    if (_spyCivPair.Key.CivID == 6)
+            //    {
+            //        _spyingCiv_6_List = _spiedDictionary[_spyCivPair.Key];
+            //        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_6_List);
+            //    }
 
-                foreach (var _spiedCiv in _spyCivPair.Value) // _spyCiv.Value = _spiedList
-                {
-                    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCivPair.Key, _spiedCiv.Key);
-                }
-            }
+            //foreach (var _spiedCiv in _spyCivPair.Value) // _spyCiv.Value = _spiedList
+            //{
+            //    GameLog.Core.UI.DebugFormat("Content of SpyDictionary: spyCiv = {0} spying on = {1}", _spyCivPair.Key, _spiedCiv.Key);
+            //}
+            //}
             PopulateDefence();
         }
         private static void PopulateDefence()
