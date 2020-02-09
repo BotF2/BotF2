@@ -159,6 +159,7 @@ namespace Supremacy.Entities
         /// </summary>
         /// <param name="context">The context.</param>
         [OnDeserialized]
+        //  Zero References ??
         private void OnDeserialized(StreamingContext context)
         {
             if (_reverseLookup == null)
@@ -168,6 +169,15 @@ namespace Supremacy.Entities
                 foreach (Civilization civ in Items)
                 {
                     _reverseLookup[civ.Key] = civ;
+
+                    GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0}", civ.Key);
+                    if (civ.SpiedCivList != null)
+                    {
+                        foreach (var spiedCiv in civ.SpiedCivList)
+                        {
+                            GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
+                        }
+                    }
                 }
             }
         }
@@ -182,7 +192,21 @@ namespace Supremacy.Entities
             lock (_reverseLookup)
             {
                 foreach (var civ in Items)
+                {
                     _reverseLookup[civ.Key] = civ;
+
+                    // works 
+                    GameLog.Core.CivsAndRaces.DebugFormat("deserialize {0}", civ.Key);
+                    if (civ.SpiedCivList != null)
+                    {
+                        foreach (var spiedCiv in civ.SpiedCivList)
+                        {
+                            GameLog.Core.CivsAndRaces.DebugFormat("DeserializeOwnedData: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
+                        }
+                    }
+
+                }
+
             }
         }
 
