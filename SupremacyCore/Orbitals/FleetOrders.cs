@@ -752,6 +752,7 @@ namespace Supremacy.Orbitals
             //    ratio = 10;
 
             IntelHelper.SendXSpiedY(civ, system.Owner, colonies);
+            civManager.InstallingSpyNework(true);
 
            GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
 

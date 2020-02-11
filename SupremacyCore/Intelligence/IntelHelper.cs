@@ -32,7 +32,6 @@ namespace Supremacy.Intelligence
         public static List<Civilization> _spyingCiv_4_List;
         public static List<Civilization> _spyingCiv_5_List;
         public static List<Civilization> _spyingCiv_6_List;
-        private static bool _installingSpy_0 = false;
 
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -76,8 +75,6 @@ namespace Supremacy.Intelligence
                 return _attackAccumulatedIntelInt;
             }
         }
-
-        public static bool InstallingSpy_0 { get => _installingSpy_0; set => _installingSpy_0 = value; }
 
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player

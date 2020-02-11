@@ -68,7 +68,7 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
-           // _installingSpyNetwork.PropertyChanged = OnInstallingSpyNetworkChanged;
+            // _installingSpyNetwork.PropertyChanged = OnInstallingSpyNetworkChanged;
 
             _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
             _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
@@ -76,7 +76,7 @@ namespace Supremacy.Game
             _totalIntelligenceDefenseAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
 
             _sitRepEntries = new List<SitRepEntry>();
-            _spiedCivList =  new List<Civilization>();
+            _spiedCivList = new List<Civilization>();
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -134,12 +134,11 @@ namespace Supremacy.Game
         {
             get
             {
-                if (IntelHelper.InstallingSpy_0 == true)
-                {
-                    _installingSpyNetwork = "Installing Spy Network";
-                    OnPropertyChanged("InstallingSpyNetwork");
-                }
-                    return _installingSpyNetwork;
+                return _installingSpyNetwork;
+            }
+            set
+            {
+                _installingSpyNetwork = value;
             }
         }
         /// <summary>
@@ -208,15 +207,15 @@ namespace Supremacy.Game
         [NotNull]
         public IList<SitRepEntry> SitRepEntries
         {
-            get 
+            get
             {
                 foreach (var rep in _sitRepEntries)
                 {
                     //if (rep.Owner.CivID == Player.GameHostID)  // outcomment to see Sitrep of all races
-                        GameLog.Core.General.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
+                    GameLog.Core.General.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                        "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
                 }
-                return _sitRepEntries; 
+                return _sitRepEntries;
             }
         }
 
@@ -225,12 +224,12 @@ namespace Supremacy.Game
             _spiedCivList.AddRange(civList);
             foreach (var item in civList)
             {
-                GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item );
+                GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
             }
         }
         public List<Civilization> SpiedCivList
         {
-            get { return _spiedCivList;}
+            get { return _spiedCivList; }
         }
 
         /// <summary>
@@ -269,7 +268,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceAttackingAccumulated;
-                
+
                 if (_totalIntelligenceAttackingAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
@@ -328,7 +327,7 @@ namespace Supremacy.Game
             internal set
             {
                 _homeColonyId = (value != null) ? value.ObjectID : -1;
-                
+
                 if (value != null)
                     _homeColonyLocation = value.Location;
             }
@@ -342,7 +341,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if(!_homeColonyLocation.HasValue)
+                if (!_homeColonyLocation.HasValue)
                     return null;
                 return GameContext.Current.Universe.Map[_homeColonyLocation.Value].System;
             }
@@ -384,6 +383,12 @@ namespace Supremacy.Game
         #endregion
 
         #region Methods
+        public bool InstallingSpyNework(bool install)
+        {
+            if (install == true)
+            return true;
+            return false;
+        }
         /// <summary>
         /// Applies the specified morale event.
         /// </summary>
@@ -408,7 +413,7 @@ namespace Supremacy.Game
 
             var tableValue = moraleTable[eventType.ToString()][_civId] ??
                              moraleTable[eventType.ToString()][0];
-            
+
             if (tableValue == null)
                 return;
 
@@ -510,7 +515,7 @@ namespace Supremacy.Game
         }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString() );
+            GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
         }
@@ -528,7 +533,7 @@ namespace Supremacy.Game
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        [field : NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
@@ -667,4 +672,5 @@ namespace Supremacy.Game
 
         #endregion
     }
+
 }
