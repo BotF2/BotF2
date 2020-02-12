@@ -47,7 +47,6 @@ namespace Supremacy.Game
         private int _seatOfGovernmentId = -1;
         private Meter _totalIntelligenceAttackingAccumulated;
         private Meter _totalIntelligenceDefenseAccumulated;
-        private string _installingSpyNetwork = "No Spy Networks Installed";
 
         #endregion
 
@@ -68,7 +67,6 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
-            // _installingSpyNetwork.PropertyChanged = OnInstallingSpyNetworkChanged;
 
             _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
             _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
@@ -130,17 +128,6 @@ namespace Supremacy.Game
             get { return _totalPopulation; }
         }
 
-        public string InstallingSpyNetwork
-        {
-            get
-            {
-                return _installingSpyNetwork;
-            }
-            set
-            {
-                _installingSpyNetwork = value;
-            }
-        }
         /// <summary>
         /// Gets the credits in the civilization's treasury.
         /// </summary>
@@ -219,14 +206,6 @@ namespace Supremacy.Game
             }
         }
 
-        public void UpDateSpiedList(List<Civilization> civList)
-        {
-            _spiedCivList.AddRange(civList);
-            foreach (var item in civList)
-            {
-                GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
-            }
-        }
         public List<Civilization> SpiedCivList
         {
             get { return _spiedCivList; }
@@ -383,12 +362,16 @@ namespace Supremacy.Game
         #endregion
 
         #region Methods
-        public bool InstallingSpyNework(bool install)
+
+        public void UpDateSpiedList(List<Civilization> civList)
         {
-            if (install == true)
-            return true;
-            return false;
+            _spiedCivList.AddRange(civList);
+            //foreach (var item in civList)
+            //{
+            //    GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
+            //}
         }
+
         /// <summary>
         /// Applies the specified morale event.
         /// </summary>
@@ -434,7 +417,6 @@ namespace Supremacy.Game
         public void Compact()
         {
             _colonies.TrimExcess();
-            //_infiltratedColonies.TrimExcess();
             _globalBonuses.TrimExcess();
             _sitRepEntries.TrimExcess();
         }

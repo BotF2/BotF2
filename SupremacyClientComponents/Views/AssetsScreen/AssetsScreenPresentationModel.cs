@@ -21,7 +21,6 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
         private List<Civilization> _localSpyingCivList;
-        private string _installing_0 = "No new spy networks";
 
         #region designInstance stuff
         //private static AssetsScreenPresentationModel _designInstance;
@@ -67,19 +66,6 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Properties for AssestsScreen
-        public string Installing_0
-        {
-            get
-            {
-                _installing_0 = MyLocalCivManager.InstallingSpyNetwork;
-               return _installing_0;
-            }
-            set
-            {
-                _installing_0 = value;
-                NotifyPropertyChanged("Installing_0");
-            }
-        }
 
         public CivilizationManager MyLocalCivManager
         {
@@ -522,10 +508,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public string InstallingSpyNetwork
-        {
-            get { return MyLocalCivManager.InstallingSpyNetwork; }
-        }
+
         public string LocalCivName
         {
             get

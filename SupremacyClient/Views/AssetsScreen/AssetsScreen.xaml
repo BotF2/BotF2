@@ -121,16 +121,8 @@
                                 Grid.Row="0"
                                 Grid.Column="2"
                                 VerticalAlignment="Center"
-                                Text="Send a Spy Ship to the Empire's system and right click the ship to order "
+                                Text="{s:StringResource Key=INSTALL_SPY_NETWORK_INSTRUCTIONS}"                     
                                 Foreground="LightGray"
-                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                FontSize="12pt"/>
-                            <TextBlock 
-                                Grid.Row="0" 
-                                Grid.Column="3"
-                                VerticalAlignment="Center"
-                                Text="&quot;Install a Spy Network&quot;"
-                                Foreground="White"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
                             <!-- Summary Button -->
@@ -151,8 +143,6 @@
                             </Button>
                         </Grid>
                     </StackPanel>
-                    <TextBlock Name="InstallingZero" Text="{Binding Path=Installing_0, Mode=OneWay}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9" Foreground="White" >
-                    </TextBlock>
                 </Grid>
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
@@ -161,7 +151,7 @@
                     Height="800"
                     HorizontalAlignment="Left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
-      <!-- Zero Expander -->
+            <!-- Zero Expander -->
                         <Expander x:Name="EmpireExpanderZero" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedFedName}" FontSize="20" BorderThickness="3" BorderBrush="Blue"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
@@ -600,7 +590,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-     <!-- One Expander -->
+                        <!-- One Expander -->
                         <Expander x:Name="EmpireExpanderOne" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedTerranName}" FontSize="20" BorderThickness="3" BorderBrush="Yellow"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
@@ -1039,7 +1029,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-        <!-- Two Expander -->
+                        <!-- Two Expander -->
                         <Expander x:Name="EmpireExpanderTwo" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedRomName}" FontSize="20" BorderThickness="3" BorderBrush="Green" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
@@ -1485,7 +1475,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-      <!-- Three Expander -->
+                        <!-- Three Expander -->
                         <Expander x:Name="EmpireExpanderThree" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedKlingName}" FontSize="20" BorderThickness="3" BorderBrush="DarkRed" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3" >
@@ -1930,7 +1920,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-      <!-- Four Expander -->
+                        <!-- Four Expander -->
                         <Expander x:Name="EmpireExpanderFour" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="Tan" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
@@ -2375,7 +2365,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-       <!-- Five Expander -->
+                        <!-- Five Expander -->
                         <Expander x:Name="EmpireExpanderFive" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedDomName}" FontSize="20" BorderThickness="3" BorderBrush="Purple" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4"  Grid.Row="3">
@@ -2820,7 +2810,7 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-      <!-- Six Expander -->
+                        <!-- Six Expander -->
                         <Expander x:Name="EmpireExpanderSix" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedBorgName}" FontSize="20" BorderThickness="3" BorderBrush="YellowGreen" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">

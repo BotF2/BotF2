@@ -17,7 +17,6 @@ namespace Supremacy.Intelligence
         private static Civilization _newTargetCiv;
         private static Civilization _newSpyCiv;
         private static UniverseObjectList<Colony> _newSpiedColonies;
-        //private static Dictionary<Civilization, List<Civilization>> _spiedDictionary = new Dictionary<Civilization, List<Civilization>>();
         private static List<Civilization> _spiedList = new List<Civilization>();
         private static List<Civilization> _localSpiedList = new List<Civilization>();
         private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
@@ -32,6 +31,13 @@ namespace Supremacy.Intelligence
         public static List<Civilization> _spyingCiv_4_List;
         public static List<Civilization> _spyingCiv_5_List;
         public static List<Civilization> _spyingCiv_6_List;
+        public static bool _showNetwork_0 = false;
+        public static bool _showNetwork_1 = false;
+        public static bool _showNetwork_2 = false;
+        public static bool _showNetwork_3 = false;
+        public static bool _showNetwork_4 = false;
+        public static bool _showNetwork_5 = false;
+        public static bool _showNetwork_6 = false;
 
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -75,7 +81,34 @@ namespace Supremacy.Intelligence
                 return _attackAccumulatedIntelInt;
             }
         }
-
+        public static bool ShowNetwork_0
+        {
+            get { return _showNetwork_0; }
+        }
+        public static bool ShowNetwork_1
+        {
+            get { return _showNetwork_1; }
+        }
+        public static bool ShowNetwork_2
+        {
+            get { return _showNetwork_2; }
+        }
+        public static bool ShowNetwork_3
+        {
+            get { return _showNetwork_3; }
+        }
+        public static bool ShowNetwork_4
+        {
+            get { return _showNetwork_4; }
+        }
+        public static bool ShowNetwork_5
+        {
+            get { return _showNetwork_5; }
+        }
+        public static bool ShowNetwork_6
+        {
+            get { return _showNetwork_6; }
+        }
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player
         /// </summary>
@@ -86,18 +119,43 @@ namespace Supremacy.Intelligence
             _localCivManager = civManager;
             return civManager;
         }
-        public static bool CheckingInstallSpy_0()
+
+        public static void ShowSpyNetwork(Civilization civ)
         {
-            return _installingSpy_0;
+            switch (civ.CivID)
+            {
+                case 0:
+                    _showNetwork_0 = true;
+                    break;
+                case 1:
+                    _showNetwork_1= true;
+                    break;
+                case 2:
+                    _showNetwork_2 = true;
+                    break;
+                case 3:
+                    _showNetwork_3 = true;
+                    break;
+                case 4:
+                    _showNetwork_4 = true;
+                    break;
+                case 5:
+                    _showNetwork_5 = true;
+                    break;
+                case 6:
+                    _showNetwork_6 = true;
+                    break;
+            }
         }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {
-            _installingSpy_0 = true;
             GameLog.Core.UI.DebugFormat("**** New spyciv = {0} spying on = {1}",spyCiv.Key, spiedCiv.Key);
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
                 throw new ArgumentNullException("spiedCiv");
+            if (_localCivManager.Civilization == spyCiv)
+            ShowSpyNetwork(spiedCiv);
             _spiedList.Clear();
             _newSpyCiv = spyCiv;
             _newTargetCiv = spiedCiv;
@@ -106,7 +164,6 @@ namespace Supremacy.Intelligence
             switch (spyCiv.CivID)
             {
                 case 0:
-
                     if (_spyingCiv_0_List == null)
                         _spyingCiv_0_List = newList;
                     else

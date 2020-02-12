@@ -36,7 +36,6 @@ namespace Supremacy.Orbitals
         public static readonly EngageOrder EngageOrder;
         public static readonly AvoidOrder AvoidOrder;
         public static readonly ColonizeOrder ColonizeOrder;
-       // public static readonly InfiltrateOrder InfiltrateOrder;
        // public static readonly RaidOrder RaidOrder;
        // public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
@@ -751,11 +750,8 @@ namespace Supremacy.Orbitals
             //if (ratio > 10)
             //    ratio = 10;
 
-            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);
-            civManager.InstallingSpyNework(true);
-
-           GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
-
+            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);          
+            GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
         }
     }
 
