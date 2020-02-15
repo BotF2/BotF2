@@ -516,7 +516,7 @@ namespace Supremacy.Client.Views
                 return MyLocalCivManager.Civilization.Name;  // keep this on AppContext
             }
         }
-        public static Civilization Local
+        public static Civilization LocalCiv
         {
             get
             {
@@ -528,8 +528,19 @@ namespace Supremacy.Client.Views
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedZeroCiv].HomeColony;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedZeroHomeColony
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivZero;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedCiv].HomeColony;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero HomeColony = {0}", homeColony);
+                return homeColony;
             }
         }
         public static Meter SpiedZeroTotalPopulation
@@ -567,6 +578,16 @@ namespace Supremacy.Client.Views
                 return SpiedCiv.Civilization;
             }
         }
+        public static Colony SpiedOneHomeColony
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivOne;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedCiv].HomeColony;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero HomeColony = {0}", homeColony);
+                return homeColony;
+            }
+        }
         public static Meter SpiedOneTotalPopulation
         {
             get
@@ -601,6 +622,16 @@ namespace Supremacy.Client.Views
                 return SpiedCiv.Civilization;
             }
         }
+        public static Colony SpiedTwoHomeColony
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedCiv].HomeColony;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero HomeColony = {0}", homeColony);
+                return homeColony;
+            }
+        }
         public Meter SpiedTwoTotalPopulation
         {
             get
@@ -633,6 +664,16 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivThree;
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedThreeHomeColony
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivThree;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedCiv].HomeColony;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero HomeColony = {0}", homeColony);
+                return homeColony;
             }
         }
         public Meter SpiedThreeTotalPopulation
@@ -670,6 +711,16 @@ namespace Supremacy.Client.Views
                 return SpiedCiv.Civilization;
             }
         }
+        public static Colony SpiedFourHomeColony
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivFour;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedCiv].HomeColony;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero HomeColony = {0}", homeColony);
+                return homeColony;
+            }
+        }
         public Meter SpiedFourTotalPopulation
         {
             get
@@ -704,6 +755,16 @@ namespace Supremacy.Client.Views
                 return SpiedCiv.Civilization;
             }
         }
+        public static Colony SpiedFiveHomeColony
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivFive;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedCiv].HomeColony;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero HomeColony = {0}", homeColony);
+                return homeColony;
+            }
+        }
         public Meter SpiedFiveTotalPopulation
         {
             get
@@ -736,6 +797,16 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivSix;
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedSixHomeColony
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivSix;
+                var homeColony = GameContext.Current.CivilizationManagers[SpiedCiv].HomeColony;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero HomeColony = {0}", homeColony);
+                return homeColony;
             }
         }
         public Meter SpiedSixTotalPopulation
