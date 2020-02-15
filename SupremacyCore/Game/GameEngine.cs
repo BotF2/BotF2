@@ -896,8 +896,31 @@ namespace Supremacy.Game
             {
                 foreach (var victim in GameContext.Current.Civilizations)
                 {
-                    //        if (civ1 == civ2)
-                    //            continue;
+                    if (attacker == victim)
+                        continue;
+
+                    // minor races are out, only empire1 vs empire2
+
+                    //var Spy_2_Power = victim;
+                    ////var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+
+                    //switch (Spy_2_Power.PendingAction)
+                    //{
+                    //    case SpyActionExecute.DoItSo:
+                    //        if (Spy_2_Power.LastProposalReceived != null)
+                    //            AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                    //        break;
+                    //    //case PendingDiplomacyAction.RejectProposal:
+                    //    //    if (ForeignPower.LastProposalReceived != null)
+                    //    //        RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                    //    //    break;
+                    //}
+
+                    GameLog.Core.Intel.DebugFormat("DoSpyOperations....doing the operations {0} VS {1}", attacker, victim);
+
+
+                    //ForeignPower.PendingAction = PendingDiplomacyAction.None;
+
 
                     //        if (civ1.CivID == 6 || civ1.Key == "BORG")
                     //        {

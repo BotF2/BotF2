@@ -225,7 +225,9 @@
     <Compile Include="Scripting\LocationScopedEvent.cs" />
     <Compile Include="Scripting\ScriptedEventDatabase.cs" />
     <Compile Include="Scripting\UnitScopedEvent.cs" />
+    <Compile Include="SpyOperations\ISpyOrder.cs" />
     <Compile Include="SpyOperations\SpyOperations.cs" />
+    <Compile Include="SpyOperations\SpyOrder.cs" />
     <Compile Include="SpyOperations\Spy_2_SpyStatus.cs" />
     <Compile Include="Tech\PlanetaryTechObjectDesign.cs" />
     <Compile Include="Effects\DynamicPropertyValue.cs" />
