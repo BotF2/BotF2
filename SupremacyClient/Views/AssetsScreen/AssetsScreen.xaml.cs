@@ -207,20 +207,20 @@ namespace Supremacy.Client.Views
                     {
                         var Civs = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
                         var luckyCiv = Civs.OrderBy(s => random.Next()).First();
-                        IntelHelper.StealCredits(civManager.HomeColony, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
+                        IntelHelper.StealCredits(civManager.SeatOfGovernment, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
                         break;
                     }
                 case 1:
-                    IntelHelper.StealResearch(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    IntelHelper.StealResearch(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
                     break;
                 case 2:
-                    IntelHelper.SabotageEnergy(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    IntelHelper.SabotageEnergy(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
                     break;
                 case 3:
-                    IntelHelper.SabotageFood(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    IntelHelper.SabotageFood(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
                     break;
                 case 4:
-                    IntelHelper.SabotageIndustry(civManager.HomeColony, civManager.Civilization, "Terrorists");
+                    IntelHelper.SabotageIndustry(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
                     break;
                 default:
                     break;
@@ -795,7 +795,7 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsZeroClick(object sender, RoutedEventArgs e) // we are using attacking spy civ as peramiter here in Creidt only so far
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedZeroHomeColony, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             StealCreditsZero.Visibility = Visibility.Collapsed;
             SabotageEnergyZero.Visibility = Visibility.Collapsed;
             SabotageFoodZero.Visibility = Visibility.Collapsed;
@@ -803,7 +803,7 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedOneHomeColony, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             StealCreditsOne.Visibility = Visibility.Collapsed;
             SabotageEnergyOne.Visibility = Visibility.Collapsed;
             SabotageFoodOne.Visibility = Visibility.Collapsed;
@@ -811,7 +811,7 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedTwoHomeColony, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             StealCreditsTwo.Visibility = Visibility.Collapsed;
             SabotageEnergyTwo.Visibility = Visibility.Collapsed;
             SabotageFoodTwo.Visibility = Visibility.Collapsed;
@@ -819,7 +819,7 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedThreeHomeColony, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             StealCreditsThree.Visibility = Visibility.Collapsed;
             SabotageEnergyThree.Visibility = Visibility.Collapsed;
             SabotageFoodThree.Visibility = Visibility.Collapsed;
@@ -827,7 +827,7 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedFourHomeColony, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             StealCreditsFour.Visibility = Visibility.Collapsed;
             SabotageEnergyFour.Visibility = Visibility.Collapsed;
             SabotageFoodFour.Visibility = Visibility.Collapsed;
@@ -835,7 +835,7 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedFiveHomeColony, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             StealCreditsFive.Visibility = Visibility.Collapsed;
             SabotageEnergyFive.Visibility = Visibility.Collapsed;
             SabotageFoodFive.Visibility = Visibility.Collapsed;
@@ -843,7 +843,7 @@ namespace Supremacy.Client.Views
         }
         private void OnCreditsSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedSixHomeColony, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             StealCreditsSix.Visibility = Visibility.Collapsed;
             SabotageEnergySix.Visibility = Visibility.Collapsed;
             SabotageFoodSix.Visibility = Visibility.Collapsed;
@@ -851,42 +851,42 @@ namespace Supremacy.Client.Views
         }
         private void OnResearchZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedZeroHomeColony, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             StealResearchZero.Visibility = Visibility.Collapsed;
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedOneHomeColony, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             StealResearchOne.Visibility = Visibility.Collapsed;
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedTwoHomeColony, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             StealResearchTwo.Visibility = Visibility.Collapsed;
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedThreeHomeColony, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             StealResearchThree.Visibility = Visibility.Collapsed;
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFourHomeColony, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             StealResearchFour.Visibility = Visibility.Collapsed;
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFiveHomeColony, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             StealResearchFive.Visibility = Visibility.Collapsed;
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedSixHomeColony, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             StealResearchSix.Visibility = Visibility.Collapsed;
         }
         private void OnEnergyZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedZeroHomeColony, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); //, out removedEnergyFacilities);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); //, out removedEnergyFacilities);
             SabotageEnergyZero.Visibility = Visibility.Collapsed;
             StealCreditsZero.Visibility = Visibility.Collapsed;
             SabotageFoodZero.Visibility = Visibility.Collapsed;
@@ -894,7 +894,7 @@ namespace Supremacy.Client.Views
         }
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedOneHomeColony, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne); //, out removedEnergyFacilities);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne); //, out removedEnergyFacilities);
             SabotageEnergyOne.Visibility = Visibility.Collapsed;
             StealCreditsOne.Visibility = Visibility.Collapsed;
             SabotageFoodOne.Visibility = Visibility.Collapsed;
@@ -902,7 +902,7 @@ namespace Supremacy.Client.Views
         }
         private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedTwoHomeColony, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             SabotageEnergyTwo.Visibility = Visibility.Collapsed;
             StealCreditsTwo.Visibility = Visibility.Collapsed;
             SabotageFoodTwo.Visibility = Visibility.Collapsed;
@@ -910,7 +910,7 @@ namespace Supremacy.Client.Views
         }
         private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedThreeHomeColony, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             SabotageEnergyThree.Visibility = Visibility.Collapsed;
             StealCreditsThree.Visibility = Visibility.Collapsed;
             SabotageFoodThree.Visibility = Visibility.Collapsed;
@@ -918,7 +918,7 @@ namespace Supremacy.Client.Views
         }
         private void OnEnergyFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFourHomeColony, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             SabotageEnergyFour.Visibility = Visibility.Collapsed;
             StealCreditsFour.Visibility = Visibility.Collapsed;
             SabotageFoodFour.Visibility = Visibility.Collapsed;
@@ -926,7 +926,7 @@ namespace Supremacy.Client.Views
         }
         private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFiveHomeColony, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             SabotageEnergyFive.Visibility = Visibility.Collapsed;
             StealCreditsFive.Visibility = Visibility.Collapsed;
             SabotageFoodFive.Visibility = Visibility.Collapsed;
@@ -934,7 +934,7 @@ namespace Supremacy.Client.Views
         }
         private void OnEnergySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedSixHomeColony, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             SabotageEnergySix.Visibility = Visibility.Collapsed;
             StealCreditsSix.Visibility = Visibility.Collapsed;
             SabotageFoodSix.Visibility = Visibility.Collapsed;
@@ -942,7 +942,7 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedZeroHomeColony, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             SabotageFoodZero.Visibility = Visibility.Collapsed;
             StealCreditsZero.Visibility = Visibility.Collapsed;
             SabotageEnergyZero.Visibility = Visibility.Collapsed;
@@ -950,7 +950,7 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedOneHomeColony, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             SabotageFoodOne.Visibility = Visibility.Collapsed;
             StealCreditsOne.Visibility = Visibility.Collapsed;
             SabotageEnergyOne.Visibility = Visibility.Collapsed;
@@ -958,7 +958,7 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedTwoHomeColony, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             SabotageFoodTwo.Visibility = Visibility.Collapsed;
             StealCreditsTwo.Visibility = Visibility.Collapsed;
             SabotageEnergyTwo.Visibility = Visibility.Collapsed;
@@ -966,7 +966,7 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedThreeHomeColony, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             SabotageFoodThree.Visibility = Visibility.Collapsed;
             StealCreditsThree.Visibility = Visibility.Collapsed;
             SabotageEnergyThree.Visibility = Visibility.Collapsed;
@@ -974,7 +974,7 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFourHomeColony, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             SabotageFoodFour.Visibility = Visibility.Collapsed;
             StealCreditsFour.Visibility = Visibility.Collapsed;
             SabotageEnergyFour.Visibility = Visibility.Collapsed;
@@ -982,7 +982,7 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFiveHomeColony, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             SabotageFoodFive.Visibility = Visibility.Collapsed;
             StealCreditsFive.Visibility = Visibility.Collapsed;
             SabotageEnergyFive.Visibility = Visibility.Collapsed;
@@ -990,7 +990,7 @@ namespace Supremacy.Client.Views
         }
         private void OnFoodSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedSixHomeColony, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             SabotageFoodSix.Visibility = Visibility.Collapsed;
             StealCreditsSix.Visibility = Visibility.Collapsed;
             SabotageEnergySix.Visibility = Visibility.Collapsed;
@@ -998,7 +998,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedZeroHomeColony, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             SabotageIndustryZero.Visibility = Visibility.Collapsed;
             StealCreditsZero.Visibility = Visibility.Collapsed;
             SabotageEnergyZero.Visibility = Visibility.Collapsed;
@@ -1006,7 +1006,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedOneHomeColony, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             SabotageIndustryOne.Visibility = Visibility.Collapsed;
             StealCreditsOne.Visibility = Visibility.Collapsed;
             SabotageEnergyOne.Visibility = Visibility.Collapsed;
@@ -1014,7 +1014,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedTwoHomeColony, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             SabotageIndustryTwo.Visibility = Visibility.Collapsed;
             StealCreditsTwo.Visibility = Visibility.Collapsed;
             SabotageEnergyTwo.Visibility = Visibility.Collapsed;
@@ -1022,7 +1022,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedThreeHomeColony, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             SabotageIndustryThree.Visibility = Visibility.Collapsed;
             StealCreditsThree.Visibility = Visibility.Collapsed;
             SabotageEnergyThree.Visibility = Visibility.Collapsed;
@@ -1030,7 +1030,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFourHomeColony, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             SabotageIndustryFour.Visibility = Visibility.Collapsed;
             StealCreditsFour.Visibility = Visibility.Collapsed;
             SabotageEnergyFour.Visibility = Visibility.Collapsed;
@@ -1038,7 +1038,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFiveHomeColony, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             SabotageIndustryFive.Visibility = Visibility.Collapsed;
             StealCreditsFive.Visibility = Visibility.Collapsed;
             SabotageEnergyFive.Visibility = Visibility.Collapsed;
@@ -1046,7 +1046,7 @@ namespace Supremacy.Client.Views
         }
         private void OnIndustrySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedSixHomeColony, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             SabotageIndustrySix.Visibility = Visibility.Collapsed;
             StealCreditsSix.Visibility = Visibility.Collapsed;
             SabotageEnergySix.Visibility = Visibility.Collapsed;
