@@ -11,6 +11,7 @@ using System;
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
+using Supremacy.Diplomacy;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -20,11 +21,12 @@ using Supremacy.IO.Serialization;
 
 // plan is: collecting SpyOperations from all clients, doing it here and re-distribute it with usual game context at end of turn processing
 
-namespace Supremacy.Diplomacy
+namespace Supremacy.SpyOperations
 {
     public enum  SpyActionExecute  //PendingSpyAction_NotUsed
     {
-        DoItSo
+        DoItSo,
+        Done
 
         //StealCredits,   // in Diplo: Accept
         //SabotageEnergy,  // In Diplo: Reject

@@ -16,6 +16,7 @@ using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Intelligence;
 using Supremacy.Orbitals;
+using Supremacy.SpyOperations;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -792,12 +793,14 @@ namespace Supremacy.Game
                     switch (ForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
+                                            GameLog.Core.Diplomacy.DebugFormat("AcceptProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
-                                AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                                        AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
+                                            GameLog.Core.Diplomacy.DebugFormat("RejectProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
-                                RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
+                                        RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
                     }
 
@@ -902,6 +905,9 @@ namespace Supremacy.Game
                     // minor races are out, only empire1 vs empire2
 
                     //var Spy_2_Power = victim;
+                    var attacker1 = Diplomat.Get(attacker);
+                    //var Spy_2_Power = new Spy_2_Power
+                        
                     ////var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
 
                     //switch (Spy_2_Power.PendingAction)
@@ -917,6 +923,14 @@ namespace Supremacy.Game
                     //}
 
                     GameLog.Core.Intel.DebugFormat("DoSpyOperations....doing the operations {0} VS {1}", attacker, victim);
+
+
+                    Colony _seat = GameContext.Current.CivilizationManagers[victim].SeatOfGovernment;
+
+                    IntelHelper.StealCredits(_seat, attacker, victim, "Terrorists");
+
+                    //Spy_2_Power.PendingSpyAction = SpyActionExecute.Done;
+
 
 
                     //ForeignPower.PendingAction = PendingDiplomacyAction.None;

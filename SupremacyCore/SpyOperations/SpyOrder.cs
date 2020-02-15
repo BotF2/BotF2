@@ -13,6 +13,7 @@ using System.Linq;
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
+using Supremacy.Diplomacy;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -20,7 +21,7 @@ using Supremacy.Utility;
 
 
 // toDo: create a namespace SpyOperations .. we don't know about and kept it to Diplomacy
-namespace Supremacy.Diplomacy
+namespace Supremacy.SpyOperations
 {
     public interface ISpyOrder : IDiplomaticExchange
     {

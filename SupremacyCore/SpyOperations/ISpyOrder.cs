@@ -1,4 +1,4 @@
-﻿namespace Supremacy.Diplomacy.Visitors
+﻿namespace Supremacy.SpyOperations
 {
     public interface ISpyOrderAttacker
     {

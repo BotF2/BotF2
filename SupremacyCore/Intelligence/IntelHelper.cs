@@ -251,6 +251,9 @@ namespace Supremacy.Intelligence
 
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
+
+            GameLog.Core.UI.DebugFormat("**** StealCredits, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+
             int stolenCredits = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 

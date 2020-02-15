@@ -1,4 +1,4 @@
-﻿namespace Supremacy.Diplomacy
+﻿namespace Supremacy.SpyOperations
 {
     public enum Spy_2_SpyStatus : byte
     {
