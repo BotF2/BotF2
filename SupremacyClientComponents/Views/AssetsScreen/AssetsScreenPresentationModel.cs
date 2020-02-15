@@ -64,7 +64,7 @@ namespace Supremacy.Client.Views
         //    OnPropertyChanged("SelectedColony");
         //}
         #endregion
-
+ 
         #region Properties for AssestsScreen
 
         public CivilizationManager MyLocalCivManager

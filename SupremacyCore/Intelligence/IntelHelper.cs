@@ -247,11 +247,9 @@ namespace Supremacy.Intelligence
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
 
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
-            //var attackMeter = AssetsScreenPresentationModel.UpdateAttackingAccumulated(attackingCiv);
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
             int stolenCredits = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
@@ -288,7 +286,6 @@ namespace Supremacy.Intelligence
             //int removeChredits = 0;
             Int32.TryParse(attackedCivManager.Credits.ToString(), out stolenCredits);
             int attackedCreditsBefore = stolenCredits;
-
 
             if (stolenCredits < 100)  // they have not enough credits worth stealing, especially avoid negative stuff !!!
             {

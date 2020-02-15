@@ -247,7 +247,7 @@ namespace Supremacy.Client.Views
                GameLog.Client.UI.DebugFormat("*********** begin of checking visible ***********");
 
                 // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedZero(_civLocalPlayer) || IntelHelper.ShowNetwork_0) // && _spiedZeroCiv != _civLocalPlayer) // && !DesignTimeObjects.SubedZero)
+                if (AssetsHelper.IsSpiedZero(_civLocalPlayer) || IntelHelper.ShowNetwork_0) 
                 {
                     EmpireExpanderZero.Visibility = Visibility.Visible;
                     SabotageEnergyZero.Visibility = Visibility.Visible;
@@ -255,10 +255,9 @@ namespace Supremacy.Client.Views
                     SabotageIndustryZero.Visibility = Visibility.Visible;
                     StealResearchZero.Visibility = Visibility.Visible;
                     StealCreditsZero.Visibility = Visibility.Visible;
-                    //Installing_0.Visibility = Visibility.Collapsed;
                 }
                     //GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedOne(_civLocalPlayer) || IntelHelper.ShowNetwork_1) // && _spiedOneCiv != _civLocalPlayer) // && !DesignTimeObjects.SubedOne)
+                if (AssetsHelper.IsSpiedOne(_civLocalPlayer) || IntelHelper.ShowNetwork_1) 
                 {
                     EmpireExpanderOne.Visibility = Visibility.Visible;                    
                     SabotageEnergyOne.Visibility = Visibility.Visible;
@@ -266,10 +265,9 @@ namespace Supremacy.Client.Views
                     SabotageIndustryOne.Visibility = Visibility.Visible;
                     StealResearchOne.Visibility = Visibility.Visible;
                     StealCreditsOne.Visibility = Visibility.Visible;
-                    //Installing_1.Visibility = Visibility.Collapsed;
                 }
                    // GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) || IntelHelper.ShowNetwork_2) // && _spiedTwoCiv != _civLocalPlayer) // && !DesignTimeObjects.SubedTwo)
+                if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) || IntelHelper.ShowNetwork_2) 
                 {
                     EmpireExpanderTwo.Visibility = Visibility.Visible;
                     SabotageEnergyTwo.Visibility = Visibility.Visible;
@@ -277,10 +275,9 @@ namespace Supremacy.Client.Views
                     SabotageIndustryTwo.Visibility = Visibility.Visible;
                     StealResearchTwo.Visibility = Visibility.Visible;
                     StealCreditsTwo.Visibility = Visibility.Visible;
-                   // Installing_2.Visibility = Visibility.Collapsed;
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedThree(_civLocalPlayer) || IntelHelper.ShowNetwork_3) // && _spiedThreeCiv != _civLocalPlayer) //&& !DesignTimeObjects.SubedThree)
+                if (AssetsHelper.IsSpiedThree(_civLocalPlayer) || IntelHelper.ShowNetwork_3) 
                 {                    
                     EmpireExpanderThree.Visibility = Visibility.Visible;
                     SabotageEnergyThree.Visibility = Visibility.Visible;
@@ -288,10 +285,9 @@ namespace Supremacy.Client.Views
                     SabotageIndustryThree.Visibility = Visibility.Visible;
                     StealResearchThree.Visibility = Visibility.Visible;
                     StealCreditsThree.Visibility = Visibility.Visible;
-                    //Installing_3.Visibility = Visibility.Collapsed;
                 }
                     //GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedFour(_civLocalPlayer) || IntelHelper.ShowNetwork_4) // && _spiedFourCiv != _civLocalPlayer) // && !DesignTimeObjects.SubedFour)
+                if (AssetsHelper.IsSpiedFour(_civLocalPlayer) || IntelHelper.ShowNetwork_4)
                 {
                     EmpireExpanderFour.Visibility = Visibility.Visible;
                     SabotageEnergyFour.Visibility = Visibility.Visible;
@@ -299,10 +295,9 @@ namespace Supremacy.Client.Views
                     SabotageIndustryFour.Visibility = Visibility.Visible;
                     StealResearchFour.Visibility = Visibility.Visible;
                     StealCreditsFour.Visibility = Visibility.Visible;
-                    //Installing_4.Visibility = Visibility.Collapsed;
                 }
                     //GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedFive(_civLocalPlayer) || IntelHelper.ShowNetwork_5) // && _spiedFiveCiv != _civLocalPlayer) // && !DesignTimeObjects.SubedFive)
+                if (AssetsHelper.IsSpiedFive(_civLocalPlayer) || IntelHelper.ShowNetwork_5) 
                 {
                     EmpireExpanderFive.Visibility = Visibility.Visible;
                     SabotageEnergyFive.Visibility = Visibility.Visible;
@@ -310,10 +305,9 @@ namespace Supremacy.Client.Views
                     SabotageIndustryFive.Visibility = Visibility.Visible;
                     StealResearchFive.Visibility = Visibility.Visible;
                     StealCreditsFive.Visibility = Visibility.Visible;
-                    //Installing_5.Visibility = Visibility.Collapsed;
                 }
                     //GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedSix(_civLocalPlayer) || IntelHelper.ShowNetwork_6) // && _spiedSixCiv != _civLocalPlayer) // && !DesignTimeObjects.SubedSix)
+                if (AssetsHelper.IsSpiedSix(_civLocalPlayer) || IntelHelper.ShowNetwork_6) 
                 {
                     EmpireExpanderSix.Visibility = Visibility.Visible;
                     SabotageEnergySix.Visibility = Visibility.Visible;
@@ -321,7 +315,6 @@ namespace Supremacy.Client.Views
                     SabotageIndustrySix.Visibility = Visibility.Visible;
                     StealResearchSix.Visibility = Visibility.Visible;
                     StealCreditsSix.Visibility = Visibility.Visible;
-                    //Installing_6.Visibility = Visibility.Collapsed;
                 }
                //GameLog.Client.UI.DebugFormat("end  of checking visible");
 
