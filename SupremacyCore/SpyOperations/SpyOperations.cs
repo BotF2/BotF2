@@ -33,6 +33,22 @@ namespace Supremacy.SpyOperations
         //SabotageEnergy,  // In Diplo: Reject
     }
 
+    public enum SpyOrderCategory
+    {
+        None,
+        StealCredits,
+        SabotageEnergy
+        //Gift,
+        //Demand,
+        //Exchange,
+        //Treaty,
+        //Threat,
+        //Statement,
+        //WarPact,
+        //WarDeclaration,
+        //Response
+    }
+
     [Serializable]
     public class Spy_2_Power : ICivIdentity, IOwnedDataSerializableAndRecreatable
     {
