@@ -545,28 +545,27 @@ namespace Supremacy.Client
 
             string introTextCase = "empty_introTextCase";  // SinglePlayerGame working
 
-            //if (GameContext.Current.IsMultiplayerGame)  // MultiPlayerGame
-            //{
-            //    GameLog.Client.GameInitData.DebugFormat("MP introTextCase = {0}", introTextCase);
-            //}
-
-
-            //if (GameContext.Current.IsMultiplayerGame)  // LoadingGame
-            //{
-            //    GameLog.Client.GameInitData.DebugFormat("LoadingGame introTextCase = {0}", introTextCase);
-
-            //}
-
-
 
             introTextCase = localEmpire + startTechLvl;  // startTechLvl = -1 shown
             if (startTechLvl == -1)
-                introTextCase = /*_resourceManager.GetString(introText_loadingGame)*/
-                    "...history out of the saved game is going on ... let's see what the future will bring...";
+                introTextCase = _resourceManager.GetString("GAME_START_INFO_LOADING_GAME");
+                    //"...history from the saved game continues ... let's see what the future will bring...";
+
+            try
+            {
+                if (_appContext.RemotePlayers != null)
+                    introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_JOINER_LOADING_GAME");
+                //"...Competition to Supremacy of Galaxy begins... join and let your empire raise ...";
+            } catch { }
+
+            if (_appContext.IsGameHost == true)
+                introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_HOSTER_LOADING_GAME");
+            //"...Competition to Supremacy of Galaxy begins... let your empire raise and lead others ...";
+
 
 
             GameLog.Client.GameInitData.DebugFormat("introTextCase = {0}", introTextCase);
-            //string introTextCase = "FED1"; // empireID + techlvl;
+            //string introTextCase = "FED1"; 
             string introText = Environment.NewLine;
             //+ "----------------------------------------------------------------------------------------------------------------------------------------------"
             //+ Environment.NewLine;
