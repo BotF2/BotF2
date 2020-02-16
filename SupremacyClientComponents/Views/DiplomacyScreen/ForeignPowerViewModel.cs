@@ -195,9 +195,9 @@ namespace Supremacy.Client.Views
             get
             {
                 // Gamelog for GET _outgoingMessage mostly not needed
-                //if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
-                //    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage GET = {0} >> {1}, CountElem.={2}", 
-                //            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString()); 
+                if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
+                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage GET = {0} >> {1}, CountElem.={2}",
+                            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString());
                 return _outgoingMessage;
             }
             set
@@ -304,7 +304,8 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            //GameLog.Client.Diplomacy.DebugFormat("propertyName ={0}", propertyName);
+            //
+            GameLog.Client.Diplomacy.DebugFormat("propertyName ={0}", propertyName);
             _propertyChanged.Raise(this, propertyName);
         }
 

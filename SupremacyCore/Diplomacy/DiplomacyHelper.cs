@@ -159,6 +159,7 @@ namespace Supremacy.Diplomacy
 
         public static void SendWarDeclaration([NotNull] Civilization declaringCiv, [NotNull] Civilization targetCiv, Tone tone = Tone.Calm)
         {
+            GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration...");
             if (declaringCiv == null)
                 throw new ArgumentNullException("declaringCiv");
             if (targetCiv == null)
@@ -189,7 +190,9 @@ namespace Supremacy.Diplomacy
             var proposal = new Statement(declaringCiv, targetCiv, StatementType.WarDeclaration, tone);
 
             foreignPower.StatementSent = proposal;
+                GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration sent to ForeignPower...");
             foreignPower.CounterpartyForeignPower.StatementReceived = proposal;
+                GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
         public static void BreakAgreement([NotNull] IAgreement agreement)

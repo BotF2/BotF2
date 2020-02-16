@@ -916,5 +916,59 @@ namespace Supremacy.Client.Views
         //    TotalIntelligenceAttackingAccumulated = 1;
         //    TotalIntelligenceDefenseAccumulated = 1;
         //}
+
+
+        private bool CanExecuteSendSpyOrder()
+        {
+            return true;
+                //DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
+                //   SelectedForeignPower != null &&
+                //   SelectedForeignPower.OutgoingMessage != null &&
+                //   SelectedForeignPower.OutgoingMessage.IsEditing &&
+                //   SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
+        }
+
+        private void ExecuteSendSpyOrder()
+        {
+            if (!CanExecuteSendSpyOrder())
+                return;
+
+            //SelectedForeignPower.OutgoingMessage.Send();
+            GameLog.Client.Diplomacy.DebugFormat("************** Execute send Spy Order ...");
+            //SelectedForeignPower.OnOutgoingMessageCategoryChanged();
+
+            //OnCommandVisibilityChanged();
+            //OnIsMessageEditInProgressChanged();
+        }
+
+        public void SendSpyOrder()
+        {
+            GameLog.Client.Diplomacy.DebugFormat("************** Doing send Spy Order ...");
+            //var isStatement = _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement);
+            //if (isStatement)
+            //{
+            //    var statement = CreateStatement();
+            //    if (statement == null)
+            //        return;
+
+            //    _sendOrder = new SendStatementOrder(statement);
+
+            //    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+            //}
+            //else
+            //{
+            //    var proposal = CreateProposal();
+            //    if (proposal == null)
+            //        return;
+
+            //    _sendOrder = new SendProposalOrder(proposal);
+
+            //    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+            //}
+
+            //IsEditing = false;
+
+            //_availableElements.Clear();
+        }
     }
 }

@@ -16,6 +16,7 @@ using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
+using Supremacy.Utility;
 
 
 
@@ -46,8 +47,8 @@ namespace Supremacy.SpyOperations
 
         //public ISpyOrder LastProposalSent { get; set; }
         //public ISpyOrder LastSpyOrderReceived { get; set; }
-        //public Statement StatementSent { get; set; }
-        //public Statement StatementReceived { get; set; }
+        public SpyStatement SpyStatementSent { get; set; }
+        public SpyStatement SpyStatementReceived { get; set; }
         //public Statement LastStatementSent { get; set; }
         //public Statement LastStatementReceived { get; set; }
         //public IResponse ResponseSent { get; set; }
@@ -55,6 +56,8 @@ namespace Supremacy.SpyOperations
         //public IResponse LastResponseSent { get; set; }
         //public IResponse LastResponseReceived { get; set; }
         public SpyActionExecute PendingSpyAction { get; set; }
+
+
 
         public Spy_2_Power(ICivIdentity attacker, ICivIdentity victim)
         {
@@ -68,6 +71,37 @@ namespace Supremacy.SpyOperations
 
             AttackerID = attacker.CivID;
             VictimID = victim.CivID;
+        }
+
+        public static void SendSpyWarDeclaration([NotNull] Civilization attacker, [NotNull] Civilization victim)
+        {
+            GameLog.Client.Diplomacy.DebugFormat("************** Spy: Send new SpyStatement ...");
+            if (attacker == null)
+                throw new ArgumentNullException("attacker");
+            if (victim == null)
+                throw new ArgumentNullException("victim");
+
+            if (attacker == victim)
+            {
+                GameLog.Core.Diplomacy.ErrorFormat(
+                    "Civilization {0} attempted to spy on itself.",
+                    attacker.ShortName);
+
+                return;
+            }
+
+
+
+            var attacker1 = Diplomat.Get(attacker);
+            //var victim1 = Diplomat.GetForeignPower(victim);
+
+            var proposal = new SpyStatement(attacker, victim);
+            GameLog.Client.Diplomacy.DebugFormat("************** Spy: new SpyStatement sent ...");
+
+            //victim.SpyStatementSent = proposal;
+            //    GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration sent to ForeignPower...");
+            //victim.CounterpartyForeignPower.SpyStatementReceived = proposal;
+            //    GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
         //public bool IsContactMade
@@ -514,5 +548,23 @@ namespace Supremacy.SpyOperations
             //writer.WriteObject(LastResponseReceived);
             writer.WriteOptimized((int)PendingSpyAction);
         }
+    }
+
+    [Serializable]
+    public class SpyStatement
+    {
+        public Civilization SpySender { get; private set; }
+        public Civilization SpyRecipient { get; private set; }
+        public SpyStatement(Civilization spy_sender, Civilization spy_recipient)
+        {
+            //TurnSent = turnNumber == 0 ? GameContext.Current.TurnNumber : turnNumber;
+            SpySender = spy_sender;
+            SpyRecipient = spy_recipient;
+            //StatementType = statementType;
+            //Tone = tone;
+            //Parameter = parameter;
+
+        }
+
     }
 }

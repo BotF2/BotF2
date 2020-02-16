@@ -1120,7 +1120,7 @@ namespace Supremacy.Game
             }
                 #endregion SpyOperations
 
-                #region DoCombat() Method
+        #region DoCombat() Method
                 void DoCombat(GameContext game)
         {
             var combatLocations = new HashSet<MapLocation>();
