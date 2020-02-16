@@ -224,7 +224,7 @@ namespace Supremacy.Game
 
             OnTurnPhaseChanged(game, TurnPhase.SpyOperations);
             GameContext.PushThreadContext(game);
-            try { DoSpyOperations(); }
+            try { DoSpyOperations(); } //?? do we need game in the constructor ??
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.SpyOperations);
 
@@ -897,146 +897,148 @@ namespace Supremacy.Game
              */
             foreach (var attacker in GameContext.Current.Civilizations)
             {
-                foreach (var victim in GameContext.Current.Civilizations)
+                if (attacker.IsEmpire)
                 {
-                    if (attacker == victim)
-                        continue;
+                    foreach (var victim in GameContext.Current.Civilizations)
+                    {
+                        if (attacker == victim || !victim.IsEmpire)
+                            continue;
 
-                    // minor races are out, only empire1 vs empire2
+                        // minor races are out, only empire1 vs empire2
 
-                    //var Spy_2_Power = victim;
-                    var attacker1 = Diplomat.Get(attacker);
-                    //var Spy_2_Power = new Spy_2_Power
-                        
-                    ////var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+                        //var Spy_2_Power = victim;
+                        var attacker1 = Diplomat.Get(attacker);
+                        //var Spy_2_Power = new Spy_2_Power
 
-                    //switch (Spy_2_Power.PendingAction)
-                    //{
-                    //    case SpyActionExecute.DoItSo:
-                    //        if (Spy_2_Power.LastProposalReceived != null)
-                    //            AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
-                    //        break;
-                    //    //case PendingDiplomacyAction.RejectProposal:
-                    //    //    if (ForeignPower.LastProposalReceived != null)
-                    //    //        RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);
-                    //    //    break;
-                    //}
+                        ////var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
 
-                    GameLog.Core.Intel.DebugFormat("DoSpyOperations....doing the operations {0} VS {1}", attacker, victim);
+                        //switch (Spy_2_Power.PendingAction)
+                        //{
+                        //    case SpyActionExecute.DoItSo:
+                        //        if (Spy_2_Power.LastProposalReceived != null)
+                        //            AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                        //        break;
+                        //    //case PendingDiplomacyAction.RejectProposal:
+                        //    //    if (ForeignPower.LastProposalReceived != null)
+                        //    //        RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                        //    //    break;
+                        //}
 
-
-                    Colony _seat = GameContext.Current.CivilizationManagers[victim].SeatOfGovernment;
-
-                    IntelHelper.StealCredits(_seat, attacker, victim, "Terrorists");
-
-                    //Spy_2_Power.PendingSpyAction = SpyActionExecute.Done;
+                        GameLog.Core.Intel.DebugFormat("DoSpyOperations....doing the operations {0} VS {1}", attacker, victim);
 
 
+                        Colony _seat = GameContext.Current.CivilizationManagers[victim].SeatOfGovernment;
 
-                    //ForeignPower.PendingAction = PendingDiplomacyAction.None;
+                        IntelHelper.StealCredits(_seat, attacker, victim, "Terrorists"); // ?? Do we need to save blame string in CivilizationManager
+
+                        //Spy_2_Power.PendingSpyAction = SpyActionExecute.Done;
 
 
-                    //        if (civ1.CivID == 6 || civ1.Key == "BORG")
-                    //        {
-                    //            //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                    //            continue; // Borg don't accept anything
-                    //        }
-                    //        if (civ2.CivID == 6 || civ2.Key == "BORG")
-                    //        {
-                    //            continue; // Borg don't accept anything
-                    //        }
-                    //        var diplomat1 = Diplomat.Get(civ1);
-                    //        var diplomat2 = Diplomat.Get(civ2);
-                    //        if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
-                    //            diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
-                    //        {
-                    //            continue;
-                    //        }
-                    //        if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
-                    //        {
-                    //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
-                    //            {
-                    //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
-                    //                {
-                    //                    //
-                    //                    GameLog.Core.Diplomacy.DebugFormat("I** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
-                    //                    var diplomatOther = Diplomat.Get(aCiv);
-                    //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
-                    //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember) // || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
-                    //                    {
-                    //                        continue;
-                    //                    }
-                    //                }
-                    //            }
 
-                    //        }
-                    //        if (!civ1.IsEmpire && civ2.IsEmpire)
-                    //        {
-                    //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
-                    //            {
-                    //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
-                    //                {
-                    //                    var diplomatOther = Diplomat.Get(aCiv);
-                    //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
-                    //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
-                    //                    {
-                    //                        continue;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        if (civ2.IsEmpire && civ2.IsHuman && civ1.IsEmpire) // only a minor vs a major
-                    //        {
-                    //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
-                    //            {
-                    //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
-                    //                {
-                    //                    // GameLog.Client.Test.DebugFormat("C** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
-                    //                    var diplomatOther = Diplomat.Get(aCiv);
-                    //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
-                    //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
-                    //                    {
-                    //                        continue;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        if (civ1.IsEmpire && civ1.IsHuman && civ2.IsEmpire) // only a minor vs a major
-                    //        {
-                    //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
-                    //            {
-                    //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
-                    //                {
-                    //                    var diplomatOther = Diplomat.Get(aCiv);
-                    //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
-                    //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
-                    //                    {
-                    //                        continue;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        var ForeignPower = diplomat1.GetForeignPower(civ2);
-                    //        var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-                    //        GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    //        GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+                        //ForeignPower.PendingAction = PendingDiplomacyAction.None;
 
-                    //        switch (ForeignPower.PendingAction)
-                    //        {
-                    //            case PendingDiplomacyAction.AcceptProposal:
-                    //                if (ForeignPower.LastProposalReceived != null)
-                    //                    AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
-                    //                break;
-                    //            case PendingDiplomacyAction.RejectProposal:
-                    //                if (ForeignPower.LastProposalReceived != null)
-                    //                    RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);
-                    //                break;
-                    //        }
 
-                    //        ForeignPower.PendingAction = PendingDiplomacyAction.None;
-                    //    }
+                        //        if (civ1.CivID == 6 || civ1.Key == "BORG")
+                        //        {
+                        //            //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+                        //            continue; // Borg don't accept anything
+                        //        }
+                        //        if (civ2.CivID == 6 || civ2.Key == "BORG")
+                        //        {
+                        //            continue; // Borg don't accept anything
+                        //        }
+                        //        var diplomat1 = Diplomat.Get(civ1);
+                        //        var diplomat2 = Diplomat.Get(civ2);
+                        //        if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
+                        //            diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+                        //        {
+                        //            continue;
+                        //        }
+                        //        if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
+                        //        {
+                        //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        //            {
+                        //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
+                        //                {
+                        //                    //
+                        //                    GameLog.Core.Diplomacy.DebugFormat("I** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+                        //                    var diplomatOther = Diplomat.Get(aCiv);
+                        //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                        //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember) // || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                        //                    {
+                        //                        continue;
+                        //                    }
+                        //                }
+                        //            }
+
+                        //        }
+                        //        if (!civ1.IsEmpire && civ2.IsEmpire)
+                        //        {
+                        //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        //            {
+                        //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
+                        //                {
+                        //                    var diplomatOther = Diplomat.Get(aCiv);
+                        //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                        //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+                        //                    {
+                        //                        continue;
+                        //                    }
+                        //                }
+                        //            }
+                        //        }
+                        //        if (civ2.IsEmpire && civ2.IsHuman && civ1.IsEmpire) // only a minor vs a major
+                        //        {
+                        //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        //            {
+                        //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
+                        //                {
+                        //                    // GameLog.Client.Test.DebugFormat("C** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+                        //                    var diplomatOther = Diplomat.Get(aCiv);
+                        //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+                        //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
+                        //                    {
+                        //                        continue;
+                        //                    }
+                        //                }
+                        //            }
+                        //        }
+                        //        if (civ1.IsEmpire && civ1.IsHuman && civ2.IsEmpire) // only a minor vs a major
+                        //        {
+                        //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+                        //            {
+                        //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
+                        //                {
+                        //                    var diplomatOther = Diplomat.Get(aCiv);
+                        //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+                        //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
+                        //                    {
+                        //                        continue;
+                        //                    }
+                        //                }
+                        //            }
+                        //        }
+                        //        var ForeignPower = diplomat1.GetForeignPower(civ2);
+                        //        var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+                        //        GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+                        //        GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+
+                        //        switch (ForeignPower.PendingAction)
+                        //        {
+                        //            case PendingDiplomacyAction.AcceptProposal:
+                        //                if (ForeignPower.LastProposalReceived != null)
+                        //                    AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                        //                break;
+                        //            case PendingDiplomacyAction.RejectProposal:
+                        //                if (ForeignPower.LastProposalReceived != null)
+                        //                    RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                        //                break;
+                        //        }
+
+                        //        ForeignPower.PendingAction = PendingDiplomacyAction.None;
+                        //    }
+                    }
                 }
-
                 //var civManagers = GameContext.Current.CivilizationManagers;
 
                 ///*
@@ -1988,7 +1990,7 @@ namespace Supremacy.Game
         }
         #endregion
 
-        //#region DoIntelligence() Method
+        #region DoIntelligence() Method
         //void DoIntelligence(GameContext game)
         //{
         //    var innateDefense = 200;
@@ -2019,7 +2021,7 @@ namespace Supremacy.Game
         //                //That they have actually met
         //                .Where(t => DiplomacyHelper.IsContactMade(civ, t));
 
-                   
+
         //            GameLog.Core.Intel.DebugFormat("Available intel targets for {0}: {1}", civ.Name, targets.Count());
 
         //            //Double check that we have viable targets
@@ -2284,7 +2286,7 @@ namespace Supremacy.Game
         //        }
         //    });
         //}
-        //#endregion
+        #endregion
 
         #region DoTrade() Method
         void DoTrade(GameContext game)

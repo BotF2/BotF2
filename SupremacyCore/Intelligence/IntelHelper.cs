@@ -31,6 +31,7 @@ namespace Supremacy.Intelligence
         public static List<Civilization> _spyingCiv_4_List;
         public static List<Civilization> _spyingCiv_5_List;
         public static List<Civilization> _spyingCiv_6_List;
+        //public static List<>
         public static bool _showNetwork_0 = false;
         public static bool _showNetwork_1 = false;
         public static bool _showNetwork_2 = false;
