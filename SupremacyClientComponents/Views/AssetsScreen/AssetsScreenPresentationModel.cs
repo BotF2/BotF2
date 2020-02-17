@@ -526,13 +526,13 @@ namespace Supremacy.Client.Views
                 return IntelHelper.LocalCivManager.Civilization;
             }
         }
+        // ### Federation ####
         public static Civilization SpiedZeroCiv
         {
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedZeroCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
         }
@@ -542,7 +542,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
@@ -553,7 +553,7 @@ namespace Supremacy.Client.Views
                 var civManager = DesignTimeObjects.SpiedCivZero;
                 try
                 {
-                    GameLog.Core.Intel.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
+                    GameLog.Core.Test.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
@@ -572,6 +572,7 @@ namespace Supremacy.Client.Views
                 return "Federation";
             }
         }
+        //## Terran ##
         public static Civilization SpiedOneCiv
         {
             get
@@ -587,7 +588,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivOne;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivOne SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
@@ -617,6 +618,7 @@ namespace Supremacy.Client.Views
                 return "Terran Empire"; 
             }
         }
+        //## Romulan ##
         public static Civilization SpiedTwoCiv
         {
             get
@@ -631,7 +633,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivTwo SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
@@ -661,6 +663,7 @@ namespace Supremacy.Client.Views
                 return "Romulans"; 
             }
         }
+        // ## Klingons ##
         public static Civilization SpiedThreeCiv
         {
             get
@@ -675,7 +678,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivThree;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivThree SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
@@ -698,7 +701,6 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-
         public static string SpiedKlingName
         {
             get
@@ -706,6 +708,7 @@ namespace Supremacy.Client.Views
                 return "Klingons";
             }
         }
+        //## Cardassians ##
         public static Civilization SpiedFourCiv
         {
             get
@@ -720,7 +723,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivFour;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivFour SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
@@ -750,6 +753,7 @@ namespace Supremacy.Client.Views
                 return "Cardassians";
             }
         }
+        //## Dominion ##
         public static Civilization SpiedFiveCiv
         {
             get
@@ -764,7 +768,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivFive;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivFive SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
@@ -794,6 +798,7 @@ namespace Supremacy.Client.Views
                 return "Dominion";
             }
         }
+        // ## Borg ##
         public static Civilization SpiedSixCiv
         {
             get
@@ -808,7 +813,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivSix;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivSix SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
@@ -843,7 +848,7 @@ namespace Supremacy.Client.Views
 
         #region Credits Empire
 
-        public Meter CreditsEmpire // do we need this???
+        public Meter CreditsEmpire // do we need this??? Local player only
         {
             get
             {

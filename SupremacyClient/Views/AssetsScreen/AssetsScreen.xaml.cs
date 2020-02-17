@@ -92,7 +92,7 @@ namespace Supremacy.Client.Views
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
             IntelHelper.GetLocalCiv(_localCivManager);
             InitializeComponent();
-            Terrorists();
+            //Terrorists();
 
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
 
@@ -146,86 +146,85 @@ namespace Supremacy.Client.Views
             BlameNoOne5.IsChecked = true;
             BlameNoOne6.IsChecked = true;
         }
-        private void Terrorists()
-        {
-            Civilization Terrorists = new Civilization();
-            CivilizationManager TerroristsManager = new CivilizationManager(GameContext.Current, Terrorists);
-            Terrorists.Key = "Terrorists";
-            Terrorists.ShortName = "Terrorists_ShortName";
+        //private void Terrorists()
+        //{
+        //    Civilization Terrorists = new Civilization();
+        //    CivilizationManager TerroristsManager = new CivilizationManager(GameContext.Current, Terrorists);
+        //    Terrorists.Key = "Terrorists";
+        //    Terrorists.ShortName = "Terrorists_ShortName";
 
-            if (GameContext.Current.TurnNumber > 2)
-            {
-                var availableCivManagers = DesignTimeObjects.AvailableCivManagers; //GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
+        //    if (GameContext.Current.TurnNumber > 2)
+        //    {
+        //        var availableCivManagers = DesignTimeObjects.AvailableCivManagers; //GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
 
-                foreach (var civManager in availableCivManagers)
-                {
-                    switch (civManager.Civilization.Key)
-                    {
-                        case "BORG":
-                            if (RandomHelper.Chance(95))
-                                TerroristsManager = GameContext.Current.CivilizationManagers[6];
-                            break;
-                        case "KLINGONS":
-                            if (RandomHelper.Chance(80))
-                                TerroristsManager = GameContext.Current.CivilizationManagers[3];
-                            break;
-                        case "ROMULANS":
-                            if (RandomHelper.Chance(75))
-                                TerroristsManager = GameContext.Current.CivilizationManagers[2];
-                            break;
-                        case "FEDERATION":
-                            if (RandomHelper.Chance(70))
-                                TerroristsManager = GameContext.Current.CivilizationManagers[0];
-                            break;
-                        case "CARDASSIANS":
-                            if (RandomHelper.Chance(65))
-                                TerroristsManager = GameContext.Current.CivilizationManagers[4];
-                            break;
-                        case "DOMINION":
-                            if (RandomHelper.Chance(60))
-                                TerroristsManager = GameContext.Current.CivilizationManagers[5];
-                            break;
-                        case "TERRANEMPIRE":
-                            if (RandomHelper.Chance(50))
-                                TerroristsManager = GameContext.Current.CivilizationManagers[1];
-                            break;
-                    }
-                }
-                if (Terrorists.ShortName != "Terrorists_ShortName")
-                    FindTarget(TerroristsManager);
-            }
-        }
-        private void FindTarget(CivilizationManager civManager)
-        {
-            GameLog.Client.UI.DebugFormat(" ********** terrorists targeet civ = {0} ************ ", civManager.Civilization.Key);
+        //        foreach (var civManager in availableCivManagers)
+        //        {
+        //            switch (civManager.Civilization.Key)
+        //            {
+        //                case "BORG":
+        //                    if (RandomHelper.Chance(95))
+        //                        TerroristsManager = GameContext.Current.CivilizationManagers[6];
+        //                    break;
+        //                case "KLINGONS":
+        //                    if (RandomHelper.Chance(80))
+        //                        TerroristsManager = GameContext.Current.CivilizationManagers[3];
+        //                    break;
+        //                case "ROMULANS":
+        //                    if (RandomHelper.Chance(75))
+        //                        TerroristsManager = GameContext.Current.CivilizationManagers[2];
+        //                    break;
+        //                case "FEDERATION":
+        //                    if (RandomHelper.Chance(70))
+        //                        TerroristsManager = GameContext.Current.CivilizationManagers[0];
+        //                    break;
+        //                case "CARDASSIANS":
+        //                    if (RandomHelper.Chance(65))
+        //                        TerroristsManager = GameContext.Current.CivilizationManagers[4];
+        //                    break;
+        //                case "DOMINION":
+        //                    if (RandomHelper.Chance(60))
+        //                        TerroristsManager = GameContext.Current.CivilizationManagers[5];
+        //                    break;
+        //                case "TERRANEMPIRE":
+        //                    if (RandomHelper.Chance(50))
+        //                        TerroristsManager = GameContext.Current.CivilizationManagers[1];
+        //                    break;
+        //            }
+        //        }
+        //        if (Terrorists.ShortName != "Terrorists_ShortName")
+        //            FindTarget(TerroristsManager);
+        //    }
+        //}
 
-            Random random = new Random();
-            int choseTheTarget = random.Next(0, 4);
-            switch (choseTheTarget)
-            {
-                case 0:
-                    {
-                        var Civs = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
-                        var luckyCiv = Civs.OrderBy(s => random.Next()).First();
-                        IntelHelper.StealCredits(civManager.SeatOfGovernment, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
-                        break;
-                    }
-                case 1:
-                    IntelHelper.StealResearch(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
-                    break;
-                case 2:
-                    IntelHelper.SabotageEnergy(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
-                    break;
-                case 3:
-                    IntelHelper.SabotageFood(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
-                    break;
-                case 4:
-                    IntelHelper.SabotageIndustry(civManager.SeatOfGovernment, civManager.Civilization, "Terrorists");
-                    break;
-                default:
-                    break;
-            }
-        }
+        //private void FindTarget(CivilizationManager civManager)
+        //{
+        //    GameLog.Client.UI.DebugFormat(" ********** terrorists targeet civ = {0} ************ ", civManager.Civilization.Key);
+
+        //    Random random = new Random();
+        //    int choseTheTarget = random.Next(0, 4);
+        //    var Civs = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
+        //    var luckyCiv = Civs.OrderBy(s => random.Next()).First();
+        //    switch (choseTheTarget)
+        //    {
+        //        case 0:
+        //            IntelHelper.StealCredits(civManager.SeatOfGovernment, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
+        //            break;
+        //        case 1:
+        //            IntelHelper.StealResearch(civManager.SeatOfGovernment, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
+        //            break;
+        //        case 2:
+        //            IntelHelper.SabotageEnergy(civManager.SeatOfGovernment, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
+        //            break;
+        //        case 3:
+        //            IntelHelper.SabotageFood(civManager.SeatOfGovernment, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
+        //            break;
+        //        case 4:
+        //            IntelHelper.SabotageIndustry(civManager.SeatOfGovernment, civManager.Civilization, luckyCiv.Civilization, "Terrorists");
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
         private void OnLocalPlayerEmpireChanged()
         {
             if (!_appContext.IsGameInPlay || _appContext.IsGameEnding)
@@ -545,6 +544,10 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoZero = "Cardassians";
                 }
+                if (Dominion0.IsChecked == true)
+                {
+                    _blameWhoZero = "Dominion";
+                }
                 if (Borg0.IsChecked == true)
                 {
                     _blameWhoZero = "Borg";
@@ -584,6 +587,10 @@ namespace Supremacy.Client.Views
                 if (Cardassians1.IsChecked == true)
                 {
                     _blameWhoOne = "Cardassians";
+                }
+                if (Dominion1.IsChecked == true)
+                {
+                    _blameWhoOne = "Dominion";
                 }
                 if (Borg1.IsChecked == true)
                 {
@@ -626,6 +633,10 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoTwo = "Cardassians";
                 }
+                if (Dominion2.IsChecked == true)
+                {
+                    _blameWhoTwo = "Dominion";
+                }
                 if (Borg2.IsChecked == true)
                 {
                     _blameWhoTwo = "Borg";
@@ -665,6 +676,10 @@ namespace Supremacy.Client.Views
                 if (Cardassians3.IsChecked == true)
                 {
                     _blameWhoThree = "Cardassians";
+                }
+                if (Dominion3.IsChecked == true)
+                {
+                    _blameWhoThree = "Dominion";
                 }
                 if (Borg3.IsChecked == true)
                 {
@@ -706,6 +721,10 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoFour = "Cardassians";
                 }
+                if (Dominion4.IsChecked == true)
+                {
+                    _blameWhoFour = "Dominion";
+                }
                 if (Borg4.IsChecked == true)
                 {
                     _blameWhoFour = "Borg";
@@ -746,6 +765,10 @@ namespace Supremacy.Client.Views
                 {
                     _blameWhoFive = "Cardassians";
                 }
+                if (Dominion5.IsChecked == true)
+                {
+                    _blameWhoFive = "Dominion";
+                }
                 if (Borg5.IsChecked == true)
                 {
                     _blameWhoFive = "Borg";
@@ -785,6 +808,10 @@ namespace Supremacy.Client.Views
                 if (Cardassians6.IsChecked == true)
                 {
                     _blameWhoSix = "Cardassians";
+                }
+                if (Dominion6.IsChecked == true)
+                {
+                    _blameWhoSix = "Dominion";
                 }
                 if (Borg6.IsChecked == true)
                 {
@@ -853,7 +880,8 @@ namespace Supremacy.Client.Views
 
         private void OnCreditsZeroClick(object sender, RoutedEventArgs e) // we are using attacking spy civ as peramiter here in Creidt only so far
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            var blame = IntelHelper.Blame(AssetsScreenPresentationModel.LocalCiv, _blameWhoZero);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, blame);
             CloseZero();
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
@@ -888,142 +916,142 @@ namespace Supremacy.Client.Views
         }
         private void OnResearchZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             CloseZero();
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             CloseOne();
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             CloseTwo();
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             CloseThree();
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             CloseFour();
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             CloseFive();
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.StealResearch(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             CloseSix();
         }
         private void OnEnergyZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); //, out removedEnergyFacilities);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); //, out removedEnergyFacilities);
             CloseZero();
         }
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne); //, out removedEnergyFacilities);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne); //, out removedEnergyFacilities);
             CloseOne();
         }
         private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             CloseTwo();
         }
         private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             CloseThree();
         }
         private void OnEnergyFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             CloseFour();
         }
         private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             CloseFive();
         }
         private void OnEnergySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             CloseSix();
         }
         private void OnFoodZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             CloseZero();
         }
         private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             CloseOne();
         }
         private void OnFoodTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             CloseTwo();
         }
         private void OnFoodThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             CloseThree();
         }
         private void OnFoodFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             CloseFour();
         }
         private void OnFoodFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             CloseFive();
         }
         private void OnFoodSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageFood(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             CloseSix();
         }
         private void OnIndustryZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             CloseZero();
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedOneSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             CloseOne();
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedTwoSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             CloseTwo();
         }
         private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedThreeSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             CloseThree();
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFourSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             CloseFour();
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedFiveSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             CloseFive();
         }
         private void OnIndustrySixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.SpiedSixSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             CloseSix();
         }
         #endregion

@@ -929,7 +929,7 @@ namespace Supremacy.Game
 
                         Colony _seat = GameContext.Current.CivilizationManagers[victim].SeatOfGovernment;
 
-                        IntelHelper.StealCredits(_seat, attacker, victim, "Terrorists"); // ?? Do we need to save blame string in CivilizationManager
+                        //IntelHelper.StealCredits(_seat, attacker, victim, "Terrorists"); // ?? Do we need to save blame string in CivilizationManager
 
                         //Spy_2_Power.PendingSpyAction = SpyActionExecute.Done;
 

@@ -224,7 +224,7 @@
                                                     Source="vfs:///Resources/Images/Insignias/Sabotage.png"
                                                     Margin="5,10,0,0" />
                                                 <RadioButton
-                                                    Name="Terrorists0"
+                                                    x:Name="Terrorists0"
                                                     VerticalAlignment="Top"
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio0"
@@ -663,7 +663,7 @@
                                                     Source="vfs:///Resources/Images/Insignias/Sabotage.png"
                                                     Margin="5,10,0,0" />
                                                 <RadioButton
-                                                    Name="Terrorists1"
+                                                    x:Name="Terrorists1"
                                                     VerticalAlignment="Top"
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio1"

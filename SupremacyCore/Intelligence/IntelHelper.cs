@@ -31,7 +31,7 @@ namespace Supremacy.Intelligence
         public static List<Civilization> _spyingCiv_4_List;
         public static List<Civilization> _spyingCiv_5_List;
         public static List<Civilization> _spyingCiv_6_List;
-        //public static List<>
+        public static Dictionary<Civilization, string> _blamedCiv;
         public static bool _showNetwork_0 = false;
         public static bool _showNetwork_1 = false;
         public static bool _showNetwork_2 = false;
@@ -170,8 +170,8 @@ namespace Supremacy.Intelligence
                     else
                     {
                         _spyingCiv_0_List.Add(spiedCiv);                       
-                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
                     }
+                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
                     break;
                 case 1:
                     if (_spyingCiv_1_List == null)
@@ -179,8 +179,8 @@ namespace Supremacy.Intelligence
                     else
                     {
                         _spyingCiv_1_List.Add(spiedCiv);
-                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_1_List);
                     }
+                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_1_List);
                     break;
                 case 2:
                     if (_spyingCiv_2_List == null)
@@ -188,8 +188,8 @@ namespace Supremacy.Intelligence
                     else
                     {
                         _spyingCiv_2_List.Add(spiedCiv);
-                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_2_List);
                     }
+                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_2_List);
                     break;
                 case 3:
                     if (_spyingCiv_3_List == null)
@@ -197,8 +197,8 @@ namespace Supremacy.Intelligence
                     else
                     {
                         _spyingCiv_3_List.Add(spiedCiv);
-                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_3_List);
                     }
+                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_3_List);
                     break;
                 case 4:
                     if (_spyingCiv_4_List == null)
@@ -206,8 +206,8 @@ namespace Supremacy.Intelligence
                     else
                     {
                         _spyingCiv_4_List.Add(spiedCiv);
-                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_4_List);
                     }
+                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_4_List);
                     break;
                 case 5:
                     if (_spyingCiv_5_List == null)
@@ -215,8 +215,8 @@ namespace Supremacy.Intelligence
                     else
                     {
                         _spyingCiv_5_List.Add(spiedCiv);
-                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_5_List);
                     }
+                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_5_List);
                     break;
                 case 6:
                     if (_spyingCiv_6_List == null)
@@ -224,8 +224,8 @@ namespace Supremacy.Intelligence
                     else
                     {
                         _spyingCiv_6_List.Add(spiedCiv);
-                        GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_6_List);
                     }
+                    GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_6_List);
                     break;
             }
             GameLog.Client.UI.DebugFormat("********* end of sending spied list to CM **********");
@@ -242,34 +242,59 @@ namespace Supremacy.Intelligence
                 _defenseDictionary.Add(spiedCiv, defenseInt);
             }
         }
-        
         #region Espionage Methods
+        public static string Blame(Civilization civ, string blamed)
+        {
+            if (RandomHelper.Chance(2))
+            return civ.Key;
+            return blamed;
+        }
 
+        public static void UpdatingBlame(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        {
+            //GameLog.Core.Test.DebugFormat("Update with attackingCiv = {0} attackedCiv = {1} blamed ={2} ",attackingCiv.Key, attackedCiv.Key, blamed);
+
+            if (_blamedCiv != null)
+            {
+                _blamedCiv[attackingCiv] = blamed;
+            }
+            else
+            {
+                var newBlame = new Dictionary<Civilization, string>() { { attackingCiv, blamed } };
+                _blamedCiv = newBlame;
+            }
+            GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(attackingCiv, blamed);
+        }
+      
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
 
+            UpdatingBlame(attackingCiv, attackedCiv, blamed);
+
+           //GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(_blamedCiv);
+
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
 
-            GameLog.Core.UI.DebugFormat("**** StealCredits, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.Test.DebugFormat("**** StealCredits, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
 
             int stolenCredits = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
-            if (blamed == "No one" || blamed == "Terrorists")
-            {
-                blamed = attackingCivManager.Civilization.ShortName;
-                if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_Terrorists";
-                }
-                else if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_No one";
-                }
-            }
+            //if (blamed == "No one" || blamed == "Terrorists")
+            //{
+            //    blamed = attackingCivManager.Civilization.ShortName;
+            //    if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_Terrorists";
+            //    }
+            //    else if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_No one";
+            //    }
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -404,8 +429,9 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
         }
-        public static void StealResearch(Colony colony, Civilization attackedCiv, string blamed)
+        public static void StealResearch(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
+            UpdatingBlame(attackingCiv, attackedCiv, blamed);
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
@@ -414,18 +440,18 @@ namespace Supremacy.Intelligence
             int stolenResearchPoints = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
-            if (blamed == "No one" || blamed == "Terrorists")
-            {
-                blamed = attackingCivManager.Civilization.ShortName;
-                if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_Terrorists";
-                }
-                else if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_No one";
-                }
-            }
+            //if (blamed == "No one" || blamed == "Terrorists")
+            //{
+            //    blamed = attackingCivManager.Civilization.ShortName;
+            //    if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_Terrorists";
+            //    }
+            //    else if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_No one";
+            //    }
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -541,8 +567,9 @@ namespace Supremacy.Intelligence
 
             // no info to attacked civ
         }
-        public static void SabotageFood(Colony colony, Civilization attackedCiv, string blamed)
+        public static void SabotageFood(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
+            UpdatingBlame(attackingCiv, attackedCiv, blamed);
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
@@ -551,18 +578,18 @@ namespace Supremacy.Intelligence
             int removeFoodFacilities = -2;  // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
-            if (blamed == "No one" || blamed == "Terrorists")
-            {
-                blamed = "bl_" + attackingCivManager.Civilization.ShortName;
-                if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_Terrorists";
-                }
-                else if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_No one";
-                }
-            }
+            //if (blamed == "No one" || blamed == "Terrorists")
+            //{
+            //    blamed = "bl_" + attackingCivManager.Civilization.ShortName;
+            //    if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_Terrorists";
+            //    }
+            //    else if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_No one";
+            //    }
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -659,9 +686,9 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
         }
-        public static void SabotageEnergy(Colony colony, Civilization attackedCiv, string blamed)
+        public static void SabotageEnergy(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
-            //var system = colony.System;
+            UpdatingBlame(attackingCiv, attackedCiv, blamed);
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[colony.Owner].TotalIntelligenceDefenseAccumulated;
@@ -669,18 +696,18 @@ namespace Supremacy.Intelligence
             int removeEnergyFacilities = -2;
             int defenseIntelligence = -2;
 
-            if (blamed == "No one" || blamed == "Terrorists")
-            {
-                blamed = attackingCivManager.Civilization.ShortName;
-                if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_Terrorists";
-                }
-                else if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_No one";
-                }
-            }
+            //if (blamed == "No one" || blamed == "Terrorists")
+            //{
+            //    blamed = attackingCivManager.Civilization.ShortName;
+            //    if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_Terrorists";
+            //    }
+            //    else if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_No one";
+            //    }
+            //}
 
             if (NewSpyCiv == null)
                 return;
@@ -774,10 +801,9 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
         }
-        public static void SabotageIndustry(Colony colony, Civilization attackedCiv, string blamed)
+        public static void SabotageIndustry(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
-            //GameLog.Core.Intel.DebugFormat("##### Sabotage Industry not implemented yet");
-            //GameLog.Core.UI.DebugFormat("IntelHelper SabotageIndustry at line 390");
+            UpdatingBlame(attackingCiv, attackedCiv, blamed);
 
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
@@ -787,18 +813,18 @@ namespace Supremacy.Intelligence
             int removeIndustryFacilities = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
-            if (blamed == "No one" || blamed == "Terrorists")
-            {
-                blamed = attackingCivManager.Civilization.ShortName;
-                if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_Terrorists";
-                }
-                else if (!RandomHelper.Chance(4))
-                {
-                    blamed = "bl_No one";
-                }
-            }
+            //if (blamed == "No one" || blamed == "Terrorists")
+            //{
+            //    blamed = attackingCivManager.Civilization.ShortName;
+            //    if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_Terrorists";
+            //    }
+            //    else if (!RandomHelper.Chance(4))
+            //    {
+            //        blamed = "bl_No one";
+            //    }
+            //}
 
             if (NewSpyCiv == null)
                 return;
