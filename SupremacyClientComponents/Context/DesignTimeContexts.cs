@@ -209,7 +209,7 @@ namespace Supremacy.Client.Context
         private static bool _subedFour = false;
         private static bool _subedFive = false;
         private static bool _subedSix = false;
-        private static object isZeroNull;
+        //private static object isZeroNull;
 
         /// <summary>
         /// Host Civilization Manager has been used as a substitute for a civ not in the game
