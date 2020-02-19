@@ -95,7 +95,6 @@ namespace Supremacy.Client.Views
             }
         }
 
-
         public int TotalIntelligenceProduction
         {
             get

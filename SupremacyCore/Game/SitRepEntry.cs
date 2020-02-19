@@ -1680,6 +1680,8 @@ namespace Supremacy.Game
     [Serializable]
     public class NewSabotageSitRepEntry : SitRepEntry
     {
+        private readonly Civilization _attacked;
+        private readonly Civilization _attacking;
         private readonly int _systemId;
         private readonly int _removedStuff;
         private readonly int _totalStuff;
@@ -1687,6 +1689,14 @@ namespace Supremacy.Game
         private readonly string _blamed;
         private readonly string _roleText;
 
+        public string Attacked
+        {
+            get { return _attacked.Key;}
+        }
+        public string Attacking
+        {
+            get { return _attacking.Key;}
+        }
         public StarSystem System
         {
             get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
@@ -1715,8 +1725,8 @@ namespace Supremacy.Game
                 if (_removedStuff == -2)
                 {
                     return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
-                        _roleText, System.Name, System.Location, System.Owner, _affectedField);
-                    //    0               1          2                 3              4   placeholders in en.txt
+                        _roleText, System.Name, System.Location, System.Owner, _affectedField, _blamed);
+                    //    0               1          2                 3              4   5   placeholders in en.txt
                 }
                 if (_removedStuff == -1)
                 {
@@ -1752,17 +1762,18 @@ namespace Supremacy.Game
             get { return true; }
         }
 
-        public NewSabotageSitRepEntry(Civilization owner, Colony colony, string affectedField, int removedStuff, int totalStuff, string blamed, string role)
+        public NewSabotageSitRepEntry(Civilization owner, Civilization attacking, Colony colony, string affectedField, int removedStuff, int totalStuff, string blame, string role)
             : base(owner, SitRepPriority.Red)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
+            _attacked = owner;
+            _attacking = attacking;
             _systemId = colony.System.ObjectID;
-
             _removedStuff = removedStuff;  // facilities or credits or research points 
             _totalStuff = totalStuff;
             _affectedField = affectedField;
-            _blamed = blamed;
+            _blamed = blame;
             switch (role)
             {
                 case "attackingCiv": _roleText = ResourceManager.GetString("SABOTAGE_ROLE_ATTACKING_CIV"); break;
@@ -2585,7 +2596,7 @@ namespace Supremacy.Game
     public class ShipDestroyedInWormholeSitRepEntry : SitRepEntry
     {
         private readonly MapLocation _wormholeLocation;
-
+        //
         public override SitRepAction Action
         {
             get { return SitRepAction.CenterOnSector; }

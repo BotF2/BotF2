@@ -877,11 +877,9 @@ namespace Supremacy.Client.Views
             SabotageIndustrySix.Visibility = Visibility.Collapsed;
         }
 
-
         private void OnCreditsZeroClick(object sender, RoutedEventArgs e) // we are using attacking spy civ as peramiter here in Creidt only so far
         {
-            var blame = IntelHelper.Blame(AssetsScreenPresentationModel.LocalCiv, _blameWhoZero);
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, blame);
+            IntelHelper.StealCredits(AssetsScreenPresentationModel.SpiedZeroSeatOfGovernment, AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); // blame);
             CloseZero();
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
