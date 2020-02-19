@@ -42,7 +42,7 @@ namespace Supremacy.Game
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
-        private Dictionary<Civilization, string> _blamedCiv;
+        //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
@@ -212,10 +212,10 @@ namespace Supremacy.Game
             get { return _spiedCivList; }
         }
 
-        public Dictionary<Civilization, string> BlamedCiv
-        {
-            get { return _blamedCiv; }
-        }
+        //public Dictionary<Civilization, string> BlamedCiv
+        //{
+        //    get { return _blamedCiv; }
+        //}
         /// <summary>
         /// Gets the average morale of all the civilization's colonies.
         /// </summary>
@@ -377,23 +377,23 @@ namespace Supremacy.Game
             //}
         }
 
-        public void UpDateBlamedCiv(Civilization attacking, string blame)
-        {
-            if(_blamedCiv != null)
-            {
-                _blamedCiv[attacking] = blame;
-            }
-            else
-            {
-                var newBlame = new Dictionary<Civilization, string>() { { attacking, blame } };
-                _blamedCiv = newBlame;
-            }
+        //public void UpDateBlamedCiv(Civilization attacking, string blame)
+        //{
+        //    if(_blamedCiv != null)
+        //    {
+        //        _blamedCiv[attacking] = blame;
+        //    }
+        //    else
+        //    {
+        //        var newBlame = new Dictionary<Civilization, string>() { { attacking, blame } };
+        //        _blamedCiv = newBlame;
+        //    }
 
-            //foreach (var item in _blamedCiv)
-            //{
-            //    GameLog.Client.Test.DebugFormat("Updated the blamed dictionary attacker {0} blamed {1}", item.Key.Key, item.Value);
-            //}
-        }
+        //    //foreach (var item in _blamedCiv)
+        //    //{
+        //    //    GameLog.Client.Test.DebugFormat("Updated the blamed dictionary attacker {0} blamed {1}", item.Key.Key, item.Value);
+        //    //}
+        //}
 
         /// <summary>
         /// Applies the specified morale event.

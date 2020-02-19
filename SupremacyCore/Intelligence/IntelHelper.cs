@@ -246,23 +246,23 @@ namespace Supremacy.Intelligence
         public static string Blame(Civilization localCivAttacker, string blamed, int chance)
         {
             if (!RandomHelper.Chance(chance))
-            return localCivAttacker.Key;
+            return localCivAttacker.ShortName;
             return blamed;
         }
-        public static void UpdatingBlame(Civilization attackingCiv, Civilization attackedCiv, string blamed)
-        {
-            //GameLog.Core.Test.DebugFormat("Update with attackingCiv = {0} attackedCiv = {1} blamed ={2} ",attackingCiv.Key, attackedCiv.Key, blamed);
-            if (_blamedCiv != null)
-            {
-                _blamedCiv[attackingCiv] = blamed;
-            }
-            else
-            {
-                var newBlame = new Dictionary<Civilization, string>() { { attackingCiv, blamed } };
-                _blamedCiv = newBlame;
-            }
-            GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(attackingCiv, blamed);
-        }
+        //public static void UpdatingBlame(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        //{
+        //    //GameLog.Core.Test.DebugFormat("Update with attackingCiv = {0} attackedCiv = {1} blamed ={2} ",attackingCiv.Key, attackedCiv.Key, blamed);
+        //    if (_blamedCiv != null)
+        //    {
+        //        _blamedCiv[attackingCiv] = blamed;
+        //    }
+        //    else
+        //    {
+        //        var newBlame = new Dictionary<Civilization, string>() { { attackingCiv, blamed } };
+        //        _blamedCiv = newBlame;
+        //    }
+        //    GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(attackingCiv, blamed);
+        //}
       
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -307,6 +307,7 @@ namespace Supremacy.Intelligence
             if (ratio < 2 || attackMeter.CurrentValue < 10)  // 
             {
                 stolenCredits = -1;  // failed
+                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
                 goto stolenCreditsIsMinusOne;
             }
 
@@ -332,68 +333,68 @@ namespace Supremacy.Intelligence
                 blamed = IntelHelper.Blame(attackingCiv, blamed, 5);
 
             }
-            GameLog.Core.UI.DebugFormat("**** CREDITS, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
-            GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: {1} Credits", attackedCiv.Key, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
+            GameLog.Core.Intel.DebugFormat("**** CREDITS, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.Intel.DebugFormat("BEFORE: attackED civ={0}: {1} Credits", attackedCiv.Key, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
 
             GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);
             GameContext.Current.CivilizationManagers[attackedCiv].Credits.UpdateAndReset();
 
-            GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: {1} Credits", attackedCiv.Key, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
-            GameLog.Core.UI.DebugFormat("attacing accumulated ={0}", _attackAccumulatedIntelInt);
+            GameLog.Core.Intel.DebugFormat(" AFTER: attackED civ={0}: {1} Credits", attackedCiv.Key, GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue);
+            GameLog.Core.Intel.DebugFormat("attacing accumulated ={0}", _attackAccumulatedIntelInt);
 
-            GameLog.Core.UI.DebugFormat("BEFORE: attackING civ={0}: {1} Credits", attackingCiv.Key, GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
+            GameLog.Core.Intel.DebugFormat("BEFORE: attackING civ={0}: {1} Credits", attackingCiv.Key, GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
 
             GameContext.Current.CivilizationManagers[attackingCiv].Credits.AdjustCurrent(stolenCredits);
             GameContext.Current.CivilizationManagers[attackingCiv].Credits.UpdateAndReset();
 
-            GameLog.Core.UI.DebugFormat(" AFTER: attakING civ={0}: {1} Credits", attackingCiv.Key, GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue);
-            GameLog.Core.UI.DebugFormat("attacing accumulated ={0}", _attackAccumulatedIntelInt);
+            GameLog.Core.Intel.DebugFormat(" AFTER: attakING civ={0}: {1} Credits, {2} Blamed *******", attackingCiv.Key, GameContext.Current.CivilizationManagers[attackingCiv].Credits.CurrentValue, blamed);
+            GameLog.Core.Intel.DebugFormat("attacing accumulated ={0}", _attackAccumulatedIntelInt);
 
             // DEFENSE
 
-            GameLog.Core.UI.DebugFormat("** DEFENSE METER INT, attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
-            GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: defense meter {1}, accumulated ={2}",
+            GameLog.Core.Intel.DebugFormat("** DEFENSE METER INT, attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.Intel.DebugFormat("BEFORE: attackED civ={0}: defense meter {1}, accumulated ={2}",
                     attackedCiv.Key, defenseMeter.CurrentValue, DefenseAccumulatedInteInt);
-            GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+            GameLog.Core.Intel.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
-            //GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
+            //GameLog.Core.Intel.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
             //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
 
             defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
             defenseMeter.UpdateAndReset();
 
-            GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: defense meter {1}, accumulated ={2}",
-                    attackedCiv.Key, defenseMeter.CurrentValue, DefenseAccumulatedInteInt);
-            GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+            GameLog.Core.Intel.DebugFormat(" AFTER: attackED civ={0}: defense meter {1}, accumulated ={2}",
+                attackedCiv.Key, defenseMeter.CurrentValue, DefenseAccumulatedInteInt);
+            GameLog.Core.Intel.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
-        //GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
+        //GameLog.Core.Intel.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
         //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
 
         //  ATTACKING
 
         stolenCreditsIsMinusOne:;   // pushing buttons makes 'intel costs'
 
-            GameLog.Core.UI.DebugFormat("** ATTACK METER INT attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
-            GameLog.Core.UI.DebugFormat("BEFORE: attackED civ={0}: attackED meter {1}, accumulated ={2}",
+            GameLog.Core.Intel.DebugFormat("** ATTACK METER INT attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.Intel.DebugFormat("BEFORE: attackED civ={0}: attackED meter {1}, accumulated ={2}",
                     attackedCiv.Key, attackMeter.CurrentValue, AttackingAccumulatedInteInt);
-            GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+            GameLog.Core.Intel.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
-            //GameLog.Core.UI.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
+            //GameLog.Core.Intel.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
             //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].Credits.CurrentValue);
 
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // divided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
 
-            GameLog.Core.UI.DebugFormat(" AFTER: attackED civ={0}: attackED meter {1}, accumulated ={2}",
+            GameLog.Core.Intel.DebugFormat(" AFTER: attackED civ={0}: attackED meter {1}, accumulated ={2}",
                     attackedCiv.Key, attackMeter.CurrentValue, AttackingAccumulatedInteInt);
-            GameLog.Core.UI.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
+            GameLog.Core.Intel.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED");
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[attackedCiv].Credits.CurrentValue.ToString(), out int newCreditsAttacked);
 
-            GameLog.Core.UI.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits", colony.Name, stolenCredits);
+            GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits, {2} Blamed", colony.Name, stolenCredits, blamed);
 
             _sitReps_Temp.Add(new NewSabotageSitRepEntry(
                 attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
@@ -413,7 +414,7 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
 
-            UpdatingBlame(attackingCiv, attackedCiv, blamed);
+           // UpdatingBlame(attackingCiv, attackedCiv, blamed);
 
         }
         public static void StealResearch(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
@@ -457,6 +458,7 @@ namespace Supremacy.Intelligence
             if (ratio < 2 || attackMeter.CurrentValue < 10)
             {
                 stolenResearchPoints = -1;  // -2 for a differenz
+                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
                 goto stolenResearchPointsIsMinusOne;
             }
 
@@ -521,7 +523,7 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"); 
 
-            GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} stolenResearchPoints", system.Name, stolenResearchPoints);
+            GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} stolenResearchPoints, {2} blamed ******", system.Name, stolenResearchPoints, blamed);
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
 
@@ -537,7 +539,7 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
 
-            UpdatingBlame(attackingCiv, attackedCiv, blamed);
+            //UpdatingBlame(attackingCiv, attackedCiv, blamed);
         }
         public static void SabotageFood(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -626,7 +628,7 @@ namespace Supremacy.Intelligence
                     GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
-            GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: TotalFoodFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Food));
+            GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: TotalFoodFacilities after={1}, {2} blamed", system.Name, colony.GetTotalFacilities(ProductionCategory.Food), blamed);
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD");
 
@@ -646,6 +648,7 @@ namespace Supremacy.Intelligence
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
+            //UpdatingBlame(attackingCiv, attackedCiv, blamed);
         }
         public static void SabotageEnergy(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -728,10 +731,9 @@ namespace Supremacy.Intelligence
                     attackMeter.CurrentValue);
 
 
-
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"); 
 
-            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy));
+            GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
 
             _sitReps_Temp.Add(new NewSabotageSitRepEntry(_newTargetCiv,
                 attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
@@ -751,7 +753,7 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
 
-            UpdatingBlame(attackingCiv, attackedCiv, blamed);
+           // UpdatingBlame(attackingCiv, attackedCiv, blamed);
         }
         public static void SabotageIndustry(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -784,7 +786,6 @@ namespace Supremacy.Intelligence
                 defenseIntelligence = 2;
 
             //Effect of sabotage // value needed for SitRep
-
 
             //if ratio > 1 than remove one more  IndustryFacility
             if (ratio > 1 /*&& !RandomHelper.Chance(2)*/ && colony.GetTotalFacilities(ProductionCategory.Industry) > 1)// Industry: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
@@ -835,7 +836,7 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_INDUSTRY");
 
-            GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry));
+            GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}, {2} blamed", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry), blamed);
 
             _sitReps_Temp.Add(new NewSabotageSitRepEntry( _newTargetCiv,
                 attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackedCiv"));
@@ -854,7 +855,7 @@ namespace Supremacy.Intelligence
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
-            UpdatingBlame(attackingCiv, attackedCiv, blamed);
+          //  UpdatingBlame(attackingCiv, attackedCiv, blamed);
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager)
         {
