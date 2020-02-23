@@ -417,31 +417,32 @@ namespace Supremacy.Game
             ParallelForEach(civManagers, civManager =>
             {
                 GameContext.PushThreadContext(game);
-                try
-                {
-                    civManager.SitRepEntries.Clear();
+                civManager.SitRepEntries.Clear();
+                //try
+                //{
+                //    civManager.SitRepEntries.Clear();
 
-                    try
-                    {
-                        var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
-                        foreach (var entry in civSitReps)
-                        {
-                            civManager.SitRepEntries.Add(entry);
-                        }
-                    }
-                    catch { }
-                }
-                catch (Exception e)
-                {
-                    errors.Push(e);
-                }
-                finally
-                {
-                    GameContext.PopThreadContext();
-                }
+                //    try
+                //    {
+                //        //var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
+                //        foreach (var entry in civSitReps)
+                //        {
+                //            civManager.SitRepEntries.Add(entry);
+                //        }
+                //    }
+                //    catch { }
+                //}
+                //catch (Exception e)
+                //{
+                //    errors.Push(e);
+                //}
+                //finally
+                //{
+                GameContext.PopThreadContext();
+                //}
             });
 
-            IntelHelper.SitReps_Temp.Clear();
+            //IntelHelper.SitReps_Temp.Clear();
 
             if (!errors.IsEmpty)
                 throw new AggregateException(innerExceptions: errors);
