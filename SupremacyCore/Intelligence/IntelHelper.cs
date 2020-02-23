@@ -249,20 +249,6 @@ namespace Supremacy.Intelligence
             return localCivAttacker.ShortName;
             return blamed;
         }
-        //public static void UpdatingBlame(Civilization attackingCiv, Civilization attackedCiv, string blamed)
-        //{
-        //    //GameLog.Core.Test.DebugFormat("Update with attackingCiv = {0} attackedCiv = {1} blamed ={2} ",attackingCiv.Key, attackedCiv.Key, blamed);
-        //    if (_blamedCiv != null)
-        //    {
-        //        _blamedCiv[attackingCiv] = blamed;
-        //    }
-        //    else
-        //    {
-        //        var newBlame = new Dictionary<Civilization, string>() { { attackingCiv, blamed } };
-        //        _blamedCiv = newBlame;
-        //    }
-        //    GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(attackingCiv, blamed);
-        //}
       
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -284,10 +270,6 @@ namespace Supremacy.Intelligence
                 return;
             if (colony == null)
                 return;
-
-            //bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
-            //if (ownedByPlayer)
-            //    return;
 
             int ratio = GetIntelRatio(attackedCivManager, attackingCivManager);
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseIntelligence);  // TotalIntelligence of attacked civ
@@ -397,20 +379,12 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits, {2} Blamed", colony.Name, stolenCredits, blamed);
 
-            //_sitReps_Temp.Add(new NewSabotageSitRepEntry(
-            //    attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
-
             _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
-
-
-            //_sitReps_Temp.Add(new NewSabotageSitRepEntry(
-            //   attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
 
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
            
-
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
             _defenseAccumulatedIntelInt = newDefenseIntelligence;
@@ -539,9 +513,12 @@ namespace Supremacy.Intelligence
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(_newTargetCiv, _newSpyCiv, system.Colony, 
-            //        affectedField, stolenResearchPoints,
-            //        newResearchCumulative, blamed, "attackingCiv"));
+
+            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+                   attackingCiv, attackedCiv, colony, affectedField, stolenResearchPoints, newResearchCumulative, blamed));
+
+            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
+                    attackedCiv, attackingCiv, colony, affectedField, stolenResearchPoints, newResearchCumulative, blamed));
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
@@ -646,14 +623,11 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD");
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(_newTargetCiv,
-            //    attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackedCiv"));
+            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+                    attackingCiv, attackedCiv, colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed));
 
-            //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-            //    attackedCiv, system.Colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackedCiv"));
-
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry( _newTargetCiv,
-            //   _newSpyCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed, "attackingCiv"));
+            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
+                    attackedCiv, attackingCiv, colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed));
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
@@ -751,15 +725,11 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(_newTargetCiv,
-            //    attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
-            //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-            //    attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackedCiv"));
+            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+                    attackingCiv, attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry( _newTargetCiv,
-            //    _newSpyCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackingCiv"));
-            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-            //    _newSpyCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed, "attackingCiv"));
+            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
+                    attackedCiv, attackingCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
@@ -860,15 +830,11 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}, {2} blamed", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry), blamed);
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry( _newTargetCiv,
-            //    attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackedCiv"));
-            //attackedCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-            //    attackedCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackedCiv"));
+            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+                    attackingCiv, attackedCiv, colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed));
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry( _newTargetCiv,
-            //    _newSpyCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackingCiv"));
-            //attackingCivManager.SitRepEntries_Temp.Add(new NewSabotageSitRepEntry(
-            //    _newSpyCiv, system.Colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed, "attackingCiv"));
+            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
+                    attackedCiv, attackingCiv, colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed));
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
