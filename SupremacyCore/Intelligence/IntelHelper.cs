@@ -415,12 +415,7 @@ namespace Supremacy.Intelligence
                 return;
             if (attackedCiv == null)
                 return;
-
             if (colony == null)
-                return;
-
-            bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
-            if (ownedByPlayer)
                 return;
 
             int ratio = GetIntelRatio(attackedCivManager, attackingCivManager);
@@ -473,16 +468,16 @@ namespace Supremacy.Intelligence
             }
 
             GameLog.Core.Intel.DebugFormat("Research ** BEFORE ** from {0}:  >>> {1} Research",
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Research.CumulativePoints);
+                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
+                GameContext.Current.CivilizationManagers[attackingCiv].Research.CumulativePoints);
 
-            // result   // only attackingCiv = _newSpyCiv is getting a plus of research points
+            // result   // only attackingCiv = attackingCiv is getting a plus of research points
             if (stolenResearchPoints > 0)
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Research.UpdateResearch(stolenResearchPoints);
+                GameContext.Current.CivilizationManagers[attackingCiv].Research.UpdateResearch(stolenResearchPoints);
 
             GameLog.Core.Intel.DebugFormat("Research ** AFTER ** from {0}:  >>> {1} Research",
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
-                GameContext.Current.CivilizationManagers[_newSpyCiv].Research.CumulativePoints);
+                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
+                GameContext.Current.CivilizationManagers[attackingCiv].Research.CumulativePoints);
 
             // handling intelligence points for attack / defence  //////////////////////////7
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
@@ -499,12 +494,12 @@ namespace Supremacy.Intelligence
             stolenResearchPointsIsMinusOne:;  // pushing buttons makes 'intel costs'
 
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"); 
@@ -534,9 +529,9 @@ namespace Supremacy.Intelligence
         {
             var system = colony.System;
             var attackedCivManager = GameContext.Current.CivilizationManagers[colony.System.Owner];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
+            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceDefenseAccumulated;
-            Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
             int removeFoodFacilities = -2;  // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
@@ -548,7 +543,7 @@ namespace Supremacy.Intelligence
             if (colony == null)
                 return;
 
-            bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
+            bool ownedByPlayer = (colony.OwnerID == attackingCiv.CivID);
             if (ownedByPlayer)
                 return;
 
@@ -611,12 +606,12 @@ namespace Supremacy.Intelligence
             NoActionFood:;   // pushing buttons makes 'intel costs'
 
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
             GameLog.Core.Intel.DebugFormat("Sabotage Food at {0}: TotalFoodFacilities after={1}, {2} blamed", system.Name, colony.GetTotalFacilities(ProductionCategory.Food), blamed);
@@ -641,9 +636,9 @@ namespace Supremacy.Intelligence
         public static void SabotageEnergy(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[_newSpyCiv];
+            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
             Meter defenseMeter = GameContext.Current.CivilizationManagers[colony.Owner].TotalIntelligenceDefenseAccumulated;
-            Meter attackMeter = GameContext.Current.CivilizationManagers[_newSpyCiv].TotalIntelligenceAttackingAccumulated;
+            Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
             int removeEnergyFacilities = -2;
             int defenseIntelligence = -2;
 
@@ -655,7 +650,7 @@ namespace Supremacy.Intelligence
             if (colony == null)
                 return;
 
-            bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
+            bool ownedByPlayer = (colony.OwnerID == attackingCiv.CivID);
             if (ownedByPlayer)
                 return;
 
@@ -712,12 +707,12 @@ namespace Supremacy.Intelligence
             NoActionEnergy:;  // pushing buttons makes 'intel costs'
 
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // devided by two, it's more than on defense side
             attackMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("attackMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
-                    GameContext.Current.CivilizationManagers[_newSpyCiv].Civilization.Key,
+                    GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
 
@@ -763,9 +758,6 @@ namespace Supremacy.Intelligence
             if (colony == null)
                 return;
 
-            //bool ownedByPlayer = (colony.OwnerID == NewSpyCiv.CivID);
-            //if (ownedByPlayer)
-            //    return;
             int ratio = GetIntelRatio(attackedCivManager, attackingCivManager);
             if (ratio < 2)
             {
