@@ -442,7 +442,7 @@ namespace Supremacy.Game
                 }
             });
 
-            //IntelHelper.SitReps_Temp.Clear();
+            IntelHelper.SitReps_Temp.Clear();
 
             if (!errors.IsEmpty)
                 throw new AggregateException(innerExceptions: errors);
