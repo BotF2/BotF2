@@ -688,8 +688,11 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
+            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (!base.IsValidOrder(fleet))
                 return false;
+            if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
+                    return false;
             if (fleet.Sector.System == null)
                 return false;
             if (fleet.Sector.System.Colony == null)

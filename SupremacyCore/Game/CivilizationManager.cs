@@ -377,24 +377,6 @@ namespace Supremacy.Game
             //}
         }
 
-        //public void UpDateBlamedCiv(Civilization attacking, string blame)
-        //{
-        //    if(_blamedCiv != null)
-        //    {
-        //        _blamedCiv[attacking] = blame;
-        //    }
-        //    else
-        //    {
-        //        var newBlame = new Dictionary<Civilization, string>() { { attacking, blame } };
-        //        _blamedCiv = newBlame;
-        //    }
-
-        //    //foreach (var item in _blamedCiv)
-        //    //{
-        //    //    GameLog.Client.Test.DebugFormat("Updated the blamed dictionary attacker {0} blamed {1}", item.Key.Key, item.Value);
-        //    //}
-        //}
-
         /// <summary>
         /// Applies the specified morale event.
         /// </summary>
