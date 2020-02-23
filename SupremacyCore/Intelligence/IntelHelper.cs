@@ -20,7 +20,7 @@ namespace Supremacy.Intelligence
         private static List<Civilization> _spiedList = new List<Civilization>();
         private static List<Civilization> _localSpiedList = new List<Civilization>();
         private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
-       // private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
+        private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
         private static CivilizationManager _localCivManager;
@@ -40,11 +40,11 @@ namespace Supremacy.Intelligence
         public static bool _showNetwork_5 = false;
         public static bool _showNetwork_6 = false;
 
-        //public static List<SitRepEntry> SitReps_Temp
-        //{
-        //    get { return _sitReps_Temp; }
-        //    set { _sitReps_Temp = value; }
-        //}
+        public static List<SitRepEntry> SitReps_Temp
+        {
+            get { return _sitReps_Temp; }
+            set { _sitReps_Temp = value; }
+        }
         public static UniverseObjectList<Colony> NewSpiedColonies
         {
             get { return _newSpiedColonies; }
@@ -399,19 +399,17 @@ namespace Supremacy.Intelligence
 
             //_sitReps_Temp.Add(new NewSabotageSitRepEntry(
             //    attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackedCiv"));
-            //if (attackingCiv == _localCivManager.Civilization)
-            //{
-                attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
+
+            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
-            //}
+
 
             //_sitReps_Temp.Add(new NewSabotageSitRepEntry(
             //   attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, "attackingCiv"));
-            //if (attackedCiv == _localCivManager.Civilization)
-            //{
-                attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
+
+            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
-            //}
+           
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);

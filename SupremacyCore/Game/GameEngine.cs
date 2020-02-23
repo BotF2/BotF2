@@ -418,28 +418,28 @@ namespace Supremacy.Game
             {
                 GameContext.PushThreadContext(game);
                 civManager.SitRepEntries.Clear();
-                //try
-                //{
-                //    civManager.SitRepEntries.Clear();
+                try
+                {
+                    civManager.SitRepEntries.Clear();
 
-                //    try
-                //    {
-                //        //var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
-                //        foreach (var entry in civSitReps)
-                //        {
-                //            civManager.SitRepEntries.Add(entry);
-                //        }
-                //    }
-                //    catch { }
-                //}
-                //catch (Exception e)
-                //{
-                //    errors.Push(e);
-                //}
-                //finally
-                //{
-                GameContext.PopThreadContext();
-                //}
+                    try
+                    {
+                        var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
+                        foreach (var entry in civSitReps)
+                        {
+                            civManager.SitRepEntries.Add(entry);
+                        }
+                    }
+                    catch { }
+                }
+                catch (Exception e)
+                {
+                    errors.Push(e);
+                }
+                finally
+                {
+                    GameContext.PopThreadContext();
+                }
             });
 
             //IntelHelper.SitReps_Temp.Clear();
