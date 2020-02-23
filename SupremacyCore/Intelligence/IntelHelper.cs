@@ -666,7 +666,7 @@ namespace Supremacy.Intelligence
                 defenseIntelligence = 2;
 
             //Effect of sabotage // value needed for SitRep
-
+            GameLog.Core.Intel.DebugFormat("**** Before Sabotage Energy at {0}: TotalEnergyFacilities before={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
             //if ratio > 1 than remove one more  EnergyFacility
             if (ratio > 1 /*&& RandomHelper.Chance(4)*/ && colony.GetTotalFacilities(ProductionCategory.Energy) > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
@@ -691,7 +691,7 @@ namespace Supremacy.Intelligence
                 blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
             }
             //_removedEnergyFacilities = removeEnergyFacilities;
-
+            GameLog.Core.Intel.DebugFormat("**** After Sabotage Energy at {0}: TotalEnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
             // handling intelligence points for attack / defence  //////////////////////////7
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
