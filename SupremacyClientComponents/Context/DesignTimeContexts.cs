@@ -199,11 +199,9 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        //static List<CivilizationManager> managerList;
-        ////static List<CivilizationManager> _allManagersList;
-        //static CivilizationManager _spyingCivManager;  // syping, but in mulitplayer maybe different to local one
-        static CivilizationManager _spiedCivDummy;
-        private static Dictionary<Civilization, List<Civilization>> _spyDictionary = new Dictionary<Civilization, List<Civilization>>();
+        private static List<CivilizationManager> _availableCivManagers;
+        private static CivilizationManager _spiedCivDummy;
+
         private static bool _subedZero = false; // Is the race not in the game? We substitue the host civ for missing civ and then _subedZero is true and Federation not in game.
         private static bool _subedOne = false;
         private static bool _subedTwo = false;
@@ -244,18 +242,26 @@ namespace Supremacy.Client.Context
         {
             get { return _subedSix; }
         }
-
+        #region  Constuctor
+        static DesignTimeObjects() 
+        {
+            _availableCivManagers = GameContext.Current.CivilizationManagers.Where(s => s.Civilization.IsEmpire).ToList();
+        }
+        #endregion
         public static CivilizationManager SpiedCivZero
         {
             get
             {
-                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later
-                try
+                var isZeroNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 0).FirstOrDefault();
+                if (isZeroNull != null)
                 {
-                        _spiedCivDummy = GameContext.Current.CivilizationManagers[0]; // if Fed is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 0).FirstOrDefault();
+                    //GameLog.Client.Test.DebugFormat("## Playable SpiedCivZero = {0}", _spiedCivDummy.Civilization.Key);
                 }
-                catch
+                else
                 {
+                    _spiedCivDummy = CivilizationManager;
+                    //GameLog.Client.Test.DebugFormat("## Substitution SpiedCivZero = {0}", _spiedCivDummy.Civilization.Key);
                     _subedZero = true;
                 }
                 return _spiedCivDummy;
@@ -265,13 +271,16 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager; // use host here as substitute, catch it later 
-                try
+                var isOneNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 1).FirstOrDefault();
+                if (isOneNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[1]; // if Terran is not in game this line will fails to the catch and Host CivManager is left in as subsitute civManager
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 1).FirstOrDefault();
+                   // GameLog.Client.Test.DebugFormat("## Playable SpiedCivOne = {0}", _spiedCivDummy.Civilization.Key);
                 }
-                catch
+                else
                 {
+                    _spiedCivDummy = CivilizationManager;
+                    //GameLog.Client.Test.DebugFormat("## Substitution SpiedCivOne = {0}", _spiedCivDummy.Civilization.Key);
                     _subedOne = true;
                 }
                 return _spiedCivDummy;
@@ -282,13 +291,16 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager; 
-                try
+                var isTwoNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 2).FirstOrDefault();
+                if (isTwoNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[2];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 2).FirstOrDefault();
+                  //  GameLog.Client.Test.DebugFormat("## Playable SpiedCivTwo = {0}", _spiedCivDummy.Civilization.Key);
                 }
-                catch
+                else
                 {
+                    _spiedCivDummy = CivilizationManager;
+                  //  GameLog.Client.Test.DebugFormat("## Substitution SpiedCivTwo = {0}", _spiedCivDummy.Civilization.Key);
                     _subedTwo = true;
                 }
                 return _spiedCivDummy;
@@ -298,13 +310,16 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager; 
-                try
+                var isThreeNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 3).FirstOrDefault();
+                if (isThreeNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[3]; 
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 3).FirstOrDefault();
+                   // GameLog.Client.Test.DebugFormat("## Playable SpiedCivThree = {0}", _spiedCivDummy.Civilization.Key);
                 }
-                catch
+                else
                 {
+                    _spiedCivDummy = CivilizationManager;
+                   // GameLog.Client.Test.DebugFormat("## Substitution SpiedCivThree = {0}", _spiedCivDummy.Civilization.Key);
                     _subedThree = true;
                 }
                 return _spiedCivDummy;
@@ -314,13 +329,16 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
-                try
+                var isFourNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 4).FirstOrDefault();
+                if (isFourNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[4];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 4).FirstOrDefault();
+                  //  GameLog.Client.Test.DebugFormat("## Playable SpiedCivFour = {0}", _spiedCivDummy.Civilization.Key);
                 }
-                catch
+                else
                 {
+                    _spiedCivDummy = CivilizationManager;
+                   // GameLog.Client.Test.DebugFormat("## Substitution SpiedCivFour = {0}", _spiedCivDummy.Civilization.Key);
                     _subedFour = true;
                 }
                 return _spiedCivDummy;
@@ -330,13 +348,16 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
-                try
+                var isFiveNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 5).FirstOrDefault();
+                if (isFiveNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[5];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 5).FirstOrDefault();
+                  // GameLog.Client.Test.DebugFormat("## Playable SpiedCivFive = {0}", _spiedCivDummy.Civilization.Key);
                 }
-                catch
+                else
                 {
+                    _spiedCivDummy = CivilizationManager;
+                   // GameLog.Client.Test.DebugFormat("## Substitution SpiedCivFive = {0}", _spiedCivDummy.Civilization.Key);
                     _subedFive = true;
                 }
                 return _spiedCivDummy;
@@ -346,19 +367,24 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                _spiedCivDummy = CivilizationManager;
-                try
+                var isSixNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 6).FirstOrDefault();
+                if (isSixNull != null)
                 {
-                    _spiedCivDummy = GameContext.Current.CivilizationManagers[6];
+                    _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 6).FirstOrDefault();
+                   // GameLog.Client.Test.DebugFormat("## Playable SpiedCivSix = {0}", _spiedCivDummy.Civilization.Key);
                 }
-                catch
+                else
                 {
+                    _spiedCivDummy = CivilizationManager;
+                   // GameLog.Client.Test.DebugFormat("## Substitution SpiedCivSix = {0}", _spiedCivDummy.Civilization.Key);
                     _subedSix = true;
                 }
                 return _spiedCivDummy;
             }
-
-
+        }
+        public static List<CivilizationManager> AvailableCivManagers
+        {
+            get { return _availableCivManagers; }
         }
 
         /// <summary>
@@ -429,94 +455,5 @@ namespace Supremacy.Client.Context
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }
-        //private static List<CivilizationManager> SpyableCivManagers()
-        //{
-        //    var LocalCivManager = DesignTimeAppContext.Instance.LocalPlayerEmpire;
-        //    var CivManagers = GameContext.Current.CivilizationManagers.Where(o => o.Civilization.IsEmpire).ToList();
-
-        //    try
-        //    {
-        //        if (CivManagers[0].Civilization.Key!= null && CivManagers[0].Civilization.Key != "FEDERATION") 
-        //            CivManagers.Insert(0, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(0, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[1].Civilization.Key != null && CivManagers[1].Civilization.Key != "TERRANEMPIRE")
-        //            CivManagers.Insert(1, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(1, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[2].Civilization.Key != null && CivManagers[2].Civilization.Key != "ROMULANS")
-        //            CivManagers.Insert(2, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(2, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[3].Civilization.Key != null && CivManagers[3].Civilization.Key != "KLINGONS")
-        //            CivManagers.Insert(3, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(3, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[4].Civilization.Key != null && CivManagers[4].Civilization.Key != "CARDASSIANS")
-        //            CivManagers.Insert(4, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(4, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[5].Civilization.Key != null && CivManagers[5].Civilization.Key != "DOMINION")
-        //            CivManagers.Insert(5, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(5, LocalCivManager);
-        //    }
-
-        //    try
-        //    {
-        //        if (CivManagers[6].Civilization.Key != null && CivManagers[6].Civilization.Key != "BORG")
-        //            CivManagers.Insert(6, LocalCivManager);
-        //    }
-        //    catch
-        //    {
-        //        CivManagers.Insert(6, LocalCivManager);
-        //    }
-
-            //GameLogOutCivMan(CivManagers);
-
-        //    CivManagers.Remove(LocalCivManager);
-        //    CivManagers.OrderBy(o => o.CivilizationID);
-
-        //    GameLog.Client.UI.DebugFormat("--------------------");
-        //    foreach (var civ in CivManagers)
-        //    {
-        //        GameLog.Client.UI.DebugFormat("civManagers contains {0} {1}", civ.CivilizationID, civ.Civilization.Key);
-        //    }
-
-        //    return CivManagers;
-        //}
-
     }
 }

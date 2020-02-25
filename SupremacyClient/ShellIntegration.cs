@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Shell;
 using System.Windows.Threading;
-
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Utility;

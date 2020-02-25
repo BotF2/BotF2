@@ -32,7 +32,7 @@
                         <RowDefinition Height="25" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="0" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -121,16 +121,8 @@
                                 Grid.Row="0"
                                 Grid.Column="2"
                                 VerticalAlignment="Center"
-                                Text="Send a Spy Ship to the Empire's system and right click the ship to order "
+                                Text="{s:StringResource Key=INSTALL_SPY_NETWORK_INSTRUCTIONS}"                     
                                 Foreground="LightGray"
-                                FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                FontSize="12pt"/>
-                            <TextBlock 
-                                Grid.Row="0" 
-                                Grid.Column="3"
-                                VerticalAlignment="Center"
-                                Text="&quot;Install a Spy Network&quot;"
-                                Foreground="White"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
                             <!-- Summary Button -->
@@ -157,13 +149,13 @@
                     Margin="5,0,0,0"
                     Width="Auto"
                     Height="800"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
-      <!-- Zero Expander -->
+            <!-- Zero Expander -->
                         <Expander x:Name="EmpireExpanderZero" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                  IsExpanded="True" Header="{Binding Path=SpiedFedName}" FontSize="20" BorderThickness="3" BorderBrush="Blue"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
-                            <Grid Name="EmpireGridZero" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                            <Grid Name="EmpireGridZero" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
@@ -232,7 +224,7 @@
                                                     Source="vfs:///Resources/Images/Insignias/Sabotage.png"
                                                     Margin="5,10,0,0" />
                                                 <RadioButton
-                                                    Name="Terrorists0"
+                                                    x:Name="Terrorists0"
                                                     VerticalAlignment="Top"
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio0"
@@ -598,11 +590,11 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-     <!-- One Expander -->
+                        <!-- One Expander -->
                         <Expander x:Name="EmpireExpanderOne" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                                 IsExpanded="True" Header="{Binding Path=SpiedTerranName}" FontSize="20" BorderThickness="3" BorderBrush="LightYellow"
+                                 IsExpanded="True" Header="{Binding Path=SpiedTerranName}" FontSize="20" BorderThickness="3" BorderBrush="Yellow"
                                   Foreground="LightYellow" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
-                            <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                            <Grid Name="EmpireGridOne" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
@@ -671,7 +663,7 @@
                                                     Source="vfs:///Resources/Images/Insignias/Sabotage.png"
                                                     Margin="5,10,0,0" />
                                                 <RadioButton
-                                                    Name="Terrorists1"
+                                                    x:Name="Terrorists1"
                                                     VerticalAlignment="Top"
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio1"
@@ -1037,11 +1029,11 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-        <!-- Two Expander -->
+                        <!-- Two Expander -->
                         <Expander x:Name="EmpireExpanderTwo" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedRomName}" FontSize="20" BorderThickness="3" BorderBrush="Green" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
-                            <Grid x:Name="EmpireGridTwo" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                            <Grid x:Name="EmpireGridTwo" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
@@ -1483,11 +1475,11 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-      <!-- Three Expander -->
+                        <!-- Three Expander -->
                         <Expander x:Name="EmpireExpanderThree" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedKlingName}" FontSize="20" BorderThickness="3" BorderBrush="DarkRed" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3" >
-                            <Grid x:Name="EmpireGridThree" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                            <Grid x:Name="EmpireGridThree" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
@@ -1928,11 +1920,11 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-      <!-- Four Expander -->
+                        <!-- Four Expander -->
                         <Expander x:Name="EmpireExpanderFour" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="Goldenrod" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="Tan" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
-                            <Grid x:Name="EmpireGridFour" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                            <Grid x:Name="EmpireGridFour" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
@@ -2373,11 +2365,11 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-       <!-- Five Expander -->
+                        <!-- Five Expander -->
                         <Expander x:Name="EmpireExpanderFive" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedDomName}" FontSize="20" BorderThickness="3" BorderBrush="Purple" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4"  Grid.Row="3">
-                            <Grid x:Name="EmpireGridFive" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                            <Grid x:Name="EmpireGridFive" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />
@@ -2818,11 +2810,11 @@
                             </Grid>
                         </Expander>
                         <TextBlock Height="5"/>
-      <!-- Six Expander -->
+                        <!-- Six Expander -->
                         <Expander x:Name="EmpireExpanderSix" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
                                IsExpanded="True" Header="{Binding Path=SpiedBorgName}" FontSize="20" BorderThickness="3" BorderBrush="YellowGreen" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
-                            <Grid x:Name="EmpireGridSix" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Center">
+                            <Grid x:Name="EmpireGridSix" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="45" />

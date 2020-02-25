@@ -5,13 +5,16 @@ using System.Threading;
 using System.Windows;
 using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
+using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
+using Supremacy.SpyOperations;
+using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using Supremacy.Client.Context;
-using Supremacy.Types;
-using Supremacy.Entities;
-using Supremacy.Intelligence;
+
+
 
 namespace Supremacy.Client.Views
 {
@@ -64,7 +67,7 @@ namespace Supremacy.Client.Views
         //    OnPropertyChanged("SelectedColony");
         //}
         #endregion
-
+ 
         #region Properties for AssestsScreen
 
         public CivilizationManager MyLocalCivManager
@@ -76,7 +79,11 @@ namespace Supremacy.Client.Views
         {
             get 
             {
-                if (MyLocalCivManager.Civilization.CivID == 0) _localSpyingCivList = IntelHelper._spyingCiv_0_List;
+                if (MyLocalCivManager.Civilization.CivID == 0)
+                {
+                    _localSpyingCivList = IntelHelper._spyingCiv_0_List;
+
+                }
                 if (MyLocalCivManager.Civilization.CivID == 1) _localSpyingCivList = IntelHelper._spyingCiv_1_List;
                 if (MyLocalCivManager.Civilization.CivID == 2) _localSpyingCivList = IntelHelper._spyingCiv_2_List;
                 if (MyLocalCivManager.Civilization.CivID == 3) _localSpyingCivList = IntelHelper._spyingCiv_3_List;
@@ -88,14 +95,14 @@ namespace Supremacy.Client.Views
             }
         }
 
-
         public int TotalIntelligenceProduction
         {
             get
             {
                 try
                 {
-                    //FillUpDefense();
+                    _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
+         
                     GameLog.Core.UI.DebugFormat("Get TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
                     return _totalIntelligenceProduction;
                 }
@@ -109,6 +116,7 @@ namespace Supremacy.Client.Views
             {
                 try
                 {
+                    _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
                     FillUpDefense();
                     _totalIntelligenceProduction = value;
                     GameLog.Core.UI.DebugFormat("Set TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
@@ -117,7 +125,6 @@ namespace Supremacy.Client.Views
                 catch
                 {
                     GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction set...");
-                    //0 = value;
                 }
             }
         }
@@ -127,27 +134,16 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //try
-                //{
-                FillUpDefense();
-                //var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                //    return civManager.TotalIntelligenceDefenseAccumulated;
-                //}
-                //catch
-                //{
-                //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceDefenseAccumulated...");
-                //    return ;
-                //}
-                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
+                FillUpDefense();          
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
-                return _totalIntelligenceDefenseAccumulated;// IntelHelper.DefenseAccumulatedIntelInt;
+                return _totalIntelligenceDefenseAccumulated;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
-                //_totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
+               //_totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
+                _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
                 GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
@@ -158,27 +154,16 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //try
-                //{
                 FillUpDefense();
-                //var civManager = GameContext.Current.CivilizationManagers[AppContext.LocalPlayerEmpire.Civilization];
-                //    return civManager.TotalIntelligenceAttackingAccumulated;
-                //}
-                //catch
-                //{
-                //    GameLog.Core.Intel.WarnFormat("Problem occured at TotalIntelligenceAttackingAccumulated...");
-                //    return 0;
-                //}
-                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
-               // _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
+                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }
             set
             {
                 FillUpDefense();
-                _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
-                //_totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
+               // _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
+                _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
                 GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceAttackingAccumulated");
@@ -218,7 +203,7 @@ namespace Supremacy.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 throw new InvalidOperationException("This constructor should only be invoked at design time.");
 
-            _colonies = MyLocalCivManager.Colonies; //not the host, DesignTimeObjects.LocalCivManager.Colonies;
+            _colonies = MyLocalCivManager.Colonies; //not the host on a remote machine, DesignTimeObjects.LocalCivManager.Colonies;
             _spiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             _spiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             _spiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;
@@ -230,6 +215,7 @@ namespace Supremacy.Client.Views
             _totalIntelligenceAttackingAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
             _totalIntelligenceDefenseAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
 
+            OnPropertyChanged("InstallingSpyNetwork");
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
             OnPropertyChanged("TotalIntelligenceProduction");
@@ -240,6 +226,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
         public event EventHandler TotalPopulationChanged;
+        public event EventHandler InstallingSpyNetworkChanged;
         public event EventHandler TotalIntelligenceProductionChanged;
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
         public event EventHandler TotalIntelligenceDefenseAccumulatedChanged;
@@ -281,8 +268,6 @@ namespace Supremacy.Client.Views
 
         private IEnumerable<Colony> _spiedSixColonies;
 
-        //private IEnumerable<Colony> _infiltratedColonies;
-
         public IEnumerable<Colony> Colonies
         {
             get { return _colonies; }
@@ -296,6 +281,7 @@ namespace Supremacy.Client.Views
                 FillUpDefense();
                 OnColoniesChanged();
                 OnTotalPopulationChanged();
+                OnInstallingSpyNetworkChanged();
                 OnTotalIntelligenceProductionChanged();
                 OnTotalIntelligenceAttackingAccumulatedChanged();
                 OnTotalIntelligenceDefenseAccumulatedChanged();
@@ -410,6 +396,11 @@ namespace Supremacy.Client.Views
             TotalPopulationChanged.Raise(this);
             OnPropertyChanged("TotalPopulation");
         }
+        protected virtual void OnInstallingSpyNetworkChanged()
+        {
+            InstallingSpyNetworkChanged.Raise(this);
+            OnPropertyChanged("InstallingSpyNetwork");
+        }
         protected virtual void OnTotalIntelligenceProductionChanged()
         {
             TotalIntelligenceProductionChanged.Raise(this);
@@ -519,6 +510,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
+
         public string LocalCivName
         {
             get
@@ -526,20 +518,31 @@ namespace Supremacy.Client.Views
                 return MyLocalCivManager.Civilization.Name;  // keep this on AppContext
             }
         }
-        public static Civilization Local
+        public static Civilization LocalCiv
         {
             get
             {
                 return IntelHelper.LocalCivManager.Civilization;
             }
         }
+        // ### Federation ####
         public static Civilization SpiedZeroCiv
         {
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
-                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedZeroSeatOfGovernment
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivZero;
+                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                return SeatOfGovernment;
             }
         }
         public static Meter SpiedZeroTotalPopulation
@@ -549,7 +552,7 @@ namespace Supremacy.Client.Views
                 var civManager = DesignTimeObjects.SpiedCivZero;
                 try
                 {
-                    GameLog.Core.Intel.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
+                    GameLog.Core.Test.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
                     return civManager.TotalPopulation;
                 }
                 catch (Exception e)
@@ -561,7 +564,6 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-
         public static string SpiedFedName
         {
             get
@@ -569,6 +571,7 @@ namespace Supremacy.Client.Views
                 return "Federation";
             }
         }
+        //## Terran ##
         public static Civilization SpiedOneCiv
         {
             get
@@ -576,6 +579,16 @@ namespace Supremacy.Client.Views
                 var SpiedCiv = DesignTimeObjects.SpiedCivOne;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedOneSeatOfGovernment
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivOne;
+                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivOne SeatOfGovernment = {0}", SeatOfGovernment);
+                return SeatOfGovernment;
             }
         }
         public static Meter SpiedOneTotalPopulation
@@ -604,12 +617,23 @@ namespace Supremacy.Client.Views
                 return "Terran Empire"; 
             }
         }
+        //## Romulan ##
         public static Civilization SpiedTwoCiv
         {
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedTwoSeatOfGovernment
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
+                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivTwo SeatOfGovernment = {0}", SeatOfGovernment);
+                return SeatOfGovernment;
             }
         }
         public Meter SpiedTwoTotalPopulation
@@ -638,12 +662,23 @@ namespace Supremacy.Client.Views
                 return "Romulans"; 
             }
         }
+        // ## Klingons ##
         public static Civilization SpiedThreeCiv
         {
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivThree;
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedThreeSeatOfGovernment
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivThree;
+                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivThree SeatOfGovernment = {0}", SeatOfGovernment);
+                return SeatOfGovernment;
             }
         }
         public Meter SpiedThreeTotalPopulation
@@ -665,7 +700,6 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-
         public static string SpiedKlingName
         {
             get
@@ -673,12 +707,23 @@ namespace Supremacy.Client.Views
                 return "Klingons";
             }
         }
+        //## Cardassians ##
         public static Civilization SpiedFourCiv
         {
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivFour;
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedFourSeatOfGovernment
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivFour;
+                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivFour SeatOfGovernment = {0}", SeatOfGovernment);
+                return SeatOfGovernment;
             }
         }
         public Meter SpiedFourTotalPopulation
@@ -707,12 +752,23 @@ namespace Supremacy.Client.Views
                 return "Cardassians";
             }
         }
+        //## Dominion ##
         public static Civilization SpiedFiveCiv
         {
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivFive;
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedFiveSeatOfGovernment
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivFive;
+                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivFive SeatOfGovernment = {0}", SeatOfGovernment);
+                return SeatOfGovernment;
             }
         }
         public Meter SpiedFiveTotalPopulation
@@ -741,12 +797,23 @@ namespace Supremacy.Client.Views
                 return "Dominion";
             }
         }
+        // ## Borg ##
         public static Civilization SpiedSixCiv
         {
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivSix;
                 return SpiedCiv.Civilization;
+            }
+        }
+        public static Colony SpiedSixSeatOfGovernment
+        {
+            get
+            {
+                var SpiedCiv = DesignTimeObjects.SpiedCivSix;
+                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivSix SeatOfGovernment = {0}", SeatOfGovernment);
+                return SeatOfGovernment;
             }
         }
         public Meter SpiedSixTotalPopulation
@@ -780,7 +847,7 @@ namespace Supremacy.Client.Views
 
         #region Credits Empire
 
-        public Meter CreditsEmpire // do we need this???
+        public Meter CreditsEmpire // do we need this??? Local player only
         {
             get
             {
@@ -797,6 +864,8 @@ namespace Supremacy.Client.Views
                 }
             }
         }
+
+  
         #endregion Credits Empire
 
         #region Implementation of NotifyPropertyChanged
@@ -854,5 +923,243 @@ namespace Supremacy.Client.Views
         //    TotalIntelligenceAttackingAccumulated = 1;
         //    TotalIntelligenceDefenseAccumulated = 1;
         //}
+
+
+        private bool CanExecuteSendSpyOrder()
+        {
+            return true;
+                //DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
+                //   SelectedForeignPower != null &&
+                //   SelectedForeignPower.OutgoingSpyOrder != null &&
+                //   SelectedForeignPower.OutgoingSpyOrder.IsEditing &&
+                //   SelectedForeignPower.OutgoingSpyOrder.Elements.Count != 0;
+        }
+
+        private void ExecuteSendSpyOrder()
+        {
+            if (!CanExecuteSendSpyOrder())
+                return;
+
+            //SelectedForeignPower.OutgoingSpyOrder.Send();
+            GameLog.Client.Diplomacy.DebugFormat("************** Execute send Spy Order ...");
+            //SelectedForeignPower.OnOutgoingSpyOrderCategoryChanged();
+
+            //OnCommandVisibilityChanged();
+            //OnIsSpyOrderEditInProgressChanged();
+        }
+
+        public void SendSpyOrder()
+        {
+            GameLog.Client.Diplomacy.DebugFormat("************** Doing send Spy Order ...");
+            //var isStatement = _elements.All(o => o.ElementType <= DiplomacySpyOrderElementType.DenounceSabotageStatement);
+            //if (isStatement)
+            //{
+            //    var statement = CreateStatement();
+            //    if (statement == null)
+            //        return;
+
+            //    _sendOrder = new SendStatementOrder(statement);
+
+            //    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+            //}
+            //else
+            //{
+            //    var proposal = CreateProposal();
+            //    if (proposal == null)
+            //        return;
+
+            //    _sendOrder = new SendProposalOrder(proposal);
+
+            //    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+            //}
+
+            //IsEditing = false;
+
+            //_availableElements.Clear();
+        }
+        public NewSpyOrder NewSpyOrder
+        {
+            get
+            {
+                // Gamelog for GET _outgoingSpyOrder mostly not needed
+                //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
+                GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder GET = {0} >> {1}, CountElem.={2}",
+                        _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
+                            //, _outgoingSpyOrder.Elements.Count().ToString());
+                return _outgoingSpyOrder;
+            }
+            set
+            {
+                if (Equals(value, _outgoingSpyOrder))
+                    return;
+
+                _outgoingSpyOrder = value;
+
+                OnOutgoingSpyOrderChanged();
+
+                if (_outgoingSpyOrder != null /*&& _outgoingSpyOrder.Elements.Count() > 0*/)
+                    GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder SET = {0} >> {1}, CountElem.={2}",
+                   _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
+                //, _outgoingSpyOrder.Elements.Count().ToString());
+            }
+        }
+
+        public static /*DiplomaticMessageCategory*/ SpyOrderCategory ResolveSpyOrderCategory(object message) // DiplomaticMessageCategory is enum of 1 to 9 message types
+        {
+            //GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
+
+            var viewModel = message as DiplomacyMessageViewModel;
+
+            //var proposal = message as IProposal;
+
+            //if (viewModel != null)
+            //{
+            //    // worksGameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
+            //    //GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0} - Category {2}", viewModel.Recipient, viewModel.Sender, proposal.ToString());
+            //    message = viewModel.CreateMessage(); // create statment vs create proposal
+            //}
+
+            //var proposal = message as IProposal;
+
+            //GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
+            //if (proposal != null)
+            //{
+            //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} ", proposal.Recipient, proposal.Sender);
+            //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} - Category {2}", proposal.Recipient, proposal.Sender, proposal.ToString());
+            //    if (proposal.IsDemand())
+            //    {
+            //        GameLog.Client.Diplomacy.DebugFormat("Message Category Demand");
+            //        return DiplomaticMessageCategory.Demand;
+            //    }
+            //    if (proposal.IsGift())
+            //    {
+            //        GameLog.Client.Diplomacy.DebugFormat("Message Category Gift");
+            //        return DiplomaticMessageCategory.Gift;
+            //    }
+            //    foreach (var clause in proposal.Clauses)
+            //    {
+            //        if (!clause.ClauseType.IsTreatyClause())
+            //            continue;
+            //        if (clause.ClauseType == ClauseType.TreatyWarPact)
+            //        {
+            //            GameLog.Client.Diplomacy.DebugFormat("Message Category 1 War Pact");
+            //            return DiplomaticMessageCategory.WarPact;
+            //        }
+            //        GameLog.Client.Diplomacy.DebugFormat("Message Category 2 Treaty");
+            //        return DiplomaticMessageCategory.Treaty;
+            //    }
+            //    GameLog.Client.Diplomacy.DebugFormat("Message Exchange");
+            //    return DiplomaticMessageCategory.Exchange;
+            //}
+
+            //var response = message as IResponse;
+
+            //if (response != null)
+            //{
+            //    GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
+            //    return DiplomaticMessageCategory.Response;
+            //}
+
+            //var statement = message as Statement;
+
+            //if (statement != null)
+            //{
+            //    GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
+            //    switch (statement.StatementType)
+            //    {
+            //        case StatementType.CommendRelationship:
+            //        case StatementType.CommendAssault:
+            //        case StatementType.CommendInvasion:
+            //        case StatementType.CommendSabotage:
+            //        case StatementType.DenounceWar:
+            //        case StatementType.DenounceRelationship:
+            //        case StatementType.DenounceAssault:
+            //        case StatementType.DenounceInvasion:
+            //        case StatementType.DenounceSabotage:
+            //            GameLog.Client.Diplomacy.DebugFormat("Message Statement");
+            //            return DiplomaticMessageCategory.Statement;
+
+            //        case StatementType.ThreatenDestroyColony:
+            //        case StatementType.ThreatenTradeEmbargo:
+            //        case StatementType.ThreatenDeclareWar:
+            //            GameLog.Client.Diplomacy.DebugFormat("Message Threat");
+            //            return DiplomaticMessageCategory.Threat;
+            //    }
+            //}
+            // a lot of times hitted without giving an info ... GameLog.Client.Diplomacy.DebugFormat("Message Category None");
+            return SpyOrderCategory.None;
+        }
+
+
+        #region OutgoingSpyOrder Property
+
+        [field: NonSerialized]
+        public event EventHandler OutgoingSpyOrderChanged;
+
+        private /*DiplomacyMessageViewModel*/ NewSpyOrder _outgoingSpyOrder;
+
+        public /*DiplomacyMessageViewModel*/ NewSpyOrder OutgoingSpyOrder
+        {
+            get
+            {
+                // Gamelog for GET _outgoingSpyOrder mostly not needed
+                //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
+                GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder GET = {0} >> {1}",
+                        _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
+                            //, _outgoingSpyOrder.Elements.Count().ToString());
+                return _outgoingSpyOrder;
+            }
+            set
+            {
+                if (Equals(value, _outgoingSpyOrder))
+                    return;
+
+                _outgoingSpyOrder = value;
+
+                OnOutgoingSpyOrderChanged();
+
+                //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
+                GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder SET = {0} >> {1}",
+                    _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
+                   //, _outgoingSpyOrder.Elements.Count().ToString());
+            }
+        }
+
+        protected virtual void OnOutgoingSpyOrderChanged()
+        {
+            //GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingSpyOrderChanged() - call OnPropertyChanged");
+            OutgoingSpyOrderChanged.Raise(this);
+            OnPropertyChanged("OutgoingSpyOrder");
+            OnOutgoingSpyOrderCategoryChanged();
+        }
+
+        #endregion OutgoingSpyOrder Property
+
+        #region OutgoingSpyOrderCategory Property
+
+        [field: NonSerialized]
+        public event EventHandler OutgoingSpyOrderCategoryChanged;
+
+        public /*DiplomaticMessageCategory*/ SpyOrderCategory OutgoingSpyOrderCategory
+        {
+            get
+            {
+                if (ResolveSpyOrderCategory(OutgoingSpyOrder).ToString() != "None")
+                    GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrderCategory = {0}", ResolveSpyOrderCategory(OutgoingSpyOrder));
+                return ResolveSpyOrderCategory(OutgoingSpyOrder);
+            }
+        }
+
+        protected internal virtual void OnOutgoingSpyOrderCategoryChanged()
+        {
+            GameLog.Client.Diplomacy.DebugFormat("SpyOrder Category Changed");
+            OutgoingSpyOrderCategoryChanged.Raise(this);
+            OnPropertyChanged("OutgoingSpyOrderCategory");
+        }
+
+
+        #endregion OutgoingSpyOrderCategory Property
+
+
     }
 }

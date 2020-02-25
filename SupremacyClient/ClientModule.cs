@@ -75,6 +75,9 @@ namespace Supremacy.Client
         private readonly DelegateCommand<string> _hostMultiplayerGameCommand;
         private readonly DelegateCommand<bool> _exitCommand;
 
+        private string localEmpire = "";
+        private int startTechLvl = -1;
+
         private bool _isExiting;
         private IGameController _gameController;
         #endregion
@@ -191,6 +194,8 @@ namespace Supremacy.Client
             RunGameController(gameController => gameController.RunLocal(initData), initData.IsMultiplayerGame);
             GameLog.Client.General.Debug("doing gameController.RunLocal(initData) ...");
 
+            startTechLvl = GetStartTechLvl(initData.Options.StartingTechLevel.ToString());
+            localEmpire = GetLocalEmpireShortage(initData.LocalPlayerEmpireID, out string localempire);
         }
 
         private void ExecuteOptionsCommand(object obj)
@@ -515,22 +520,62 @@ namespace Supremacy.Client
         {
             var statusWindow = _container.Resolve<StatusWindow>();
             //statusWindow.Header = _resourceManager.GetString("LOADING_GAME_MESSAGE");
-            statusWindow.Header = " ***     Loading Game . . .      ***  " +Environment.NewLine;
+            statusWindow.Header = " ***     Loading Game . . .      ***  "; // +Environment.NewLine;
 
 
-            statusWindow.Content =  "For more information on game play please read the manual." 
-            + Environment.NewLine + "-------------------------------------------------------------------------------------------------------------------------------"
+            statusWindow.Content = Environment.NewLine
+            + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
+            + Environment.NewLine + "For more information on game play please read the manual."
+            + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
             + Environment.NewLine + "Star Trek and all related marks, logos and characters are solely owned by CBS Studios Inc."
             + Environment.NewLine + "This fan production is not endorsed by, sponsored by, nor affiliated with CBS, Paramount Pictures, or"
             + Environment.NewLine + "any other Star Trek franchise, and is a non-commercial fan-made game intended for recreational use."
             + Environment.NewLine + "No commercial exhibition or distribution is permitted. No alleged independent rights will be asserted"
             + Environment.NewLine + "against CBS or Paramount Pictures."
-            + Environment.NewLine + "-------------------------------------------------------------------------------------------------------------------------------"
+            + Environment.NewLine + "----------------------------------------------------------------------------------------------------------------------------------------------"
             + Environment.NewLine + "This work is licensed under the Creative Commons"
             + Environment.NewLine + "Attribution - NonCommercial - ShareAlike 4.0 International (CC BY - NC - SA 4.0)"
             ;
 
-   
+            //string techlvl = "3";
+            //var options = localEmpireID;
+            //string techlvl = startTechLvl;
+            //string techlvl = _appContext.LobbyData.GameOptions.StartingTechLevel.ToString();
+            //string empireID = _appContext.LocalPlayerEmpire.Civilization.Key.Substring(3, 0);
+
+            string introTextCase = "empty_introTextCase";  // SinglePlayerGame working
+
+
+            introTextCase = localEmpire + startTechLvl;  // startTechLvl = -1 shown
+            if (startTechLvl == -1)
+                introTextCase = _resourceManager.GetString("GAME_START_INFO_LOADING_GAME");
+                    //"...history from the saved game continues ... let's see what the future will bring...";
+
+            try
+            {
+                if (_appContext.RemotePlayers != null)
+                    introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_JOINER_LOADING_GAME");
+                //"...Competition to Supremacy of Galaxy begins... join and let your empire raise ...";
+            } catch { }
+
+            if (_appContext.IsGameHost == true)
+                introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_HOSTER_LOADING_GAME");
+            //"...Competition to Supremacy of Galaxy begins... let your empire raise and lead others ...";
+
+
+
+            GameLog.Client.GameInitData.DebugFormat("introTextCase = {0}", introTextCase);
+            //string introTextCase = "FED1"; 
+            string introText = Environment.NewLine;
+            //+ "----------------------------------------------------------------------------------------------------------------------------------------------"
+            //+ Environment.NewLine;
+            try
+            {
+                introText += _resourceManager.GetString(introTextCase);
+            } catch { introText = "";  }
+
+            statusWindow.Content = introText + statusWindow.Content + Environment.NewLine;
+
 
 
             // Hints screen will not show for host of a multiplayer game so is excluded here, the host cannot progress to the loaded game.
@@ -767,6 +812,61 @@ namespace Supremacy.Client
 
             var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, startScreen.EmpireID);
 
+            localEmpire = GetLocalEmpireShortage(startScreen.EmpireID, out string localempire);
+            //localEmpireID = startScreen.EmpireID;
+            //switch (startScreen.EmpireID)
+            //{
+            //    case 0:
+            //        localEmpire = "FED";
+            //        break;
+            //    case 1:
+            //        localEmpire = "TER";
+            //        break;
+            //    case 2:
+            //        localEmpire = "ROM";
+            //        break;
+            //    case 3:
+            //        localEmpire = "KLI";
+            //        break;
+            //    case 4:
+            //        localEmpire = "CAR";
+            //        break;
+            //    case 5:
+            //        localEmpire = "DOM";
+            //        break;
+            //    case 6:
+            //        localEmpire = "FED";
+            //        break;
+            //    default:
+            //        localEmpire = "BOR";
+            //        break;
+            //}
+            startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
+            //string startTechLvlText = startScreen.Options.StartingTechLevel.ToString();
+            //switch (startTechLvlText)
+            //{
+            //    case "Early":
+            //        startTechLvl = 1;
+            //        break;
+            //    case "Developed":
+            //        startTechLvl = 2;
+            //        break;
+            //    case "Sophisticated":
+            //        startTechLvl = 3;
+            //        break;
+            //    case "Advanced":
+            //        startTechLvl = 4;
+            //        break;
+            //    case "Supreme":
+            //        startTechLvl = 5;
+            //        break;
+            //    default:
+            //        startTechLvl = 1;
+            //        break;
+            //}
+
+
+
             //if (startScreen.EmpireID = 5)
             //    var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, themeID);
 
@@ -775,6 +875,64 @@ namespace Supremacy.Client
             // activate following for switching to using MP-Screen as well for SP
             //var initData = GameInitData.CreateMultiplayerGame(GameOptionsManager.LoadDefaults(), "LOCAL PLAYER");
             //RunGameController(gameController => gameController.RunLocal(initData), true);
+        }
+
+        private int GetStartTechLvl(string startTechLvlText)
+        {
+            switch (startTechLvlText)
+            {
+                case "Early":
+                    startTechLvl = 1;
+                    break;
+                case "Developed":
+                    startTechLvl = 2;
+                    break;
+                case "Sophisticated":
+                    startTechLvl = 3;
+                    break;
+                case "Advanced":
+                    startTechLvl = 4;
+                    break;
+                case "Supreme":
+                    startTechLvl = 5;
+                    break;
+                default:
+                    startTechLvl = 1;
+                    break;
+            }
+            return startTechLvl;
+        }
+
+        private string GetLocalEmpireShortage(int empireID, out string localEmpire)
+        {
+            switch (empireID)
+            {
+                case 0:
+                    localEmpire = "FED";
+                    break;
+                case 1:
+                    localEmpire = "TER";
+                    break;
+                case 2:
+                    localEmpire = "ROM";
+                    break;
+                case 3:
+                    localEmpire = "KLI";
+                    break;
+                case 4:
+                    localEmpire = "CAR";
+                    break;
+                case 5:
+                    localEmpire = "DOM";
+                    break;
+                case 6:
+                    localEmpire = "FED";
+                    break;
+                default:
+                    localEmpire = "BOR";
+                    break;
+            }
+            return localEmpire;
         }
 
         private void RunGameController(Action<IGameController> runDelegate, bool remoteConnection)
@@ -819,6 +977,8 @@ namespace Supremacy.Client
                 Interlocked.Exchange(ref _gameController, null);
                 ActivateMenuScreen();
             }
+
+            //ShowLoadingScreen();  // additional showing
 
         }
 

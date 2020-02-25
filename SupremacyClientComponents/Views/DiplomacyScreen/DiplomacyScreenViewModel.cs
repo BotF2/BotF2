@@ -245,6 +245,7 @@ namespace Supremacy.Client.Views
                 return;
 
             SelectedForeignPower.OutgoingMessage.Send();
+            GameLog.Client.Diplomacy.DebugFormat("Diplo Message sent...");
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
 
             OnCommandVisibilityChanged();

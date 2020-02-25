@@ -16,6 +16,7 @@ using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Intelligence;
 using Supremacy.Orbitals;
+using Supremacy.SpyOperations;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -36,6 +37,7 @@ namespace Supremacy.Game
     {
         WaitOnPlayers = 0,
         PreTurnOperations,
+        SpyOperations,
         ResetObjects,
         FleetMovement,
         Combat,
@@ -218,6 +220,14 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PreTurnOperations);
 
+            GameLog.Core.Events.DebugFormat("...beginning SpyOperations...");
+
+            //OnTurnPhaseChanged(game, TurnPhase.SpyOperations);
+            //GameContext.PushThreadContext(game);
+            //try { DoSpyOperations(); } //?? do we need game in the constructor ??
+            //finally { GameContext.PopThreadContext(); }
+            //OnTurnPhaseFinished(game, TurnPhase.SpyOperations);
+
             GameLog.Core.Events.DebugFormat("...beginning FleetMovement...");
 
             OnTurnPhaseChanged(game, TurnPhase.FleetMovement);
@@ -298,13 +308,13 @@ namespace Supremacy.Game
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.Trade);
 
-            GameLog.Core.Events.DebugFormat("...beginning Intelligence...");
+            //GameLog.Core.Events.DebugFormat("...beginning Intelligence...");
 
-            OnTurnPhaseChanged(game, TurnPhase.Intelligence);
-            GameContext.PushThreadContext(game);
-            try { DoIntelligence(game); }
-            finally { GameContext.PopThreadContext(); }
-            OnTurnPhaseFinished(game, TurnPhase.Intelligence);
+            //OnTurnPhaseChanged(game, TurnPhase.Intelligence);
+            //GameContext.PushThreadContext(game);
+            //try { DoIntelligence(game); }
+            //finally { GameContext.PopThreadContext(); }
+            //OnTurnPhaseFinished(game, TurnPhase.Intelligence);
 
             GameLog.Core.Events.DebugFormat("...beginning Morale...");
 
@@ -374,17 +384,17 @@ namespace Supremacy.Game
             var fleets = objects.OfType<Fleet>().ToHashSet();
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
 
-           GameLog.Core.Stations.DebugFormat("resetting items...");
+           GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {
                 GameContext.PushThreadContext(game);
-                //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1}", item.ObjectID, item.Name);
+                // GameLog.Core.General.DebugFormat("next item will be: ID = {0}, Name = {1}", item.ObjectID, item.Name);
                 try
                 {
-                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    // GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is trying to reset", item.ObjectID, item.Name);
                     item.Reset();
                     // works well but gives hidden info
-                    //GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
+                    // GameLog.Core.General.DebugFormat("item: ID = {0}, Name = {1} is successfully resetted", item.ObjectID, item.Name);
                 }
                 catch (Exception e)
                 {
@@ -407,6 +417,7 @@ namespace Supremacy.Game
             ParallelForEach(civManagers, civManager =>
             {
                 GameContext.PushThreadContext(game);
+                civManager.SitRepEntries.Clear();
                 try
                 {
                     civManager.SitRepEntries.Clear();
@@ -717,7 +728,8 @@ namespace Supremacy.Game
                         {
                             if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
                             {
-                                //GameLog.Client.Test.DebugFormat("I** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+                                //
+                                GameLog.Core.Diplomacy.DebugFormat("I** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
                                 var diplomatOther = Diplomat.Get(aCiv);
                                 var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
                                 if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember) // || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
@@ -782,12 +794,14 @@ namespace Supremacy.Game
                     switch (ForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
+                                            GameLog.Core.Diplomacy.DebugFormat("AcceptProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
-                                AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                                        AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
+                                            GameLog.Core.Diplomacy.DebugFormat("RejectProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
-                                RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
+                                        RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
                     }
 
@@ -876,8 +890,239 @@ namespace Supremacy.Game
         }
         #endregion
 
+        #region DoSpyOperations() Method
+        //private void DoSpyOperations()
+        //{
+        //    /*
+        //     * Process pending actions.... collected ...like SabotageEnergy or SabotageCredits
+        //     */
+        //    foreach (var attacker in GameContext.Current.Civilizations)
+        //    {
+        //        if (attacker.IsEmpire)
+        //        {
+        //            foreach (var victim in GameContext.Current.Civilizations)
+        //            {
+        //                if (attacker == victim || !victim.IsEmpire)
+        //                    continue;
+
+        //                // minor races are out, only empire1 vs empire2
+
+        //                //var Spy_2_Power = victim;
+        //                var attacker1 = Diplomat.Get(attacker);
+        //                //var Spy_2_Power = new Spy_2_Power
+
+        //                ////var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+
+        //                //switch (Spy_2_Power.PendingAction)
+        //                //{
+        //                //    case SpyActionExecute.DoItSo:
+        //                //        if (Spy_2_Power.LastProposalReceived != null)
+        //                //            AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+        //                //        break;
+        //                //    //case PendingDiplomacyAction.RejectProposal:
+        //                //    //    if (ForeignPower.LastProposalReceived != null)
+        //                //    //        RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+        //                //    //    break;
+        //                //}
+
+        //                GameLog.Core.Intel.DebugFormat("DoSpyOperations....doing the operations {0} VS {1}", attacker, victim);
+
+
+        //                Colony _seat = GameContext.Current.CivilizationManagers[victim].SeatOfGovernment;
+
+        //                //IntelHelper.StealCredits(_seat, attacker, victim, "Terrorists"); // ?? Do we need to save blame string in CivilizationManager
+
+        //                //Spy_2_Power.PendingSpyAction = SpyActionExecute.Done;
+
+
+
+        //                //ForeignPower.PendingAction = PendingDiplomacyAction.None;
+
+
+        //                //        if (civ1.CivID == 6 || civ1.Key == "BORG")
+        //                //        {
+        //                //            //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
+        //                //            continue; // Borg don't accept anything
+        //                //        }
+        //                //        if (civ2.CivID == 6 || civ2.Key == "BORG")
+        //                //        {
+        //                //            continue; // Borg don't accept anything
+        //                //        }
+        //                //        var diplomat1 = Diplomat.Get(civ1);
+        //                //        var diplomat2 = Diplomat.Get(civ2);
+        //                //        if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
+        //                //            diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
+        //                //        {
+        //                //            continue;
+        //                //        }
+        //                //        if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
+        //                //        {
+        //                //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+        //                //            {
+        //                //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
+        //                //                {
+        //                //                    //
+        //                //                    GameLog.Core.Diplomacy.DebugFormat("I** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+        //                //                    var diplomatOther = Diplomat.Get(aCiv);
+        //                //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+        //                //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember) // || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+        //                //                    {
+        //                //                        continue;
+        //                //                    }
+        //                //                }
+        //                //            }
+
+        //                //        }
+        //                //        if (!civ1.IsEmpire && civ2.IsEmpire)
+        //                //        {
+        //                //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+        //                //            {
+        //                //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
+        //                //                {
+        //                //                    var diplomatOther = Diplomat.Get(aCiv);
+        //                //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+        //                //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.CounterpartyIsMember || otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.OwnerIsMember)
+        //                //                    {
+        //                //                        continue;
+        //                //                    }
+        //                //                }
+        //                //            }
+        //                //        }
+        //                //        if (civ2.IsEmpire && civ2.IsHuman && civ1.IsEmpire) // only a minor vs a major
+        //                //        {
+        //                //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+        //                //            {
+        //                //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ1 && aCiv != civ2)
+        //                //                {
+        //                //                    // GameLog.Client.Test.DebugFormat("C** civ1= {2} civ2 = {3} aCiv = {0} status = {1}", aCiv, Diplomat.Get(aCiv).GetForeignPower(civ2).DiplomacyData.Status.ToString(), civ1.Key, civ2.Key);
+        //                //                    var diplomatOther = Diplomat.Get(aCiv);
+        //                //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ2).DiplomacyData.Status;
+        //                //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
+        //                //                    {
+        //                //                        continue;
+        //                //                    }
+        //                //                }
+        //                //            }
+        //                //        }
+        //                //        if (civ1.IsEmpire && civ1.IsHuman && civ2.IsEmpire) // only a minor vs a major
+        //                //        {
+        //                //            foreach (Civilization aCiv in GameContext.Current.Civilizations) // not already a member with other empire
+        //                //            {
+        //                //                if (aCiv.IsEmpire && aCiv.CivID != 6 && aCiv != civ2 && aCiv != civ1)
+        //                //                {
+        //                //                    var diplomatOther = Diplomat.Get(aCiv);
+        //                //                    var otherForeignPowerStatus = diplomatOther.GetForeignPower(civ1).DiplomacyData.Status;
+        //                //                    if (otherForeignPowerStatus == Diplomacy.ForeignPowerStatus.Allied)
+        //                //                    {
+        //                //                        continue;
+        //                //                    }
+        //                //                }
+        //                //            }
+        //                //        }
+        //                //        var ForeignPower = diplomat1.GetForeignPower(civ2);
+        //                //        var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+        //                //        GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+        //                //        GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+
+        //                //        switch (ForeignPower.PendingAction)
+        //                //        {
+        //                //            case PendingDiplomacyAction.AcceptProposal:
+        //                //                if (ForeignPower.LastProposalReceived != null)
+        //                //                    AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+        //                //                break;
+        //                //            case PendingDiplomacyAction.RejectProposal:
+        //                //                if (ForeignPower.LastProposalReceived != null)
+        //                //                    RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+        //                //                break;
+        //                //        }
+
+        //                //        ForeignPower.PendingAction = PendingDiplomacyAction.None;
+        //                //    }
+        //            }
+        //        }
+        //        //var civManagers = GameContext.Current.CivilizationManagers;
+
+        //        ///*
+        //        // * Schedule delivery of outbound messages
+        //        // */
+        //        //foreach (var civ1 in GameContext.Current.Civilizations)
+        //        //{
+        //        //    var diplomat = Diplomat.Get(civ1);
+
+        //        //    foreach (var civ2 in GameContext.Current.Civilizations)
+        //        //    {
+        //        //        if (civ1 == civ2)
+        //        //            continue;
+
+        //        //        var foreignPower = diplomat.GetForeignPower(civ2);
+
+        //        //        var proposalSent = foreignPower.ProposalSent;
+        //        //        if (proposalSent != null)
+        //        //        {
+        //        //            foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
+        //        //            foreignPower.LastProposalSent = proposalSent;
+        //        //            foreignPower.ProposalSent = null;
+
+        //        //            if (civ1.IsEmpire)
+        //        //                civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, proposalSent));
+
+        //        //            if (civ2.IsEmpire)
+        //        //                civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, proposalSent));
+        //        //        }
+        //        //        else
+        //        //        {
+        //        //            foreignPower.CounterpartyForeignPower.ProposalReceived = null;
+        //        //        }
+
+        //        //        var statementSent = foreignPower.StatementSent;
+        //        //        if (statementSent != null)
+        //        //        {
+        //        //            foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
+        //        //            foreignPower.LastStatementSent = statementSent;
+        //        //            foreignPower.StatementSent = null;
+
+        //        //            if (statementSent.StatementType == StatementType.WarDeclaration)
+        //        //                foreignPower.DeclareWar();
+        //        //        }
+        //        //        else
+        //        //        {
+        //        //            foreignPower.CounterpartyForeignPower.StatementReceived = null;
+        //        //        }
+
+        //        //        var responseSent = foreignPower.ResponseSent;
+        //        //        if (responseSent != null)
+        //        //        {
+        //        //            foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent;
+        //        //            foreignPower.LastResponseSent = responseSent;
+        //        //            foreignPower.ResponseSent = null;
+
+        //        //            if (responseSent.ResponseType != ResponseType.NoResponse &&
+        //        //                !(responseSent.ResponseType == ResponseType.Accept && responseSent.Proposal.IsGift()))
+        //        //            {
+        //        //                if (civ1.IsEmpire)
+        //        //                    civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, responseSent));
+
+        //        //                if (civ2.IsEmpire)
+        //        //                    civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, responseSent));
+        //        //            }
+        //        //        }
+        //        //        else
+        //        //        {
+        //        //            foreignPower.CounterpartyForeignPower.ResponseReceived = null;
+        //        //        }
+        //        //}
+        //    }
+
+        //        ///*
+        //        // * Fulfull agreement obligations
+        //        // */
+        //        //foreach (var agreement in GameContext.Current.AgreementMatrix)
+        //        //    AgreementFulfillmentVisitor.Visit(agreement);
+        //    }
+    #endregion SpyOperations
+
         #region DoCombat() Method
-        void DoCombat(GameContext game)
+                void DoCombat(GameContext game)
         {
             var combatLocations = new HashSet<MapLocation>();
             var invasionLocations = new HashSet<MapLocation>();
@@ -1120,6 +1365,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
+                    // Check TechObj for correct (formatted) values for ScienceAbility and ScanStrength
                     GameLog.Core.Research.ErrorFormat(string.Format("##### There was a problem conducting research for {0} {1}",
                         scienceShip.ObjectID, scienceShip.Name),
                         e);
@@ -1746,300 +1992,301 @@ namespace Supremacy.Game
         #endregion
 
         #region DoIntelligence() Method
-        void DoIntelligence(GameContext game)
-        {
-            var innateDefense = 200;
-            var chanceOfAttemptSucceeding = 100;
-            var minProductionFacilitiesToLeave = 5;
+        //void DoIntelligence(GameContext game)
+        //{
+        //    var innateDefense = 200;
+        //    var chanceOfAttemptSucceeding = 100;
+        //    var minProductionFacilitiesToLeave = 5;
 
-            ParallelForEach(GameContext.Current.Civilizations, civ =>
-            {
-                GameContext.PushThreadContext(game);
-                try
-                {
-                    if (!civ.IsEmpire)
-                        return;
+        //    ParallelForEach(GameContext.Current.Civilizations, civ =>
+        //    {
+        //        GameContext.PushThreadContext(game);
+        //        try
+        //        {
+        //            if (!civ.IsEmpire)
+        //                return;
 
-                    var attackingEmpire = GameContext.Current.CivilizationManagers[civ.CivID];
-                    if (attackingEmpire.TotalIntelligenceProduction <= 0) {
-                        GameLog.Core.Intel.DebugFormat("{0} has no intel power so cannot attack");
-                        return;
-                    }
+        //            var attackingEmpire = GameContext.Current.CivilizationManagers[civ.CivID];
+        //            if (attackingEmpire.TotalIntelligenceProduction <= 0)
+        //            {
+        //                GameLog.Core.Intel.DebugFormat("{0} has no intel power so cannot attack");
+        //                return;
+        //            }
 
-                    //Get a list of all viable target empire
-                    var targets = GameContext.Current.Civilizations
-                        //All empires
-                        .Where(t => t.IsEmpire)
-                        //That aren't themselves
-                        .Where(t => t.CivID != civ.CivID)
-                        //That they have actually met
-                        .Where(t => DiplomacyHelper.IsContactMade(civ, t));
+        //            //Get a list of all viable target empire
+        //            var targets = GameContext.Current.Civilizations
+        //                //All empires
+        //                .Where(t => t.IsEmpire)
+        //                //That aren't themselves
+        //                .Where(t => t.CivID != civ.CivID)
+        //                //That they have actually met
+        //                .Where(t => DiplomacyHelper.IsContactMade(civ, t));
 
-                   
-                    GameLog.Core.Intel.DebugFormat("Available intel targets for {0}: {1}", civ.Name, targets.Count());
 
-                    //Double check that we have viable targets
-                    if (targets.Count() == 0)
-                        return;
+        //            GameLog.Core.Intel.DebugFormat("Available intel targets for {0}: {1}", civ.Name, targets.Count());
 
-                    // ToDo: let player chose a target
-                    //Select one at random
-                    CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[targets.RandomElement()];
-                    GameLog.Core.Intel.DebugFormat("{0} is targeting empire {1}...", civ.Name, targetEmpire.Civilization.Name);
+        //            //Double check that we have viable targets
+        //            if (targets.Count() == 0)
+        //                return;
 
-                    //Randomly pick one of their colonies to attack
-                    Colony targetColony = targetEmpire.Colonies.RandomElement();
+        //            // ToDo: let player chose a target
+        //            //Select one at random
+        //            CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[targets.RandomElement()];
+        //            GameLog.Core.Intel.DebugFormat("{0} is targeting empire {1}...", civ.Name, targetEmpire.Civilization.Name);
 
-                    GameLog.Core.Intel.DebugFormat("{0} is targeting colony {1}...", civ.Name, targetColony.Name);
+        //            //Randomly pick one of their colonies to attack
+        //            Colony targetColony = targetEmpire.Colonies.RandomElement();
 
-                    int defenseIntelligence = targetEmpire.TotalIntelligenceProduction + innateDefense;
-                    int attackIntelligience = attackingEmpire.TotalIntelligenceProduction;
+        //            GameLog.Core.Intel.DebugFormat("{0} is targeting colony {1}...", civ.Name, targetColony.Name);
 
-                    //Get the ratio of the attacking power to defending power
-                    int ratio = attackIntelligience / defenseIntelligence;
+        //            int defenseIntelligence = targetEmpire.TotalIntelligenceProduction + innateDefense;
+        //            int attackIntelligience = attackingEmpire.TotalIntelligenceProduction;
 
-                    //We need at least a ratio of greater than 1 to attack
-                    if (ratio < 1)
-                    {
-                        GameLog.Core.Intel.DebugFormat("{0} doesn't have enough attacking intelligence to make an attack against {1} - {2} vs {3}",
-                            attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligience, defenseIntelligence);
-                        return;
-                    }
+        //            //Get the ratio of the attacking power to defending power
+        //            int ratio = attackIntelligience / defenseIntelligence;
 
-                    //For each 1 ratio, the attacking empire has a chance of performing an action, or failing, to a maximum of 4
-                    int attempts;
-                    if (ratio > 4)
-                    {
-                        attempts = 4;
-                    }
-                    else
-                    {
-                        attempts = ratio;
-                    }
+        //            //We need at least a ratio of greater than 1 to attack
+        //            if (ratio < 1)
+        //            {
+        //                GameLog.Core.Intel.DebugFormat("{0} doesn't have enough attacking intelligence to make an attack against {1} - {2} vs {3}",
+        //                    attackingEmpire.Civilization.Name, targetEmpire.Civilization.Name, attackIntelligience, defenseIntelligence);
+        //                return;
+        //            }
 
-                    for (int i = 0; i < attempts; i++)
-                    {
-                        int action = RandomHelper.Roll(chanceOfAttemptSucceeding);
+        //            //For each 1 ratio, the attacking empire has a chance of performing an action, or failing, to a maximum of 4
+        //            int attempts;
+        //            if (ratio > 4)
+        //            {
+        //                attempts = 4;
+        //            }
+        //            else
+        //            {
+        //                attempts = ratio;
+        //            }
 
-                        if (action < 9)
-                        {
-                            /*
-                             * Adjust morale
-                             */
-                            //-2 morale at target colony
-                            targetColony.Morale.AdjustCurrent(-2);
-                            targetColony.Morale.UpdateAndReset();
-                            GameLog.Core.Intel.DebugFormat("Morale at {0} reduced by 2 to {1}", targetColony.Name, targetColony.Morale.CurrentValue);
+        //            for (int i = 0; i < attempts; i++)
+        //            {
+        //                int action = RandomHelper.Roll(chanceOfAttemptSucceeding);
 
-                            //-1 morale at target home colony
-                            targetEmpire.HomeColony.Morale.AdjustCurrent(-1);
-                            targetEmpire.HomeColony.Morale.UpdateAndReset();
-                            GameLog.Core.Intel.DebugFormat("Morale on {0} reduced by 1 to {1}", targetEmpire.HomeColony.Name, targetEmpire.HomeColony.Morale.CurrentValue);
+        //                if (action < 9)
+        //                {
+        //                    /*
+        //                     * Adjust morale
+        //                     */
+        //                    //-2 morale at target colony
+        //                    targetColony.Morale.AdjustCurrent(-2);
+        //                    targetColony.Morale.UpdateAndReset();
+        //                    GameLog.Core.Intel.DebugFormat("Morale at {0} reduced by 2 to {1}", targetColony.Name, targetColony.Morale.CurrentValue);
 
-                            //-1 morale at target seat of government
-                            targetEmpire.SeatOfGovernment.Morale.AdjustCurrent(-1);
-                            targetEmpire.SeatOfGovernment.Morale.UpdateAndReset();
-                            GameLog.Core.Intel.DebugFormat("Morale on {0} reduced by 1 to {1}", targetEmpire.SeatOfGovernment.Name, targetEmpire.SeatOfGovernment.Morale.CurrentValue);
+        //                    //-1 morale at target home colony
+        //                    targetEmpire.HomeColony.Morale.AdjustCurrent(-1);
+        //                    targetEmpire.HomeColony.Morale.UpdateAndReset();
+        //                    GameLog.Core.Intel.DebugFormat("Morale on {0} reduced by 1 to {1}", targetEmpire.HomeColony.Name, targetEmpire.HomeColony.Morale.CurrentValue);
 
-                            //Morale +1 to attacker HomeColony
-                            attackingEmpire.HomeColony.Morale.AdjustCurrent(+1);
-                            attackingEmpire.HomeColony.Morale.UpdateAndReset();
-                            GameLog.Core.Intel.DebugFormat("Morale on {0} increased by 1 to {1}", attackingEmpire.HomeColony.Name, attackingEmpire.HomeColony.Morale.CurrentValue);
-                        }
+        //                    //-1 morale at target seat of government
+        //                    targetEmpire.SeatOfGovernment.Morale.AdjustCurrent(-1);
+        //                    targetEmpire.SeatOfGovernment.Morale.UpdateAndReset();
+        //                    GameLog.Core.Intel.DebugFormat("Morale on {0} reduced by 1 to {1}", targetEmpire.SeatOfGovernment.Name, targetEmpire.SeatOfGovernment.Morale.CurrentValue);
 
-                        //Steal Money
-                        if (action == 1)
-                        {
-                            //If we're going for their main planet, target the central treasury
-                            if ((targetColony == targetEmpire.HomeColony) || (targetColony == targetEmpire.SeatOfGovernment))
-                            {
-                                if (targetEmpire.Credits.CurrentValue > 0)
-                                {
-                                    int stolenCredits = RandomHelper.Roll(targetEmpire.Credits.CurrentValue);
+        //                    //Morale +1 to attacker HomeColony
+        //                    attackingEmpire.HomeColony.Morale.AdjustCurrent(+1);
+        //                    attackingEmpire.HomeColony.Morale.UpdateAndReset();
+        //                    GameLog.Core.Intel.DebugFormat("Morale on {0} increased by 1 to {1}", attackingEmpire.HomeColony.Name, attackingEmpire.HomeColony.Morale.CurrentValue);
+        //                }
 
-                                    targetEmpire.Credits.AdjustCurrent(-1 * stolenCredits);
-                                    targetEmpire.Credits.UpdateAndReset();
-                                    attackingEmpire.Credits.AdjustCurrent(stolenCredits);
-                                    attackingEmpire.Credits.UpdateAndReset();
+        //                //Steal Money
+        //                if (action == 1)
+        //                {
+        //                    //If we're going for their main planet, target the central treasury
+        //                    if ((targetColony == targetEmpire.HomeColony) || (targetColony == targetEmpire.SeatOfGovernment))
+        //                    {
+        //                        if (targetEmpire.Credits.CurrentValue > 0)
+        //                        {
+        //                            int stolenCredits = RandomHelper.Roll(targetEmpire.Credits.CurrentValue);
 
-                                    GameLog.Core.Intel.DebugFormat("{0} stole {1} credits from the {2} treasury", attackingEmpire.Civilization.Name, stolenCredits, targetEmpire.Civilization.Name);
+        //                            targetEmpire.Credits.AdjustCurrent(-1 * stolenCredits);
+        //                            targetEmpire.Credits.UpdateAndReset();
+        //                            attackingEmpire.Credits.AdjustCurrent(stolenCredits);
+        //                            attackingEmpire.Credits.UpdateAndReset();
 
-                                    targetEmpire.SitRepEntries.Add(new CreditsStolenTargetSitRepEntry(targetEmpire.Civilization, targetColony, stolenCredits));
-                                    attackingEmpire.SitRepEntries.Add(new CreditsStolenAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, stolenCredits));
-                                }
-                            }
-                            else //Otherwise siphon credits from trade route
-                            {
-                                if (targetColony.CreditsFromTrade.CurrentValue > 0)
-                                {
-                                    int stolenCredits = RandomHelper.Roll(targetColony.CreditsFromTrade.CurrentValue);
-                                    targetColony.CreditsFromTrade.AdjustCurrent(stolenCredits * -1);
-                                    targetColony.CreditsFromTrade.UpdateAndReset();
-                                    attackingEmpire.Credits.AdjustCurrent(stolenCredits);
-                                    attackingEmpire.Credits.UpdateAndReset();
+        //                            GameLog.Core.Intel.DebugFormat("{0} stole {1} credits from the {2} treasury", attackingEmpire.Civilization.Name, stolenCredits, targetEmpire.Civilization.Name);
 
-                                    GameLog.Core.Intel.DebugFormat("{0} stole {1} credits from the trade routes on {2}", attackingEmpire.Civilization.Name, stolenCredits, targetColony.Name);
+        //                            targetEmpire.SitRepEntries.Add(new CreditsStolenTargetSitRepEntry(targetEmpire.Civilization, targetColony, stolenCredits));
+        //                            attackingEmpire.SitRepEntries.Add(new CreditsStolenAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, stolenCredits));
+        //                        }
+        //                    }
+        //                    else //Otherwise siphon credits from trade route
+        //                    {
+        //                        if (targetColony.CreditsFromTrade.CurrentValue > 0)
+        //                        {
+        //                            int stolenCredits = RandomHelper.Roll(targetColony.CreditsFromTrade.CurrentValue);
+        //                            targetColony.CreditsFromTrade.AdjustCurrent(stolenCredits * -1);
+        //                            targetColony.CreditsFromTrade.UpdateAndReset();
+        //                            attackingEmpire.Credits.AdjustCurrent(stolenCredits);
+        //                            attackingEmpire.Credits.UpdateAndReset();
 
-                                    targetEmpire.SitRepEntries.Add(new TradeRouteCreditsStolenTargetSitRepEntry(targetEmpire.Civilization, targetColony, stolenCredits));
-                                    attackingEmpire.SitRepEntries.Add(new TradeRouteCreditsStolenAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, stolenCredits));
-                                }
-                            }
-                        }
+        //                            GameLog.Core.Intel.DebugFormat("{0} stole {1} credits from the trade routes on {2}", attackingEmpire.Civilization.Name, stolenCredits, targetColony.Name);
 
-                        //Target their food reserves
-                        else if (action == 2)
-                        {
-                            if (targetColony.FoodReserves.CurrentValue > 0)
-                            {
-                                int destroyedFoodReserves = RandomHelper.Roll(targetColony.FoodReserves.CurrentValue);
+        //                            targetEmpire.SitRepEntries.Add(new TradeRouteCreditsStolenTargetSitRepEntry(targetEmpire.Civilization, targetColony, stolenCredits));
+        //                            attackingEmpire.SitRepEntries.Add(new TradeRouteCreditsStolenAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, stolenCredits));
+        //                        }
+        //                    }
+        //                }
 
-                                targetColony.FoodReserves.AdjustCurrent(destroyedFoodReserves * -1);
-                                targetColony.FoodReserves.UpdateAndReset();
+        //                //Target their food reserves
+        //                else if (action == 2)
+        //                {
+        //                    if (targetColony.FoodReserves.CurrentValue > 0)
+        //                    {
+        //                        int destroyedFoodReserves = RandomHelper.Roll(targetColony.FoodReserves.CurrentValue);
 
-                                GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food at {2}", attackingEmpire.Civilization.Name, destroyedFoodReserves, targetColony.Name);
+        //                        targetColony.FoodReserves.AdjustCurrent(destroyedFoodReserves * -1);
+        //                        targetColony.FoodReserves.UpdateAndReset();
 
-                                targetEmpire.SitRepEntries.Add(new FoodReservesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, destroyedFoodReserves));
-                                attackingEmpire.SitRepEntries.Add(new FoodReservesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, destroyedFoodReserves));
-                            }
-                        }
+        //                        GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food at {2}", attackingEmpire.Civilization.Name, destroyedFoodReserves, targetColony.Name);
 
-                        //Target their food production
-                        else if (action == 3)
-                        {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Food) <= minProductionFacilitiesToLeave)
-                            {
-                                continue;
-                            }
+        //                        targetEmpire.SitRepEntries.Add(new FoodReservesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, destroyedFoodReserves));
+        //                        attackingEmpire.SitRepEntries.Add(new FoodReservesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, destroyedFoodReserves));
+        //                    }
+        //                }
 
-                            int destroyedFoodFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Food) - minProductionFacilitiesToLeave);
-                            targetColony.RemoveFacilities(ProductionCategory.Food, destroyedFoodFacilities);
+        //                //Target their food production
+        //                else if (action == 3)
+        //                {
+        //                    if (targetColony.GetTotalFacilities(ProductionCategory.Food) <= minProductionFacilitiesToLeave)
+        //                    {
+        //                        continue;
+        //                    }
 
-                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food faciliities at {2}", attackingEmpire.Civilization.Name, destroyedFoodFacilities, targetColony.Name);
+        //                    int destroyedFoodFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Food) - minProductionFacilitiesToLeave);
+        //                    targetColony.RemoveFacilities(ProductionCategory.Food, destroyedFoodFacilities);
 
-                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
-                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
-                        }
+        //                    GameLog.Core.Intel.DebugFormat("{0} destroyed {1} food faciliities at {2}", attackingEmpire.Civilization.Name, destroyedFoodFacilities, targetColony.Name);
 
-                        //Target industrial production
-                        else if (action == 4)
-                        {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Industry) <= minProductionFacilitiesToLeave)
-                            {
-                                continue;
-                            }
+        //                    targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
+        //                    attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Food, destroyedFoodFacilities));
+        //                }
 
-                            int destroyedIndustrialFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Industry) - minProductionFacilitiesToLeave);
-                            targetColony.RemoveFacilities(ProductionCategory.Industry, destroyedIndustrialFacilities);
+        //                //Target industrial production
+        //                else if (action == 4)
+        //                {
+        //                    if (targetColony.GetTotalFacilities(ProductionCategory.Industry) <= minProductionFacilitiesToLeave)
+        //                    {
+        //                        continue;
+        //                    }
 
-                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} industrial faciliities at {2}", attackingEmpire.Civilization.Name, destroyedIndustrialFacilities, targetColony.Name);
+        //                    int destroyedIndustrialFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Industry) - minProductionFacilitiesToLeave);
+        //                    targetColony.RemoveFacilities(ProductionCategory.Industry, destroyedIndustrialFacilities);
 
-                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
-                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
-                        }
+        //                    GameLog.Core.Intel.DebugFormat("{0} destroyed {1} industrial faciliities at {2}", attackingEmpire.Civilization.Name, destroyedIndustrialFacilities, targetColony.Name);
 
-                        //Target energy production
-                        else if (action == 5)
-                        {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Energy) <= minProductionFacilitiesToLeave)
-                            {
-                                continue;
-                            }
+        //                    targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
+        //                    attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Industry, destroyedIndustrialFacilities));
+        //                }
 
-                            int destroyedEnergyFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Energy) - minProductionFacilitiesToLeave);
-                            targetColony.RemoveFacilities(ProductionCategory.Energy, destroyedEnergyFacilities);
+        //                //Target energy production
+        //                else if (action == 5)
+        //                {
+        //                    if (targetColony.GetTotalFacilities(ProductionCategory.Energy) <= minProductionFacilitiesToLeave)
+        //                    {
+        //                        continue;
+        //                    }
 
-                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} energy faciliities at {2}", attackingEmpire.Civilization.Name, destroyedEnergyFacilities, targetColony.Name);
+        //                    int destroyedEnergyFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Energy) - minProductionFacilitiesToLeave);
+        //                    targetColony.RemoveFacilities(ProductionCategory.Energy, destroyedEnergyFacilities);
 
-                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
-                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
-                        }
+        //                    GameLog.Core.Intel.DebugFormat("{0} destroyed {1} energy faciliities at {2}", attackingEmpire.Civilization.Name, destroyedEnergyFacilities, targetColony.Name);
 
-                        //Target research facilities
-                        else if (action == 6)
-                        {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Research) <= minProductionFacilitiesToLeave)
-                            {
-                                continue;
-                            }
+        //                    targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
+        //                    attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Energy, destroyedEnergyFacilities));
+        //                }
 
-                            int destroyedResearchFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Research) - minProductionFacilitiesToLeave);
-                            targetColony.RemoveFacilities(ProductionCategory.Research, destroyedResearchFacilities);
+        //                //Target research facilities
+        //                else if (action == 6)
+        //                {
+        //                    if (targetColony.GetTotalFacilities(ProductionCategory.Research) <= minProductionFacilitiesToLeave)
+        //                    {
+        //                        continue;
+        //                    }
 
-                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} research facilities at {2}", attackingEmpire.Civilization.Name, destroyedResearchFacilities, targetColony.Name);
+        //                    int destroyedResearchFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Research) - minProductionFacilitiesToLeave);
+        //                    targetColony.RemoveFacilities(ProductionCategory.Research, destroyedResearchFacilities);
 
-                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
-                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
-                        }
+        //                    GameLog.Core.Intel.DebugFormat("{0} destroyed {1} research facilities at {2}", attackingEmpire.Civilization.Name, destroyedResearchFacilities, targetColony.Name);
 
-                        //Target intel facilities
-                        else if (action == 7)
-                        {
-                            if (targetColony.GetTotalFacilities(ProductionCategory.Intelligence) <= minProductionFacilitiesToLeave)
-                            {
-                                continue;
-                            }
+        //                    targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
+        //                    attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Research, destroyedResearchFacilities));
+        //                }
 
-                            int destroyedIntelFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Intelligence) - minProductionFacilitiesToLeave);
-                            targetColony.RemoveFacilities(ProductionCategory.Intelligence, destroyedIntelFacilities);
+        //                //Target intel facilities
+        //                else if (action == 7)
+        //                {
+        //                    if (targetColony.GetTotalFacilities(ProductionCategory.Intelligence) <= minProductionFacilitiesToLeave)
+        //                    {
+        //                        continue;
+        //                    }
 
-                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} intelligence facilities at {2}", attackingEmpire.Civilization.Name, destroyedIntelFacilities, targetColony.Name);
+        //                    int destroyedIntelFacilities = RandomHelper.Roll(targetColony.GetTotalFacilities(ProductionCategory.Intelligence) - minProductionFacilitiesToLeave);
+        //                    targetColony.RemoveFacilities(ProductionCategory.Intelligence, destroyedIntelFacilities);
 
-                            targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
-                            attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
-                        }
+        //                    GameLog.Core.Intel.DebugFormat("{0} destroyed {1} intelligence facilities at {2}", attackingEmpire.Civilization.Name, destroyedIntelFacilities, targetColony.Name);
 
-                        //Target planetary defenses
-                        else if (action == 8)
-                        {
-                            int destroyedOrbitalBatteries = 0;
-                            int shieldStrengthLost = 0;
+        //                    targetEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedTargetSitRepEntry(targetEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
+        //                    attackingEmpire.SitRepEntries.Add(new ProductionFacilitiesDestroyedAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, ProductionCategory.Intelligence, destroyedIntelFacilities));
+        //                }
 
-                            if (targetColony.OrbitalBatteries.Count > 1)
-                            {
-                                destroyedOrbitalBatteries = RandomHelper.Roll(targetColony.OrbitalBatteries.Count);
-                                targetColony.RemoveOrbitalBatteries(destroyedOrbitalBatteries);
-                            }
+        //                //Target planetary defenses
+        //                else if (action == 8)
+        //                {
+        //                    int destroyedOrbitalBatteries = 0;
+        //                    int shieldStrengthLost = 0;
 
-                            if (targetColony.ShieldStrength.CurrentValue > 0) {
-                                shieldStrengthLost = RandomHelper.Roll(targetColony.ShieldStrength.CurrentValue);
-                                targetColony.ShieldStrength.AdjustCurrent(-1 * shieldStrengthLost);
-                                targetColony.ShieldStrength.UpdateAndReset();
-                            }
+        //                    if (targetColony.OrbitalBatteries.Count > 1)
+        //                    {
+        //                        destroyedOrbitalBatteries = RandomHelper.Roll(targetColony.OrbitalBatteries.Count);
+        //                        targetColony.RemoveOrbitalBatteries(destroyedOrbitalBatteries);
+        //                    }
 
-                            GameLog.Core.Intel.DebugFormat("{0} destroyed {1} orbital batteries and removed {2} strength from planetary shields at {3}",
-                                attackingEmpire.Civilization.Name, destroyedOrbitalBatteries, shieldStrengthLost, targetColony.Name);
+        //                    if (targetColony.ShieldStrength.CurrentValue > 0) {
+        //                        shieldStrengthLost = RandomHelper.Roll(targetColony.ShieldStrength.CurrentValue);
+        //                        targetColony.ShieldStrength.AdjustCurrent(-1 * shieldStrengthLost);
+        //                        targetColony.ShieldStrength.UpdateAndReset();
+        //                    }
 
-                            targetEmpire.SitRepEntries.Add(new PlanetaryDefenceAttackTargetSitRepEntry(targetEmpire.Civilization, targetColony, destroyedOrbitalBatteries, shieldStrengthLost));
-                            attackingEmpire.SitRepEntries.Add(new PlanetaryDefenceAttackAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, destroyedOrbitalBatteries, shieldStrengthLost));
-                        }
+        //                    GameLog.Core.Intel.DebugFormat("{0} destroyed {1} orbital batteries and removed {2} strength from planetary shields at {3}",
+        //                        attackingEmpire.Civilization.Name, destroyedOrbitalBatteries, shieldStrengthLost, targetColony.Name);
 
-                        //Other possibilties...
-                        //Uncover who attacked us and blaming others 
-                        //Destroy orbiting space station
-                        //Assasination
-                        //Target individual buildings
-                        //Bombing
-                        //Target research (destroy)
-                        //Target research (steal)
+        //                    targetEmpire.SitRepEntries.Add(new PlanetaryDefenceAttackTargetSitRepEntry(targetEmpire.Civilization, targetColony, destroyedOrbitalBatteries, shieldStrengthLost));
+        //                    attackingEmpire.SitRepEntries.Add(new PlanetaryDefenceAttackAttackerSitRepEntry(attackingEmpire.Civilization, targetColony, destroyedOrbitalBatteries, shieldStrengthLost));
+        //                }
 
-                        //Attack failed
-                        //else
-                        //{
-                        //    targetEmpire.SitRepEntries.Add(new IntelDefenceSucceededSitRepEntry(targetEmpire.Civilization, targetColony));
-                        //    attackingEmpire.SitRepEntries.Add(new IntelAttackFailedSitRepEntry(attackingEmpire.Civilization, targetColony));
-                        //}
-                    }
-                }
-                catch (Exception e)
-                {
-                    GameLog.Core.Intel.ErrorFormat(string.Format("DoIntelligience failed for {0}", civ.Name), e);
-                }
-                finally
-                {
-                    GameContext.PopThreadContext();
-                }
-            });
-        }
+        //                //Other possibilties...
+        //                //Uncover who attacked us and blaming others 
+        //                //Destroy orbiting space station
+        //                //Assasination
+        //                //Target individual buildings
+        //                //Bombing
+        //                //Target research (destroy)
+        //                //Target research (steal)
+
+        //                //Attack failed
+        //                //else
+        //                //{
+        //                //    targetEmpire.SitRepEntries.Add(new IntelDefenceSucceededSitRepEntry(targetEmpire.Civilization, targetColony));
+        //                //    attackingEmpire.SitRepEntries.Add(new IntelAttackFailedSitRepEntry(attackingEmpire.Civilization, targetColony));
+        //                //}
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            GameLog.Core.Intel.ErrorFormat(string.Format("DoIntelligience failed for {0}", civ.Name), e);
+        //        }
+        //        finally
+        //        {
+        //            GameContext.PopThreadContext();
+        //        }
+        //    });
+        //}
         #endregion
 
         #region DoTrade() Method
@@ -2222,6 +2469,22 @@ namespace Supremacy.Game
                 civManager.Resources.UpdateAndReset();
                 civManager.Credits.UpdateAndReset();
                 civManager.OnTurnFinished();
+
+                // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
+                GameLog.Core.CivsAndRaces.DebugFormat(";Col:;{1};Pop:;{2};Morale:;{3};Credits;{4};Change;{5};Research;{6};{7};for;{0}"
+                    , civManager.Civilization.Key
+                    , civManager.Colonies.Count
+                    , civManager.TotalPopulation
+                    , civManager.AverageMorale  
+                    , civManager.Credits.CurrentValue
+                    , civManager.Credits.CurrentChange
+
+                    , civManager.Research.CumulativePoints
+                    , civManager.Civilization.CivilizationType
+                    //, civManager.Treasury.GrossIncome  // ;Treasury;{7}  // doesn't work, maybe it's just done with Credits !
+                    //, civManager.Treasury.Maintenance  // ;Maint;{8}
+
+                    );
             }
 
             GameContext.Current.TurnNumber++;

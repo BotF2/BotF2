@@ -202,14 +202,16 @@ namespace Supremacy.Game
                 GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
                 _nextObjectId = reader.ReadOptimizedInt32();
                 _turnNumber = reader.ReadOptimizedUInt16();
-                GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
+                        GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
                 _options = reader.Read<GameOptions>();
                 _gameMod = reader.Read<GameMod>();
                 _civilizations = reader.Read<CivDatabase>();
+                        // CivDatabase = basic Civs (like ShortName etc)
                 _civManagers = reader.Read<CivilizationManagerMap>();
+                        // _civManagers = basic Civs (like ShortName etc)
                 _races = reader.Read<RaceDatabase>();
                 _universe = reader.Read<UniverseManager>();
-                GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
+                        GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
                 _techDatabase = reader.Read<TechDatabase>();
                 _researchMatrix = reader.Read<ResearchMatrix>();
                 _sectorClaims = reader.Read<SectorClaimGrid>();

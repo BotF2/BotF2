@@ -424,6 +424,13 @@ namespace Supremacy.Orbitals
                 newElement = doc.CreateElement("ScienceAbility");
                 newElement.InnerText = _scienceAbility.ToString();
                 baseElement.AppendChild(newElement);
+
+                if (_scienceAbility < 0 || _scienceAbility > 100)   // atm all values between x and x (or 0 for not having this ability)
+                    GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml ScienceAbility = {0}, but check for a correct value in percent", _scienceAbility);
+
+                Int32.TryParse(_scienceAbility.ToString(), out int _scienceAbilityINT);
+                if (_scienceAbility != _scienceAbilityINT)  // atm all values between x and x (or 0 for not having this ability)
+                    GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml ScienceAbility = {0}, but check for a correct value (full numeric) in percent", _scienceAbility);
             }
 
             if (ScanStrength > 0)

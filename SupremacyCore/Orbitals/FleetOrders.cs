@@ -36,9 +36,8 @@ namespace Supremacy.Orbitals
         public static readonly EngageOrder EngageOrder;
         public static readonly AvoidOrder AvoidOrder;
         public static readonly ColonizeOrder ColonizeOrder;
-        public static readonly InfiltrateOrder InfiltrateOrder;
-        public static readonly RaidOrder RaidOrder;
-        public static readonly SabotageOrder SabotageOrder;
+       // public static readonly RaidOrder RaidOrder;
+       // public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
         public static readonly MedicalOrder MedicalOrder;
         public static readonly SpyOnOrder SpyOnOrder;
@@ -57,9 +56,9 @@ namespace Supremacy.Orbitals
             EngageOrder = new EngageOrder();
             AvoidOrder = new AvoidOrder();
             ColonizeOrder = new ColonizeOrder();
-            InfiltrateOrder = new InfiltrateOrder();
-            RaidOrder = new RaidOrder();
-            SabotageOrder = new SabotageOrder();
+            //InfiltrateOrder = new InfiltrateOrder();
+           // RaidOrder = new RaidOrder();
+           // SabotageOrder = new SabotageOrder();
             InfluenceOrder = new InfluenceOrder();
             MedicalOrder = new MedicalOrder();
             SpyOnOrder = new SpyOnOrder();
@@ -76,9 +75,9 @@ namespace Supremacy.Orbitals
                           EngageOrder,
                           AvoidOrder,
                           ColonizeOrder,
-                          InfiltrateOrder,
-                          RaidOrder,
-                          SabotageOrder,
+                          //InfiltrateOrder,
+                          //RaidOrder,
+                          //SabotageOrder,
                           InfluenceOrder,
                           MedicalOrder,
                           SpyOnOrder,
@@ -336,164 +335,164 @@ namespace Supremacy.Orbitals
 
     #endregion
 
-    #region InfiltrateOrder
+    //#region InfiltrateOrder
 
-    [Serializable]
-    public sealed class InfiltrateOrder : FleetOrder
-    {
-        private readonly bool _isComplete;
+    //[Serializable]
+    //public sealed class InfiltrateOrder : FleetOrder
+    //{
+    //    private readonly bool _isComplete;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_INFILTRATE"); }
-        }
+    //    public override string OrderName
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_INFILTRATE"); }
+    //    }
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_INFILTRATE"); }
-        }
+    //    public override string Status
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_INFILTRATE"); }
+    //    }
 
-        public override FleetOrder Create()
-        {
-            return new InfiltrateOrder();
-        }
+    //    public override FleetOrder Create()
+    //    {
+    //        return new InfiltrateOrder();
+    //    }
 
-        public override bool IsComplete
-        {
-            get { return _isComplete; }
-        }
+    //    public override bool IsComplete
+    //    {
+    //        get { return _isComplete; }
+    //    }
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+    //    public override bool IsCancelledOnRouteChange
+    //    {
+    //        get { return true; }
+    //    }
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+    //    public override bool IsRouteCancelledOnAssign
+    //    {
+    //        get { return true; }
+    //    }
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+    //    public override bool WillEngageHostiles
+    //    {
+    //        get { return false; }
+    //    }
 
-        public InfiltrateOrder()
-        {
-            _isComplete = false;
-        }
+    //    public InfiltrateOrder()
+    //    {
+    //        _isComplete = false;
+    //    }
 
-        private Ship FindBestInfiltrateShip()
-        {
-            Ship bestShip = null;
-            foreach (Ship ship in Fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Spy)
-                {
-                    if ((bestShip == null)
-                        || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
-                    {
-                        bestShip = ship;
-                    }
-                }
-            }
-            return bestShip;
-        }
+    //    private Ship FindBestInfiltrateShip()
+    //    {
+    //        Ship bestShip = null;
+    //        foreach (Ship ship in Fleet.Ships)
+    //        {
+    //            if (ship.ShipType == ShipType.Spy)
+    //            {
+    //                if ((bestShip == null)
+    //                    || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
+    //                {
+    //                    bestShip = ship;
+    //                }
+    //            }
+    //        }
+    //        return bestShip;
+    //    }
 
-        public override bool IsValidOrder(Fleet fleet)
-        {
-            return false; // replaced by AssetsScreen spy mission
-            //if (!base.IsValidOrder(fleet))
-            //    return false;
-            //if (fleet.Sector.System == null)
-            //    return false;
-            ////if (fleet.Sector.System.IsInhabited)
-            ////    return false;
-            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
-            //    return false;
-            ////if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
-            ////    return false;
-            //foreach (var ship in fleet.Ships)
-            //{
-            //    if (ship.ShipType == ShipType.Spy)
-            //        return true;
-            //}
-            //return false;
-        }
+    //    public override bool IsValidOrder(Fleet fleet)
+    //    {
+    //        return false; // replaced by AssetsScreen spy mission
+    //        //if (!base.IsValidOrder(fleet))
+    //        //    return false;
+    //        //if (fleet.Sector.System == null)
+    //        //    return false;
+    //        ////if (fleet.Sector.System.IsInhabited)
+    //        ////    return false;
+    //        //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+    //        //    return false;
+    //        ////if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+    //        ////    return false;
+    //        //foreach (var ship in fleet.Ships)
+    //        //{
+    //        //    if (ship.ShipType == ShipType.Spy)
+    //        //        return true;
+    //        //}
+    //        //return false;
+    //    }
 
-        protected internal override void OnTurnBeginning()
-        {
-            base.OnTurnBeginning();
-            if (_isComplete)
-                return;
-            var spyShip = FindBestInfiltrateShip();
-            if (spyShip == null)
-                return;
-            CreateInfiltrate(
-                Fleet.Owner,
-                Fleet.Sector.System);
-        }
+    //    protected internal override void OnTurnBeginning()
+    //    {
+    //        base.OnTurnBeginning();
+    //        if (_isComplete)
+    //            return;
+    //        var spyShip = FindBestInfiltrateShip();
+    //        if (spyShip == null)
+    //            return;
+    //        CreateInfiltrate(
+    //            Fleet.Owner,
+    //            Fleet.Sector.System);
+    //    }
 
-        protected internal override void OnOrderAssigned()
-        {
-            base.OnOrderAssigned();
-            if (!Fleet.Route.IsEmpty)
-                Fleet.Route = TravelRoute.Empty;
-        }
-
-
-        private static void CreateInfiltrate(Civilization civ, StarSystem system)
-        {
-            var infiltratedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+    //    protected internal override void OnOrderAssigned()
+    //    {
+    //        base.OnOrderAssigned();
+    //        if (!Fleet.Route.IsEmpty)
+    //            Fleet.Route = TravelRoute.Empty;
+    //    }
 
 
-            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
-            if (defenseIntelligence -1 < 0.1)
-                defenseIntelligence = 2;
-            //GameLog.Client.GameData.DebugFormat("defenseIntelligence={0}", defenseIntelligence);
-
-            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
-            if (attackingIntelligence -1 < 0.1)
-                attackingIntelligence = 1;
-            //GameLog.Client.GameData.DebugFormat("attackingIntelligence={0}", attackingIntelligence);
-
-            int ratio = attackingIntelligence / defenseIntelligence;
-                //max ratio for no exceeding gaining points
-                if (ratio > 10)
-                    ratio = 10;
-
-            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is INFILTRATED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})", 
-                                                    system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+    //    private static void CreateInfiltrate(Civilization civ, StarSystem system)
+    //    {
+    //        var infiltratedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
+    //        var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
 
-            int gainedResearchPointsSum = 0;
-            int gainedOfTotalResearchPoints = 0;
+    //        int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
+    //        if (defenseIntelligence -1 < 0.1)
+    //            defenseIntelligence = 2;
+    //        //GameLog.Client.GameData.DebugFormat("defenseIntelligence={0}", defenseIntelligence);
 
-            foreach (var infiltrated in infiltratedCiv)
-            {
-                int gainedResearchPoints = infiltrated.NetResearch;
+    //        int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
+    //        if (attackingIntelligence -1 < 0.1)
+    //            attackingIntelligence = 1;
+    //        //GameLog.Client.GameData.DebugFormat("attackingIntelligence={0}", attackingIntelligence);
 
-                if (gainedResearchPoints > 10)
-                    gainedResearchPoints = gainedResearchPoints * ratio / 10;
+    //        int ratio = attackingIntelligence / defenseIntelligence;
+    //            //max ratio for no exceeding gaining points
+    //            if (ratio > 10)
+    //                ratio = 10;
 
-                gainedResearchPointsSum = gainedResearchPointsSum + gainedResearchPoints;
-                gainedOfTotalResearchPoints = gainedOfTotalResearchPoints + infiltrated.NetResearch;
-                var infiltratedColony = infiltrated;
+    //        GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is INFILTRATED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})", 
+    //                                                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
-                GameContext.Current.CivilizationManagers[civ].Research.UpdateResearch(gainedResearchPoints);
 
-            }
+    //        int gainedResearchPointsSum = 0;
+    //        int gainedOfTotalResearchPoints = 0;
 
-            civManager.SitRepEntries.Add(new NewInfiltrateSitRepEntry(civ, system.Colony, gainedResearchPointsSum, gainedOfTotalResearchPoints));
+    //        foreach (var infiltrated in infiltratedCiv)
+    //        {
+    //            int gainedResearchPoints = infiltrated.NetResearch;
 
-            gainedResearchPointsSum = 0;
-            gainedOfTotalResearchPoints = 0;
+    //            if (gainedResearchPoints > 10)
+    //                gainedResearchPoints = gainedResearchPoints * ratio / 10;
 
-        }
-    }
+    //            gainedResearchPointsSum = gainedResearchPointsSum + gainedResearchPoints;
+    //            gainedOfTotalResearchPoints = gainedOfTotalResearchPoints + infiltrated.NetResearch;
+    //            var infiltratedColony = infiltrated;
 
-    #endregion
+    //            GameContext.Current.CivilizationManagers[civ].Research.UpdateResearch(gainedResearchPoints);
+
+    //        }
+
+    //        civManager.SitRepEntries.Add(new NewInfiltrateSitRepEntry(civ, system.Colony, gainedResearchPointsSum, gainedOfTotalResearchPoints));
+
+    //        gainedResearchPointsSum = 0;
+    //        gainedOfTotalResearchPoints = 0;
+
+    //    }
+    //}
+
+    //#endregion
 
     #region MedicalOrder
     [Serializable]
@@ -689,8 +688,11 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
+            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (!base.IsValidOrder(fleet))
                 return false;
+            if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
+                    return false;
             if (fleet.Sector.System == null)
                 return false;
             if (fleet.Sector.System.Colony == null)
@@ -701,24 +703,13 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
                 return false;
-            try
-            {
-                foreach (Civilization Civ in IntelHelper.SpiedDictionary[fleet.Owner])
-                {
-                    if (Civ == fleet.Sector.System.Colony.Owner)
-                    {
-                        return false;
-                    }
-                }
-            }
-            catch
-            {
-                GameLog.Client.UI.DebugFormat("Tried the Spied Dictionary but it was null");
-            }
             foreach (var ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)
+                {
                     return true;
+                }
+                    
             }
             return false;
         }
@@ -762,313 +753,311 @@ namespace Supremacy.Orbitals
             //if (ratio > 10)
             //    ratio = 10;
 
-            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);
-
-           GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
-
+            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);          
+            GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
         }
     }
 
     #endregion
 
-    #region RaidOrder
+    //#region RaidOrder
 
-    [Serializable]
-    public sealed class RaidOrder : FleetOrder
-    {
-        private readonly bool _isComplete;
+    //[Serializable]
+    //public sealed class RaidOrder : FleetOrder
+    //{
+    //    private readonly bool _isComplete;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_RAID"); }
-        }
+    //    public override string OrderName
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_RAID"); }
+    //    }
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_RAID"); }
-        }
+    //    public override string Status
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_RAID"); }
+    //    }
 
-        public override FleetOrder Create()
-        {
-            return new RaidOrder();
-        }
+    //    public override FleetOrder Create()
+    //    {
+    //        return new RaidOrder();
+    //    }
 
-        public override bool IsComplete
-        {
-            get { return _isComplete; }
-        }
+    //    public override bool IsComplete
+    //    {
+    //        get { return _isComplete; }
+    //    }
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+    //    public override bool IsCancelledOnRouteChange
+    //    {
+    //        get { return true; }
+    //    }
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+    //    public override bool IsRouteCancelledOnAssign
+    //    {
+    //        get { return true; }
+    //    }
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+    //    public override bool WillEngageHostiles
+    //    {
+    //        get { return false; }
+    //    }
 
-        public RaidOrder()
-        {
-            _isComplete = false;
-        }
+    //    public RaidOrder()
+    //    {
+    //        _isComplete = false;
+    //    }
 
-        private Ship FindBestRaidShip()
-        {
-            Ship bestShip = null;
-            foreach (Ship ship in Fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.FastAttack)
-                {
-                    if ((bestShip == null)
-                        || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
-                    {
-                        bestShip = ship;
-                    }
-                }
-            }
-            return bestShip;
-        }
+    //    private Ship FindBestRaidShip()
+    //    {
+    //        Ship bestShip = null;
+    //        foreach (Ship ship in Fleet.Ships)
+    //        {
+    //            if (ship.ShipType == ShipType.FastAttack)
+    //            {
+    //                if ((bestShip == null)
+    //                    || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
+    //                {
+    //                    bestShip = ship;
+    //                }
+    //            }
+    //        }
+    //        return bestShip;
+    //    }
 
-        public override bool IsValidOrder(Fleet fleet)
-        {
-            return false; // replaced by AssetsScreen spy missions
-            //if (!base.IsValidOrder(fleet))
-            //    return false;
-            //if (fleet.Sector.System == null)
-            //    return false;
-            //if (!fleet.Sector.System.HasColony)
-            //    return false;
-            //if (fleet.Sector.System.Owner == fleet.Owner)
-            //    return false;
-            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.FastAttack))
-            //    return false;
+    //    public override bool IsValidOrder(Fleet fleet)
+    //    {
+    //        return false; // replaced by AssetsScreen spy missions
+    //        //if (!base.IsValidOrder(fleet))
+    //        //    return false;
+    //        //if (fleet.Sector.System == null)
+    //        //    return false;
+    //        //if (!fleet.Sector.System.HasColony)
+    //        //    return false;
+    //        //if (fleet.Sector.System.Owner == fleet.Owner)
+    //        //    return false;
+    //        //if (!fleet.Ships.Any(s => s.ShipType == ShipType.FastAttack))
+    //        //    return false;
 
-            //return true;
-        }
+    //        //return true;
+    //    }
 
-        protected internal override void OnTurnBeginning()
-        {
-            base.OnTurnBeginning();
-            if (_isComplete)
-                return;
-            var raidShip = FindBestRaidShip();
-            if (raidShip == null)
-                return;
+    //    protected internal override void OnTurnBeginning()
+    //    {
+    //        base.OnTurnBeginning();
+    //        if (_isComplete)
+    //            return;
+    //        var raidShip = FindBestRaidShip();
+    //        if (raidShip == null)
+    //            return;
 
-            var raidedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
-            var raiderCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
+    //        var raidedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
+    //        var raiderCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
-            int defenseIntelligence = raidedCiv.TotalIntelligenceProduction + 1;
-            if (defenseIntelligence - 1 < 0.1)
-                defenseIntelligence = 2;
+    //        int defenseIntelligence = raidedCiv.TotalIntelligenceProduction + 1;
+    //        if (defenseIntelligence - 1 < 0.1)
+    //            defenseIntelligence = 2;
 
-            int attackingIntelligence = raiderCiv.TotalIntelligenceProduction + 1;
-            if (attackingIntelligence - 1 < 0.1)
-                attackingIntelligence = 1;
+    //        int attackingIntelligence = raiderCiv.TotalIntelligenceProduction + 1;
+    //        if (attackingIntelligence - 1 < 0.1)
+    //            attackingIntelligence = 1;
 
-            int ratio = attackingIntelligence / defenseIntelligence;
-            if (ratio > 10)
-                ratio = 10;
+    //        int ratio = attackingIntelligence / defenseIntelligence;
+    //        if (ratio > 10)
+    //            ratio = 10;
 
-            //TODO: Actually do something with the ratio
+    //        //TODO: Actually do something with the ratio
 
-            GameLog.Core.Intel.DebugFormat("{0} is raiding {1} at {2} (AttackIntel={3}, DefenseIntel={4}, Ratio={5})",
-                raiderCiv, raidedCiv, Fleet.Sector.System, attackingIntelligence, defenseIntelligence, ratio);
+    //        GameLog.Core.Intel.DebugFormat("{0} is raiding {1} at {2} (AttackIntel={3}, DefenseIntel={4}, Ratio={5})",
+    //            raiderCiv, raidedCiv, Fleet.Sector.System, attackingIntelligence, defenseIntelligence, ratio);
 
-            int gainedCredits = Fleet.Sector.System.Colony.TaxCredits;
+    //        int gainedCredits = Fleet.Sector.System.Colony.TaxCredits;
 
-            if (gainedCredits > 10)
-                gainedCredits = gainedCredits * ratio / 10;
+    //        if (gainedCredits > 10)
+    //            gainedCredits = gainedCredits * ratio / 10;
 
-            GameLog.Core.Intel.DebugFormat("{0} gained {1} by raiding the {2} colony at {3}",
-                raiderCiv, gainedCredits, raidedCiv, Fleet.Sector.System);
-            GameLog.Core.Intel.DebugFormat("{0} credits - Before={1}, After={2}",
-                raiderCiv.Credits.CurrentValue, raiderCiv.Credits.CurrentValue + gainedCredits);
-            GameLog.Core.Intel.DebugFormat("{0} credits - Before={1}, After={2}",
-                raidedCiv.Credits.CurrentValue, raidedCiv.Credits.CurrentValue - gainedCredits);
+    //        GameLog.Core.Intel.DebugFormat("{0} gained {1} by raiding the {2} colony at {3}",
+    //            raiderCiv, gainedCredits, raidedCiv, Fleet.Sector.System);
+    //        GameLog.Core.Intel.DebugFormat("{0} credits - Before={1}, After={2}",
+    //            raiderCiv.Credits.CurrentValue, raiderCiv.Credits.CurrentValue + gainedCredits);
+    //        GameLog.Core.Intel.DebugFormat("{0} credits - Before={1}, After={2}",
+    //            raidedCiv.Credits.CurrentValue, raidedCiv.Credits.CurrentValue - gainedCredits);
 
-            raiderCiv.SitRepEntries.Add(new NewRaidSitRepEntry(raidedCiv.Civilization, Fleet.Sector.System.Colony, gainedCredits, raidedCiv.Credits.CurrentValue));
+    //        raiderCiv.SitRepEntries.Add(new NewRaidSitRepEntry(raidedCiv.Civilization, Fleet.Sector.System.Colony, gainedCredits, raidedCiv.Credits.CurrentValue));
 
-            raiderCiv.Credits.AdjustCurrent(gainedCredits);
-            raidedCiv.Credits.AdjustCurrent(gainedCredits * -1);
-        }
+    //        raiderCiv.Credits.AdjustCurrent(gainedCredits);
+    //        raidedCiv.Credits.AdjustCurrent(gainedCredits * -1);
+    //    }
 
-        protected internal override void OnOrderAssigned()
-        {
-            base.OnOrderAssigned();
-            if (!Fleet.Route.IsEmpty)
-                Fleet.Route = TravelRoute.Empty;
-        }
-    }
-    #endregion
+    //    protected internal override void OnOrderAssigned()
+    //    {
+    //        base.OnOrderAssigned();
+    //        if (!Fleet.Route.IsEmpty)
+    //            Fleet.Route = TravelRoute.Empty;
+    //    }
+    //}
+    //#endregion
     
-    #region SabotageOrder
+    //#region SabotageOrder
 
-    [Serializable]
-    public sealed class SabotageOrder : FleetOrder
-    {
-        private readonly bool _isComplete;
+    //[Serializable]
+    //public sealed class SabotageOrder : FleetOrder
+    //{
+    //    private readonly bool _isComplete;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_SABOTAGE"); }
-        }
+    //    public override string OrderName
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_SABOTAGE"); }
+    //    }
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_SABOTAGE"); }
-        }
+    //    public override string Status
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_SABOTAGE"); }
+    //    }
 
-        public override FleetOrder Create()
-        {
-            return new SabotageOrder();
-        }
+    //    public override FleetOrder Create()
+    //    {
+    //        return new SabotageOrder();
+    //    }
 
-        public override bool IsComplete
-        {
-            get { return _isComplete; }
-        }
+    //    public override bool IsComplete
+    //    {
+    //        get { return _isComplete; }
+    //    }
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+    //    public override bool IsCancelledOnRouteChange
+    //    {
+    //        get { return true; }
+    //    }
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+    //    public override bool IsRouteCancelledOnAssign
+    //    {
+    //        get { return true; }
+    //    }
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+    //    public override bool WillEngageHostiles
+    //    {
+    //        get { return false; }
+    //    }
 
-        public SabotageOrder()
-        {
-            _isComplete = false;
-        }
+    //    public SabotageOrder()
+    //    {
+    //        _isComplete = false;
+    //    }
 
-        private Ship FindBestSabotageShip()
-        {
-            Ship bestShip = null;
-            foreach (Ship ship in Fleet.Ships)
-            {
-                if (ship.ShipType == ShipType.Spy)
-                {
-                    if ((bestShip == null)
-                        || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
-                    {
-                        bestShip = ship;
-                    }
-                }
-            }
-            return bestShip;
-        }
+    //    private Ship FindBestSabotageShip()
+    //    {
+    //        Ship bestShip = null;
+    //        foreach (Ship ship in Fleet.Ships)
+    //        {
+    //            if (ship.ShipType == ShipType.Spy)
+    //            {
+    //                if ((bestShip == null)
+    //                    || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
+    //                {
+    //                    bestShip = ship;
+    //                }
+    //            }
+    //        }
+    //        return bestShip;
+    //    }
 
-        public override bool IsValidOrder(Fleet fleet)
-        {
-            return false; // not use in place of AssetsScreen spy missions taking over
-            //if (!base.IsValidOrder(fleet))
-            //    return false;
-            //if (fleet.Sector.System == null)
-            //    return false;
-            //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
-            //    return false;
-            //foreach (var ship in fleet.Ships)
-            //{
-            //    if (ship.ShipType == ShipType.Spy)
-            //        return true;
-            //}
-            //return false;
-        }
+    //    public override bool IsValidOrder(Fleet fleet)
+    //    {
+    //        return false; // not use in place of AssetsScreen spy missions taking over
+    //        //if (!base.IsValidOrder(fleet))
+    //        //    return false;
+    //        //if (fleet.Sector.System == null)
+    //        //    return false;
+    //        //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
+    //        //    return false;
+    //        //foreach (var ship in fleet.Ships)
+    //        //{
+    //        //    if (ship.ShipType == ShipType.Spy)
+    //        //        return true;
+    //        //}
+    //        //return false;
+    //    }
 
-        protected internal override void OnTurnBeginning()
-        {
-            base.OnTurnBeginning();
-            if (_isComplete)
-                return;
-            var sabotageShip = FindBestSabotageShip();
-            if (sabotageShip == null)
-                return;
-            CreateSabotage(
-                Fleet.Owner,
-                Fleet.Sector.System);
-            GameContext.Current.Universe.Destroy(sabotageShip);
-        }
+    //    protected internal override void OnTurnBeginning()
+    //    {
+    //        base.OnTurnBeginning();
+    //        if (_isComplete)
+    //            return;
+    //        var sabotageShip = FindBestSabotageShip();
+    //        if (sabotageShip == null)
+    //            return;
+    //        CreateSabotage(
+    //            Fleet.Owner,
+    //            Fleet.Sector.System);
+    //        GameContext.Current.Universe.Destroy(sabotageShip);
+    //    }
 
-        protected internal override void OnOrderAssigned()
-        {
-            base.OnOrderAssigned();
-            if (!Fleet.Route.IsEmpty)
-                Fleet.Route = TravelRoute.Empty;
-        }
+    //    protected internal override void OnOrderAssigned()
+    //    {
+    //        base.OnOrderAssigned();
+    //        if (!Fleet.Route.IsEmpty)
+    //            Fleet.Route = TravelRoute.Empty;
+    //    }
 
-        private static void CreateSabotage(Civilization civ, StarSystem system)
-        {
-            var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+    //    private static void CreateSabotage(Civilization civ, StarSystem system)
+    //    {
+    //        var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
+    //        var civManager = GameContext.Current.CivilizationManagers[civ.Key];
 
-            int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
-            if (defenseIntelligence - 1 < 0.1)
-                defenseIntelligence = 2;
+    //        int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
+    //        if (defenseIntelligence - 1 < 0.1)
+    //            defenseIntelligence = 2;
 
-            int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
-            if (attackingIntelligence - 1 < 0.1)
-                attackingIntelligence = 1;
+    //        int attackingIntelligence = GameContext.Current.CivilizationManagers[civ].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
+    //        if (attackingIntelligence - 1 < 0.1)
+    //            attackingIntelligence = 1;
 
-            int ratio = attackingIntelligence / defenseIntelligence;
-            //max ratio for no exceeding gaining points
-            if (ratio > 10)
-                ratio = 10;
+    //        int ratio = attackingIntelligence / defenseIntelligence;
+    //        //max ratio for no exceeding gaining points
+    //        if (ratio > 10)
+    //            ratio = 10;
 
-            GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SABOTAGED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
-                system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
+    //        GameLog.Core.Intel.DebugFormat("owner= {0}, system= {1} is SABOTAGED by civ= {2} (Intelligence: defense={3}, attack={4}, ratio={5})",
+    //            system.Owner, system.Name, civ.Name, defenseIntelligence, attackingIntelligence, ratio);
 
 
-            GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}",
-                system.Owner, system.Name, system.Location,
-                system.Colony.GetEnergyUsage(),
-                system.Colony.GetActiveFacilities(ProductionCategory.Energy),
-                system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities before={1}",
-                system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+    //        GameLog.Core.Intel.DebugFormat("Owner= {0}, system= {1} at {2} (sabotaged): Energy={3} out of facilities={4}, in total={5}",
+    //            system.Owner, system.Name, system.Location,
+    //            system.Colony.GetEnergyUsage(),
+    //            system.Colony.GetActiveFacilities(ProductionCategory.Energy),
+    //            system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+    //        GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities before={1}",
+    //            system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
 
-            //Effect of sabatoge
-            int removeEnergyFacilities = 0;
-            if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            {
-                removeEnergyFacilities = 1;
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
-            }
+    //        //Effect of sabatoge
+    //        int removeEnergyFacilities = 0;
+    //        if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 1 && ratio > 1)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+    //        {
+    //            removeEnergyFacilities = 1;
+    //            system.Colony.RemoveFacilities(ProductionCategory.Energy, 1);
+    //        }
 
-            // if ratio > 2 than remove one more  EnergyFacility
-            if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            {
-                removeEnergyFacilities = 3;  //  2 and one from before
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
-            }
+    //        // if ratio > 2 than remove one more  EnergyFacility
+    //        if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 2 && ratio > 2)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+    //        {
+    //            removeEnergyFacilities = 3;  //  2 and one from before
+    //            system.Colony.RemoveFacilities(ProductionCategory.Energy, 2);
+    //        }
 
-            // if ratio > 3 than remove one more  EnergyFacility
-            if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
-            {
-                removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
-                system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
-            }
+    //        // if ratio > 3 than remove one more  EnergyFacility
+    //        if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 3 && ratio > 3)// Energy: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
+    //        {
+    //            removeEnergyFacilities = 6;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
+    //            system.Colony.RemoveFacilities(ProductionCategory.Energy, 3);
+    //        }
 
-            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+    //        GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+    //        civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
-        }
-    }
+    //    }
+    //}
 
-    #endregion
+    //#endregion
 
     #region InfluenceOrder
 

@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Linq;
 using Supremacy.Orbitals;
 using Supremacy.Utility;
+using Supremacy.Intelligence;
 
 namespace Supremacy.Game
 {
@@ -40,7 +41,8 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        //private Dictionary<Civilization, List<Colony>> _infiltratedColonies;
+        private List<Civilization> _spiedCivList;
+        //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
@@ -73,6 +75,7 @@ namespace Supremacy.Game
             _totalIntelligenceDefenseAccumulated.PropertyChanged += OnTotalIntelligenceDefenseAccumulatedPropertyChanged;
 
             _sitRepEntries = new List<SitRepEntry>();
+            _spiedCivList = new List<Civilization>();
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -173,27 +176,7 @@ namespace Supremacy.Game
             get { return _colonies; }
         }
 
-        ///// <summary>
-        ///// Gets a list of the spied civilization's colonies.
-        ///// </summary>
-        ///// <value>The colonies.</value>
-        //[NotNull]
-        //public UniverseObjectList<Colony> SpyColonies
-        //{
-        //    get { return _spyColonies; }
-        //}
-
-        /// <summary>
-        /// Gets a list of the civilization's infiltrated colonies.
-        /// </summary>
-        /// <value>The infiltrated colonies.</value>
         [NotNull]
-        //public Dictionary<Civilization, List<Colony>> InfiltratedColonies
-        //{
-        //    get { return _infiltratedColonies; }
-        //    // set{ alksdjf = value}
-        //}
-
         public Colony SeatOfGovernment
         {
             get
@@ -212,18 +195,27 @@ namespace Supremacy.Game
         [NotNull]
         public IList<SitRepEntry> SitRepEntries
         {
-            get 
+            get
             {
                 foreach (var rep in _sitRepEntries)
                 {
                     //if (rep.Owner.CivID == Player.GameHostID)  // outcomment to see Sitrep of all races
-                        GameLog.Core.General.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
+                    GameLog.Core.General.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                        "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
                 }
-                return _sitRepEntries; 
+                return _sitRepEntries;
             }
         }
 
+        public List<Civilization> SpiedCivList
+        {
+            get { return _spiedCivList; }
+        }
+
+        //public Dictionary<Civilization, string> BlamedCiv
+        //{
+        //    get { return _blamedCiv; }
+        //}
         /// <summary>
         /// Gets the average morale of all the civilization's colonies.
         /// </summary>
@@ -246,7 +238,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
+                int baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
                 foreach (var bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
                 {
                     baseIntel *= bonus.Amount;
@@ -255,13 +247,12 @@ namespace Supremacy.Game
                 return baseIntel;
             }
         }
-
         public Meter TotalIntelligenceAttackingAccumulated
         {
             get
             {
                 var updateMeter = _totalIntelligenceAttackingAccumulated;
-                
+
                 if (_totalIntelligenceAttackingAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
@@ -276,7 +267,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceDefenseAccumulated;
-                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated ={0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
@@ -320,7 +311,7 @@ namespace Supremacy.Game
             internal set
             {
                 _homeColonyId = (value != null) ? value.ObjectID : -1;
-                
+
                 if (value != null)
                     _homeColonyLocation = value.Location;
             }
@@ -334,7 +325,7 @@ namespace Supremacy.Game
         {
             get
             {
-                if(!_homeColonyLocation.HasValue)
+                if (!_homeColonyLocation.HasValue)
                     return null;
                 return GameContext.Current.Universe.Map[_homeColonyLocation.Value].System;
             }
@@ -376,6 +367,16 @@ namespace Supremacy.Game
         #endregion
 
         #region Methods
+
+        public void UpDateSpiedList(List<Civilization> civList)
+        {
+            _spiedCivList.AddRange(civList);
+            //foreach (var item in civList)
+            //{
+            //    GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
+            //}
+        }
+
         /// <summary>
         /// Applies the specified morale event.
         /// </summary>
@@ -400,7 +401,7 @@ namespace Supremacy.Game
 
             var tableValue = moraleTable[eventType.ToString()][_civId] ??
                              moraleTable[eventType.ToString()][0];
-            
+
             if (tableValue == null)
                 return;
 
@@ -421,7 +422,6 @@ namespace Supremacy.Game
         public void Compact()
         {
             _colonies.TrimExcess();
-            //_infiltratedColonies.TrimExcess();
             _globalBonuses.TrimExcess();
             _sitRepEntries.TrimExcess();
         }
@@ -495,10 +495,14 @@ namespace Supremacy.Game
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("AverageMorale");
         }
-
+        private void OnInstallingSpyNetworkPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+                OnPropertyChanged("InstallingSpyNetwork");
+        }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString() );
+            GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
         }
@@ -516,7 +520,7 @@ namespace Supremacy.Game
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        [field : NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
@@ -655,4 +659,5 @@ namespace Supremacy.Game
 
         #endregion
     }
+
 }
