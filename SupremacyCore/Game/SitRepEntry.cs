@@ -1689,7 +1689,6 @@ namespace Supremacy.Game
         private readonly string _affectedField;
         private readonly string _blamed;
         //private readonly string _roleText;
-
         public string Attacking
         {
             get { return _attacking.Key; }

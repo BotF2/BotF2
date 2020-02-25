@@ -379,9 +379,11 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits, {2} Blamed", colony.Name, stolenCredits, blamed);
 
+            /* No not SitRep who local player attacked -- only SitRep when local player is attacked
             _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
-
+                   */
+//*********** How do combat button clicks end up back in host core?????????? do the same for spy missions
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
            
@@ -508,9 +510,8 @@ namespace Supremacy.Intelligence
 
             Int32.TryParse(GameContext.Current.CivilizationManagers[system.Owner].Research.CumulativePoints.ToString(), out int newResearchCumulative);
 
-
-            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
-                   attackingCiv, attackedCiv, colony, affectedField, stolenResearchPoints, newResearchCumulative, blamed));
+            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+            //       attackingCiv, attackedCiv, colony, affectedField, stolenResearchPoints, newResearchCumulative, blamed));
 
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenResearchPoints, newResearchCumulative, blamed));
@@ -523,7 +524,6 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
 
-            //UpdatingBlame(attackingCiv, attackedCiv, blamed);
         }
         public static void SabotageFood(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -618,8 +618,8 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD");
 
-            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
-                    attackingCiv, attackedCiv, colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed));
+            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+            //        attackingCiv, attackedCiv, colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed));
 
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed));
@@ -720,8 +720,8 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
 
-            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
-                    attackingCiv, attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
+            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+            //        attackingCiv, attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
 
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
@@ -822,8 +822,8 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}, {2} blamed", system.Name, colony.GetTotalFacilities(ProductionCategory.Industry), blamed);
 
-            _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
-                    attackingCiv, attackedCiv, colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed));
+            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(
+            //        attackingCiv, attackedCiv, colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed));
 
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed));

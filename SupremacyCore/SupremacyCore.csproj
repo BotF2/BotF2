@@ -196,6 +196,7 @@
     <Compile Include="Diplomacy\Visitors\CreditObligationFulfillmentVisitor.cs" />
     <Compile Include="Diplomacy\Visitors\RejectProposalVisitor.cs" />
     <Compile Include="Economy\EconomyHelper.cs" />
+    <Compile Include="Intelligence\IntelUpdate.cs" />
     <Compile Include="Intelligence\IntelHelper.cs" />
     <Compile Include="Intelligence\IntelPool.cs" />
     <Compile Include="Economy\ShipyardBuildSlot.cs" />

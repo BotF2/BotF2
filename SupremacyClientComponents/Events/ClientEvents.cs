@@ -17,6 +17,7 @@ using Microsoft.Practices.ServiceLocation;
 
 using Supremacy.Annotations;
 using Supremacy.Combat;
+using Supremacy.Intelligence;
 using Supremacy.Game;
 using Supremacy.Client.Context;
 
@@ -204,6 +205,7 @@ namespace Supremacy.Client.Events
     public sealed class ClientConnectionBrokenEvent : CompositePresentationEvent<ClientEventArgs> { }
     public sealed class ClientDisconnectedEvent : CompositePresentationEvent<ClientDataEventArgs<ClientDisconnectReason>> { }
     public sealed class CombatUpdateReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<CombatUpdate>> { }
+    public sealed class IntelUpdateReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<IntelUpdate>> { }
     public sealed class InvasionUpdateReceivedEvent : CompositePresentationEvent<ClientDataEventArgs<InvasionArena>> { }
     public sealed class LocalPlayerJoinedEvent : CompositePresentationEvent<LocalPlayerJoinedEventArgs> { }
     public sealed class PlayerJoinedEvent : CompositePresentationEvent<ClientDataEventArgs<IPlayer>> { }
@@ -236,6 +238,7 @@ namespace Supremacy.Client.Events
         public static readonly ClientConnectionBrokenEvent ClientConnectionBroken;
         public static readonly ClientDisconnectedEvent ClientDisconnected;
         public static readonly CombatUpdateReceivedEvent CombatUpdateReceived;
+        public static readonly IntelUpdateReceivedEvent IntelUpdateReceived;
         public static readonly InvasionUpdateReceivedEvent InvasionUpdateReceived;
         public static readonly LocalPlayerJoinedEvent LocalPlayerJoined;
         public static readonly PlayerJoinedEvent PlayerJoined;
@@ -270,6 +273,7 @@ namespace Supremacy.Client.Events
             ClientConnectionBroken = eventAggregator.GetEvent<ClientConnectionBrokenEvent>();
             ClientDisconnected = eventAggregator.GetEvent<ClientDisconnectedEvent>();
             CombatUpdateReceived = eventAggregator.GetEvent<CombatUpdateReceivedEvent>();
+            IntelUpdateReceived = eventAggregator.GetEvent<IntelUpdateReceivedEvent>();
             InvasionUpdateReceived = eventAggregator.GetEvent<InvasionUpdateReceivedEvent>();
             LocalPlayerJoined = eventAggregator.GetEvent<LocalPlayerJoinedEvent>();
             PlayerJoined = eventAggregator.GetEvent<PlayerJoinedEvent>();
