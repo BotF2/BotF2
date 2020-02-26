@@ -32,6 +32,9 @@ namespace Supremacy.Client.Views
         private readonly IAppContext _appContext;
         private CivilizationManager _localCivManager;
 
+        //private readonly Dictionary<int, IntelOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
+        //private readonly Dictionary<int, IntelTargetPrimaries> _targetOneByCiv; // like _orders
+
         private string _blameWhoZero = "No one";
         private string _blameWhoOne = "No one";
         private string _blameWhoTwo = "No one";

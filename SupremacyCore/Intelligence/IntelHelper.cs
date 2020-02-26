@@ -379,11 +379,11 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits, {2} Blamed", colony.Name, stolenCredits, blamed);
 
-            /* No not SitRep who local player attacked -- only SitRep when local player is attacked
+            /* only SitRep when local player is attacked for now
             _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
                    */
-//*********** How do combat button clicks end up back in host core?????????? do the same for spy missions
+//*********** Want spy operation clicks coming back to host the same as it does for combat, combatupdat and now intelupdate
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
            

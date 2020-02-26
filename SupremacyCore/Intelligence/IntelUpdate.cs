@@ -22,20 +22,21 @@ namespace Supremacy.Combat
     [Serializable]
     public class IntelUpdate
     {
-        private int _combatId;
-        private int _roundNumber;
+        private int _combatId; // do we need an id for intel operations?
+       // private int _roundNumber;
         private int _ownerId;
-        private int _otherCivStrength = 0;
-        private bool _standoff;
+        private int _otherCivStrength = 0; // will thi be our intel points??
+        private bool _standoff; // do we need this for failed spy mission report??
         private MapLocation _location;
-        private IList<CombatAssets> _friendlyAssets;
-        private IList<CombatAssets> _hostileAssets;
+        private IList<CombatAssets> _friendlyAssets; //? intel points
+        private IList<CombatAssets> _hostileAssets; // intel points
         private List<Object> _civList;
         private List<string> _civShortNameList;
-        private List<string> _civFirePowerList;
+        private List<string> _civFirePowerList; // 
         private List<Civilization> _civStatusList;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
+        // where are the orders?? combat and so for intel ??? 
         
         public IntelUpdate() //int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
@@ -551,10 +552,10 @@ namespace Supremacy.Combat
             get { return _combatId; }
         }
 
-        public int RoundNumber
-        {
-            get { return _roundNumber; }
-        }
+        //public int RoundNumber
+        //{
+        //    get { return _roundNumber; }
+        //}
 
         public int OwnerID
         {
@@ -589,10 +590,10 @@ namespace Supremacy.Combat
             get { return _hostileAssets; }
         }
 
-        public bool IsStandoff
-        {
-            get { return _standoff; }
-        }
+        //public bool IsStandoff
+        //{
+        //    get { return _standoff; }
+        //}
         public bool CombatUpdate_IsCombatOver // This bool opens and closes the 'close' button and the combat order buttons
         {
             get
