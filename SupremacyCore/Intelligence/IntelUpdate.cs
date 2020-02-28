@@ -22,37 +22,27 @@ namespace Supremacy.Intelligence
     [Serializable]
     public class IntelUpdate
     {
-        private int _combatId; // do we need an id for intel operations?
+        private int _intelId; // do we need an id for intel operations?
        // private int _roundNumber;
         private int _ownerId;
-        private int _otherCivStrength = 0; // will thi be our intel points??
-        private bool _standoff; // do we need this for failed spy mission report??
-        private MapLocation _location;
-       // private IList<CombatAssets> _friendlyAssets; //? intel points
-       // private IList<CombatAssets> _hostileAssets; // intel points
+      // private int _otherCivStrength = 0; // will this be our intel points??
+       // private bool _standoff; // do we need this for failed spy mission report??
+       // private MapLocation _location;
+       // private IList<CombatAssets> _friendlyAssets; //see intel points below
+       // private IList<CombatAssets> _hostileAssets; 
         private List<Object> _civList;
         private List<string> _civShortNameList;
-        private List<string> _civFirePowerList; // 
-        private List<Civilization> _civStatusList;
-        private int _friendlyEmpireStrength;
-        private int _allHostileEmpireStrength;
-        // where are the orders?? combat and so for intel ??? 
-        
-        public IntelUpdate() //int combatId, int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
-        {
-            //GameLog.Core.Combat.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
-            //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",
-            //    combatId
-            //    , roundNumber
-            //    , standoff
-            //    , owner.CivID
-            //    , location.ToString()
-            //    , friendlyAssets.Count
-            //    , hostileAssets.Count
-            //    );
+        private List<string> _civIntelPowerList; //from combat _civFirePowerList
+       // private List<Civilization> _civStatusList; do we need this in intel?, thinking not
+        private int _friendlyEmpireStrength; // intel points
+       // private int _allHostileEmpireStrength; // intel points, think we do not need this                                         
 
-            //if (owner == null)
-            //    throw new ArgumentNullException("owner");
+        public IntelUpdate(int intelId, Civilization owner) //Do we need intel points for each side???  int _roundNumber, bool _standoff, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets
+        {
+            GameLog.Core.Intel.DebugFormat("intelId = {0} Civilization owner = {1}", intelId, owner.CivID);
+
+            if (owner == null)
+                throw new ArgumentNullException("owner");
             //if (friendlyAssets == null)
             //    throw new ArgumentNullException("friendlyAssets");
             //if (hostileAssets == null)
@@ -60,10 +50,10 @@ namespace Supremacy.Intelligence
 
 
 
-            //_combatId = combatId;
+            _intelId = intelId;
             //_roundNumber = roundNumber;
             //_standoff = standoff;
-            //_ownerId = owner.CivID;
+            _ownerId = owner.CivID;
             //_location = location;
             //_friendlyAssets = friendlyAssets;
             //_hostileAssets = hostileAssets;
@@ -71,54 +61,13 @@ namespace Supremacy.Intelligence
         }
         #region Properties for total fire power of the friends and Others (hostiles)
         // ********* get intel points here  ******************
-        //public int FriendlyEmpireStrength
-        //{
-
-        //    get
-        //    {
-        //        foreach (var fa in FriendlyAssets)
-        //        {
-
-        //            foreach (var cs in fa.CombatShips)   // only combat ships 
-        //            {
-        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
-        //                _friendlyEmpireStrength = Convert.ToInt32(
-        //                        Convert.ToDouble(_friendlyEmpireStrength + cs.Firepower)
-        //                        + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
-        //                        * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
-        //                        );
-
-        //                GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
-        //                     cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Firepower, _friendlyEmpireStrength);
-        //            }
-
-        //            // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
-        //            foreach (var ncs in fa.NonCombatShips)   // only NonCombat ships 
-        //            {
-        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
-        //                _friendlyEmpireStrength = Convert.ToInt32(
-        //                        Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
-        //                        + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
-        //                        * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
-        //                        );
-        //            }
-
-        //            if (fa.Station != null)
-        //            {
-
-        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
-        //                _friendlyEmpireStrength = Convert.ToInt32(
-        //                        Convert.ToDouble(_friendlyEmpireStrength + fa.Station.Firepower)
-        //                        + Convert.ToDouble(fa.Station.ShieldStrength + fa.Station.HullStrength)
-        //                        );
-
-        //                GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
-        //                    fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
-        //            }
-        //        }
-        //        return _friendlyEmpireStrength;
-        //    }
-        //}
+        public int FriendlyEmpireStrength
+        {
+            get
+            {
+                return IntelHelper.AttackingAccumulatedInteInt;
+            }
+        }
 
         //public int AllHostileEmpireStrength
         //{
@@ -242,53 +191,53 @@ namespace Supremacy.Intelligence
         //            civNameList.Distinct().ToList();
         //        }
         //        civNameList.Remove(civShortName);
-        //        _civFirePowerList = civNameList.ToList();
+        //        _civIntelPowerList = civNameList.ToList();
         //        return civShortName;
         //    }
 
         //}
 
-        public string CivName2
-        {
-            get
-            {
-                return GetOthersName();
-            }
+        //public string CivName2
+        //{
+        //    get
+        //    {
+        //        return GetOthersName();
+        //    }
 
-        }
+        //}
 
-        public string CivName3
-        {
-            get
-            {
-                return GetOthersName();
-            }
+        //public string CivName3
+        //{
+        //    get
+        //    {
+        //        return GetOthersName();
+        //    }
 
-        }
+        //}
 
-        public string CivName4
-        {
-            get
-            {
-                return GetOthersName();
-            }
+        //public string CivName4
+        //{
+        //    get
+        //    {
+        //        return GetOthersName();
+        //    }
 
-        }
+        //}
         #endregion
 
         public string GetOthersName()
         {
-            if (_civFirePowerList.FirstOrDefault() != null)
+            if (_civIntelPowerList.FirstOrDefault() != null)
             {
-                var civShortName = _civFirePowerList.FirstOrDefault();
+                var civShortName = _civIntelPowerList.FirstOrDefault();
                 List<string> civNameList = new List<string>();
-                foreach (var name in _civFirePowerList)
+                foreach (var name in _civIntelPowerList)
                 {
                     civNameList.Add(name);
                     civNameList.Distinct().ToList();
                 }
                 civNameList.Remove(civShortName);
-                _civFirePowerList = civNameList.ToList();
+                _civIntelPowerList = civNameList.ToList();
                 return civShortName;
             }
             else { return null; }
@@ -323,83 +272,83 @@ namespace Supremacy.Intelligence
 
         //}
 
-        public string CivStatus2
-        {
-            get
-            {
-                return GetStatusToOthers();
-            }
+        //public string CivStatus2
+        //{
+        //    get
+        //    {
+        //        return GetStatusToOthers();
+        //    }
 
-        }
+        //}
 
-        public string CivStatus3
-        {
-            get
-            {
-                return GetStatusToOthers();
-            }
+        //public string CivStatus3
+        //{
+        //    get
+        //    {
+        //        return GetStatusToOthers();
+        //    }
 
-        }
+        //}
 
-        public string CivStatus4
-        {
-            get
-            {
-                return GetStatusToOthers();
-            }
+        //public string CivStatus4
+        //{
+        //    get
+        //    {
+        //        return GetStatusToOthers();
+        //    }
 
-        }
+        //}
         #endregion
 
-        public string GetStatusToOthers()
-        {
-            if (_civStatusList.FirstOrDefault() != null)
-            {
-                var currentCiv = _civStatusList.FirstOrDefault();
-                var _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, currentCiv].Status.ToString();
-                List<Civilization> civStatusList = new List<Civilization>();
-                foreach (var civilization in _civStatusList)
-                {
-                    civStatusList.Add(civilization);
-                    civStatusList.Distinct().ToList();
-                }
-                GameLog.Core.CombatDetails.DebugFormat("_targetCiv1Status = {0}", _targetCiv1Status);
-                civStatusList.Remove(currentCiv);
-                _civStatusList = civStatusList.ToList();
-                return String.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
-            }
-            else { return null; }
-        }
+        //public string GetStatusToOthers()
+        //{
+        //    if (_civStatusList.FirstOrDefault() != null)
+        //    {
+        //        var currentCiv = _civStatusList.FirstOrDefault();
+        //        var _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, currentCiv].Status.ToString();
+        //        List<Civilization> civStatusList = new List<Civilization>();
+        //        foreach (var civilization in _civStatusList)
+        //        {
+        //            civStatusList.Add(civilization);
+        //            civStatusList.Distinct().ToList();
+        //        }
+        //        GameLog.Core.CombatDetails.DebugFormat("_targetCiv1Status = {0}", _targetCiv1Status);
+        //        civStatusList.Remove(currentCiv);
+        //        _civStatusList = civStatusList.ToList();
+        //        return String.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
+        //    }
+        //    else { return null; }
+        //}
 
 
-        private string ReturnTextOfStatus(string status)
+        //private string ReturnTextOfStatus(string status)
 
-        {
-            var enumStatus = (ForeignPowerStatus)Enum.Parse(typeof(ForeignPowerStatus), status);
+        //{
+        //    var enumStatus = (ForeignPowerStatus)Enum.Parse(typeof(ForeignPowerStatus), status);
 
-            string returnStatus = " ";
+        //    string returnStatus = " ";
 
-            switch (enumStatus)
-            {
-                case ForeignPowerStatus.NoContact:
-                    returnStatus = "First Contact";
-                    break;
-                case ForeignPowerStatus.CounterpartyIsSubjugated:
-                    returnStatus = "Subjugated";
-                    break;
-                case ForeignPowerStatus.AtWar:
-                    returnStatus = "War";
-                    break;
-                case ForeignPowerStatus.CounterpartyIsUnreachable:
-                    returnStatus = "Undefined";
-                    break;
-                default:
-                    returnStatus = status;
-                    break;
-            }
+        //    switch (enumStatus)
+        //    {
+        //        case ForeignPowerStatus.NoContact:
+        //            returnStatus = "First Contact";
+        //            break;
+        //        case ForeignPowerStatus.CounterpartyIsSubjugated:
+        //            returnStatus = "Subjugated";
+        //            break;
+        //        case ForeignPowerStatus.AtWar:
+        //            returnStatus = "War";
+        //            break;
+        //        case ForeignPowerStatus.CounterpartyIsUnreachable:
+        //            returnStatus = "Undefined";
+        //            break;
+        //        default:
+        //            returnStatus = status;
+        //            break;
+        //    }
 
-            return returnStatus;
-        }
+        //    return returnStatus;
+        //}
 
         #region Properties for civ firepowers
         //public string CivFirePowers1
@@ -538,18 +487,18 @@ namespace Supremacy.Intelligence
 
         //}
 
-        public string TargetCiv1Status(Civilization us, Civilization others)
+        //public string TargetCiv1Status(Civilization us, Civilization others)
+        //{
+        //    var _targetCiv1Status = GameContext.Current.DiplomacyData[us, others].Status.ToString();
+        //    GameLog.Core.CombatDetails.DebugFormat("Status Target 1: Us = {0}, Status = {2}, others = {1}", us, others, _targetCiv1Status);
+
+        //    return _targetCiv1Status;
+
+        //}
+
+        public int IntelID
         {
-            var _targetCiv1Status = GameContext.Current.DiplomacyData[us, others].Status.ToString();
-            GameLog.Core.CombatDetails.DebugFormat("Status Target 1: Us = {0}, Status = {2}, others = {1}", us, others, _targetCiv1Status);
-
-            return _targetCiv1Status;
-
-        }
-
-        public int CombatID
-        {
-            get { return _combatId; }
+            get { return _intelId; }
         }
 
         //public int RoundNumber
@@ -562,15 +511,15 @@ namespace Supremacy.Intelligence
             get { return _ownerId; }
         }
 
-        public MapLocation Location
-        {
-            get { return _location; }
-        }
+        //public MapLocation Location
+        //{
+        //    get { return _location; }
+        //}
 
-        public Sector Sector
-        {
-            get { return GameContext.Current.Universe.Map[Location]; }
-        }
+        //public Sector Sector
+        //{
+        //    get { return GameContext.Current.Universe.Map[Location]; }
+        //}
 
         public Civilization Owner
         {

@@ -26,13 +26,11 @@ namespace Supremacy.Intelligence
         SabotageEnergy,
         SabotageIndustry
     }
-
     //public enum AssaultStrategy
     //{
     //    StagedAttack,
     //    TotalAnnihilation
     //}
-
     [Serializable]
     public class IntelOrders : IEnumerable<IntelOrder>
     {
@@ -40,8 +38,7 @@ namespace Supremacy.Intelligence
         private readonly int _ownerId;
         //private readonly AssaultStrategy _assaultStrategy;
         //private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
-        private readonly Dictionary<int, IntelOrder> _orders; // Dictinary, int key is ownerID &  order from enum
-
+        private readonly Dictionary<int, IntelOrder> _orders; // Dictinary, int key is ownerID & order from enum above this IntelOrders class
 
         public int IntelID
         {

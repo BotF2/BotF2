@@ -33,8 +33,9 @@ namespace Supremacy.Client.Views
         private readonly IUnityContainer _container;
         private readonly IAppContext _appContext;
         private CivilizationManager _localCivManager;
+        private IntelUpdate _update;
 
-        // order dictionary is located in IntelOrders.cs constructor
+        // order dictionary is located in IntelOrders.cs constructor, store orders in core of host?
 
         private string _blameWhoZero = "No one";
         private string _blameWhoOne = "No one";
@@ -99,7 +100,7 @@ namespace Supremacy.Client.Views
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
             IntelHelper.GetLocalCiv(_localCivManager);
             ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
-            DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
+           // DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 
             GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
             IsVisibleChanged += OnIsVisibleChanged;
@@ -1080,12 +1081,12 @@ namespace Supremacy.Client.Views
         }
         private void OnIntelUpdateReceived(DataEventArgs<IntelUpdate> args)
         {
-            HandleCombatUpdate(args.Value);
+            HandleIntelUpdate(args.Value);
         }
 
-        private void HandleIntelUpdate() //(IntelUpdate update)
+        private void HandleIntelUpdate(IntelUpdate update)
         {
-            //_update = update;
+            _update = update;
 
 
             //foreach (CombatAssets assets in update.FriendlyAssets)
