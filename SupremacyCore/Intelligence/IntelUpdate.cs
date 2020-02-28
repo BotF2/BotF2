@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Supremacy.Combat
+namespace Supremacy.Intelligence
 {
     [Serializable]
     public class IntelUpdate
@@ -28,8 +28,8 @@ namespace Supremacy.Combat
         private int _otherCivStrength = 0; // will thi be our intel points??
         private bool _standoff; // do we need this for failed spy mission report??
         private MapLocation _location;
-        private IList<CombatAssets> _friendlyAssets; //? intel points
-        private IList<CombatAssets> _hostileAssets; // intel points
+       // private IList<CombatAssets> _friendlyAssets; //? intel points
+       // private IList<CombatAssets> _hostileAssets; // intel points
         private List<Object> _civList;
         private List<string> _civShortNameList;
         private List<string> _civFirePowerList; // 
@@ -70,122 +70,123 @@ namespace Supremacy.Combat
 
         }
         #region Properties for total fire power of the friends and Others (hostiles)
-        public int FriendlyEmpireStrength
-        {
+        // ********* get intel points here  ******************
+        //public int FriendlyEmpireStrength
+        //{
 
-            get
-            {
-                foreach (var fa in FriendlyAssets)
-                {
+        //    get
+        //    {
+        //        foreach (var fa in FriendlyAssets)
+        //        {
 
-                    foreach (var cs in fa.CombatShips)   // only combat ships 
-                    {
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        _friendlyEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_friendlyEmpireStrength + cs.Firepower)
-                                + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
-                                * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
-                                );
+        //            foreach (var cs in fa.CombatShips)   // only combat ships 
+        //            {
+        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
+        //                _friendlyEmpireStrength = Convert.ToInt32(
+        //                        Convert.ToDouble(_friendlyEmpireStrength + cs.Firepower)
+        //                        + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
+        //                        * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+        //                        );
 
-                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
-                             cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Firepower, _friendlyEmpireStrength);
-                    }
+        //                GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+        //                     cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Firepower, _friendlyEmpireStrength);
+        //            }
 
-                    // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
-                    foreach (var ncs in fa.NonCombatShips)   // only NonCombat ships 
-                    {
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        _friendlyEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
-                                + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
-                                * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
-                                );
-                    }
+        //            // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
+        //            foreach (var ncs in fa.NonCombatShips)   // only NonCombat ships 
+        //            {
+        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
+        //                _friendlyEmpireStrength = Convert.ToInt32(
+        //                        Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
+        //                        + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
+        //                        * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+        //                        );
+        //            }
 
-                    if (fa.Station != null)
-                    {
+        //            if (fa.Station != null)
+        //            {
 
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        _friendlyEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_friendlyEmpireStrength + fa.Station.Firepower)
-                                + Convert.ToDouble(fa.Station.ShieldStrength + fa.Station.HullStrength)
-                                );
+        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
+        //                _friendlyEmpireStrength = Convert.ToInt32(
+        //                        Convert.ToDouble(_friendlyEmpireStrength + fa.Station.Firepower)
+        //                        + Convert.ToDouble(fa.Station.ShieldStrength + fa.Station.HullStrength)
+        //                        );
 
-                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
-                            fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
-                    }
-                }
-                return _friendlyEmpireStrength;
-            }
-        }
+        //                GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0}  - in total now {1}",
+        //                    fa.Station.Name, _friendlyEmpireStrength); // fa.Source.Name, fa.Source.Design, _friendlyEmpireStrength);
+        //            }
+        //        }
+        //        return _friendlyEmpireStrength;
+        //    }
+        //}
 
-        public int AllHostileEmpireStrength
-        {
-            get
-            {
-                foreach (var ha in HostileAssets)
-                {
+        //public int AllHostileEmpireStrength
+        //{
+        //    get
+        //    {
+        //        foreach (var ha in HostileAssets)
+        //        {
 
-                    foreach (var cs in ha.CombatShips)   // only combat ships 
-                    {
-                        // _allHostileEmpireStrength += cs.FirePower;
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        _allHostileEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_allHostileEmpireStrength + cs.Firepower)
-                                + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
-                                * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
-                                );
+        //            foreach (var cs in ha.CombatShips)   // only combat ships 
+        //            {
+        //                // _allHostileEmpireStrength += cs.FirePower;
+        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
+        //                _allHostileEmpireStrength = Convert.ToInt32(
+        //                        Convert.ToDouble(_allHostileEmpireStrength + cs.Firepower)
+        //                        + Convert.ToDouble(cs.ShieldStrength + cs.HullStrength)
+        //                        * ((1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+        //                        );
 
-                        //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
-                        //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
-                    }
+        //                //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+        //                //    cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.FirePower, _hostileEmpireStrength);
+        //            }
 
-                    foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
-                    {
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        _allHostileEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_allHostileEmpireStrength + ncs.Firepower)
-                                + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
-                                * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
-                                );
-                    }
-                    if (ha.Station != null)
-                    {
-                        // Update X 25 june 2019 Total Strenght instead of just Firepower
-                        //_allHostileEmpireStrength += ha.Station.FirePower;
-                        _allHostileEmpireStrength = Convert.ToInt32(
-                                Convert.ToDouble(_allHostileEmpireStrength + ha.Station.Firepower)
-                                + Convert.ToDouble(ha.Station.ShieldStrength + ha.Station.HullStrength)
-                                );
+        //            foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+        //            {
+        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
+        //                _allHostileEmpireStrength = Convert.ToInt32(
+        //                        Convert.ToDouble(_allHostileEmpireStrength + ncs.Firepower)
+        //                        + Convert.ToDouble(ncs.ShieldStrength + ncs.HullStrength)
+        //                        * ((1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))
+        //                        );
+        //            }
+        //            if (ha.Station != null)
+        //            {
+        //                // Update X 25 june 2019 Total Strenght instead of just Firepower
+        //                //_allHostileEmpireStrength += ha.Station.FirePower;
+        //                _allHostileEmpireStrength = Convert.ToInt32(
+        //                        Convert.ToDouble(_allHostileEmpireStrength + ha.Station.Firepower)
+        //                        + Convert.ToDouble(ha.Station.ShieldStrength + ha.Station.HullStrength)
+        //                        );
 
-                        //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0}  - in total now {1}",
-                        //    ha.Station.Name, _hostileEmpireStrength); 
-                    }
-                }
-                return _allHostileEmpireStrength;
-            }
-        }
+        //                //GameLog.Core.CombatDetails.DebugFormat("adding _hostileEmpireStrength for {0}  - in total now {1}",
+        //                //    ha.Station.Name, _hostileEmpireStrength); 
+        //            }
+        //        }
+        //        return _allHostileEmpireStrength;
+        //    }
+        //}
         #endregion
 
         #region Properties for other civilization insignias
-        public string OtherCivInsignia1
-        {
-            get
-            {
-                var asset = _hostileAssets.FirstOrDefault();
-                var civOwner = asset.Owner;
-                var civKey = asset.Owner.Key;
-                List<Object> civList = new List<Object>();
-                foreach (var ha in _hostileAssets)
-                {
-                    civList.Add(ha.Owner);
-                    civList.Distinct().ToList();
-                }
-                civList.Remove(civOwner);
-                _civList = civList.ToList();
-                return civKey;
-            }
-        }
+        //public string OtherCivInsignia1
+        //{
+        //    get
+        //    {
+        //        var asset = _hostileAssets.FirstOrDefault();
+        //        var civOwner = asset.Owner;
+        //        var civKey = asset.Owner.Key;
+        //        List<Object> civList = new List<Object>();
+        //        foreach (var ha in _hostileAssets)
+        //        {
+        //            civList.Add(ha.Owner);
+        //            civList.Distinct().ToList();
+        //        }
+        //        civList.Remove(civOwner);
+        //        _civList = civList.ToList();
+        //        return civKey;
+        //    }
+        //}
 
         public string OtherCivInsignia2
         {
@@ -228,24 +229,24 @@ namespace Supremacy.Combat
 
         #region other Civ name
 
-        public string CivName1
-        {
-            get
-            {
-                var asset = _hostileAssets.FirstOrDefault();
-                var civShortName = asset.Owner.ShortName;
-                List<string> civNameList = new List<string>();
-                foreach (var ha in _hostileAssets)
-                {
-                    civNameList.Add(ha.Owner.ShortName);
-                    civNameList.Distinct().ToList();
-                }
-                civNameList.Remove(civShortName);
-                _civFirePowerList = civNameList.ToList();
-                return civShortName;
-            }
+        //public string CivName1
+        //{
+        //    get
+        //    {
+        //        var asset = _hostileAssets.FirstOrDefault();
+        //        var civShortName = asset.Owner.ShortName;
+        //        List<string> civNameList = new List<string>();
+        //        foreach (var ha in _hostileAssets)
+        //        {
+        //            civNameList.Add(ha.Owner.ShortName);
+        //            civNameList.Distinct().ToList();
+        //        }
+        //        civNameList.Remove(civShortName);
+        //        _civFirePowerList = civNameList.ToList();
+        //        return civShortName;
+        //    }
 
-        }
+        //}
 
         public string CivName2
         {
@@ -295,32 +296,32 @@ namespace Supremacy.Combat
 
         #region other Civ Status
 
-        public string CivStatus1
-        {
-            get
-            {
-                var asset = _hostileAssets.FirstOrDefault();
-                var currentOwner = asset.Owner;
-                List<Civilization> civOwner = new List<Civilization>();
+        //public string CivStatus1
+        //{
+        //    get
+        //    {
+        //        var asset = _hostileAssets.FirstOrDefault();
+        //        var currentOwner = asset.Owner;
+        //        List<Civilization> civOwner = new List<Civilization>();
 
-                var _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, asset.Owner].Status.ToString();
-                //GameLog.Core.CombatDetails.DebugFormat("Status Target 1: Status = {2} for Owner = {0} vs others = {1}", 
-                //Owner, asset.Owner, _targetCiv1Status);
+        //        var _targetCiv1Status = GameContext.Current.DiplomacyData[Owner, asset.Owner].Status.ToString();
+        //        //GameLog.Core.CombatDetails.DebugFormat("Status Target 1: Status = {2} for Owner = {0} vs others = {1}", 
+        //        //Owner, asset.Owner, _targetCiv1Status);
 
-                List<string> civStatusList = new List<string>();  // list of Status
-                foreach (var ha in _hostileAssets)
-                {
-                    civOwner.Add(ha.Owner);
-                    civOwner.Distinct().ToList();
+        //        List<string> civStatusList = new List<string>();  // list of Status
+        //        foreach (var ha in _hostileAssets)
+        //        {
+        //            civOwner.Add(ha.Owner);
+        //            civOwner.Distinct().ToList();
 
-                }
-                civOwner.Remove(currentOwner);
+        //        }
+        //        civOwner.Remove(currentOwner);
 
-                _civStatusList = civOwner.ToList();
-                return String.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
-            }
+        //        _civStatusList = civOwner.ToList();
+        //        return String.Format(ResourceManager.GetString("COMBAT_STATUS_WORD")) + " " + ReturnTextOfStatus(_targetCiv1Status);
+        //    }
 
-        }
+        //}
 
         public string CivStatus2
         {
@@ -401,142 +402,141 @@ namespace Supremacy.Combat
         }
 
         #region Properties for civ firepowers
-        public string CivFirePowers1
-        {
-            get
-            {
-                var asset = _hostileAssets.FirstOrDefault();
-                var civShortName = asset.Owner.ShortName;
-                List<string> civNameList = new List<string>();
-                foreach (var ha in _hostileAssets)
-                {
-                    civNameList.Add(ha.Owner.ShortName);
-                    civNameList.Distinct().ToList();
-                }
-                civNameList.Remove(civShortName);
-                _civShortNameList = civNameList.ToList();
+        //public string CivFirePowers1
+        //{
+        //    get
+        //    {
+        //        var asset = _hostileAssets.FirstOrDefault();
+        //        var civShortName = asset.Owner.ShortName;
+        //        List<string> civNameList = new List<string>();
+        //        foreach (var ha in _hostileAssets)
+        //        {
+        //            civNameList.Add(ha.Owner.ShortName);
+        //            civNameList.Distinct().ToList();
+        //        }
+        //        civNameList.Remove(civShortName);
+        //        _civShortNameList = civNameList.ToList();
 
-                //int otherCivStrength = 0;
-                var _otherAssetsLocal = _hostileAssets.ToList();
+        //        //int otherCivStrength = 0;
+        //        var _otherAssetsLocal = _hostileAssets.ToList();
 
-                foreach (var ha in _hostileAssets)
-                {
+        //        foreach (var ha in _hostileAssets)
+        //        {
 
-                    foreach (var cs in ha.CombatShips)   // only combat ships 
-                    {
-                        if (civShortName == cs.Owner.ShortName)
-                        {
-                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            _otherCivStrength = Convert.ToInt32(Convert.ToDouble((_otherCivStrength + cs.Firepower))
-                                + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength))
-                                * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
-                            _otherAssetsLocal.Remove(ha);
-                        }
-                    }
-                    foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
-                    {
-                        if (civShortName == ncs.Owner.ShortName)
-                        {
-                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            _otherCivStrength = Convert.ToInt32(Convert.ToDouble((_otherCivStrength + ncs.Firepower))
-                                + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
-                                * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
-                            _otherAssetsLocal.Remove(ha);
-                        }
-                    }
+        //            foreach (var cs in ha.CombatShips)   // only combat ships 
+        //            {
+        //                if (civShortName == cs.Owner.ShortName)
+        //                {
+        //                    // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+        //                    _otherCivStrength = Convert.ToInt32(Convert.ToDouble((_otherCivStrength + cs.Firepower))
+        //                        + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength))
+        //                        * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
+        //                    _otherAssetsLocal.Remove(ha);
+        //                }
+        //            }
+        //            foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+        //            {
+        //                if (civShortName == ncs.Owner.ShortName)
+        //                {
+        //                    // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+        //                    _otherCivStrength = Convert.ToInt32(Convert.ToDouble((_otherCivStrength + ncs.Firepower))
+        //                        + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
+        //                        * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
+        //                    _otherAssetsLocal.Remove(ha);
+        //                }
+        //            }
 
-                    if (ha.Station != null)  //  station
-                    {
-                        // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                        _otherCivStrength = _otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
-                        _otherAssetsLocal.Remove(ha);
-                    }
-                }
-                GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", _otherCivStrength);
-                return _otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
-            }
-        }
+        //            if (ha.Station != null)  //  station
+        //            {
+        //                // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+        //                _otherCivStrength = _otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+        //                _otherAssetsLocal.Remove(ha);
+        //            }
+        //        }
+        //        GameLog.Core.CombatDetails.DebugFormat("A civilization with firepower {0}", _otherCivStrength);
+        //        return _otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
+        //    }
+        //}
+        //public string CivFirePowers2
+        //{
+        //    get
+        //    {
+        //        return GetOthersFirePower();
+        //    }
+        //}
+        //public string CivFirePowers3
+        //{
+        //    get
+        //    {
+        //        return GetOthersFirePower();
+        //    }
+        //}
 
-        public string CivFirePowers2
-        {
-            get
-            {
-                return GetOthersFirePower();
-            }
-        }
-        public string CivFirePowers3
-        {
-            get
-            {
-                return GetOthersFirePower();
-            }
-        }
-
-        public string CivFirePowers4
-        {
-            get
-            {
-                return GetOthersFirePower();
-            }
-        }
+        //public string CivFirePowers4
+        //{
+        //    get
+        //    {
+        //        return GetOthersFirePower();
+        //    }
+        //}
         #endregion of proerties for civilizations firepowers
 
-        public string GetOthersFirePower()
-        {
-            if (_civShortNameList.FirstOrDefault() != null)
-            {
-                var civShortName = _civShortNameList.FirstOrDefault();
-                List<string> civNameList = new List<string>();
-                foreach (var name in _civShortNameList)
-                {
-                    civNameList.Add(name);
-                    civNameList.Distinct().ToList();
-                }
-                civNameList.Remove(civShortName);
-                _civShortNameList = civNameList.ToList();
+        //public string GetOthersFirePower()
+        //{
+        //    if (_civShortNameList.FirstOrDefault() != null)
+        //    {
+        //        var civShortName = _civShortNameList.FirstOrDefault();
+        //        List<string> civNameList = new List<string>();
+        //        foreach (var name in _civShortNameList)
+        //        {
+        //            civNameList.Add(name);
+        //            civNameList.Distinct().ToList();
+        //        }
+        //        civNameList.Remove(civShortName);
+        //        _civShortNameList = civNameList.ToList();
 
-                int otherCivStrength = 0;
-                var _otherAssetsLocal = _hostileAssets.ToList();
+        //        int otherCivStrength = 0;
+        //        var _otherAssetsLocal = _hostileAssets.ToList();
 
-                foreach (var ha in _hostileAssets)
-                {
+        //        foreach (var ha in _hostileAssets)
+        //        {
 
-                    foreach (var cs in ha.CombatShips)   // only combat ships 
-                    {
-                        if (civShortName == cs.Owner.ShortName)
-                        {
-                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.Firepower))
-                                + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength))
-                                * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
-                            _otherAssetsLocal.Remove(ha);
-                        }
-                    }
-                    foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
-                    {
-                        if (civShortName == ncs.Owner.ShortName)
-                        {
-                            // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                            otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.Firepower))
-                                + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
-                                * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
-                            _otherAssetsLocal.Remove(ha);
-                        }
-                    }
+        //            foreach (var cs in ha.CombatShips)   // only combat ships 
+        //            {
+        //                if (civShortName == cs.Owner.ShortName)
+        //                {
+        //                    // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+        //                    otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + cs.Firepower))
+        //                        + Convert.ToDouble((cs.ShieldStrength + cs.HullStrength))
+        //                        * (1 + Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
+        //                    _otherAssetsLocal.Remove(ha);
+        //                }
+        //            }
+        //            foreach (var ncs in ha.NonCombatShips)   // only NonCombat ships 
+        //            {
+        //                if (civShortName == ncs.Owner.ShortName)
+        //                {
+        //                    // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+        //                    otherCivStrength = Convert.ToInt32(Convert.ToDouble((otherCivStrength + ncs.Firepower))
+        //                        + Convert.ToDouble((ncs.ShieldStrength + ncs.HullStrength))
+        //                        * (1 + Convert.ToDouble(ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100));
+        //                    _otherAssetsLocal.Remove(ha);
+        //                }
+        //            }
 
-                    if (ha.Station != null)  //  station
-                    {
-                        // UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                        otherCivStrength = otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
-                        _otherAssetsLocal.Remove(ha);
-                    }
-                }
-                GameLog.Core.CombatDetails.DebugFormat("A civilization with CombatPower: {0}", otherCivStrength);
-                return otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
-            }
-            else { return null; }
+        //            if (ha.Station != null)  //  station
+        //            {
+        //                // UPDATE X 25 June 2019: Do total strenght instead of just firepower
+        //                otherCivStrength = otherCivStrength + ha.Station.Firepower + ha.Station.HullStrength + ha.Station.ShieldStrength;
+        //                _otherAssetsLocal.Remove(ha);
+        //            }
+        //        }
+        //        GameLog.Core.CombatDetails.DebugFormat("A civilization with CombatPower: {0}", otherCivStrength);
+        //        return otherCivStrength.ToString("N0") + " " + String.Format(ResourceManager.GetString("COMBAT_POWER"));
+        //    }
+        //    else { return null; }
 
-        }
+        //}
 
         public string TargetCiv1Status(Civilization us, Civilization others)
         {
@@ -577,85 +577,85 @@ namespace Supremacy.Combat
             get { return GameContext.Current.Civilizations[_ownerId]; }
         }
 
-        public IList<CombatAssets> FriendlyAssets
-        {
-            get
-            {
-                return _friendlyAssets;
-            }
-        }
+        //public IList<CombatAssets> FriendlyAssets
+        //{
+        //    get
+        //    {
+        //        return _friendlyAssets;
+        //    }
+        //}
 
-        public IList<CombatAssets> HostileAssets
-        {
-            get { return _hostileAssets; }
-        }
+        //public IList<CombatAssets> HostileAssets
+        //{
+        //    get { return _hostileAssets; }
+        //}
 
         //public bool IsStandoff
         //{
         //    get { return _standoff; }
         //}
-        public bool CombatUpdate_IsCombatOver // This bool opens and closes the 'close' button and the combat order buttons
-        {
-            get
-            {
-                if (_standoff)
-                    return true;
-                // CHANGE X
-                int friendlyAssets = 0;
-                int hostileAssets = 0;
-                int currentCivStrength = 0;
+        //public bool CombatUpdate_IsCombatOver // This bool opens and closes the 'close' button and the combat order buttons
+        //{
+        //    get
+        //    {
+        //        if (_standoff)
+        //            return true;
+        //        // CHANGE X
+        //        int friendlyAssets = 0;
+        //        int hostileAssets = 0;
+        //        int currentCivStrength = 0;
 
-                foreach (CombatAssets asset in FriendlyAssets)
-                {
+        //        foreach (CombatAssets asset in FriendlyAssets)
+        //        {
 
-                    if (asset.HasSurvivingAssets)
-                    {
-                        GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", asset.CombatShips.Count);
-                        friendlyAssets++;
-                    }
-                    //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
-                    foreach (var ship in asset.CombatShips)
-                    {
-                        currentCivStrength += ship.Firepower;
-                        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                        //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
-                    }
-                    if (asset.Station != null)
-                        currentCivStrength += asset.Station.Firepower;
-                }
-                GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(Amount)={0} and otherCivStrength ={1}", friendlyAssets, _otherCivStrength);
-                if (friendlyAssets == 0 || _otherCivStrength == 0)// currentCivStrength == 0)
-                {
-                    GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
-                    return true;
-                }
+        //            if (asset.HasSurvivingAssets)
+        //            {
+        //                GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(assets.CombatShips.Count)={0}", asset.CombatShips.Count);
+        //                friendlyAssets++;
+        //            }
+        //            //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", cs.Owner.Key, civ.Owner.Key);
+        //            foreach (var ship in asset.CombatShips)
+        //            {
+        //                currentCivStrength += ship.Firepower;
+        //                //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
+        //                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+        //            }
+        //            if (asset.Station != null)
+        //                currentCivStrength += asset.Station.Firepower;
+        //        }
+        //        GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets(Amount)={0} and otherCivStrength ={1}", friendlyAssets, _otherCivStrength);
+        //        if (friendlyAssets == 0 || _otherCivStrength == 0)// currentCivStrength == 0)
+        //        {
+        //            GameLog.Core.CombatDetails.DebugFormat("Combat: friendlyAssets (number of involved entities)={0}", friendlyAssets);
+        //            return true;
+        //        }
 
-                foreach (CombatAssets asset in HostileAssets)
-                {
-                    if (asset.HasSurvivingAssets)
-                    {
-                        GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets(assets.CombatShips.Count)={0}", asset.CombatShips.Count);
-                        hostileAssets++;
-                    }
-                    foreach (var ship in asset.CombatShips)
-                    {
-                        currentCivStrength += ship.Firepower;
-                        //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
-                        //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
-                    }
-                    if (asset.Station != null)
-                        currentCivStrength += asset.Station.Firepower;
-                }
+        //        foreach (CombatAssets asset in HostileAssets)
+        //        {
+        //            if (asset.HasSurvivingAssets)
+        //            {
+        //                GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets(assets.CombatShips.Count)={0}", asset.CombatShips.Count);
+        //                hostileAssets++;
+        //            }
+        //            foreach (var ship in asset.CombatShips)
+        //            {
+        //                currentCivStrength += ship.Firepower;
+        //                //GameLog.Core.CombatDetails.DebugFormat("added Firepower into {0} for {1} {2} ({3}) = {4}",
+        //                //    civ.Owner.Key, ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, ship.FirePower);
+        //            }
+        //            if (asset.Station != null)
+        //                currentCivStrength += asset.Station.Firepower;
+        //        }
 
-                if (hostileAssets == 0 || _otherCivStrength == 0)//currentCivStrength == 0)
-                {
-                    //GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
-                    return true;
-                }
+        //        if (hostileAssets == 0 || _otherCivStrength == 0)//currentCivStrength == 0)
+        //        {
+        //            //GameLog.Core.CombatDetails.DebugFormat("Combat: hostileAssets (number of involved entities)={0}", hostileAssets);
+        //            return true;
+        //        }
 
-                return (hostileAssets == 0);
-            }
-        }
+        //        return (hostileAssets == 0);
+        //    }
+        //}
     }
 }
 

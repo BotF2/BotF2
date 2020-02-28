@@ -16,7 +16,7 @@ using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Utility;
 
-namespace Supremacy.Combat
+namespace Supremacy.Intelligence
 {
     public enum IntelOrder : byte
     {

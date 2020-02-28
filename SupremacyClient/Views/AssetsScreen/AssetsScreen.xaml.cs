@@ -1,8 +1,10 @@
 ﻿using Avalon.Windows.Annotations;
+using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Unity;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
+using Supremacy.Combat;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -32,8 +34,7 @@ namespace Supremacy.Client.Views
         private readonly IAppContext _appContext;
         private CivilizationManager _localCivManager;
 
-        //private readonly Dictionary<int, IntelOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
-        //private readonly Dictionary<int, IntelTargetPrimaries> _targetOneByCiv; // like _orders
+        // order dictionary is located in IntelOrders.cs constructor
 
         private string _blameWhoZero = "No one";
         private string _blameWhoOne = "No one";
@@ -97,7 +98,7 @@ namespace Supremacy.Client.Views
             InitializeComponent();
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
             IntelHelper.GetLocalCiv(_localCivManager);
-           // ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
+            ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
             DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 
             GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
@@ -1077,9 +1078,9 @@ namespace Supremacy.Client.Views
             GameLog.Client.UI.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
             return true;
         }
-        private void OnIntelUpdateReceived() //(DataEventArgs<IntelUpdate> args)
+        private void OnIntelUpdateReceived(DataEventArgs<IntelUpdate> args)
         {
-            //HandleCombatUpdate(args.Value);
+            HandleCombatUpdate(args.Value);
         }
 
         private void HandleIntelUpdate() //(IntelUpdate update)
