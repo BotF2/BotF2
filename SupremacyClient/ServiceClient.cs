@@ -13,6 +13,7 @@ using System.ServiceModel.Channels;
 
 using Supremacy.Combat;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.WCF;
 
 namespace Supremacy.Client
@@ -186,7 +187,15 @@ namespace Supremacy.Client
             try { Channel.SendCombatTarget2(target2); }
             catch (FaultException) { }
         }
+        public void SendIntelOrders(IntelOrders orders)
+        {
+            if (orders != null && Channel != null)
+            { 
+                try { Channel.SendIntelOrders(orders); }
+                catch (FaultException) { }
+            }
 
+        }
         public void SendInvasionOrders(InvasionOrders orders)
         {
             try { Channel.SendInvasionOrders(orders); }

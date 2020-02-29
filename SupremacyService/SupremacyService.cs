@@ -16,6 +16,7 @@ using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Messaging;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -62,6 +63,7 @@ namespace Supremacy.WCF
         private GameInitData _gameInitData;
         private IAsyncResult _aiAsyncResult;
         private CombatEngine _combatEngine;
+        private IntelEngine _intelEngine;
         private InvasionEngine _invasionEngine;
         private GameContext _game;
         private bool _isGameStarted;
@@ -1363,7 +1365,7 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
                 GameLog.Server.Combat.Error(e);
             }
-        } // CHANGE X TOTAL END HERE, WINDOW REMAINS
+        } 
 
         public void SendCombatTarget1(CombatTargetPrimaries target1)
         {
@@ -1404,11 +1406,28 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.Error(e);
             }
         }
+        public void SendIntelOrders(IntelOrders orders)
+        {
+            try
+            {
+                if (_intelEngine == null || orders == null)
+                    return;
 
+                //lock (_combatEngine.SyncLockTargetTwos)
+                //{
+                _intelEngine.SubmitOrders(orders);
+
+                //}
+            }
+            catch (Exception e)
+            {
+                GameLog.Server.Intel.DebugFormat("SendIntelOrders null {0}", orders.ToString());
+                GameLog.Server.Intel.Error(e);
+            }
+        }
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
 
-            // CHANGE X HERE IS SOMETHING
             GameContext.PushThreadContext(_game);
 
             var player = _playerInfo.FromEmpireId(update.OwnerID);
