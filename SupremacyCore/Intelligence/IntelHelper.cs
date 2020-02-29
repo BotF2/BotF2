@@ -20,6 +20,7 @@ namespace Supremacy.Intelligence
         private static List<Civilization> _spiedList = new List<Civilization>();
         private static List<Civilization> _localSpiedList = new List<Civilization>();
         private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
+        private static Dictionary<Civilization, string> _intelOrdersDictionary = new Dictionary<Civilization, string>();
         private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
@@ -32,6 +33,8 @@ namespace Supremacy.Intelligence
         public static List<Civilization> _spyingCiv_5_List;
         public static List<Civilization> _spyingCiv_6_List;
         public static Dictionary<Civilization, string> _blamedCiv;
+        //List<KeyValuePair<int, string>> itemsSource = new List<KeyValuePair<int, string>>();
+        public static List<NewIntelOrders> _local_IntelOrders = new List<NewIntelOrders>();
         public static bool _showNetwork_0 = false;
         public static bool _showNetwork_1 = false;
         public static bool _showNetwork_2 = false;
@@ -39,6 +42,7 @@ namespace Supremacy.Intelligence
         public static bool _showNetwork_4 = false;
         public static bool _showNetwork_5 = false;
         public static bool _showNetwork_6 = false;
+        //internal static NewIntelOrders NewIntelOrders;
 
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -57,14 +61,14 @@ namespace Supremacy.Intelligence
         {
             get { return _newTargetCiv; }
         }
-   
+
         public static Dictionary<Civilization, int> DefenceDictionary
         {
             get { return _defenseDictionary; }
         }
         public static CivilizationManager LocalCivManager
         {
-            get { return _localCivManager; } 
+            get { return _localCivManager; }
         }
         public static int DefenseAccumulatedInteInt
         {
@@ -129,7 +133,7 @@ namespace Supremacy.Intelligence
                     _showNetwork_0 = true;
                     break;
                 case 1:
-                    _showNetwork_1= true;
+                    _showNetwork_1 = true;
                     break;
                 case 2:
                     _showNetwork_2 = true;
@@ -150,13 +154,13 @@ namespace Supremacy.Intelligence
         }
         public static void SendXSpiedY(Civilization spyCiv, Civilization spiedCiv, UniverseObjectList<Colony> colonies)
         {
-            GameLog.Core.UI.DebugFormat("**** New spyciv = {0} spying on = {1}",spyCiv.Key, spiedCiv.Key);
+            GameLog.Core.UI.DebugFormat("**** New spyciv = {0} spying on = {1}", spyCiv.Key, spiedCiv.Key);
             if (spyCiv == null)
                 throw new ArgumentNullException("spyCiv");
             if (spiedCiv == null)
                 throw new ArgumentNullException("spiedCiv");
             if (_localCivManager.Civilization == spyCiv)
-            ShowSpyNetwork(spiedCiv);
+                ShowSpyNetwork(spiedCiv);
             _spiedList.Clear();
             _newSpyCiv = spyCiv;
             _newTargetCiv = spiedCiv;
@@ -169,7 +173,7 @@ namespace Supremacy.Intelligence
                         _spyingCiv_0_List = newList;
                     else
                     {
-                        _spyingCiv_0_List.Add(spiedCiv);                       
+                        _spyingCiv_0_List.Add(spiedCiv);
                     }
                     GameContext.Current.CivilizationManagers[spyCiv].UpDateSpiedList(_spyingCiv_0_List);
                     break;
@@ -236,7 +240,7 @@ namespace Supremacy.Intelligence
             _defenseDictionary.Clear();
             foreach (var spiedCiv in _spiedList)
             {
-                int defenseInt = 0;      
+                int defenseInt = 0;
                 var spiedCivManager = GameContext.Current.CivilizationManagers[spiedCiv];
                 Int32.TryParse(spiedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseInt);
                 _defenseDictionary.Add(spiedCiv, defenseInt);
@@ -246,15 +250,28 @@ namespace Supremacy.Intelligence
         public static string Blame(Civilization localCivAttacker, string blamed, int chance)
         {
             if (!RandomHelper.Chance(chance))
-            return localCivAttacker.ShortName;
+                return localCivAttacker.ShortName;
             return blamed;
         }
-      
+
+
+
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-           //GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(_blamedCiv);
+            //GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(_blamedCiv);
+
+            //_intelOrdersDictionary = (4, "StealCredits");
+
+            var _intelOrder = new IntelOrders.SetNewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits");   // IntelOrder.StealCredits.ToString());
+
+            //IntelOrders.SetNewIntelOrders(); /*just for fun*/
+
+            //IntelOrders.SetNewIntelOrders..add(_intelOrder);
+            //.SetIntelOrder(attackingCiv.CivID.ToString(), IntelOrder.StealCredits.ToString());  // we are sending to host: ID of local civ = local player, + a dictionary, who is attacked with what (e.g. StealCredits)
+
+            //IntelOrders.
 
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
@@ -311,7 +328,7 @@ namespace Supremacy.Intelligence
             }
             if (ratio > 20 && !RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-               // SeeStealCredits(_newTargetCiv, "Clicked");
+                // SeeStealCredits(_newTargetCiv, "Clicked");
                 stolenCredits = stolenCredits * 2;
                 blamed = IntelHelper.Blame(attackingCiv, blamed, 5);
 
@@ -343,19 +360,19 @@ namespace Supremacy.Intelligence
             //GameLog.Core.Intel.DebugFormat("Before: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
             //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue);
 
-            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence / 4 * -1);
             defenseMeter.UpdateAndReset();
 
             GameLog.Core.Intel.DebugFormat(" AFTER: attackED civ={0}: defense meter {1}, accumulated ={2}",
                 attackedCiv.Key, defenseMeter.CurrentValue, DefenseAccumulatedInteInt);
             GameLog.Core.Intel.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={2}",
                 attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
-        //GameLog.Core.Intel.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
-        //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
+            //GameLog.Core.Intel.DebugFormat(" After: attackING civ={0}, local civ={1}, GameContest * accululated ={1}",
+            //    attackingCiv.Key, _localCivManager.Civilization.Key, GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue);
 
-        //  ATTACKING
+            //  ATTACKING
 
-        stolenCreditsIsMinusOne:;   // pushing buttons makes 'intel costs'
+            stolenCreditsIsMinusOne:;   // pushing buttons makes 'intel costs'
 
             GameLog.Core.Intel.DebugFormat("** ATTACK METER INT attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
             GameLog.Core.Intel.DebugFormat("BEFORE: attackED civ={0}: attackED meter {1}, accumulated ={2}",
@@ -383,10 +400,10 @@ namespace Supremacy.Intelligence
             _sitReps_Temp.Add(new NewSabotagingSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
                    */
-//*********** Want spy operation clicks coming back to host the same as it does for combat, combatupdat and now intelupdate
+            //*********** Want spy operation clicks coming back to host the same as it does for combat, combatupdat and now intelupdate
             _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
-           
+
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
             _defenseAccumulatedIntelInt = newDefenseIntelligence;
@@ -395,7 +412,7 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
 
-           // UpdatingBlame(attackingCiv, attackedCiv, blamed);
+            // UpdatingBlame(attackingCiv, attackedCiv, blamed);
 
         }
         public static void StealResearch(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
@@ -485,7 +502,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence / 4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -504,7 +521,7 @@ namespace Supremacy.Intelligence
                     GameContext.Current.CivilizationManagers[attackingCiv].Civilization.Key,
                     attackMeter.CurrentValue);
 
-            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"); 
+            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED");
 
             GameLog.Core.Intel.DebugFormat("Research stolen at {0}: {1} stolenResearchPoints, {2} blamed ******", system.Name, stolenResearchPoints, blamed);
 
@@ -595,7 +612,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence / 4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -696,7 +713,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence / 4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -716,7 +733,7 @@ namespace Supremacy.Intelligence
                     attackMeter.CurrentValue);
 
 
-            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY"); 
+            string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_ENERGY");
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
 
@@ -734,7 +751,7 @@ namespace Supremacy.Intelligence
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
 
-           // UpdatingBlame(attackingCiv, attackedCiv, blamed);
+            // UpdatingBlame(attackingCiv, attackedCiv, blamed);
         }
         public static void SabotageIndustry(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -799,7 +816,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** BEFORE ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
                     defenseMeter.CurrentValue);
-            defenseMeter.AdjustCurrent(defenseIntelligence /4 * -1);
+            defenseMeter.AdjustCurrent(defenseIntelligence / 4 * -1);
             defenseMeter.UpdateAndReset();
             GameLog.Core.Intel.DebugFormat("defenseMeter.Adjust ** AFTER ** from {0}:  >>> {1} intelligence points",
                     GameContext.Current.CivilizationManagers[attackedCiv].Civilization.Key,
@@ -835,7 +852,7 @@ namespace Supremacy.Intelligence
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _attackAccumulatedIntelInt = newAttackIntelligence;
-          //  UpdatingBlame(attackingCiv, attackedCiv, blamed);
+            //  UpdatingBlame(attackingCiv, attackedCiv, blamed);
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
         {
@@ -850,7 +867,7 @@ namespace Supremacy.Intelligence
 
             attackingIntelligence = 1 * attackingIntelligence;// multiplied with 1000 - just for increase attacking Intelligence
 
-            ratio = attackingIntelligence / defenseIntelligence; 
+            ratio = attackingIntelligence / defenseIntelligence;
             if (ratio < 2)
                 ratio = 1;
 
@@ -858,6 +875,41 @@ namespace Supremacy.Intelligence
 
             return ratio;
         }
+
+        public class NewIntelOrders //(int, int, string)
+        {
+            //public NewIntelOrders()
+            //{
+            //            public class NewIntelOrders //(int aCiv, int a2Civ, string intelOrder)
+            //{
+                public int AttackingCivID { get; set; }
+                //{
+                //    get;
+
+                //set AttackingIntelCivID = aCiv; 
+                //}
+                public int AttackedCivID { get; set; }
+                public string Intel_Order { get; set; }
+
+
+        //    }
+        //}
+        }
     }
-        #endregion
+        //public class NewIntelOrders //(int aCiv, int a2Civ, string intelOrder)
+        //{
+        //    public int AttackingIntelCivID { get; set; }
+        ////{
+        ////    get;
+
+        ////set AttackingIntelCivID = aCiv; 
+        ////}
+        //    public int AttackedCivID { get; set; }
+        //    public string Intel_Order { get; set; }
+
+
+        //}
+    //}
+    #endregion
+
 }

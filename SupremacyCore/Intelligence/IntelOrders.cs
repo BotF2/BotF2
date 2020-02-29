@@ -18,6 +18,8 @@ using Supremacy.Utility;
 
 namespace Supremacy.Intelligence
 {
+
+    
     public enum IntelOrder : byte
     {
         StealCredits,
@@ -31,14 +33,24 @@ namespace Supremacy.Intelligence
     //    StagedAttack,
     //    TotalAnnihilation
     //}
+
+    //[Serializable]
+    //public class SetNewIntelOrders(int attackingCivID, IntelOrder _intelOrder)
+    //{
+
+    //}
+
     [Serializable]
     public class IntelOrders : IEnumerable<IntelOrder>
     {
         private readonly int _intelId;
+        public  Dictionary<int, IntelOrder> _intelOrders; // Dictionary, int key is ownerID & order from enum above this IntelOrders class
+
+        /*Not used:*/
         private readonly int _ownerId;
         //private readonly AssaultStrategy _assaultStrategy;
         //private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
-        private readonly Dictionary<int, IntelOrder> _orders; // Dictinary, int key is ownerID & order from enum above this IntelOrders class
+
 
         public int IntelID
         {
@@ -58,15 +70,17 @@ namespace Supremacy.Intelligence
             }
         }
 
+        public Dictionary<int, IntelOrder> _localIntelOrders { get; private set; }
+
         public IntelOrders(Civilization owner, int intelId)
-            //AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
-            //InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
+        //AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
+        //InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
             _ownerId = owner.CivID;
-            _orders = new Dictionary<int, IntelOrder>();
+            _intelOrders = new Dictionary<int, IntelOrder>();
             _intelId = intelId;
             //_assaultStrategy = assaultStrategy;
             //_assaultTargetingStrategy = assaultTargetingStrategy;
@@ -82,53 +96,93 @@ namespace Supremacy.Intelligence
         //    get { return _assaultTargetingStrategy; }
         //}
 
-        public void SetOrder(CivilizationManager source, IntelOrder order)
+        //public class SetNewIntelOrders(int attackingCivID, IntelOrder _intelOrder)
+        //{
+
+        //}
+
+        //public void SetIntelOrder(int attackingCivID, IntelOrder _intelOrder)
+        public void SetIntelOrders()
+
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            GameLog.Core.CombatDetails.DebugFormat("Set order = {1} for attacker {0}", source.Civilization.Key, order.ToString());
-            _orders[source.CivilizationID] = order;
+            //if (attackingCivID < 0 || attackingCivID > 6)
+            //    throw new ArgumentN_localIntelOrdersullException("source");
+            //GameLog.Core.CombatDetails.DebugFormat("Set order = {1} for attacker {0}", attackingCivID, _intelOrder.ToString());
+            //_intelOrders[attackingCivID] = _intelOrder;
+            _intelOrders = _localIntelOrders; /*= _intelOrders;*/
         }
 
-        public void ClearOrder(CivilizationManager source)
+        public void ClearIntelOrder(CivilizationManager source)
         {
             if (source == null)
                 return;
-            _orders.Remove(source.CivilizationID);
+            _intelOrders.Remove(source.CivilizationID);
         }
 
         public void Clear()
         {
-            _orders.Clear();
+            _intelOrders.Clear();
         }
 
         public bool IsOrderSet(CivilizationManager source)
         {
             if (source == null)
                 return false;
-            return _orders.ContainsKey(source.CivilizationID);
+            return _intelOrders.ContainsKey(source.CivilizationID);
         }
 
         public IntelOrder GetOrder(CivilizationManager source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (!_orders.ContainsKey(source.CivilizationID))
+            if (!_intelOrders.ContainsKey(source.CivilizationID))
                 throw new ArgumentException("No order has been set for the specified source");
 
             GameLog.Core.Intel.DebugFormat("GetCombatOrder source {0}", source.Civilization.Key);
 
-            return _orders[source.CivilizationID];
+            return _intelOrders[source.CivilizationID];
         }
 
         public IEnumerator<IntelOrder> GetEnumerator()
         {
-            return _orders.Values.GetEnumerator();
+            return _intelOrders.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+        //}
+
+
+        public class SetNewIntelOrders
+        {
+
+            //public Dictionary<int , string> _local_IntelOrders; // Dictionary, int key is ownerID & order from enum above this IntelOrders class
+            public SetNewIntelOrders(int attackingCivID, int attackedCivID, string _intelOrder)
+            {
+                if (attackingCivID < 0 || attackingCivID > 6)
+                    throw new ArgumentNullException("source");
+                GameLog.Core.Intel.DebugFormat("Set order = {0} for attacker {1} VS {2}", _intelOrder.ToString(), attackingCivID, attackedCivID);
+
+                //if (IntelHelper._localIntelOrders.Count = 0)
+                //    IntelHelper._localIntelOrders.
+                //    else
+                var _newIntelOrder = new IntelHelper.NewIntelOrders();
+                //var _newIntelOrder = (0, 0, "F");
+                _newIntelOrder.AttackedCivID = attackedCivID;
+                _newIntelOrder.AttackingCivID = attackingCivID;
+                _newIntelOrder.Intel_Order = _intelOrder;
+
+
+                IntelHelper._local_IntelOrders.Add(_newIntelOrder);// _intelOrder.ToString());
+
+                foreach (var item in IntelHelper._local_IntelOrders)
+                {
+                    GameLog.Core.Intel.DebugFormat("_localIntelOrders: civ = {0}, _intelOrder = {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order.ToString());
+                }
+                //_localIntelOrders[attackingCivID] = _intelOrder;
+            }
         }
     }
 }
