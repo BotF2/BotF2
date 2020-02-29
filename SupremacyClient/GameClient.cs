@@ -614,6 +614,7 @@ namespace Supremacy.Client
                 ClientCommands.SendCombatOrders.RegisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.RegisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.RegisterCommand(_sendCombatTarget2Command);
+                ClientCommands.SendIntelOrders.RegisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.RegisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.RegisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.RegisterCommand(_saveGameCommand);
@@ -744,6 +745,7 @@ namespace Supremacy.Client
                 ClientCommands.SendCombatOrders.UnregisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.UnregisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.UnregisterCommand(_sendCombatTarget2Command);
+                ClientCommands.SendIntelOrders.UnregisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.UnregisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.UnregisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.UnregisterCommand(_saveGameCommand);

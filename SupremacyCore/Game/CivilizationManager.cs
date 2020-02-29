@@ -44,6 +44,7 @@ namespace Supremacy.Game
         private List<Civilization> _spiedCivList;
         //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
+        private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
         private Meter _totalIntelligenceAttackingAccumulated;
@@ -553,6 +554,8 @@ namespace Supremacy.Game
         {
             get { return _civId; }
         }
+
+        public List<int> IntelIDs { get => _IntelIDs; set => _IntelIDs = value; }
 
         #endregion
     }
