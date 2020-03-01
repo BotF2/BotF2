@@ -267,45 +267,45 @@ namespace Supremacy.Intelligence
 
 
         // from DoPreTurn
-        public static void ExecuteIncomingIntelOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
-        {
-            GameLog.Core.Intel.DebugFormat("doing ExecuteIntelOrders...");
+        //public static void ExecuteIncomingIntelOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        //{
+        //    GameLog.Core.Intel.DebugFormat("doing ExecuteIntelOrders...");
 
-            var civs = GameContext.Current.CivilizationManagers;// .ToL   .Where(s => s.Civilization)
-            var empires = new List<CivilizationManager>();
+        //    var civs = GameContext.Current.CivilizationManagers;// .ToL   .Where(s => s.Civilization)
+        //    var empires = new List<CivilizationManager>();
 
-            foreach (var civ in civs)
-            {
-                if (civ.Civilization.IsEmpire)
-                    empires.Add(civ);
-            }
+        //    foreach (var civ in civs)
+        //    {
+        //        if (civ.Civilization.IsEmpire)
+        //            empires.Add(civ);
+        //    }
 
-            foreach (var empire in empires)
-            {
-                GameLog.Core.Intel.DebugFormat("doing ExecuteIntelOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersGoingToHost.Count);
-                if (empire.IntelOrdersGoingToHost != null) // && empire.IntelOrdersGoingToHost.)
-                {
-                    foreach (var order in empire.IntelOrdersGoingToHost)
-                    {
-                        var attacking = GameContext.Current.CivilizationManagers[order.AttackingCivID];
-                        var attacked = GameContext.Current.CivilizationManagers[order.AttackedCivID];
-                        GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
-                                                                                        attacked.Civilization.Key,
-                                                                                         order.Intel_Order);
-                        switch (order.Intel_Order)
-                        {
-                            case "StealCredits":
-                                ExecuteStealCredits(attacking.Civilization, attacked.Civilization, "Terrorists");
-                                break;
-                            default:
-                                break;
-                        }
+        //    foreach (var empire in empires)
+        //    {
+        //        GameLog.Core.Intel.DebugFormat("doing ExecuteIntelOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersGoingToHost.Count);
+        //        if (empire.IntelOrdersGoingToHost != null) // && empire.IntelOrdersGoingToHost.)
+        //        {
+        //            foreach (var order in empire.IntelOrdersGoingToHost)
+        //            {
+        //                var attacking = GameContext.Current.CivilizationManagers[order.AttackingCivID];
+        //                var attacked = GameContext.Current.CivilizationManagers[order.AttackedCivID];
+        //                GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+        //                                                                                attacked.Civilization.Key,
+        //                                                                                 order.Intel_Order);
+        //                switch (order.Intel_Order)
+        //                {
+        //                    case "StealCredits":
+        //                        ExecuteStealCredits(attacking.Civilization, attacked.Civilization, "Terrorists");
+        //                        break;
+        //                    default:
+        //                        break;
+        //                }
 
-                    }
-                }
-                //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
-            }
-        }
+        //            }
+        //        }
+        //        //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
+        //    }
+        //}
 
 
 
