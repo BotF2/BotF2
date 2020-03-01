@@ -24,6 +24,8 @@ using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Utility;
 using System.IO;
+using Supremacy.Game;
+using System.Windows.Automation;
 
 namespace Supremacy.Text
 {
@@ -97,6 +99,7 @@ namespace Supremacy.Text
             //streamWriter = new StreamWriter(file);
             String strHeader = "";  // first line of output files
 
+            if (GameLog.Core.GameInitData.IsDebugEnabled == true)
             try // avoid hang up if this file is opened by another program 
             {
 

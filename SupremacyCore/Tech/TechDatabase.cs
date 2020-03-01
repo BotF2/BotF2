@@ -597,7 +597,8 @@ namespace Supremacy.Tech
                 String strHeader = "";  // first line of output files
 
                 #region ProductionFacilities_To_CSV
-                try // avoid hang up if this file is opened by another program 
+                if (GameLog.Core.GameInitData.IsDebugEnabled == true)
+                    try // avoid hang up if this file is opened by another program 
                 {
                     file = pathOutputFile + "_FromTechObj-ProdFac_(autoCreated).csv";
 
@@ -789,7 +790,8 @@ namespace Supremacy.Tech
 
 
                 #region Buildings_To_CSV
-                try // avoid hang up if this file is opened by another program 
+                if (GameLog.Core.GameInitData.IsDebugEnabled == true)
+                    try // avoid hang up if this file is opened by another program 
                 {
                     file = pathOutputFile + "_FromTechObj-Buildings_(autoCreated).csv";
 
