@@ -166,6 +166,9 @@ namespace Supremacy.Intelligence
                 {
                     GameLog.Core.Intel.DebugFormat("_localIntelOrders: {2} for civ = {0}, _intelOrder = {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order.ToString());
                 }
+
+                GameContext.Current.CivilizationManagers[attackingCivID].UpdateIntelOrdersGoingToHost(_newIntelOrder);
+
                 //_localIntelOrders[attackingCivID] = _intelOrder;
             }
         }

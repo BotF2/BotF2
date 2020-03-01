@@ -242,7 +242,7 @@ namespace Supremacy.Intelligence
 
         }
 
-        public void SubmitOrders(IntelOrders intelOrders) // _orders is dictionary of intel orders
+        public void SubmitIntelOrders(IntelOrders intelOrders) // _orders is dictionary of intel orders
         {
             GameLog.Core.Intel.DebugFormat("NEXT: trying subit outstanding intel orders...");
             //  lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.

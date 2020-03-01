@@ -42,6 +42,7 @@ namespace Supremacy.Game
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingtoHost;
         //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
         private List<int> _IntelIDs;
@@ -213,6 +214,23 @@ namespace Supremacy.Game
             get { return _spiedCivList; }
         }
 
+
+        /// <summary>
+        /// Intel Orders like StealCredits
+        /// </summary>
+        /// <value>Intel Orders like StealCredits</value>
+        public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
+        {
+            get { return _intelOrdersGoingtoHost; }
+        }
+        public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _intelOrdersGoingToHost)
+        {
+            this.IntelOrdersGoingToHost.AddRange(_intelOrdersGoingtoHost);
+            foreach (var item in IntelOrdersGoingToHost)
+            {
+                GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
+            }
+        }
         //public Dictionary<Civilization, string> BlamedCiv
         //{
         //    get { return _blamedCiv; }

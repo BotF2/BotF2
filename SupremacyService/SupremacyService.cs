@@ -1417,7 +1417,7 @@ namespace Supremacy.WCF
                 GameLog.Server.Intel.DebugFormat("trying to do SendIntelOrders ...");
                 //lock (_combatEngine.SyncLockTargetTwos)
                 //{
-                _intelEngine.SubmitOrders(intelOrders);
+                _intelEngine.SubmitIntelOrders(intelOrders);
                 GameLog.Server.Intel.DebugFormat("done Submit for  SendIntelOrders ...");
                 //}
             }

@@ -266,7 +266,29 @@ namespace Supremacy.Intelligence
 
             var _intelOrder = new IntelOrders.SetNewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits");   // IntelOrder.StealCredits.ToString());
 
-            goto EndofStealCredits;
+            //goto EndofStealCredits;
+        }
+
+        public static void ExecuteStealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        {
+            var civs = GameContext.Current.CivilizationManagers;// .ToL   .Where(s => s.Civilization)
+            var empires = new List<CivilizationManager>();
+
+            foreach (var civ in civs)
+            {
+                if (civ.Civilization.IsEmpire)
+                    empires.Add(civ);
+            }
+
+            foreach (var empire in empires)
+            {
+                foreach (var order in empire.IntelOrdersGoingToHost)
+                {
+                    GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", order.AttackingCivID, order.AttackedCivID, order.Intel_Order);
+                }
+                //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
+            }
+
 
             //IntelOrders.SetNewIntelOrders(); /*just for fun*/
 
