@@ -266,6 +266,8 @@ namespace Supremacy.Intelligence
 
             var _intelOrder = new IntelOrders.SetNewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits");   // IntelOrder.StealCredits.ToString());
 
+            goto EndofStealCredits;
+
             //IntelOrders.SetNewIntelOrders(); /*just for fun*/
 
             //IntelOrders.SetNewIntelOrders..add(_intelOrder);
@@ -413,6 +415,7 @@ namespace Supremacy.Intelligence
             _attackAccumulatedIntelInt = newAttackIntelligence;
 
             // UpdatingBlame(attackingCiv, attackedCiv, blamed);
+            EndofStealCredits:;
 
         }
         public static void StealResearch(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
