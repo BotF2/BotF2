@@ -1406,22 +1406,24 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.Error(e);
             }
         }
-        public void SendIntelOrders(IntelOrders orders)
+        public void SendIntelOrders(IntelOrders intelOrders)
         {
+            GameLog.Server.Intel.DebugFormat("NEXT: trying to do SendIntelOrders ...");
             try
             {
-                if (_intelEngine == null || orders == null)
+                if (_intelEngine == null || intelOrders == null)
                     return;
 
+                GameLog.Server.Intel.DebugFormat("trying to do SendIntelOrders ...");
                 //lock (_combatEngine.SyncLockTargetTwos)
                 //{
-                _intelEngine.SubmitOrders(orders);
-
+                _intelEngine.SubmitOrders(intelOrders);
+                GameLog.Server.Intel.DebugFormat("done Submit for  SendIntelOrders ...");
                 //}
             }
             catch (Exception e)
             {
-                GameLog.Server.Intel.DebugFormat("SendIntelOrders null {0}", orders.ToString());
+                GameLog.Server.Intel.DebugFormat("SendIntelOrders null {0}", intelOrders.ToString());
                 GameLog.Server.Intel.Error(e);
             }
         }

@@ -244,7 +244,8 @@ namespace Supremacy.Intelligence
 
         public void SubmitOrders(IntelOrders intelOrders) // _orders is dictionary of intel orders
         {
-          //  lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            GameLog.Core.Intel.DebugFormat("NEXT: trying subit outstanding intel orders...");
+            //  lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
             {
 
                 if (!_intelOrders.ContainsKey(intelOrders.OwnerID))
@@ -255,11 +256,9 @@ namespace Supremacy.Intelligence
                 }
 
 
-                var outstandingIntelOrders = new List<IntelOrders>(); // list of OwnerIDs, ints
-                                                                      //List<int> dummyIDs = new List<int>();
-                                                                      //dummyIDs.Add(777); 
-                                                                      //dummyIDs.Add(888);
-                                                                      //dummyIDs.Add(999);
+                var outstandingIntelOrders = new List<IntelOrders>(); 
+                
+
                                                                       // outstandingOrders.AddRange(dummyIDs);
 
                 //outstandingIntelOrders.Add(4, 1);
@@ -278,6 +277,7 @@ namespace Supremacy.Intelligence
                     //    _ready = true;
                     //}
                 }
+                _intelOrders.Clear();
             }
         }
 

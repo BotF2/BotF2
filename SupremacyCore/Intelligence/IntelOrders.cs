@@ -28,17 +28,6 @@ namespace Supremacy.Intelligence
         SabotageEnergy,
         SabotageIndustry
     }
-    //public enum AssaultStrategy
-    //{
-    //    StagedAttack,
-    //    TotalAnnihilation
-    //}
-
-    //[Serializable]
-    //public class SetNewIntelOrders(int attackingCivID, IntelOrder _intelOrder)
-    //{
-
-    //}
 
     [Serializable]
     public class IntelOrders : IEnumerable<IntelOrder>
@@ -96,10 +85,6 @@ namespace Supremacy.Intelligence
         //    get { return _assaultTargetingStrategy; }
         //}
 
-        //public class SetNewIntelOrders(int attackingCivID, IntelOrder _intelOrder)
-        //{
-
-        //}
 
         //public void SetIntelOrder(int attackingCivID, IntelOrder _intelOrder)
         public void SetIntelOrders()
@@ -124,14 +109,14 @@ namespace Supremacy.Intelligence
             _intelOrders.Clear();
         }
 
-        public bool IsOrderSet(CivilizationManager source)
+        public bool IsIntelOrderSet(CivilizationManager source)
         {
             if (source == null)
                 return false;
             return _intelOrders.ContainsKey(source.CivilizationID);
         }
 
-        public IntelOrder GetOrder(CivilizationManager source)
+        public IntelOrder GetIntelOrder(CivilizationManager source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
@@ -163,7 +148,7 @@ namespace Supremacy.Intelligence
             {
                 if (attackingCivID < 0 || attackingCivID > 6)
                     throw new ArgumentNullException("source");
-                GameLog.Core.Intel.DebugFormat("Set order = {0} for attacker {1} VS {2}", _intelOrder.ToString(), attackingCivID, attackedCivID);
+                GameLog.Core.Intel.DebugFormat("******************** NEW: Set order = {0} for attacker {1} VS {2}", _intelOrder.ToString(), attackingCivID, attackedCivID);
 
                 //if (IntelHelper._localIntelOrders.Count = 0)
                 //    IntelHelper._localIntelOrders.
@@ -179,7 +164,7 @@ namespace Supremacy.Intelligence
 
                 foreach (var item in IntelHelper._local_IntelOrders)
                 {
-                    GameLog.Core.Intel.DebugFormat("_localIntelOrders: civ = {0}, _intelOrder = {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order.ToString());
+                    GameLog.Core.Intel.DebugFormat("_localIntelOrders: {2} for civ = {0}, _intelOrder = {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order.ToString());
                 }
                 //_localIntelOrders[attackingCivID] = _intelOrder;
             }
