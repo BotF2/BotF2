@@ -379,7 +379,7 @@ namespace Supremacy.Game
         #region DoPreTurnOperations() Method
         private void DoPreTurnOperations(GameContext game)
         {
-            IntelHelper.ExecuteStealCredits();
+            IntelHelper.ExecuteIncomingIntelOrders();
 
             var objects = GameContext.Current.Universe.Objects.ToHashSet();
             var civManagers = GameContext.Current.CivilizationManagers.ToHashSet();

@@ -42,7 +42,9 @@ namespace Supremacy.Game
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
-        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingtoHost;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
+        private List<IntelHelper.NewIntelOrders> itemList;
         //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
         private List<int> _IntelIDs;
@@ -78,6 +80,11 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
+            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>();// { 0, 0, "Dummy" };
+            //var _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
+
+            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>();
+            itemList = new List<IntelHelper.NewIntelOrders>();
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -221,20 +228,125 @@ namespace Supremacy.Game
         /// <value>Intel Orders like StealCredits</value>
         public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
         {
-            get { return _intelOrdersGoingtoHost; }
-        }
-        public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _intelOrdersGoingToHost)
-        {
-            this.IntelOrdersGoingToHost.AddRange(_intelOrdersGoingtoHost);
-            foreach (var item in IntelOrdersGoingToHost)
+            get 
             {
-                GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
+                //var _newIntelOrder = new IntelHelper.NewIntelOrders();
+                //if (_intelOrdersGoingToHost == null || this == null)
+                //{
+                //var _newIntelOrder = new IntelHelper.NewIntelOrders() { 88,99,"Dummy"};
+                ////var _newIntelOrder = (0, 0, "F");
+                //_newIntelOrder.AttackedCivID = 88;
+                //_newIntelOrder.AttackingCivID = 99;
+                //_newIntelOrder.Intel_Order = "Dummy";
+
+                //    //var _intelOrdersGoingToHost = _intelOrdersGoingToHost.Add
+
+                //    return _newIntelOrder;
+                //}
+                //else
+                //if (_intelOrdersGoingToHost != null)
+                    return _intelOrdersGoingToHost;
+                //else
+                //    return (_newIntelOrder);
+
+
+
+                //_newIntelOrderDummy.AttackedCivID = 99;
+                //_newIntelOrderDummy.AttackingCivID = 88;
+                //_newIntelOrderDummy.Intel_Order = "DummyIntelOrder";
+
+                //itemList = IntelOrdersGoingToHost;
+
+                ////var itemList = new List<IntelHelper.NewIntelOrders>();
+                //itemList.Add(_newIntelOrderDummy);
+
+                ////_intelOrdersGoingToHost = itemList;
+
+                //return itemList;
+            }
+            set
+            {
+                //_intelOrdersGoingToHost = value;
             }
         }
-        //public Dictionary<Civilization, string> BlamedCiv
+
+        public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _NewIntelOrdersGoingToHost)
+        {
+            var _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
+
+            _newIntelOrderDummy.AttackedCivID = 99;
+            _newIntelOrderDummy.AttackingCivID = 88;
+            _newIntelOrderDummy.Intel_Order = "DummyIntelOrder";
+            //var itemList = new List<IntelHelper.NewIntelOrders>();
+            //itemList.Add(_newIntelOrderDummy);
+            //var myIntelOrdersGoingToHost = _intelOrdersGoingToHost ?? _newIntelOrderDummy;
+            //this._NewIntelOrdersGoingToHost.Add(myIntelOrdersGoingToHost);
+
+            if (_NewIntelOrdersGoingToHost == null)
+            {
+                _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
+
+                _newIntelOrderDummy.AttackedCivID = 99;
+                _newIntelOrderDummy.AttackingCivID = 88;
+                _newIntelOrderDummy.Intel_Order = "DummyIntelOrder";
+                //var myIntelOrdersGoingToHost = _intelOrdersGoingToHost ?? _newIntelOrderDummy;
+                IntelOrdersGoingToHost.Add(_newIntelOrderDummy);
+            }
+            //IntelOrdersGoingToHost.AddRange(_intelOrdersGoingToHost);
+            else
+            {
+                _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
+
+                _newIntelOrderDummy.AttackedCivID = 99;
+                _newIntelOrderDummy.AttackingCivID = 88;
+                _newIntelOrderDummy.Intel_Order = "DummyIntelOrder";
+                //var myIntelOrdersGoingToHost = _intelOrdersGoingToHost ?? _newIntelOrderDummy;
+                //_intelOrdersGoingToHost.Add(_newIntelOrderDummy);
+
+                if (IntelOrdersGoingToHost != null)
+                    IntelOrdersGoingToHost.Add(_NewIntelOrdersGoingToHost);
+                else
+                    IntelOrdersGoingToHost.Add(_NewIntelOrdersGoingToHost);
+
+
+            }
+
+            //foreach (var item in IntelOrdersGoingToHost)
+            //{
+            //    GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
+            //}
+
+        }
+        //public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _NewIntelOrdersGoingToHost)
         //{
-        //    get { return _blamedCiv; }
+        //    var _newIntelOrder = new IntelHelper.NewIntelOrders();
+        //    //var _newIntelOrder = (0, 0, "F");
+        //    _newIntelOrder.AttackedCivID = _NewIntelOrdersGoingToHost.AttackingCivID;
+        //    _newIntelOrder.AttackingCivID = _NewIntelOrdersGoingToHost.AttackedCivID;
+        //    _newIntelOrder.Intel_Order = _NewIntelOrdersGoingToHost.Intel_Order;
+
+        //    //var itemList = new List<IntelHelper.NewIntelOrders>();
+        //    //itemList.Add(_newIntelOrder);
+
+        //    //if (IntelOrdersGoingToHost != null)
+        //    //{
+        //        IntelOrdersGoingToHost.Add(_newIntelOrder);
+
+        //        //GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
+        //        foreach (var item in IntelOrdersGoingToHost)
+        //        {
+        //            GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
+        //        }
+
+        //        //IntelOrdersGoingToHost.AddRange(this._intelOrdersGoingToHost);
+        //    //}
+        //    //else
+        //    //    IntelOrdersGoingToHost.Add(itemList);
+
         //}
+
+
+
         /// <summary>
         /// Gets the average morale of all the civilization's colonies.
         /// </summary>
@@ -574,6 +686,7 @@ namespace Supremacy.Game
         }
 
         public List<int> IntelIDs { get => _IntelIDs; set => _IntelIDs = value; }
+        public object _newIntelOrderDummy { get; private set; }
 
         #endregion
     }
