@@ -41,7 +41,7 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        private List<Civilization> _spiedCivList;
+        private List<Civilization> _spiedCivList;  
         //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
         //private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
         //private List<IntelHelper.NewIntelOrders> itemList;

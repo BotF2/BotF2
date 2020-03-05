@@ -77,6 +77,13 @@ namespace Supremacy.Game
     /// </summary>
     public class GameEngine
     {
+        private Civilization _spyAttacking;
+
+        private Civilization _spyAttacked;
+
+        private int _spyCredits;
+
+
         #region Public Members
 
         /// <summary>
@@ -106,8 +113,16 @@ namespace Supremacy.Game
 
         public object GameContent { get; private set; }
         public object AppContext { get; private set; }
+        //public Civilization SpyAttacking { get => _spyAttacking; set => _spyAttacking = value; }
+        //public Civilization SpyAttacked { get => _spyAttacked; set => _spyAttacked = value; }
+        //public int SpyCredits { get => spyCredits; set => spyCredits = value; }
         #endregion
-
+        public void SendStealCreditsData(Civilization attacking, Civilization attacked, int credits)
+        {
+            _spyAttacking = attacking;
+            _spyAttacked = attacked;
+            _spyCredits = credits;
+        }
         #region Private Members
         /// <summary>
         /// Blocks the execution of the turn processing engine while waiting on players
@@ -892,7 +907,9 @@ namespace Supremacy.Game
         }
         #endregion
 
-        #region DoSpyOperations() Method
+        #region DoSpyOperations() Method - move this to end of turn after the orders were given. Results will show up in the next turn
+
+
         //private void DoSpyOperations()
         //{
         //    /*
@@ -1121,10 +1138,10 @@ namespace Supremacy.Game
         //        //foreach (var agreement in GameContext.Current.AgreementMatrix)
         //        //    AgreementFulfillmentVisitor.Visit(agreement);
         //    }
-    #endregion SpyOperations
+        #endregion SpyOperations
 
         #region DoCombat() Method
-                void DoCombat(GameContext game)
+        void DoCombat(GameContext game)
         {
             var combatLocations = new HashSet<MapLocation>();
             var invasionLocations = new HashSet<MapLocation>();
@@ -1993,7 +2010,8 @@ namespace Supremacy.Game
         }
         #endregion
 
-        #region DoIntelligence() Method
+        #region DoIntelligence() Method // move this to post turn operations, see results next turn
+
         //void DoIntelligence(GameContext game)
         //{
         //    var innateDefense = 200;
@@ -2435,6 +2453,10 @@ namespace Supremacy.Game
         #region DoPostTurnOperations() Method
         private void DoPostTurnOperations(GameContext game)
         {
+            IntelHelper.ExecuteIntelOrders(); // mark facilities as destroyed and let post turn remove them
+
+            //GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);
+            //GameContext.Current.CivilizationManagers[attackedCiv].Credits.UpdateAndReset();
             var destroyedOrbitals = GameContext.Current.Universe.Find<Orbital>(o => o.HullStrength.IsMinimized);
             var allFleets = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
 
