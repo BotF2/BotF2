@@ -2453,7 +2453,7 @@ namespace Supremacy.Game
         #region DoPostTurnOperations() Method
         private void DoPostTurnOperations(GameContext game)
         {
-            IntelHelper.ExecuteIntelOrders(); // mark facilities as destroyed and let post turn remove them
+            IntelHelper.ExecuteIntelOrders(); // now update results of spy operations on host computer, steal and sabotage, remove production facilities, just before we end the turn
 
             //GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);
             //GameContext.Current.CivilizationManagers[attackedCiv].Credits.UpdateAndReset();

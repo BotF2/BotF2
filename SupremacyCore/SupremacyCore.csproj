@@ -207,6 +207,7 @@
     <Compile Include="Game\CivilizationMapData.cs" />
     <Compile Include="Game\SectorClaim.cs" />
     <Compile Include="Intelligence\IntelligenceMatrix.cs" />
+    <Compile Include="Intelligence\StealCredits.cs" />
     <Compile Include="Markup\ContextualTextEntryExtension.cs" />
     <Compile Include="Markup\TechObjectTextGroupExtension.cs" />
     <Compile Include="Orbitals\OrbitalHelper.cs" />

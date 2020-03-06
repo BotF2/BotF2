@@ -41,7 +41,8 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
-        private List<Civilization> _spiedCivList;  
+        private List<Civilization> _spiedCivList;
+        private List<StealCredits> _stealCreditsSpyOperation;
         //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
         //private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
         //private List<IntelHelper.NewIntelOrders> itemList;
@@ -93,6 +94,8 @@ namespace Supremacy.Game
             _resources.RawMaterials.BaseValue = 1000;
             _resources.RawMaterials.Reset();
             _resources.UpdateAndReset();
+
+            //_stealCreditsSpyOperation = new List<StealCredits>();
         }
 
         /// <summary>
@@ -108,6 +111,11 @@ namespace Supremacy.Game
             _civId = civilization.CivID;
             _research = new ResearchPool(civilization, game.ResearchMatrix);
         }
+
+        //public CivilizationManager(List<StealCredits> stealCreditsSpyOperation)
+        //{
+        //    _stealCreditsSpyOperation = stealCreditsSpyOperation;
+        //}
         #endregion
 
         #region Properties and Indexers
@@ -614,7 +622,6 @@ namespace Supremacy.Game
         }
 
         public List<int> IntelIDs { get => _IntelIDs; set => _IntelIDs = value; }
-        //public object _newIntelOrderDummy { get; private set; }
 
         #endregion
     }
