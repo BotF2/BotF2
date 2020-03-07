@@ -941,6 +941,7 @@ namespace Supremacy.Intelligence
             return ratio;
         }
 
+        [Serializable]
         public class NewIntelOrders //(int, int, string)
         {
             private int _attackingCivID = 999;

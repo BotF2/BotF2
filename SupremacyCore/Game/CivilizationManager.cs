@@ -57,6 +57,9 @@ namespace Supremacy.Game
 
         #endregion
 
+        //[NonSerialized]
+        IntelHelper.NewIntelOrders newStuff = new IntelHelper.NewIntelOrders();
+
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="CivilizationManager"/> class.
@@ -82,10 +85,10 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
-            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "OutgoingDummy", "blamedTerrorist" };
+            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>() { newStuff }; // new List<IntelHelper.NewIntelOrders>(// { 0, 0, "OutgoingDummy", "blamedTerrorist" };
             //var _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
 
-            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "IncomingDummy", "blamedTerrorist" };
+            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>() { newStuff }; //new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "IncomingDummy", "blamedTerrorist" };
             //itemList = new List<IntelHelper.NewIntelOrders>();
 
             _resources.Deuterium.BaseValue = 100;

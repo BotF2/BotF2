@@ -29,7 +29,7 @@ namespace Supremacy.Intelligence
         SabotageIndustry
     }
 
-    [Serializable]
+    //[NonSerializable]
     public class IntelOrders : IEnumerable<IntelOrder>
     {
         private readonly int _intelId;
