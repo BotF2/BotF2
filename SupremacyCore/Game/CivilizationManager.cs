@@ -43,8 +43,8 @@ namespace Supremacy.Game
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
         private List<StealCredits> _stealCreditsSpyOperation;
-        //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
-        //private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
         //private List<IntelHelper.NewIntelOrders> itemList;
         //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
@@ -81,10 +81,10 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
-           // _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>();// { 0, 0, "Dummy" };
+            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>();// { 0, 0, "Dummy" };
             //var _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
 
-            //_intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>();
+            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>();
             //itemList = new List<IntelHelper.NewIntelOrders>();
 
             _resources.Deuterium.BaseValue = 100;
@@ -234,10 +234,21 @@ namespace Supremacy.Game
         /// Intel Orders like StealCredits
         /// </summary>
         /// <value>Intel Orders like StealCredits</value>
-        //public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
-        //{
-        //    get { return _intelOrdersGoingToHost; }
-        //}
+        public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
+        {
+            get { return _intelOrdersGoingToHost; }
+        }
+
+
+        /// <summary>
+        /// Intel Orders like StealCredits
+        /// </summary>
+        /// <value>Intel Orders like StealCredits</value>
+        public List<IntelHelper.NewIntelOrders> IntelOrdersIncomingToHost
+        {
+            get { return _intelOrdersIncomingToHost; }
+        }
+
         //public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _newIntelOrdersGoingToHost)
         //{
 

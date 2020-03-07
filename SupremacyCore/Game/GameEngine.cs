@@ -394,7 +394,7 @@ namespace Supremacy.Game
         #region DoPreTurnOperations() Method
         private void DoPreTurnOperations(GameContext game)
         {
-           // IntelHelper.ExecuteIncomingIntelOrders();
+            IntelHelper.ExecuteIntelIncomingOrders();
 
             var objects = GameContext.Current.Universe.Objects.ToHashSet();
             var civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
@@ -2453,7 +2453,7 @@ namespace Supremacy.Game
         #region DoPostTurnOperations() Method
         private void DoPostTurnOperations(GameContext game)
         {
-            IntelHelper.ExecuteIntelOrders(); // now update results of spy operations on host computer, steal and sabotage, remove production facilities, just before we end the turn
+            //IntelHelper.ExecuteIntelOrders(); // now update results of spy operations on host computer, steal and sabotage, remove production facilities, just before we end the turn
 
             //GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);
             //GameContext.Current.CivilizationManagers[attackedCiv].Credits.UpdateAndReset();
