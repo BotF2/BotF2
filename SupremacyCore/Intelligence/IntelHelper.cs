@@ -943,6 +943,11 @@ namespace Supremacy.Intelligence
 
         public class NewIntelOrders //(int, int, string)
         {
+            private int _attackingCivID = 999;
+            private int _attackedCivID = 999;
+            private string _intel_Order = "Dummy_Intel_Order";
+            private string _intel_Order_Blamed = "Dummy_Intel_Order_Blamed";
+
             //private int sCiv;
             //private int aCiv;
             //private string order;
@@ -954,12 +959,71 @@ namespace Supremacy.Intelligence
             //    this.order = order;
             //}
 
-            public int AttackingCivID { get; set; }
+            public int AttackingCivID {
+                get
+                {
+                    //var _DummyattackingCivID = 999;
+                    if (_attackingCivID == null)
+                        _attackingCivID = 999;
 
-            public int AttackedCivID { get; set; }
-            public string Intel_Order { get; set; }
+                    return _attackingCivID; 
+                }
+                set
+                {
+                    if (_attackingCivID != 999)
+                        _attackingCivID = value; 
+                }
+            }
 
-            public string Intel_Order_Blamed { get; set; }
+            public int AttackedCivID
+            {
+                get
+                {
+                    //var _DummyattackedCivID = 999;
+                    if (_attackedCivID == null)
+                        _attackedCivID = 999;
+
+                    return _attackedCivID;
+                }
+                set
+                {
+                    if (_attackedCivID != 999)
+                        _attackedCivID = value;
+                }
+            }
+            public string Intel_Order 
+            {
+                get
+                {
+                    //var _DummyattackedCivID = 999;
+                    if (_intel_Order == null)
+                        _intel_Order = "Dummy_Intel_Order was null";
+
+                    return _intel_Order;
+                }
+                set
+                {
+                    if (_intel_Order != null)
+                        _intel_Order = value;
+                }
+            }
+
+            public string Intel_Order_Blamed
+            {
+                get
+                {
+                    //var _DummyattackedCivID = 999;
+                    if (_intel_Order_Blamed == null)
+                        _intel_Order_Blamed = "Dummy_Intel_Order_Blamed was null";
+
+                    return _intel_Order_Blamed;
+                }
+                set
+                {
+                    if (_intel_Order_Blamed != null)
+                        _intel_Order_Blamed = value;
+                }
+            }
 
         }
         //public void CreateNewIntelOrders(int sCiv, int aCiv, string order)

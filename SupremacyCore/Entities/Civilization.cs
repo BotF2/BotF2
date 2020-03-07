@@ -6,6 +6,7 @@
 // All other rights reserved.
 
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -15,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using static Supremacy.Intelligence.IntelHelper;
 
 namespace Supremacy.Entities
 {
@@ -104,6 +106,8 @@ namespace Supremacy.Entities
         private int _baseMoraleLevel = 100;
         private int _moraleDriftRate = 1;
         private List<Civilization> _spiedCivList;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
         #endregion
 
         #region Constructors
@@ -148,6 +152,53 @@ namespace Supremacy.Entities
                 _spiedCivList = value;
             }
         }
+
+        public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
+        {
+            get
+            {
+                //if (_intelOrdersGoingToHost == null)
+                //{
+                //    var _DummyintelOrdersGoingToHost = new NewIntelOrders();
+                //    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
+                //    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
+                //    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
+                //    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
+                //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
+                //}
+                //var _intelOrdersGoingToHost = value;
+                return _intelOrdersGoingToHost;
+            }
+            set
+            {
+                // code here to .Add civs to list as spy ships install spy network
+                _intelOrdersGoingToHost = value;
+            }
+        }
+
+        public List<IntelHelper.NewIntelOrders> IntelOrdersIncomingToHost
+        {
+            get
+            {
+                //if (_intelOrdersIncomingToHost == null)
+                //{
+                //    var _DummyintelOrdersIncomingToHost = new NewIntelOrders();
+                //    _DummyintelOrdersIncomingToHost.AttackedCivID = 0;
+                //    _DummyintelOrdersIncomingToHost.AttackingCivID = 1;
+                //    _DummyintelOrdersIncomingToHost.Intel_Order = "StealCredits";
+                //    _DummyintelOrdersIncomingToHost.Intel_Order_Blamed = "Blam_out";
+                //    _intelOrdersIncomingToHost.Add(_DummyintelOrdersIncomingToHost);
+                //}
+                //var _intelOrdersGoingToHost = value;
+                return _intelOrdersIncomingToHost;
+            }
+            set
+            {
+                // code here to .Add civs to list as spy ships install spy network
+                _intelOrdersIncomingToHost = value;
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class from XML data.
         /// </summary>
@@ -194,6 +245,8 @@ namespace Supremacy.Entities
             _traits = (string)element.Element(ns + "Traits");
             _traits = _traits.Trim();
             _spiedCivList = SpiedCivList; // 
+            _intelOrdersGoingToHost = IntelOrdersGoingToHost;
+            _intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
 
             // When starting a game, options is null
             //TODO: This should be in with the code to start the game

@@ -21,6 +21,7 @@ using System.Linq;
 using Supremacy.Orbitals;
 using Supremacy.Utility;
 using Supremacy.Intelligence;
+using static Supremacy.Intelligence.IntelHelper;
 
 namespace Supremacy.Game
 {
@@ -81,10 +82,10 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
-            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>() { 0, 0, "OutgoingDummy", "blamedTerrorist" };
+            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "OutgoingDummy", "blamedTerrorist" };
             //var _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
 
-            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>() { 0, 0, "IncomingDummy", "blamedTerrorist" };
+            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "IncomingDummy", "blamedTerrorist" };
             //itemList = new List<IntelHelper.NewIntelOrders>();
 
             _resources.Deuterium.BaseValue = 100;
@@ -235,10 +236,23 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>Intel Orders like StealCredits</value>
 
-        [NotNull]
+        //[NotNull]
         public IList<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
         {
-            get { return _intelOrdersGoingToHost; }
+            get 
+            {
+                if (_intelOrdersGoingToHost == null)
+                {
+                    var _DummyintelOrdersGoingToHost = new NewIntelOrders();
+                    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
+                    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
+                    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
+                    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
+                    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
+                }
+                //var _intelOrdersGoingToHost = value;
+                return _intelOrdersGoingToHost; 
+            }
         }
 
 
@@ -247,10 +261,23 @@ namespace Supremacy.Game
         /// </summary>
         /// <value>Intel Orders like StealCredits</value>
         /// 
-        [NotNull]
+        //[NotNull]
         public IList<IntelHelper.NewIntelOrders> IntelOrdersIncomingToHost
         {
-            get { return _intelOrdersIncomingToHost; }
+            get 
+            {
+                if (_intelOrdersIncomingToHost == null)
+                {
+                    var _DummyintelOrdersIncomingToHost = new NewIntelOrders();
+                    _DummyintelOrdersIncomingToHost.AttackedCivID = 0;
+                    _DummyintelOrdersIncomingToHost.AttackingCivID = 1;
+                    _DummyintelOrdersIncomingToHost.Intel_Order = "StealCredits";
+                    _DummyintelOrdersIncomingToHost.Intel_Order_Blamed = "Blam_out";
+                    _intelOrdersIncomingToHost.Add(_DummyintelOrdersIncomingToHost);
+                }
+                //var _intelOrdersGoingToHost = value;
+                return _intelOrdersIncomingToHost; 
+            }
         }
 
         //public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _newIntelOrdersGoingToHost)
