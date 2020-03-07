@@ -264,54 +264,62 @@ namespace Supremacy.Intelligence
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
             
 
-            var _intelOrder = new IntelOrders.SetNewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits");   // Do we need this anymore?????
+            var _intelOrder = new IntelOrders.SetNewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);   
         }
 
 
 
-        // from DoPostTurnOperations in GameEngine, only do it at this time 
-        public static void ExecuteIntelOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        // from DoPreTurnOperations in GameEngine, only do it at this time 
+        public static void ExecuteIntelIncomingOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
+            //if it is StealCredits than do ExecuteStealCredits
+            //if it is StealResearch than do ExecuteStealResearch
+
+            GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders...");
+
+            var civs = GameContext.Current.CivilizationManagers;// .ToL   .Where(s => s.Civilization)
+            var empiresDoingIntel = new List<CivilizationManager>();
+
+            foreach (var civ in civs)
+            {
+                if (civ.Civilization.IsEmpire)
+                    empiresDoingIntel.Add(civ);
+            }
+
+            foreach (var empire in empiresDoingIntel)
+            {
+                GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersIncomingToHost.Count);
+                if (empire.IntelOrdersIncomingToHost != null) // && empire.IntelOrdersGoingToHost.)
+                {
+                    foreach (var order in empire.IntelOrdersIncomingToHost)
+                    {
+                        var attacking = GameContext.Current.CivilizationManagers[order.AttackingCivID];
+                        var attacked = GameContext.Current.CivilizationManagers[order.AttackedCivID];
+                        GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+                                                                                        attacked.Civilization.Key,
+                                                                                         order.Intel_Order,
+                                                                                         order.Intel_Order_Blamed);
+                        switch (order.Intel_Order)
+                        {
+                            case "StealCredits":
+                                ExecuteStealCredits(attacking.Civilization, attacked.Civilization, "Terrorists");
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }
+                }
+                //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
+            }
+        //}
+
+
+
 
 
         }
-        //    GameLog.Core.Intel.DebugFormat("doing ExecuteIntelOrders...");
 
-        //    var civs = GameContext.Current.CivilizationManagers;// .ToL   .Where(s => s.Civilization)
-        //    var empires = new List<CivilizationManager>();
-
-        //    foreach (var civ in civs)
-        //    {
-        //        if (civ.Civilization.IsEmpire)
-        //            empires.Add(civ);
-        //    }
-
-        //    foreach (var empire in empires)
-        //    {
-        //        GameLog.Core.Intel.DebugFormat("doing ExecuteIntelOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersGoingToHost.Count);
-        //        if (empire.IntelOrdersGoingToHost != null) // && empire.IntelOrdersGoingToHost.)
-        //        {
-        //            foreach (var order in empire.IntelOrdersGoingToHost)
-        //            {
-        //                var attacking = GameContext.Current.CivilizationManagers[order.AttackingCivID];
-        //                var attacked = GameContext.Current.CivilizationManagers[order.AttackedCivID];
-        //                GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
-        //                                                                                attacked.Civilization.Key,
-        //                                                                                 order.Intel_Order);
-        //                switch (order.Intel_Order)
-        //                {
-        //                    case "StealCredits":
-        //                        ExecuteStealCredits(attacking.Civilization, attacked.Civilization, "Terrorists");
-        //                        break;
-        //                    default:
-        //                        break;
-        //                }
-
-        //            }
-        //        }
-        //        //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
-        //    }
-        //}
 
         //IntelOrders.SetNewIntelOrders(); /*just for fun*/
 
@@ -950,6 +958,8 @@ namespace Supremacy.Intelligence
 
             public int AttackedCivID { get; set; }
             public string Intel_Order { get; set; }
+
+            public string Intel_Order_Blamed { get; set; }
 
         }
         //public void CreateNewIntelOrders(int sCiv, int aCiv, string order)
