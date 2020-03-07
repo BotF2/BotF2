@@ -144,7 +144,7 @@ namespace Supremacy.Intelligence
         {
 
             //public Dictionary<int , string> _local_IntelOrders; // Dictionary, int key is ownerID & order from enum above this IntelOrders class
-            public SetNewIntelOrders(int attackingCivID, int attackedCivID, string _intelOrder)
+            public SetNewIntelOrders(int attackingCivID, int attackedCivID, string _intelOrder, string _intelOrderBlamed)
             {
                 if (attackingCivID < 0 || attackingCivID > 6)
                     throw new ArgumentNullException("source");
@@ -158,13 +158,14 @@ namespace Supremacy.Intelligence
                 _newIntelOrder.AttackedCivID = attackedCivID;
                 _newIntelOrder.AttackingCivID = attackingCivID;
                 _newIntelOrder.Intel_Order = _intelOrder;
+                _newIntelOrder.Intel_Order_Blamed = _intelOrderBlamed;
 
 
                 IntelHelper._local_IntelOrders.Add(_newIntelOrder);// _intelOrder.ToString());
 
                 foreach (var item in IntelHelper._local_IntelOrders)
                 {
-                    GameLog.Core.Intel.DebugFormat("_localIntelOrders: {2} for civ = {0}, _intelOrder = {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order.ToString());
+                    GameLog.Core.Intel.DebugFormat("_localIntelOrders: {2} for civ = {0}, _intelOrder = {1}, Blamed = {3}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order, item.Intel_Order_Blamed);
                 }
 
                // GameContext.Current.CivilizationManagers[attackingCivID].UpdateIntelOrdersGoingToHost(_newIntelOrder);
