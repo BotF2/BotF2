@@ -260,16 +260,25 @@ namespace Supremacy.Intelligence
             // save the spy operation on CivManager then run it at the end of each turn on host computer
             StealCredits stealCredits = new StealCredits(colony, attackingCiv, attackedCiv, blamed);
             //CivilizationManager
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            //var attackedCiv = GameContext.Current.CivilizationManagers[attackedCiv].Civilization;
+            //var attackingCiv = GameContext.Current.CivilizationManagers[attackingCiv].Civilization;
             
 
-            var _intelOrder = new IntelOrders.SetNewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);   
+            var _intelOrder = new IntelHelper.NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
+
+            if (GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost == null)
+            {
+                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost = new List<NewIntelOrders>();
+                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost.Add(_intelOrder);
+
+            }
+            else
+                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost.Add(_intelOrder);
         }
 
 
 
-        // from DoPreTurnOperations in GameEngine, only do it at this time 
+        // from DoPreTurnOperations in GameEngine, only do it at this time //   Done at HOST !!!!!
         public static void ExecuteIntelIncomingOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             //if it is StealCredits than do ExecuteStealCredits
@@ -293,16 +302,35 @@ namespace Supremacy.Intelligence
                 {
                     foreach (var order in empire.IntelOrdersIncomingToHost)
                     {
-                        var attacking = GameContext.Current.CivilizationManagers[order.AttackingCivID];
-                        var attacked = GameContext.Current.CivilizationManagers[order.AttackedCivID];
-                        GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
-                                                                                        attacked.Civilization.Key,
+
+                        if (order.AttackingCivID == 999)
+                        {
+                            GameLog.Core.Intel.DebugFormat("Creating fake Incoming Order... (ROM vs DOM)"); // Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+                            order.AttackedCivID = 5;
+                            order.AttackingCivID = 3;
+                            order.Intel_Order = "StealCredits";
+                            order.Intel_Order_Blamed = "bl_Federation";
+                            //order._attackedCivID = 5;
+                            //order._attackingCivID = 3;
+                            //order._intel_Order = "StealCreditsUL";
+                            //order._intel_Order_Blamed = "bl_FederationUL";
+                        }
+
+                        //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+                        //                                        attacked.Civilization.Key,
+                        //                                         order.Intel_Order,
+                        //                                         order.Intel_Order_Blamed);
+
+                        var attacking = GameContext.Current.CivilizationManagers[2].Civilization;
+                        var attacked = GameContext.Current.CivilizationManagers[5].Civilization;
+                        GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Key,
+                                                                                        attacked.Key,
                                                                                          order.Intel_Order,
                                                                                          order.Intel_Order_Blamed);
                         switch (order.Intel_Order)
                         {
                             case "StealCredits":
-                                ExecuteStealCredits(attacking.Civilization, attacked.Civilization, "Terrorists");
+                                ExecuteStealCredits(attacking, attacked, "_bla_Terrorists");
                                 break;
                             default:
                                 break;
@@ -944,10 +972,10 @@ namespace Supremacy.Intelligence
         [Serializable]
         public class NewIntelOrders //(int, int, string)
         {
-            private int _attackingCivID = 999;
-            private int _attackedCivID = 999;
-            private string _intel_Order = "Dummy_Intel_Order";
-            private string _intel_Order_Blamed = "Dummy_Intel_Order_Blamed";
+            private int _attackingCivID; // = 999;
+            private int _attackedCivID; //= 999;
+            private string _intel_Order; // = "Dummy_Intel_Order";
+            private string _intel_Order_Blamed; // = "Dummy_Intel_Order_Blamed";
 
             //private int sCiv;
             //private int aCiv;
@@ -960,12 +988,21 @@ namespace Supremacy.Intelligence
             //    this.order = order;
             //}
 
+
+            public NewIntelOrders(int attackingCivID, int attackedCivID, string intelOrder, string intelOrderBlamed)
+            {
+                _attackingCivID = attackingCivID;
+                _attackedCivID = attackedCivID;
+                _intel_Order = intelOrder;
+                _intel_Order_Blamed = intelOrderBlamed;
+            }
+
             public int AttackingCivID {
                 get
                 {
                     //var _DummyattackingCivID = 999;
-                    if (_attackingCivID == null)
-                        _attackingCivID = 999;
+                    //if (_attackingCivID == null)
+                    //    _attackingCivID = 999;
 
                     return _attackingCivID; 
                 }
@@ -981,8 +1018,8 @@ namespace Supremacy.Intelligence
                 get
                 {
                     //var _DummyattackedCivID = 999;
-                    if (_attackedCivID == null)
-                        _attackedCivID = 999;
+                    //if (_attackedCivID == null)
+                    //    _attackedCivID = 999;
 
                     return _attackedCivID;
                 }
@@ -997,14 +1034,14 @@ namespace Supremacy.Intelligence
                 get
                 {
                     //var _DummyattackedCivID = 999;
-                    if (_intel_Order == null)
-                        _intel_Order = "Dummy_Intel_Order was null";
+                    //if (_intel_Order == null)
+                    //    _intel_Order = "Dummy_Intel_Order was null";
 
                     return _intel_Order;
                 }
                 set
                 {
-                    if (_intel_Order != null)
+                    //if (_intel_Order != null)
                         _intel_Order = value;
                 }
             }
@@ -1014,14 +1051,14 @@ namespace Supremacy.Intelligence
                 get
                 {
                     //var _DummyattackedCivID = 999;
-                    if (_intel_Order_Blamed == null)
-                        _intel_Order_Blamed = "Dummy_Intel_Order_Blamed was null";
+                    //if (_intel_Order_Blamed == null)
+                    //    _intel_Order_Blamed = "Dummy_Intel_Order_Blamed was null";
 
                     return _intel_Order_Blamed;
                 }
                 set
                 {
-                    if (_intel_Order_Blamed != null)
+                    //if (_intel_Order_Blamed != null)
                         _intel_Order_Blamed = value;
                 }
             }

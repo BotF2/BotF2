@@ -44,8 +44,8 @@ namespace Supremacy.Game
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
         //private List<StealCredits> _stealCreditsSpyOperation;
-        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
-        private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;    // fed  -> terrans
+        private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;  // host
         //private List<IntelHelper.NewIntelOrders> itemList;
         //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
@@ -58,7 +58,7 @@ namespace Supremacy.Game
         #endregion
 
         //[NonSerialized]
-        IntelHelper.NewIntelOrders newStuff = new IntelHelper.NewIntelOrders();
+        //IntelHelper.NewIntelOrders newStuff = new IntelHelper.NewIntelOrders(999,999,"x","y");
 
         #region Constructors
         /// <summary>
@@ -85,10 +85,10 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
-            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>() { newStuff }; // new List<IntelHelper.NewIntelOrders>(// { 0, 0, "OutgoingDummy", "blamedTerrorist" };
+            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>(); // { newStuff }; // new List<IntelHelper.NewIntelOrders>(// { 0, 0, "OutgoingDummy", "blamedTerrorist" };
             //var _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
 
-            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>() { newStuff }; //new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "IncomingDummy", "blamedTerrorist" };
+            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>(); // { newStuff }; //new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "IncomingDummy", "blamedTerrorist" };
             //itemList = new List<IntelHelper.NewIntelOrders>();
 
             _resources.Deuterium.BaseValue = 100;
@@ -244,16 +244,16 @@ namespace Supremacy.Game
         {
             get 
             {
-                if (_intelOrdersGoingToHost == null)
-                {
-                    var _DummyintelOrdersGoingToHost = new NewIntelOrders();
-                    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
-                    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
-                    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
-                    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
-                    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
-                }
-                //var _intelOrdersGoingToHost = value;
+                //if (_intelOrdersGoingToHost == null)
+                //{
+                //    var _DummyintelOrdersGoingToHost = new NewIntelOrders(0,1,"Dum","out");
+                //    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
+                //    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
+                //    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
+                //    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
+                //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
+                //}
+
                 return _intelOrdersGoingToHost; 
             }
         }
@@ -269,16 +269,16 @@ namespace Supremacy.Game
         {
             get 
             {
-                if (_intelOrdersIncomingToHost == null)
-                {
-                    var _DummyintelOrdersIncomingToHost = new NewIntelOrders();
-                    _DummyintelOrdersIncomingToHost.AttackedCivID = 0;
-                    _DummyintelOrdersIncomingToHost.AttackingCivID = 1;
-                    _DummyintelOrdersIncomingToHost.Intel_Order = "StealCredits";
-                    _DummyintelOrdersIncomingToHost.Intel_Order_Blamed = "Blam_out";
-                    _intelOrdersIncomingToHost.Add(_DummyintelOrdersIncomingToHost);
-                }
-                //var _intelOrdersGoingToHost = value;
+                //if (_intelOrdersIncomingToHost == null)
+                //{
+                //    var _DummyintelOrdersIncomingToHost = new NewIntelOrders(0,1,"a","b");
+                //    _DummyintelOrdersIncomingToHost.AttackedCivID = 0;
+                //    _DummyintelOrdersIncomingToHost.AttackingCivID = 1;
+                //    _DummyintelOrdersIncomingToHost.Intel_Order = "StealCredits";
+                //    _DummyintelOrdersIncomingToHost.Intel_Order_Blamed = "Blam_out";
+                //    _intelOrdersIncomingToHost.Add(_DummyintelOrdersIncomingToHost);
+                //}
+
                 return _intelOrdersIncomingToHost; 
             }
         }

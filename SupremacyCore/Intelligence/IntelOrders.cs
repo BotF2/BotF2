@@ -140,38 +140,38 @@ namespace Supremacy.Intelligence
         //}
 
 
-        public class SetNewIntelOrders
-        {
+        //public class SetNewIntelOrders
+        //{
 
-            //public Dictionary<int , string> _local_IntelOrders; // Dictionary, int key is ownerID & order from enum above this IntelOrders class
-            public SetNewIntelOrders(int attackingCivID, int attackedCivID, string _intelOrder, string _intelOrderBlamed)
-            {
-                if (attackingCivID < 0 || attackingCivID > 6)
-                    throw new ArgumentNullException("source");
-                GameLog.Core.Intel.DebugFormat("******************** NEW: Set order = {0} for attacker {1} VS {2}", _intelOrder.ToString(), attackingCivID, attackedCivID);
+        //    //public Dictionary<int , string> _local_IntelOrders; // Dictionary, int key is ownerID & order from enum above this IntelOrders class
+        //    public SetNewIntelOrders(int attackingCivID, int attackedCivID, string _intelOrder, string _intelOrderBlamed)
+        //    {
+        //        if (attackingCivID < 0 || attackingCivID > 6)
+        //            throw new ArgumentNullException("source");
+        //        GameLog.Core.Intel.DebugFormat("******************** NEW: Set order = {0} for attacker {1} VS {2}", _intelOrder.ToString(), attackingCivID, attackedCivID);
 
-                //if (IntelHelper._localIntelOrders.Count = 0)
-                //    IntelHelper._localIntelOrders.
-                //    else
-                var _newIntelOrder = new IntelHelper.NewIntelOrders();
-                //var _newIntelOrder = (0, 0, "F");
-                _newIntelOrder.AttackedCivID = attackedCivID;
-                _newIntelOrder.AttackingCivID = attackingCivID;
-                _newIntelOrder.Intel_Order = _intelOrder;
-                _newIntelOrder.Intel_Order_Blamed = _intelOrderBlamed;
+        //        //if (IntelHelper._localIntelOrders.Count = 0)
+        //        //    IntelHelper._localIntelOrders.
+        //        //    else
+        //        var _newIntelOrder = new IntelHelper.NewIntelOrders(999,999,"d","e");
+        //        //var _newIntelOrder = (0, 0, "F");
+        //        _newIntelOrder.AttackedCivID = attackedCivID;
+        //        _newIntelOrder.AttackingCivID = attackingCivID;
+        //        _newIntelOrder.Intel_Order = _intelOrder;
+        //        _newIntelOrder.Intel_Order_Blamed = _intelOrderBlamed;
 
 
-                IntelHelper._local_IntelOrders.Add(_newIntelOrder);// _intelOrder.ToString());
+        //        IntelHelper._local_IntelOrders.Add(_newIntelOrder);// _intelOrder.ToString());
 
-                foreach (var item in IntelHelper._local_IntelOrders)
-                {
-                    GameLog.Core.Intel.DebugFormat("_localIntelOrders: {2} for civ = {0}, _intelOrder = {1}, Blamed = {3}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order, item.Intel_Order_Blamed);
-                }
+        //        foreach (var item in IntelHelper._local_IntelOrders)
+        //        {
+        //            GameLog.Core.Intel.DebugFormat("_localIntelOrders: {2} for civ = {0} VS {1}, Blamed = {3}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order, item.Intel_Order_Blamed);
+        //        }
 
-               // GameContext.Current.CivilizationManagers[attackingCivID].UpdateIntelOrdersGoingToHost(_newIntelOrder);
+        //        //GameContext.Current.CivilizationManagers[attackingCivID].UpdateIntelOrdersGoingToHost(_newIntelOrder);
 
-                //_localIntelOrders[attackingCivID] = _intelOrder;
-            }
-        }
+        //        //_localIntelOrders[attackingCivID] = _intelOrder;
+        //    }
+        //}
     }
 }
