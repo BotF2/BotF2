@@ -47,8 +47,8 @@ using System.Windows.Markup;
 
 
     // seems Version is affecting the available list of saved games
-[assembly: AssemblyVersion("2019.11.03.0")]
-[assembly: AssemblyFileVersion("2019.11.03.0")]
+[assembly: AssemblyVersion("2020.17.0.1")]
+[assembly: AssemblyFileVersion("2020.17.0.1")]
 
 [assembly: Dependency("WindowsBase,", LoadHint.Always)]
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]
