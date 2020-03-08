@@ -394,14 +394,15 @@ namespace Supremacy.Game
         #region DoPreTurnOperations() Method
         private void DoPreTurnOperations(GameContext game)
         {
-            IntelHelper.ExecuteIntelIncomingOrders();
-
+            
             var objects = GameContext.Current.Universe.Objects.ToHashSet();
             var civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
             var fleets = objects.OfType<Fleet>().ToHashSet();
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
 
-           GameLog.Core.General.DebugFormat("resetting items...");
+            IntelHelper.ExecuteIntelIncomingOrders();
+
+            GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {
                 GameContext.PushThreadContext(game);
@@ -2492,10 +2493,11 @@ namespace Supremacy.Game
                  */
                 civManager.Resources.UpdateAndReset();
                 civManager.Credits.UpdateAndReset();
+                //civManager.IntelOrdersGoingToHost.Count;
                 civManager.OnTurnFinished();
 
                 // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
-                GameLog.Core.CivsAndRaces.DebugFormat(";Col:;{1};Pop:;{2};Morale:;{3};Credits;{4};Change;{5};Research;{6};{7};for;{0}"
+                GameLog.Core.CivsAndRaces.DebugFormat(";Col:;{1};Pop:;{2};Morale:;{3};Credits;{4};Change;{5};Research;{6};{7};{8};for;{0}"
                     , civManager.Civilization.Key
                     , civManager.Colonies.Count
                     , civManager.TotalPopulation
@@ -2505,6 +2507,7 @@ namespace Supremacy.Game
 
                     , civManager.Research.CumulativePoints
                     , civManager.Civilization.CivilizationType
+                    , civManager.Civilization.IntelOrdersGoingToHost.Count
                     //, civManager.Treasury.GrossIncome  // ;Treasury;{7}  // doesn't work, maybe it's just done with Credits !
                     //, civManager.Treasury.Maintenance  // ;Maint;{8}
 

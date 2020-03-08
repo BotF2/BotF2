@@ -265,6 +265,7 @@ namespace Supremacy.Intelligence
             
 
             var _intelOrder = new IntelHelper.NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
+            GameLog.Core.Intel.DebugFormat("adding ExecuteIntelIncomingOrders: {0} vs {1} - {2}, blamed {3}", attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
 
             if (GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost == null)
             {
@@ -295,12 +296,33 @@ namespace Supremacy.Intelligence
                     empiresDoingIntel.Add(civ);
             }
 
+            var _completeListofIntelOrders = new List<IntelHelper.NewIntelOrders>();
+
             foreach (var empire in empiresDoingIntel)
             {
-                GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersIncomingToHost.Count);
-                if (empire.IntelOrdersIncomingToHost != null) // && empire.IntelOrdersGoingToHost.)
+                GameLog.Core.Intel.DebugFormat("checking from {0}: for IntelOrdersGoingToHost... # = no counting", empire.Civilization.Key); //, empire.Civilization.IntelOrdersGoingToHost.Count);
+                if (empire.Civilization.IntelOrdersGoingToHost != null && empire.Civilization.IntelOrdersGoingToHost.Count > 0)
                 {
-                    foreach (var order in empire.IntelOrdersIncomingToHost)
+                    //_completeListofIntelOrders.AddRange(empire.IntelOrdersGoingToHost);
+                    _completeListofIntelOrders.AddRange(empire.Civilization.IntelOrdersGoingToHost);
+                    GameLog.Core.Intel.DebugFormat("add from {0}: {1} into _completeListofIntelOrders", empire.Civilization.Key, empire.IntelOrdersGoingToHost.ToString());
+                }
+            }
+
+            foreach (var item in _completeListofIntelOrders)
+            {
+                GameLog.Core.Intel.DebugFormat("_completeListofIntelOrders-Entry: {0} from {1} against {2], blamed={3}", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            }
+
+
+            //foreach (var empire in empiresDoingIntel)
+            //{
+            //    //GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersIncomingToHost.Count);
+
+            //if (empire.IntelOrdersIncomingToHost != null) // && empire.IntelOrdersGoingToHost.)
+                                                          //    {
+                                                          //foreach (var order in empire.IntelOrdersIncomingToHost)
+                foreach (var order in _completeListofIntelOrders)
                     {
 
                         if (order.AttackingCivID == 999)
@@ -336,8 +358,8 @@ namespace Supremacy.Intelligence
                                 break;
                         }
 
-                    }
-                }
+                //    }
+                //}
                 //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
             }
         //}

@@ -240,7 +240,7 @@ namespace Supremacy.Game
         /// <value>Intel Orders like StealCredits</value>
 
         //[NotNull]
-        public IList<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
+        public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
         {
             get 
             {
@@ -254,7 +254,8 @@ namespace Supremacy.Game
                 //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
                 //}
 
-                return _intelOrdersGoingToHost; 
+
+                return this.Civilization.IntelOrdersGoingToHost; 
             }
         }
 
@@ -265,10 +266,13 @@ namespace Supremacy.Game
         /// <value>Intel Orders like StealCredits</value>
         /// 
         //[NotNull]
-        public IList<IntelHelper.NewIntelOrders> IntelOrdersIncomingToHost
+        public List<IntelHelper.NewIntelOrders> IntelOrdersIncomingToHost
         {
             get 
             {
+                //_intelOrdersIncomingToHost =
+                    
+
                 //if (_intelOrdersIncomingToHost == null)
                 //{
                 //    var _DummyintelOrdersIncomingToHost = new NewIntelOrders(0,1,"a","b");
