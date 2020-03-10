@@ -258,7 +258,7 @@ namespace Supremacy.Intelligence
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // save the spy operation on CivManager then run it at the end of each turn on host computer
-            StealCredits stealCredits = new StealCredits(colony, attackingCiv, attackedCiv, blamed);
+            //StealCredits stealCredits = new StealCredits(colony, attackingCiv, attackedCiv, blamed);
             //CivilizationManager
             //var attackedCiv = GameContext.Current.CivilizationManagers[attackedCiv].Civilization;
             //var attackingCiv = GameContext.Current.CivilizationManagers[attackingCiv].Civilization;

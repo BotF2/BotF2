@@ -37,7 +37,7 @@ namespace Supremacy.Game
     {
         WaitOnPlayers = 0,
         PreTurnOperations,
-        SpyOperations,
+       // SpyOperations,
         ResetObjects,
         FleetMovement,
         Combat,
@@ -48,7 +48,7 @@ namespace Supremacy.Game
         ShipProduction,
         Production,
         Trade,
-        Intelligence,
+       // Intelligence,
         Morale,
         MapUpdates,
         PostTurnOperations,
@@ -908,7 +908,7 @@ namespace Supremacy.Game
         }
         #endregion
 
-        #region DoSpyOperations() Method - move this to end of turn after the orders were given. Results will show up in the next turn
+        #region DoSpyOperations() Commented Out for now
 
 
         //private void DoSpyOperations()
@@ -2011,7 +2011,7 @@ namespace Supremacy.Game
         }
         #endregion
 
-        #region DoIntelligence() Method // move this to post turn operations, see results next turn
+        #region DoIntelligence() Commented Out For Now
 
         //void DoIntelligence(GameContext game)
         //{

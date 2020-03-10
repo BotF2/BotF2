@@ -20,123 +20,123 @@ namespace Supremacy.Intelligence
 {
 
     
-    public enum IntelOrder : byte
-    {
-        StealCredits,
-        StealResearch,
-        SabotageFood,
-        SabotageEnergy,
-        SabotageIndustry
-    }
+    //public enum IntelOrder : byte
+    //{
+    //    StealCredits,
+    //    StealResearch,
+    //    SabotageFood,
+    //    SabotageEnergy,
+    //    SabotageIndustry
+    //}
 
-    //[NonSerializable]
-    public class IntelOrders : IEnumerable<IntelOrder>
-    {
-        private readonly int _intelId;
-        public  Dictionary<int, IntelOrder> _intelOrders; // Dictionary, int key is ownerID & order from enum above this IntelOrders class
+    ////[NonSerializable]
+    //public class IntelOrders : IEnumerable<IntelOrder>
+    //{
+    //    private readonly int _intelId;
+    //    public  Dictionary<int, IntelOrder> _intelOrders; // Dictionary, int key is ownerID & order from enum above this IntelOrders class
 
-        /*Not used:*/
-        private readonly int _ownerId;
-        //private readonly AssaultStrategy _assaultStrategy;
-        //private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
-
-
-        public int IntelID
-        {
-            get { return _intelId; }
-        }
-
-        public int OwnerID
-        {
-            get { return _ownerId; }
-        }
-
-        public Civilization Owner
-        {
-            get
-            {
-                return GameContext.Current.Civilizations[_ownerId];
-            }
-        }
-
-        public Dictionary<int, IntelOrder> _localIntelOrders { get; private set; }
-
-        public IntelOrders(Civilization owner, int intelId)
-        //AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
-        //InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
-        {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-
-            _ownerId = owner.CivID;
-            _intelOrders = new Dictionary<int, IntelOrder>();
-            _intelId = intelId;
-            //_assaultStrategy = assaultStrategy;
-            //_assaultTargetingStrategy = assaultTargetingStrategy;
-        }
-
-        //public AssaultStrategy AssaultStrategy
-        //{
-        //    get { return _assaultStrategy; }
-        //}
-
-        //public InvasionTargetingStrategy AssaultTargetingStrategy
-        //{
-        //    get { return _assaultTargetingStrategy; }
-        //}
+    //    /*Not used:*/
+    //    private readonly int _ownerId;
+    //    //private readonly AssaultStrategy _assaultStrategy;
+    //    //private readonly InvasionTargetingStrategy _assaultTargetingStrategy;
 
 
-        //public void SetIntelOrder(int attackingCivID, IntelOrder _intelOrder)
-        public void SetIntelOrders()
+    //    public int IntelID
+    //    {
+    //        get { return _intelId; }
+    //    }
 
-        {
-            //if (attackingCivID < 0 || attackingCivID > 6)
-            //    throw new ArgumentN_localIntelOrdersullException("source");
-            //GameLog.Core.CombatDetails.DebugFormat("Set order = {1} for attacker {0}", attackingCivID, _intelOrder.ToString());
-            //_intelOrders[attackingCivID] = _intelOrder;
-            _intelOrders = _localIntelOrders; /*= _intelOrders;*/
-        }
+    //    public int OwnerID
+    //    {
+    //        get { return _ownerId; }
+    //    }
 
-        public void ClearIntelOrder(CivilizationManager source)
-        {
-            if (source == null)
-                return;
-            _intelOrders.Remove(source.CivilizationID);
-        }
+    //    public Civilization Owner
+    //    {
+    //        get
+    //        {
+    //            return GameContext.Current.Civilizations[_ownerId];
+    //        }
+    //    }
 
-        public void Clear()
-        {
-            _intelOrders.Clear();
-        }
+    //    public Dictionary<int, IntelOrder> _localIntelOrders { get; private set; }
 
-        public bool IsIntelOrderSet(CivilizationManager source)
-        {
-            if (source == null)
-                return false;
-            return _intelOrders.ContainsKey(source.CivilizationID);
-        }
+    //    public IntelOrders(Civilization owner, int intelId)
+    //    //AssaultStrategy assaultStrategy = AssaultStrategy.StagedAttack,
+    //    //InvasionTargetingStrategy assaultTargetingStrategy = InvasionTargetingStrategy.Balanced)
+    //    {
+    //        if (owner == null)
+    //            throw new ArgumentNullException("owner");
 
-        public IntelOrder GetIntelOrder(CivilizationManager source)
-        {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (!_intelOrders.ContainsKey(source.CivilizationID))
-                throw new ArgumentException("No order has been set for the specified source");
+    //        _ownerId = owner.CivID;
+    //        _intelOrders = new Dictionary<int, IntelOrder>();
+    //        _intelId = intelId;
+    //        //_assaultStrategy = assaultStrategy;
+    //        //_assaultTargetingStrategy = assaultTargetingStrategy;
+    //    }
 
-            GameLog.Core.Intel.DebugFormat("GetCombatOrder source {0}", source.Civilization.Key);
+    //    //public AssaultStrategy AssaultStrategy
+    //    //{
+    //    //    get { return _assaultStrategy; }
+    //    //}
 
-            return _intelOrders[source.CivilizationID];
-        }
+    //    //public InvasionTargetingStrategy AssaultTargetingStrategy
+    //    //{
+    //    //    get { return _assaultTargetingStrategy; }
+    //    //}
 
-        public IEnumerator<IntelOrder> GetEnumerator()
-        {
-            return _intelOrders.Values.GetEnumerator();
-        }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    //    //public void SetIntelOrder(int attackingCivID, IntelOrder _intelOrder)
+    //    public void SetIntelOrders()
+
+    //    {
+    //        //if (attackingCivID < 0 || attackingCivID > 6)
+    //        //    throw new ArgumentN_localIntelOrdersullException("source");
+    //        //GameLog.Core.CombatDetails.DebugFormat("Set order = {1} for attacker {0}", attackingCivID, _intelOrder.ToString());
+    //        //_intelOrders[attackingCivID] = _intelOrder;
+    //        _intelOrders = _localIntelOrders; /*= _intelOrders;*/
+    //    }
+
+    //    public void ClearIntelOrder(CivilizationManager source)
+    //    {
+    //        if (source == null)
+    //            return;
+    //        _intelOrders.Remove(source.CivilizationID);
+    //    }
+
+    //    public void Clear()
+    //    {
+    //        _intelOrders.Clear();
+    //    }
+
+    //    public bool IsIntelOrderSet(CivilizationManager source)
+    //    {
+    //        if (source == null)
+    //            return false;
+    //        return _intelOrders.ContainsKey(source.CivilizationID);
+    //    }
+
+    //    public IntelOrder GetIntelOrder(CivilizationManager source)
+    //    {
+    //        if (source == null)
+    //            throw new ArgumentNullException("source");
+    //        if (!_intelOrders.ContainsKey(source.CivilizationID))
+    //            throw new ArgumentException("No order has been set for the specified source");
+
+    //        GameLog.Core.Intel.DebugFormat("GetCombatOrder source {0}", source.Civilization.Key);
+
+    //        return _intelOrders[source.CivilizationID];
+    //    }
+
+    //    public IEnumerator<IntelOrder> GetEnumerator()
+    //    {
+    //        return _intelOrders.Values.GetEnumerator();
+    //    }
+
+    //    IEnumerator IEnumerable.GetEnumerator()
+    //    {
+    //        return GetEnumerator();
+    //    }
         //}
 
 
@@ -173,5 +173,5 @@ namespace Supremacy.Intelligence
         //        //_localIntelOrders[attackingCivID] = _intelOrder;
         //    }
         //}
-    }
+    //}
 }

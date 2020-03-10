@@ -136,12 +136,12 @@ namespace Supremacy.WCF
             Action = "http://Supremacy.WPF/ISupremacyService/SendCombatTarget2")]
         void SendCombatTarget2(CombatTargetSecondaries target2);
 
-        [OperationContract(
-            IsOneWay = true,
-            IsInitiating = false,
-            IsTerminating = false,
-            Action = "http://Supremacy.WPF/ISupremacyService/SendIntelOrders")]
-        void SendIntelOrders(IntelOrders orders);
+        //[OperationContract(
+        //    IsOneWay = true,
+        //    IsInitiating = false,
+        //    IsTerminating = false,
+        //    Action = "http://Supremacy.WPF/ISupremacyService/SendIntelOrders")]
+        //void SendIntelOrders(IntelOrders orders);
 
         [OperationContract(
             IsOneWay = true,

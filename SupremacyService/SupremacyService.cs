@@ -63,7 +63,7 @@ namespace Supremacy.WCF
         private GameInitData _gameInitData;
         private IAsyncResult _aiAsyncResult;
         private CombatEngine _combatEngine;
-        private IntelEngine _intelEngine;
+       // private IntelEngine _intelEngine;
         private InvasionEngine _invasionEngine;
         private GameContext _game;
         private bool _isGameStarted;
@@ -1406,27 +1406,27 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.Error(e);
             }
         }
-        public void SendIntelOrders(IntelOrders intelOrders)
-        {
-            GameLog.Server.Intel.DebugFormat("NEXT: trying to do SendIntelOrders ...");
-            try
-            {
-                if (_intelEngine == null || intelOrders == null)
-                    return;
+        //public void SendIntelOrders(IntelOrders intelOrders)
+        //{
+        //    GameLog.Server.Intel.DebugFormat("NEXT: trying to do SendIntelOrders ...");
+        //    try
+        //    {
+        //        if (_intelEngine == null || intelOrders == null)
+        //            return;
 
-                GameLog.Server.Intel.DebugFormat("trying to do SendIntelOrders ...");
-                //lock (_combatEngine.SyncLockTargetTwos)
-                //{
-                _intelEngine.SubmitIntelOrders(intelOrders);
-                GameLog.Server.Intel.DebugFormat("done Submit for  SendIntelOrders ...");
-                //}
-            }
-            catch (Exception e)
-            {
-                GameLog.Server.Intel.DebugFormat("SendIntelOrders null {0}", intelOrders.ToString());
-                GameLog.Server.Intel.Error(e);
-            }
-        }
+        //        GameLog.Server.Intel.DebugFormat("trying to do SendIntelOrders ...");
+        //        //lock (_combatEngine.SyncLockTargetTwos)
+        //        //{
+        //        _intelEngine.SubmitIntelOrders(intelOrders);
+        //        GameLog.Server.Intel.DebugFormat("done Submit for  SendIntelOrders ...");
+        //        //}
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        GameLog.Server.Intel.DebugFormat("SendIntelOrders null {0}", intelOrders.ToString());
+        //        GameLog.Server.Intel.Error(e);
+        //    }
+        //}
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
 
