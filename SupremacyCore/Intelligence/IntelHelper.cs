@@ -19,8 +19,8 @@ namespace Supremacy.Intelligence
         private static UniverseObjectList<Colony> _newSpiedColonies;
         private static List<Civilization> _spiedList = new List<Civilization>();
         private static List<Civilization> _localSpiedList = new List<Civilization>();
-        private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
-        private static Dictionary<Civilization, string> _intelOrdersDictionary = new Dictionary<Civilization, string>();
+        //private static Dictionary<Civilization, int> _defenseDictionary = new Dictionary<Civilization, int>();
+        //private static Dictionary<Civilization, string> _intelOrdersDictionary = new Dictionary<Civilization, string>();
         private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
@@ -62,10 +62,10 @@ namespace Supremacy.Intelligence
             get { return _newTargetCiv; }
         }
 
-        public static Dictionary<Civilization, int> DefenceDictionary
-        {
-            get { return _defenseDictionary; }
-        }
+        //public static Dictionary<Civilization, int> DefenceDictionary
+        //{
+        //    get { return _defenseDictionary; }
+        //}
         public static CivilizationManager LocalCivManager
         {
             get { return _localCivManager; }
@@ -233,19 +233,19 @@ namespace Supremacy.Intelligence
                     break;
             }
             GameLog.Client.UI.DebugFormat("********* end of sending spied list to CM **********");
-            PopulateDefence();
+           // PopulateDefence();
         }
-        private static void PopulateDefence()
-        {
-            _defenseDictionary.Clear();
-            foreach (var spiedCiv in _spiedList)
-            {
-                int defenseInt = 0;
-                var spiedCivManager = GameContext.Current.CivilizationManagers[spiedCiv];
-                Int32.TryParse(spiedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseInt);
-                _defenseDictionary.Add(spiedCiv, defenseInt);
-            }
-        }
+        //private static void PopulateDefence()
+        //{
+        //    _defenseDictionary.Clear();
+        //    foreach (var spiedCiv in _spiedList)
+        //    {
+        //        int defenseInt = 0;
+        //        var spiedCivManager = GameContext.Current.CivilizationManagers[spiedCiv];
+        //        Int32.TryParse(spiedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseInt);
+        //        _defenseDictionary.Add(spiedCiv, defenseInt);
+        //    }
+        //}
         #region Espionage Methods
         public static string Blame(Civilization localCivAttacker, string blamed, int chance)
         {
