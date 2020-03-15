@@ -63,7 +63,7 @@ namespace Supremacy.WCF
         private GameInitData _gameInitData;
         private IAsyncResult _aiAsyncResult;
         private CombatEngine _combatEngine;
-       // private IntelEngine _intelEngine;
+        private IntelEngine _intelEngine;
         private InvasionEngine _invasionEngine;
         private GameContext _game;
         private bool _isGameStarted;
@@ -471,6 +471,7 @@ namespace Supremacy.WCF
 
                 foreach (var order in orders)
                 {
+                    //GameLog.Core.Test.DebugFormat("", order.);
                     order.Execute(_game);
                 }
 
@@ -589,6 +590,8 @@ namespace Supremacy.WCF
             var player = playerInfo.Player;
             var message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
             var tcs = new TaskCompletionSource<Unit>();
+
+            GameLog.Server.GameData.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
 
             var subscription = Observable
                 .ToAsync(() => callback.NotifyGameDataUpdated(message), _scheduler)()

@@ -8,12 +8,13 @@
 // All other rights reserved.
 
 using System;
-
+using System.Collections.Generic;
 using Supremacy.Annotations;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
 
@@ -25,6 +26,8 @@ namespace Supremacy.Diplomacy
         private int _ownerId;
         private int _seatOfGovernmentId;
         private CivilizationKeyedMap<ForeignPower> _foreignPowers;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
+        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost_List;
 
         public int OwnerID
         {
@@ -44,6 +47,12 @@ namespace Supremacy.Diplomacy
         public ResourcePool OwnerResources
         {
             get { return GameContext.Current.CivilizationManagers[_ownerId].Resources; }
+        }
+
+        public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
+        {
+            get { return GetIntelOrdersGoingToHost(_ownerId); }
+            //get { return GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost; }
         }
 
         public Colony SeatOfGovernment
@@ -90,12 +99,52 @@ namespace Supremacy.Diplomacy
             return _foreignPowers[civilization.CivID];
         }
 
+        //public List<IntelHelper.NewIntelOrders> GetIntelOrdersGoingToHost(ICivIdentity civilization)
+        //{
+        //    if (civilization == null)
+        //        throw new ArgumentNullException("civilization");
+        //    //EnsureForeignPower(civilization);
+        //    _intelOrdersGoingToHost_List = new List<IntelHelper.NewIntelOrders>();
+
+        //    _intelOrdersGoingToHost_List.AddRange(_intelOrdersGoingToHost[civilization.CivID]);
+
+        //    return _intelOrdersGoingToHost_List;
+        //}
+
+        public List<IntelHelper.NewIntelOrders> GetIntelOrdersGoingToHost(int civID)
+        {
+            if (civID == null)
+                throw new ArgumentNullException("civilization");
+            //EnsureForeignPower(civilization);
+            _intelOrdersGoingToHost_List = new List<IntelHelper.NewIntelOrders>();
+
+            if (_intelOrdersGoingToHost_List == null)
+            {
+                if (_intelOrdersGoingToHost.Count > 0)
+                {
+                    _intelOrdersGoingToHost_List = new List<IntelHelper.NewIntelOrders>();
+                    _intelOrdersGoingToHost_List.Add(_intelOrdersGoingToHost[civID]);
+                }
+
+            }
+            else
+            {
+                if (_intelOrdersGoingToHost.Count > 0)
+                    _intelOrdersGoingToHost_List.Add(_intelOrdersGoingToHost[civID]);
+            }
+
+
+            return _intelOrdersGoingToHost_List;
+            //return _intelOrdersGoingToHost[civID];
+        }
+
         public Diplomat(ICivIdentity owner)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
             _ownerId = owner.CivID;
             _foreignPowers = new CivilizationKeyedMap<ForeignPower>(o => o.CounterpartyID);
+            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>();
         }
 
         protected ForeignPower EnsureForeignPower(ICivIdentity counterparty)
@@ -215,6 +264,7 @@ namespace Supremacy.Diplomacy
             _ownerId = reader.ReadOptimizedInt32();
             _seatOfGovernmentId = reader.ReadOptimizedInt32();
             _foreignPowers = reader.Read<CivilizationKeyedMap<ForeignPower>>();
+            _intelOrdersGoingToHost = reader.Read<List<IntelHelper.NewIntelOrders>>();
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
@@ -222,6 +272,7 @@ namespace Supremacy.Diplomacy
             writer.WriteOptimized(_ownerId);
             writer.WriteOptimized(_seatOfGovernmentId);
             writer.WriteObject(_foreignPowers);
+            writer.WriteObject(_intelOrdersGoingToHost);
         }
     }
 }

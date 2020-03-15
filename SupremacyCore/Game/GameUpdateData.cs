@@ -8,14 +8,17 @@
 // All other rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
+using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -47,12 +50,26 @@ namespace Supremacy.Game
             try
             {
                 game.TurnNumber = _turnNumber;
+
+
+
                 game.CivilizationManagers.Clear();
+
+
                 game.CivilizationManagers.AddRange(_civManagers);
                 game.Universe.Objects = _objects;
                 game.SectorClaims = _sectorClaims;
                 game.AgreementMatrix = _agreementMatrix;
                 game.DiplomacyData = _diplomacyData;
+
+                var _ListofIntelOrders = new List<IntelHelper.NewIntelOrders>();
+                if (_diplomats != null)
+                {
+                    foreach (var diplomat in _diplomats)
+                    {
+                        _ListofIntelOrders = diplomat.IntelOrdersGoingToHost;
+                    }
+                }
 
                 game.Diplomats.Clear();
 
@@ -62,6 +79,8 @@ namespace Supremacy.Game
                     {
                         var ownerId = diplomat.OwnerID;
 
+                        //game.Diplomats.Add(diplomat);
+                        diplomat.IntelOrdersGoingToHost.AddRange(_ListofIntelOrders);
                         game.Diplomats.Add(diplomat);
 
                         foreach (var civ in game.Civilizations)
@@ -97,6 +116,8 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("player");
 
             var data = new GameUpdateData();
+
+            GameLog.Server.GameData.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
 
             GameContext.PushThreadContext(game);
             try

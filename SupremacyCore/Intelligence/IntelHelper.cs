@@ -1,4 +1,5 @@
 using Supremacy.Collections;
+using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -267,14 +268,53 @@ namespace Supremacy.Intelligence
             var _intelOrder = new IntelHelper.NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
             GameLog.Core.Intel.DebugFormat("adding ExecuteIntelIncomingOrders: {0} vs {1} - {2}, blamed {3}", attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
 
-            if (GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost == null)
-            {
-                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost = new List<NewIntelOrders>();
-                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost.Add(_intelOrder);
+            //if (GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost == null)
+            //{
+            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost = new List<NewIntelOrders>();
+            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost.Add(_intelOrder);
+            //    //GameContext.Current.CivilizationManagers[attackingCiv].UpDateIntelOrdersGoingToHost();
+            //}
+            //else
+            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost.Add(_intelOrder);
 
-            }
-            else
-                GameContext.Current.CivilizationManagers[attackingCiv].Civilization.IntelOrdersGoingToHost.Add(_intelOrder);
+            //_diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
+
+            //foreach (var civManager in _civManagers)
+            //{
+            //    if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
+            //    {
+            //        _diplomats.Add(new Diplomat(civManager.Civilization));
+
+                    //var _diplomat = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
+
+            //foreach (var civManager in _civManagers)
+            //{
+            //    if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
+            //    {
+
+            //////////////var playerDiplomat = Diplomat.Get(attackingCiv.CivID);
+
+            //////////////var listIntelOrders = playerDiplomat.IntelOrdersGoingToHost;
+
+            //////////////    listIntelOrders.Add(_intelOrder);
+
+            Diplomat.Get(attackingCiv.CivID).IntelOrdersGoingToHost.Add(_intelOrder);
+
+            //listIOrders.
+
+            //_intelOrders.Add(new IntelHelper.NewIntelOrders(_intelOrder));
+
+
+            //if (GameContext.Current.CivilizationManagers[attackingCiv] == null)
+            //{
+            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost = new List<NewIntelOrders>();
+            //    //Diplomat[attackingCiv].
+            //    //CivilizationKeyedMap[attackingCiv]
+            //    listIntelOrders.Add(_intelOrder);
+            //    //GameContext.Current.CivilizationManagers[attackingCiv].UpDateIntelOrdersGoingToHost();
+            //}
+            //else
+
         }
 
 
@@ -288,6 +328,7 @@ namespace Supremacy.Intelligence
             GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders...");
 
             var civs = GameContext.Current.CivilizationManagers;// .ToL   .Where(s => s.Civilization)
+
             var empiresDoingIntel = new List<CivilizationManager>();
 
             foreach (var civ in civs)
@@ -300,12 +341,13 @@ namespace Supremacy.Intelligence
 
             foreach (var empire in empiresDoingIntel)
             {
-                GameLog.Core.Intel.DebugFormat("checking from {0}: for IntelOrdersGoingToHost... # = no counting", empire.Civilization.Key); //, empire.Civilization.IntelOrdersGoingToHost.Count);
-                if (empire.Civilization.IntelOrdersGoingToHost != null && empire.Civilization.IntelOrdersGoingToHost.Count > 0)
+                var _diplomat = Diplomat.Get(empire);
+                //GameLog.Core.Intel.DebugFormat("checking from {0}: for Dipolmat.IntelOrdersGoingToHost... # = {1}"/*no counting"*/, empire.Civilization.Key, _diplomat.IntelOrdersGoingToHost.Count); //, empire.Civilization.IntelOrdersGoingToHost.Count);
+                if (Diplomat.Get(empire).IntelOrdersGoingToHost.Count > 0)
                 {
                     //_completeListofIntelOrders.AddRange(empire.IntelOrdersGoingToHost);
-                    _completeListofIntelOrders.AddRange(empire.Civilization.IntelOrdersGoingToHost);
-                    GameLog.Core.Intel.DebugFormat("add from {0}: {1} into _completeListofIntelOrders", empire.Civilization.Key, empire.IntelOrdersGoingToHost.ToString());
+                    _completeListofIntelOrders.AddRange(Diplomat.Get(empire).IntelOrdersGoingToHost);
+                    //GameLog.Core.Intel.DebugFormat("add from {0} into _completeListofIntelOrders", empire.Civilization.Key/*, Diplomat.Get(empire).IntelOrdersGoingToHost.ToString()*/);
                 }
             }
 
@@ -992,7 +1034,7 @@ namespace Supremacy.Intelligence
         }
 
         [Serializable]
-        public class NewIntelOrders //(int, int, string)
+        public class NewIntelOrders //(ICivilization civilization)  //(int, int, string)
         {
             private int _attackingCivID; // = 999;
             private int _attackedCivID; //= 999;

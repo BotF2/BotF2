@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 
 using Supremacy.Game;
 using Supremacy.IO;
+using Supremacy.Utility;
 
 namespace Supremacy.WCF
 {
@@ -24,7 +25,16 @@ namespace Supremacy.WCF
 
         public IList<Order> Orders
         {
-            get { return StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer)); }
+            get 
+            {
+                var orders = StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer));
+                foreach (var item in orders)
+                {
+                    GameLog.Core.SaveLoad.DebugFormat("Order: owner = {0}, IsExecuted = {1}", item.Owner, item.IsExecuted);
+                }
+/*                GameLog.Core.SaveLoad.DebugFormat("{0}", gamelogText)*/;
+                return StreamUtility.Read<IList<Order>>(Convert.FromBase64String(_buffer)); 
+            }
         }
 
         [DataMember]

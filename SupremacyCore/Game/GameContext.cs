@@ -13,6 +13,7 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
+using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -221,7 +222,6 @@ namespace Supremacy.Game
                         GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
                 _techDatabase = reader.Read<TechDatabase>();
                 _researchMatrix = reader.Read<ResearchMatrix>();
-              //  _intelMatrix = reader.Read<IntelMatrix>();
                 _sectorClaims = reader.Read<SectorClaimGrid>();
                 _techTrees = reader.Read<TechTreeMap>();
                 _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
@@ -231,6 +231,7 @@ namespace Supremacy.Game
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
 
+                
                 FixupDiplomacyData();
             }
             finally
@@ -602,7 +603,45 @@ namespace Supremacy.Game
             {
                 var gameContext = ThreadContext ?? Peek();
                 if (gameContext != null)
+                {
+                    // keep this for next time we have to check Game Context
+                        //foreach (var civManager in gameContext.CivilizationManagers)
+                        //{
+                        //    //    if (civManager.Civilization.IsEmpire)
+                        //    //        continue;
+                        //    if (civManager.CivilizationID != 4) // only Cardassians
+                        //        continue;
+
+                        //bool output = false;
+
+                        //    string _gameLogText = "Civ= " + civManager.CivilizationID +"  :";//  .Civilization.Key;
+                        //                                                                     //string _gameLogText = "Hello";
+                        //if (civManager.IntelOrdersGoingToHost != null)
+                        //{
+                        //    _gameLogText += civManager.IntelOrdersGoingToHost.Count + " for civManager.IntelOrdersGoingToHost,  ";
+                        //    if (civManager.IntelOrdersGoingToHost.Count > 0)
+                        //        output = true;
+                        //}
+                        //if (civManager.IntelOrdersIncomingToHost != null)
+                        //{
+                        //    _gameLogText += civManager.IntelOrdersIncomingToHost.Count + " for civManager.IntelOrdersIncomingToHost";
+                        //    if(civManager.IntelOrdersIncomingToHost.Count > 0)
+                        //        output = true;
+                        //}
+                        ////    // same for civ, not for CivManager
+                        ////    if (civManager.Civilization.IntelOrdersGoingToHost != null)
+                        ////        _gameLogText += "civ.IntelOrdersGoingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+                        ////    if (civManager.Civilization.IntelOrdersIncomingToHost != null)
+                        ////        _gameLogText += "civ.IntelOrdersIncomingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+
+                        //if (output == true)
+                        //GameLog.Core.Test.DebugFormat(_gameLogText);
+
+                        //}
+
+
                     return gameContext;
+                }
 
                 if (_isInDesignMode.Value)
                     gameContext = CreateDesignTimeGameContext();
@@ -1140,6 +1179,7 @@ namespace Supremacy.Game
                     if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
                     {
                         _diplomats.Add(new Diplomat(civManager.Civilization));
+                        //_diplomats.Add(new List<IntelHelper.NewIntelOrders>());
                         civManager.EnsureSeatOfGovernment();
                     }
                 }
