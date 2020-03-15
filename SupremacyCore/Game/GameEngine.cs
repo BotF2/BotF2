@@ -2493,7 +2493,9 @@ namespace Supremacy.Game
                  */
                 civManager.Resources.UpdateAndReset();
                 civManager.Credits.UpdateAndReset();
-                //civManager.IntelOrdersGoingToHost.Count;
+                //var _countIntelOrders = civManager.IntelOrdersGoingToHost.Count;
+                //if (_countIntelOrders > 0)
+                //    GameLog.Core.Intel.DebugFormat("{0}: _countIntelOrders = {1}", civManager.Civilization.Key, _countIntelOrders);
                 civManager.OnTurnFinished();
 
                 // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)

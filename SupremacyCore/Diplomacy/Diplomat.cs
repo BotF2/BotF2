@@ -17,6 +17,7 @@ using Supremacy.Game;
 using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Diplomacy
 {
@@ -27,7 +28,7 @@ namespace Supremacy.Diplomacy
         private int _seatOfGovernmentId;
         private CivilizationKeyedMap<ForeignPower> _foreignPowers;
         private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
-        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost_List;
+        //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost_List;
 
         public int OwnerID
         {
@@ -51,8 +52,12 @@ namespace Supremacy.Diplomacy
 
         public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
         {
-            get { return GetIntelOrdersGoingToHost(_ownerId); }
-            //get { return GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost; }
+            //get { return GetIntelOrdersGoingToHost(_ownerId); }
+            get 
+            {
+                GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost.Count = {0}", GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost.Count);
+                return GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost; 
+            }
         }
 
         public Colony SeatOfGovernment
@@ -116,21 +121,21 @@ namespace Supremacy.Diplomacy
             if (civID == null)
                 throw new ArgumentNullException("civilization");
             //EnsureForeignPower(civilization);
-            _intelOrdersGoingToHost_List = new List<IntelHelper.NewIntelOrders>();
+            var _intelOrdersGoingToHost_List = new List<IntelHelper.NewIntelOrders>();
 
             if (_intelOrdersGoingToHost_List == null)
             {
-                if (_intelOrdersGoingToHost.Count > 0)
+                if (IntelOrdersGoingToHost.Count > 0)
                 {
-                    _intelOrdersGoingToHost_List = new List<IntelHelper.NewIntelOrders>();
-                    _intelOrdersGoingToHost_List.Add(_intelOrdersGoingToHost[civID]);
+                    //_intelOrdersGoingToHost_List = new List<IntelHelper.NewIntelOrders>();
+                    _intelOrdersGoingToHost_List.Add(IntelOrdersGoingToHost[civID]);
                 }
 
             }
             else
             {
-                if (_intelOrdersGoingToHost.Count > 0)
-                    _intelOrdersGoingToHost_List.Add(_intelOrdersGoingToHost[civID]);
+                if (IntelOrdersGoingToHost.Count > 0)
+                    _intelOrdersGoingToHost_List.Add(IntelOrdersGoingToHost[civID]);
             }
 
 
@@ -242,6 +247,16 @@ namespace Supremacy.Diplomacy
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
+            
+            var _diplomats = GameContext.Current.Diplomats[owner.CivID];
+            _diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
+
+            foreach (var item in _diplomats.IntelOrdersGoingToHost)
+            {
+                
+                GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            }
+
 
             return GameContext.Current.Diplomats[owner.CivID];
         }
