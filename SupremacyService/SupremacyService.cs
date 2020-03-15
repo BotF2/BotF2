@@ -1357,7 +1357,11 @@ namespace Supremacy.WCF
                 
                 lock (_combatEngine.SyncLock)
                 {
-                        _combatEngine.SubmitOrders(orders); 
+                    try
+                    {
+                        _combatEngine.SubmitOrders(orders);
+                    }
+                    catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
 
                     if (_combatEngine.Ready)
                         TryResumeCombat(_combatEngine);

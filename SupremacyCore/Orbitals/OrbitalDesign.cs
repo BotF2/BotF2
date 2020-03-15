@@ -205,8 +205,8 @@ namespace Supremacy.Orbitals
                 }
                 if (TryEnsureObjectString())
                     return TextDatabaseEntry.Custom1;
-                if (TextDatabaseEntry.Custom1 == null)
-                    GameLog.Core.XMLCheck.WarnFormat("PrimaryWeaponName is missing... (ship/station is unknown here");
+                //if (TextDatabaseEntry.Custom1 == null)
+                //    GameLog.Core.XMLCheck.WarnFormat("PrimaryWeaponName is missing... (ship/station is unknown here");
                 return String.Empty;
             }
         }
@@ -240,8 +240,8 @@ namespace Supremacy.Orbitals
                 }
                 if (TryEnsureObjectString())
                     return TextDatabaseEntry.Custom2;
-                if (TextDatabaseEntry.Custom2 == null)
-                    GameLog.Core.XMLCheck.WarnFormat("SecondaryWeaponName is missing... (ship/station is unknown here");
+                //if (TextDatabaseEntry.Custom2 == null)
+                //    GameLog.Core.XMLCheck.WarnFormat("SecondaryWeaponName is missing... (ship/station is unknown here");
                 return String.Empty;
             }
         }
