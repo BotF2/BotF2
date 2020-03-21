@@ -263,9 +263,9 @@ namespace Supremacy.Intelligence
             //CivilizationManager
             //var attackedCiv = GameContext.Current.CivilizationManagers[attackedCiv].Civilization;
             //var attackingCiv = GameContext.Current.CivilizationManagers[attackingCiv].Civilization;
+            IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
             
-
-            var _intelOrder = new IntelHelper.NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
+            //var _intelOrder = IntelHelper.NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
             GameLog.Core.Intel.DebugFormat("adding ExecuteIntelIncomingOrders: {0} vs {1} - {2}, blamed {3}", attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
 
             //if (GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost == null)
@@ -296,13 +296,11 @@ namespace Supremacy.Intelligence
 
             var listIntelOrders = playerDiplomat.IntelOrdersGoingToHost;
 
-            listIntelOrders.Add(_intelOrder);
+            listIntelOrders.Add(order);
+            playerDiplomat.UpdateIntelOrderList(listIntelOrders);
             
-
             if (playerDiplomat.IntelOrdersGoingToHost.Count > 0)
                 GameLog.Core.Intel.DebugFormat("playerDiplomat for {0} has {1} going to host", playerDiplomat.Owner.Key, playerDiplomat.IntelOrdersGoingToHost.Count);
-
-
 
             //var dip2 = Diplomat.Get(attackingCiv.CivID);
             //if (dip2.IntelOrdersGoingToHost.Count > 0)
@@ -325,8 +323,6 @@ namespace Supremacy.Intelligence
 
         }
 
-
-
         // from DoPreTurnOperations in GameEngine, only do it at this time //   Done at HOST !!!!!
         public static void ExecuteIntelIncomingOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -335,7 +331,7 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders...");
 
-            var civs = GameContext.Current.CivilizationManagers;// .ToL   .Where(s => s.Civilization)
+            var civs = GameContext.Current.CivilizationManagers;
 
             var empiresDoingIntel = new List<CivilizationManager>();
 
@@ -351,23 +347,22 @@ namespace Supremacy.Intelligence
             {
                 var _diplomat = Diplomat.Get(empire);
                 //GameLog.Core.Intel.DebugFormat("checking from {0}: for Dipolmat.IntelOrdersGoingToHost... # = {1}"/*no counting"*/, empire.Civilization.Key, _diplomat.IntelOrdersGoingToHost.Count); //, empire.Civilization.IntelOrdersGoingToHost.Count);
-                if (empire.CivilizationID == 4)
-                {
-                    GameLog.Core.Intel.DebugFormat("checking for {0}: Count Intel Orders = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
+                //if (empire.CivilizationID == 4)
+                //{
+                    GameLog.Core.Intel.DebugFormat("Before add intelOrders CivKey = {0}: Count Intel Orders = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
                     if (Diplomat.Get(empire).IntelOrdersGoingToHost.Count > 0)
                     {
                         //_completeListofIntelOrders.AddRange(empire.IntelOrdersGoingToHost);
                         _completeListofIntelOrders.AddRange(Diplomat.Get(empire).IntelOrdersGoingToHost);
-                        GameLog.Core.Intel.DebugFormat("add from {0} into _completeListofIntelOrders", empire.Civilization.Key/*, Diplomat.Get(empire).IntelOrdersGoingToHost.ToString()*/);
+                        GameLog.Core.Intel.DebugFormat("add to CivKey {0} Intel OrderToHost Count = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
                     }
-                }
+                //}
             }
 
             foreach (var item in _completeListofIntelOrders)
             {
                 GameLog.Core.Intel.DebugFormat("_completeListofIntelOrders-Entry: {0} from {1} against {2], blamed={3}", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
             }
-
 
             //foreach (var empire in empiresDoingIntel)
             //{
@@ -416,12 +411,6 @@ namespace Supremacy.Intelligence
                 //}
                 //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
             }
-        //}
-
-
-
-
-
         }
 
 

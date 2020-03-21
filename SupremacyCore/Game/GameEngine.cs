@@ -806,8 +806,8 @@ namespace Supremacy.Game
                     }
                     var ForeignPower = diplomat1.GetForeignPower(civ2);
                     var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-                    GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+                    //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+                    //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
                     switch (ForeignPower.PendingAction)
                     {

@@ -607,7 +607,7 @@ namespace Supremacy.Diplomacy
             if (secondManager != null)
                 secondManager.SitRepEntries.Add(new FirstContactSitRepEntry(secondCiv, firstCiv, location));
 
-            GameLog.Core.Diplomacy.DebugFormat("firstManager.Civilization.Key = {0}, second = {1}", firstManager.Civilization.Key, secondManager.Civilization.Key);
+            //GameLog.Core.Diplomacy.DebugFormat("firstManager.Civilization.Key = {0}, second = {1}", firstManager.Civilization.Key, secondManager.Civilization.Key);
             if (firstManager.Civilization.Key == "BORG")
             {
                 foreignPower.DeclareWar();
