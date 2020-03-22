@@ -110,6 +110,9 @@
     <Setting Name="TracesResearch" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="TracesSitReps" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="TracesSaveLoad" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

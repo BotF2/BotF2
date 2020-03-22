@@ -1038,6 +1038,40 @@ namespace Supremacy.Client
         //}
         #endregion
 
+        #region TracesSitReps Property
+        public DependencyProperty TracesSitRepsProperty = DependencyProperty.Register(
+            "SitReps",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        public bool TracesSitReps
+        {
+            get { return (bool)GetValue(TracesSitRepsProperty); }
+            set
+            {
+                SetValue(TracesSitRepsProperty, value);
+                //GameLog.Client.General.InfoFormat("SitReps = {0}", value);
+                if (value == true)
+                    GameLog.SetRepositoryToDebug("SitReps");
+                else
+                    GameLog.SetRepositoryToErrorOnly("SitReps");
+            }
+        }
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesSitRepsChanged;
+
+        //private void OnTracesSitRepsChanged(bool oldValue, bool newValue)
+        //{
+        //    var handler = TracesSitRepsChanged;
+        //    if (handler != null)
+        //        handler(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+        //}
+
+        #endregion TracesSitReps Property
+
         #region TracesResearch Property
         public static readonly DependencyProperty TracesResearchProperty = DependencyProperty.Register(
             "Research",

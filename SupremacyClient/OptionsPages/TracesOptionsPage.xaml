@@ -3,45 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
-  <scc:AutoGrid Orientation="Vertical">
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="100" />
-        <ColumnDefinition Width="10" />
-        <ColumnDefinition Width="3" />
-        <ColumnDefinition Width="100" />
-        <ColumnDefinition Width="10" />
-        <ColumnDefinition Width="3" />
-        <ColumnDefinition Width="*" />
+    <scc:AutoGrid Orientation="Vertical">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-    <Grid.RowDefinitions>
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="18" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
 
         <TextBlock
@@ -74,9 +74,9 @@
         ToolTip="{s:StringResource SETTINGS_REPORT_ERRORS_TOOLTIP}"
         />-->
 
-      
-      
-      
+
+
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="0" 
@@ -85,7 +85,7 @@
         Content="{s:StringResource SETTINGS_TRACES_AI}"
         ToolTip="{s:StringResource SETTINGS_TRACES_AI_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="0" 
@@ -103,7 +103,7 @@
         Content="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES}"
         ToolTip="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="0" 
@@ -112,7 +112,7 @@
         Content="{s:StringResource SETTINGS_TRACES_COLONIES}"
         ToolTip="{s:StringResource SETTINGS_TRACES_COLONIES_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="0" 
@@ -121,7 +121,7 @@
         Content="{s:StringResource SETTINGS_TRACES_COMBAT}"
         ToolTip="{s:StringResource SETTINGS_TRACES_COMBAT_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="0" 
@@ -166,7 +166,7 @@
         Content="{s:StringResource SETTINGS_TRACES_DIPLOMACY}"
         ToolTip="{s:StringResource SETTINGS_TRACES_DIPLOMACY_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="0" 
@@ -175,8 +175,8 @@
         Content="{s:StringResource SETTINGS_TRACES_ENERGY}"
         ToolTip="{s:StringResource SETTINGS_TRACES_ENERGY_TOOLTIP}" 
         />
-      
-      
+
+
         <!--column 3 (2nd one)-->
         <CheckBox 
         Grid.ColumnSpan="2"
@@ -195,7 +195,7 @@
         Content="{s:StringResource SETTINGS_TRACES_GALAXY_GENERATOR}"
         ToolTip="{s:StringResource SETTINGS_TRACES_GALAXY_GENERATOR_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="3" 
@@ -240,7 +240,7 @@
         Content="{s:StringResource SETTINGS_TRACES_MAPDATA}"
         ToolTip="{s:StringResource SETTINGS_TRACES_MAPDATA_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="3" 
@@ -249,7 +249,7 @@
         Content="{s:StringResource SETTINGS_TRACES_MULTIPLAY}"
         ToolTip="{s:StringResource SETTINGS_TRACES_MULTIPLAY_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="3" 
@@ -268,7 +268,7 @@
         ToolTip="{s:StringResource SETTINGS_TRACES_REPORT_ERRORS_TO_EMAIL_TOOLTIP}"
         />
 
-      <CheckBox 
+        <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="3" 
         Grid.Row="13"
@@ -295,7 +295,7 @@
         Content="{s:StringResource SETTINGS_TRACES_SHIPS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SHIPS_TOOLTIP}"
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="6" 
@@ -304,7 +304,7 @@
         Content="{s:StringResource SETTINGS_TRACES_SHIPPRODUCTION}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SHIPPRODUCTION_TOOLTIP}" 
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="6" 
@@ -338,8 +338,8 @@
         Content="{s:StringResource SETTINGS_TRACES_SYSTEMASSAULTDETAILS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SYSTEMASSAULTDETAILS_TOOLTIP}"
         />
-      
-       <CheckBox 
+
+        <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="6" 
         Grid.Row="10"
@@ -347,7 +347,7 @@
         Content="{s:StringResource SETTINGS_TRACES_TEST}"
         ToolTip="{s:StringResource SETTINGS_TRACES_TEST_TOOLTIP}"
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="6" 
@@ -356,7 +356,7 @@
         Content="{s:StringResource SETTINGS_TRACES_TRADEROUTES}"
         ToolTip="{s:StringResource SETTINGS_TRACES_TRADEROUTES_TOOLTIP}"
         />
-      
+
         <CheckBox 
         Grid.ColumnSpan="2"
         Grid.Column="6" 
@@ -382,6 +382,15 @@
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesXML2CSVOutput), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_XML2CSV_OUTPUT}"
         ToolTip="{s:StringResource SETTINGS_TRACES_XML2CSV_OUTPUT_TOOLTIP}"
+        />
+        
+        <CheckBox 
+            Grid.ColumnSpan="2"
+            Grid.Column="3" 
+            Grid.Row="14"
+            IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesSitReps), Mode=TwoWay}"
+            Content="{s:StringResource SETTINGS_TRACES_SITREPS}"
+            ToolTip="{s:StringResource SETTINGS_TRACES_SITREPS_TOOLTIP}"
         />
 
         <!--<CheckBox

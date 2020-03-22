@@ -458,6 +458,18 @@ namespace Supremacy.Client.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string TracesSitReps {
+            get {
+                return ((string)(this["TracesSitReps"]));
+            }
+            set {
+                this["TracesSitReps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public string TracesSaveLoad {
             get {
                 return ((string)(this["TracesSaveLoad"]));
