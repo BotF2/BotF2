@@ -55,38 +55,43 @@ namespace Supremacy.Diplomacy
             //get { return GetIntelOrdersGoingToHost(_ownerId); }
             get 
             {
-                GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
+                if (_intelOrdersGoingToHost.Count > 0)
+                    GameLog.Server.Intel.DebugFormat("GET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
                 //return GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost; 
                 return _intelOrdersGoingToHost;
             }
             set
             {
-                if(_intelOrdersGoingToHost != value)
-                _intelOrdersGoingToHost = value;
+                GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
+                if (_intelOrdersGoingToHost != value)
+                {
+                    GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost to VALUE");
+                    _intelOrdersGoingToHost = value;
+                }
             }
 
-            //[NotNull]
+            ////[NotNull]
             //public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
             //{
             //    get
             //    {
-            //        //if (_intelOrdersGoingToHost == null)
-            //        //{
-            //        //    var _DummyintelOrdersGoingToHost = new NewIntelOrders(0,1,"Dum","out");
-            //        //    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
-            //        //    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
-            //        //    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
-            //        //    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
-            //        //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
-            //        //}
+            //        //        //if (_intelOrdersGoingToHost == null)
+            //        //        //{
+            //        //        //    var _DummyintelOrdersGoingToHost = new NewIntelOrders(0,1,"Dum","out");
+            //        //        //    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
+            //        //        //    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
+            //        //        //    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
+            //        //        //    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
+            //        //        //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
+            //        //        //}
 
-            //        // gameLog is to often > 10000
-            //        //GameLog.Core.Intel.DebugFormat("...doing IntelOrdersGoingToHost");
+            //        //        // gameLog is to often > 10000
+            //        //        //GameLog.Core.Intel.DebugFormat("...doing IntelOrdersGoingToHost");
 
             //        return _intelOrdersGoingToHost;
             //    }
             //    set
-            //    {
+            //            {
             //        _intelOrdersGoingToHost = value;
             //    }
             //}
@@ -186,6 +191,15 @@ namespace Supremacy.Diplomacy
             _ownerId = owner.CivID;
             _foreignPowers = new CivilizationKeyedMap<ForeignPower>(o => o.CounterpartyID);
             _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>();
+            //_intelOrdersGoingToHost.Add();
+            try
+            {
+                _intelOrdersGoingToHost = Diplomat.Get(owner)._intelOrdersGoingToHost;
+            }
+            catch
+            {
+                GameLog.Server.Intel.DebugFormat("***List _intelOrdersGoingToHost might be empty");
+            }
         }
 
         protected ForeignPower EnsureForeignPower(ICivIdentity counterparty)
@@ -283,15 +297,15 @@ namespace Supremacy.Diplomacy
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
-            
-            //var _diplomats = GameContext.Current.Diplomats[owner.CivID];
-            //_diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
 
-            //foreach (var item in _diplomats.IntelOrdersGoingToHost)
-            //{
-                
-            //    GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
-            //}
+            var _diplomats = GameContext.Current.Diplomats[owner.CivID];
+            _diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
+
+            foreach (var item in _diplomats.IntelOrdersGoingToHost)
+            {
+
+                GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            }
 
             return GameContext.Current.Diplomats[owner.CivID];
         }
@@ -299,13 +313,13 @@ namespace Supremacy.Diplomacy
         public static Diplomat Get(int ownerId)
         {
 
-            //var _diplomats = GameContext.Current.Diplomats[ownerId];
-            //_diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
+            var _diplomats = GameContext.Current.Diplomats[ownerId];
+            _diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
 
-            //foreach (var item in _diplomats.IntelOrdersGoingToHost)
-            //{
-            //    GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
-            //}
+            foreach (var item in _diplomats.IntelOrdersGoingToHost)
+            {
+                GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            }
             return GameContext.Current.Diplomats[ownerId];
         }
 

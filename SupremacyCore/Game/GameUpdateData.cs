@@ -68,6 +68,7 @@ namespace Supremacy.Game
                     foreach (var diplomat in _diplomats)
                     {
                         _ListofIntelOrders = diplomat.IntelOrdersGoingToHost;
+                        //GameLog.Core.Intel.DebugFormat("_ListofIntelOrders.Count = {0}", _ListofIntelOrders.Count);
                     }
                 }
 
@@ -130,6 +131,11 @@ namespace Supremacy.Game
                 data._diplomacyData = game.DiplomacyData;
 //                game.Diplomats.TryGetValue(player.EmpireID, out data._diplomat);
                 data._diplomats = new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
+
+                //var _diplomat = data._diplomats;  // just for have a look
+                
+                //GameLog.Core.Intel.DebugFormat("", _diplomat.);
+
                 data._civManagers.ForEach(o => o.Compact());
             }
             finally
@@ -143,6 +149,7 @@ namespace Supremacy.Game
         #region IOwnedDataSerializable Members
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
+            GameLog.Server.GameData.DebugFormat("try to SerializeOwnedData GameUpdateData");
             writer.WriteOptimized(_turnNumber);
             _objects.SerializeOwnedData(writer, context);
             writer.WriteObject(_civManagers);

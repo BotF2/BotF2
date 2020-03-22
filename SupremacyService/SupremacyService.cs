@@ -63,7 +63,7 @@ namespace Supremacy.WCF
         private GameInitData _gameInitData;
         private IAsyncResult _aiAsyncResult;
         private CombatEngine _combatEngine;
-        private IntelEngine _intelEngine;
+        //private IntelEngine _intelEngine;
         private InvasionEngine _invasionEngine;
         private GameContext _game;
         private bool _isGameStarted;

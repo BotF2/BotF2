@@ -400,6 +400,8 @@ namespace Supremacy.Game
             var fleets = objects.OfType<Fleet>().ToHashSet();
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
 
+            var diplomatCheck = game.Diplomats;
+
             IntelHelper.ExecuteIntelIncomingOrders();
 
             GameLog.Core.General.DebugFormat("resetting items...");
@@ -2439,7 +2441,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.General.DebugFormat(string.Format("DoTrade failed for {0}",
+                    GameLog.Core.Production.DebugFormat(string.Format("DoTrade failed for {0}",
                         civ.Name),
                         e);
                 }
