@@ -33,7 +33,7 @@ namespace Supremacy.Client.Views
         private readonly IUnityContainer _container;
         private readonly IAppContext _appContext;
         private CivilizationManager _localCivManager;
-        private IntelUpdate _update;
+        //private IntelUpdate _update;
 
         // order dictionary is located in IntelOrders.cs constructor, store orders in core of host?
 
@@ -99,7 +99,7 @@ namespace Supremacy.Client.Views
             InitializeComponent();
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
             IntelHelper.GetLocalCiv(_localCivManager);
-            ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
+           // ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
            // DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 
             GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
@@ -1079,108 +1079,108 @@ namespace Supremacy.Client.Views
             GameLog.Client.UI.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
             return true;
         }
-        private void OnIntelUpdateReceived(DataEventArgs<IntelUpdate> args)
-        {
-            HandleIntelUpdate(args.Value);
-        }
-
-        private void HandleIntelUpdate(IntelUpdate update)
-        {
-            _update = update;
+        //private void OnIntelUpdateReceived(DataEventArgs<IntelUpdate> args)
+        //{
+        //    HandleIntelUpdate(args.Value);
+        //   //private void HandleIntelUpdate(IntelUpdate update)
+        ////{
+        ////    _update = update;
 
 
-            //foreach (CombatAssets assets in update.FriendlyAssets)
-            //{
-            //    if (assets.Owner == _appContext.LocalPlayer.Empire)
-            //    {
-            //        _playerAssets = assets;
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        _otherAssets = assets;
-            //    }
-            //}
-            //if (_playerAssets == null)
-            //{
-            //    _playerAssets = update.FriendlyAssets[0];
-            //}
-            //if (_otherAssets == null)
-            //{
-            //    _otherAssets = update.HostileAssets[0];
-            //}
+        //    //foreach (CombatAssets assets in update.FriendlyAssets)
+        //    //{
+        //    //    if (assets.Owner == _appContext.LocalPlayer.Empire)
+        //    //    {
+        //    //        _playerAssets = assets;
+        //    //        break;
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        _otherAssets = assets;
+        //    //    }
+        //    //}
+        //    //if (_playerAssets == null)
+        //    //{
+        //    //    _playerAssets = update.FriendlyAssets[0];
+        //    //}
+        //    //if (_otherAssets == null)
+        //    //{
+        //    //    _otherAssets = update.HostileAssets[0];
+        //    //}
 
 
-            //DataContext = _update;
+        //    //DataContext = _update;
 
-            //if (update.CombatUpdate_IsCombatOver)
-            //{
+        //    //if (update.CombatUpdate_IsCombatOver)
+        //    //{
 
-            //    if (_update.IsStandoff)
-            //    {
-            //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-            //            + String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
-            //        SubHeaderText.Text = String.Format(
-            //            ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
-            //            _update.Sector.Name);
-            //    }
-            //    else if (_playerAssets.HasSurvivingAssets)
-            //    {
-            //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-            //            + String.Format(ResourceManager.GetString("COMBAT_VICTORY"));
-            //        SubHeaderText.Text = String.Format(
-            //            ResourceManager.GetString("COMBAT_TEXT_VICTORY"),
-            //            _update.Sector.Name);
-            //    }
-            //    else
-            //    {
-            //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-            //            + String.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
-            //        SubHeaderText.Text = String.Format(
-            //            ResourceManager.GetString("COMBAT_TEXT_DEFEAT"),
-            //            _update.Sector.Name);
-            //    }
-            //}
-            //else
-            //{
-            //    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER"); // + ": "
-            //                                                                  //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
-            //    SubHeaderText.Text = String.Format(
-            //        ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
-            //        _update.Sector.Name);
-            //    var soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
-            //    {
-            //        if (File.Exists("Resources/SoundFX/REDALERT.wav"))
-            //            soundPlayer.Play();
-            //    }
-            //}
-            //SubHeader2Text.Text = String.Format(
-            //    ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
-            //    _update.Sector.Name);
+        //    //    if (_update.IsStandoff)
+        //    //    {
+        //    //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
+        //    //            + String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
+        //    //        SubHeaderText.Text = String.Format(
+        //    //            ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
+        //    //            _update.Sector.Name);
+        //    //    }
+        //    //    else if (_playerAssets.HasSurvivingAssets)
+        //    //    {
+        //    //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
+        //    //            + String.Format(ResourceManager.GetString("COMBAT_VICTORY"));
+        //    //        SubHeaderText.Text = String.Format(
+        //    //            ResourceManager.GetString("COMBAT_TEXT_VICTORY"),
+        //    //            _update.Sector.Name);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
+        //    //            + String.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
+        //    //        SubHeaderText.Text = String.Format(
+        //    //            ResourceManager.GetString("COMBAT_TEXT_DEFEAT"),
+        //    //            _update.Sector.Name);
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER"); // + ": "
+        //    //                                                                  //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
+        //    //    SubHeaderText.Text = String.Format(
+        //    //        ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
+        //    //        _update.Sector.Name);
+        //    //    var soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
+        //    //    {
+        //    //        if (File.Exists("Resources/SoundFX/REDALERT.wav"))
+        //    //            soundPlayer.Play();
+        //    //    }
+        //    //}
+        //    //SubHeader2Text.Text = String.Format(
+        //    //    ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
+        //    //    _update.Sector.Name);
 
-            //PopulateUnitTrees();
+        //    //PopulateUnitTrees();
 
-            ////We need combat assets to be able to engage
-            //EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null));
-            ////We need combat assets to be able to rush the opposition
-            //RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
-            ////There needs to be transports in the opposition to be able to target them
-            //TransportsButton.IsEnabled = false;
-            ////We need at least 3 ships to create a formation
-            //FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
-            ////We need assets to be able to retreat
-            //RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0));
-            ////Can hail
-            //HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null)); //(update.RoundNumber == 1);
+        //    ////We need combat assets to be able to engage
+        //    //EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null));
+        //    ////We need combat assets to be able to rush the opposition
+        //    //RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
+        //    ////There needs to be transports in the opposition to be able to target them
+        //    //TransportsButton.IsEnabled = false;
+        //    ////We need at least 3 ships to create a formation
+        //    //FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
+        //    ////We need assets to be able to retreat
+        //    //RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0));
+        //    ////Can hail
+        //    //HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null)); //(update.RoundNumber == 1);
 
-            //UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
-            //LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
-            //CloseButton.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
-            //UpperButtonsPanel.IsEnabled = true;
-            //LowerButtonsPanel.IsEnabled = true;
+        //    //UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+        //    //LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
+        //    //CloseButton.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
+        //    //UpperButtonsPanel.IsEnabled = true;
+        //    //LowerButtonsPanel.IsEnabled = true;
 
-            //if (!IsVisible)
-            //    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));
-        }
+        //    //if (!IsVisible)
+        //    //    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));     }
+
+
+        //}
     }
 }
