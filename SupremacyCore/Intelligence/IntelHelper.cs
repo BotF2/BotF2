@@ -265,9 +265,10 @@ namespace Supremacy.Intelligence
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
 
-            attackedCiv = GameContext.Current.CivilizationManagers[attackedCiv].Civilization;
-            attackingCiv = GameContext.Current.CivilizationManagers[attackingCiv].Civilization;
             IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
+
+            IntelOrdersStealCredits stealCredit = new IntelOrdersStealCredits(attackingCiv, attackedCiv, blamed);
+            GameLog.Core.Intel.DebugFormat("** Class StealCredits = {0} vs {1} blamedd = {2}", attackingCiv.Key, attackedCiv.Key, blamed);
 
             attackingCivManager.UpdateIntelOrdersGoingToHost(order);
 
