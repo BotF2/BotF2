@@ -3329,7 +3329,7 @@ namespace Supremacy.Game
         {
             if (route == null)
                 throw new ArgumentException("TradeRoute");
-            _systemId = TradeRoute.SourceColony.ObjectID;
+            _systemId = route.SourceColony.ObjectID;
             _tradeRoute = route;
         }
     }
