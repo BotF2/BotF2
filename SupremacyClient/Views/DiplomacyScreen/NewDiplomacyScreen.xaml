@@ -1,4 +1,5 @@
-﻿<scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
+﻿<!--File:NewDiplomacySreen.xaml-->
+<scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
                        x:Name="_self"
                        x:FieldModifier="private"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -416,13 +417,53 @@
                     <scc:GameButton x:Name="ProposalButton"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NewMessageButtonText', CharacterCasing=Upper}"
                           Margin="0,0,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NewMessageButtonTooltipText'}"
                           Command="{Binding Path=MakeProposalCommand}"
                           IsEnabled="{Binding Path=MakeProposalCommand}"/>
                     <scc:GameButton x:Name="DeclareWarButton"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DeclareWarButtonText', CharacterCasing=Upper}"
                           Margin="0,2,0,0"
                           Command="{Binding Path=DeclareWarCommand}" 
-                          IsEnabled="{Binding Path=DeclareWarCommand}"/>
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DeclareWarButtonTooltipText'}"
+                          IsEnabled="{Binding Path=DeclareWarCommand}">
+                    </scc:GameButton>
+                    <scc:GameButton x:Name="EndWarButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          Command="{Binding Path=EndWarCommand}" 
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonTooltipText'}"
+                          IsEnabled="{Binding Path=EndWarCommand}">
+                    </scc:GameButton>
+                    <scc:GameButton x:Name="OpenBordersButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OpenBordersButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OpenBordersButtonTooltipText'}"
+                          Command="{Binding Path=OpenBordersCommand}" 
+                          IsEnabled="{Binding Path=OpenBordersCommand}"/>
+                    <scc:GameButton x:Name="NonAgressionButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NonAgressionButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NonAgressionButtonTooltipText'}"
+                          Command="{Binding Path=NonAgressionCommand}" 
+                          IsEnabled="{Binding Path=NonAgressionCommand}"/>
+                    <scc:GameButton x:Name="AffiliationButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AffiliationButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AffiliationButtonTooltipText'}"
+                          Command="{Binding Path=AffiliationCommand}" 
+                          IsEnabled="{Binding Path=AffiliationCommand}"/>
+                    <scc:GameButton x:Name="DefenceAllianceButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DefenceAllianceButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DefenceAllianceButtonTooltipText'}"
+                          Command="{Binding Path=DefenceAllianceCommand}" 
+                          IsEnabled="{Binding Path=DefenceAllianceCommand}"/>
+                    <scc:GameButton x:Name="FullAllianceButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonTooltipText'}"
+                          Command="{Binding Path=FullAllianceCommand}" 
+                          IsEnabled="{Binding Path=FullAllianceCommand}"/>
                 </scc:GameItemsControl>
                 <scc:GameItemsControl x:Name="DraftButtons"
                               Grid.Column="0"
