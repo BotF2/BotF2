@@ -46,7 +46,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        #endregion
+        #endregion Design-Time Instance
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
         private readonly ReadOnlyObservableCollection<ForeignPowerViewModel> _foreignPowersView;
@@ -58,6 +58,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _threatenCommand;
         private readonly DelegateCommand _makeProposalCommand;
         private readonly DelegateCommand _declareWarCommand;
+        private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
         private readonly DelegateCommand _openBordersCommand;
         private readonly DelegateCommand _nonAgressionCommand;
         private readonly DelegateCommand _affiliationCommand;
@@ -82,6 +83,7 @@ namespace Supremacy.Client.Views
             _threatenCommand = new DelegateCommand(ExecuteThreatenCommand, CanExecuteThreatenCommand);
             _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
             _declareWarCommand = new DelegateCommand(ExecuteDeclareWarCommand, CanExecuteDeclareWarCommand);
+            _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
             _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
             _nonAgressionCommand = new DelegateCommand(ExecuteNonAgressionCommand, CanExecuteNonAgressionCommand);
             _affiliationCommand = new DelegateCommand(ExecuteAffiliationCommand, CanExecuteAffiliationCommand);
@@ -207,6 +209,8 @@ namespace Supremacy.Client.Views
             if (!CanExecuteDeclareWarCommandCore(out foreignPower))
                 return;
 
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -226,6 +230,51 @@ namespace Supremacy.Client.Views
             OnCommandVisibilityChanged();
         }
         #endregion DeclareWarCommandButton
+
+
+        #region EndWarCommandButton
+        private bool CanExecuteEndWarCommand()
+        {
+            return CanExecuteEndWarCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteEndWarCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status == ForeignPowerStatus.AtWar;
+        }
+
+        private void ExecuteEndWarCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteEndWarCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var endWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyCeaseFireClause); // CeaseFire = endWar
+            if (endWarElement == null || !endWarElement.AddCommand.CanExecute(null))
+                return;
+
+            endWarElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion EndWarCommandButton
 
 
         #region OpenBordersCommandButton
@@ -256,7 +305,7 @@ namespace Supremacy.Client.Views
             if (!CanExecuteOpenBordersCommandCore(out foreignPower))
                 return;
 
-            _ = DiplomacyScreenDisplayMode.Outbox; // new
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
@@ -277,6 +326,7 @@ namespace Supremacy.Client.Views
             OnCommandVisibilityChanged();
         }
         #endregion OpenBordersCommandButton
+
 
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
@@ -306,7 +356,7 @@ namespace Supremacy.Client.Views
             if (!CanExecuteNonAgressionCommandCore(out foreignPower))
                 return;
 
-            _ = DiplomacyScreenDisplayMode.Outbox; // new
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
@@ -408,7 +458,7 @@ namespace Supremacy.Client.Views
             if (!CanExecuteDefenceAllianceCommandCore(out foreignPower))
                 return;
 
-            _ = DiplomacyScreenDisplayMode.Outbox; // new
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
 
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
@@ -453,7 +503,7 @@ namespace Supremacy.Client.Views
             if (!CanExecuteFullAllianceCommandCore(out foreignPower))
                 return;
 
-            _ = DiplomacyScreenDisplayMode.Outbox; // new
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
 
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
@@ -589,6 +639,7 @@ namespace Supremacy.Client.Views
             _threatenCommand.RaiseCanExecuteChanged();
             _makeProposalCommand.RaiseCanExecuteChanged();
             _declareWarCommand.RaiseCanExecuteChanged();
+            _endWarCommand.RaiseCanExecuteChanged();
             _openBordersCommand.RaiseCanExecuteChanged();
             _nonAgressionCommand.RaiseCanExecuteChanged();
             _affiliationCommand.RaiseCanExecuteChanged();
@@ -667,6 +718,10 @@ namespace Supremacy.Client.Views
         public ICommand DeclareWarCommand
         {
             get { return _declareWarCommand; }
+        }
+        public ICommand EndWarCommand
+        {
+            get { return _endWarCommand; }
         }
         public ICommand OpenBordersCommand
         {
