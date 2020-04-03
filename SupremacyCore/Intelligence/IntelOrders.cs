@@ -34,7 +34,9 @@ namespace Supremacy.Intelligence
     {
         private Civilization _attackingCiv;
         private Civilization _attackedCiv;
-        string _blamed;
+        private string _blamed;
+        private int _turnCreated;
+        private int _counter = 0;
 
         public Civilization AttackingCiv
         {
@@ -50,13 +52,22 @@ namespace Supremacy.Intelligence
         {
             get { return _blamed; }
         }
-
+        public int TurnNumber
+        {
+            get { return _turnCreated; }
+        }
+        public int Counter
+        {
+            get { return _counter; }
+        }
         public IntelOrdersStealCredits(Civilization attacking, Civilization attacked, string blamed)
             {
             _attackingCiv = attacking;
             _attackedCiv = attacked;
             _blamed = blamed;
-            }
+            _turnCreated = GameContext.Current.TurnNumber;
+            //_counter += _counter;
+        }
 
     }
 }

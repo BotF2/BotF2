@@ -393,8 +393,7 @@ namespace Supremacy.Game
 
         #region DoPreTurnOperations() Method
         private void DoPreTurnOperations(GameContext game)
-        {
-            
+        {           
             var objects = GameContext.Current.Universe.Objects.ToHashSet();
             var civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
             var fleets = objects.OfType<Fleet>().ToHashSet();
@@ -403,7 +402,15 @@ namespace Supremacy.Game
             var diplomatCheck = game.Diplomats;
 
             IntelHelper.ExecuteIntelIncomingOrders();
-
+            
+            foreach(var stealCredit in IntelHelper.IntelStealCreditsDictionary.Values)
+            {
+                if (stealCredit.TurnNumber < GameContext.Current.TurnNumber)
+                {
+                    
+                }
+            }
+           // List<IntelOrdersStealCredits> stealCreditsOrder = GetIntelOrderStealCredits();
             GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {
@@ -431,8 +438,6 @@ namespace Supremacy.Game
                 throw new AggregateException(errors);
 
             errors.Clear();
-
-
 
             ParallelForEach(civManagers, civManager =>
             {

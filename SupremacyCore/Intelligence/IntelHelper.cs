@@ -43,6 +43,7 @@ namespace Supremacy.Intelligence
         public static bool _showNetwork_4 = false;
         public static bool _showNetwork_5 = false;
         public static bool _showNetwork_6 = false;
+        private static Dictionary<int, IntelOrdersStealCredits> _IntelStealCreditDictionary;
         //internal static NewIntelOrders NewIntelOrders;
 
         public static List<SitRepEntry> SitReps_Temp
@@ -114,6 +115,10 @@ namespace Supremacy.Intelligence
         public static bool ShowNetwork_6
         {
             get { return _showNetwork_6; }
+        }
+        public static Dictionary<int, IntelOrdersStealCredits> IntelStealCreditsDictionary
+        {
+            get{ return _IntelStealCreditDictionary;  } 
         }
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player
@@ -268,6 +273,18 @@ namespace Supremacy.Intelligence
             IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
 
             IntelOrdersStealCredits stealCredit = new IntelOrdersStealCredits(attackingCiv, attackedCiv, blamed);
+
+            //Dictionary<int, IntelOrdersStealCredits> stealCreditDicitonary = new Dictionary<int, IntelOrdersStealCredits>();
+            _IntelStealCreditDictionary.Add(attackingCiv.CivID, stealCredit);
+
+            List<IntelOrdersStealCredits> stealCreditOrders = new List<IntelOrdersStealCredits>() { stealCredit };
+
+            if (stealCredit.TurnNumber != GameContext.Current.TurnNumber)
+            {
+                
+            }
+  
+            //stealCreditOrders.Add(stealCredit);
             GameLog.Core.Intel.DebugFormat("** Class StealCredits = {0} vs {1} blamedd = {2}", attackingCiv.Key, attackedCiv.Key, blamed);
 
             attackingCivManager.UpdateIntelOrdersGoingToHost(order);
