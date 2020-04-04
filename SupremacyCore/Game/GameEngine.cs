@@ -403,19 +403,30 @@ namespace Supremacy.Game
 
             IntelHelper.ExecuteIntelIncomingOrders();
 
-            List<KeyValuePair<int, IntelOrdersStealCredits>> stealCreditList = IntelHelper.IntelStealCreditsDictionary.ToList();
-            foreach(var stealCredit in stealCreditList)
+            #region class steal credit section
+            if (IntelHelper.IntelStealCreditsDictionary != null)
             {
-                if (stealCredit.Value.TurnNumber < GameContext.Current.TurnNumber)
+                List<KeyValuePair<int, IntelOrdersStealCredits>> stealCreditList = IntelHelper.IntelStealCreditsDictionary.ToList();
+
+                foreach (var stealCredit in stealCreditList) // make list and foreach list to get key to remove last turns values from Dictionary
                 {
-                    IntelHelper.IntelStealCreditsDictionary.Remove(stealCredit.Key);
-                }               
+                    if (stealCredit.Value.TurnNumber < GameContext.Current.TurnNumber)
+                    {
+                        GameLog.Core.Intel.DebugFormat("* * * StealCredit turn# {0} vs {1} current turn#", stealCredit.Value.TurnNumber, GameContext.Current.TurnNumber);
+                        GameLog.Core.Intel.DebugFormat("* * * Remove last turn classes, attacking = {0}", stealCredit.Value.AttackingCiv);
+                        IntelHelper.IntelStealCreditsDictionary.Remove(stealCredit.Key);
+                    }
+                }
+                foreach (var stolenCredits in IntelHelper.IntelStealCreditsDictionary) // foreach dictionary to find and run stealcredit classes
+                {
+                    GameLog.Core.Intel.DebugFormat("* * * for {0} vs {1} call ExecuteStealCredits", stolenCredits.Value.AttackingCiv, stolenCredits.Value.AttackedCiv);
+                    IntelHelper.ExecuteStealCredits(stolenCredits.Value.AttackingCiv,
+                                                    stolenCredits.Value.AttackedCiv,
+                                                    stolenCredits.Value.Blamed);
+                }
             }
-            foreach(var stolenCredits in IntelHelper.IntelStealCreditsDictionary)
-            {
-                IntelHelper.ExecuteStealCredits(GameContext.Current.CivilizationManagers[stolenCredits.Value.AttackingCiv]);
-            }
-            
+            #endregion class steal credit
+
             GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {
