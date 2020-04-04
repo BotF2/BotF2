@@ -402,15 +402,20 @@ namespace Supremacy.Game
             var diplomatCheck = game.Diplomats;
 
             IntelHelper.ExecuteIntelIncomingOrders();
-            
-            foreach(var stealCredit in IntelHelper.IntelStealCreditsDictionary.Values)
+
+            List<KeyValuePair<int, IntelOrdersStealCredits>> stealCreditList = IntelHelper.IntelStealCreditsDictionary.ToList();
+            foreach(var stealCredit in stealCreditList)
             {
-                if (stealCredit.TurnNumber < GameContext.Current.TurnNumber)
+                if (stealCredit.Value.TurnNumber < GameContext.Current.TurnNumber)
                 {
-                    
-                }
+                    IntelHelper.IntelStealCreditsDictionary.Remove(stealCredit.Key);
+                }               
             }
-           // List<IntelOrdersStealCredits> stealCreditsOrder = GetIntelOrderStealCredits();
+            foreach(var stolenCredits in IntelHelper.IntelStealCreditsDictionary)
+            {
+                IntelHelper.ExecuteStealCredits(GameContext.Current.CivilizationManagers[stolenCredits.Value.AttackingCiv]);
+            }
+            
             GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {

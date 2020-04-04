@@ -356,7 +356,92 @@ namespace Supremacy.Intelligence
             //else
 
         }
+        public static void ExecuteStealCredits(CivilizationManager civManager)  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        {
 
+            GameLog.Core.Intel.DebugFormat("doing ExecuteStealCredits...");
+
+            var civs = GameContext.Current.CivilizationManagers;
+
+            var empiresDoingIntel = new List<CivilizationManager>();
+
+            foreach (var civ in civs)
+            {
+                if (civ.Civilization.IsEmpire)
+                    empiresDoingIntel.Add(civ);
+            }
+
+            //var _completeListofIntelOrders = new List<IntelHelper.NewIntelOrders>();
+
+            //foreach (var empire in empiresDoingIntel)
+            //{
+            //    var _diplomat = Diplomat.Get(empire);
+            //    GameLog.Core.Intel.DebugFormat("checking from {0}: for Dipolmat.IntelOrdersGoingToHost... # = {1}"/*no counting"*/, empire.Civilization.Key, _diplomat.IntelOrdersGoingToHost.Count); //, empire.Civilization.IntelOrdersGoingToHost.Count);
+            //    if (empire.CivilizationID == 4)
+            //    {
+            //        GameLog.Core.Intel.DebugFormat("Before add intelOrders CivKey = {0}: Count Intel Orders = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
+            //        if (Diplomat.Get(empire).IntelOrdersGoingToHost.Count > 0)
+            //        {
+            //            //_completeListofIntelOrders.AddRange(empire.IntelOrdersGoingToHost);
+            //            _completeListofIntelOrders.AddRange(Diplomat.Get(empire).IntelOrdersGoingToHost);
+            //            GameLog.Core.Intel.DebugFormat("add to CivKey {0} Intel OrderToHost Count = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
+            //        }
+            //    }
+            //}
+
+            //foreach (var item in _completeListofIntelOrders)
+            //{
+            //    GameLog.Core.Intel.DebugFormat("_completeListofIntelOrders-Entry: {0} from {1} against {2], blamed={3}", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            //}
+
+            ////foreach (var empire in empiresDoingIntel)
+            ////{
+            ////    //GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersIncomingToHost.Count);
+
+            ////if (empire.IntelOrdersIncomingToHost != null) // && empire.IntelOrdersGoingToHost.)
+            ////    {
+            ////foreach (var order in empire.IntelOrdersIncomingToHost)
+            //foreach (var order in _completeListofIntelOrders)
+            //{
+
+            //    if (order.AttackingCivID == 999)
+            //    {
+            //        GameLog.Core.Intel.DebugFormat("Creating fake Incoming Order... (ROM vs DOM)"); // Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+            //        order.AttackedCivID = 5;
+            //        order.AttackingCivID = 3;
+            //        order.Intel_Order = "StealCredits";
+            //        order.Intel_Order_Blamed = "bl_Federation";
+            //        //order._attackedCivID = 5;
+            //        //order._attackingCivID = 3;
+            //        //order._intel_Order = "StealCreditsUL";
+            //        //order._intel_Order_Blamed = "bl_FederationUL";
+            //    }
+
+                //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+                //                                        attacked.Civilization.Key,
+                //                                         order.Intel_Order,
+                //                                         order.Intel_Order_Blamed);
+
+            //    var attacking = GameContext.Current.CivilizationManagers[2].Civilization;
+            //    var attacked = GameContext.Current.CivilizationManagers[5].Civilization;
+            //    GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Key,
+            //                                                                    attacked.Key,
+            //                                                                     order.Intel_Order,
+            //                                                                     order.Intel_Order_Blamed);
+            //    switch (order.Intel_Order)
+            //    {
+            //        case "StealCredits":
+            //            ExecuteStealCredits(attacking, attacked, "_bla_Terrorists");
+            //            break;
+            //        default:
+            //            break;
+            //    }
+
+            //    //    }
+            //    //}
+            //    //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
+            //}
+        }
         // from DoPreTurnOperations in GameEngine, only do it at this time //   Done at HOST !!!!!
         public static void ExecuteIntelIncomingOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
@@ -446,7 +531,6 @@ namespace Supremacy.Intelligence
                 //GameLog.Core.Intel.DebugFormat("", empire.IntelOrdersGoingToHost.);
             }
         }
-
 
         //IntelOrders.SetNewIntelOrders(); /*just for fun*/
 
