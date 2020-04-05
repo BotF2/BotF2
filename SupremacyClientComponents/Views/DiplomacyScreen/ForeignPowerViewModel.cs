@@ -210,9 +210,19 @@ namespace Supremacy.Client.Views
 
                 OnOutgoingMessageChanged();
 
+                string _gamelogPart2 = "";
+                //if (_outgoingMessage.Elements[0].ActionCategory == Actionc)
+
+
+
                 if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
-                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage SET = {0} >> {1}, CountElem.={2}",
-                   _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString()); 
+                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage SET = {0} >> {1}: {3} = {4} {5}",
+                   _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
+                   , _outgoingMessage.Elements.Count().ToString()
+                   , _outgoingMessage.Elements[0].ActionCategory.ToString()
+                   , _outgoingMessage.Elements[0].Description.ToString()
+                   , _gamelogPart2
+                   ); 
             }
         }
 
@@ -364,7 +374,7 @@ namespace Supremacy.Client.Views
             
             if (response != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
+                //GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
                 return DiplomaticMessageCategory.Response;
             }
 
@@ -372,7 +382,7 @@ namespace Supremacy.Client.Views
             
             if (statement != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
+                //GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
                 switch (statement.StatementType)
                 {
                     case StatementType.CommendRelationship:

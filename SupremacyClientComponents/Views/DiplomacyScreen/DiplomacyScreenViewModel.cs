@@ -607,7 +607,7 @@ namespace Supremacy.Client.Views
                 return;
 
             SelectedForeignPower.OutgoingMessage.Send();
-            GameLog.Client.Diplomacy.DebugFormat("Diplo Message sent...");
+            GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
 
             OnCommandVisibilityChanged();
@@ -1133,7 +1133,11 @@ namespace Supremacy.Client.Views
                 var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
-                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerViewModel: {2} (ID {1}) vs {0}", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name);
+                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerView: {2} (ID {1}) vs {0}: {3} ({4}/{5})", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name
+                    , foreignPowerViewModel.Status
+                    , foreignPowerViewModel.CounterpartyRegard
+                    , foreignPowerViewModel.CounterpartyTrust
+                    );
             }
 
             if (selectedForeignPower != null)

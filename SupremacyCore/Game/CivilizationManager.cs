@@ -1,3 +1,4 @@
+// File:CivilizationManager.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -304,10 +305,10 @@ namespace Supremacy.Game
             //_newIntelOrderList.Add(_newIntelOrdersGoingToHost);
             //_intelOrdersGoingToHost.AddRange(_newIntelOrderList);
             _intelOrdersGoingToHost.Add(_newIntelOrdersGoingToHost);
-            foreach (var item in IntelOrdersGoingToHost)
-            {
-                GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
-            }
+            //////////////foreach (var item in IntelOrdersGoingToHost)
+            //////////////{
+            //////////////    GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
+            //////////////}
         }
 
         /// <summary>

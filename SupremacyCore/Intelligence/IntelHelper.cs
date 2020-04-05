@@ -310,7 +310,9 @@ namespace Supremacy.Intelligence
             }
             
             //var _intelOrder = IntelHelper.NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
-            GameLog.Core.Intel.DebugFormat("adding ExecuteIntelIncomingOrders: {0} vs {1} - {2}, blamed {3}", attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
+
+            //works
+            //////////////////GameLog.Core.Intel.DebugFormat("adding ExecuteIntelIncomingOrders: {0} vs {1} - {2}, blamed {3}", attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
 
             //if (GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost == null)
             //{
@@ -338,8 +340,9 @@ namespace Supremacy.Intelligence
             listIntelOrders.Add(order);
             playerDiplomat.UpdateIntelOrderList(listIntelOrders);
             
-            if (playerDiplomat.IntelOrdersGoingToHost.Count > 0)
-                GameLog.Core.Intel.DebugFormat("playerDiplomat for {0} has {1} going to host", playerDiplomat.Owner.Key, playerDiplomat.IntelOrdersGoingToHost.Count);
+            //works
+            //if (playerDiplomat.IntelOrdersGoingToHost.Count > 0)
+            //    GameLog.Core.Intel.DebugFormat("playerDiplomat for {0} has {1} going to host", playerDiplomat.Owner.Key, playerDiplomat.IntelOrdersGoingToHost.Count);
 
             //var dip2 = Diplomat.Get(attackingCiv.CivID);
             //if (dip2.IntelOrdersGoingToHost.Count > 0)
@@ -368,7 +371,7 @@ namespace Supremacy.Intelligence
             //if it is StealCredits than do ExecuteStealCredits
             //if it is StealResearch than do ExecuteStealResearch
 
-            GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders...");
+            //GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders...");
 
             var civs = GameContext.Current.CivilizationManagers;
 
@@ -385,23 +388,24 @@ namespace Supremacy.Intelligence
             foreach (var empire in empiresDoingIntel)
             {
                 var _diplomat = Diplomat.Get(empire);
-                GameLog.Core.Intel.DebugFormat("checking from {0}: for Dipolmat.IntelOrdersGoingToHost... # = {1}"/*no counting"*/, empire.Civilization.Key, _diplomat.IntelOrdersGoingToHost.Count); //, empire.Civilization.IntelOrdersGoingToHost.Count);
+                //GameLog.Core.Intel.DebugFormat("checking from {0}: for Dipolmat.IntelOrdersGoingToHost... # = {1}"/*no counting"*/, empire.Civilization.Key, _diplomat.IntelOrdersGoingToHost.Count); //, empire.Civilization.IntelOrdersGoingToHost.Count);
                 if (empire.CivilizationID == 4)
                 {
-                    GameLog.Core.Intel.DebugFormat("Before add intelOrders CivKey = {0}: Count Intel Orders = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
+                    //GameLog.Core.Intel.DebugFormat("Before add intelOrders CivKey = {0}: Count Intel Orders = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
                     if (Diplomat.Get(empire).IntelOrdersGoingToHost.Count > 0)
                     {
                         //_completeListofIntelOrders.AddRange(empire.IntelOrdersGoingToHost);
                         _completeListofIntelOrders.AddRange(Diplomat.Get(empire).IntelOrdersGoingToHost);
-                        GameLog.Core.Intel.DebugFormat("add to CivKey {0} Intel OrderToHost Count = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
+                        //GameLog.Core.Intel.DebugFormat("add to CivKey {0} Intel OrderToHost Count = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
                     }
                 }
             }
 
-            foreach (var item in _completeListofIntelOrders)
-            {
-                GameLog.Core.Intel.DebugFormat("_completeListofIntelOrders-Entry: {0} from {1} against {2], blamed={3}", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
-            }
+            //works
+            //foreach (var item in _completeListofIntelOrders)
+            //{
+            //    GameLog.Core.Intel.DebugFormat("_completeListofIntelOrders-Entry: {0} from {1} against {2], blamed={3}", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            //}
 
             //foreach (var empire in empiresDoingIntel)
             //{
@@ -413,18 +417,18 @@ namespace Supremacy.Intelligence
                 foreach (var order in _completeListofIntelOrders)
                     {
 
-                        if (order.AttackingCivID == 999)
-                        {
-                            GameLog.Core.Intel.DebugFormat("Creating fake Incoming Order... (ROM vs DOM)"); // Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
-                            order.AttackedCivID = 5;
-                            order.AttackingCivID = 3;
-                            order.Intel_Order = "StealCredits";
-                            order.Intel_Order_Blamed = "bl_Federation";
-                            //order._attackedCivID = 5;
-                            //order._attackingCivID = 3;
-                            //order._intel_Order = "StealCreditsUL";
-                            //order._intel_Order_Blamed = "bl_FederationUL";
-                        }
+                        //if (order.AttackingCivID == 999)
+                        //{
+                        //    GameLog.Core.Intel.DebugFormat("Creating fake Incoming Order... (ROM vs DOM)"); // Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+                        //    order.AttackedCivID = 5;
+                        //    order.AttackingCivID = 3;
+                        //    order.Intel_Order = "StealCredits";
+                        //    order.Intel_Order_Blamed = "bl_Federation";
+                        //    //order._attackedCivID = 5;
+                        //    //order._attackingCivID = 3;
+                        //    //order._intel_Order = "StealCreditsUL";
+                        //    //order._intel_Order_Blamed = "bl_FederationUL";
+                        //}
 
                         //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
                         //                                        attacked.Civilization.Key,
@@ -433,10 +437,10 @@ namespace Supremacy.Intelligence
 
                         var attacking = GameContext.Current.CivilizationManagers[2].Civilization;
                         var attacked = GameContext.Current.CivilizationManagers[5].Civilization;
-                        GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Key,
-                                                                                        attacked.Key,
-                                                                                         order.Intel_Order,
-                                                                                         order.Intel_Order_Blamed);
+                        //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Key,
+                        //                                                                attacked.Key,
+                        //                                                                 order.Intel_Order,
+                        //                                                                 order.Intel_Order_Blamed);
                         switch (order.Intel_Order)
                         {
                             case "StealCredits":
@@ -467,7 +471,7 @@ namespace Supremacy.Intelligence
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
 
-            GameLog.Core.Test.DebugFormat("**** StealCredits, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.Intel.DebugFormat("**** StealCredits, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
 
             int stolenCredits = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;

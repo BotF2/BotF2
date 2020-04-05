@@ -828,10 +828,19 @@ namespace Supremacy.Game
                             }
                         }
                     }
+
+
+
+
                     var ForeignPower = diplomat1.GetForeignPower(civ2);
                     var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+                    
+                    
+                    if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                        ;  // do nothing else = emtpy line
+
 
                     switch (ForeignPower.PendingAction)
                     {
@@ -868,7 +877,49 @@ namespace Supremacy.Game
                     var foreignPower = diplomat.GetForeignPower(civ2);
 
                     // just for testing especially generating break point
-                    if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                    if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
+                    {
+                        string _gameLog = "### Checking ForeignerPower - see next line";
+                        if (foreignPower.ProposalReceived != null)
+                            _gameLog += Environment.NewLine + "ProposalReceived: "
+                                      + foreignPower.ProposalReceived.Sender + " vs "
+                                      + foreignPower.ProposalReceived.Recipient + ": > "
+                                      + foreignPower.ProposalReceived.Clauses.ToString();
+                        if (foreignPower.ProposalSent != null)
+                            _gameLog += Environment.NewLine + "ProposalSent: "
+                                      + foreignPower.ProposalSent.Sender + " vs "
+                                      + foreignPower.ProposalSent.Recipient + ": > "
+                                      + foreignPower.ProposalSent.Clauses.ToString();
+                        if (foreignPower.ResponseReceived != null)
+                            _gameLog += Environment.NewLine + "ResponseReceived: "
+                                      + foreignPower.ResponseReceived.Sender + " vs "
+                                      + foreignPower.ResponseReceived.Recipient + ": > "
+                                      + foreignPower.ResponseReceived.ResponseType.ToString();
+                        if (foreignPower.ResponseSent != null)
+                            _gameLog += Environment.NewLine + "ResponseSent: "
+                                      + foreignPower.ResponseSent.Sender + " vs "
+                                      + foreignPower.ResponseSent.Recipient + ": > "
+                                      + foreignPower.ResponseSent.ResponseType.ToString();
+                        if (foreignPower.StatementReceived != null)
+                            _gameLog += Environment.NewLine + "StatementReceived: "
+                                      + foreignPower.StatementReceived.Sender + " vs "
+                                      + foreignPower.StatementReceived.Recipient + ": > "
+                                      + foreignPower.StatementReceived.StatementType.ToString();
+                        if (foreignPower.StatementSent != null)
+                            _gameLog += Environment.NewLine + "StatementSent: "
+                                      + foreignPower.StatementSent.Sender + " vs "
+                                      + foreignPower.StatementSent.Recipient + ": > "
+                                      + foreignPower.StatementSent.StatementType.ToString();
+
+                        if (foreignPower.PendingAction != null)
+                            _gameLog += Environment.NewLine + "PendingAction: "
+                                      //+ foreignPower.PendingAction + " vs "
+                                      //+ foreignPower.PendingAction.Recipient
+                                      + foreignPower.PendingAction.ToString();
+
+                        GameLog.Core.Diplomacy.DebugFormat(_gameLog);
+
+                    }
                         ;  // do nothing else = emtpy line
 
                     var proposalSent = foreignPower.ProposalSent;
@@ -902,6 +953,12 @@ namespace Supremacy.Game
 
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
+
+                        if (statementSent.StatementType == StatementType.DenounceRelationship && statementSent.Tone == Tone.Indignant)
+                        {
+                            GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");
+                            IntelHelper.ExecuteStealCredits(civ1, civ2, "Diplo-Terrorists");
+                        }
                     }
                     else
                     {

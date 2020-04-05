@@ -1,4 +1,4 @@
-// Diplomat.cs
+// File:Diplomat.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -55,17 +55,22 @@ namespace Supremacy.Diplomacy
             //get { return GetIntelOrdersGoingToHost(_ownerId); }
             get 
             {
-                if (_intelOrdersGoingToHost.Count > 0)
-                    GameLog.Server.Intel.DebugFormat("GET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
+                //works
+                //if (_intelOrdersGoingToHost.Count > 0)
+                    //GameLog.Server.Intel.DebugFormat("GET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
+
+
                 //return GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost; 
                 return _intelOrdersGoingToHost;
             }
             set
             {
-                GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
+                //works
+                //GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
                 if (_intelOrdersGoingToHost != value)
                 {
-                    GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost to VALUE");
+                    //works
+                    //GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost to VALUE");
                     _intelOrdersGoingToHost = value;
                 }
             }
@@ -134,7 +139,8 @@ namespace Supremacy.Diplomacy
         }
         public void UpdateIntelOrderList(List<IntelHelper.NewIntelOrders> orderList)
         {
-            GameLog.Core.Diplomacy.DebugFormat("Adding orders, count = {0}", orderList.Count);  
+            // old stuff, not working 
+            // GameLog.Core.Diplomacy.DebugFormat("Adding orders, count = {0}", orderList.Count);  
             _intelOrdersGoingToHost.AddRange(orderList);
         }
         public ForeignPower GetForeignPower(ICivIdentity civilization)

@@ -1,3 +1,4 @@
+// File:PlayerOrderService.cs
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -5,6 +6,7 @@ using System.Collections.ObjectModel;
 using Supremacy.Annotations;
 using Supremacy.Game;
 using Supremacy.Client.Context;
+using Supremacy.Utility;
 
 namespace Supremacy.Client.Services
 {
@@ -51,6 +53,17 @@ namespace Supremacy.Client.Services
                 while ((_orders.Count > 0) && order.Overrides(_orders[_orders.Count - 1]))
                     _orders.RemoveAt(_orders.Count - 1);
                 _orders.Add(order);
+
+                string _gamelogPart2 = "";
+
+                
+
+                //if (order.ToString() == "SendStatementOrder")
+
+                //    _gamelogPart2 = order
+
+
+                GameLog.Client.Diplomacy.DebugFormat("adding order {0}: {1}", owner, order.ToString() );
             }
             OnOrdersChanged();
         }
