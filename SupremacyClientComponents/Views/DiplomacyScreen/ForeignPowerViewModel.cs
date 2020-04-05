@@ -267,7 +267,7 @@ namespace Supremacy.Client.Views
 
         protected internal virtual void OnOutgoingMessageCategoryChanged()
         {
-            GameLog.Client.Diplomacy.DebugFormat("Message Category Changed");
+            //GameLog.Client.Diplomacy.DebugFormat("Message Category Changed");
             OutgoingMessageCategoryChanged.Raise(this);
             OnPropertyChanged("OutgoingMessageCategory");
         }
@@ -306,8 +306,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            //
-            GameLog.Client.Diplomacy.DebugFormat("propertyName ={0}", propertyName);
+            //GameLog.Client.Diplomacy.DebugFormat("propertyName ={0}", propertyName);
             _propertyChanged.Raise(this, propertyName);
         }
 

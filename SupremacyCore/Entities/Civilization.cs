@@ -1,3 +1,5 @@
+// File:Civilization.cs
+// Copyright (c) 2007 Mike Strobel
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -6,7 +8,6 @@
 // All other rights reserved.
 
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
@@ -16,7 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-using static Supremacy.Intelligence.IntelHelper;
+
 
 namespace Supremacy.Entities
 {

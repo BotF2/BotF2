@@ -1,3 +1,4 @@
+// File:GameEngine.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -866,10 +867,16 @@ namespace Supremacy.Game
 
                     var foreignPower = diplomat.GetForeignPower(civ2);
 
+                    // just for testing especially generating break point
+                    if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                        ;  // do nothing else = emtpy line
+
                     var proposalSent = foreignPower.ProposalSent;
                     if (proposalSent != null)
                     {
-                        foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
+                        if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                            ;
+                            foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
                         foreignPower.LastProposalSent = proposalSent;
                         foreignPower.ProposalSent = null;
 
@@ -887,6 +894,8 @@ namespace Supremacy.Game
                     var statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
                     {
+                        if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                            ;  // do nothing else = emtpy line
                         foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
                         foreignPower.LastStatementSent = statementSent;
                         foreignPower.StatementSent = null;
@@ -902,6 +911,8 @@ namespace Supremacy.Game
                     var responseSent = foreignPower.ResponseSent;
                     if (responseSent != null)
                     {
+                        if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                            ;  // do nothing else = emtpy line
                         foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent;
                         foreignPower.LastResponseSent = responseSent;
                         foreignPower.ResponseSent = null;

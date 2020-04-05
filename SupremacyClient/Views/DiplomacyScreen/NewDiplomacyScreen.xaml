@@ -504,6 +504,12 @@
                           ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonTooltipText', CharacterCasing=Upper}"
                           Command="{Binding Path=FullAllianceCommand}" 
                           IsEnabled="{Binding Path=FullAllianceCommand}"/>
+                    <scc:GameButton x:Name="MembershipButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonTooltipText', CharacterCasing=Upper}"
+                          Command="{Binding Path=MembershipCommand}" 
+                          IsEnabled="{Binding Path=MembershipCommand}"/>
                 </scc:GameItemsControl>
                 <scc:GameItemsControl x:Name="DraftButtons"
                               Grid.Column="0"
@@ -872,9 +878,9 @@
 
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EmbassyOfText, CharacterCasing=Upper}">
-                                        <Binding Path="SelectedForeignPower.Counterparty.ShortName"
+                                        <Binding Path="SelectedForeignPower.Counterparty.ShortNameToThe"
                                                  Converter="{StaticResource UpperCaseConverter}" />
-                                        <Binding Path="PlayerCivilization.ShortName"
+                                        <Binding Path="PlayerCivilization.ShortNameFromThe"
                                                  Converter="{StaticResource UpperCaseConverter}" />
                                     </MultiBinding>
                                 </TextBlock.Text>

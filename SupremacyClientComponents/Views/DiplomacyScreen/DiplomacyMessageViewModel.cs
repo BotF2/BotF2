@@ -704,7 +704,7 @@ namespace Supremacy.Client.Views
             if (statementType == StatementType.NoStatement)
                 return null;
             if(statementType != StatementType.NoStatement)
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement sender = {0} *vs* rRecipient = {1}: Tone = {2}  StatementType = {3} ", _sender, _recipient, _tone, statementType.ToString());
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ", _sender, _recipient, _tone, statementType.ToString());
 
             return new Statement(_sender, _recipient, statementType, _tone);
         }
