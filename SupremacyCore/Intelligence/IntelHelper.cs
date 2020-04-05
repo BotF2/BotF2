@@ -1,3 +1,6 @@
+// File:IntelHelper.cs
+using Microsoft.Practices.ServiceLocation;
+using Supremacy.Client;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
@@ -270,22 +273,24 @@ namespace Supremacy.Intelligence
 
             IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
 
-            #region class steal credit
+            //var statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
+            //if (statementType == StatementType.NoStatement)
+            //    return null;
+            //if (statementType != StatementType.NoStatement)
+            //    GameLog.Core.Diplomacy.DebugFormat("Create Statement sender = {0} *vs* rRecipient = {1}: Tone = {2}  StatementType = {3} ", _sender, _recipient, _tone, statementType.ToString());
+
+            //return new Statement(attackingCiv, attackedCiv, StatementType.DenounceRelationship, Tone.Indignant);
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.DenounceRelationship, Tone.Indignant));
+            _sendOrder.Owner = attackingCiv;
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for Stealing Credits sender = {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ", attackingCiv, attackedCiv, "Tone.Indignant", "DenounceRelationship");
+            ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+
+            var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
+
+            //IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
+
             IntelOrdersStealCredits stealCredit = new IntelOrdersStealCredits(attackingCiv, attackedCiv, blamed);
-            GameLog.Core.Intel.DebugFormat("* * * 1st Dictionary = {0} vs {1} blame = {2}", stealCredit.AttackingCiv, stealCredit.AttackedCiv, stealCredit.Blamed);
-
-            if (_intelStealCreditDictionary == null)
-            {
-                Dictionary<int, IntelOrdersStealCredits> _dictionary = new Dictionary<int, IntelOrdersStealCredits>() { { stealCredit.AttackingCiv.CivID, stealCredit } };
-                _intelStealCreditDictionary = _dictionary;
-            }
-            else
-                _intelStealCreditDictionary.Add(attackingCiv.CivID, stealCredit); // populate dictionary for GameEngine with key and class IntelOrderStealCredits
-
-            //List<IntelOrdersStealCredits> stealCreditOrders = new List<IntelOrdersStealCredits>() { stealCredit };
-
-            //_intelStealCreditList.Add(new List< KeyValuePair<attackingCiv.CivID, stealCredit>>);
-            #endregion 
+            GameLog.Core.Intel.DebugFormat("** Class StealCredits = {0} vs {1} blamedd = {2}", attackingCiv.Key, attackedCiv.Key, blamed);
 
             attackingCivManager.UpdateIntelOrdersGoingToHost(order);
 
@@ -356,15 +361,8 @@ namespace Supremacy.Intelligence
             //else
 
         }
-        //public static void StealCreditsFromDictionary(CivilizationManager civManager) 
-        //{
-        //    foreach(IntelOrdersStealCredits stealCredits in IntelHelper.IntelStealCreditsDictionary.Values)
-        //    {
-        //        GameLog.Core.Intel.DebugFormat("* * *ExecuteStealCredits {0} vs {1} Blamed {2}", stealCredits.AttackingCiv, stealCredits.AttackedCiv, stealCredits.Blamed);
-        //        ExecuteStealCredits(stealCredits.AttackingCiv, stealCredits.AttackedCiv, stealCredits.Blamed);
-        //    }
-        //}
 
+        // from DoPreTurnOperations in GameEngine, only do it at this time //   Done at HOST !!!!!
         public static void ExecuteIntelIncomingOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             //if it is StealCredits than do ExecuteStealCredits
