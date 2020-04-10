@@ -43,7 +43,7 @@ namespace Supremacy.Intelligence
         public static bool _showNetwork_4 = false;
         public static bool _showNetwork_5 = false;
         public static bool _showNetwork_6 = false;
-        private static Dictionary<int, IntelOrdersStealCredits> _intelStealCreditDictionary;
+       // private static Dictionary<int, IntelOrdersStealCredits> _intelStealCreditDictionary;
        // private static List<KeyValuePair<int, IntelOrdersStealCredits>> _intelStealCreditList;
 
         public static List<SitRepEntry> SitReps_Temp
@@ -112,14 +112,9 @@ namespace Supremacy.Intelligence
         {
             get { return _showNetwork_6; }
         }
-        public static Dictionary<int, IntelOrdersStealCredits> IntelStealCreditsDictionary
-        {
-            get { return _intelStealCreditDictionary; }
-        }
-
-        //public static List<KeyValuePair<int, IntelOrdersStealCredits>> IntelStealCreditsList
+        //public static Dictionary<int, IntelOrdersStealCredits> IntelStealCreditsDictionary
         //{
-        //    get { return _intelStealCreditList; }
+        //    get { return _intelStealCreditDictionary; }
         //}
 
         /// <summary>
@@ -243,17 +238,7 @@ namespace Supremacy.Intelligence
             GameLog.Client.UI.DebugFormat("********* end of sending spied list to CM **********");
            // PopulateDefence();
         }
-        //private static void PopulateDefence()
-        //{
-        //    _defenseDictionary.Clear();
-        //    foreach (var spiedCiv in _spiedList)
-        //    {
-        //        int defenseInt = 0;
-        //        var spiedCivManager = GameContext.Current.CivilizationManagers[spiedCiv];
-        //        Int32.TryParse(spiedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseInt);
-        //        _defenseDictionary.Add(spiedCiv, defenseInt);
-        //    }
-        //}
+
         #region Espionage Methods
         public static string Blame(Civilization localCivAttacker, string blamed, int chance)
         {
@@ -265,9 +250,6 @@ namespace Supremacy.Intelligence
         // coming from Buttons in each of the six expanders
         public static void StealCredits(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
-            // try to save the spy operation in class, like IntelOrdersStealCredits, then run it at the end of each turn on host computer
-            //StealCredits stealCredits = new StealCredits(colony, attackingCiv, attackedCiv, blamed);
-
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
 
@@ -287,10 +269,8 @@ namespace Supremacy.Intelligence
 
             var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
 
-            //IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
-
-            IntelOrdersStealCredits stealCredit = new IntelOrdersStealCredits(attackingCiv, attackedCiv, blamed);
-            GameLog.Core.Intel.DebugFormat("** Class StealCredits = {0} vs {1} blamedd = {2}", attackingCiv.Key, attackedCiv.Key, blamed);
+            //IntelOrdersStealCredits stealCredit = new IntelOrdersStealCredits(attackingCiv, attackedCiv, blamed);
+            //GameLog.Core.Intel.DebugFormat("** Class StealCredits = {0} vs {1} blamedd = {2}", attackingCiv.Key, attackedCiv.Key, blamed);
 
             attackingCivManager.UpdateIntelOrdersGoingToHost(order);
 
@@ -368,8 +348,6 @@ namespace Supremacy.Intelligence
         // from DoPreTurnOperations in GameEngine, only do it at this time //   Done at HOST !!!!!
         public static void ExecuteIntelIncomingOrders()  //(Colony colony, Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
-            //if it is StealCredits than do ExecuteStealCredits
-            //if it is StealResearch than do ExecuteStealResearch
 
             //GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders...");
 

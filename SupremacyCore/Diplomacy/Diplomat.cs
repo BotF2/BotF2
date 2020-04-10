@@ -309,7 +309,6 @@ namespace Supremacy.Diplomacy
 
             foreach (var item in _diplomats.IntelOrdersGoingToHost)
             {
-
                 GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
             }
 

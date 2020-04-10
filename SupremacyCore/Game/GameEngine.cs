@@ -404,29 +404,29 @@ namespace Supremacy.Game
 
             IntelHelper.ExecuteIntelIncomingOrders();
 
-            #region class steal credit section
-            if (IntelHelper.IntelStealCreditsDictionary != null)
-            {
-                List<KeyValuePair<int, IntelOrdersStealCredits>> stealCreditList = IntelHelper.IntelStealCreditsDictionary.ToList();
+            //#region class steal credit section
+            //if (IntelHelper.IntelStealCreditsDictionary != null)
+            //{
+            //    List<KeyValuePair<int, IntelOrdersStealCredits>> stealCreditList = IntelHelper.IntelStealCreditsDictionary.ToList();
 
-                foreach (var stealCredit in stealCreditList) // make list and foreach list to get key to remove last turns values from Dictionary
-                {
-                    if (stealCredit.Value.TurnNumber < GameContext.Current.TurnNumber)
-                    {
-                        GameLog.Core.Intel.DebugFormat("* * * StealCredit turn# {0} vs {1} current turn#", stealCredit.Value.TurnNumber, GameContext.Current.TurnNumber);
-                        GameLog.Core.Intel.DebugFormat("* * * Remove last turn classes, attacking = {0}", stealCredit.Value.AttackingCiv);
-                        IntelHelper.IntelStealCreditsDictionary.Remove(stealCredit.Key);
-                    }
-                }
-                foreach (var stolenCredits in IntelHelper.IntelStealCreditsDictionary) // foreach dictionary to find and run stealcredit classes
-                {
-                    GameLog.Core.Intel.DebugFormat("* * * for {0} vs {1} call ExecuteStealCredits", stolenCredits.Value.AttackingCiv, stolenCredits.Value.AttackedCiv);
-                    IntelHelper.ExecuteStealCredits(stolenCredits.Value.AttackingCiv,
-                                                    stolenCredits.Value.AttackedCiv,
-                                                    stolenCredits.Value.Blamed);
-                }
-            }
-            #endregion class steal credit
+            //    foreach (var stealCredit in stealCreditList) // make list and foreach list to get key to remove last turns values from Dictionary
+            //    {
+            //        if (stealCredit.Value.TurnNumber < GameContext.Current.TurnNumber)
+            //        {
+            //            GameLog.Core.Intel.DebugFormat("* * * StealCredit turn# {0} vs {1} current turn#", stealCredit.Value.TurnNumber, GameContext.Current.TurnNumber);
+            //            GameLog.Core.Intel.DebugFormat("* * * Remove last turn classes, attacking = {0}", stealCredit.Value.AttackingCiv);
+            //            IntelHelper.IntelStealCreditsDictionary.Remove(stealCredit.Key);
+            //        }
+            //    }
+            //    foreach (var stolenCredits in IntelHelper.IntelStealCreditsDictionary) // foreach dictionary to find and run stealcredit classes
+            //    {
+            //        GameLog.Core.Intel.DebugFormat("* * * for {0} vs {1} call ExecuteStealCredits", stolenCredits.Value.AttackingCiv, stolenCredits.Value.AttackedCiv);
+            //        IntelHelper.ExecuteStealCredits(stolenCredits.Value.AttackingCiv,
+            //                                        stolenCredits.Value.AttackedCiv,
+            //                                        stolenCredits.Value.Blamed);
+            //    }
+            //}
+            //#endregion class steal credit
 
             GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
@@ -745,6 +745,8 @@ namespace Supremacy.Game
             {
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
+                    var orderCiv1 = new Civilization();
+                    var orderCiv2 = new Civilization();
                     if (civ1 == civ2)
                         continue;
 
@@ -758,6 +760,15 @@ namespace Supremacy.Game
                         continue; // Borg don't accept anything
                     }
                     var diplomat1 = Diplomat.Get(civ1);
+                    var intelOrderList = diplomat1.IntelOrdersGoingToHost;
+                    foreach (var order in intelOrderList)
+                    {
+                        orderCiv1 = GameContext.Current.Civilizations[order.AttackingCivID];
+                        orderCiv2 = GameContext.Current.Civilizations[order.AttackedCivID];
+                        string blame = order.Intel_Order_Blamed;
+                        string newIntelOrder = order.Intel_Order;
+                        IntelHelper.ExecuteStealCredits(orderCiv1, orderCiv2, blame);
+                    }
                     var diplomat2 = Diplomat.Get(civ2);
                     if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
                         diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
@@ -829,9 +840,6 @@ namespace Supremacy.Game
                         }
                     }
 
-
-
-
                     var ForeignPower = diplomat1.GetForeignPower(civ2);
                     var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
@@ -840,7 +848,6 @@ namespace Supremacy.Game
                     
                     if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
                         ;  // do nothing else = emtpy line
-
 
                     switch (ForeignPower.PendingAction)
                     {
